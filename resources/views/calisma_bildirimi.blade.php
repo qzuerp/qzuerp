@@ -1,7 +1,7 @@
 @extends('layout.mainlayout')
 
 @php
-
+  echo 'deneme';
   if (Auth::check()) {
     $user = Auth::user();
   }
