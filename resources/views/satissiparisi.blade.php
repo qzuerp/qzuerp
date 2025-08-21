@@ -228,7 +228,7 @@
                           </td>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                              <select class="form-control select2" data-name="KOD" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                              <select class="form-control select2" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
                                 <option value=" ">Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
@@ -808,7 +808,15 @@
 @include('components/detayBtnLib')
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
   <script>
-
+        function stokAdiGetir3(veri) {
+          const veriler = veri.split("|||");
+          //$('#STOK_KODU_SHOW').val(veriler[0]);
+          $('#STOK_KODU_FILL').val(veriler[0]);
+          $('#STOK_ADI_SHOW').val(veriler[1]);
+          $('#STOK_ADI_FILL').val(veriler[1]);
+          $('#SF_SF_UNIT_SHOW').val(veriler[2]);
+          $('#SF_SF_UNIT_FILL').val(veriler[2]);
+        }
     $(document).ready(function() {
 
       $('#popupSelectt').DataTable({
