@@ -184,7 +184,7 @@
 											$img = DB::table($database.'dosyalar00')
 											->where('EVRAKNO',@$kart_veri->KOD)
 											->where('EVRAKTYPE','STOK00')
-											->where('EVRAKNO','GORSEL')
+											->where('DOSYATURU','GORSEL')
 											->first();
 										@endphp
 										<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" width="100">
