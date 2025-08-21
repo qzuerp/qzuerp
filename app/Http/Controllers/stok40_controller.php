@@ -60,7 +60,7 @@ class stok40_controller extends Controller
     $TERMIN_TAR = $request->input('TERMIN_TAR');
     $AK = $request->input('AK');
     $LAST_TRNUM = $request->input('LAST_TRNUM');
-    $TRNUM = $request->input('TRNUM');
+    $TRNUM = $request->TRNUM;
     $FIYAT = $request->FIYAT;
     $FIYAT_PB = $request->FIYAT_PB;
     
@@ -101,7 +101,7 @@ class stok40_controller extends Controller
         break;
 
     case 'kart_sil':
-FunctionHelpers::Logla('STOK40',$EVRAKNO,'D',$TARIH);
+      FunctionHelpers::Logla('STOK40',$EVRAKNO,'D',$TARIH);
 
       DB::table($firma.'stok40e')->where('EVRAKNO',$EVRAKNO)->delete();
       DB::table($firma.'stok40t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -181,7 +181,7 @@ FunctionHelpers::Logla('STOK40',$EVRAKNO,'D',$TARIH);
     break;
 
     case 'kart_duzenle':
-FunctionHelpers::Logla('STOK40',$EVRAKNO,'W',$TARIH);
+    FunctionHelpers::Logla('STOK40',$EVRAKNO,'W',$TARIH);
 
     DB::table($firma.'stok40e')->where('EVRAKNO',$EVRAKNO)->update([
       'TARIH' => $TARIH,
@@ -213,7 +213,13 @@ FunctionHelpers::Logla('STOK40',$EVRAKNO,'W',$TARIH);
     $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
     $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
     $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-
+    // dd([
+    //   'd' => $deleteTRNUMS,
+    //   'n' => $newTRNUMS,
+    //   'u' => $updateTRNUMS,
+    //   't' => $TRNUM,
+    //   'all' => $request->all()
+    // ]);
     for ($i = 0; $i < $satir_say; $i++) {
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);

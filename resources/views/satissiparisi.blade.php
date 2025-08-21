@@ -401,13 +401,13 @@
                               ->orderByDesc('t.GECERLILIK_TAR')
                               ->first();
                           @endphp
-                          <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $t_veri->KOD }}"></td>
-                          <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $t_veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $t_veri->STOK_ADI }}"></td>
+                          <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD_F[]" value="{{ $t_veri->KOD }}"></td>
+                          <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $t_veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI_F[]" value="{{ $t_veri->STOK_ADI }}"></td>
 
-                          <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
-                          <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $record->PRICE ??  $t_veri->FIYAT}}"></td>
+                          <td><input type="number" class="form-control" name="SF_MIKTAR_F[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
+                          <td><input type="number" class="form-control" name="FIYAT_F[]" value="{{ $record->PRICE ??  $t_veri->FIYAT}}"></td>
                           <td>
-                            <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%;">
+                            <select name="FIYAT_PB_F[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%;">
                               <option value="">Seç</option>
                               @php
                                 $kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -830,9 +830,9 @@
           scrollX: false,
         ajax: '/evraklar-veri',
         columns: [
-          { data: 'KOD', name: 'KOD' },
-          { data: 'AD', name: 'AD' },
-          { data: 'IUNIT', name: 'IUNIT' }
+          { data: 'KOD' },
+          { data: 'AD' },
+          { data: 'IUNIT' }
         ],language: {
           url: '{{ asset("tr.json") }}'
         },
