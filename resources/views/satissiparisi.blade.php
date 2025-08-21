@@ -371,7 +371,7 @@
                 </div>
                   
                 <div class="tab-pane" id="fiyatlar">
-                  <table class="table table-bordered text-center" id="veriTable" style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
+                  <table class="table table-bordered text-center" id="fiyatlar_table" style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
                     <thead>
                       <tr>
                         <th style="display:none;">Sıra</th>
