@@ -15,4 +15,8 @@ yarn-error.log
 /.vscode
 .htaccess
 *.log
-public
+public/assets
+public/300
+public/300.png
+public/dosyalar
+public/storage

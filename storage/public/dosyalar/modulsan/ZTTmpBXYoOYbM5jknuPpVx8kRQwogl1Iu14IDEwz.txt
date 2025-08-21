@@ -1,0 +1,36 @@
+%_N_HHY1_SPF
+;$PATH=/_N_SPF_DIR
+
+;#7__DlgK contour definition begin - Don't change!;*GP*;*RO*;*HD*
+G18 G90 DIAMON ;*GP*
+G0 Z0 X49 ;*GP*
+G1 X50 ;*GP*
+G3 Z-1 X52 K=AC(-1) I=AC(50) ;*GP*
+G1 X52.2 ;*GP*
+G1 Z-6 ;*GP*
+X84 ;*GP*
+G3 Z-7 X86 K=AC(-7) I=AC(84) ;*GP*
+G1 Z-17.5 ;*GP*
+X91 ;*GP*
+;CON,2,0.0000,7,7,MST:1,2,AX:Z,X,K,I;*GP*;*RO*;*HD*
+;S,EX:0,EY:49;*GP*;*RO*;*HD*
+;LU,EY:50;*GP*;*RO*;*HD*
+;ACCW,DIA:0/35,EX:-1,EY:52,RAD:1;*GP*;*RO*;*HD*
+;LL,EX:-6;*GP*;*RO*;*HD*
+;LU,EY:84;*GP*;*RO*;*HD*
+;ACCW,DIA:0/35,EX:-7,EY:86,RAD:1;*GP*;*RO*;*HD*
+;LL,E*GP*;*RO*;*HD*
+;LU,EY:91;*GP*;*RO*;*HD*
+;#End contour definition end - Don't change!;*GP*;*RO*;*HD*
+;#7__DlgK contour definition begin - Don't change!;*GP*;*RO*;*HD*
+;CON,2,0.0000,7,7,MST:1,2,AX:Z,X,K,I;*GP*;*RO*;*HD*
+;S,EX:0,EY:46;*GP*;*RO*;*HD*
+;LU,EY:48;*GP*;*RO*;*HD*
+;ACCW,DIA:0/35,EX:-1,EY:50,RAD:1;*GP*;*RO*;*HD*
+;LL,EX:-5;*GP*;*RO*;*HD*
+;LU,EY:80;*GP*;*RO*;*HD*
+;LA,EX:-5.25,EY:80.5;*GP*;*RO*;*HD*
+;LL,EX:-65;*GP*;*RO*;*HD*
+;LU,EY:81;*GP*;*RO*;*HD*
+;#our definition end - Don't change!;*GP*;*RO*;*HD*
+M17

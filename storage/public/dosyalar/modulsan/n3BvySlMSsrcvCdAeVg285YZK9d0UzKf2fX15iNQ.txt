@@ -1,0 +1,43 @@
+%_N_HHY1_SPF
+;$PATH=/_N_SPF_DIR
+
+;#7__DlgK contour definition begin - Don't change!;*GP*;*RO*;*HD*
+G18 G90 DIAMON ;*GP*
+G0 Z0 X11.7 ;*GP*
+G1 Z-5  ;*GP*
+Z-7 X13.95 ;*GP*
+Z-28 ;*GP*
+X20 ;*GP*
+Z-28.5 X21 ;*GP*
+X21.3 ;*GP*
+Z-107.3 ;*GP*
+X24.3 ;*GP*
+Z-107.8 X25.3 ;*GP*
+Z-141.2 ;*GP*
+X31 ;*GP*
+Z-141.7 X32 ;*GP*
+X32.15 ;*GP*
+Z-338.6 ;*GP*
+X35 ;*GP*
+;CON,2,0.0000,18,18,MST:1,2,AX:Z,X,K,I;*GP*;*RO*;*HD*
+;S,EX:0,EY:11.8;*GP*;*RO*;*HD*
+;LL,EX:-5;*GP*;*RO*;*HD*
+;LA,EX:-7,EY:13.95;*GP*;*RO*;*HD*
+;LL,EX:-27;*GP*;*RO*;*HD*
+;ACW,DIA:0/235,EX:-28,EY:D:1;*GP*;*RO*;*HD*
+;LU,EY:20;*GP*;*RO*;*HD*
+;LA,EX:-28.5,EY:21;*GP*;*RO*;*HD*
+;LU,EY:21.3;*GP*;*RO*;*HD*
+;LL,EX:-106.3;*GP*;*RO*;*HD*
+;ACW,DIA:0/35,EX:-107.3,EY:23.3,RAD:1;*GP*;*RO*;*HD*
+;LU,EY:24.3;*GP*;*RO*;*HD*
+;LA,EX:-107.8,EY:25.3;*GP*;*RO*;*HD*
+;LL,EX:-139.7;*GP*;*RO*;*HD*
+;ACW,DIA:0/35,EX:-141.2,EY:28.3,RAD:1.5;*GP*;*RO*;*HD*
+;LU,EY:31;*GP*;*RO*;*HD*
+;LA,EX:-141.7,EY:32;*GP*;*RO*;*HD*
+;LU,EY:32.15;*GP*;*RO*;*HD*
+;LL,EX:-338.6;*GP*;*RO*;*HD*
+;LU,EY:36;*GP*;*RO*;*HD*
+;#End contour definition end - Don'!;*GP*;*RO*;*HD*
+M17

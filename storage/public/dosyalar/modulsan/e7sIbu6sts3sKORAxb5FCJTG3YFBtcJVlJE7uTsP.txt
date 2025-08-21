@@ -1,0 +1,18 @@
+%_N_HHY5_SPF
+;$PATH=/_N_SPF_DIR
+
+;#7__DlgK contour definition begin - Don't change!;*GP*;*RO*;*HD*
+G18 G90 DIAMON ;*GP*
+G0 Z4.5 X95 ;*GP*
+G1 Z0 ;*GP*
+X20 ;*GP*
+Z4.5 ;*GP*
+;CON,2,0.0000,5,5,MST:1,2,AX:Z,X,K,I;*GP*;*RO*;*HD*
+;S,EX:1,EY:96;*GP*;*RO*;*HD*
+;LL,EX:-0.5;*GP*;*RO*;*HD*
+;LD,EY:85;*GP*;*RO*;*HD*
+;LA,EX:0,EY:84;*GP*;*RO*;*HD*
+;LD,EY:24;*GP*;*RO*;*HD*
+;LR,EX:1;*GP*;*RO*;*HD*
+;#End contour definition end - Don't change!;*GP*;*RO*;*HD*
+M17
