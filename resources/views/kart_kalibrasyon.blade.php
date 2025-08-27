@@ -971,7 +971,7 @@ if (isset($kart_veri)) {
 										foreach ($evraklar as $key => $suzVeri) {
 												echo "<tr>";
 												echo "<td>".$suzVeri->KOD."</td>";
-												echo "<td>".$suzVeri->AD."</td>";
+												echo "<td>".$suzVeri->OLCUM_ARALIGI."   ".$suzVeri->AD."</td>";
 												echo "<td>".$suzVeri->GK_1."</td>";
 												echo "<td>".$suzVeri->SERINO."</td>";
 												echo "<td>".$suzVeri->URETICIFIRMA."</td>";
