@@ -952,7 +952,7 @@ if (isset($kart_veri)) {
 									<tfoot>
 										<tr class="bg-info">
 											<th>Kod</th>
-											<th>Ad</th>
+											<th style="min-width:250px;">Ad</th>
 											<th>GK 1</th>
 											<th>Seri no</th>
 											<th>Marka</th>
@@ -971,7 +971,7 @@ if (isset($kart_veri)) {
 										foreach ($evraklar as $key => $suzVeri) {
 												echo "<tr>";
 												echo "<td>".$suzVeri->KOD."</td>";
-												echo "<td>".$suzVeri->OLCUM_ARALIGI."   ".$suzVeri->AD."</td>";
+												echo "<td>".$suzVeri->OLCUM_ARALIGI." ".$suzVeri->AD."</td>";
 												echo "<td>".$suzVeri->GK_1."</td>";
 												echo "<td>".$suzVeri->SERINO."</td>";
 												echo "<td>".$suzVeri->URETICIFIRMA."</td>";
