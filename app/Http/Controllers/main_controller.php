@@ -39,7 +39,7 @@ class main_controller extends Controller
     $firma = trim($u->firma).'.dbo.';
     $id = DB::table($firma.'D7KIDSLB')->max('id');
     $serino = str_pad($id, 12, '0', STR_PAD_LEFT);
-    return $serino;
+    return $serino++;
   }
   public function hizli_islem_verileri(Request $request) {
     $DEPO = $request->veriler[2];

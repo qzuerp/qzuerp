@@ -48,6 +48,7 @@ use App\Http\Controllers\pers00_controller;
 use App\Http\Controllers\Issiralama;
 use App\Http\Controllers\RaporlamaController;
 use App\Http\Controllers\deneme1;
+use App\Http\Controllers\uretim_gazetesi;
 
 
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ Route::get('/raporlama/template/edit/{id}', [RaporlamaController::class, 'editTe
 Route::post('/raporlama/template/update/{id}', [RaporlamaController::class, 'updateTemplate'])->name('raporlama.template.update');
 
 
-
+Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_gazetesi.index');
 
 
 Auth::routes(['password.request' => false]);

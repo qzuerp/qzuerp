@@ -1386,6 +1386,7 @@
 					success: function(response) {
 						response.rMiktar = response.rMiktar.map(x => Number(parseFloat(x).toFixed(2)));
 						response.rTmyMamul = response.rTmyMamul.map(x => Number(parseFloat(x).toFixed(2)));
+						
 						Highcharts.chart('charts', {
 							chart: {
 								type: 'column',

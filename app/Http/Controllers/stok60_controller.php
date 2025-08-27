@@ -65,8 +65,6 @@ class stok60_controller extends Controller
     $STOK_ADI = $request->STOK_ADI;
     $SF_MIKTAR = $request->SF_MIKTAR;
     $SF_SF_UNIT = $request->SF_SF_UNIT;
-    $PKTICIADET = $request->PKTICIADET;
-    $AMBLJ_TNM = $request->AMBLJ_TNM;
     $LOTNUMBER = $request->LOTNUMBER;
     $SERINO = $request->SERINO;
     $AMBCODE_T = $request->AMBCODE;
@@ -223,8 +221,6 @@ class stok60_controller extends Controller
               'STOK_ADI' => $STOK_ADI[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-              'PKTICIADET' => $PKTICIADET[$i],
-              'AMBLJ_TNM' => $AMBLJ_TNM[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
               'AMBCODE' => $AMBCODE_T[$i],
@@ -391,7 +387,8 @@ class stok60_controller extends Controller
             //   "s2" => $s2,
             //   "Kontrol" => $kontrol,
             //   "Miktar" => $SF_MIKTAR[$i],
-            //   'Depo' => $AMBCODE_T[$i]
+            //   'Depo' => $AMBCODE_T[$i],
+            //   'all' => $request->all()
             // ]);
 
             if($SF_MIKTAR[$i] > $kontrol)
@@ -407,8 +404,6 @@ class stok60_controller extends Controller
               'STOK_ADI' => $STOK_ADI[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-              'PKTICIADET' => $PKTICIADET[$i] ?? '',
-              'AMBLJ_TNM' => $AMBLJ_TNM[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
               'AMBCODE' => $AMBCODE_T[$i],
@@ -472,7 +467,7 @@ class stok60_controller extends Controller
                     ->where('KOD',$KOD[$i])
                     ->where('LOTNUMBER',$LOTNUMBER[$i])
                     ->where('SERINO',$SERINO[$i])
-                    ->where('AMBCODE',$AMBCODE[$i])
+                    ->where('AMBCODE',$AMBCODE_T[$i])
                     ->where('NUM1',$NUM1[$i])
                     ->where('NUM2',$NUM2[$i])
                     ->where('NUM3',$NUM3[$i])
@@ -511,7 +506,7 @@ class stok60_controller extends Controller
                 ->sum('SF_MIKTAR');
                 
                 $kontrol = $s1 + (-1 * $s2);
-                // dd($SONUC,$SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR,$SONUC > $kontrol);
+                // dd($SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR,$kontrol,$s1,$s2);
                 if($SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR)
                 {
                     $SONUC = $SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR;
@@ -537,8 +532,6 @@ class stok60_controller extends Controller
               'STOK_ADI' => $STOK_ADI[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-              'PKTICIADET' => $PKTICIADET[$i],
-              'AMBLJ_TNM' => $AMBLJ_TNM[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
               'AMBCODE' => $AMBCODE_T[$i],

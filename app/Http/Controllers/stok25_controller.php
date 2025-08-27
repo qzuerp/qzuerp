@@ -329,13 +329,13 @@ class stok25_controller extends Controller
             FunctionHelpers::Logla('STOK25',$EVRAKNO,'W',$TARIH);
 
             // dd($request->all());
-            DB::table($firma.'stok25e')->where('id',$EVRAKNO)->update([
-            'TARIH' => $TARIH,
-            'AMBCODE' => $AMBCODE_E,
-            'TARGETAMBCODE' => $TARGETAMBCODE_E,
-            'NITELIK' => $NITELIK,
-            'LAST_TRNUM' => $LAST_TRNUM,
-            'updated_at' => date('Y-m-d H:i:s'),
+            DB::table($firma.'stok25e')->where('EVRAKNO',$EVRAKNO)->update([
+                'TARIH' => $TARIH,
+                'AMBCODE' => $AMBCODE_E,
+                'TARGETAMBCODE' => $TARGETAMBCODE_E,
+                'NITELIK' => $NITELIK,
+                'LAST_TRNUM' => $LAST_TRNUM,
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
             // dd($TRNUM);
             // Yeni TRNUM Yapisi
@@ -669,10 +669,10 @@ class stok25_controller extends Controller
                     // 'SF_MIKTAR' => $SF_TOPLAM_MIKTAR[$i],
                     'SF_BAKIYE' => DB::raw("CAST(SF_MIKTAR AS DECIMAL(18, 2)) - " . floatval($SF_MIKTAR[$i])),
                     'DEPO' => $AMBCODE[$i],
-                    "VARYANT1"       => $TEXT1[$i],
-                    "VARYANT2"       => $TEXT2[$i],
-                    "VARYANT3"       => $TEXT3[$i],
-                    "VARYANT4"       => $TEXT4[$i],
+                    "VARYANT1" => $TEXT1[$i],
+                    "VARYANT2" => $TEXT2[$i],
+                    "VARYANT3" => $TEXT3[$i],
+                    "VARYANT4" => $TEXT4[$i],
                     'NUM1' => $NUM1[$i],
                     'NUM2' => $NUM2[$i],
                     'NUM3' => $NUM3[$i],

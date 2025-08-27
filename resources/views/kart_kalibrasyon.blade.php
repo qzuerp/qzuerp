@@ -244,7 +244,7 @@ if (isset($kart_veri)) {
       </div>
       <div class="col-md-4 col-xs-6  col-sm-6">
         <label>Özellikler 2</label>
-        <input type="text" class="form-control "maxlength="30" name="OZELLIKLER2" id="OZELLIKLER2" value="{{ @$kart_veri->OZELLIKLER2 }}" >
+        <input type="text" class="form-control "maxlength="30" name="OZELLIKLER2" id="OZELLIKLER2" value="{{ @$kart_veri->OLCUM_ARALIGI }}" >
       </div>
       <div class="col-md-4 col-xs-6  col-sm-6">
         <label>Özellikler 3</label>

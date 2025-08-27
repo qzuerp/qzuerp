@@ -373,10 +373,9 @@ class calisma_bildirimi_controller extends Controller {
         if($JOBNO != NULL)
         {
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');
-          $MIKTAR = $MIKTAR + $SF_MIKTAR;
           DB::update("UPDATE {$firma} mmps10t 
-                      SET R_TMYMAMULMIKTAR =  ? 
-                      WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+              SET R_TMYMAMULMIKTAR =  ? 
+              WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
         }
 
         $sonID=DB::table($firma.'sfdc31e')->max('ID');
@@ -515,8 +514,8 @@ class calisma_bildirimi_controller extends Controller {
         
         if($JOBNO != NULL)
         {
+          // dd($JOBNO);
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');
-          $MIKTAR = $MIKTAR + $SF_MIKTAR;
           // dd($MIKTAR);
           DB::update("UPDATE {$firma} mmps10t 
                       SET R_TMYMAMULMIKTAR = ? 

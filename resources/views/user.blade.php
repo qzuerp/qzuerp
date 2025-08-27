@@ -461,11 +461,18 @@
                                     <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="QLT02" @php if(in_array('QLT02', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="QLT02" @php if(in_array('QLT02', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
+                                  
                                   <tr>
                                     <td>Etiket Bölme</td>
                                     <td><input type="checkbox" class="yetki_read"   id="DYS_read" name="yetki_read[]" value="ETIKETBOL" @php if(in_array('ETIKETBOL', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="ETIKETBOL" @php if(in_array('ETIKETBOL', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="ETIKETBOL" @php if(in_array('ETIKETBOL', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Üretim Gazetesi</td>
+                                    <td><input type="checkbox" class="yetki_read"   id="DYS_read" name="yetki_read[]" value="URETIM_GAZETESI" @php if(in_array('URETIM_GAZETESI', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="URETIM_GAZETESI" @php if(in_array('URETIM_GAZETESI', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="URETIM_GAZETESI" @php if(in_array('URETIM_GAZETESI', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
                                 </tbody>
                               </table>

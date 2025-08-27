@@ -278,7 +278,7 @@
                             <input maxlength="6 "style="color: red" type="number" data-name="SF_NETKAPANANMIK" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" class="form-control" disabled>
                           </td> 
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" data-name="SEVK_MIKTARI" id="SEVK_MIKTARI_SHOW" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" data-name="URETILEN_MIKTARI" id="URETILEN_MIKTARI_SHOW" class="form-control" disabled>
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR" id="TERMIN_TAR_FILL" class="form-control">
@@ -348,7 +348,7 @@
                                 @endphp
                               </select>
                               </td>
-                              <td><input type="number" class="form-control" name="SEVK_MIKTARI" value="{{ floor($t_veri->SF_IMIKTAR) }}" readonly></td>
+                              <td><input type="number" class="form-control" name="URETILEN_MIKTARI" value="{{ floor($t_veri->URETILEN_MIKTARI) }}" readonly></td>
                               <td><input type="number" class="form-control" name="SF_NETKAPANANMIK" value="{{ floor($t_veri->SF_NETKAPANANMIK) }}" readonly></td>
                             
                             <td><input type="date" class="form-control" name="TERMIN_TAR[]" value="{{ $t_veri->TERMIN_TAR }}"></td>
@@ -891,8 +891,8 @@
     //     htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE_SHOW[]' value='"+satirEkleInputs.SF_BAKIYE_SHOW+"' disabled></td> ";
     //     htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
     //     htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
-    //     htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readony></td> ";
-    //     htmlCode += " <td><input type='number' class='form-control' name='SEVK_MIKTARI[]' value='"+satirEkleInputs.SEVK_MIKTARI_SHOW+"' readony></td> ";
+    //     htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readonly></td> ";
+    //     htmlCode += " <td><input type='number' class='form-control' name='URETILEN_MIKTARI[]' value='"+satirEkleInputs.URETILEN_MIKTARI_SHOW+"' readonly></td> ";
     //     htmlCode += " <td><input type='date' class='form-control' name='TERMIN_TAR[]' value='"+satirEkleInputs.TERMIN_TAR_FILL+"'></td> ";
     //     htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
     //     htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
@@ -978,8 +978,8 @@
             htmlCode += "<td><input type='text' class='form-control' name='SF_BAKIYE_SHOW[]' value='" + satirEkleInputs.BAKIYE_FILL + "' disabled></td>";
             htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
-            htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readony></td> ";
-            htmlCode += " <td><input type='number' class='form-control' name='SEVK_MIKTARI[]' value='"+satirEkleInputs.SEVK_MIKTARI_SHOW+"' readony></td> ";
+            htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readonly></td> ";
+            htmlCode += " <td><input type='number' class='form-control' name='URETILEN_MIKTARI[]' value='"+satirEkleInputs.URETILEN_MIKTARI_SHOW+"' readonly></td> ";
             htmlCode += " <td><input type='date' class='form-control' name='TERMIN_TAR[]' value='"+satirEkleInputs.TERMIN_TAR_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
@@ -1014,7 +1014,7 @@
         // Gerekli hücrelerden değerleri al
         const siparisMiktari = parseFloat(row.querySelector('.SF_MIKTAR_FILL').value) || 0;
         const uretilenMiktar = parseFloat(row.querySelector('.SF_NETKAPANANMIK').value) || 0;
-        const sevkMiktari = parseFloat(row.querySelector('.SEVK_MIKTARI_SHOW').value) || 0;
+        const sevkMiktari = parseFloat(row.querySelector('.URETILEN_MIKTARI_SHOW').value) || 0;
         // const iadeMiktari = parseFloat(row.querySelector('.iade-miktari').value) || 0;
 
         // Hesaplamaları yap

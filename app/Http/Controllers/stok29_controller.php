@@ -310,26 +310,22 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
             'created_at' => date('Y-m-d H:i:s'),
             'FIYAT_PB' => $FIYAT_PB[$i]
           ]);
-          if($SIPARTNO[$i])
-          {
-            DB::update("
-              UPDATE ".$firma."stok46t 
-              SET 
-                NETKAPANANMIK = NETKAPANANMIK + ".$SF_MIKTAR[$i].", 
-                SF_BAKIYE = SF_BAKIYE - ".$SF_MIKTAR[$i]." 
-              WHERE 
-                CONCAT(EVRAKNO, TRNUM) = '".$SIPARTNO[$i]."'
-            ");
+
+          if(!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
+            DB::table($firma.'stok46t')
+                ->whereRaw("CONCAT(EVRAKNO, TRNUM) = ?", [$SIPARTNO[$i]])
+                ->update([
+                    'NETKAPANANMIK' => DB::raw("NETKAPANANMIK + ".$SF_MIKTAR[$i]),
+                    'SF_BAKIYE' => DB::raw("SF_BAKIYE - ".$SF_MIKTAR[$i])
+                ]);
           }
-
-
           DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
-            // 'LOTNUMBER' => $LOTNUMBER[$i],
+            'LOTNUMBER' => $LOTNUMBER[$i],
             'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'LOCATION1' => $LOCATION1[$i],
@@ -350,7 +346,7 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
             'STOK_MIKTAR' => $SF_MIKTAR[$i],
             'AMBCODE' => $AMBCODE,
             'created_at' => date('Y-m-d H:i:s'),
-            // 'SERINO' => $SERINO[$i],
+            'SERINO' => $SERINO[$i],
           ]);
 
           }
@@ -407,7 +403,7 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
               'SRNUM' => $SRNUM,
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
-              // 'LOTNUMBER' => $LOTNUMBER[$i],
+              'LOTNUMBER' => $LOTNUMBER[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOCATION1' => $LOCATION1[$i],
@@ -429,7 +425,6 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
               // 'SERINO' => $SERINO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
-
           }
 
         }
@@ -463,18 +458,22 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
         // break;
       
       case 'yazdir':
-
+        if($satir_say <= 0)
+        {
+          return redirect()->back()->with('error', 'Veri Bulunamadı');
+        }
         $MPS_BILGISI = [];
         $MUSERI_ADI = DB::table($firma.'cari00')->where('KOD',$CARIHESAPCODE)->first();
         
+        $SERINO_ETIKET = [];
         for($i = 0; $i < count($SERINO); $i++)
         {
-          $check = DB::table($firma.'D7KIDSLB')
-          ->where('BARCODE',$SERINO[$i] ?? 0)
-          ->first();
-          if($check == null)
+          $barcode = $SERINO[$i] ?? '';
+          if($barcode === '' || DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist())
           {
-            // sırurtm
+            $lastId = DB::table($firma.'D7KIDSLB')->max('id') + 1;
+            $newSerial = str_pad($lastId, 12, '0', STR_PAD_LEFT);
+
             DB::table($firma.'D7KIDSLB')->insert([
               'KOD' => $KOD[$i],
               'AD' => $STOK_ADI[$i],
@@ -493,9 +492,18 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
-              'BARCODE' => $SERINO[$i],
+              'BARCODE' => $newSerial,
               'SF_MIKTAR' => $SF_MIKTAR[$i]
             ]);
+            $SERINO_ETIKET[] = $newSerial;
+
+            DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK29T')->where('TRNUM',$TRNUM[$i])->update([
+              'SERINO' => $newSerial
+            ]);
+            DB::table($firma.'stok29t')
+                ->where('EVRAKNO', $EVRAKNO)
+                ->where('TRNUM', $TRNUM[$i])
+                ->update(['SERINO' => $newSerial]);
           }
           else
           {
@@ -514,6 +522,7 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
               'NUM4' => $NUM4[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i]
             ]);
+            $SERINO_ETIKET[] = str_pad($barcode, 12, '0', STR_PAD_LEFT);
           }
           $obje = new \stdClass();
           // $obje->MUSTERIKODU = $CARIHESAPCODE;
@@ -528,7 +537,7 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
           'KOD' => $KOD,
           'STOK_ADI' => $STOK_ADI,
           'LOTNUMBER' => $LOTNUMBER,
-          'SERINO' => $SERINO,
+          'SERINO' => $SERINO_ETIKET,
           'MPS_BILGISI' => $MPS_BILGISI,
           'MIKTAR' => $SF_MIKTAR,
           'ID' => 'satinalmairsaliyesi?ID='.$request->ID_TO_REDIRECT
@@ -537,7 +546,6 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
         FunctionHelpers::Logla('STOK29',$EVRAKNO,'P',$TARIH);
 
         return view('etiketKarti', ['data' => $data]);
-
     }
 
 }

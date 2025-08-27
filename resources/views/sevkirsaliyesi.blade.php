@@ -217,8 +217,6 @@
                                   <th>Fiyat</th>
                                   <th style="min-width: 120px;">Para Birimi</th>
                                   <th>İşlem Br.</th>
-                                  <th>Paket İçi Mik.</th>
-                                  <th>Ambalaj Tanımı</th>
                                   <th>Lot No</th>
                                   <th>Seri No</th>
                                   <th>Depo</th>
@@ -287,12 +285,6 @@
                                   <td style="min-width: 150px">
                                     <input maxlength="50 "style="color: red" type="text" data-name="SF_SF_UNIT" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" readonly>
                                     <input maxlength="50 "style="color: red" type="hidden" data-name="SF_SF_UNIT" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
-                                  </td>
-                                  <td style="min-width: 150px">
-                                    <input maxlength="50" style="color: red" type="number" data-name="PKTICIADET" name="PKTICIADET_FILL" id="PKTICIADET_FILL" class="form-control">
-                                  </td>
-                                  <td style="min-width: 150px">
-                                    <input maxlength="50" min="0" style="color: red" type="text" data-name="AMBLJ_TNM" name="AMBLJ_TNM_FILL" id="AMBLJ_TNM_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
                                     <input maxlength="50 "style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_SHOW" id="LOTNUMBER_SHOW" class="form-control">
@@ -399,8 +391,6 @@
                                     </select>
                                   </td>
                                   <td><input type="text" class="form-control" id="birim-{{ $veri->id }}-CAM" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}" readonly></td>
-                                  <td><input type="number" class="form-control" name="PKTICIADET[]" value="{{ $veri->PKTICIADET }}"></td>
-                                  <td><input type="text" class="form-control" name="AMBLJ_TNM[]" value="{{ $veri->AMBLJ_TNM }}"></td>
                                   <td><input type="text" class="form-control" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" readonly></td>
                                   <td class="d-flex ">
                                     <input type="text" class="form-control" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}" readonly>
@@ -470,8 +460,6 @@
                                   <th style="min-width: 150px;">Fiyat</th>
                                   <th style="min-width: 150px;">Para Birimi</th>
                                   <th style="min-width: 150px;">İşlem Br.</th>
-                                  <th style="min-width: 150px;">Paket İçi Mik.</th>
-                                  <th style="min-width: 150px;">Ambalaj Tanımı</th>
                                   <th style="min-width: 150px;">Lot No</th>
                                   <th style="min-width: 150px;">Seri No</th>
                                   <th style="min-width: 150px;">Depo</th>
@@ -1245,8 +1233,6 @@
         htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
         htmlCode += " <td><input type='text' id='birim-"+TRNUM_FILL+"' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_SHOW+"' readonly></td> ";
-        htmlCode += " <td><input type='number' class='form-control' name='PKTICIADET[]' value='"+satirEkleInputs.PKTICIADET_FILL+"'></td> ";
-        htmlCode += " <td><input type='text' class='form-control' name='AMBLJ_TNM[]' value='"+satirEkleInputs.AMBLJ_TNM_FILL+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' id='Lot-"+TRNUM_FILL+"' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"' readonly></td> ";
         htmlCode += " <td class='d-flex '>" +
           "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' value='" +satirEkleInputs.SERINO_FILL + "' readonly>" +
@@ -1299,7 +1285,6 @@
     $(document).ready(function() {
       // refreshPopupSelect();  
       $('#seriNoSec tbody').on('click', 'tr', function () {
-          console.log('Sa');
           var $row = $(this);
           var $cells = $row.find('td');
 
@@ -1328,15 +1313,15 @@
           $('#depo-' + ID).val(DEPO);
           $('#birim-' + ID).val(BIRIM);
 
-          $('#num1-' + ID).val(V1);
-          $('#num2-' + ID).val(V2);
-          $('#num3-' + ID).val(V3);
-          $('#num4-' + ID).val(V4);
+          $('#num1-' + ID).val(O1);
+          $('#num2-' + ID).val(O2);
+          $('#num3-' + ID).val(O3);
+          $('#num4-' + ID).val(O4);
           
-          $('#text1-' + ID).val(O1);
-          $('#text2-' + ID).val(O2);
-          $('#text3-' + ID).val(O3);
-          $('#text4-' + ID).val(O4);
+          $('#text1-' + ID).val(V1);
+          $('#text2-' + ID).val(V2);
+          $('#text3-' + ID).val(V3);
+          $('#text4-' + ID).val(V4);
 
           $('#lok1-' + ID).val(L1);
           $('#lok2-' + ID).val(L2);
@@ -1470,9 +1455,7 @@
               htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"' readonly></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT_PB)+"' readonly></td> ";
               htmlCode += " <td><input type='text' id='birim-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='SF_SF_UNIT[]' value='"+setValueOfJsonObject(kartVerisi2.SF_SF_UNIT)+"' readonly></td> ";
-              htmlCode += " <td><input type='text' class='form-control' name='SF_PMIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_PMIKTAR)+"'></td> ";
-              htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
-              htmlCode += " <td style='display:none;'><input type='text' class='form-control' name='AMBLJ_TNM[]' value=''></td> ";
+              // htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
               htmlCode += " <td><input type='text' id='Lot-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOTNUMBER[]' value='"+setValueOfJsonObject(kartVerisi2.LOTNUMBER)+"' readonly></td> ";
               htmlCode += " <td class='d-flex '>" +
                 "<input type='text' id='serino-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly>" +

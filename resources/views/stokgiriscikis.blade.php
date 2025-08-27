@@ -886,9 +886,6 @@
           $("#modal_popupSelectModal4").modal('hide');
       });
       $("#addRow").on('click', async function() {
-
-        
-
         var TRNUM_FILL = getTRNUM();
 
         var satirEkleInputs = getInputs('satirEkle');
@@ -911,6 +908,7 @@
             Swal.showLoading();
           }
         });
+        
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

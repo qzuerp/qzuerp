@@ -441,26 +441,26 @@
 									@endforeach
 								</tbody>
 								</table>
+								</div>
+
+								<div class="tab-pane" id="siparis">
+									<div class="row">
+										<div class="col-md-6">
+											<button type="button" class="btn btn-default" id="secilenleriAktar"><i class="fa fa-plus-square" style="color: blue"></i> Seçilenleri Ekle</button>
+										</div>
+										<div class="col-md-6">
+											<div class="input-group flex-nowrap" style="height:32px;">
+												<span class="d-flex">
+													<button class="btn btn-primary input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" id="basic-addon1" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal2" type="button" id="SIP_NO_SEC_BTN" name="SIP_NO_SEC_BTN" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif><span class="fa-solid fa-magnifying-glass"  >
+													</span></button>
+												</span>
+												<select class="form-control select2 js-example-basic-single" style="width: 100%" onchange="stokAdiGetir(this.value)" name="SIP_NO_SEC" id="SIP_NO_SEC" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
+													<option value=" ">Sipariş seç...</option>
+												</select>                              
+												<button type="button" class="btn btn-default pull-right" id="siparisSuz" name="siparisSuz" onclick="siparisleriGetir()" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif><i class="fa fa-filter" style="color: blue"></i></button>  
 											</div>
-
-											<div class="tab-pane" id="siparis">
-												<div class="col-md-6">
-								<button type="button" class="btn btn-default" id="secilenleriAktar"><i class="fa fa-plus-square" style="color: blue"></i> Seçilenleri Ekle</button>
-								</div>
-								<div class="col-md-6">
-								<div class="d-flex ">
-									<select class="form-control select2 js-example-basic-single" style="width: 100%" onchange="stokAdiGetir(this.value)" name="SIP_NO_SEC" id="SIP_NO_SEC" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
-									<option value=" ">Sipariş seç...</option>
-									</select>                              
-									<span class="d-flex -btn">
-										<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal2" type="button" id="SIP_NO_SEC_BTN" name="SIP_NO_SEC_BTN" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif><span class="fa-solid fa-magnifying-glass"  >
-										</span></button>
-									</span>
-								</div>
-
-								<button type="button" class="btn btn-default pull-right" id="siparisSuz" name="siparisSuz"  style="margin-top: 5px;" onclick="siparisleriGetir()" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif><i class="fa fa-filter" style="color: blue"></i> Süz</button>  
-								<br><br>
-								</div>
+										</div>
+									</div>
 								<table class="table table-bordered text-center" id="suzTable" name="suzTable">
 								<thead>
 									<tr>
@@ -889,7 +889,7 @@
 	          </div>
 	          <div class="modal-body">
 	            <div class="row" style="overflow: auto">
-	              <table id="popupSelect2" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
+	              <table id="popupSelect2" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em; width:100%;">
 	                <thead>
 	                  <tr class="bg-primary">
 	                    <th>Evrak No</th>
@@ -1022,34 +1022,6 @@
         var satirEkleInputs = getInputs('satirEkle');
 
         var htmlCode = " ";
-
-		if(satirEkleInputs.SERINO_FILL == null || satirEkleInputs.SERINO_FILL == '' || satirEkleInputs.SERINO_FILL == ' ')
-		{
-			Swal.fire({
-				title: 'Seri numarası üretiliyor...',
-				text: 'Lütfen bekleyin',
-				allowOutsideClick: false,
-				didOpen: () => {
-					Swal.showLoading();
-				}
-			});
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-				});
-				const veri = await $.ajax({
-				url: '/seri_no_uret',
-				method: 'post',
-				data: {},
-				success:function(res)
-				{
-					satirEkleInputs.SERINO_FILL = res;
-				},complete:function(){
-					Swal.close();
-				}
-			});
-		}
 
         htmlCode += " <tr> ";
 
@@ -1202,7 +1174,7 @@
             htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='"+setValueOfJsonObject(kartVerisi2.LOTNUMBER)+"' readonly></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+setValueOfJsonObject(kartVerisi2.SERINO)+"' readonly></td> ";
             htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
-            htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"'></td> ";
+            htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"'></td> ";
 			htmlCode += "<td><select name='FIYAT_PB[]' class='form-control js-example-basic-single select2 required' style='width: 100%; border-radius: 5px;'>";
 			htmlCode += "<option value=' '>Seç</option>";
 

@@ -213,13 +213,13 @@ class stok40_controller extends Controller
     $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
     $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
     $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-    dd([
-      'd' => $deleteTRNUMS,
-      'n' => $newTRNUMS,
-      'u' => $updateTRNUMS,
-      't' => $TRNUM,
-      'all' => $request->all()
-    ]);
+    // dd([
+    //   'd' => $deleteTRNUMS,
+    //   'n' => $newTRNUMS,
+    //   'u' => $updateTRNUMS,
+    //   't' => $TRNUM,
+    //   'all' => $request->all()
+    // ]);
     for ($i = 0; $i < $satir_say; $i++) {
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);

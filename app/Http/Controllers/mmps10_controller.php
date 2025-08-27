@@ -787,46 +787,47 @@ class mmps10_controller extends Controller
       $TOPLAM_URETILEN = 0;
       $SURECLER = [];
 
-      $EVRAKLAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $JOBNO)->get();
-      foreach ($EVRAKLAR as $EVRAK) {
-          $A_sure += DB::table($firma . 'sfdc31t')
-              ->where('EVRAKNO', $EVRAK->EVRAKNO)
-              ->where('ISLEM_TURU', 'A')
-              ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
-              ->value('toplam') ?? 0;
+      $EVRAKLAR = DB::table($firma . 'sfdc31e as e')
+      ->leftJoin($firma . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
+      ->where('e.JOBNO', $JOBNO)
+      ->select('e.*', 't.*')
+      ->get()
+      ->groupBy('EVRAKNO');
 
-          $U_sure += DB::table($firma . 'sfdc31t')
-              ->where('EVRAKNO', $EVRAK->EVRAKNO)
-              ->where('ISLEM_TURU', 'U')
-              ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
-              ->value('toplam') ?? 0;
+      $SURECLER = [];
+      $A_sure = $U_sure = $D_sure = $TOPLAM_URETILEN = 0;
 
-          $D_sure += DB::table($firma . 'sfdc31t')
-            ->where('EVRAKNO', $EVRAK->EVRAKNO)
-            ->where('ISLEM_TURU', 'D')
-            ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
-            ->value('toplam') ?? 0;
-            
+      foreach ($EVRAKLAR as $evrakNo => $rows) {
+          $EVRAK = $rows[0];
+
+          // Sureleri hesapla
+          $A_sure += $rows->where('ISLEM_TURU', 'A')->sum(function($r) {
+              return (float) $r->SURE;
+          });
+          $U_sure += $rows->where('ISLEM_TURU', 'U')->sum(function($r) {
+              return (float) $r->SURE;
+          });
+          $D_sure += $rows->where('ISLEM_TURU', 'D')->sum(function($r) {
+              return (float) $r->SURE;
+          });
+
           $TOPLAM_URETILEN += $EVRAK->SF_MIKTAR;
+
+          $SURECLER[] = [
+              'id' => $EVRAK->ID,
+              'veriler' => $rows
+          ];
       }
 
-      $SURECLER[] = [
-          'id' => $EVRAK->ID,
-          'veriler' => DB::table('sfdc31e as e')
-            ->leftJoin('sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
-            ->where('e.JOBNO', $JOBNO)
-            ->select('e.*', 't.*') 
-            ->get()
-            ->toArray()
-      ];
 
       $gerceklesenSure = $A_sure + $U_sure;
       $planlananSure = array_sum($rMiktarData);
 
       // Verimlilik hesaplama
-      $verimlilik = ($planlananSure > 0) 
-          ? round(($planlananSure / $gerceklesenSure) * 100, 2)
-          : 0;
+      $verimlilik = ($gerceklesenSure > 0) 
+        ? round(($planlananSure / $gerceklesenSure) * 100, 2)
+        : 0;
+
 
       return response()->json([
           'verimlilik' => $verimlilik,

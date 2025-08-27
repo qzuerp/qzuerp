@@ -522,7 +522,7 @@ if (isset($kart_veri)) {
                           <input maxlength="12" style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="20" style="color: red" type="text" data-name="SERINO" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                          <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" placeholder="Otomotik Üretilicek" id="SERINO_FILL" class="form-control" readonly>
                         </td> 
                         <td style="min-width: 150px">
                           <input maxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
@@ -985,14 +985,12 @@ if (isset($kart_veri)) {
   $(document).ready(function() 
   {
     
-    $("#addRow").on('click', function() {
-
+    $("#addRow").on('click',async function() {
       var satirEkleInputs = getInputs('satirEkle');
 
       var TRNUM_FILL = getTRNUM();
 
       var htmlCode = " ";
-
       var KOD_PARCAC = satirEkleInputs.IS_EMRI_FILL.split('|||');
 
       htmlCode += " <tr> ";
@@ -1030,7 +1028,6 @@ if (isset($kart_veri)) {
 
       htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
       htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
-4
       htmlCode += " <td><input type='text' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOKT1_FILL+"'></td> ";
       htmlCode += " <td><input type='text' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOKT2_FILL+"'></td> ";
       htmlCode += " <td><input type='text' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOKT3_FILL+"'></td> ";
@@ -1045,7 +1042,6 @@ if (isset($kart_veri)) {
       }
 
       else {
-        $("#veriTable > tbody").remove ;
         $("#veriTable > tbody").append(htmlCode);
         updateLastTRNUM(TRNUM_FILL);
 

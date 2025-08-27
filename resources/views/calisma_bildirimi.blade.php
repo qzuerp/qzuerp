@@ -513,17 +513,23 @@
                                     @endphp
                                     <tr class="text-center">
                                       <td>
+                                          <input type="hidden" 
+                                            style="width:100px; border:none; outline:none;" 
+                                            class="bg-transparent" 
+                                            name="ISLEM_TURU[]"
+                                            value="{{$val->ISLEM_TURU}}" 
+                                            readonly>
                                           <input type="text" 
-                                                style="width:100px; border:none; outline:none;" 
-                                                class="bg-transparent" 
-                                                name="ISLEM_TURU[]" 
-                                                value="@switch($val->ISLEM_TURU)
-                                                          @case('A') AYAR @break
-                                                          @case('U') ÜRETİM @break
-                                                          @case('D') DURUŞ @break
-                                                          @default {{ $val->ISLEM_TURU }}
-                                                        @endswitch" 
-                                                readonly>
+                                            style="width:100px; border:none; outline:none;" 
+                                            class="bg-transparent" 
+                                            name="ISLEM_TURU_SHOW"
+                                            value="@switch($val->ISLEM_TURU)
+                                                      @case('A') AYAR @break
+                                                      @case('U') ÜRETİM @break
+                                                      @case('D') DURUŞ @break
+                                                      @default {{ $val->ISLEM_TURU }}
+                                                    @endswitch" 
+                                            readonly>
                                       </td>
                                       <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
                                       <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>

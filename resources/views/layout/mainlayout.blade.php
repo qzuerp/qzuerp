@@ -24,8 +24,8 @@
 <body class='skin-blue sidebar-mini sidebar-collapse'>
   <style>
     .main {
-        width: 1920px; /* veya istediğin kadar */
-        height: 1080px;
+        width: 100%;
+        height: 100%;
         z-index: 9999;
         background-color: #fff;
         position: fixed;
@@ -184,250 +184,392 @@
 
     @yield('content') 
 
-<script>
-  var evrakDegisti = false;
-  var originalValues = {};
-  var elementCounter = 0;
+  <script>
+    var evrakDegisti = false;
+    var originalValues = {};
+    var elementCounter = 0;
+    var originalTableRowCounts = {}; // Tablo satır sayılarını saklamak için
 
-  $(document).ready(function () {
-    trackAllFormElements();
-    
-    observeNewElements();
-    
-    $(document).on('click', '[data-evrak-kontrol]', function (e) {
-      if (!evrakDegisti) return;
+    $(document).ready(function () {
+      trackAllFormElements();
+      trackAllTables(); // Tabloları da takip et
+      
+      observeNewElements();
+      
+      $(document).on('click', '[data-evrak-kontrol]', function (e) {
 
-      e.preventDefault();
-      const href = $(this).attr('href');
-      const $button = $(this);
+        if (!evrakDegisti) return;
 
-      Swal.fire({
-        icon: 'warning',
-        title: 'Evrakta Değişiklik Var!',
-        text: 'Kaydetmeden çıkmak istiyor musun?',
-        showCancelButton: true,
-        confirmButtonText: 'Evet, çık',
-        cancelButtonText: 'Vazgeç'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if (href) {
-            $('#loader').fadeIn(150);
-            window.location.href = href;
-          } else {
-            $button.trigger('devamEt');
+        e.preventDefault();
+        const href = $(this).attr('href');
+        const $button = $(this);
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Evrakta Değişiklik Var!',
+          text: 'Kaydetmeden çıkmak istiyor musun?',
+          showCancelButton: true,
+          confirmButtonText: 'Evet, çık',
+          cancelButtonText: 'Vazgeç'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (href) {
+              $('#loader').fadeIn(150);
+              window.location.href = href;
+            } else {
+              $button.trigger('devamEt');
+            }
           }
-        }
+        });
       });
+
+      $('.smbButton').on('click', function(e) {
+          if (evrakDegisti) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            Swal.fire({
+              icon: 'warning',
+              title: 'Evrak Kaydedilmeli!',
+              text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
+              confirmButtonText: 'Tamam'
+            });
+            
+            return false;
+          }
+        });
     });
 
-    $('.smbButton').on('click', function(e) {
-        if (evrakDegisti) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          Swal.fire({
-            icon: 'warning',
-            title: 'Evrak Kaydedilmeli!',
-            text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
-            confirmButtonText: 'Tamam'
-          });
-          
-          return false;
-        }
+    function trackAllFormElements() {
+      $('input, textarea, select').each(function (index, element) {
+        trackElement($(element));
       });
-  });
-
-  function trackAllFormElements() {
-    $('input, textarea, select').each(function (index, element) {
-      trackElement($(element));
-    });
-  }
-
-  function trackElement($element) {
-    if ($element.attr('data-tracked')) return;
-    
-    if (shouldSkipElement($element)) {
-      return;
     }
-    
-    var uniqueKey = generateUniqueKey($element);
-    
-    $element.attr('data-tracked', 'true');
-    $element.attr('data-unique-key', uniqueKey);
-    
-    originalValues[uniqueKey] = getElementValue($element);
-    
-    $element.on('input change keyup paste', function() {
-      checkForChanges($(this), uniqueKey);
-    });
-    
-  }
 
-  function shouldSkipElement($element) {
-    if ($element.attr('data-skip-tracking') === 'true') {
-      return true;
+    function trackAllTables() {
+      $('table').each(function (index, element) {
+        trackTable($(element));
+      });
     }
-    
-    var skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
-    for (var i = 0; i < skipClasses.length; i++) {
-      if ($element.hasClass(skipClasses[i])) {
+
+    function trackTable($table) {
+      if ($table.attr('data-table-tracked')) return;
+      
+      // Skip tablosunu atla
+      if (shouldSkipTable($table)) {
+        return;
+      }
+      
+      var uniqueKey = generateTableUniqueKey($table);
+      
+      $table.attr('data-table-tracked', 'true');
+      $table.attr('data-table-unique-key', uniqueKey);
+      
+      // Başlangıç satır sayısını kaydet
+      originalTableRowCounts[uniqueKey] = getTableRowCount($table);
+    }
+
+    function shouldSkipTable($table) {
+      // Tablo atlanacaksa (özel class'lar vs.)
+      if ($table.attr('data-skip-table-tracking') === 'true') {
         return true;
       }
+      
+      var skipClasses = ['no-track-table', 'skip-table-tracking', 'ignore-table-changes'];
+      for (var i = 0; i < skipClasses.length; i++) {
+        if ($table.hasClass(skipClasses[i])) {
+          return true;
+        }
+      }
+      
+      return false;
     }
-    
-    var skipTypes = ['hidden', 'submit', 'button', 'reset', 'image'];
-    var inputType = $element.attr('type');
-    if (inputType && skipTypes.indexOf(inputType) !== -1) {
-      return true;
-    }
-    
-    var skipNames = ['_token', 'csrf_token', 'authenticity_token'];
-    var elementName = $element.attr('name');
-    if (elementName && skipNames.indexOf(elementName) !== -1) {
-      return true;
-    }
-    
-    var skipIds = ['search', 'filter', 'temp'];
-    var elementId = $element.attr('id');
-    if (elementId && skipIds.indexOf(elementId) !== -1) {
-      return true;
-    }
-    
-    if ($element.prop('readonly') || $element.prop('disabled')) {
-      return true;
-    }
-    
-    return false;
-  }
 
-  function generateUniqueKey($element) {
-    var element = $element[0];
-    var tagName = element.tagName.toLowerCase();
-    var id = $element.attr('id');
-    var name = $element.attr('name');
-    var type = $element.attr('type') || '';
-    
-    if (id) {
-      return tagName + '_id_' + id;
-    } else if (name) {
-      var sameNameElements = $('[name="' + name + '"]');
-      var elementIndex = sameNameElements.index(element);
-      return tagName + '_name_' + name + '_' + elementIndex;
-    } else {
-      elementCounter++;
-      return tagName + '_counter_' + elementCounter;
+    function generateTableUniqueKey($table) {
+      var table = $table[0];
+      var id = $table.attr('id');
+      var classes = $table.attr('class') || '';
+      
+      if (id) {
+        return 'table_id_' + id;
+      } else {
+        elementCounter++;
+        return 'table_counter_' + elementCounter + '_' + classes.replace(/\s+/g, '_');
+      }
     }
-  }
 
-  function getElementValue($element) {
-    var type = $element.attr('type');
-    
-    if (type === 'checkbox') {
-      return $element.is(':checked');
-    } else if (type === 'radio') {
-      return $element.is(':checked') ? $element.val() : null;
-    } else {
-      return $element.val() || '';
+    function getTableRowCount($table) {
+      // tbody varsa onun satırlarını say, yoksa table'ın direkt tr'lerini say
+      var $tbody = $table.find('tbody');
+      if ($tbody.length > 0) {
+        return $tbody.find('tr').length;
+      } else {
+        // thead'i hariç tut, sadece veri satırlarını say
+        var $thead = $table.find('thead');
+        var totalRows = $table.find('tr').length;
+        var headerRows = $thead.find('tr').length;
+        return totalRows - headerRows;
+      }
     }
-  }
 
-  function checkForChanges($element, uniqueKey) {
-    var currentValue = getElementValue($element);
-    var originalValue = originalValues[uniqueKey];
-    
-    var hasChanged = false;
-    
-    if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
-      hasChanged = Boolean(currentValue) !== Boolean(originalValue);
-    } else {
-      hasChanged = String(currentValue) !== String(originalValue);
+    function checkTableChanges() {
+      var anyTableChanged = false;
+      
+      $('[data-table-tracked]').each(function() {
+        var $table = $('#veriTable');
+        var uniqueKey = $table.attr('data-table-unique-key');
+        var currentRowCount = getTableRowCount($table);
+        var originalRowCount = originalTableRowCounts[uniqueKey];
+        
+        if (currentRowCount !== originalRowCount) {
+          anyTableChanged = true;
+          return false; // break out of each loop
+        }
+      });
+      
+      if (anyTableChanged && !evrakDegisti) {
+        evrakDegisti = true;
+      }
     }
-    
-    if (hasChanged && !evrakDegisti) {
-      evrakDegisti = true;
-    }
-    
-    checkAllElements();
-  }
 
-  function checkAllElements() {
-    var anyChanged = false;
-    
-    $('[data-tracked]').each(function() {
-      var $element = $(this);
-      var uniqueKey = $element.attr('data-unique-key');
+    function trackElement($element) {
+      if ($element.attr('data-tracked')) return;
+      
+      if (shouldSkipElement($element)) {
+        return;
+      }
+      
+      var uniqueKey = generateUniqueKey($element);
+      
+      $element.attr('data-tracked', 'true');
+      $element.attr('data-unique-key', uniqueKey);
+      
+      originalValues[uniqueKey] = getElementValue($element);
+      
+      $element.on('input change keyup paste', function() {
+        checkForChanges($(this), uniqueKey);
+      });
+      
+    }
+
+    function shouldSkipElement($element) {
+      if ($element.attr('data-skip-tracking') === 'true') {
+        return true;
+      }
+      
+      var skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
+      for (var i = 0; i < skipClasses.length; i++) {
+        if ($element.hasClass(skipClasses[i])) {
+          return true;
+        }
+      }
+      
+      var skipTypes = ['hidden', 'submit', 'button', 'reset', 'image'];
+      var inputType = $element.attr('type');
+      if (inputType && skipTypes.indexOf(inputType) !== -1) {
+        return true;
+      }
+      
+      var skipNames = ['_token', 'csrf_token', 'authenticity_token'];
+      var elementName = $element.attr('name');
+      if (elementName && skipNames.indexOf(elementName) !== -1) {
+        return true;
+      }
+      
+      var skipIds = ['search', 'filter', 'temp'];
+      var elementId = $element.attr('id');
+      if (elementId && skipIds.indexOf(elementId) !== -1) {
+        return true;
+      }
+      
+      if ($element.prop('readonly') || $element.prop('disabled')) {
+        return true;
+      }
+      
+      return false;
+    }
+
+    function generateUniqueKey($element) {
+      var element = $element[0];
+      var tagName = element.tagName.toLowerCase();
+      var id = $element.attr('id');
+      var name = $element.attr('name');
+      var type = $element.attr('type') || '';
+      
+      if (id) {
+        return tagName + '_id_' + id;
+      } else if (name) {
+        var sameNameElements = $('[name="' + name + '"]');
+        var elementIndex = sameNameElements.index(element);
+        return tagName + '_name_' + name + '_' + elementIndex;
+      } else {
+        elementCounter++;
+        return tagName + '_counter_' + elementCounter;
+      }
+    }
+
+    function getElementValue($element) {
+      var type = $element.attr('type');
+      
+      if (type === 'checkbox') {
+        return $element.is(':checked');
+      } else if (type === 'radio') {
+        return $element.is(':checked') ? $element.val() : null;
+      } else {
+        return $element.val() || '';
+      }
+    }
+
+    function checkForChanges($element, uniqueKey) {
       var currentValue = getElementValue($element);
       var originalValue = originalValues[uniqueKey];
       
       var hasChanged = false;
+      
       if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
         hasChanged = Boolean(currentValue) !== Boolean(originalValue);
       } else {
         hasChanged = String(currentValue) !== String(originalValue);
       }
       
-      if (hasChanged) {
-        anyChanged = true;
-        return false;
+      if (hasChanged && !evrakDegisti) {
+        evrakDegisti = true;
       }
-    });
-    
-    evrakDegisti = anyChanged;
-  }
+      
+      checkAllElements();
+      checkTableChanges(); // Tablo değişikliklerini de kontrol et
+    }
 
-  function observeNewElements() {
-    var observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        mutation.addedNodes.forEach(function(node) {
-          if (node.nodeType === 1) {
-            var $node = $(node);
-            var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
-            
-            newElements.each(function() {
-              var $element = $(this);
-              if (!$element.attr('data-tracked')) {
-                trackElement($element);
+    function checkAllElements() {
+      var anyChanged = false;
+      
+      $('[data-tracked]').each(function() {
+        var $element = $(this);
+        var uniqueKey = $element.attr('data-unique-key');
+        var currentValue = getElementValue($element);
+        var originalValue = originalValues[uniqueKey];
+        
+        var hasChanged = false;
+        if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
+          hasChanged = Boolean(currentValue) !== Boolean(originalValue);
+        } else {
+          hasChanged = String(currentValue) !== String(originalValue);
+        }
+        
+        if (hasChanged) {
+          anyChanged = true;
+          return false;
+        }
+      });
+      
+      evrakDegisti = anyChanged;
+    }
+
+    function observeNewElements() {
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              var $node = $(node);
+              
+              // Yeni form elementlerini takip et
+              var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
+              newElements.each(function() {
+                var $element = $(this);
+                if (!$element.attr('data-tracked')) {
+                  trackElement($element);
+                }
+              });
+              
+              // Yeni tabloları takip et
+              var newTables = $node.find('table').addBack().filter('table');
+              newTables.each(function() {
+                var $table = $('#veriTable');
+                if (!$table.attr('data-table-tracked')) {
+                  trackTable($table);
+                }
+              });
+            }
+          });
+          
+          // Silinen nodeları kontrol et (tablo satırı silinirse)
+          mutation.removedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              // Bir tr elementi silindiyse tabloları tekrar kontrol et
+              if (node.tagName === 'TR' || $(node).find('tr').length > 0) {
+                setTimeout(function() {
+                  checkTableChanges();
+                }, 10);
               }
-            });
-          }
+            }
+          });
         });
       });
-    });
-    
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-  }
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
 
-  function resetEvrakDegisiklikFlag() {
-    evrakDegisti = false;
-    
-    $('[data-tracked]').each(function() {
-      var $element = $(this);
-      var uniqueKey = $element.attr('data-unique-key');
-      originalValues[uniqueKey] = getElementValue($element);
-    });
-    
-  }
+    function resetEvrakDegisiklikFlag() {
+      evrakDegisti = false;
+      
+      // Form elementlerinin değerlerini resetle
+      $('[data-tracked]').each(function() {
+        var $element = $(this);
+        var uniqueKey = $element.attr('data-unique-key');
+        originalValues[uniqueKey] = getElementValue($element);
+      });
+      
+      // Tablo satır sayılarını resetle
+      $('[data-table-tracked]').each(function() {
+        var $table = $('#veriTable');
+        var uniqueKey = $table.attr('data-table-unique-key');
+        originalTableRowCounts[uniqueKey] = getTableRowCount($table);
+      });
+    }
 
-  function addSkipRule(selector) {
-    $(selector).attr('data-skip-tracking', 'true');
-  }
+    function addSkipRule(selector) {
+      $(selector).attr('data-skip-tracking', 'true');
+    }
 
-  function removeSkipRule(selector) {
-    $(selector).removeAttr('data-skip-tracking');
-  }
+    function removeSkipRule(selector) {
+      $(selector).removeAttr('data-skip-tracking');
+    }
 
-  function showTrackedElements() {
-    $('[data-tracked]').each(function() {
-      var $element = $(this);
-      var uniqueKey = $element.attr('data-unique-key');
-      var currentValue = getElementValue($element);
-      var originalValue = originalValues[uniqueKey];
-    });
-  }
-</script>
+    // Tablo için skip rule fonksiyonları
+    function addTableSkipRule(selector) {
+      $(selector).attr('data-skip-table-tracking', 'true');
+    }
+
+    function removeTableSkipRule(selector) {
+      $(selector).removeAttr('data-skip-table-tracking');
+    }
+
+    function showTrackedElements() {
+      $('[data-tracked]').each(function() {
+        var $element = $(this);
+        var uniqueKey = $element.attr('data-unique-key');
+        var currentValue = getElementValue($element);
+        var originalValue = originalValues[uniqueKey];
+        console.log('Element:', uniqueKey, 'Current:', currentValue, 'Original:', originalValue);
+      });
+      
+      $('[data-table-tracked]').each(function() {
+        var $table = $('#veriTable');
+        var uniqueKey = $table.attr('data-table-unique-key');
+        var currentRowCount = getTableRowCount($table);
+        var originalRowCount = originalTableRowCounts[uniqueKey];
+        console.log('Table:', uniqueKey, 'Current rows:', currentRowCount, 'Original rows:', originalRowCount);
+      });
+    }
+
+    // Manuel tablo kontrol fonksiyonu (ihtiyaç halinde çağırılabilir)
+    function manualTableCheck() {
+      checkTableChanges();
+    }
+  </script>
 
 <!-- Loader Script -->
 <script>

@@ -168,23 +168,16 @@ class stok20_controller extends Controller
           
           $IS_EMRI_PARCA = explode('|||', $IS_EMRI[$i] ?? '');
 
-          $MPS_MUSTERI = DB::table($firma.'mmps10e')
+         $MPS_MUSTERI = DB::table($firma.'mmps10e')
               ->where('EVRAKNO', $IS_EMRI[$i])
-              ->select('MUSTERIKODU')
-              ->first();
-          
-          $SIPARIS_EVRAKNO = DB::table($firma.'stok40e')
-              ->where('CARIHESAPCODE', $MPS_MUSTERI->MUSTERIKODU)
-              ->select('EVRAKNO')
               ->first();
 
-          if ($SIPARIS_EVRAKNO && isset($SF_MIKTAR[$i])) {
+          if (isset($SF_MIKTAR[$i])) {
               DB::table($firma.'stok40t')
-                  ->where('EVRAKNO', $SIPARIS_EVRAKNO->EVRAKNO)
-                  ->where('KOD', $KOD[$i])
-                  ->update([
-                      'SF_IMIKTAR' => $SF_MIKTAR[$i],
-                  ]);
+                ->where('ARTNO', $MPS_MUSTERI->SIPARTNO)
+                ->update([
+                    'URETILEN_MIKTARI' => $SF_MIKTAR[$i],
+                ]);
           }
 
           if (!isset($AMBCODE[$i]) || $AMBCODE[$i] === "") {
@@ -238,6 +231,7 @@ class stok20_controller extends Controller
             'SF_VRI_VR_R2' => $TEXT2[$i],
             'SF_VRI_VR_R3' => $TEXT3[$i],
             'SF_VRI_VR_R4' => $TEXT4[$i],
+            'SIPNO' => $MPS_MUSTERI->SIPARTNO,
             'SF_VRI_NUM1' => $NUM1[$i],
             'SF_VRI_NUM2' => $NUM2[$i],
             'SF_VRI_NUM3' => $NUM3[$i],
@@ -287,7 +281,7 @@ class stok20_controller extends Controller
 
           
           DB::table($firma.'stok40t')->where('ARTNO',$sipNO)->update([
-            'SF_IMIKTAR'=>$toplamMiktar
+            'URETILEN_MIKTARI'=>$toplamMiktar
           ]);
 
         }
@@ -321,7 +315,7 @@ class stok20_controller extends Controller
               'TARIH' => $TARIH,
               'EVRAKTIPI' => 'STOK20T',
               'STOK_MIKTAR' => $TI_SF_MIKTAR[$i],
-              'AMBCODE' => $TI_AMBCODE_SEC,
+              'AMBCODE' => $TI_AMBCODE[$i],
               'LOCATION1' => $TI_LOCATION1[$i],
               'LOCATION2' => $TI_LOCATION2[$i],
               'LOCATION3' => $TI_LOCATION3[$i],
@@ -341,7 +335,7 @@ class stok20_controller extends Controller
         // break;      
 
       case 'kart_duzenle':
-FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
+        FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
 
         DB::table($firma.'stok20e')->where('EVRAKNO',$EVRAKNO)->update([
           'TARIH' => $TARIH,
@@ -379,21 +373,15 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
 
           $MPS_MUSTERI = DB::table($firma.'mmps10e')
               ->where('EVRAKNO', $IS_EMRI[$i])
-              ->select('MUSTERIKODU')
+              
               ->first();
 
-          $SIPARIS_EVRAKNO = DB::table($firma.'stok40e')
-              ->where('CARIHESAPCODE', $MPS_MUSTERI->MUSTERIKODU)
-              ->select('EVRAKNO')
-              ->first();
-
-          if ($SIPARIS_EVRAKNO && isset($SF_MIKTAR[$i])) {
+          if (isset($SF_MIKTAR[$i])) {
               DB::table($firma.'stok40t')
-                  ->where('EVRAKNO', $SIPARIS_EVRAKNO->EVRAKNO)
-                  ->where('KOD', $KOD[$i])
-                  ->update([
-                      'SF_IMIKTAR' => $SF_MIKTAR[$i],
-                  ]);
+                ->where('ARTNO', $MPS_MUSTERI->SIPARTNO)
+                ->update([
+                    'URETILEN_MIKTARI' => $SF_MIKTAR[$i],
+                ]);
           }
 
 
@@ -419,6 +407,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
               'SF_VRI_NUM2' => $NUM2[$i],
               'SF_VRI_NUM3' => $NUM3[$i],
               'SF_VRI_NUM4' => $NUM4[$i],
+              'SIPNO' => $MPS_MUSTERI->SIPARTNO,
               // 'NOT1' => $NOT1[$i],
               'AMBCODE' => $AMBCODE_E,
               'LOCATION1' => $LOCATION1[$i],
@@ -433,7 +422,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
-              'TRNUM' => $SRNUM,
+              'TRNUM' => $TRNUM[$i],
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
@@ -491,7 +480,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
 
           
             DB::table($firma.'stok40t')->where('ARTNO',$sipNO)->update([
-              'SF_IMIKTAR'=>$toplamMiktar
+              'URETILEN_MIKTARI'=>$toplamMiktar
             ]);
           }
 
@@ -582,7 +571,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
 
           
             DB::table($firma.'stok40t')->where('ARTNO',$sipNO)->update([
-              'SF_IMIKTAR'=>$toplamMiktar
+              'URETILEN_MIKTARI'=>$toplamMiktar
             ]);
           } 
 
@@ -828,7 +817,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
                 
                 $kontrol = $s1 + (-1 * $s2);
                 // dd($SONUC,$SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR,$SONUC > $kontrol);
-                if($TI_SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR)
+                if($TI_SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR && $BILGISATIRIE[$i] != 'E')
                 {
                     $SONUC = $TI_SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR;
                     if($SONUC > $kontrol)
@@ -836,7 +825,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
                         return redirect()->back()->with('error', 'Hata: ' . $TI_KOD[$i] . ' || ' . $TI_STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $TI_SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
                     }
                 }
-                else
+                else if($TI_SF_MIKTAR[$i] < $KAYITLI_SF_MIKTAR && $BILGISATIRIE[$i] != 'E')
                 {
                     $SONUC = $KAYITLI_SF_MIKTAR - $TI_SF_MIKTAR[$i];
                     if($SONUC < $kontrol)
@@ -955,60 +944,76 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
         // break;
 
       case 'yazdir':
+        if($satir_say <= 0)
+        {
+          return redirect()->back()->with('error', 'Veri Bulunamadı');
+        }
         $MPS_BILGISI = DB::table($firma.'mmps10e as t')
           ->leftJoin($firma.'cari00 as c', 'c.KOD', '=', 't.MUSTERIKODU')
           ->whereIn('t.EVRAKNO', $IS_EMRI)
           ->get();
 
-        for($i = 0; $i < count($SERINO); $i++)
-        {
-          $check = DB::table($firma.'D7KIDSLB')
-          ->where('BARCODE',$SERINO[$i] ?? 0)
-          ->first();
-          if($check == null)
-          {
-            // sırurtm
-            DB::table($firma.'D7KIDSLB')->insert([
-              'KOD' => $KOD[$i],
-              'AD' => $STOK_ADI[$i],
-              'EVRAKTYPE' => 'STOK20T',
-              'EVRAKNO' => $EVRAKNO,
-              'TRNUM' => $TRNUM[$i],
-              'MPSNO' => $IS_EMRI[$i],
-              'VARYANT1' => $TEXT1[$i],
-              'VARYANT2' => $TEXT2[$i],
-              'VARYANT3' => $TEXT3[$i],
-              'VARYANT4' => $TEXT4[$i],
-              'LOCATION1' => $LOCATION1[$i],
-              'LOCATION2' => $LOCATION2[$i],
-              'LOCATION3' => $LOCATION3[$i],
-              'LOCATION4' => $LOCATION4[$i],
-              'NUM1' => $NUM1[$i],
-              'NUM2' => $NUM2[$i],
-              'NUM3' => $NUM3[$i],
-              'NUM4' => $NUM4[$i],
-              'BARCODE' => $SERINO[$i],
-              'SF_MIKTAR' => $SF_MIKTAR[$i]
-            ]);
-          }
-          else
-          {
-            DB::table($firma.'D7KIDSLB')->where('BARCODE',$SERINO[$i])->update([
-              'VARYANT1' => $TEXT1[$i],
-              'VARYANT2' => $TEXT2[$i],
-              'VARYANT3' => $TEXT3[$i],
-              'VARYANT4' => $TEXT4[$i],
-              'LOCATION1' => $LOCATION1[$i],
-              'LOCATION2' => $LOCATION2[$i],
-              'LOCATION3' => $LOCATION3[$i],
-              'LOCATION4' => $LOCATION4[$i],
-              'NUM1' => $NUM1[$i],
-              'NUM2' => $NUM2[$i],
-              'NUM3' => $NUM3[$i],
-              'NUM4' => $NUM4[$i],
-              'SF_MIKTAR' => $SF_MIKTAR[$i]
-            ]);
-          }
+        $SERINO_ETIKET = [];
+
+        for($i = 0; $i < count($SERINO); $i++) {
+            $barcode = $SERINO[$i] ?? '';
+            if($barcode === '' || DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist()) {
+                $lastId = DB::table($firma.'D7KIDSLB')->max('id') + 1;
+                $newSerial = str_pad($lastId, 12, '0', STR_PAD_LEFT);
+
+                DB::table($firma.'D7KIDSLB')->insert([
+                    'KOD' => $KOD[$i],
+                    'AD' => $STOK_ADI[$i],
+                    'EVRAKTYPE' => 'STOK20T',
+                    'EVRAKNO' => $EVRAKNO,
+                    'TRNUM' => $TRNUM[$i],
+                    'MPSNO' => $IS_EMRI[$i],
+                    'VARYANT1' => $TEXT1[$i],
+                    'VARYANT2' => $TEXT2[$i],
+                    'VARYANT3' => $TEXT3[$i],
+                    'VARYANT4' => $TEXT4[$i],
+                    'LOCATION1' => $LOCATION1[$i],
+                    'LOCATION2' => $LOCATION2[$i],
+                    'LOCATION3' => $LOCATION3[$i],
+                    'LOCATION4' => $LOCATION4[$i],
+                    'NUM1' => $NUM1[$i],
+                    'NUM2' => $NUM2[$i],
+                    'NUM3' => $NUM3[$i],
+                    'NUM4' => $NUM4[$i],
+                    'BARCODE' => $newSerial,
+                    'SF_MIKTAR' => $SF_MIKTAR[$i]
+                ]);
+
+                $SERINO_ETIKET[] = $newSerial;
+
+                DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK20T')->where('TRNUM',$TRNUM[$i])->update([
+                  'SERINO' => $newSerial
+                ]);
+                DB::table($firma.'stok20t')
+                    ->where('EVRAKNO', $EVRAKNO)
+                    ->where('TRNUM', $TRNUM[$i])
+                    ->update(['SERINO' => $newSerial]);
+
+            } else {
+                // Var olan seri → güncelle
+                DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->update([
+                    'VARYANT1' => $TEXT1[$i],
+                    'VARYANT2' => $TEXT2[$i],
+                    'VARYANT3' => $TEXT3[$i],
+                    'VARYANT4' => $TEXT4[$i],
+                    'LOCATION1' => $LOCATION1[$i],
+                    'LOCATION2' => $LOCATION2[$i],
+                    'LOCATION3' => $LOCATION3[$i],
+                    'LOCATION4' => $LOCATION4[$i],
+                    'NUM1' => $NUM1[$i],
+                    'NUM2' => $NUM2[$i],
+                    'NUM3' => $NUM3[$i],
+                    'NUM4' => $NUM4[$i],
+                    'SF_MIKTAR' => $SF_MIKTAR[$i]
+                ]);
+
+                $SERINO_ETIKET[] = str_pad($barcode, 12, '0', STR_PAD_LEFT);
+            }
         }
 
         $data = [
@@ -1016,7 +1021,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
           'KOD' => $KOD,
           'STOK_ADI' => $STOK_ADI,
           'LOTNUMBER' => $LOTNUMBER,
-          'SERINO' => $SERINO,
+          'SERINO' => $SERINO_ETIKET,
           'MPS_BILGISI' => $MPS_BILGISI,
           'MIKTAR' => $SF_MIKTAR,
           'ID' => 'uretim_fisi?ID='.$EVRAKNO
@@ -1026,7 +1031,7 @@ FunctionHelpers::Logla('STOK20',$EVRAKNO,'W',$TARIH);
 
         return view('etiketKarti', ['data' => $data]);
 
-        // break;
+      // break;
     }
 
   }
