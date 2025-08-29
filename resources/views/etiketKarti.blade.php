@@ -6,42 +6,44 @@
   $database = trim($kullanici_veri->firma) . ".dbo.";
 @endphp
 <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .card {
-      width: 5cm;
-      height: 3cm;
-      display: flex;
-      box-sizing: border-box;
-      padding: 2px;
-      font-size: 7.5px;
-      justify-content: space-between;
-      align-items: center;
-      page-break-inside: avoid;
-    }
-
-    .card .info {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 1px 3px;
-      flex: 1;
-    }
-
-    .card .barcode {
-      transform: rotate(-90deg) !important;
-    }
   @media print {
-    @page {
-      size: 5cm 3cm;
-      margin: 0;
-    }
+    @page { size: 5cm 3cm; margin: 0; }
+    body { margin: 0; padding: 0; }
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    width: 5cm;
+    height: 3cm;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px;
+    font-size: 7.5px;
+    page-break-inside: avoid;
+    margin: 0;
+  }
+
+  .card .info {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 1px 2px;
+    flex: 1;
+  }
+
+  .card .barcode {
+    transform: rotate(-90deg) !important;
+    transform-origin: center;
   }
 </style>
+
 <div id="yazdirilicak">
   @php
     $firma_bilgileri = DB::table('FIRMA_TANIMLARI')
@@ -99,7 +101,7 @@
     document.querySelectorAll(".barcode").forEach(barcode => {
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
-        width: 2.5,
+        width: 1.0,
         height: 40,
         displayValue: true,
         background: "#ffffff",
