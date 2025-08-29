@@ -30,16 +30,16 @@
     page-break-inside: avoid;
     margin: 0;
   }
-
-  .card .info {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: 1px 2px;
-    flex: 1;
+  h1,h2,h3
+  {
+    margin:0;
+    padding:0;
   }
-
+  .info
+  {
+    max-width:200px;
+  }
   .card .barcode {
-    transform: rotate(-90deg) !important;
     transform-origin: center;
   }
 </style>
@@ -64,30 +64,14 @@
 
   <div class="card">
     <div class="info">
-      <div style="font-weight:700;">Kod:</div>
-      <div>{{ $data['KOD'][$i] ?? '' }}</div>
+      <center>
+        <h2>{{ $data['KOD'][$i] ?? '' }}</h2>
 
-      <div style="font-weight:700;">Stok Adı:</div>
-      <div>{{ $data['STOK_ADI'][$i] ?? '' }}</div>
+        <h1>{{ $data['STOK_ADI'][$i] ?? '' }} </h1>
+      </center>
 
-      @if(isset($data['MPS_BILGISI'][$i]->MUSTERIKODU))
-      <div style="font-weight:700;">Müşteri:</div>
-      <div>{{ ($data['MPS_BILGISI'][$i]->MUSTERIKODU ?? '') . ' - ' . ($data['MPS_BILGISI'][$i]->AD ?? '') }}</div>
-      @endif
-
-      @if(isset($data['MPS_BILGISI'][$i]->SIPNO))
-      <div style="font-weight:700;">Sipariş No:</div>
-      <div>{{ $data['MPS_BILGISI'][$i]->SIPNO ?? '' }}</div>
-      @endif
-
-      <div style="font-weight:700;">Miktar:</div>
-      <div>{{ $data['MIKTAR'][$i] ?? '' }}</div>
-
-      <div style="font-weight:700;">Tarih:</div>
-      <div>{{ $data['TARIH'] ?? '' }}</div>
+      <svg class="barcode" data-value="{{ $barcodeVal }}"></svg>
     </div>
-
-    <svg class="barcode" data-value="{{ $barcodeVal }}"></svg>
   </div>
 
   @php } @endphp
@@ -105,7 +89,8 @@
         height: 40,
         displayValue: true,
         background: "#ffffff",
-        lineColor: "#343a40"
+        lineColor: "#343a40",
+        fontSize:10
       });
     });
 
