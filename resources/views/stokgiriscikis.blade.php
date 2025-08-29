@@ -241,7 +241,7 @@
                             <input maxlength="12" style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
                           </td>
                           <td>
-                            <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" disabled placeholder="Otomotik Üretilicek" class="form-control">
+                            <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" disabled placeholder="" class="form-control">
                           </td>
                           <td>
                             <input maxlength="28" style="color: red" type="number" name="GIREN_MIKTAR_FILL" data-name="GIREN_MIKTAR" id="GIREN_MIKTAR_FILL" onchange ="girenMiktarAction(this.value)" class="form-control">
@@ -899,30 +899,6 @@
         };
 
         if (kontrolZorunluAlanlar(alanlar)) return;
-
-        Swal.fire({
-          title: 'Seri numarası üretiliyor...',
-          text: 'Lütfen bekleyin',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        const veri = await $.ajax({
-          url: '/seri_no_uret',
-          method: 'post',
-          data: {},
-          success:function(res)
-          {
-            satirEkleInputs.SERINO_FILL = res;
-          }
-        });
 
         var htmlCode = " ";
         

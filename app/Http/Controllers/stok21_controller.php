@@ -686,20 +686,23 @@ class stok21_controller extends Controller
       break;
 
       case 'yazdir':
-
+        if($satir_say <= 0)
+        {
+          return redirect()->back()->with('error', 'Veri Bulunamadı');
+        }
         $MPS_BILGISI = [];
+        $SERINO_ETIKET = [];
 
         
         for($i = 0; $i < count($SERINO); $i++)
         {
           
           $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
-          $check = DB::table($firma.'D7KIDSLB')
-          ->where('BARCODE',$SERINO[$i] ?? 0)
-          ->first();
-          if($check == null)
+          $barcode = $SERINO[$i] ?? '';
+          if($barcode === '' || DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist())
           {
-            // sırurtm
+            $lastId = DB::table($firma.'D7KIDSLB')->max('id') + 1;
+            $newSerial = str_pad($lastId, 12, '0', STR_PAD_LEFT);
             DB::table($firma.'D7KIDSLB')->insert([
               'KOD' => $KOD[$i],
               'AD' => $STOK_ADI[$i],
@@ -718,9 +721,18 @@ class stok21_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
-              'BARCODE' => $SERINO[$i],
+              'BARCODE' => $newSerial,
               'SF_MIKTAR' => $SF_MIKTAR
             ]);
+            $SERINO_ETIKET[] = $newSerial;
+
+            DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->where('TRNUM',$TRNUM[$i])->update([
+              'SERINO' => $newSerial
+            ]);
+            DB::table($firma.'stok21t')
+                ->where('EVRAKNO', $EVRAKNO)
+                ->where('TRNUM', $TRNUM[$i])
+                ->update(['SERINO' => $newSerial]);
           }
           else
           {
@@ -739,6 +751,8 @@ class stok21_controller extends Controller
               'NUM4' => $NUM4[$i],
               'SF_MIKTAR' => $SF_MIKTAR
             ]);
+
+            $SERINO_ETIKET[] = str_pad($barcode, 12, '0', STR_PAD_LEFT);
           }
           $obje = new \stdClass();
           // $obje->MUSTERIKODU = '';

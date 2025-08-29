@@ -849,9 +849,8 @@ if (isset($kart_veri)) {
                   @foreach ($ti_kart_veri as $key => $veri)
                   <tr>
                     <td>
-											@include('components.detayBtn', ['KOD' => $veri->KOD])
-										</td> 
-                    <!-- <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td> -->
+                      @include('components.detayBtn', ['KOD' => $veri->KOD])
+                    </td> 
                     <td>
                       <input type="text" class="form-control" name="TI_KARSITRNUM" value="{{ $veri->TRNUM }}" disabled>
                       <input type="hidden" class="form-control" name="TI_KARSITRNUM[]" value="{{ $veri->TI_KARSITRNUM }}">
@@ -876,12 +875,17 @@ if (isset($kart_veri)) {
                       <input type="hidden" class="form-control" name="TI_KARSISF_MIKTAR[]" value="{{ floor($veri->KARSISF_MIKTAR) }}">
                     </td>
                     <td>
-                      <input type="checkbox"  style="width:20px;height:20px;" name="" {{ $veri->BILGISATIRIE == 'E' ? 'checked' : ' '}} value='{{ $veri->BILGISATIRIE }}'>
-                      <input type="hidden" class="form-control" name="BILGISATIRIE[]" value='{{ $veri->BILGISATIRIE }}'>
+                      {{-- önce hidden, sonra checkbox --}}
+                      <input type="hidden" name="BILGISATIRIE[{{ $key }}]" value="">
+                      <input type="checkbox" style="width:20px;height:20px;"
+                            name="BILGISATIRIE[{{ $key }}]"
+                            value="E"
+                            {{ $veri->BILGISATIRIE == 'E' ? 'checked' : '' }}>
                     </td>
                     <td>
                       <input type="text" class="form-control" name="TI_KOD[]" value="{{ $veri->KOD }}" readonly>
-                    </td>                       <td>
+                    </td>                       
+                    <td>
                       <input type="text" class="form-control" name="TI_STOK_ADI[]" value="{{ $veri->STOK_ADI }}" readonly>
                     </td>
                     <td>
@@ -939,11 +943,12 @@ if (isset($kart_veri)) {
                       <input type="text" class="form-control" name="PM[]" value="{{ $veri->PM }}" readonly>
                     </td>
                     <td>
-                      <button type="button" class="btn btn-default delete-row" id="deleteSingleRow2"><i class="fa fa-minus" style="color: red"></i></button>
+                      <button type="button" class="btn btn-default delete-row" id="deleteSingleRow2">
+                        <i class="fa fa-minus" style="color: red"></i>
+                      </button>
                     </td>
-
                   </tr>
-                  @endforeach              
+                  @endforeach
                 </tbody>
               </table>
 

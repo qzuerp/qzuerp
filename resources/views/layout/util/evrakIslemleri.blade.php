@@ -22,7 +22,7 @@
         @if(in_array($ekran, $kullanici_write_yetkileri))
           <td width="40">
             <div id="kartOlustur" name="kartOlustur" style="display: none;">
-              <a href="#" class="pull-right" title="Kaydet"><i class="fa fa-save fa-2x" style="color: green" data-bs-toggle="modal" onclick="evrakIslemleri('evrakKaydet',{{ $ekranKayitSatirKontrol }})"></i></a>
+              <a href="#" class="pull-right" id="kartOlusturBtn" title="Kaydet"><i class="fa fa-save fa-2x" style="color: green" data-bs-toggle="modal" onclick="evrakIslemleri('evrakKaydet',{{ $ekranKayitSatirKontrol }})"></i></a>
             </div>
           </td>
           <td width="40">
@@ -40,7 +40,7 @@
           </td>
           <td width="40">
             <div id="kartDuzenle2" name="kartDuzenle2">
-              <a href="#" class="pull-right" title="Kaydet"><i class="fa fa-save fa-2x" style="color: green" data-bs-toggle="modal" onclick="evrakIslemleri('evrakDuzenle',{{ $ekranKayitSatirKontrol }})"></i></a>
+              <a href="#" class="pull-right" id="kartDuzenle2Btn" title="Kaydet"><i class="fa fa-save fa-2x" style="color: green" data-bs-toggle="modal" onclick="evrakIslemleri('evrakDuzenle',{{ $ekranKayitSatirKontrol }})"></i></a>
             </div>
           </td>
         @endif

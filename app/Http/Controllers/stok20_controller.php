@@ -609,10 +609,6 @@ class stok20_controller extends Controller
         // dd($request->all());
         for ($i = 0; $i < $TI_satir_say; $i++) {
 
-
-          
-          
-
           $TI_SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
           // dd($newTRNUMS2);
@@ -661,7 +657,7 @@ class stok20_controller extends Controller
             $kontrol = $s1 + (-1 * $s2);
             
 
-            if($TI_SF_MIKTAR[$i] > $kontrol && $BILGISATIRIE[$i] != 'E')
+            if($TI_SF_MIKTAR[$i] > $kontrol && (!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
             {
               return redirect()->back()->with('error', 'Hata: ' . $TI_KOD[$i] . ' || ' . $TI_STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $TI_SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
             }
@@ -736,7 +732,7 @@ class stok20_controller extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
               ]);
             }
-            else if($BILGISATIRIE[$i] != 'E')
+            else if((!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
             {
               DB::table($firma.'stok10a')->insert([
                 'EVRAKNO' => $EVRAKNO,
@@ -817,7 +813,7 @@ class stok20_controller extends Controller
                 
                 $kontrol = $s1 + (-1 * $s2);
                 // dd($SONUC,$SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR,$SONUC > $kontrol);
-                if($TI_SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR && $BILGISATIRIE[$i] != 'E')
+                if($TI_SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR && (!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
                 {
                     $SONUC = $TI_SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR;
                     if($SONUC > $kontrol)
@@ -825,7 +821,7 @@ class stok20_controller extends Controller
                         return redirect()->back()->with('error', 'Hata: ' . $TI_KOD[$i] . ' || ' . $TI_STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $TI_SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
                     }
                 }
-                else if($TI_SF_MIKTAR[$i] < $KAYITLI_SF_MIKTAR && $BILGISATIRIE[$i] != 'E')
+                else if($TI_SF_MIKTAR[$i] < $KAYITLI_SF_MIKTAR && (!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
                 {
                     $SONUC = $KAYITLI_SF_MIKTAR - $TI_SF_MIKTAR[$i];
                     if($SONUC < $kontrol)
@@ -899,7 +895,7 @@ class stok20_controller extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
               ]);
             }
-            else if($BILGISATIRIE[$i] != 'E')
+            else if((!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
             {
                 DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
                   'KOD' => $TI_KOD[$i],

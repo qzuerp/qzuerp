@@ -952,7 +952,7 @@ if (isset($kart_veri)) {
 									<tfoot>
 										<tr class="bg-info">
 											<th>Kod</th>
-											<th style="min-width:250px;">Ad</th>
+											<th style="min-width:220px;">Ad</th>
 											<th>GK 1</th>
 											<th>Seri no</th>
 											<th>Marka</th>

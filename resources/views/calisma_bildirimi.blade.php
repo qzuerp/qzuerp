@@ -175,7 +175,7 @@
                         <input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW" required=""  value="{{ @$kart_veri->JOBNO }}" disabled>
                         <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO" required="" value="{{ @$kart_veri->JOBNO }}" >
                         <span class="d-flex -btn">
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button">
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" id="modal_popupSelectModalBtn" type="button">
                             <span class="fa-solid fa-magnifying-glass"  ></span>
                           </button>
                         </span>
@@ -200,9 +200,8 @@
               <div class="nav-tabs-custom box-body">
                 <ul class="nav nav-tabs">
                   <li class="nav-item"><a href="#calisma_bildirimi" class="nav-link" data-bs-toggle="tab">Çalışma Bildirimi</a></li>
-                  <li class=""><a href="#surec_bilgileri" class="nav-link" data-bs-toggle="tab">Süreç Bilgileri</a></li>
+                  <li class="" id="surec_bi"><a href="#surec_bilgileri" class="nav-link" data-bs-toggle="tab">Süreç Bilgileri</a></li>
                   <li class=""><a href="#hatalar" class="nav-link" data-bs-toggle="tab">Hatalar</a></li>
-                  <li class=""><a href="#verimlilik" class="nav-link" data-bs-toggle="tab">Verimlilik</a></li>
                   <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                   <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                 </ul>
@@ -287,6 +286,12 @@
                             </div>
 
                           </div>
+                        </div>
+                        <div class="d-flex mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
+                          <div id="chart" style="height: 270px;"></div>
+                          <div id="chart1" style="height: 270px;"></div>
+                          <div id="chart2" style="height: 270px;"></div>
+                          <div id="chart3" style="height: 270px;"></div>
                         </div>
                       </div>
                     </div>
@@ -620,16 +625,6 @@
                       </div>
                     </div>
                   {{-- HATALAR BİTİŞ --}}
-
-                  {{-- VERİMLİLİK BAŞLANGIÇ --}}
-                    <div class="tab-pane" id="verimlilik">
-                      <div class="d-flex">
-                        <div id="chart1" style="height: 270px;"></div>
-                        <div id="chart2" style="height: 270px;"></div>
-                        <div id="chart3" style="height: 270px;"></div>
-                      </div>
-                    </div>
-                  {{-- VERİMLİLİK BİTİŞ --}}
 
                   {{-- LİSTE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="liste">
@@ -1389,9 +1384,9 @@
           var len = $('#veri_table tbody tr').length;
           if(len <= 0)
           {
-            loaderManager.show();
+            $('#loader').css('display','none !important');
             e.preventDefault();
-            mesaj("Süreç Bilgieri Boş","error");
+            mesaj("Süreç Bilgileri Boş","error");
           }
         });
       });
@@ -1988,10 +1983,163 @@
           // Süreyi son hücreye yazma
           lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
       });
-
+      @php
+      $GERCEKLESEN_MIK = DB::table($database.'sfdc31e')->where('JOBNO',@$kart_veri->JOBNO)->SUM('SF_MIKTAR');
+      @endphp
       // Verimlilik grafikleri
+      Highcharts.chart('chart', {
+        chart: {
+          type: 'column',
+          backgroundColor: 'transparent',
+          spacingTop: 20,
+          spacingBottom: 20,
+          style: {
+            fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+          }
+        },
+        title: {
+          text: 'Planlanan / Gerçekleşen Miktar',
+          style: {
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#2c3e50'
+          },
+          margin: 25
+        },
+        xAxis: {
+          title: { 
+            text: '',
+            style: {
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#34495e'
+            }
+          },
+          labels: { 
+            style: { 
+              fontSize: '12px',
+              color: '#7f8c8d'
+            }
+          },
+          lineColor: '#bdc3c7',
+          tickColor: '#bdc3c7'
+        },
+        yAxis: {
+          min: 0,
+          title: { 
+            text: 'Miktar',
+            style: {
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#34495e'
+            }
+          },
+          labels: { 
+            style: { 
+              fontSize: '12px',
+              color: '#7f8c8d'
+            }
+          },
+          gridLineColor: '#ecf0f1',
+          gridLineWidth: 1
+        },
+        legend: {
+          itemStyle: { 
+            fontSize: '13px',
+            fontWeight: '500',
+            color: '#2c3e50'
+          },
+          itemHoverStyle: {
+            color: '#3498db'
+          },
+          symbolRadius: 3,
+          symbolHeight: 12,
+          symbolWidth: 12,
+          itemDistance: 30
+        },
+        tooltip: {
+          shared: true,
+          borderRadius: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderColor: '#bdc3c7',
+          borderWidth: 1,
+          shadow: {
+            color: 'rgba(0, 0, 0, 0.1)',
+            offsetX: 0,
+            offsetY: 2,
+            opacity: 0.1,
+            width: 3
+          },
+          style: { 
+            fontSize: '13px',
+            color: '#2c3e50'
+          },
+          headerFormat: '<span style="font-weight: bold; color: #34495e">{point.key}</span><br/>'
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.05,
+            groupPadding: 0.1,
+            borderWidth: 0,
+            pointWidth: 40,
+            borderRadius: {
+              radius: 3,
+              scope: 'point'
+            },
+            dataLabels: {
+              enabled: true,
+              inside: true,
+              align: 'center',
+              verticalAlign: 'middle',
+              style: {
+                fontWeight: '600',
+                color: '#fff',
+                textOutline: '1px contrast',
+                fontSize: '11px'
+              },
+              formatter: function() {
+                return this.y > 0 ? this.y : '';
+              }
+            },
+            states: {
+              hover: {
+                brightness: 0.1
+              }
+            }
+          }
+        },
+        colors: [
+          {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, '#3498db'],
+              [1, '#2980b9']
+            ]
+          },
+          {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, '#e74c3c'],
+              [1, '#c0392b']
+            ]
+          }
+        ],
+        series: [
+          {
+            name: 'Planlanan Miktar',
+            data: [{{ $MPS->R_YMK_YMPAKETICERIGI ?? 0}}]
+          },
+          {
+            name: 'Gerçekleşen Miktar',
+            data: [{{ $GERCEKLESEN_MIK ?? 0}}]
+          }
+        ],credits: {
+          enabled: false
+        },
+      });
+
       function drawVerimlilikGauge(efficiency = 0, container, title = "") {
-        Highcharts.chart(container, {
+        let chart = Highcharts.chart(container, {
           chart: {
             type: 'gauge',
             backgroundColor: '#ffffff',
@@ -2001,7 +2149,6 @@
             height: '280px',
             spacing: [10, 10, 10, 10]
           },
-          
           title: {
             text: title,
             style: {
@@ -2012,7 +2159,6 @@
             },
             y: 30
           },
-          
           pane: {
             startAngle: -120,
             endAngle: 120,
@@ -2025,7 +2171,6 @@
             }],
             size: '85%'
           },
-          
           yAxis: {
             min: 0,
             max: 150,
@@ -2037,7 +2182,6 @@
             minorTickLength: 4,
             minorTickWidth: 1,
             minorTickColor: '#cbd5e1',
-            
             labels: {
               distance: 15,
               style: {
@@ -2047,9 +2191,7 @@
                 fontFamily: '"Segoe UI", Tahoma, Geneva, sans-serif'
               }
             },
-            
             lineWidth: 0,
-            
             plotBands: [{
               from: 0,
               to: 75,
@@ -2059,11 +2201,7 @@
               innerRadius: '80%',
               label: {
                 text: 'Düşük',
-                style: {
-                  fontSize: '10px',
-                  color: '#ffffff',
-                  fontWeight: '500'
-                },
+                style: { fontSize: '10px', color: '#ffffff', fontWeight: '500' },
                 y: -5
               }
             }, {
@@ -2075,11 +2213,7 @@
               innerRadius: '80%',
               label: {
                 text: 'Orta',
-                style: {
-                  fontSize: '10px',
-                  color: '#ffffff',
-                  fontWeight: '500'
-                },
+                style: { fontSize: '10px', color: '#ffffff', fontWeight: '500' },
                 y: -5
               }
             }, {
@@ -2091,51 +2225,22 @@
               innerRadius: '80%',
               label: {
                 text: 'Yüksek',
-                style: {
-                  fontSize: '10px',
-                  color: '#ffffff',
-                  fontWeight: '500'
-                },
+                style: { fontSize: '10px', color: '#ffffff', fontWeight: '500' },
                 y: -5
               }
             }]
           },
-          
           series: [{
             name: title,
             data: [efficiency],
-            tooltip: {
-              backgroundColor: '#ffffff',
-              borderColor: '#e5e7eb',
-              borderWidth: 1,
-              borderRadius: 8,
-              shadow: {
-                color: 'rgba(0,0,0,0.08)',
-                width: 4,
-                offsetX: 0,
-                offsetY: 2
-              },
-              style: {
-                color: '#374151',
-                fontSize: '13px',
-                fontWeight: '500',
-                fontFamily: '"Segoe UI", Tahoma, Geneva, sans-serif'
-              },
-              useHTML: true,
-              formatter: function() {
-                return '<div style="text-align: center; padding: 4px;">' +
-                      '<div style="font-size: 16px; font-weight: 600; color: #1f2937;">' + this.y + '%</div>' +
-                      '</div>';
-              }
-            },
+            tooltip: { enabled: false },
             dataLabels: {
-              format: '<span style="font-size:20px;font-weight:600">{y}</span><span style="font-size:14px;color:#6b7280">%</span>',
-              borderWidth: 0,
-              style: {
-                color: '#111827',
-                textOutline: 'none',
-                fontFamily: '"Segoe UI", Tahoma, Geneva, sans-serif'
+              // Sabit değeri göster
+              formatter: function() {
+                return '<span style="font-size:20px;font-weight:600">' + efficiency + '</span><span style="font-size:14px;color:#6b7280">%</span>';
               },
+              borderWidth: 0,
+              style: { color: '#111827', textOutline: 'none' },
               y: 25,
               useHTML: true
             },
@@ -2155,8 +2260,6 @@
               radius: 5
             }
           }],
-          
-          // Alt kısma bilgi ekleme
           subtitle: {
             text: 'Hedef: ≥100% | Güncel Durum: ' + (efficiency >= 100 ? 'Hedefte' : efficiency >= 75 ? 'Gelişmeli' : 'Kritik'),
             style: {
@@ -2166,27 +2269,68 @@
             },
             y: -20
           },
-          
-          credits: {
-            enabled: false
-          },
-          
+          credits: { enabled: false },
           plotOptions: {
             gauge: {
-              animation: {
-                duration: 1000,
-                easing: 'easeOutQuad'
-              }
+              animation: false
             }
           }
         });
+
+        const baseValue = efficiency;
+        const animationRange = 1.5;
+        let currentValue = baseValue;
+        let targetValue = baseValue; 
+        let lastTime = performance.now();
+
+        // Yeni hedef değer belirlemek için
+        function getNewTarget() {
+          const offset = (Math.random() - 0.5) * 5 * animationRange;
+          let newTarget = baseValue + offset;
+          if (newTarget < 0) newTarget = 0;
+          if (newTarget > 150) newTarget = 150;
+          return newTarget;
+        }
+
+        let targetInterval = setInterval(() => {
+          targetValue = getNewTarget();
+        }, 2000 + Math.random() * 1500);
+
+        function smoothAnimation() {
+          if (chart && chart.series[0]) {
+            const now = performance.now();
+            const deltaTime = (now - lastTime) / 1000;
+            lastTime = now;
+
+            const lerpSpeed = 5;
+            const diff = targetValue - currentValue;
+            currentValue += diff * lerpSpeed * deltaTime;
+
+            if (Math.abs(diff) < 0.01) {
+              currentValue = targetValue;
+            }
+
+            chart.series[0].points[0].update(currentValue, false, false);
+            chart.redraw(false);
+          }
+
+          requestAnimationFrame(smoothAnimation);
+        }
+
+        targetValue = getNewTarget();
+        requestAnimationFrame(smoothAnimation);
+
+        return chart;
       }
 
       drawVerimlilikGauge({{ min(floor($AYAR_VERIMLILIK),150) }},'chart1','Ayar Verimliliği');
       drawVerimlilikGauge({{ min(floor($URETIM_VERIMLILIK),150) }},'chart2','Üretim Verimliliği');
       drawVerimlilikGauge({{ min(floor($TOPLAM_VERIMLILIK),150) }},'chart3','Toplam Verimliliği');
-
-
+      
+      setTimeout(() => {
+        $('#charts').removeClass('opacity-0');
+        $('#charts').addClass('opacity-100');
+      }, 1500);
 
       // Satır ekleme
       $('#addRow').on('click', function() {

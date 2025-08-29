@@ -473,7 +473,13 @@ function inputTemizle() {
   $('#LAST_TRNUM3').val('000000');
 
   //yeniEvrakNo();
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 0-11
+  const year = today.getFullYear();
 
+  const formattedDate = `${day}/${month}/${year}`;
+  $('#TARIH').text(formattedDate);
 }
 
 
@@ -489,16 +495,6 @@ function inputTemizle2() {
   $('#ID_TO_REDIRECT').val(ID);
 
   $('#evrakSec').prop('disabled', 'disabled');
-
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-
-  const formattedDate = `${year}-${month}-${day}`;
-  
-  $('#TARIH_E').val(formattedDate);
-  $('#TARIH').val(formattedDate);
   //$('#CARIHESAPCODE_E').val('').change();
   //$('#AMBCODE_E').val('').change();
   //$('#EVRAKNO_E_SHOW').val('');
@@ -526,6 +522,13 @@ function inputTemizle2() {
   $('#LAST_TRNUM3').val('000000');
 
   //yeniEvrakNo();
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 0-11
+  const year = today.getFullYear();
+
+  const formattedDate = `${year}-${month}-${day}`;
+  $('#TARIH').val(formattedDate);
 }
 
 function inputTemizle3() {
@@ -561,6 +564,13 @@ function inputTemizle3() {
   $('#AP10').prop('checked', false);
 
   //yeniEvrakNo();
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 0-11
+  const year = today.getFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
+  $('#TARIH').text(formattedDate);
 }
 
 function buttonRollback() {

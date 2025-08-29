@@ -207,7 +207,7 @@
 													maxlength="50" name="SIPARTNO" id="SIPARTNO" 
 													value="{{ @$kart_veri->SIPARTNO }}" readonly>
 												<span class="d-flex -btn">
-													<button class="btn btn-primary" data-bs-toggle="modal" 
+													<button class="btn btn-primary" id="modal_popupSelectModalBtn" data-bs-toggle="modal" 
 															data-bs-target="#modal_popupSelectModal" type="button">
 														<i class="fa-solid fa-magnifying-glass"></i>
 													</button>
