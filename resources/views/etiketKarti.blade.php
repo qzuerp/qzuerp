@@ -23,25 +23,32 @@
     height: 3cm;
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 1px;
     font-size: 7.5px;
     page-break-inside: avoid;
     margin: 0;
+    margin-top:0.5px;
   }
   h1,h2,h3
   {
     margin:0;
     padding:0;
   }
-  .info
-  {
-    max-width:200px;
+  h2.
+  .info {
+    max-width: 200px;
   }
+
   .card .barcode {
     transform-origin: center;
   }
+  .barcode {
+    display: block;
+    margin: 0 auto;
+  }
+
 </style>
 
 <div id="yazdirilicak">
@@ -67,7 +74,7 @@
       <center>
         <h2>{{ $data['KOD'][$i] ?? '' }}</h2>
 
-        <h1>{{ $data['STOK_ADI'][$i] ?? '' }} </h1>
+        <h1>{{ $data['STOK_ADI'][$i] ?? '' }}</h1>
       </center>
 
       <svg class="barcode" data-value="{{ $barcodeVal }}"></svg>
@@ -85,8 +92,8 @@
     document.querySelectorAll(".barcode").forEach(barcode => {
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
-        width: 1.0,
-        height: 40,
+        width: 1.3,
+        height: 25,
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",
@@ -98,9 +105,9 @@
     setTimeout(() => {
       window.print();
       window.onafterprint = () => window.close(); 
-    }, 500); // 0.5 sn bekletiyoruz, barkodlar çizilsin
+    }, 500);
   };
-  // window.onafterprint = function() {
-  //     window.history.back();
-  // };
+  window.onafterprint = function() {
+      window.history.back();
+  };
 </script>

@@ -104,6 +104,9 @@
         @if (in_array('URTFISI', $kullanici_read_yetkileri))
           <li><a href="uretim_fisi"><i class='fa-solid fa-industry'></i>Üretim Fişi</a></li>
         @endif
+        @if (in_array('URETIM_GAZETESI', $kullanici_read_yetkileri))
+          <li><a href="uretim_gazetesi"><i class='fa-solid fa-newspaper'></i>Üretim Gazetesi</a></li>
+        @endif
       </ul>
     </li>
 

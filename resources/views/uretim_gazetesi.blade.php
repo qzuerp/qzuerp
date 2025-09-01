@@ -89,20 +89,22 @@ $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 $sql = <<<SQL
 ;WITH agg_sure AS (
     SELECT 
-        S31E.JOBNO,
-        SUM(TRY_CONVERT(DECIMAL(18,4), S31T.SURE)) AS gerceklenen_SURE
-    FROM sfdc31E AS S31E
-    LEFT JOIN sfdc31T AS S31T
-        ON S31E.EVRAKNO = S31T.EVRAKNO
-       AND S31T.ISLEM_TURU IN ('U','A')
-    GROUP BY S31E.JOBNO
+        E.JOBNO,
+        E.OPERASYON,
+        SUM(TRY_CONVERT(DECIMAL(18,4), T.SURE)) AS gerceklenen_SURE
+    FROM sfdc31E AS E
+    LEFT JOIN sfdc31T AS T
+         ON T.EVRAKNO = E.EVRAKNO
+        AND T.ISLEM_TURU IN ('U','A')
+    GROUP BY E.JOBNO, E.OPERASYON
 ),
 agg_miktar AS (
     SELECT 
-        S31E.JOBNO,
-        SUM(TRY_CONVERT(DECIMAL(18,4), S31E.SF_MIKTAR)) AS gerceklesen_MIKTAR
-    FROM sfdc31E AS S31E
-    GROUP BY S31E.JOBNO
+        E.JOBNO,
+        E.OPERASYON,
+        SUM(TRY_CONVERT(DECIMAL(18,4), E.SF_MIKTAR)) AS gerceklesen_MIKTAR
+    FROM sfdc31E AS E
+    GROUP BY E.JOBNO, E.OPERASYON
 )
 SELECT
     M10T.EVRAKNO AS mps_no,
@@ -118,7 +120,7 @@ SELECT
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
     M10T.R_OPERASYON,
-    TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTAR0) AS plan_sure,
+    TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
     A2.gerceklesen_MIKTAR
@@ -127,10 +129,17 @@ LEFT JOIN MMPS10E AS M10E ON M10E.EVRAKNO = M10T.EVRAKNO
 LEFT JOIN STOK40T  AS S40T  ON S40T.ARTNO = M10E.SIPARTNO
 LEFT JOIN STOK00   AS S00   ON S00.KOD = M10E.MAMULSTOKKODU
 LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
-LEFT JOIN agg_sure   AS A1  ON A1.JOBNO = M10T.JOBNO
-LEFT JOIN agg_miktar AS A2  ON A2.JOBNO = M10T.JOBNO
-{$whereSql}
-ORDER BY M10E.SIPNO, M10T.EVRAKNO;
+LEFT JOIN agg_sure   AS A1  
+  ON A1.JOBNO = M10T.JOBNO 
+ AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
+
+LEFT JOIN agg_miktar AS A2  
+  ON A2.JOBNO = M10T.JOBNO 
+ AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
+    {$whereSql}
+    and M10T.R_KAYNAKTYPE = 'I'
+   AND   M10T.R_ACIK_KAPALI IS NULL
+ORDER BY M10E.SIPNO, M10T.EVRAKNO ASC;
 SQL;
 
 $stmt = $pdo->prepare($sql);
@@ -179,14 +188,7 @@ foreach ($rows as $r) {
                 'planSure' => $planSure, 'actSure' => $actSure,
                 'planMik' => $planMik, 'actMik' => $actMik
             ];
-        } else {
-            // Aynı operasyon birden fazla satır gelirse topla
-            $g =& $grouped[$key]['ops'][$op];
-            $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
-            $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
-            $g['planMik']  = ($g['planMik']  ?? 0) + ($planMik  ?? 0);
-            $g['actMik']   = ($g['actMik']   ?? 0) + ($actMik   ?? 0);
-        }
+        } 
     }
 }
 $groups = array_values($grouped);
@@ -205,96 +207,528 @@ usort($groups, function($a,$b){
 <title>MPS Form Raporu (Pivot + Senaryo)</title>
 <style>
     :root {
-        --bg: #0b1020;
-        --card: #141a2f;
-        --muted: #a8b3cf;
-        --text: #eef2ff;
-        --accent: #3b82f6;
-        --okfill: 40, 197, 94; /* yeşil benzeri */
-        --warnfill: 246, 189, 22; /* sarı benzeri */
-        --badfill: 244, 63, 94; /* pembe/kırmızı benzeri */
-        --soft: 26, 115, 232; /* mavi yumuşak */
+        --primary: #1a365d;
+        --primary-light: #2d5a87;
+        --secondary: #2b6cb0;
+        --accent: #3182ce;
+        --accent-light: #63b3ed;
+        
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --surface-3: #f1f5f9;
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        
+        --text-primary: #1a202c;
+        --text-secondary: #4a5568;
+        --text-muted: #718096;
+        
+        --success: #38a169;
+        --success-light: #68d391;
+        --warning: #d69e2e;
+        --warning-light: #f6e05e;
+        --danger: #e53e3e;
+        --danger-light: #fc8181;
+        
+        --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
     }
-    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: var(--bg); color: var(--text); }
-    .container { max-width: 1600px; margin: 24px auto; padding: 0 16px; }
 
-    .panel { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
-    .title { font-size: 20px; font-weight: 700; margin: 0 0 12px; }
-
-    .filters { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 8px; align-items: end; }
-    .filters label { font-size: 12px; color: var(--muted); display:block; margin-bottom: 4px; }
-    .filters input[type="text"] { width:100%; padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:#0f1426; color: var(--text); }
-    .filters .buttons { display:flex; gap:8px; }
-    .btn { border:1px solid rgba(255,255,255,.12); background:#0f1426; color: var(--text); padding:8px 12px; border-radius:10px; cursor:pointer; }
-    .btn:hover{ background:#12183a; }
-
-    .toolbar { display:flex; justify-content: space-between; align-items:center; gap: 12px; margin: 12px 0; }
-    .scenario { display:flex; gap:8px; }
-    .scenario .btn { background:#0f1426; }
-    .scenario .btn.active { background: var(--accent); border-color: transparent; }
-
-    .table-wrap { overflow:auto; border-radius: 12px; border:1px solid rgba(255,255,255,.08); }
-    table { border-collapse: separate; border-spacing:0; width:100%; min-width: 1200px; }
-    thead th { position: sticky; top:0; background:#0f1426; color: var(--muted); font-weight:600; font-size:12px; text-align:left; padding:10px; border-bottom:1px solid rgba(255,255,255,.1); z-index:2; }
-    tbody td { padding:10px; border-bottom:1px solid rgba(255,255,255,.06); font-size:13px; vertical-align: middle; }
-    tbody tr:hover td { background: rgba(255,255,255,.02); }
-
-    .num { text-align: right; font-variant-numeric: tabular-nums; }
-    .op-cell { white-space: nowrap; position: relative; }
-    .op-cell[data-p=""] { background-image: none; }
-
-    /* Dolgu: soldan sağa yumuşak dolum, okunurluğu bozmayacak opaklık */
-    .op-cell { 
-        background-image: linear-gradient(to right, rgba(var(--soft), .28) 0, rgba(var(--soft), .28) calc(var(--p,0)*1%), transparent calc(var(--p,0)*1%));
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        border-radius: 8px;
+    * {
+        box-sizing: border-box;
     }
-    .badge { font-size: 11px; color: var(--muted); }
 
-    .empty { color: #6b7280; font-style: italic; }
+    body {
+        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface-3) 100%);
+        color: var(--text-primary);
+        font-size: 14px;
+        line-height: 1.5;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+
+    .header {
+        background: var(--surface);
+        border-radius: var(--radius-xl);
+        padding: 32px;
+        box-shadow: var(--shadow-lg);
+        margin-bottom: 24px;
+        border: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    }
+
+    .header-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0 0 24px;
+        letter-spacing: -0.025em;
+    }
+
+    .filters-container {
+        background: var(--surface-2);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        border: 1px solid var(--border-light);
+    }
+
+    .filters-grid {
+        display: flex;
+        gap: 20px;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+    }
+
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface);
+        color: var(--text-primary);
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        padding-top: 8px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+        min-width: 120px;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-light);
+        border-color: var(--primary-light);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+        background: var(--surface);
+        color: var(--text-secondary);
+        border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+        background: var(--surface-2);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .content-panel {
+        background: var(--surface);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border);
+        overflow: hidden;
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .stats-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        background: var(--accent);
+        color: white;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .scenario-tabs {
+        display: flex;
+        background: var(--surface-3);
+        border-radius: var(--radius-lg);
+        padding: 4px;
+        gap: 4px;
+    }
+
+    .scenario-btn {
+        padding: 10px 16px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        white-space: nowrap;
+    }
+
+    .scenario-btn.active {
+        background: var(--surface);
+        color: var(--primary);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .scenario-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--text-primary);
+    }
+
+    .table-container {
+        overflow: auto;
+        max-height: calc(100vh - 50px);
+        background: var(--surface);
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 1400px;
+        font-size: 13px;
+    }
+
+    .table-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .table-header th {
+        background: var(--primary);
+        color: white;
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        border-bottom: 3px solid var(--accent);
+        position: relative;
+    }
+
+    .table-header th:first-child {
+        border-top-left-radius: 0;
+    }
+
+    .table-header th:last-child {
+        border-top-right-radius: 0;
+    }
+
+    .table-header th.num {
+        text-align: right;
+    }
+
+    .table-body tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .table-body tr:hover {
+        background: var(--surface-2);
+        transform: scale(1.002);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-body td {
+        padding: 16px 12px;
+        vertical-align: middle;
+        border-right: 1px solid var(--border-light);
+    }
+
+    .table-body td:last-child {
+        border-right: none;
+    }
+
+    .num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-weight: 500;
+    }
+
+    .op-cell {
+        position: relative;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        min-width: 120px;
+        background: linear-gradient(
+            to right,
+            rgba(49, 130, 206, 0.15) 0%,
+            rgba(49, 130, 206, 0.15) var(--p, 0%),
+            transparent var(--p, 0%)
+        );
+        transition: all 0.3s ease;
+    }
+
+    .op-cell:empty {
+        background: none;
+    }
+
+    .op-cell[data-p=""] {
+        background: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+        padding: 60px 20px;
+        font-size: 16px;
+    }
+
+    .footer-note {
+        padding: 16px 24px;
+        background: var(--surface-2);
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--text-muted);
+        text-align: center;
+    }
+
+    .footer-note strong {
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 16px;
+        }
+
+        .header {
+            padding: 24px 20px;
+        }
+
+        .header-title {
+            font-size: 24px;
+        }
+
+        .toolbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+        }
+
+        .scenario-tabs {
+            justify-content: center;
+        }
+
+        .scenario-btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        .table-container {
+            margin: 0 -24px;
+            border-radius: 0;
+        }
+    }
+
+    /* Loading Animation */
+    .loading {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /* Custom Scrollbar */
+    .table-container::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+        background: var(--surface-2);
+        border-radius: var(--radius-sm);
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: var(--radius-sm);
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-light);
+    }
+
+    /* Progress Bar Enhancement */
+    .op-cell {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .op-cell::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 3px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .op-cell:hover::after {
+        opacity: 1;
+    }
+
+    /* Enhanced Typography */
+    .data-table {
+        font-feature-settings: "tnum" 1;
+    }
+
+    /* Zebra striping for better readability */
+    .table-body tr:nth-child(even) {
+        background: rgba(248, 250, 252, 0.5);
+    }
+
+    .table-body tr:nth-child(even):hover {
+        background: var(--surface-2);
+    }
+
+    /* Better focus states */
+    .form-input:focus,
+    .btn:focus,
+    .scenario-btn:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    /* Animation for scenario changes */
+    .op-cell {
+        transition: background-image 0.4s ease, color 0.2s ease;
+    }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div class="container">
-    <div class="panel">
-        <h1 class="title">MPS Form Raporu</h1>
-        <form method="get" class="filters" autocomplete="off">
-            <div>
-                <label>Sipariş No</label>
-                <input type="text" name="sipno" value="<?= htmlspecialchars($sipno) ?>" placeholder="SIPNO">
-            </div>
-            <div>
-                <label>Müşteri Kodu</label>
-                <input type="text" name="musteri_kodu" value="<?= htmlspecialchars($musteri_kodu) ?>" placeholder="MUSTERIKODU">
-            </div>
-            <div>
-                <label>Mamul Stok Kodu</label>
-                <input type="text" name="mamul_kod" value="<?= htmlspecialchars($mamul_kod) ?>" placeholder="MAMULSTOKKODU">
-            </div>
-            <div>
-                <label>MPS No</label>
-                <input type="text" name="mps_no" value="<?= htmlspecialchars($mps_no) ?>" placeholder="EVRAKNO">
-            </div>
-            <div class="buttons">
-                <button class="btn" type="submit">Filtrele</button>
-                <a class="btn" href="?">Sıfırla</a>
-            </div>
-        </form>
+    <div class="header">
+        <h1 class="header-title">Üretim Gazetesi</h1>
+        
+        <div class="filters-container">
+            <form method="get" autocomplete="off">
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <a href="{{ route('index') }}" style="min-width:0;" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sipariş Numarası</label>
+                        <input type="text" name="sipno" class="form-input" value="<?= htmlspecialchars($sipno ?? '') ?>" placeholder="Sipariş numarasını girin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Müşteri Kodu</label>
+                        <input type="text" name="musteri_kodu" class="form-input" value="<?= htmlspecialchars($musteri_kodu ?? '') ?>" placeholder="Müşteri kodunu girin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mamul Stok Kodu</label>
+                        <input type="text" name="mamul_kod" class="form-input" value="<?= htmlspecialchars($mamul_kod ?? '') ?>" placeholder="Mamul stok kodunu girin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">MPS Numarası</label>
+                        <input type="text" name="mps_no" class="form-input" value="<?= htmlspecialchars($mps_no ?? '') ?>" placeholder="MPS numarasını girin">
+                    </div>
+                    <div class="form-group">
+                       <button type="submit" class="btn btn-primary">Filtrele</button>
+                    </div>
+                    <div class="form-group">
+                        <a href="?" class="btn btn-secondary">Sıfırla</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    <div class="content-panel">
         <div class="toolbar">
-            <div class="badge">Toplam kayıt: <?= number_format(count($groups), 0, ',', '.') ?></div>
-            <div class="scenario" id="scenarioButtons">
-                <button type="button" class="btn active" data-scn="sure">1) Süre</button>
-                <button type="button" class="btn" data-scn="miktar">2) Miktar</button>
-                <button type="button" class="btn" data-scn="pctMiktar">3) % Miktar</button>
-                <button type="button" class="btn" data-scn="pctSure">4) % Süre</button>
+            <div class="stats-badge">
+                Toplam Kayıt: <?= number_format(count($groups ?? []), 0, ',', '.') ?>
+            </div>
+            
+            <div class="scenario-tabs" id="scenarioButtons">
+                <button type="button" class="scenario-btn active" data-scn="sure"> Süre Analizi</button>
+                <button type="button" class="scenario-btn" data-scn="miktar"> Miktar Analizi</button>
+                <button type="button" class="scenario-btn" data-scn="pctMiktar"> % Miktar</button>
+                <button type="button" class="scenario-btn" data-scn="pctSure"> % Süre</button>
             </div>
         </div>
 
-        <div class="table-wrap">
-            <table id="rapor">
-                <thead>
+        <div class="table-container">
+            <table class="data-table" id="rapor">
+                <thead class="table-header">
                     <tr>
                         <th>Sipariş No</th>
                         <th>Müşteri Kodu</th>
@@ -302,70 +736,77 @@ usort($groups, function($a,$b){
                         <th>MPS No</th>
                         <th>Mamul Kod</th>
                         <th>Mamul Adı</th>
-                        <th>Termin</th>
+                        <th>Termin Tarihi</th>
                         <th class="num">Sipariş Miktarı</th>
                         <th class="num">Üretilen Miktar</th>
                         <th class="num">Sipariş Bakiyesi</th>
-                        <?php foreach ($ops as $op): ?>
-                            <th><?= htmlspecialchars($op) ?></th>
-                        <?php endforeach; ?>
+                        <?php if (isset($ops)): foreach ($ops as $op): ?>
+                            <th class="num"><?= htmlspecialchars($op) ?></th>
+                        <?php endforeach; endif; ?>
                     </tr>
                 </thead>
-                <tbody>
-<?php if (!$groups): ?>
-    <tr><td class="empty" colspan="<?= 10 + count($ops) ?>">Kayıt bulunamadı.</td></tr>
-<?php else: ?>
-<?php foreach ($groups as $ix => $g): 
-    $sip_miktar = $g['sip_miktar'];
-    $uretilen   = $g['uretilen_miktar'];
-    $bakiye     = $g['sip_bakiye'];
-?>
-    <tr>
-        <td><?= htmlspecialchars($g['sip_no']) ?></td>
-        <td><?= htmlspecialchars($g['musteri_kod']) ?></td>
-        <td><?= htmlspecialchars($g['musteri_ad']) ?></td>
-        <td><?= htmlspecialchars($g['mps_no']) ?></td>
-        <td><?= htmlspecialchars($g['mamul_kod']) ?></td>
-        <td><?= htmlspecialchars($g['mamul_ad']) ?></td>
-        <td><?= $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '' ?></td>
-        <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '' ?></td>
-        <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '' ?></td>
-        <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '' ?></td>
-        <?php foreach ($ops as $op): 
-            if (isset($g['ops'][$op])) {
-                $m = $g['ops'][$op];
-                $planS = isset($m['planSure']) ? (float)$m['planSure'] : null;
-                $actS  = isset($m['actSure'])  ? (float)$m['actSure'] : null;
-                $planQ = isset($m['planMik'])  ? (float)$m['planMik']  : null;
-                $actQ  = isset($m['actMik'])   ? (float)$m['actMik']   : null;
-                $pSure = (!is_null($planS) && $planS!=0 && !is_null($actS)) ? max(0, min(150, ($actS/$planS)*100)) : '';
-                $pMik  = (!is_null($g['sip_miktar']) && $g['sip_miktar']!=0 && !is_null($actQ)) ? max(0, min(150, ($actQ/$g['sip_miktar'])*100)) : '';
-                $display = '';
-                if ($planS !== null || $actS !== null) {
-                    $display = number_format((float)$planS, 2, ',', '.') . ' / ' . number_format((float)$actS, 2, ',', '.');
-                }
-                echo '<td class="op-cell"'
-                   . ' data-sure-plan="' . htmlspecialchars($planS ?? '') . '"'
-                   . ' data-sure-actual="' . htmlspecialchars($actS ?? '') . '"'
-                   . ' data-mik-plan="' . htmlspecialchars($planQ ?? '') . '"'
-                   . ' data-mik-actual="' . htmlspecialchars($actQ ?? '') . '"'
-                   . ' data-pct-sure="' . htmlspecialchars($pSure) . '"'
-                   . ' data-pct-mik="' . htmlspecialchars($pMik) . '"'
-                   . ' style="--p:' . htmlspecialchars($pSure) . ';"'
-                   . ' title="OP: ' . htmlspecialchars($op) . '"'
-                   . '>' . ($display ?: '') . '</td>';
-            } else {
-                echo '<td class="op-cell" data-pct-sure="" data-pct-mik="" data-sure-plan="" data-sure-actual="" data-mik-plan="" data-mik-actual=""></td>';
-            }
-        endforeach; ?>
-    </tr>
-<?php endforeach; ?>
-<?php endif; ?>
-</tbody>
+                <tbody class="table-body">
+                    <?php if (empty($groups ?? [])): ?>
+                        <tr>
+                            <td colspan="<?= 10 + count($ops ?? []) ?>" class="empty-state">
+                                🔍 Arama kriterlerinize uygun kayıt bulunamadı.<br>
+                                <small>Filtreleri genişletmeyi deneyin.</small>
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($groups as $ix => $g): 
+                            $sip_miktar = $g['sip_miktar'] ?? null;
+                            $uretilen   = $g['uretilen_miktar'] ?? null;
+                            $bakiye     = $g['sip_bakiye'] ?? null;
+                        ?>
+                            <tr>
+                                <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($g['musteri_ad'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($g['mps_no'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($g['mamul_kod'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($g['mamul_ad'] ?? '') ?></td>
+                                <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
+                                <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
+                                <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
+                                <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <?php if (isset($ops)): foreach ($ops as $op): 
+                                    if (isset($g['ops'][$op])) {
+                                        $m = $g['ops'][$op];
+                                        $planS = isset($m['planSure']) ? (float)$m['planSure'] : null;
+                                        $actS  = isset($m['actSure'])  ? (float)$m['actSure'] : null;
+                                        $planQ = isset($m['planMik'])  ? (float)$m['planMik']  : null;
+                                        $actQ  = isset($m['actMik'])   ? (float)$m['actMik']   : null;
+                                        $pSure = (!is_null($planS) && $planS!=0 && !is_null($actS)) ? max(0, min(150, ($actS/$planS)*100)) : '';
+                                        $pMik  = (!is_null($sip_miktar) && $sip_miktar!=0 && !is_null($actQ)) ? max(0, min(150, ($actQ/$sip_miktar)*100)) : '';
+                                        $display = '';
+                                        if ($planS !== null || $actS !== null) {
+                                            $display = number_format((float)($planS ?? 0), 2, ',', '.') . ' / ' . number_format((float)($actS ?? 0), 2, ',', '.');
+                                        }
+                                        echo '<td class="op-cell num"'
+                                           . ' data-sure-plan="' . htmlspecialchars($planS ?? '') . '"'
+                                           . ' data-sure-actual="' . htmlspecialchars($actS ?? '') . '"'
+                                           . ' data-mik-plan="' . htmlspecialchars($planQ ?? '') . '"'
+                                           . ' data-mik-actual="' . htmlspecialchars($actQ ?? '') . '"'
+                                           . ' data-pct-sure="' . htmlspecialchars($pSure) . '"'
+                                           . ' data-pct-mik="' . htmlspecialchars($pMik) . '"'
+                                           . ' style="--p:' . htmlspecialchars($pSure) . ';"'
+                                           . ' title="Operasyon: ' . htmlspecialchars($op) . '"'
+                                           . '>' . ($display ?: '—') . '</td>';
+                                    } else {
+                                        echo '<td class="op-cell num" data-pct-sure="" data-pct-mik="" data-sure-plan="" data-sure-actual="" data-mik-plan="" data-mik-actual="">—</td>';
+                                    }
+                                endforeach; endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
             </table>
         </div>
 
-        <p class="badge" style="margin-top:10px">İpucu: Başlıklardaki operasyonlar, mevcut sonuç kümesindeki <strong>benzersiz</strong> R_OPERASYON değerlerine göre oluşturulur.</p>
+        <div class="footer-note">
+            💡 <strong>Bilgi:</strong> Başlıktaki operasyonlar, mevcut sonuç kümesindeki benzersiz R_OPERASYON değerlerine göre dinamik olarak oluşturulur.
+        </div>
     </div>
 </div>
 
@@ -374,7 +815,7 @@ usort($groups, function($a,$b){
     const fmtNum  = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct0 = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-    const btns = document.querySelectorAll('#scenarioButtons .btn');
+    const btns = document.querySelectorAll('#scenarioButtons .scenario-btn');
     let current = 'sure';
 
     function setActive(scn) {
@@ -385,51 +826,107 @@ usort($groups, function($a,$b){
 
     function renderScenario(){
         const cells = document.querySelectorAll('td.op-cell');
-        cells.forEach(td => {
-            const planS = parseFloat(td.dataset.surePlan);
-            const actS  = parseFloat(td.dataset.sureActual);
-            const planQ = parseFloat(td.dataset.mikPlan);
-            const actQ  = parseFloat(td.dataset.mikActual);
-            const pctS  = (td.dataset.pctSure !== '') ? parseFloat(td.dataset.pctSure) : null;
-            const pctQ  = (td.dataset.pctMik  !== '') ? parseFloat(td.dataset.pctMik ) : null;
+        
+        // Add loading state
+        document.querySelector('.data-table').classList.add('loading');
+        
+        setTimeout(() => {
+            cells.forEach(td => {
+                const planS = parseFloat(td.dataset.surePlan);
+                const actS  = parseFloat(td.dataset.sureActual);
+                const planQ = parseFloat(td.dataset.mikPlan);
+                const actQ  = parseFloat(td.dataset.mikActual);
+                const pctS  = (td.dataset.pctSure !== '') ? parseFloat(td.dataset.pctSure) : null;
+                const pctQ  = (td.dataset.pctMik  !== '') ? parseFloat(td.dataset.pctMik ) : null;
 
-            let text = '';
-            let p = '';
+                let text = '';
+                let p = '';
 
-            if (current === 'sure') {
-                if (!isNaN(planS) || !isNaN(actS)) {
-                    text = (isNaN(planS)?'-':fmtNum.format(planS)) + ' / ' + (isNaN(actS)?'-':fmtNum.format(actS));
-                    if (!isNaN(planS) && planS !== 0 && !isNaN(actS)) {
-                        p = Math.max(0, Math.min(150, (actS/planS)*100));
+                if (current === 'sure') {
+                    if (!isNaN(planS) || !isNaN(actS)) {
+                        text = (isNaN(planS)?'—':fmtNum.format(planS)) + ' / ' + (isNaN(actS)?'—':fmtNum.format(actS));
+                        if (!isNaN(planS) && planS !== 0 && !isNaN(actS)) {
+                            p = Math.max(0, Math.min(150, (actS/planS)*100));
+                        }
+                    }
+                } else if (current === 'miktar') {
+                    if (!isNaN(planQ) || !isNaN(actQ)) {
+                        text = (isNaN(planQ)?'—':fmtNum.format(planQ)) + ' / ' + (isNaN(actQ)?'—':fmtNum.format(actQ));
+                        if (!isNaN(planQ) && planQ !== 0 && !isNaN(actQ)) {
+                            p = Math.max(0, Math.min(150, (actQ/planQ)*100));
+                        }
+                    }
+                } else if (current === 'pctMiktar') {
+                    if (pctQ !== null && !isNaN(pctQ)) {
+                        text = fmtPct0.format(pctQ) + '%';
+                        p = pctQ;
+                    }
+                } else if (current === 'pctSure') {
+                    if (pctS !== null && !isNaN(pctS)) {
+                        text = fmtPct0.format(pctS) + '%';
+                        p = pctS;
                     }
                 }
-            } else if (current === 'miktar') {
-                if (!isNaN(planQ) || !isNaN(actQ)) {
-                    text = (isNaN(planQ)?'-':fmtNum.format(planQ)) + ' / ' + (isNaN(actQ)?'-':fmtNum.format(actQ));
-                    if (!isNaN(planQ) && planQ !== 0 && !isNaN(actQ)) {
-                        p = Math.max(0, Math.min(150, (actQ/planQ)*100));
-                    }
-                }
-            } else if (current === 'pctMiktar') {
-                if (pctQ !== null && !isNaN(pctQ)) {
-                    text = fmtPct0.format(pctQ) + '%';
-                    p = pctQ;
-                }
-            } else if (current === 'pctSure') {
-                if (pctS !== null && !isNaN(pctS)) {
-                    text = fmtPct0.format(pctS) + '%';
-                    p = pctS;
-                }
-            }
 
-            if (p !== '') td.style.setProperty('--p', p);
-            else td.style.removeProperty('--p');
-            td.textContent = text;
-        });
+                if (p !== '') {
+                    td.style.setProperty('--p', p);
+                } else {
+                    td.style.removeProperty('--p');
+                }
+                
+                td.textContent = text || '—';
+            });
+            
+            // Remove loading state
+            document.querySelector('.data-table').classList.remove('loading');
+        }, 150);
     }
 
-    btns.forEach(b => b.addEventListener('click', () => setActive(b.dataset.scn)));
+    btns.forEach(b => b.addEventListener('click', (e) => {
+        e.preventDefault();
+        setActive(b.dataset.scn);
+    }));
+
+    // Initialize
     renderScenario();
+
+    // Add smooth scrolling for better UX
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Enhanced keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+                case '1':
+                    e.preventDefault();
+                    setActive('sure');
+                    break;
+                case '2':
+                    e.preventDefault();
+                    setActive('miktar');
+                    break;
+                case '3':
+                    e.preventDefault();
+                    setActive('pctMiktar');
+                    break;
+                case '4':
+                    e.preventDefault();
+                    setActive('pctSure');
+                    break;
+            }
+        }
+    });
 })();
 </script>
 </body>
