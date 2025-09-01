@@ -112,7 +112,7 @@ class stok63_controller extends Controller
         break;
 
       case 'kart_sil':
-FunctionHelpers::Logla('STOK63',$EVRAKNO,'D',$TARIH);
+        FunctionHelpers::Logla('STOK63',$EVRAKNO,'D',$TARIH);
 
         DB::table($firma.'stok63e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->delete();

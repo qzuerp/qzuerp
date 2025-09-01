@@ -400,6 +400,7 @@
 																		<th>Ölçü 2</th>
 																		<th>Ölçü 3</th>
 																		<th>Ölçü 4</th>
+																		<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
 																		<th>#</th>
 																	</tr>
 																	<tr class="satirEkle" style="background-color:#3c8dbc">
@@ -502,6 +503,9 @@
 																		<th><input type="number" class="form-control" name="NUM2_FILL" id="NUM2_FILL"></th>
 																		<th><input type="number" class="form-control" name="NUM3_FILL" id="NUM3_FILL"></th>
 																		<th><input type="number" class="form-control" name="NUM4_FILL" id="NUM4_FILL"></th>
+																		<th style="min-width: 150px;">
+																			<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
+																		</th>
 																		<th>#</th>
 																	</tr>
 																</thead>
@@ -557,10 +561,10 @@
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" readonly class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
 																		<td style="{{ $bgColor }}">
 																			<button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button>
 																		</td>
-
 																	</tr>
 																	@endforeach
 																</tbody>
@@ -2145,7 +2149,7 @@
 					htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td>";
 					htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td>";
 					htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td>";
-
+					
 					htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td> ";
 
 					htmlCode += " </tr> ";
@@ -2196,7 +2200,7 @@
 
 			        $sql_sorgu = "SELECT 
 								m10e.EVRAKNO, 
-								B01T.*, 
+								B01T.*,
 								(CASE WHEN B01T.SIRANO IS NULL THEN ' ' ELSE B01T.SIRANO END) AS R_SIRANO,
 								(CASE WHEN IM01.AD IS NULL THEN ' ' ELSE IM01.AD END) AS R_OPERASYON_IMLT01_AD,
 								(CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END) AS KAYNAK_AD,
@@ -2302,7 +2306,7 @@
 			        htmlCode += "<td><input type='text' class='form-control' name='NUM2[]' value='{{ $tableRow->NUM2 }}'></td>";
 			        htmlCode += "<td><input type='text' class='form-control' name='NUM3[]' value='{{ $tableRow->NUM3 }}'></td>";
 			        htmlCode += "<td><input type='text' class='form-control' name='NUM4[]' value='{{ $tableRow->NUM4 }}'></td>";
-			        
+			        htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='{{ $tableRow->BOMREC_YMAMULCODE }}'></td> ";
 			        htmlCode += "<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td>";
 			        
 			        htmlCode += "</tr>";

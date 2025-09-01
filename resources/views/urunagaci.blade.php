@@ -228,16 +228,17 @@
 																	<th>Ölçü 2</th>
 																	<th>Ölçü 3</th>
 																	<th>Ölçü 4</th>
+																	<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
 																	<th></th>
 																</tr>
-																<tr class="satirEkle" style="background-color:#3c8dbc">
-																	<th>
+																<tr class="satirEkle">
+																	<td>
 																		<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="number" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select  class="form-control select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
 																			<option value=" ">Seç</option>
 																			<option value="H">H - Hammadde</option>
@@ -245,8 +246,8 @@
 																			<option value="Y">Y - Yan Ürün</option>
 																		</select>
 																		<input type="hidden" class="form-control" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL" >
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<div class="d-flex ">
 																			<select class="form-control js-example-basic-single"  onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW">
 																				
@@ -257,11 +258,11 @@
 																			</span>
 																		</div>
 																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL" class="form-control">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="text" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select class="form-control select2 js-example-basic-single" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
 																			<option value=" ">Seç</option>
 																			@php
@@ -275,11 +276,11 @@
 																			@endphp
 																		</select>
 																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL" class="form-control">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="text" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
-																	</th>
-													                <th style="min-width: 150px;">
+																	</td>
+													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
 										                                    <input type="number" class="form-control" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
 										                                    <span class="d-flex -btn">
@@ -288,8 +289,8 @@
 										                                        </button>
 										                                    </span>
 										                                </div>
-										                            </th>
-																	<th>
+										                            </td>
+																	<td>
 																		<!-- <select class="form-control select2 js-example-basic-single" style="color: red" name="ACIKLAMA_FILL" id="ACIKLAMA_FILL">
 																			<option value=" ">Seç</option>
 																			<option>AD</option>
@@ -303,20 +304,20 @@
 																			<option>F</option>
 																		</select> -->
 																		<input type="text" class="form-control" readonly id="ACIKLAMA_FILL">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="0">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="0">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_1_FILL" id="KALIPKODU_1_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
@@ -329,8 +330,8 @@
 																			}
 																			@endphp
 																		</select>
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_2_FILL" id="KALIPKODU_2_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
@@ -343,8 +344,8 @@
 																			}
 																			@endphp
 																		</select>
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_3_FILL" id="KALIPKODU_3_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
@@ -357,8 +358,8 @@
 																			}
 																			@endphp
 																		</select>
-																	</th>
-																	<th>
+																	</td>
+																	<td>
 																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_4_FILL" id="KALIPKODU_4_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
@@ -371,32 +372,35 @@
 																			}
 																			@endphp
 																		</select>
-																	</th>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	</td>
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="number" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="number" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; background-color:#3c8dbc;">
+																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
 																	</td>
-																	<th>#</th>
+																	<td style="min-width: 150px; ">
+																		<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
+																	</td>
+																	<td>#</td>
 																</tr>
 															</thead>
 															<tbody>
@@ -439,6 +443,7 @@
 																		<td><input type="number" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
 
 																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 																	</tr>
@@ -1153,6 +1158,7 @@
         		htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				htmlCode += " </tr> ";
 

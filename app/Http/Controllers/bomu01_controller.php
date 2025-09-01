@@ -18,7 +18,7 @@ class bomu01_controller extends Controller
     return view('urunagaci')->with('sonID', $sonID);;
   }
 
-  public function kartGetir(Request $request)//açılır pencere ve listelere veri çekmek
+  public function kartGetir(Request $request)
   {
     $id = $request->input('id');
     $firma = $request->input('firma').'.dbo.';
@@ -208,6 +208,7 @@ class bomu01_controller extends Controller
     $NUM2 = $request->NUM2;
     $NUM3 = $request->NUM3;
     $NUM4 = $request->NUM4;
+    $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
 
     if ($BOMREC_KAYNAKCODE == null) {
       $satir_say = 0;
@@ -323,6 +324,7 @@ class bomu01_controller extends Controller
             'NUM2' => $NUM2[$i],
             'NUM3' => $NUM3[$i],
             'NUM4' => $NUM4[$i],
+            'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -336,7 +338,7 @@ class bomu01_controller extends Controller
         break;
 
       case 'kart_duzenle':
-FunctionHelpers::Logla('BOMU01',$EVRAKNO,'W');
+        FunctionHelpers::Logla('BOMU01',$EVRAKNO,'W');
 
         DB::table(trim($firma).'.dbo.'.'bomu01e')->where('EVRAKNO',$EVRAKNO)->update([
           'MAMULCODE' => $MAMULCODE,
@@ -406,6 +408,7 @@ FunctionHelpers::Logla('BOMU01',$EVRAKNO,'W');
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -442,6 +445,7 @@ FunctionHelpers::Logla('BOMU01',$EVRAKNO,'W');
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
               // 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 

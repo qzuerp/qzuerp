@@ -186,7 +186,7 @@ FunctionHelpers::Logla('STOK68',$EVRAKNO,'D',$TARIH);
             'AMBLJ_TNM' => $AMBLJ_TNM[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'AMBCODE' => $AMBCODE_SEC,
-            'SIPARTNO' => $SIPARTNO[$i],
+            // 'SIPARTNO' => $SIPARTNO[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],

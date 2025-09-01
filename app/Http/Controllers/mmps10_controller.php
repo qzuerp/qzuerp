@@ -323,6 +323,7 @@ class mmps10_controller extends Controller
     $NUM2 = $request->NUM2;
     $NUM3 = $request->NUM3;
     $NUM4 = $request->NUM4;
+    $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
 
     $satir_say = 0;
 
@@ -479,6 +480,7 @@ class mmps10_controller extends Controller
             'NUM2' => $TEXT2[$i],
             'NUM3' => $TEXT3[$i],
             'NUM4' => $TEXT4[$i],
+            'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -607,6 +609,7 @@ class mmps10_controller extends Controller
                 'NUM2' => $TEXT2[$i],
                 'NUM3' => $TEXT3[$i],
                 'NUM4' => $TEXT4[$i],
+                'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
                 'created_at' => date('Y-m-d H:i:s'),
               ]);
             }
@@ -651,6 +654,7 @@ class mmps10_controller extends Controller
               'NUM2' => $TEXT2[$i],
               'NUM3' => $TEXT3[$i],
               'NUM4' => $TEXT4[$i],
+              'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
