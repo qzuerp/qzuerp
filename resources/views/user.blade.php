@@ -474,6 +474,12 @@
                                     <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="URETIM_GAZETESI" @php if(in_array('URETIM_GAZETESI', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="URETIM_GAZETESI" @php if(in_array('URETIM_GAZETESI', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
+                                  <tr>
+                                    <td>Satış Sipariş fiyatlar</td>
+                                    <td><input type="checkbox" class="yetki_read"   id="DYS_read" name="yetki_read[]" value="SSF" @php if(in_array('SSF', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="SSF" @php if(in_array('SSF', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="SSF" @php if(in_array('SSF', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
+                                  </tr>
                                 </tbody>
                               </table>
 

@@ -176,7 +176,7 @@
             <div  class="nav-tabs-custom box box-info">
               <ul class="nav nav-tabs">
                 <li class="nav-item" ><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Satış Sipariş</a></li>
-                <li class="nav-item" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
+                <li class="nav-item {{ in_array('SSF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
                 <li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
               </ul>
@@ -370,7 +370,7 @@
                   </div>
                 </div>
                   
-                <div class="tab-pane" id="fiyatlar">
+                <div class="tab-pane " id="fiyatlar">
                   <table class="table table-bordered text-center" id="fiyatlar_table" style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
                     <thead>
                       <tr>
