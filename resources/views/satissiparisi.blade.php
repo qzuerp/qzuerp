@@ -218,6 +218,7 @@
                           <th>Ölçü 2</th>
                           <th>Ölçü 3</th>
                           <th>Ölçü 4</th>
+                          <th style="min-width:100px;">MPS NO</th>
                           <!-- <th>#</th> -->
                         </tr>
 
@@ -319,7 +320,9 @@
                         
                         @foreach ($t_kart_veri as $key => $t_veri)
                         <tr>
-                          
+                            @php
+                              $MPS_BILGISI = DB::table('mmps10e')->where('SIPARTNO', $t_veri->ARTNO)->value('EVRAKNO');
+                            @endphp
                             <!-- <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
                             <td>
                               @include('components.detayBtn', ['KOD' => $t_veri->KOD])
@@ -361,6 +364,7 @@
                             <td><input type="number" class="form-control" name="NUM2[]" value="{{ floor($t_veri->NUM2) }}"></td>
                             <td><input type="number" class="form-control" name="NUM3[]" value="{{ floor($t_veri->NUM3) }}"></td>
                             <td><input type="number" class="form-control" name="NUM4[]" value="{{ floor($t_veri->NUM4) }}"></td>
+                            <td><input type="text" class="form-control" name="" disabled value="{{ $MPS_BILGISI }}"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach

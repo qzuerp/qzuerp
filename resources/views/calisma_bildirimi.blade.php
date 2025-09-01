@@ -512,9 +512,9 @@
                                   @foreach($surecB as $val)
                                     @php
                                       if($val->ISLEM_TURU == 'A')
-                                        $AYAR += $val->SURE;
+                                        $AYAR += (float)$val->SURE;
                                       else if($val->ISLEM_TURU == 'U')
-                                        $URETIM += $val->SURE;
+                                        $URETIM += (float)$val->SURE;
                                     @endphp
                                     <tr class="text-center">
                                       <td>
@@ -546,7 +546,7 @@
                                     </tr>
                                   @endforeach
                                   @php
-                                    $TOPLAM_SURE = $AYAR + $URETIM;
+                                    $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
                                     $MPS = DB::table($database.'mmps10t')->where('JOBNO',@$kart_veri->JOBNO)->first();
 
                                     @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
@@ -2285,7 +2285,7 @@
 
         // Yeni hedef değer belirlemek için
         function getNewTarget() {
-          const offset = (Math.random() - 0.5) * 5 * animationRange;
+          const offset = (Math.random() - 0.5) * 15 * animationRange;
           let newTarget = baseValue + offset;
           if (newTarget < 0) newTarget = 0;
           if (newTarget > 150) newTarget = 150;

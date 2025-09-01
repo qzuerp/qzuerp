@@ -1054,7 +1054,7 @@ class stok20_controller extends Controller
               S002.IUNIT AS TI_SF_SF_UNIT,
               ISNULL((
                   SELECT SUM(SF_MIKTAR) 
-                  FROM stok10a 
+                  FROM ".$firma."stok10a 
                   WHERE KOD = B01T.BOMREC_KAYNAKCODE
               ), 0) AS MEVCUT_STOK
           FROM STOK20T S20T
