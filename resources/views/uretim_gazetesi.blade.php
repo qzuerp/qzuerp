@@ -671,6 +671,12 @@ usort($groups, function($a,$b){
     .op-cell {
         transition: background-image 0.4s ease, color 0.2s ease;
     }
+    td {
+        max-height: 40px !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -759,7 +765,7 @@ usort($groups, function($a,$b){
                             $uretilen   = $g['uretilen_miktar'] ?? null;
                             $bakiye     = $g['sip_bakiye'] ?? null;
                         ?>
-                            <tr>
+                            <tr style="max-height:100px;">
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_ad'] ?? '') ?></td>
