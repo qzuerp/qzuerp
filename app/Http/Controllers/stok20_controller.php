@@ -1057,7 +1057,7 @@ class stok20_controller extends Controller
                   FROM ".$firma."stok10a 
                   WHERE KOD = B01T.BOMREC_KAYNAKCODE
               ), 0) AS MEVCUT_STOK
-          FROM STOK20T S20T
+          FROM ".$firma."STOK20T S20T
           LEFT JOIN ".$firma."STOK20E S20E ON S20E.EVRAKNO = S20T.EVRAKNO
           LEFT JOIN ".$firma."BOMU01E B01E ON B01E.MAMULCODE = S20T.KOD
           LEFT JOIN ".$firma."BOMU01T B01T ON B01T.EVRAKNO = B01E.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H','Y')
