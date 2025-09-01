@@ -204,7 +204,7 @@ usort($groups, function($a,$b){
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MPS Form Raporu (Pivot + Senaryo)</title>
+<title>Üretim Gazetesi</title>
 <style>
     :root {
         --primary: #1a365d;
@@ -768,10 +768,10 @@ usort($groups, function($a,$b){
                             <tr style="max-height:100px;">
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($g['musteri_ad'] ?? '') ?></td>
+                                <td><?= substr(htmlspecialchars($g['musteri_ad'] ?? ''),0,20) ?></td>
                                 <td><?= htmlspecialchars($g['mps_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['mamul_kod'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($g['mamul_ad'] ?? '') ?></td>
+                                <td><?= substr(htmlspecialchars($g['mamul_ad'] ?? ''),0,20) ?></td>
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
