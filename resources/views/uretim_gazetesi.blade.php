@@ -458,6 +458,7 @@ usort($groups, function($a,$b){
         border-spacing: 0;
         min-width: 1400px;
         font-size: 13px;
+        transition:0.3s;
     }
 
     .table-header {
@@ -599,7 +600,7 @@ usort($groups, function($a,$b){
 
     /* Loading Animation */
     .loading {
-        opacity: 0.5;
+        opacity: 0.4;
         pointer-events: none;
     }
 
@@ -768,10 +769,23 @@ usort($groups, function($a,$b){
                             <tr style="max-height:100px;">
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
-                                <td><?= mb_substr(htmlspecialchars($g['musteri_ad'] ?? ''),0,21,'UTF-8') ?></td>
+                                <td>
+                                    <?= 
+                                        mb_strlen($g['musteri_ad'] ?? '', 'UTF-8') > 21 
+                                        ? mb_substr(htmlspecialchars($g['musteri_ad'] ?? ''), 0, 21, 'UTF-8') . '...' 
+                                        : htmlspecialchars($g['musteri_ad'] ?? '') 
+                                    ?>
+                                </td>
+
                                 <td><?= htmlspecialchars($g['mps_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['mamul_kod'] ?? '') ?></td>
-                                <td><?= mb_substr(htmlspecialchars($g['mamul_ad'] ?? ''),0,21,'UTF-8') ?></td>
+                                <td>
+                                    <?= 
+                                        mb_strlen($g['mamul_ad'] ?? '', 'UTF-8') > 21 
+                                        ? mb_substr(htmlspecialchars($g['mamul_ad'] ?? ''), 0, 21, 'UTF-8') . '...' 
+                                        : htmlspecialchars($g['mamul_ad'] ?? '') 
+                                    ?>
+                                </td>
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
