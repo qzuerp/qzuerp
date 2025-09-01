@@ -6,7 +6,7 @@
   $firma = trim($kullanici_veri->firma);
   $database = $firma . ".dbo.";
   $dosyaTuruKodlari = DB::table($database.'gecoust')->where('EVRAKNO','DOSYATURLERI')->get();
-  $dosyaEvrakNo = $kart_veri->KOD ?? $kart_veri->EVRAKNO ?? $kullanici_veri->id;
+  $dosyaEvrakNo = $kart_veri->EVRAKNO ?? $kart_veri->KOD ?? $kullanici_veri->id;
   $dosyalarVeri = DB::table($database.'dosyalar00')->where('EVRAKNO', $dosyaEvrakNo)->where('EVRAKTYPE', $ekranRumuz)->get();
 @endphp
 

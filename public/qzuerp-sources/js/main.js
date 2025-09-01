@@ -503,6 +503,7 @@ function inputTemizle2() {
   
 
   $('#veriTable tbody').empty();
+  $('#baglantiliDokumanlarTable tbody').empty();
 
   $('.nav-tabs-custom input[type="text"]').val('');
   $('.nav-tabs-custom input[type="number"]').val('');
