@@ -1023,8 +1023,8 @@
 						let saat2 = oran2 / 60;
 						let saat3 = oran3 / 60;
 						document.getElementById('BOMREC_KAYNAK0_FILL').value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK01_FILL').value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK02_FILL').value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01_FILL').value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02_FILL').value = saat3.toFixed(2);
 					}
 					else if(unit == 'second')
 					{
@@ -1032,8 +1032,8 @@
 						let saat2 = oran2 / 3600;
 						let saat3 = oran3 / 3600;
 						document.getElementById('BOMREC_KAYNAK0_FILL').value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK01_FILL').value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK02_FILL').value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01_FILL').value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02_FILL').value = saat3.toFixed(2);
 					}
 				}
 		        $('#dimensionsModal').modal('hide');
