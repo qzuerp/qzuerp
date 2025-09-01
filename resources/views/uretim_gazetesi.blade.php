@@ -768,10 +768,10 @@ usort($groups, function($a,$b){
                             <tr style="max-height:100px;">
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
-                                <td><?= substr(htmlspecialchars($g['musteri_ad'] ?? ''),0,21) ?></td>
+                                <td><?= substr(htmlspecialchars($g['musteri_ad'] ?? ''),0,21,'UTF-8') ?></td>
                                 <td><?= htmlspecialchars($g['mps_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['mamul_kod'] ?? '') ?></td>
-                                <td><?= substr(htmlspecialchars($g['mamul_ad'] ?? ''),0,21) ?></td>
+                                <td><?= substr(htmlspecialchars($g['mamul_ad'] ?? ''),0,21,'UTF-8') ?></td>
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
