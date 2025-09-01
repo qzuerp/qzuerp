@@ -277,7 +277,18 @@
                             <div class="col-md-2 col-sm-4 col-xs-6">
                               <label>Üretim Miktarı</label>
                               <input type="hidden" class="form-control input-sm" maxlength="50" name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}" >
-                              <input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="SF_MIKTAR" id="SF_MIKTAR"  value="{{ @$kart_veri->SF_MIKTAR }}" >
+                              <div class="d-flex gap-1">
+                                  <input type="text" class="form-control input-sm" style="color:red" maxlength="50" 
+                                        name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}">
+
+                                  @php
+                                      $MPS = DB::table($database.'mmps10t')->where('JOBNO', @$kart_veri->JOBNO)->first();
+                                  @endphp
+
+                                  <input type="text" disabled class="form-control input-sm" style="color:red" maxlength="50" 
+                                        value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
+                              </div>
+
                             </div>
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
@@ -286,12 +297,6 @@
                             </div>
 
                           </div>
-                        </div>
-                        <div class="d-flex mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
-                          <div id="chart" style="height: 270px;"></div>
-                          <div id="chart1" style="height: 270px;"></div>
-                          <div id="chart2" style="height: 270px;"></div>
-                          <div id="chart3" style="height: 270px;"></div>
                         </div>
                       </div>
                     </div>
@@ -464,6 +469,12 @@
                               </div>
                             </div>
 
+                            <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
+                              <div id="chart" style="height: 270px;"></div>
+                              <div id="chart1" style="height: 270px;"></div>
+                              <div id="chart2" style="height: 270px;"></div>
+                              <div id="chart3" style="height: 270px;"></div>
+                            </div>
                             <!-- Tools Section -->
                             <div class="tools-section">
                               <div class="row align-items-end">
@@ -547,7 +558,6 @@
                                   @endforeach
                                   @php
                                     $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
-                                    $MPS = DB::table($database.'mmps10t')->where('JOBNO',@$kart_veri->JOBNO)->first();
 
                                     @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
                                     @$URETIM_VERIMLILIK = ($URETIM > 0) ? ($MPS->R_MIKTAR0 / $URETIM) * 100 : 0;
