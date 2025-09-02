@@ -95,7 +95,7 @@
 								</div>
 
 								<div class="border rounded p-3 mb-4 position-relative">
-									<div class="d-flex justify-content-between align-items-center mb-3">
+									<div class="d-flex justify-content-between align-items-center mb-3-sonra-sil">
 										<h6 class="text-muted mb-0">Şablon Kriterleri</h6>
 										<button type="button" id="sablonGetirBtn" class="btn border border-secondary btn-outline-secondary">
 											<i class="fa fa-filter me-1"></i> Süz
@@ -143,7 +143,7 @@
 
 
 								<div class="border rounded p-3 mb-4">
-									<h6 class="text-muted mb-3">Ürün ve İşlem Bilgileri</h6>
+									<h6 class="text-muted mb-3-sonra-sil">Ürün ve İşlem Bilgileri</h6>
 									<div class="row g-3">
 										<div class="col-md-4">
 											<label>Lot No</label>

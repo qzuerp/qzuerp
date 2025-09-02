@@ -547,12 +547,31 @@ if (isset($kart_veri)) {
                     @endif
                 </div>
                 <div class="tab-pane" id="fasonSuz">
-                  <div class="input-group mb-3 w-25" >
+                  <div class="input-group mb-3-sonra-sil w-25" >
                     <button class="input-group-text" type="button">Seçilenleri Ekle</button>
+                    @php
+                     $sql = "select T2.*,S00.AD,S01.SF_MIKTAR,S00.IUNIT,S01.SERINO,S01.LOTNUMBER,S01.VRI_VR_R1,S01.VRI_VR_R2,S01.VRI_VR_R3,S01.AMBCODE,S01.LOCATION1,S01.LOCATION2,S01.LOCATION3,S01.LOCATION4 FROM (SELECT T1.EVRAKNO AS MPSNO,
+                              (CASE WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN  M10.R_YMAMULKODU ELSE 
+                              (SELECT R_KAYNAKKODU FROM MMPS10T WHERE EVRAKNO = T1.EVRAKNO AND R_SIRANO = T1.ONCEKI_OPERASYON AND R_KAYNAKTYPE = 'H' AND ROWNUM = 1 ) END) AS HAMMADDE
+                              FROM
+                              (select M10T.EVRAKNO,M10T.R_MAMULKODU,(SELECT MAX(R_SIRANO) FROM MMPS10T WHERE EVRAKNO = M10T.EVRAKNO AND R_SIRANO < M10T.R_SIRANO AND R_KAYNAKTYPE = 'I') ONCEKI_OPERASYON from mmps10t m10t
+                              WHERE R_ACIK_KAPALI = ' '
+                              AND R_KAYNAKTYPE = 'I'
+                              AND R_KAYNAKKODU LIKE 'F%')T1
+                              LEFT JOIN MMPS10T M10 ON M10.EVRAKNO = T1.EVRAKNO AND M10.R_SIRANO = T1.ONCEKI_OPERASYON)T2
+                              LEFT JOIN VIW_STOK01 S01 ON S01.KOD = T2.HAMMADDE 
+                              LEFT JOIN STOK00 S00 ON S00.KOD = T2.HAMMADDE";
+
+                      $res = DB::select($sql);
+                      dd($res);
+                    @endphp
                     <select name="" class="form-select" id="fasonlar">
                       <option value="">Seç</option>
+                      @foreach ($res as $veri)
+                      
+                      @endforeach
                     </select>
-                    <button class="input-group-text">Süz</button>
+                    <button type="button" class="input-group-text">Süz</button>
                   </div>
 
                   <div style="overflow:auto;">

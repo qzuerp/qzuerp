@@ -13,7 +13,7 @@
 
         @foreach($tumAlanlar as $tablo => $alanlar)
             <h5>{{ $tablo }} Tablosundaki Alanlar</h5>
-            <div class="row mb-3">
+            <div class="row mb-3-sonra-sil">
                 @foreach($alanlar as $alan)
                     <div class="col-md-3">
                         <div class="form-check">

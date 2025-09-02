@@ -40,7 +40,7 @@ class stok68_controller extends Controller
     $islem_turu = $request->kart_islemleri;
     $firma = $request->input('firma').'.dbo.';
     $EVRAKNO = $request->input('EVRAKNO_E');
-    $TARIH = $request->input('TARIH_E');
+    $TARIH = $request->input('TARIH');
     $YANMAMULAMBCODE = $request->input('YANMAMULAMBCODE_E');
     $AMBCODE = $request->input('AMBCODE_E'); //TARGET
     $IMALATAMBCODE = $request->input('IMALATAMBCODE_E');
@@ -114,7 +114,7 @@ class stok68_controller extends Controller
         break;
 
       case 'kart_sil':
-FunctionHelpers::Logla('STOK68',$EVRAKNO,'D',$TARIH);
+        FunctionHelpers::Logla('STOK68',$EVRAKNO,'D',$TARIH);
 
         DB::table($firma.'stok68e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -275,7 +275,7 @@ FunctionHelpers::Logla('STOK68',$EVRAKNO,'D',$TARIH);
         break;
 
       case 'kart_duzenle':
-FunctionHelpers::Logla('STOK68',$EVRAKNO,'W',$TARIH);
+        FunctionHelpers::Logla('STOK68',$EVRAKNO,'W',$TARIH);
 
         DB::table($firma.'stok68e')->where('EVRAKNO',$EVRAKNO)->update([
           'TARIH' => $TARIH,

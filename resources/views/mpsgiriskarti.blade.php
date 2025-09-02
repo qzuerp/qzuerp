@@ -374,6 +374,7 @@
 																<thead>
 																	<tr>
 																		<th>#</th>
+																		<th style="min-width:100px !important;">A/K</th>
 																		<th>Sıra No</th>
 																		<th>KT</th>
 																		<th>Hammadde/Tezgah Kodu</th>
@@ -406,6 +407,16 @@
 																	<tr class="satirEkle" style="background-color:#3c8dbc">
 																		<th>
 																			<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+																		</th>
+																		<th style="min-width:0px !important; width:50px;">
+																			<select class="form-select" style="font-size: 0.7rem !important;" id="R_ACIK_KAPALI_FILL">
+																				<option value="">
+																					Açık
+																				</option>
+																				<option value="K">
+																					Kapalı
+																				</option>
+																			</select>
 																		</th>
 																		<th>
 																			<input type="text" class="form-control" style="color: red" name="R_SIRANO_FILL" id="R_SIRANO_FILL" >
@@ -520,6 +531,18 @@
 
 																		<td style="{{ $bgColor }}"><input type='checkbox' name='record'></td>
 																		<td style="{{ $bgColor }} display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+																		
+																		<td style="{{ $bgColor }}">
+																			<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
+																				<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
+																					Açık
+																				</option>
+																				<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
+																					Kapalı
+																				</option>
+																			</select>
+																		</td>
+
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="R_SIRANO[]" value="{{ $veri->R_SIRANO }}"></td>
 																		<td style="{{ $bgColor }}">
 																			<input type="text" class="form-control" name="R_KAYNAKTYPE_SHOW_T" value="{{ $veri->R_KAYNAKTYPE }}" disabled>
@@ -796,7 +819,7 @@
 													</div>
 													<div class="card shadow-sm p-4 mb-4">
 														<div class="verimlilik-mini" style="width: 100%;">
-															<div class="d-flex justify-content-between align-items-center mb-3">
+															<div class="d-flex justify-content-between align-items-center mb-3-sonra-sil">
 																<div class="w-100">
 																	<label for="operver" class="form-label fw-bold text-primary small mb-1">Operasyon Seç</label>
 																	<select class="select2 form-select form-select-sm" id="operver">
@@ -2093,6 +2116,14 @@
 						cache: true
 					}
 				});
+				$('#verilerForm').on('submit', function() {
+					$(this).find('.check').each(function() {
+						if ($(this).is(':checked')) {
+							$(this).prev('.hidden').remove();
+						}
+					});
+				});
+
 				$("#addRow").on('click', function() 
 				{
 					//"disabled" komutu tablonun frontendinde olmadığı için burada da olmamalı.
@@ -2107,6 +2138,14 @@
 					htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
 
 					htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+
+					htmlCode += "<td>" +
+						"<select class='form-select' style='font-size: 0.7rem !important;' name='R_ACIK_KAPALI[]'>" +
+							"<option value='' " + (satirEkleInputs.R_ACIK_KAPALI_FILL === 'K' ? '' : 'selected') + ">Açık</option>" +
+							"<option value='K' " + (satirEkleInputs.R_ACIK_KAPALI_FILL === 'K' ? 'selected' : '') + ">Kapalı</option>" +
+						"</select>" +
+					"</td>";
+
 
 					htmlCode += " <td><input type='text' class='form-control' name='R_SIRANO' value='"+satirEkleInputs.R_SIRANO_FILL+"' disabled><input type='hidden' class='form-control' name='R_SIRANO[]' value='"+satirEkleInputs.R_SIRANO_FILL+"'></td> ";
 
@@ -2149,6 +2188,7 @@
 					htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td>";
 					htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td>";
 					htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td>";
+			        htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"'></td> ";
 					
 					htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td> ";
 
@@ -2257,6 +2297,13 @@
 			        htmlCode += "<tr>";
 			        htmlCode += "<td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td>";
 			        htmlCode += "<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td>";
+					
+					htmlCode += "<td>" +
+						"<select class='form-select' style='font-size: 0.7rem !important;' name='R_ACIK_KAPALI[]'>" +
+							"<option value='' selected>Açık</option>" +
+							"<option value='K'>Kapalı</option>" +
+						"</select>" +
+					"</td>";
 			       
 			        htmlCode += "<td><input type='text' class='form-control' name='R_SIRANO[]' value='{{ $tableRow->R_SIRANO }}'></td>";
 			        

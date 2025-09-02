@@ -373,9 +373,18 @@ class calisma_bildirimi_controller extends Controller {
         if($JOBNO != NULL)
         {
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');
-          DB::update("UPDATE {$firma} mmps10t 
+          if($MIKTAR == $request->TAMAMLANAN_MIK)
+          {
+            DB::update("UPDATE {$firma} mmps10t 
+              SET R_TMYMAMULMIKTAR =  ?,R_ACIK_KAPALI = ?
+              WHERE JOBNO = ?", [$MIKTAR, 'K', $JOBNO]);
+          }
+          else
+          {
+            DB::update("UPDATE {$firma} mmps10t 
               SET R_TMYMAMULMIKTAR =  ? 
               WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+          }
         }
 
         $sonID=DB::table($firma.'sfdc31e')->max('ID');
@@ -514,12 +523,20 @@ class calisma_bildirimi_controller extends Controller {
         
         if($JOBNO != NULL)
         {
-          // dd($JOBNO);
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');
-          // dd($MIKTAR);
-          DB::update("UPDATE {$firma} mmps10t 
-                      SET R_TMYMAMULMIKTAR = ? 
-                      WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+          // dd($MIKTAR == $request->TAMAMLANAN_MIK);
+          if($MIKTAR == $request->TAMAMLANAN_MIK)
+          {
+            DB::update("UPDATE {$firma} mmps10t 
+              SET R_TMYMAMULMIKTAR =  ?,R_ACIK_KAPALI = ?
+              WHERE JOBNO = ?", [$MIKTAR, 'K', $JOBNO]);
+          }
+          else
+          {
+            DB::update("UPDATE {$firma} mmps10t 
+              SET R_TMYMAMULMIKTAR =  ? 
+              WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+          }
         }
 
         $veri=DB::table($firma.'sfdc31e')->where('ID',$ID)->first();

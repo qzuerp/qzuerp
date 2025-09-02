@@ -56,7 +56,7 @@
             <div class="box-body">
                 
                 @if(in_array($ekran, $kullanici_write_yetkileri))
-                    <div class="row mb-3">
+                    <div class="row mb-3-sonra-sil">
                         <div class="col-12 justify-content-end d-flex gap-3">
                             <button type="submit" form="etiketForm" name="kart_islem" value="kart_duzenle" class="btn btn-primary btn-block"><i class="fas fa-save"></i> Kaydet</button>
                             <button type="submit" form="etiketForm" name="kart_islem" value="yazdir" class="btn btn-success btn-block" id="smbButton"><i class="fas fa-print"></i> Yazdır</button>

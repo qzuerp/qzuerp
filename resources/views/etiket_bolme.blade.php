@@ -208,7 +208,7 @@
                   <div class="active tab-pane" id="veriTab">
 
                     <div class="row">
-                      <div class="col-4 mb-3 d-flex gap-3">
+                      <div class="col-4 mb-3-sonra-sil d-flex gap-3">
                           <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
                         <button type="button" class="btn btn-default delete-row" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
                       </div>
@@ -713,7 +713,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-6 mb-3">
+                <div class="col-6 mb-3-sonra-sil">
                   <label for="islemKodu">Barkod</label>
                   <div class="input-group" style="flex-wrap: nowrap;">
                     <input type="text" aria-describedby="basic-addon2" class="form-control" id="barcode-result" style="background-color:rgb(218, 236, 255);">
@@ -725,27 +725,27 @@
                   <label for="islem_miktari">İşlem Miktarı</label>
                   <input type="number" class="form-control" id="islem_miktari">
                 </div>
-                <div class="col-6 mb-3">
+                <div class="col-6 mb-3-sonra-sil">
                   <label for="stok_kodu">Stok Kod</label>
                   <input type="text" class="form-control" id="stok_kodu" readonly>
                 </div>
-                <div class="col-6 mb-3">
+                <div class="col-6 mb-3-sonra-sil">
                   <label for="stok_adi">Stok Adı</label>
                   <input type="text" class="form-control" id="stok_adi" readonly>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-3 mb-3-sonra-sil">
                   <label for="stok_adi">Lokasyon 1</label>
                   <input type="text" class="form-control" id="lok-1" readonly>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-3 mb-3-sonra-sil">
                   <label for="stok_adi">Lokasyon 2</label>
                   <input type="text" class="form-control" id="lok-2" readonly>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-3 mb-3-sonra-sil">
                   <label for="stok_adi">Lokasyon 3</label>
                   <input type="text" class="form-control" id="lok-3" readonly>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-3 mb-3-sonra-sil">
                   <label for="stok_adi">Lokasyon 4</label>
                   <input type="text" class="form-control" id="lok-4" readonly>
                 </div>

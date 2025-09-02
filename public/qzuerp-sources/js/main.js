@@ -406,6 +406,7 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
  function emptyInputs(className) {
     $("."+className+" input").val("");
     $("."+className+" select").val(" ").change();
+    $("."+className+" checkbox").prop('checked', false);
  }
 
 
@@ -511,10 +512,11 @@ function inputTemizle2() {
 
 
   $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden, :checkbox')
+  .not(':button, :submit, :reset, :hidden')
   .val('')
   .prop('checked', false)
   .prop('selected', false);
+
 
   $('#AP10').prop('checked', false);
 
@@ -530,6 +532,7 @@ function inputTemizle2() {
 
   const formattedDate = `${year}-${month}-${day}`;
   $('#TARIH').val(formattedDate);
+  $('#TARIH_E').val(formattedDate);
 }
 
 function inputTemizle3() {

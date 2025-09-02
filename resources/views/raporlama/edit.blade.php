@@ -6,7 +6,7 @@
 
     <form method="POST" action="{{ route('raporlama.template.update', $template->id) }}">
         @csrf
-        <div class="mb-3">
+        <div class="mb-3-sonra-sil">
             <label for="name" class="form-label">Şablon Adı</label>
             <input type="text" name="name" class="form-control" value="{{ $template->name }}" required>
         </div>

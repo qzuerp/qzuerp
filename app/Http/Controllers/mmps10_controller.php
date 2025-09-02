@@ -291,7 +291,7 @@ class mmps10_controller extends Controller
     $MUSTERIKODU = $request->input('MUSTERIKODU');
     $SIPNO = $request->input('SIPNO');
     $SIPARTNO = $request->input('SIPARTNO');
-    $R_ACIK_KAPALI = $request->input('R_ACIK_KAPALI');
+    $R_ACIK_KAPALI = $request->R_ACIK_KAPALI;
     $R_SIRANO = $request->input('R_SIRANO', []);
     $R_KAYNAKTYPE = $request->R_KAYNAKTYPE;
     $R_KAYNAKKODU = $request->R_KAYNAKKODU;
@@ -451,7 +451,7 @@ class mmps10_controller extends Controller
             'SRNUM' => $SRNUM,
              'TRNUM' => $TRNUM[$i],
              'JOBNO' => $JOBNO,
-            //'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
+            'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
              'R_SIRANO' => $R_SIRANO[$i],
             'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
             'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
@@ -475,7 +475,6 @@ class mmps10_controller extends Controller
             'TEXT2' => $TEXT2[$i],
             'TEXT3' => $TEXT3[$i],
             'TEXT4' => $TEXT4[$i],
-
             'NUM1' => $TEXT1[$i],
             'NUM2' => $TEXT2[$i],
             'NUM3' => $TEXT3[$i],
@@ -575,12 +574,12 @@ class mmps10_controller extends Controller
           $JOBNO = $EVRAKNO . $TRNUM[$i];
             if (in_array($TRNUM[$i], $newTRNUMS)) {
               DB::table($firma.'mmps10t')->insert([
-              //  'firma' => $firma,
+                //'firma' => $firma,
                 'EVRAKNO' => $EVRAKNO,
                 'SRNUM' => $SRNUM,
                 'TRNUM' => $TRNUM[$i],
                 'JOBNO' => $JOBNO,
-                // 'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
+                'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
                 'R_SIRANO' => $R_SIRANO[$i],
                 'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
                 'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
@@ -622,11 +621,8 @@ class mmps10_controller extends Controller
             ->where('EVRAKNO',$EVRAKNO)
             ->where('TRNUM', $TRNUM[$i])
             ->update([
-              // 'SRNUM' => $SRNUM,
-              // 'JOBNO' => $JOBNO,
-              // 'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
-             // 'firma' => $firma,
               'R_SIRANO' => $R_SIRANO[$i],
+              'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
               'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
               'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
               'KAYNAK_AD' => $KAYNAK_AD[$i],

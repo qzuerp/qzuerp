@@ -80,7 +80,7 @@
 					<div class="box box-danger">
 						<div class="box-body">
 							<!-- Üst Kontrol Paneli -->
-							<div class="row mb-3">
+							<div class="row mb-3-sonra-sil">
 								<div class="col-md-2">
 									<select id="evrakSec" class="form-control js-example-basic-single" 
 											name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
@@ -215,6 +215,7 @@
 																	<th style="min-width:110px">PK No</th>
 																	<th style="min-width:110px">Yarı mamul miktarı</th>
 																	<th style="min-width:80px">Ayar Süresi</th>
+																	<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
 																	<th style="min-width:80px">Yükleme Süresi</th>
 																	<th style="min-width:300px">Kalıp Kodu 1</th>
 																	<th style="min-width:300px">Kalıp Kodu 2</th>
@@ -228,7 +229,6 @@
 																	<th>Ölçü 2</th>
 																	<th>Ölçü 3</th>
 																	<th>Ölçü 4</th>
-																	<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
 																	<th></th>
 																</tr>
 																<tr class="satirEkle">
@@ -314,6 +314,9 @@
 																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
 																	</td>
+																	<td style="min-width: 150px; ">
+																		<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
+																	</td>
 																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
 																	</td>
@@ -397,9 +400,6 @@
 																	<td style="min-width: 150px; ">
 																		<input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
 																	</td>
-																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
-																	</td>
 																	<td>#</td>
 																</tr>
 															</thead>
@@ -428,6 +428,7 @@
 																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0" value="{{ $veri->BOMREC_KAYNAK0 }}"></td>
 																		<td><input type="text" class="form-control" maxlength='255' name="ACIKLAMA[]" id="ACIKLAMA" value="{{ $veri->STOK_BIRIM }}" readonly></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
+																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
 																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
@@ -443,7 +444,6 @@
 																		<td><input type="number" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
-																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
 
 																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 																	</tr>
@@ -753,7 +753,7 @@
 						<div class="modal-body">
 							<!-- Zaman formu - başlangıçta gizli -->
 							<div id="timeForm" class="d-none">
-								<div class="form-group mb-3">
+								<div class="form-group mb-3-sonra-sil">
 									<label for="unit">Birim</label>
 									<select class="form-control" id="unit">
 										<option value="min">Dakika</option>
@@ -761,7 +761,7 @@
 									</select>
 								</div>
 								
-								<div class="form-group mb-3 d-flex gap-3">
+								<div class="form-group mb-3-sonra-sil d-flex gap-3">
 									<input type="text" id="oran" class="form-control" placeholder="İş Süresi"> 
 									<input type="text" id="oran2" class="form-control" placeholder="Ayar Süresi"> 
 									<input type="text" id="oran3" class="form-control" placeholder="Sök-Tak Süresi"> 
@@ -770,7 +770,7 @@
 
 							<!-- Boyut formu - başlangıçta gizli -->
 							<div id="dimensionsForm" class="d-none">
-								<div class="form-group mb-3">
+								<div class="form-group mb-3-sonra-sil">
 									<label for="shapeType">Cisim Tipi</label>
 									<select class="form-control" id="shapeType">
 										<option value="cuboid">Kübik</option>
@@ -779,22 +779,22 @@
 									</select>
 								</div>
 
-								<div class="form-group mb-3">
+								<div class="form-group mb-3-sonra-sil">
 									<label for="density">Yoğunluk (kg/m³)</label>
 									<input type="number" class="form-control" id="density" step="0.01" placeholder="Yoğunluk girin">
 								</div>
 
 								<!-- Kübik cisim inputları -->
 								<div id="cuboidInputs">
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_EN">En (m)</label>
 										<input type="number" class="form-control" id="B_EN" step="0.01" placeholder="En değeri">
 									</div>
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_BOY">Boy (m)</label>
 										<input type="number" class="form-control" id="B_BOY" step="0.01" placeholder="Boy değeri">
 									</div>
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_YUKSEKLIK">Yükseklik (m)</label>
 										<input type="number" class="form-control" id="B_YUKSEKLIK" step="0.01" placeholder="Yükseklik değeri">
 									</div>
@@ -802,11 +802,11 @@
 
 								<!-- Silindir inputları -->
 								<div id="cylinderInputs" class="d-none">
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_CAP">Çap (m)</label>
 										<input type="number" class="form-control" id="B_CAP" step="0.01" placeholder="Çap değeri">
 									</div>
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_YUKSEKLIK_CYL">Yükseklik (m)</label>
 										<input type="number" class="form-control" id="B_YUKSEKLIK_CYL" step="0.01" placeholder="Yükseklik değeri">
 									</div>
@@ -814,7 +814,7 @@
 
 								<!-- Küre inputları -->
 								<div id="sphereInputs" class="d-none">
-									<div class="form-group mb-3">
+									<div class="form-group mb-3-sonra-sil">
 										<label for="B_CAP_SPH">Çap (m)</label>
 										<input type="number" class="form-control" id="B_CAP_SPH" step="0.01" placeholder="Çap değeri">
 									</div>
@@ -1143,6 +1143,7 @@
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+satirEkleInputs.PK_NO_FILL+"' style='color:blue;'></td>";
+        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+satirEkleInputs.YARI_MAMUL_MIKTARI_FILL+"' style='color:blue;'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK01[]' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK02[]' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"'></td> ";
@@ -1158,7 +1159,6 @@
         		htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
-        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				htmlCode += " </tr> ";
 

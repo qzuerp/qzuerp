@@ -187,7 +187,7 @@
 											->where('DOSYATURU','GORSEL')
 											->first();
 										@endphp
-										<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" width="100">
+										<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
 									</div>
 								</div>
 
@@ -1430,7 +1430,10 @@
 			}
 		</script> --}}
 		<script>
-
+		  function ozelInput()
+		  {
+			$('#kart_img').fadeOut(200);
+		  }
 		  function fnExcelReport() {
 		    var tab_text = "";
 		    var textRange; var j = 0;

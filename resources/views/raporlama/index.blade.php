@@ -5,7 +5,7 @@
     <h2 class="mb-4">1. Adım: Ana Tablo Seçimi</h2>
 
     <form action="{{ route('raporlama.index') }}" method="GET">
-        <div class="mb-3">
+        <div class="mb-3-sonra-sil">
             <label for="ana_tablo" class="form-label">Ana Tablo</label>
             <select name="ana_tablo" id="ana_tablo" class="form-select" onchange="this.form.submit()">
                 <option value="">Lütfen seçin</option>
@@ -29,10 +29,10 @@
 
             <input type="hidden" name="ana_tablo" value="{{ $selectedTable }}">
 
-            <h4 class="mb-3 mt-4">2. Adım: Bağlantılı Tabloları Belirle</h4>
+            <h4 class="mb-3-sonra-sil mt-4">2. Adım: Bağlantılı Tabloları Belirle</h4>
 
             <div id="joinContainer">
-                <div class="row mb-3 border p-3 rounded bg-light">
+                <div class="row mb-3-sonra-sil border p-3 rounded bg-light">
                     <div class="col-md-3">
                         <label>Bağlantılı Tablo</label>
                         <select name="joins[0][table]" class="form-select">
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <button type="button" onclick="addJoinBlock()" class="btn btn-outline-primary mb-3">+ Bağlantı Ekle</button>
+            <button type="button" onclick="addJoinBlock()" class="btn btn-outline-primary mb-3-sonra-sil">+ Bağlantı Ekle</button>
             <br>
             <button type="submit" class="btn btn-success">Devam Et (Kriterler)</button>
         </form>
@@ -82,7 +82,7 @@
     function addJoinBlock() {
         const container = document.getElementById('joinContainer');
         const html = `
-        <div class="row mb-3 border p-3 rounded bg-light">
+        <div class="row mb-3-sonra-sil border p-3 rounded bg-light">
             <div class="col-md-3">
                 <label>Bağlantılı Tablo</label>
                 <select name="joins[${joinIndex}][table]" class="form-select">

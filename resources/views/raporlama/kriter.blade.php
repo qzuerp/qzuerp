@@ -11,7 +11,7 @@
         <input type="hidden" name="joins_json" value="{{ json_encode($joins) }}">
 
         <div id="kriterContainer">
-            <div class="row mb-3 border p-3 rounded bg-light">
+            <div class="row mb-3-sonra-sil border p-3 rounded bg-light">
                 <div class="col-md-3">
                     <label>Tablo</label>
                     <select name="kriterler[0][table]" class="form-select">
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <button type="button" onclick="addKriter()" class="btn btn-outline-primary mb-3">+ Kriter Ekle</button>
+        <button type="button" onclick="addKriter()" class="btn btn-outline-primary mb-3-sonra-sil">+ Kriter Ekle</button>
         <br>
         <button type="submit" class="btn btn-success">Devam Et (Alan Seçimi)</button>
     </form>
@@ -57,7 +57,7 @@
         const container = document.getElementById('kriterContainer');
 
         const html = `
-        <div class="row mb-3 border p-3 rounded bg-light">
+        <div class="row mb-3-sonra-sil border p-3 rounded bg-light">
             <div class="col-md-3">
                 <label>Tablo</label>
                 <select name="kriterler[${kriterIndex}][table]" class="form-select">

@@ -180,7 +180,7 @@
                             <div class="row align-items-center">
                               <!-- Sol taraf: isim ve email -->
                               <div class="col-md-10">
-                                <div class="row mb-3">
+                                <div class="row mb-3-sonra-sil">
                                   <div class="col-md-6">
                                     <label for="kullanici_isim" class="form-label">İsim</label>
                                     <input type="text" class="form-control" id="kullanici_isim" name="kullanici_isim" value="{{ $kullanici_veri->name }}">
@@ -190,7 +190,7 @@
                                     <input type="email" class="form-control" id="kullanici_email" name="kullanici_email" value="{{ $kullanici_veri->email }}">
                                   </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="row mb-3-sonra-sil">
                                   <div class="col-12">
                                     <label for="kullanici_sifre" class="form-label">Şifre</label>
                                     <input type="password" class="form-control" id="kullanici_sifre" name="kullanici_sifre" placeholder="Şifreyi güncellemek istiyorsanız yeni şifreyi giriniz">

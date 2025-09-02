@@ -270,6 +270,14 @@ Auth::routes(['password.request' => false]);
 
   Route::get('/maliyet',[Maliyet::class,'index']);
 
+  Route::get('/check-session', function () {
+      if (auth()->check()) {
+          return response()->json(['status' => 'active']);
+      }
+      return response()->json(['status' => 'expired']);
+  });
+
+
   // Route::get('/sayfa', [YourController::class, 'metodAdi']);
 
   //Route::view('satinalmairsaliyesi','satinalmairsaliyesi');

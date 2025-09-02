@@ -11,6 +11,13 @@
     width: 100% !important;
     
   }
+  .table>:not(caption)>*>*
+  {
+    padding: 0 5px !important;
+  }
+  .form-group{
+    margin: 0 !important;
+  }
   input[readonly],
   textarea[readonly] {
     background: #e9ecef;
@@ -1329,7 +1336,7 @@
   width: 50px;
   border: none;
   border-radius: 12px;
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
   background: #1d1b31;
 }
 

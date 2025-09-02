@@ -209,7 +209,7 @@
 
                     <div class="row">
  
-                      <div class="col-4 mb-3 d-flex gap-3" >
+                      <div class="col-4 mb-3-sonra-sil d-flex gap-3" >
                         <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
                         <button type="button" class="btn btn-default delete-row" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
                       </div>

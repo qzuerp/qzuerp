@@ -131,7 +131,7 @@
       
                     <div class="col-md-3 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH_E" id="TARIH_E" required="" value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control" name="TARIH" id="TARIH_E" required="" value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
