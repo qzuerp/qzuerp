@@ -1430,10 +1430,7 @@
 			}
 		</script> --}}
 		<script>
-		  function ozelInput()
-		  {
-			$('#kart_img').fadeOut(200);
-		  }
+		  
 		  function fnExcelReport() {
 		    var tab_text = "";
 		    var textRange; var j = 0;
@@ -1608,6 +1605,7 @@
 		  });
 		function ozelInput() {
 			$('#KOD_ALANI').removeAttr('readonly');
+			$('#kart_img').fadeOut(200);
 		}
 		</script>
 		{{-- Excel Döküman çekme yeni kod --}}
