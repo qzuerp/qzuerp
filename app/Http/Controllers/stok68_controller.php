@@ -78,6 +78,7 @@ class stok68_controller extends Controller
     $AK = $request->input('AK');
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->input('TRNUM');
+    $JOBNO = $request->JOBNO;
     
     if ($KOD == null) {
       $satir_say = 0;
@@ -234,13 +235,16 @@ class stok68_controller extends Controller
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
+          $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
+          $AD = DB::table($firma.'imlt00')->where('KOD',$R_YMAMULCODE)->select('AD')->first();
+          
           // Fason depoya giris
           DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
-            'KOD' => $KOD[$i],
-            'STOK_ADI' => $STOK_ADI[$i],
+            'KOD' => $R_YMAMULCODE,
+            'STOK_ADI' => $AD,
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
@@ -384,13 +388,16 @@ class stok68_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
-            // Mamul depoya giris
+            $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
+            $AD = DB::table($firma.'imlt00')->where('KOD',$R_YMAMULCODE)->select('AD')->first();
+            
+            // Fason depoya giris
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
-              'KOD' => $KOD[$i],
-              'STOK_ADI' => $STOK_ADI[$i],
+              'KOD' => $R_YMAMULCODE,
+              'STOK_ADI' => $AD,
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
               'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
@@ -411,7 +418,6 @@ class stok68_controller extends Controller
               'EVRAKTIPI' => 'STOK68T-G',
               'STOK_MIKTAR' => $SF_MIKTAR[$i],
               'AMBCODE' => $AMBCODE,
-              'SERINO' => $SERINO[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 

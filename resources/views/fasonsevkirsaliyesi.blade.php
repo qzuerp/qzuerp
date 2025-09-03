@@ -904,72 +904,76 @@ if (isset($kart_veri)) {
                     <div class="modal-body">
                       @php
                         $sql = "
-                            SELECT 
-                                T2.MPSNO,
-                                T2.HAMMADDE,
-                                T2.MAMULSTOKKODU,
-                                T2.MAMULSTOKADI,
-                                S00.AD,
-                                S01.MIKTAR,
-                                S00.IUNIT,
-                                S01.SERINO,
-                                S01.LOTNUMBER,
-                                S01.TEXT1,
-                                S01.TEXT2,
-                                S01.TEXT3,
-                                S01.TEXT4,
-                                S01.AMBCODE,
-                                S01.LOCATION1,
-                                S01.LOCATION2,
-                                S01.LOCATION3,
-                                S01.LOCATION4,
-                                S01.NUM1,
-                                S01.NUM2,
-                                S01.NUM3, 
-                                S01.NUM4
-                            FROM (
-                                SELECT 
-                                    T1.EVRAKNO AS MPSNO,
-                                    T1.MAMULSTOKKODU,
-                                    T1.MAMULSTOKADI,
-                                    CASE 
-                                        WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
-                                        ELSE (
-                                            SELECT TOP 1 R_KAYNAKKODU 
-                                            FROM {$database}MMPS10T 
-                                            WHERE EVRAKNO = T1.EVRAKNO 
-                                              AND R_SIRANO = T1.ANA_SIRANO 
-                                              AND R_KAYNAKTYPE = 'H'
-                                        )
-                                    END AS HAMMADDE
-                                FROM (
-                                    SELECT 
-                                        M10T.EVRAKNO,
-                                        M10E.MAMULSTOKKODU,
-                                        M10E.MAMULSTOKADI,
-                                        M10T.R_SIRANO AS ANA_SIRANO,
-                                        (
-                                            SELECT MAX(R_SIRANO)
-                                            FROM {$database}MMPS10T
-                                            WHERE EVRAKNO = M10T.EVRAKNO
-                                              AND R_SIRANO < M10T.R_SIRANO
-                                              AND R_KAYNAKTYPE = 'I'
-                                        ) AS ONCEKI_OPERASYON
-                                    FROM {$database}MMPS10T M10T
-                                    LEFT JOIN {$database}MMPS10E M10E
-                                        ON M10T.EVRAKNO = M10E.EVRAKNO
-                                    WHERE M10T.R_ACIK_KAPALI IS NULL
-                                      AND M10T.R_KAYNAKTYPE = 'I'
-                                      AND M10T.R_KAYNAKKODU LIKE 'F%'
-                                ) AS T1
-                                LEFT JOIN {$database}MMPS10T M10 
-                                    ON M10.EVRAKNO = T1.EVRAKNO 
-                                  AND M10.R_SIRANO = T1.ONCEKI_OPERASYON
-                            ) AS T2
-                            LEFT JOIN {$database}VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
-                            LEFT JOIN {$database}STOK00 S00 ON S00.KOD = T2.HAMMADDE
-                            WHERE S01.MIKTAR > 0
-                        ";
+                          SELECT 
+                              T2.EVRAKNO,
+                              T2.JOBNO,
+                              T2.HAMMADDE,
+                              T2.MAMULSTOKKODU,
+                              T2.MAMULSTOKADI,
+                              S00.AD,
+                              S01.MIKTAR,
+                              S00.IUNIT,
+                              S01.SERINO,
+                              S01.LOTNUMBER,
+                              S01.TEXT1,
+                              S01.TEXT2,
+                              S01.TEXT3,
+                              S01.TEXT4,
+                              S01.AMBCODE,
+                              S01.LOCATION1,
+                              S01.LOCATION2,
+                              S01.LOCATION3,
+                              S01.LOCATION4,
+                              S01.NUM1,
+                              S01.NUM2,
+                              S01.NUM3, 
+                              S01.NUM4
+                          FROM (
+                              SELECT 
+                                  T1.EVRAKNO,
+                                  T1.JOBNO,
+                                  T1.MAMULSTOKKODU,
+                                  T1.MAMULSTOKADI,
+                                  CASE 
+                                      WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
+                                      ELSE (
+                                          SELECT TOP 1 R_KAYNAKKODU 
+                                          FROM {$database}MMPS10T 
+                                          WHERE EVRAKNO = T1.EVRAKNO
+                                            AND R_SIRANO = T1.ANA_SIRANO 
+                                            AND R_KAYNAKTYPE = 'H'
+                                      )
+                                  END AS HAMMADDE
+                              FROM (
+                                  SELECT 
+                                      M10T.EVRAKNO,
+                                      M10T.JOBNO,
+                                      M10E.MAMULSTOKKODU,
+                                      M10E.MAMULSTOKADI,
+                                      M10T.R_SIRANO AS ANA_SIRANO,
+                                      (
+                                          SELECT MAX(R_SIRANO)
+                                          FROM {$database}MMPS10T M10T_SUB
+                                          WHERE M10T_SUB.EVRAKNO = M10T.EVRAKNO
+                                            AND M10T_SUB.R_SIRANO < M10T.R_SIRANO
+                                            AND M10T_SUB.R_KAYNAKTYPE = 'I'
+                                      ) AS ONCEKI_OPERASYON
+                                  FROM {$database}MMPS10T M10T
+                                  LEFT JOIN {$database}MMPS10E M10E
+                                      ON M10T.EVRAKNO = M10E.EVRAKNO
+                                  WHERE M10T.R_ACIK_KAPALI IS NULL
+                                    AND M10T.R_KAYNAKTYPE = 'I'
+                                    AND M10T.R_KAYNAKKODU LIKE 'F%'
+                              ) AS T1
+                              LEFT JOIN {$database}MMPS10T M10 
+                                  ON M10.EVRAKNO = T1.EVRAKNO 
+                                AND M10.R_SIRANO = T1.ONCEKI_OPERASYON
+                          ) AS T2
+                          LEFT JOIN {$database}VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
+                          LEFT JOIN {$database}STOK00 S00 ON S00.KOD = T2.HAMMADDE
+                          WHERE S01.MIKTAR > 0
+                          ";
+
 
                         $res = DB::select($sql);
                         $LASTTRNUM = DB::table($database.'stok63t')->max('TRNUM') ?? 0;
@@ -1016,7 +1020,7 @@ if (isset($kart_veri)) {
                                 <td><input type="text" class="form-control" name="LOTNUMBER[]" value="{{ $value->LOTNUMBER }}" readonly></td>
                                 <td><input type="text" class="form-control" name="SERINO[]" value="{{ $value->SERINO }}" readonly></td>
                                 <td><input type="text" class="form-control" name="AMBCODE[]" value="{{ $value->AMBCODE }}" readonly></td>
-                                <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $value->MPSNO }}" readonly></td>
+                                <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $value->JOBNO }}" readonly></td>
                                 <td><input type="text" class="form-control" name="LOCATION1[]" value="{{ $value->LOCATION1 }}" readonly></td>
                                 <td><input type="text" class="form-control" name="LOCATION2[]" value="{{ $value->LOCATION2 }}" readonly></td>
                                 <td><input type="text" class="form-control" name="LOCATION3[]" value="{{ $value->LOCATION3 }}" readonly></td>
@@ -1351,7 +1355,6 @@ $(document).ready(function() {
 
                 $("#veriTable tbody").append(tr);
 
-                this.remove();
             }
         });
         table.draw(false);

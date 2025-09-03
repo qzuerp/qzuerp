@@ -238,7 +238,7 @@
                                 <th>Lot No</th>
                                 <th>Seri No</th>
                                 <th>Depo</th>
-                                <th>Sipariş No</th>
+                                <th>MPS numarası</th>
                                 <th>Lokasyon 1</th>
                                 <th>Lokasyon 2</th>
                                 <th>Lokasyon 3</th>
@@ -305,7 +305,11 @@
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" name="AMBCODE_SHOW" id="AMBCODE_SHOW" class="form-control" disabled>
                                   <input maxlength="50" type="hidden" name="AMBCODE_FILL" id="AMBCODE_FILL" class="form-control">
-                                </td>                 
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="50 "style="color: red" type="text" name="MPSNO_SHOW" id="MPSNO_SHOW" class="form-control" disabled>
+                                  <input maxlength="50" type="hidden" name="MPSNO_FILL" id="MPSNO_FILL" class="form-control">
+                                </td>            
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" name="LOCATION1_SHOW" id="LOCATION1_SHOW" class="form-control" disabled>
                                   <input maxlength="255" type="hidden" name="LOCATION1_FILL" id="LOCATION1_FILL" class="form-control">
@@ -385,6 +389,7 @@
                                     </span>
                                   </td>
                                   <td><input type="text" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                                  <td><input type="text" readonly class="form-control" name="JOBNO[]" value="{{ $veri->MPSNO }}"></td>
                                   <td><input type="text" class="form-control" id="lok1-{{$veri->id}}" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
                                   <td><input type="text" class="form-control" id="lok2-{{$veri->id}}" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" disabled><input id="lok2-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
                                   <td><input type="text" class="form-control" id="lok3-{{$veri->id}}" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" disabled><input id="lok3-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
@@ -750,31 +755,32 @@
             </div>
             <div class="modal-body">
               <div class="row" style="overflow: auto">
-                <table id="fasonSuz" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
+                <table id="fasonSuz_table" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
                   <thead>
                     <tr class="bg-primary">
-                      <th>Stok Kodu</th>
-                      <th>Stok Adı</th>
-                      <th>İşlem Mik.</th>
-                      <th>İşlem Br.</th>
-                      <th>Paket İçi Mik.</th>
-                      <th>Ambalaj Tanımı</th>
-                      <th>Lot No</th>
-                      <th>Seri No</th>
-                      <th>Depo</th>
-                      <th>Sipariş No</th>
-                      <th>Lokasyon 1</th>
-                      <th>Lokasyon 2</th>
-                      <th>Lokasyon 3</th>
-                      <th>Lokasyon 4</th>
-                      <th>Varyant Text 1</th>
-                      <th>Varyant Text 2</th>
-                      <th>Varyant Text 3</th>
-                      <th>Varyant Text 4</th>
-                      <th>Ölçü 1</th>
-                      <th>Ölçü 2</th>
-                      <th>Ölçü 3</th>
-                      <th>Ölçü 4</th>
+                      <th></th>
+                      <th style="min-width:100px;">Stok Kodu</th>
+                      <th style="min-width:100px;">Stok Adı</th>
+                      <th style="min-width:100px;">İşlem Mik.</th>
+                      <th style="min-width:100px;">İşlem Br.</th>
+                      <th style="min-width:100px;">Paket İçi Mik.</th>
+                      <th style="min-width:100px;">Ambalaj Tanımı</th>
+                      <th style="min-width:100px;">Lot No</th>
+                      <th style="min-width:100px;">Seri No</th>
+                      <th style="min-width:100px;">Depo</th>
+                      <th style="min-width:100px;">Sipariş No</th>
+                      <th style="min-width:100px;">Lokasyon 1</th>
+                      <th style="min-width:100px;">Lokasyon 2</th>
+                      <th style="min-width:100px;">Lokasyon 3</th>
+                      <th style="min-width:100px;">Lokasyon 4</th>
+                      <th style="min-width:100px;">Varyant Text 1</th>
+                      <th style="min-width:100px;">Varyant Text 2</th>
+                      <th style="min-width:100px;">Varyant Text 3</th>
+                      <th style="min-width:100px;">Varyant Text 4</th>
+                      <th style="min-width:100px;">Ölçü 1</th>
+                      <th style="min-width:100px;">Ölçü 2</th>
+                      <th style="min-width:100px;">Ölçü 3</th>
+                      <th style="min-width:100px;">Ölçü 4</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -785,6 +791,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="secilenleriEkle" style="margin-top: 15px;">Seçilenleri Ekle</button>
             </div>
           </div>
         </div>
@@ -803,7 +810,44 @@
           data:{DEPO:DEPO,URETICI:URETICI},
           success:function(res)
           {
-            //res.e
+            
+            var htmlCode  = " ";
+            res.forEach(element => {
+              htmlCode += "<tr>";
+              htmlCode += "<td><input type='checkbox' class='seciliFason' style='width:20px;height:20px' name='hepsinisec'></td>";
+              htmlCode += "<td style='display: none;'><input type='hidden' name='TRNUM[]' value='"+element.TRNUM+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.KOD+"' disabled><input type='hidden' name='KOD[]' value='"+element.KOD+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.STOK_ADI+"' disabled><input type='hidden' name='STOK_ADI[]' value='"+element.STOK_ADI+"'></td>";
+              htmlCode += "<td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+element.SF_MIKTAR+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.SF_SF_UNIT+"' disabled><input type='hidden' name='SF_SF_UNIT[]' value='"+element.SF_SF_UNIT+"'></td>";
+              htmlCode += "<td><input type='number' class='form-control' name='PKTICIADET[]' value='"+(element.PKTICIADET ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' name='AMBLJ_TNM[]' value='"+(element.AMBLJ_TNM ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.LOTNUMBER ?? '')+"' disabled><input type='hidden' name='LOTNUMBER[]' value='"+(element.LOTNUMBER ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.SERINO ?? '')+"' disabled><input type='hidden' name='SERINO[]' value='"+(element.SERINO ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.AMBCODE ?? '')+"' disabled><input type='hidden' name='AMBCODE[]' value='"+(element.AMBCODE ?? '')+"'></td>";
+
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.MPSNO ?? '')+"' disabled><input type='hidden' name='JOBNO[]' value='"+(element.MPSNO ?? '')+"'></td>";
+              // LOCATION
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION1 ?? '') + "' disabled><input type='hidden' name='LOCATION1[]' value='" + (element.LOCATION1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION2 ?? '') + "' disabled><input type='hidden' name='LOCATION2[]' value='" + (element.LOCATION2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION3 ?? '') + "' disabled><input type='hidden' name='LOCATION3[]' value='" + (element.LOCATION3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION4 ?? '') + "' disabled><input type='hidden' name='LOCATION4[]' value='" + (element.LOCATION4 ?? '') + "'></td>";
+
+              // TEXT
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT1 ?? '') + "' disabled><input type='hidden' name='TEXT1[]' value='" + (element.TEXT1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT2 ?? '') + "' disabled><input type='hidden' name='TEXT2[]' value='" + (element.TEXT2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT3 ?? '') + "' disabled><input type='hidden' name='TEXT3[]' value='" + (element.TEXT3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT4 ?? '') + "' disabled><input type='hidden' name='TEXT4[]' value='" + (element.TEXT4 ?? '') + "'></td>";
+
+              // NUM
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM1 ?? '') + "' disabled><input type='hidden' name='NUM1[]' value='" + (element.NUM1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM2 ?? '') + "' disabled><input type='hidden' name='NUM2[]' value='" + (element.NUM2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM3 ?? '') + "' disabled><input type='hidden' name='NUM3[]' value='" + (element.NUM3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM4 ?? '') + "' disabled><input type='hidden' name='NUM4[]' value='" + (element.NUM4 ?? '') + "'></td>";
+
+              htmlCode += "</tr>";
+            });
+            $('#fasonSuz_table tbody').append(htmlCode);
           }
         });
       }
@@ -966,6 +1010,18 @@
 
     <script>
       $(document).ready(function() {
+        fasonSuz();
+        // var table = $('#fasonSuz_table').DataTable({  
+        //     autoWidth: false,
+        //     ordering: false,
+        //     paging: false,
+        //     language: { url: '{{ asset("tr.json") }}' }
+        // });
+
+        $('#secilenleriEkle').on('click', function() {
+            var seciliTr = $('#fasonSuz_table tbody .seciliFason:checked').parents('tr');
+            $("#veriTable tbody").append(seciliTr); 
+        });
 
         $('#popupSelectt').DataTable({
           "order": [[ 0, "desc" ]],
@@ -1032,6 +1088,7 @@
           htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"' disabled><input type='hidden' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"' disabled><input type='hidden' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='JOBNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"' disabled><input type='hidden' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' disabled><input type='hidden' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";
