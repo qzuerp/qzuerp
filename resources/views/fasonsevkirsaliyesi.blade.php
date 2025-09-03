@@ -936,7 +936,7 @@ if (isset($kart_veri)) {
                                         WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
                                         ELSE (
                                             SELECT TOP 1 R_KAYNAKKODU 
-                                            FROM {$database}.MMPS10T 
+                                            FROM {$database}MMPS10T 
                                             WHERE EVRAKNO = T1.EVRAKNO 
                                               AND R_SIRANO = T1.ANA_SIRANO 
                                               AND R_KAYNAKTYPE = 'H'
@@ -950,24 +950,24 @@ if (isset($kart_veri)) {
                                         M10T.R_SIRANO AS ANA_SIRANO,
                                         (
                                             SELECT MAX(R_SIRANO)
-                                            FROM {$database}.MMPS10T
+                                            FROM {$database}MMPS10T
                                             WHERE EVRAKNO = M10T.EVRAKNO
                                               AND R_SIRANO < M10T.R_SIRANO
                                               AND R_KAYNAKTYPE = 'I'
                                         ) AS ONCEKI_OPERASYON
-                                    FROM {$database}.MMPS10T M10T
-                                    LEFT JOIN {$database}.MMPS10E M10E
+                                    FROM {$database}MMPS10T M10T
+                                    LEFT JOIN {$database}MMPS10E M10E
                                         ON M10T.EVRAKNO = M10E.EVRAKNO
                                     WHERE M10T.R_ACIK_KAPALI IS NULL
                                       AND M10T.R_KAYNAKTYPE = 'I'
                                       AND M10T.R_KAYNAKKODU LIKE 'F%'
                                 ) AS T1
-                                LEFT JOIN {$database}.MMPS10T M10 
+                                LEFT JOIN {$database}MMPS10T M10 
                                     ON M10.EVRAKNO = T1.EVRAKNO 
                                   AND M10.R_SIRANO = T1.ONCEKI_OPERASYON
                             ) AS T2
-                            LEFT JOIN {$database}.VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
-                            LEFT JOIN {$database}.STOK00 S00 ON S00.KOD = T2.HAMMADDE
+                            LEFT JOIN {$database}VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
+                            LEFT JOIN {$database}STOK00 S00 ON S00.KOD = T2.HAMMADDE
                             WHERE S01.MIKTAR > 0
                         ";
 
