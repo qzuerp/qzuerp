@@ -467,7 +467,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
               </div>
             </div>
           </div>
@@ -525,7 +525,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
               </div>
             </div>
           </div>

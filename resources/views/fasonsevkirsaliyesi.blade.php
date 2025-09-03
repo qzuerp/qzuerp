@@ -254,7 +254,8 @@ if (isset($kart_veri)) {
 
 
 
-                        <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
+                        <button type="button" class="btn btn-default delete-row mb-2" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
+                        <button type="button" data-bs-target="#modal_fason" data-bs-toggle="modal" class="btn btn-default mb-2" id="deleteRow"><i class="fa fa-check" style="color: red"></i>&nbsp;Fason Seç</button>
                        
 
                       <table class="table table-bordered text-center" id="veriTable" >
@@ -408,13 +409,11 @@ if (isset($kart_veri)) {
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
                             <td><input type="number" class="form-control" name="PKTICIADET[]" value="{{ $veri->PKTICIADET }}"></td>
                             <td><input type="text" class="form-control" name="AMBLJ_TNM[]" value="{{ $veri->AMBLJ_TNM }}"></td>
-                            <td >
-                              <input type="text" class="form-control"   id='Lot-{{ $veri->id }}' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" disabled>
-                              <input type="hidden" class="form-control" id='Lot-{{ $veri->id }}' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
+                            <td>
+                              <input type="text" class="form-control"   id='Lot-{{ $veri->id }}' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" readonly>
                             </td>
                             <td class="d-flex ">
-                              <input type="text" class="form-control"   id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}" disabled>
-                              <input type="hidden" class="form-control" id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}">
+                              <input type="text" class="form-control"   id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}" readonly>
                               <span class="d-flex -btn">
                                 <button class="btn btn-primary" data-bs-toggle="modal" onclick="veriCek('{{ $veri->KOD }}', '{{ $veri->id }}')" data-bs-target="#modal_popupSelectModal4" type="button">
                                   <span class="fa-solid fa-magnifying-glass"  >
@@ -423,6 +422,7 @@ if (isset($kart_veri)) {
                               </span>
                             </td>
                             <td><input type="text" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                            <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $veri->MPSNO }}"></td>
                             <td><input type="text" class="form-control" id="lok1-{{$veri->id}}" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
                             <td><input type="text" class="form-control" id="lok2-{{$veri->id}}" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" disabled><input id="lok2-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
                             <td><input type="text" class="form-control" id="lok3-{{$veri->id}}" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" disabled><input id="lok3-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
@@ -549,27 +549,8 @@ if (isset($kart_veri)) {
                 <div class="tab-pane" id="fasonSuz">
                   <div class="input-group mb-3-sonra-sil w-25" >
                     <button class="input-group-text" type="button">Seçilenleri Ekle</button>
-                    @php
-                     $sql = "select T2.*,S00.AD,S01.SF_MIKTAR,S00.IUNIT,S01.SERINO,S01.LOTNUMBER,S01.VRI_VR_R1,S01.VRI_VR_R2,S01.VRI_VR_R3,S01.AMBCODE,S01.LOCATION1,S01.LOCATION2,S01.LOCATION3,S01.LOCATION4 FROM (SELECT T1.EVRAKNO AS MPSNO,
-                              (CASE WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN  M10.R_YMAMULKODU ELSE 
-                              (SELECT R_KAYNAKKODU FROM MMPS10T WHERE EVRAKNO = T1.EVRAKNO AND R_SIRANO = T1.ONCEKI_OPERASYON AND R_KAYNAKTYPE = 'H' AND ROWNUM = 1 ) END) AS HAMMADDE
-                              FROM
-                              (select M10T.EVRAKNO,M10T.R_MAMULKODU,(SELECT MAX(R_SIRANO) FROM MMPS10T WHERE EVRAKNO = M10T.EVRAKNO AND R_SIRANO < M10T.R_SIRANO AND R_KAYNAKTYPE = 'I') ONCEKI_OPERASYON from mmps10t m10t
-                              WHERE R_ACIK_KAPALI = ' '
-                              AND R_KAYNAKTYPE = 'I'
-                              AND R_KAYNAKKODU LIKE 'F%')T1
-                              LEFT JOIN MMPS10T M10 ON M10.EVRAKNO = T1.EVRAKNO AND M10.R_SIRANO = T1.ONCEKI_OPERASYON)T2
-                              LEFT JOIN VIW_STOK01 S01 ON S01.KOD = T2.HAMMADDE 
-                              LEFT JOIN STOK00 S00 ON S00.KOD = T2.HAMMADDE";
-
-                      $res = DB::select($sql);
-                      dd($res);
-                    @endphp
-                    <select name="" class="form-select" id="fasonlar">
-                      <option value="">Seç</option>
-                      @foreach ($res as $veri)
-                      
-                      @endforeach
+                    <select name="hammadde" class="form-select" id="fasonlar">
+                        <option value="">Seç</option>
                     </select>
                     <button type="button" class="input-group-text">Süz</button>
                   </div>
@@ -793,7 +774,7 @@ if (isset($kart_veri)) {
                       </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
                     </div>
                   </div>
                 </div>
@@ -830,7 +811,7 @@ if (isset($kart_veri)) {
                       </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
                     </div>
                   </div>
                 </div>
@@ -912,6 +893,157 @@ if (isset($kart_veri)) {
             </div>
           </div>
         {{-- Seri no finish --}}
+
+        {{-- Fason Seç start --}}
+          <div class="modal fade bd-example-modal-lg" id="modal_fason" tabindex="-1" role="dialog" aria-labelledby="modal_fason">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Fason Seç</h4>
+                    </div>
+                    <div class="modal-body">
+                      @php
+                        $sql = "
+                            SELECT 
+                                T2.MPSNO,
+                                T2.HAMMADDE,
+                                T2.MAMULSTOKKODU,
+                                T2.MAMULSTOKADI,
+                                S00.AD,
+                                S01.MIKTAR,
+                                S00.IUNIT,
+                                S01.SERINO,
+                                S01.LOTNUMBER,
+                                S01.TEXT1,
+                                S01.TEXT2,
+                                S01.TEXT3,
+                                S01.TEXT4,
+                                S01.AMBCODE,
+                                S01.LOCATION1,
+                                S01.LOCATION2,
+                                S01.LOCATION3,
+                                S01.LOCATION4,
+                                S01.NUM1,
+                                S01.NUM2,
+                                S01.NUM3, 
+                                S01.NUM4
+                            FROM (
+                                SELECT 
+                                    T1.EVRAKNO AS MPSNO,
+                                    T1.MAMULSTOKKODU,
+                                    T1.MAMULSTOKADI,
+                                    CASE 
+                                        WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
+                                        ELSE (
+                                            SELECT TOP 1 R_KAYNAKKODU 
+                                            FROM MMPS10T 
+                                            WHERE EVRAKNO = T1.EVRAKNO 
+                                              AND R_SIRANO = T1.ANA_SIRANO 
+                                              AND R_KAYNAKTYPE = 'H'
+                                        )
+                                    END AS HAMMADDE
+                                FROM (
+                                    SELECT 
+                                        M10T.EVRAKNO,
+                                        M10E.MAMULSTOKKODU,
+                                        M10E.MAMULSTOKADI,
+                                        m10t.R_SIRANO AS ANA_SIRANO,
+                                        (
+                                            SELECT MAX(R_SIRANO)
+                                            FROM MMPS10T
+                                            WHERE EVRAKNO = M10T.EVRAKNO
+                                              AND R_SIRANO < M10T.R_SIRANO
+                                              AND R_KAYNAKTYPE = 'I'
+                                        ) AS ONCEKI_OPERASYON
+                                    FROM mmps10t M10T
+                                    LEFT JOIN mmps10e M10E
+                                        ON M10T.EVRAKNO = M10E.EVRAKNO
+                                    WHERE M10T.R_ACIK_KAPALI IS NULL
+                                      AND M10T.R_KAYNAKTYPE = 'I'
+                                      AND M10T.R_KAYNAKKODU LIKE 'F%'
+                                ) AS T1
+                                LEFT JOIN MMPS10T M10 
+                                    ON M10.EVRAKNO = T1.EVRAKNO 
+                                  AND M10.R_SIRANO = T1.ONCEKI_OPERASYON
+                            ) AS T2
+                            LEFT JOIN VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
+                            LEFT JOIN STOK00 S00 ON S00.KOD = T2.HAMMADDE
+                            WHERE S01.MIKTAR > 0
+                            ";
+
+                        $res = DB::select($sql);
+                        $LASTTRNUM = DB::table($database.'stok63t')->max('TRNUM') ?? 0;
+                      @endphp
+                      <div class="row" style="overflow: auto">
+                        <table id="fasonSelectt" class="table table-striped text-center" data-page-length="10">
+                          <thead>
+                            <tr class="bg-primary">
+                              <th><input type="checkbox" id="tumunuSec"></th>
+                              <th style="min-width:100px">Gönderilecek Malzeme Kodu</th>
+                              <th style="min-width:100px">Gönderilecek Malzeme Adı</th>
+                              <th style="min-width:100px">Miktar</th>
+                              <th style="min-width:100px">Birim</th>
+                              <th style="min-width:100px">Lot No</th>
+                              <th style="min-width:100px">Seri No</th>
+                              <th style="min-width:100px">Depo</th>
+                              <th style="min-width:100px">Sipariş No</th>
+                              <th style="min-width:100px">Lokasyon 1</th>
+                              <th style="min-width:100px">Lokasyon 2</th>
+                              <th style="min-width:100px">Lokasyon 3</th>
+                              <th style="min-width:100px">Lokasyon 4</th>
+                              <th style="min-width:100px">Varyant Text 1</th>
+                              <th style="min-width:100px">Varyant Text 2</th>
+                              <th style="min-width:100px">Varyant Text 3</th>
+                              <th style="min-width:100px">Varyant Text 4</th>
+                              <th style="min-width:100px">Ölçü 1</th>
+                              <th style="min-width:100px">Ölçü 2</th>
+                              <th style="min-width:100px">Ölçü 3</th>
+                              <th style="min-width:100px">Ölçü 4</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach ($res as $key => $value)
+                              @php
+                                $TRNUM = str_pad((int)$LASTTRNUM++, 6, "0", STR_PAD_LEFT);
+                              @endphp
+                              <tr>
+                                <td><input type="checkbox" class="seciliFason"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $TRNUM }}"></td>
+                                <td><input type="text" class="form-control" name="KOD[]" value="{{ $value->HAMMADDE }}" readonly></td>
+                                <td><input type="text" class="form-control" name="STOK_ADI[]" value="{{ $value->AD }}" readonly></td>
+                                <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $value->MIKTAR }}"></td>
+                                <td><input type="text" class="form-control" name="SF_SF_UNIT[]" value="{{ $value->IUNIT }}" readonly></td>
+                               
+                                <td><input type="text" class="form-control" name="LOTNUMBER[]" value="{{ $value->LOTNUMBER }}" readonly></td>
+                                <td><input type="text" class="form-control" name="SERINO[]" value="{{ $value->SERINO }}" readonly></td>
+                                <td><input type="text" class="form-control" name="AMBCODE[]" value="{{ $value->AMBCODE }}" readonly></td>
+                                <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $value->MPSNO }}" readonly></td>
+                                <td><input type="text" class="form-control" name="LOCATION1[]" value="{{ $value->LOCATION1 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="LOCATION2[]" value="{{ $value->LOCATION2 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="LOCATION3[]" value="{{ $value->LOCATION3 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="LOCATION4[]" value="{{ $value->LOCATION4 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="TEXT1[]" value="{{ $value->TEXT1 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="TEXT2[]" value="{{ $value->TEXT2 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="TEXT3[]" value="{{ $value->TEXT3 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="TEXT4[]" value="{{ $value->TEXT4 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="NUM1[]" value="{{ $value->NUM1 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="NUM2[]" value="{{ $value->NUM2 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="NUM3[]" value="{{ $value->NUM3 }}" readonly></td>
+                                <td><input type="text" class="form-control" name="NUM4[]" value="{{ $value->NUM4 }}" readonly></td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+                          <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="secilenleriEkle" style="margin-top: 15px;">Seçilenleri Ekle</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        {{-- Fason Seç finish --}}
 </section>
 
 <script>
@@ -1182,6 +1314,51 @@ function siparisleriGetir() {
     });
   }
 $(document).ready(function() {
+    var table = $('#fasonSelectt').DataTable({  
+        autoWidth: false,
+        ordering: false,
+        paging: false,
+        language: { url: '{{ asset("tr.json") }}' }
+    });
+
+    // Tümünü seç çalışmıyor datatable ile bir uyuşmazlık sorunu var DÜZELTİLİCEK
+    $('#tumunuSec').on('click', function() {
+        var checked = $(this).is(':checked');
+        table.rows().every(function() {
+            $('#fasonSelectt').DataTable().rows().nodes().to$().find('.seciliFason').prop('checked', checked);
+        });
+    });
+
+    $('#fasonSelectt tbody').on('change', '.seciliFason', function() {
+        var total = table.rows().nodes().to$().find('.seciliFason').length;
+        var checkedCount = table.rows().nodes().to$().find('.seciliFason:checked').length;
+        $('#tumunuSec').prop('checked', total === checkedCount);
+    });
+
+    $('#secilenleriEkle').on('click', function() {
+        $('#tumunuSec').prop('checked',false)
+        table.rows().every(function() {
+            var rowNode = $(this.node());
+            var checkbox = rowNode.find('.seciliFason');
+            if(checkbox.is(':checked')) {
+                var tr = rowNode.clone();
+                var unitTd = tr.find('input[name="SF_SF_UNIT[]"]').closest('td');
+
+                unitTd.after(
+                    '<td><input type="number" class="form-control" name="PKTICIADET[]" value=""></td>' +
+                    '<td><input type="text" class="form-control" name="AMBLJ_TNM[]" value=""></td>'
+                );
+
+                $("#veriTable tbody").append(tr);
+
+                this.remove();
+            }
+        });
+        table.draw(false);
+    });
+
+
+
   $('#seriNoSec tbody').on('click', 'tr', function () {
       var $row = $(this);
       var $cells = $row.find('td');
@@ -1253,6 +1430,7 @@ $(document).ready(function() {
       });
     }
   });
+
   $('#STOK_KODU_SHOW').select2({
       placeholder: 'Stok kodu seç...',
       ajax: {
@@ -1304,7 +1482,7 @@ $(document).ready(function() {
       "</span>" +
       "</td>";
     htmlCode += " <td><input type='text' class='form-control' id='depo-"+TRNUM_FILL+"' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' disabled><input type='hidden' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' name='SIPNO[]' value='"+satirEkleInputs.SIP_FILL+"' disabled><input type='hidden' class='form-control' name='SIPNO[]' value='"+satirEkleInputs.SIP_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"' disabled><input type='hidden' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' id='lok1-"+TRNUM_FILL+"' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' disabled><input type='hidden' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' id='lok2-"+TRNUM_FILL+"' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"' disabled><input type='hidden' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' id='lok3-"+TRNUM_FILL+"' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' disabled><input type='hidden' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";

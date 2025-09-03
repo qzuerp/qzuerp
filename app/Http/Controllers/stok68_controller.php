@@ -5,6 +5,7 @@ use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class stok68_controller extends Controller
 {
@@ -230,7 +231,6 @@ class stok68_controller extends Controller
             'EVRAKTIPI' => 'STOK68T-C',
             'STOK_MIKTAR' => '-'.$SF_MIKTAR[$i],
             'AMBCODE' => $AMBCODE_SEC,
-            'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -261,7 +261,6 @@ class stok68_controller extends Controller
             'EVRAKTIPI' => 'STOK68T-G',
             'STOK_MIKTAR' => $SF_MIKTAR[$i],
             'AMBCODE' => $AMBCODE,
-            'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -522,6 +521,24 @@ class stok68_controller extends Controller
 
     }
 
-}
+  }
 
+
+  public function fason_getir(Request $request)
+  {
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+
+    $DEPO  = $request->DEPO;
+    $URETICI  = $request->URETICI;
+
+    $res = DB::table($firma.'stok63e','e')->leftJoin($firma.'stok63t as t','e.EVRAKNO','=','t.EVRAKNO')
+    ->where('e.CARIHESAPCODE',$URETICI)
+    ->where('t.AMBCODE',$DEPO)
+    ->get();
+
+    return $res;
+  }
 }

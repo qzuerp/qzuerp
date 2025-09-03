@@ -126,6 +126,7 @@ Auth::routes(['password.request' => false]);
   Route::post('stok48_islemler',[stok48_controller::class,'islemler']);
   Route::post('stok63_islemler',[stok63_controller::class,'islemler']);
   Route::post('stok68_islemler',[stok68_controller::class,'islemler']);
+  Route::post('/fason/getir',[stok68_controller::class,'fason_getir']);
   Route::post('kalip00_islemler',[kalip00_controller::class,'islemler']);
   Route::post('sfdc31_e_islemler',[calisma_bildirimi_controller::class,'islemler']);
   Route::post('toplumps_islemler',[toplumps_controller::class,'islemler']);
@@ -270,12 +271,7 @@ Auth::routes(['password.request' => false]);
 
   Route::get('/maliyet',[Maliyet::class,'index']);
 
-  Route::get('/check-session', function () {
-      if (auth()->check()) {
-          return response()->json(['status' => 'active']);
-      }
-      return response()->json(['status' => 'expired']);
-  });
+
 
 
   // Route::get('/sayfa', [YourController::class, 'metodAdi']);
@@ -292,3 +288,9 @@ Auth::routes(['password.request' => false]);
 });
 
 
+Route::get('/check-session', function () {
+  if (auth()->check()) {
+      return response()->json(['status' => 'active']);
+  }
+  return response()->json(['status' => 'expired']);
+});

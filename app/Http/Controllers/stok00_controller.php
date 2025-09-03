@@ -94,7 +94,7 @@ class stok00_controller extends Controller
     $islem_turu = $request->kart_islemleri;
     $KOD = $request->input('KOD');
     $AD = $request->input('AD');
-    $AP10 = $request->input('AP10');
+    $AP10 = $request->AP10;
     $KALIPMI = $request->input('KALIPMI');
     $IUNIT = $request->input('IUNIT');
     $GK_1 = $request->input('GK_1');
@@ -253,9 +253,8 @@ class stok00_controller extends Controller
         DB::table($firma.'stok00')->insert([
           'KOD' => $KOD,
           'AD' => $AD,
-          'AP10' => $AP10,
-          'KALIPMI' => $KALIPMI,
           'IUNIT' => $IUNIT,
+          'AP10' => $AP10,
           'GK_1' => $GK_1,
           'GK_2' => $GK_2,
           'GK_3' => $GK_3,

@@ -136,7 +136,7 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Yan Ürün Depo</label>
-                      <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="YANMAMULAMBCODE_E" id="YANMAMULAMBCODE_E" >
+                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="YANMAMULAMBCODE_E" id="YANMAMULAMBCODE_E" >
                         <option value="" selected>Seç</option>
                         @php
                           foreach ($depo_evraklar as $key => $veri) {
@@ -154,7 +154,7 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Fason Üretici</label>
-                      <select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
                         <option value="">Seç...</option>
                         @php
                           foreach ($cari_evraklar as $key => $veri) {
@@ -221,6 +221,7 @@
 
                     		<div class="active tab-pane" id="irsaliye">
                           <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;Fason Süz</button>
                           <br><br>
 
                           <table class="table table-bordered text-center" id="veriTable" >
@@ -699,7 +700,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
             </div>
           </div>
         </div>
@@ -735,16 +736,77 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;"><i class='fa fa-window-close'></i></button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
             </div>
           </div>
         </div>
       </div>
+      
+      <div class="modal fade bd-example-modal-lg" id="modal_fasonSuz" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal2"  >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Fason Seç</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row" style="overflow: auto">
+                <table id="fasonSuz" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th>Stok Kodu</th>
+                      <th>Stok Adı</th>
+                      <th>İşlem Mik.</th>
+                      <th>İşlem Br.</th>
+                      <th>Paket İçi Mik.</th>
+                      <th>Ambalaj Tanımı</th>
+                      <th>Lot No</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Sipariş No</th>
+                      <th>Lokasyon 1</th>
+                      <th>Lokasyon 2</th>
+                      <th>Lokasyon 3</th>
+                      <th>Lokasyon 4</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <script>
-
+      function fasonSuz()
+      {
+        let DEPO = $('#YANMAMULAMBCODE_E').val();
+        let URETICI = $('#CARIHESAPCODE_E').val();
+        
+        $.ajax({
+          url:'/fason/getir',
+          type:'post',
+          data:{DEPO:DEPO,URETICI:URETICI},
+          success:function(res)
+          {
+            //res.e
+          }
+        });
+      }
       function addRowHandlers2() {
         var table = document.getElementById("popupSelect2");
         var rows = table.getElementsByTagName("tr");

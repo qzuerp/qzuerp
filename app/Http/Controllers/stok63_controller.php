@@ -60,7 +60,7 @@ class stok63_controller extends Controller
     $LOTNUMBER = $request->LOTNUMBER;
     $SERINO = $request->SERINO;
     $AMBCODE_T = $request->AMBCODE;
-    $SIPARTNO = $request->SIPARTNO;
+    $MPSNO = $request->MPSNO;
     $LOCATION1 = $request->LOCATION1;
     $LOCATION2 = $request->LOCATION2;
     $LOCATION3 = $request->LOCATION3;
@@ -109,7 +109,7 @@ class stok63_controller extends Controller
         ]);
         // print_r("mesaj mesaj");
 
-        break;
+        
 
       case 'kart_sil':
         FunctionHelpers::Logla('STOK63',$EVRAKNO,'D',$TARIH);
@@ -125,7 +125,7 @@ class stok63_controller extends Controller
           $sonID=DB::table($firma.'stok63e')->min('id');
           return redirect()->route('fasonsevkirsaliyesi', ['ID' => $sonID, 'silme' => 'ok']);
 
-        break;
+        
 
       case 'kart_olustur':
         
@@ -182,7 +182,7 @@ class stok63_controller extends Controller
             'AMBLJ_TNM' => $AMBLJ_TNM[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'AMBCODE' => $AMBCODE_SEC,
-            // 'SIPARTNO' => $SIPARTNO[$i],
+            'MPSNO' => $MPSNO[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],
@@ -266,7 +266,7 @@ class stok63_controller extends Controller
         $sonID = DB::table($firma.'stok63e')->max('id');
         return redirect()->route('fasonsevkirsaliyesi', ['ID' => $sonID, 'kayit' => 'ok']);
 
-        break;
+        
 
       case 'kart_duzenle':
 
@@ -307,8 +307,13 @@ class stok63_controller extends Controller
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
 
-        for ($i = 0; $i < $satir_say; $i++) {
+        // dd([
+        //   'd' => $deleteTRNUMS,
+        //   'n' => $newTRNUMS,
+        //   'u' => $updateTRNUMS,
+        // ]);
 
+        for ($i = 0; $i < $satir_say; $i++) {
           if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
             $AMBCODE_SEC = $AMBCODE;
           }
@@ -323,7 +328,7 @@ class stok63_controller extends Controller
               ->where('KOD',$KOD[$i])
               ->where('LOTNUMBER',$LOTNUMBER[$i])
               ->where('SERINO',$SERINO[$i])
-              ->where('AMBCODE',$AMBCODE_T[$i])
+              ->where('AMBCODE',$AMBCODE)
               ->where('NUM1',$NUM1[$i])
               ->where('NUM2',$NUM2[$i])
               ->where('NUM3',$NUM3[$i])
@@ -342,7 +347,7 @@ class stok63_controller extends Controller
                 ->where('KOD',$KOD[$i])
                 ->where('LOTNUMBER',$LOTNUMBER[$i])
                 ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T[$i])
+                ->where('AMBCODE',$AMBCODE)
                 ->where('NUM1',$NUM1[$i])
                 ->where('NUM2',$NUM2[$i])
                 ->where('NUM3',$NUM3[$i])
@@ -356,7 +361,7 @@ class stok63_controller extends Controller
                 ->where('LOCATION3',$LOCATION3[$i])
                 ->where('LOCATION4',$LOCATION4[$i])
                 ->where('EVRAKNO',$EVRAKNO)
-                ->where('EVRAKTIPI','STOK63T-C')
+                // ->where('EVRAKTIPI','STOK63T-G')
                 ->where('TRNUM',$TRNUM[$i])
                 ->sum('SF_MIKTAR');
             
@@ -522,6 +527,7 @@ class stok63_controller extends Controller
                       return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
                   }
               }
+            }
 
             DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
@@ -606,17 +612,12 @@ class stok63_controller extends Controller
             ]);
 
           }
-
         }
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
-          DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->where('EVRAKTIPI','STOK63T-C')->delete();
-          DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->where('EVRAKTIPI','STOK63T-G')->delete();
-
           DB::table('stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
           DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$deleteTRNUM)->delete();
           DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$deleteTRNUM)->delete();
-
         }
 
         print_r("Düzenleme işlemi başarılı.");
@@ -624,11 +625,7 @@ class stok63_controller extends Controller
         $veri=DB::table($firma.'stok63e')->where('EVRAKNO',$EVRAKNO)->first();
         FunctionHelpers::Logla('STOK63',$EVRAKNO,'W',$TARIH);
         return redirect()->route('fasonsevkirsaliyesi', ['ID' => $veri->id, 'duzenleme' => 'ok']);
-
-        break;
+        
     }
-
-}
-
   }
 }
