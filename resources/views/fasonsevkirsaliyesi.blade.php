@@ -486,16 +486,31 @@ if (isset($kart_veri)) {
 
                     @if(@$_GET["SUZ"])
 
-
+                    <div class="row align-items-end">
+                      <div class="col-md-12">
+                        <label class="form-label fw-bold">İşlemler</label>
+                        <div class="action-btn-group flex gap-2 flex-wrap">
+                          <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('listeleTable')">
+                            <i class="fas fa-file-excel"></i> Excel'e Aktar
+                          </button>
+                          <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('listeleTable')">
+                            <i class="fas fa-file-word"></i> Word'e Aktar
+                          </button>
+                          <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('listeleTable')">
+                            <i class="fas fa-print"></i> Yazdır
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                     <table class="table table-bordered text-center" id="listeleTable">
                     <thead>
                       <th>Kod</th>
-                      <th>Tedarikçi</th>
+                      <th>Adet</th>
                       <th>Tarih</th>
                     </thead>
                     <tfoot>
                       <th>Kod</th>
-                      <th>Tedarikçi</th>
+                      <th>Adet</th>
                       <th>Tarih</th>
                     </tfoot>
                     <tbody>
@@ -1050,8 +1065,56 @@ if (isset($kart_veri)) {
         {{-- Fason Seç finish --}}
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+function exportTableToExcel(tableId)
+      {
+        let table = document.getElementById(tableId)
+        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+        XLSX.writeFile(wb, "tablo.xlsx");
+      }
+      function exportTableToWord(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML;
+        let htmlContent = `<!DOCTYPE html>
+            <html>
+            <head><meta charset='UTF-8'></head>
+            <body>${table}</body>
+            </html>`;
 
+        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "tablo.doc";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      }
+      function printTable(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+        let newWindow = window.open("", "_blank"); // Yeni pencere aç
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Tablo Yazdır</title>
+                <style>
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                </style>
+            </head>
+            <body>
+                ${table}
+                <script>
+                    window.onload = function() { window.print(); window.onafterprint = window.close; };
+                <\/script>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
+      }
   function addRowHandlers2() {
     var table = document.getElementById("popupSelect2");
     var rows = table.getElementsByTagName("tr");

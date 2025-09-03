@@ -197,7 +197,7 @@
 
         var table = $('#listeleTable').DataTable({
           "order": [[ 0, "desc" ]],
-          dom: 'rtip',
+          dom: 'brtip',
           buttons: ['copy', 'excel', 'print'],
           language: {
             url: '{{ asset("tr.json") }}'
