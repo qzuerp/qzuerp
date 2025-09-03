@@ -505,13 +505,13 @@ if (isset($kart_veri)) {
                     <table class="table table-bordered text-center" id="listeleTable">
                     <thead>
                       <th>Kod</th>
+                      <th>Ad</th>
                       <th>Adet</th>
-                      <th>Tarih</th>
                     </thead>
                     <tfoot>
                       <th>Kod</th>
+                      <th>Ad</th>
                       <th>Adet</th>
-                      <th>Tarih</th>
                     </tfoot>
                     <tbody>
                       @php
@@ -551,8 +551,8 @@ if (isset($kart_veri)) {
                           @endphp
                           <tr>
                             <td>{{ $row->KOD }}</td>
-                            <td>{{ $row->SF_MIKTAR }}</td>
                             <td>{{ $row->STOK_ADI }}</td>
+                            <td>{{ $row->SF_MIKTAR }}</td>
                           </tr>
                           @php
                         }
