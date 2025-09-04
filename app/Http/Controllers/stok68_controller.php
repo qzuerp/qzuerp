@@ -36,7 +36,7 @@ class stok68_controller extends Controller
 
   public function islemler(Request $request)
   {
-    //dd(request()->all());
+    // dd(request()->all());
 
     $islem_turu = $request->kart_islemleri;
     $firma = $request->input('firma').'.dbo.';
@@ -167,12 +167,12 @@ class stok68_controller extends Controller
 
         for ($i = 0; $i < $satir_say; $i++) {
 
-          if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
-            $AMBCODE_SEC = $IMALATAMBCODE;
-          }
-          else {
-            $AMBCODE_SEC = $AMBCODE_T[$i];
-          }
+          $AMBCODE_SEC = $IMALATAMBCODE;
+          // if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
+          // }
+          // else {
+          //   $AMBCODE_SEC = $AMBCODE_T[$i];
+          // }
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
@@ -188,7 +188,7 @@ class stok68_controller extends Controller
             'AMBLJ_TNM' => $AMBLJ_TNM[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'AMBCODE' => $AMBCODE_SEC,
-            // 'SIPARTNO' => $SIPARTNO[$i],
+            'MPSNO' => $JOBNO[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],
@@ -214,7 +214,7 @@ class stok68_controller extends Controller
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
-            'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+            'SF_MIKTAR' => -1*$SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
@@ -230,8 +230,8 @@ class stok68_controller extends Controller
             'NUM4' => $NUM4[$i],
             'TARIH' => $TARIH,
             'EVRAKTIPI' => 'STOK68T-C',
-            'STOK_MIKTAR' => '-'.$SF_MIKTAR[$i],
-            'AMBCODE' => $AMBCODE_SEC,
+            'STOK_MIKTAR' => -1*$SF_MIKTAR[$i],
+            'AMBCODE' => $AMBCODE,
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -247,7 +247,7 @@ class stok68_controller extends Controller
             'STOK_ADI' => $AD,
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
-            'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+            'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
@@ -264,7 +264,7 @@ class stok68_controller extends Controller
             'TARIH' => $TARIH,
             'EVRAKTIPI' => 'STOK68T-G',
             'STOK_MIKTAR' => $SF_MIKTAR[$i],
-            'AMBCODE' => $AMBCODE,
+            'AMBCODE' => $AMBCODE_SEC,
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -319,12 +319,12 @@ class stok68_controller extends Controller
 
         for ($i = 0; $i < $satir_say; $i++) {
 
-          if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
-            $AMBCODE_SEC = $IMALATAMBCODE;
-          }
-          else {
-            $AMBCODE_SEC = $AMBCODE_T[$i];
-          }
+          $AMBCODE_SEC = $IMALATAMBCODE;
+          // if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
+          // }
+          // else {
+          //   $AMBCODE_SEC = $AMBCODE_T[$i];
+          // }
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
@@ -342,6 +342,7 @@ class stok68_controller extends Controller
               'AMBLJ_TNM' => $AMBLJ_TNM[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
+              'MPSNO' => $JOBNO[$i],
               'AMBCODE' => $AMBCODE_T[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
@@ -366,7 +367,7 @@ class stok68_controller extends Controller
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
-              'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+              'SF_MIKTAR' => -1 * $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
@@ -382,25 +383,30 @@ class stok68_controller extends Controller
               'NUM4' => $NUM4[$i],
               'TARIH' => $TARIH,
               'EVRAKTIPI' => 'STOK68T-C',
-              'STOK_MIKTAR' => '-'.$SF_MIKTAR[$i],
-              'AMBCODE' => $AMBCODE_SEC,
+              'STOK_MIKTAR' => -1 * $SF_MIKTAR[$i],
+              'AMBCODE' => $AMBCODE,
               'SERINO' => $SERINO[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
             $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
-            $AD = DB::table($firma.'imlt00')->where('KOD',$R_YMAMULCODE)->select('AD')->first();
+            $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
             
+            $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
+            DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
+              'R_YMAMULMIKTAR' => $TOPLAM_MIK
+            ]);
+            // dd($R_YMAMULCODE,$AD);
             // Fason depoya giris
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
-              'KOD' => $R_YMAMULCODE,
-              'STOK_ADI' => $AD,
+              'KOD' => $R_YMAMULCODE->R_YMAMULKODU,
+              'STOK_ADI' => $AD->AD,
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
-              'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+              'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
@@ -417,7 +423,7 @@ class stok68_controller extends Controller
               'TARIH' => $TARIH,
               'EVRAKTIPI' => 'STOK68T-G',
               'STOK_MIKTAR' => $SF_MIKTAR[$i],
-              'AMBCODE' => $AMBCODE,
+              'AMBCODE' => $AMBCODE_SEC,
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -457,7 +463,7 @@ class stok68_controller extends Controller
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
-              'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+              'SF_MIKTAR' => -1*$SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
@@ -472,19 +478,27 @@ class stok68_controller extends Controller
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
               'TARIH' => $TARIH,
-              'STOK_MIKTAR' => '-'.$SF_MIKTAR[$i],
-              'AMBCODE' => $AMBCODE_SEC,
+              'STOK_MIKTAR' => -1*$SF_MIKTAR[$i],
+              'AMBCODE' => $AMBCODE,
               'SERINO' => $SERINO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
+            $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+
+            $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
+            DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
+              'R_YMAMULMIKTAR' => $TOPLAM_MIK
             ]);
 
             // Mamul depoya giris
             DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
-              'KOD' => $KOD[$i],
-              'STOK_ADI' => $STOK_ADI[$i],
+              'KOD' => $R_YMAMULCODE->R_YMAMULKODU,
+              'STOK_ADI' => $AD->AD,
               'LOTNUMBER' => $LOTNUMBER[$i],
-              'SF_MIKTAR' => '-'.$SF_MIKTAR[$i],
+              'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
@@ -500,7 +514,7 @@ class stok68_controller extends Controller
               'NUM4' => $NUM4[$i],
               'TARIH' => $TARIH,
               'STOK_MIKTAR' => $SF_MIKTAR[$i],
-              'AMBCODE' => $AMBCODE,
+              'AMBCODE' => $AMBCODE_SEC,
               'SERINO' => $SERINO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);

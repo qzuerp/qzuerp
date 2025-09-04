@@ -234,6 +234,7 @@ Auth::routes(['password.request' => false]);
   Route::get('stokgiriscikis',[stok21_controller::class,'index'])->name('stokgiriscikis');
   Route::get('uretim_fisi',[stok20_controller::class,'index'])->name('uretim_fisi');
   Route::post('receteden-hesapla', [stok20_controller::class, 'hesapla'])->name('receteden-hesapla');
+  Route::post('mpsden-hesapla', [stok20_controller::class, 'hesaplaMPS'])->name('mpsden-hesapla');
   Route::get('depodandepoyatransfer',[stok26_controller::class,'index'])->name('depodandepoyatransfer');
   Route::get('etiket_bolme',[stok25_controller::class,'index'])->name('etiket_bolme');
   Route::get('mpsgiriskarti',[mmps10_controller::class,'index'])->name('mpsgiriskarti');

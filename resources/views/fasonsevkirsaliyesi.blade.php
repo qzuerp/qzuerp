@@ -991,7 +991,9 @@ if (isset($kart_veri)) {
 
 
                         $res = DB::select($sql);
-                        $LASTTRNUM = DB::table($database.'stok63t')->max('TRNUM') ?? 0;
+                        $LASTTRNUM = DB::table($database.'stok63t')
+                        ->where('EVRAKNO', @$kart_veri->EVRAKNO)
+                        ->max('TRNUM');
                       @endphp
                       <div class="row" style="overflow: auto">
                         <table id="fasonSelectt" class="table table-striped text-center" data-page-length="10">
@@ -1023,7 +1025,7 @@ if (isset($kart_veri)) {
                           <tbody>
                             @foreach ($res as $key => $value)
                               @php
-                                $TRNUM = str_pad((int)$LASTTRNUM++, 6, "0", STR_PAD_LEFT);
+                                $TRNUM = str_pad(((int)$LASTTRNUM + 1), 6, "0", STR_PAD_LEFT);
                               @endphp
                               <tr>
                                 <td><input type="checkbox" class="seciliFason"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $TRNUM }}"></td>
@@ -1547,20 +1549,20 @@ $(document).ready(function() {
       "</button>" +
       "</span>" +
       "</td>";
-    htmlCode += " <td><input type='text' class='form-control' id='depo-"+TRNUM_FILL+"' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' disabled><input type='hidden' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"' disabled><input type='hidden' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='lok1-"+TRNUM_FILL+"' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' disabled><input type='hidden' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='lok2-"+TRNUM_FILL+"' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"' disabled><input type='hidden' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='lok3-"+TRNUM_FILL+"' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' disabled><input type='hidden' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='lok4-"+TRNUM_FILL+"' name='LOCATION4[]' value='"+satirEkleInputs.LOCATION4_FILL+"' disabled><input type='hidden' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOCATION4_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='text1-"+TRNUM_FILL+"' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"' disabled><input type='hidden' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='text2-"+TRNUM_FILL+"' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"' disabled><input type='hidden' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='text3-"+TRNUM_FILL+"' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"' disabled><input type='hidden' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
-    htmlCode += " <td><input type='text' class='form-control' id='text4-"+TRNUM_FILL+"' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"' disabled><input type='hidden' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
-    htmlCode += " <td><input type='number' class='form-control' id='num1-"+TRNUM_FILL+"' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"' disabled><input type='hidden' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
-    htmlCode += " <td><input type='number' class='form-control' id='num2-"+TRNUM_FILL+"' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"' disabled><input type='hidden' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
-    htmlCode += " <td><input type='number' class='form-control' id='num3-"+TRNUM_FILL+"' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"' disabled><input type='hidden' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
-    htmlCode += " <td><input type='number' class='form-control' id='num4-"+TRNUM_FILL+"' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"' disabled><input type='hidden' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOCATION4_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
+    htmlCode += " <td><input type='text' readonly id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
     htmlCode += " <td><button type='button' class='btn btn-default delete-row' id'deleteSingleRow' onclick=''><i class='fa fa-minus' style='color: red'></i></button></td> ";
     htmlCode += " </tr> ";
 

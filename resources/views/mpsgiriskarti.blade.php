@@ -515,7 +515,17 @@
 																		<th><input type="number" class="form-control" name="NUM3_FILL" id="NUM3_FILL"></th>
 																		<th><input type="number" class="form-control" name="NUM4_FILL" id="NUM4_FILL"></th>
 																		<th style="min-width: 150px;">
-																			<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
+																			@php
+  																				$stok_evraklar=DB::table($database.'stok00')->get();
+																			@endphp
+																			<select class="form-control select2" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="YMAMULCODE" id="YMAMULCODE" style=" height: 30px; width:100%;">
+																				<option value=" ">Seç</option>
+																				@php
+																				foreach ($stok_evraklar as $key => $veri) {
+																					echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+																				}
+																				@endphp
+																			</select>
 																		</th>
 																		<th>#</th>
 																	</tr>
@@ -584,7 +594,7 @@
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" readonly class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" readonly class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->R_YMAMULKODU }}"></td>
 																		<td style="{{ $bgColor }}">
 																			<button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button>
 																		</td>

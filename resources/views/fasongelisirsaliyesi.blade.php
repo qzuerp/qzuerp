@@ -121,13 +121,8 @@
                 </div>
                 
                 <div>
-
-                  <div class="row ">
-                    <div class="col-md-3 col-sm-3 col-xs-6">
-                      <label>Fiş No</label>
-                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
-                      <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
-                    </div>
+                  <div class="row">
+                    <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
       
                     <div class="col-md-3 col-sm-3 col-xs-6">
                       <label>Tarih</label>
@@ -135,13 +130,31 @@
                     </div>
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
-                      <label>Yan Ürün Depo</label>
-                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="YANMAMULAMBCODE_E" id="YANMAMULAMBCODE_E" >
+                      <label>Alan Depo</label>
+                      <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="IMALATAMBCODE_E" id="IMALATAMBCODE_E" >
                         <option value="" selected>Seç</option>
                         @php
                           foreach ($depo_evraklar as $key => $veri) {
 
-                              if ($veri->KOD == @$kart_veri->YANMAMULAMBCODE) {
+                              if ($veri->KOD == @$kart_veri->IMALATAMBCODE) {
+                                  echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                              }
+                              else {
+                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                              }
+                          }
+                        @endphp
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <label>Fason Depo</label>
+                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
+                        <option value="" selected>Seç</option>
+                        @php
+                          foreach ($depo_evraklar as $key => $veri) {
+
+                              if ($veri->KOD == @$kart_veri->AMBCODE) {
                                   echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
                               }
                               else {
@@ -801,7 +814,7 @@
     <script>
       function fasonSuz()
       {
-        let DEPO = $('#YANMAMULAMBCODE_E').val();
+        let DEPO = $('#AMBCODE_E').val();
         let URETICI = $('#CARIHESAPCODE_E').val();
         
         $.ajax({

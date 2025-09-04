@@ -181,7 +181,7 @@ class stok63_controller extends Controller
             'PKTICIADET' => $PKTICIADET[$i],
             'AMBLJ_TNM' => $AMBLJ_TNM[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
-            'AMBCODE' => $AMBCODE_SEC,
+            'AMBCODE' => $TARGETAMBCODE,
             'MPSNO' => $MPSNO[$i],
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
@@ -385,7 +385,7 @@ class stok63_controller extends Controller
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
               'MPSNO' => $MPSNO[$i],
-              'AMBCODE' => $AMBCODE_T[$i],
+              'AMBCODE' => $TARGETAMBCODE,
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
               'LOCATION3' => $LOCATION3[$i],
@@ -528,6 +528,61 @@ class stok63_controller extends Controller
                       return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
                   }
               }
+
+              // Depodan cikis
+              DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$TRNUM[$i])->update([
+                'SRNUM' => $SRNUM,
+                'KOD' => $KOD[$i],
+                'STOK_ADI' => $STOK_ADI[$i],
+                'LOTNUMBER' => $LOTNUMBER[$i],
+                'SF_MIKTAR' => -1 * $SF_MIKTAR[$i],
+                'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+                'LOCATION1' => $LOCATION1[$i],
+                'LOCATION2' => $LOCATION2[$i],
+                'LOCATION3' => $LOCATION3[$i],
+                'LOCATION4' => $LOCATION4[$i],
+                'TEXT1' => $TEXT1[$i],
+                'TEXT2' => $TEXT2[$i],
+                'TEXT3' => $TEXT3[$i],
+                'TEXT4' => $TEXT4[$i],
+                'NUM1' => $NUM1[$i],
+                'NUM2' => $NUM2[$i],
+                'NUM3' => $NUM3[$i],
+                'NUM4' => $NUM4[$i],
+                'TARIH' => $TARIH,
+                'STOK_MIKTAR' => -1 * $SF_MIKTAR[$i],
+                'AMBCODE' => $AMBCODE,
+                'SERINO' => $SERINO[$i],
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
+
+              // Fason depoya giris
+
+              DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$TRNUM[$i])->update([
+                'SRNUM' => $SRNUM,
+                'KOD' => $KOD[$i],
+                'STOK_ADI' => $STOK_ADI[$i],
+                'LOTNUMBER' => $LOTNUMBER[$i],
+                'SF_MIKTAR' => $SF_MIKTAR[$i],
+                'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+                'LOCATION1' => $LOCATION1[$i],
+                'LOCATION2' => $LOCATION2[$i],
+                'LOCATION3' => $LOCATION3[$i],
+                'LOCATION4' => $LOCATION4[$i],
+                'TEXT1' => $TEXT1[$i],
+                'TEXT2' => $TEXT2[$i],
+                'TEXT3' => $TEXT3[$i],
+                'TEXT4' => $TEXT4[$i],
+                'NUM1' => $NUM1[$i],
+                'NUM2' => $NUM2[$i],
+                'NUM3' => $NUM3[$i],
+                'NUM4' => $NUM4[$i],
+                'TARIH' => $TARIH,
+                'STOK_MIKTAR' => $SF_MIKTAR[$i],
+                'AMBCODE' => $TARGETAMBCODE,
+                'SERINO' => $SERINO[$i],
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
             }
 
             DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
@@ -554,62 +609,6 @@ class stok63_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
-              'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            // Depodan cikis
-
-            DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$TRNUM[$i])->update([
-              'SRNUM' => $SRNUM,
-              'KOD' => $KOD[$i],
-              'STOK_ADI' => $STOK_ADI[$i],
-              'LOTNUMBER' => $LOTNUMBER[$i],
-              'SF_MIKTAR' => -1 * $SF_MIKTAR[$i],
-              'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-              'LOCATION1' => $LOCATION1[$i],
-              'LOCATION2' => $LOCATION2[$i],
-              'LOCATION3' => $LOCATION3[$i],
-              'LOCATION4' => $LOCATION4[$i],
-              'TEXT1' => $TEXT1[$i],
-              'TEXT2' => $TEXT2[$i],
-              'TEXT3' => $TEXT3[$i],
-              'TEXT4' => $TEXT4[$i],
-              'NUM1' => $NUM1[$i],
-              'NUM2' => $NUM2[$i],
-              'NUM3' => $NUM3[$i],
-              'NUM4' => $NUM4[$i],
-              'TARIH' => $TARIH,
-              'STOK_MIKTAR' => -1 * $SF_MIKTAR[$i],
-              'AMBCODE' => $AMBCODE,
-              'SERINO' => $SERINO[$i],
-              'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            // Fason depoya giris
-
-            DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$TRNUM[$i])->update([
-              'SRNUM' => $SRNUM,
-              'KOD' => $KOD[$i],
-              'STOK_ADI' => $STOK_ADI[$i],
-              'LOTNUMBER' => $LOTNUMBER[$i],
-              'SF_MIKTAR' => $SF_MIKTAR[$i],
-              'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-              'LOCATION1' => $LOCATION1[$i],
-              'LOCATION2' => $LOCATION2[$i],
-              'LOCATION3' => $LOCATION3[$i],
-              'LOCATION4' => $LOCATION4[$i],
-              'TEXT1' => $TEXT1[$i],
-              'TEXT2' => $TEXT2[$i],
-              'TEXT3' => $TEXT3[$i],
-              'TEXT4' => $TEXT4[$i],
-              'NUM1' => $NUM1[$i],
-              'NUM2' => $NUM2[$i],
-              'NUM3' => $NUM3[$i],
-              'NUM4' => $NUM4[$i],
-              'TARIH' => $TARIH,
-              'STOK_MIKTAR' => $SF_MIKTAR[$i],
-              'AMBCODE' => $TARGETAMBCODE,
-              'SERINO' => $SERINO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
