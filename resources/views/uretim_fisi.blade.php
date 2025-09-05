@@ -672,7 +672,7 @@ if (isset($kart_veri)) {
                     <button type="button" class="btn btn-default delete-row2" id="deleteRow2"><i class="fa fa-minus" style="color: red;"></i>&nbsp;Seçili Satırları Sil</button>
                   </div>
 
-                  <div  class="col-md-4 col-sm-6 col-xs-8">
+                  <div  class="col-md-4 col-sm-6 col-xs-8 m-auto">
                     <select class="form-control select2 js-example-basic-single"  onchange="receteden_hesapla(this.value)" name="stokDusum" id="stokDusum">
                      <option value=" ">Seç</option>
                      <option value="">Ürün Ağacından Hammaddeleri Hesapla</option>

@@ -118,6 +118,7 @@ Auth::routes(['password.request' => false]);
   Route::post('stok25_islemler',[stok25_controller::class,'islemler']);
   Route::post('bomu01_islemler',[bomu01_controller::class,'islemler']);
   Route::post('mmps10_islemler',[mmps10_controller::class,'islemler']);
+  Route::post('mps_olustur',[mmps10_controller::class,'mps_olustur']);
   Route::post('mmps10_fetchData',[mmps10_controller::class,'fetchData']);
   Route::post('chartVeri',[mmps10_controller::class,'chartVeri']);
   Route::post('chartVeri2',[mmps10_controller::class,'chartVeri2']);

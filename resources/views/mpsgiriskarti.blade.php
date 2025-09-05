@@ -367,6 +367,16 @@
 													<div style="display:flex; gap:10px; margin:15px 0px;">
 														<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
 														<button type="button" class="btn btn-default" onclick="receteden_hesapla()" name="stokDusum" id="stokDusum"><i class="fa fa-plus-square" style="color: blue"></i> Ürün Ağacından Ekle</button>
+														<select class="form-control select2 js-example-basic-single"  onchange="MPSolustur(this.value)" name="stokDusum" id="stokDusum">
+															<option value=" ">Seç</option>
+															<option value="">Çok seviyeli MPS oluştur</option>
+															<!-- <option value="category2">MPS'den veya Ürün Ağaçlarından Hammaddeleri Hesapla</option>
+															<option value="category1">MPS'den fason operasyonlarını hesapla</option> -->
+															<!-- <option value="category3">Transferlerden veya MPS'den Hammaddeleri Hesapla</option>
+															<option value="category4">Transferlerden veya MPS'den Hammaddeleri Hesapla (Tüm Depolar)</option>
+															<option value="category5">Sadece MPS için Transfer Edilen Tüm Hammaddeleri Hesapla</option>
+															<option value="category6">Sadece MPS için Transfer Edilen Tüm Hammaddeleri Hesapla (Tüm Depolar)</option> -->
+														</select>
 													</div>
 													<div class="row">
 														<div class="row">
@@ -406,7 +416,7 @@
 																	</tr>
 																	<tr class="satirEkle" style="background-color:#3c8dbc">
 																		<th>
-																			<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+																			<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: white"></i></button>
 																		</th>
 																		<th style="min-width:0px !important; width:50px;">
 																			<select class="form-select" style="font-size: 0.7rem !important;" id="R_ACIK_KAPALI_FILL">
@@ -518,7 +528,7 @@
 																			@php
   																				$stok_evraklar=DB::table($database.'stok00')->get();
 																			@endphp
-																			<select class="form-control select2" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="YMAMULCODE" id="YMAMULCODE" style=" height: 30px; width:100%;">
+																			<select class="form-control select2" data-name="KOD" name="YMAMULCODE" id="YMAMULCODE" style=" height: 30px; width:100%;">
 																				<option value=" ">Seç</option>
 																				@php
 																				foreach ($stok_evraklar as $key => $veri) {
@@ -2208,8 +2218,6 @@
 					updateLastTRNUM(TRNUM_FILL);
 
 					emptyInputs('satirEkle');
-
-
 				});
 
 			});
@@ -2377,9 +2385,62 @@
 			    emptyInputs('satirEkle');
 				Swal.close();
 			}
+
+			function MPSolustur()
+			{
+				var tab = document.getElementById('firma').value;
+
+				if (tab == null || tab.trim() === "") {
+					Swal.fire({
+						title: "Uyarı",
+						html: "MPS oluşturmak için <br> önce evrakı kaydetmelisiniz",
+						icon: "warning",
+						// confirm
+					});
+					return;
+				}
+
+				Swal.fire({
+					title: 'Oluşturuluyor...',
+					text: 'Lütfen bekleyin',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				});
+
+				var KOD = [];
+				var AD  = [];
+
+				$('#veriTable tbody tr').each(function() {
+					let KT = $(this).find("input[name='R_KAYNAKTYPE[]']").val();
+					if(KT === 'H') {
+						let kodVal = $(this).find("input[name='R_KAYNAKKODU[]']").val();
+						let adVal  = $(this).find("input[name='KAYNAK_AD[]']").val();
+
+						KOD.push(kodVal);
+						AD.push(adVal);
+					}
+				});
+
+				$.ajax({
+					url:'/mps_olustur',
+					type:'post',
+					data:{EVRAKNO:{{@$kart_veri->EVRAKNO}},KOD:KOD,AD:AD},
+					success:function(res)
+					{
+						Swal.close();
+
+						Swal.fire({
+							title: "MPS(ler) Oluşturuldu",
+							text: "MPS(ler) "+res+" olarak oluşturuldu",
+							icon: "success",
+						})
+					}
+				});
+			}
 		</script>
 
-		{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
 		<script>

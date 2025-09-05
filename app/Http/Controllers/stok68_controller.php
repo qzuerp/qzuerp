@@ -124,10 +124,10 @@ class stok68_controller extends Controller
         DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->delete();
         DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-C')->delete();
 
-          print_r("Silme işlemi başarılı.");
+        print_r("Silme işlemi başarılı.");
 
-          $sonID=DB::table($firma.'stok68e')->min('EVRAKNO');
-          return redirect()->route('fasongelisirsaliyesi', ['ID' => $sonID, 'silme' => 'ok']);
+        $sonID=DB::table($firma.'stok68e')->min('EVRAKNO');
+        return redirect()->route('fasongelisirsaliyesi', ['ID' => $sonID, 'silme' => 'ok']);
 
         break;
 
@@ -235,16 +235,22 @@ class stok68_controller extends Controller
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
-          $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
-          $AD = DB::table($firma.'imlt00')->where('KOD',$R_YMAMULCODE)->select('AD')->first();
+          if($JOBNO[$i] != null)
+          {
+            $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
+            if($R_YMAMULCODE->R_YMAMULKODU)
+            {
+              $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+            }
+          }
           
           // Fason depoya giris
           DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
-            'KOD' => $R_YMAMULCODE,
-            'STOK_ADI' => $AD,
+            'KOD' => $R_YMAMULCODE->R_YMAMULKODU,
+            'STOK_ADI' => $AD->AD,
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => $SF_MIKTAR[$i],
@@ -389,13 +395,21 @@ class stok68_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
-            $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
-            $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+            if($JOBNO[$i] != null)
+            {
+              $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
+              if($R_YMAMULCODE->R_YMAMULKODU)
+              {
+                $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+              }
+              
+              $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
+              DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
+                'R_YMAMULMIKTAR' => $TOPLAM_MIK
+              ]);
+            }
             
-            $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
-            DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
-              'R_YMAMULMIKTAR' => $TOPLAM_MIK
-            ]);
+           
             // dd($R_YMAMULCODE,$AD);
             // Fason depoya giris
             DB::table($firma.'stok10a')->insert([
@@ -488,10 +502,11 @@ class stok68_controller extends Controller
             $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
 
             $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
-            DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
+
+            $sonuc = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->update([
               'R_YMAMULMIKTAR' => $TOPLAM_MIK
             ]);
-
+            // dd($TOPLAM_MIK,$sonuc);
             // Mamul depoya giris
             DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
@@ -529,6 +544,14 @@ class stok68_controller extends Controller
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->where('TRNUM',$deleteTRNUM)->delete();
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-C')->where('TRNUM',$deleteTRNUM)->delete();
 
+          if($JOBNO[$i])
+          {
+            DB::table($firma.'mmps10t')
+            ->where('JOBNO', $JOBNO[$i])
+            ->update([
+                'R_YMAMULMIKTAR' => DB::raw('R_YMAMULMIKTAR - '.$SF_MIKTAR[$i])
+            ]);
+          }
         }
 
         print_r("Düzenleme işlemi başarılı.");

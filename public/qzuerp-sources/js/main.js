@@ -413,7 +413,7 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
  function popupToDropdown(value, inputName, modalName) {
   var parts = value.split('|||');
   var KOD = parts[0];
-  var AD = parts[1]; 
+  var AD = parts[1];
   var IUNIT = parts[2];
   
   var $select = $("#" + inputName);

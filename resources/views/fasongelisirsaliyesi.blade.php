@@ -233,16 +233,17 @@
                     	<div class="tab-content">
 
                     		<div class="active tab-pane" id="irsaliye">
-                          <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;Fason Süz</button>
-                          <br><br>
+                          <div class="my-2 d-flex gap-2">
+                            <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;Fason Süz</button>
+                          </div>
 
                           <table class="table table-bordered text-center" id="veriTable" >
                             <thead>
                               <tr>
                                 <th>#</th>
                                 <th style="display:none;">Sıra</th>
-                                <th>Stok Kodu</th>
+                                <th style="min-width:150px;">Stok Kodu</th>
                                 <th>Stok Adı</th>
                                 <th>İşlem Mik.</th>
                                 <th>İşlem Br.</th>

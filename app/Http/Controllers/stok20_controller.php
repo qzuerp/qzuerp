@@ -1156,19 +1156,17 @@ class stok20_controller extends Controller
             M10T.R_YMAMULKODU AS TI_KOD,
             S002.AD AS TI_STOK_ADI,
             M10T.R_KAYNAKTYPE AS PM,
-
-            CAST(S20T.SF_MIKTAR * M10T.R_MIKTAR0 / NULLIF(M10T.R_MIKTART, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
+            M10T.R_YMAMULMIKTAR,
+            CAST(S20T.SF_MIKTAR * M10T.R_YMAMULMIKTAR / NULLIF(M10E.SF_TOPLAMMIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
             S002.IUNIT AS TI_SF_SF_UNIT,
 
             ISNULL((
               SELECT SUM(SF_MIKTAR) 
               FROM " . $firma . "STOK10A 
               WHERE KOD = M10T.R_YMAMULKODU
-            ), 0) AS MEVCUT_STOK,
+            ), 0) AS MEVCUT_STOK
 
-            M10T.R_YMAMULMIKTAR
-        FROM
-        (
+        FROM (
             SELECT S20.*,
                   (SELECT MAX(R_SIRANO) 
                     FROM " . $firma . "MMPS10T 
@@ -1176,6 +1174,7 @@ class stok20_controller extends Controller
             FROM " . $firma . "STOK20T S20
             WHERE S20.EVRAKNO = " . $GET_ID . "
         ) S20T
+
         LEFT JOIN " . $firma . "STOK20E S20E 
               ON S20E.EVRAKNO = S20T.EVRAKNO
         LEFT JOIN " . $firma . "STOK00 S00 
@@ -1185,19 +1184,23 @@ class stok20_controller extends Controller
               AND M10T.R_KAYNAKTYPE = 'I'
               AND M10T.R_KAYNAKKODU LIKE 'F%'
               AND M10T.R_SIRANO = S20T.MPS_SIRANO
+        LEFT JOIN " . $firma . "MMPS10E M10E 
+              ON M10E.EVRAKNO = M10T.EVRAKNO
         LEFT JOIN " . $firma . "STOK00 S002 
               ON S002.KOD = M10T.R_YMAMULKODU
+
         ORDER BY M10T.R_SIRANO DESC;
-      ";
+    ";
+
 
       $table = DB::select($sql_sorgu);
-
+      
       $data = [];
       
       foreach ($table as $row) {
           $istenen = $row->TI_SF_MIKTAR;
           $stok_kod = $row->TI_KOD;
-          if($row->PM == 'H')
+          if($row->PM == 'I')
           {
             $stokKaydi = $veriler = DB::table($firma.'stok10a')
                 ->selectRaw("'".$row->TI_KARSITRNUM."' AS TI_KARSITRNUM,'".$row->TI_KARSIKOD."' AS TI_KARSIKOD,'".$row->TI_KARSISTOK_ADI."' AS TI_KARSISTOK_ADI,
@@ -1214,7 +1217,7 @@ class stok20_controller extends Controller
                     'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'
                 )
                 ->get();
-
+            
 
             foreach ($stokKaydi as $veri)
             {
@@ -1227,17 +1230,15 @@ class stok20_controller extends Controller
                 $istenen = 0;
                 break;
               }
-              else
-              {
-                if($istenen >= 0)
-                {
-                  $satir1 = $veri;
-                  $satir1->TI_SF_MIKTAR = $veri->MIKTAR;
-                  $satir1->STOKTAN_DUS = true;
-                  $satir1->PM = '';
-                  $data[] = $satir1;
-                  $istenen -= $veri->MIKTAR;
-                }
+              else {
+                  if($istenen > 0) {
+                      $satir1 = $veri;
+                      $satir1->TI_SF_MIKTAR = $veri->MIKTAR;
+                      $satir1->STOKTAN_DUS = true;
+                      $satir1->PM = '';
+                      $data[] = $satir1;
+                      $istenen -= $veri->MIKTAR;
+                  }
               }
             }
             if($istenen > 0)
