@@ -403,7 +403,7 @@ class stok63_controller extends Controller
 
             // Depodan cikis
 
-            DB::table('stok10a')->insert([
+            DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
@@ -434,7 +434,7 @@ class stok63_controller extends Controller
 
             // Fason depoya giris
 
-            DB::table('stok10a')->insert([
+            DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
@@ -530,7 +530,7 @@ class stok63_controller extends Controller
               }
 
               // Depodan cikis
-              DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$TRNUM[$i])->update([
+              DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$TRNUM[$i])->update([
                 'SRNUM' => $SRNUM,
                 'KOD' => $KOD[$i],
                 'STOK_ADI' => $STOK_ADI[$i],
@@ -558,7 +558,7 @@ class stok63_controller extends Controller
 
               // Fason depoya giris
 
-              DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$TRNUM[$i])->update([
+              DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$TRNUM[$i])->update([
                 'SRNUM' => $SRNUM,
                 'KOD' => $KOD[$i],
                 'STOK_ADI' => $STOK_ADI[$i],
