@@ -937,7 +937,7 @@ if (isset($kart_veri)) {
                           ) AS T2
                           LEFT JOIN {$database}VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
                           LEFT JOIN {$database}STOK00 S00 ON S00.KOD = T2.HAMMADDE
-                          WHERE S01.MIKTAR > 0 and
+                          WHERE S01.MIKTAR > 0
                           ";
 
 
