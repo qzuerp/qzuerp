@@ -616,9 +616,9 @@ class stok63_controller extends Controller
         }
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
-          DB::table('stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
-          DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$deleteTRNUM)->delete();
-          DB::table('stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$deleteTRNUM)->delete();
+          DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+          DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$deleteTRNUM)->delete();
+          DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-C')->where('TRNUM',$deleteTRNUM)->delete();
         }
 
         print_r("Düzenleme işlemi başarılı.");
