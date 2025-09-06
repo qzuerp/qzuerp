@@ -1080,7 +1080,7 @@
                     </div>
                   {{-- LİSTE BİTİŞ --}}
                   
-                  {{-- BAĞLANTILI DÖKÜMANLAR BİTİŞ --}}
+                  {{-- BAĞLANTILI DokümanLAR BİTİŞ --}}
                     <div class="tab-pane" id="baglantiliDokumanlar">
                       <div class="row">
                         <div class="row">
@@ -1090,7 +1090,7 @@
                         </div>
                       </div>
                     </div>
-                  {{-- BAĞLANTILI DÖKÜMANLAR BİTİŞ --}}
+                  {{-- BAĞLANTILI DokümanLAR BİTİŞ --}}
 
                 </div>
               </div>

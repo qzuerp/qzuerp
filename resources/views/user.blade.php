@@ -388,7 +388,7 @@
                                     <td><input type="checkbox" class="yetki_write"  id="fasongelisirsaliyesi_write" name="yetki_write[]" value="FSNGLSIRS" @php if(in_array('FSNGLSIRS', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="fasongelisirsaliyesi_delete" name="yetki_delete[]" value="FSNGLSIRS" @php if(in_array('FSNGLSIRS', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
-                                  <tr><td>Döküman Yönetimi</td>
+                                  <tr><td>Doküman Yönetimi</td>
                                     <td><input type="checkbox" class="yetki_read"   id="DYS_read" name="yetki_read[]" value="DYS" @php if(in_array('DYS', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="DYS" @php if(in_array('DYS', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="DYS" @php if(in_array('DYS', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>

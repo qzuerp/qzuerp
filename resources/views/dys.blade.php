@@ -10,7 +10,7 @@
 	$firma = trim($kullanici_veri->firma);
 	$ekran = "DYS";
 	$ekranRumuz = "DYS";
-	$ekranAdi = "Döküman Yönetimi";
+	$ekranAdi = "Doküman Yönetimi";
 	$ekranLink = "dys";
 	$ekranTableE = $database."dys00";
 	$ekranKayitSatirKontrol = "false";
@@ -90,143 +90,138 @@
 										 
 									</div>
 									<div class="col-md-2 col-xs-2">
-	                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-	                  <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
-	                </div>
+										<input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
+										<input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+									</div>
 									<div class="col-md-6 col-xs-6">
 										@include('layout.util.evrakIslemleri')
 									</div>
 								</div>
 
-								<div class="row">
-									<div class="row">
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Kodu</label>
-											<input type="text" class="form-control" name="DOKUMAN_NO" required id="DOKUMAN_NO" maxlength="16"  value="{{ @$kart_veri->DOKUMAN_NO }}">
-										</div>
+								<div class="row g-3">
 
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Kaynağı</label>
-											<input type="text" class="form-control" maxlength="50" name="DOKUMAN_KAYNAGI" id="DOKUMAN_KAYNAGI" value="{{ @$kart_veri->DOKUMAN_KAYNAGI }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>İlk Yayın Tar</label>
-											<input type="date" class="form-control" name="ILKYAYIN_TAR" id="ILKYAYIN_TAR" value="{{ @$kart_veri->ILKYAYIN_TAR }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Gözden Geç. Sorumlu</label>
-											<input type="text" class="form-control" maxlength="50" name="GOZ_GECIRME_SOR" id="GOZ_GECIRME_SOR" value="{{ @$kart_veri->GOZ_GECIRME_SOR }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>İlgili Süreç</label>
-											<input type="text" class="form-control" maxlength="50" name="ILGILI_SUREC" id="ILGILI_SUREC" value="{{ @$kart_veri->ILGILI_SUREC }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Adı</label>
-											<input type="text" class="form-control" maxlength="50" required  name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Türü-1</label>
-											<input type="text" class="form-control" maxlength="50" name="DOKUMAN_TURU_1" id="DOKUMAN_TURU_1" value="{{ @$kart_veri->DOKUMAN_TURU_1 }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Döküman İptal/İmha Tar</label>
-											<input type="date" class="form-control" name="DOK_IPTAL_TAR" id="DOK_IPTAL_TAR" value="{{ @$kart_veri->DOK_IPTAL_TAR }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Gözden Geç. Pery. (AY)</label>
-											<input type="text" class="form-control" maxlength="50" name="GOZ_GECIRME_PERY" id="GOZ_GECIRME_PERY" value="{{ @$kart_veri->GOZ_GECIRME_PERY;}}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>İlgili Prosedür</label>
-											<input type="text" class="form-control" maxlength="50" name="ILGILI_PROSEDUR" id="ILGILI_PROSEDUR" value="{{ @$kart_veri->ILGILI_PROSEDUR }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Revizyon No</label>
-											<input type="text" class="form-control" maxlength="50" name="REVIZYON_NO" id="REVIZYON_NO" value="{{ @$kart_veri->REVIZYON_NO }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Türü-2</label>
-											<input type="text" class="form-control" maxlength="50" name="DOKUMAN_TURU_2" id="DOKUMAN_TURU_2" value="{{ @$kart_veri->DOKUMAN_TURU_2 }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Durumu</label>
-											<input type="text" class="form-control" maxlength="50" name="DURUMU" id="DURUMU" value="{{ @$kart_veri->DURUMU }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Gözden Geç. Tar</label>
-											<input type="date" class="form-control" name="GOZ_GECIRME_TAR" id="GOZ_GECIRME_TAR" value="{{ @$kart_veri->GOZ_GECIRME_TAR }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>İlgili Talimat</label>
-											<input type="text" class="form-control" maxlength="50" name="ILGILI_TALIMAT" id="ILGILI_TALIMAT" value="{{ @$kart_veri->ILGILI_TALIMAT }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Revizyon  Tarihi</label>
-											<input type="date" class="form-control" name="REVIZYON_TAR" id="REVIZYON_TAR" value="{{ @$kart_veri->REVIZYON_TAR }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Müşteri</label>
-											<input type="text" class="form-control" maxlength="50" name="MUSTERI_KOD" id="MUSTERI_KOD" value="{{ @$kart_veri->MUSTERI_KOD }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Arşiv Süresi (YIL)</label>
-											<input type="text" class="form-control" maxlength="50" name="ARSIV_SURESI" id="ARSIV_SURESI" value="{{ @$kart_veri->ARSIV_SURESI }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Gel. Gözden Geç. Tar</label>
-											<input type="date" class="form-control" name="GOZ_GECIRME_TAR" id="GOZ_GECIRME_TAR" value="{{ @$kart_veri->GOZ_GECIRME_TAR }}">
-										</div>
-
-										{{-- <div class="col-md-2 col-sm-4 col-xs-6">
-											<label>İlgili Parça Kodu</label>
-											<input type="text" class="form-control" maxlength="50" name="AD" id="AD" value="{{ @$kart_veri->AD }}">
-										</div> --}}
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Döküman Sınıfı</label>
-											<input type="text" class="form-control" maxlength="50" name="DOKUMAN_SINIFI" id="DOKUMAN_SINIFI" value="{{ @$kart_veri->DOKUMAN_SINIFI }}">
-										</div>
-
-										<div class="col-md-3 col-sm-4 col-xs-6">
-											<label>Tedarikçi</label>
-											<input type="text" class="form-control" maxlength="50" name="TEDARIKCI_KOD" id="TEDARIKCI_KOD" value="{{ @$kart_veri->TEDARIKCI_KOD }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Hata Bildirimi</label>
-											<input type="text" class="form-control" maxlength="50" name="HATA_BILDIRIMI" id="HATA_BILDIRIMI" value="{{ @$kart_veri->HATA_BILDIRIMI }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Master Kod</label>
-											<input type="text" class="form-control" maxlength="50" name="MASTER_KOD" id="MASTER_KOD" value="{{ @$kart_veri->MASTER_KOD }}">
-										</div>
-
-										<div class="col-md-2 col-sm-4 col-xs-6">
-											<label>Parça Adı</label>
-											<input type="text" class="form-control" maxlength="50" name="PARCA_ADI" id="PARCA_ADI" value="{{ @$kart_veri->PARCA_ADI }}">
-										</div>
-
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Kodu</label>
+										<input type="text" class="form-control" name="DOKUMAN_NO" required id="DOKUMAN_NO" maxlength="16" value="{{ @$kart_veri->DOKUMAN_NO }}">
 									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Kaynağı</label>
+										<input type="text" class="form-control" maxlength="50" name="DOKUMAN_KAYNAGI" id="DOKUMAN_KAYNAGI" value="{{ @$kart_veri->DOKUMAN_KAYNAGI }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>İlk Yayın Tar</label>
+										<input type="date" class="form-control" name="ILKYAYIN_TAR" id="ILKYAYIN_TAR" value="{{ @$kart_veri->ILKYAYIN_TAR }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Gözden Geç. Sorumlu</label>
+										<input type="text" class="form-control" maxlength="50" name="GOZ_GECIRME_SOR" id="GOZ_GECIRME_SOR" value="{{ @$kart_veri->GOZ_GECIRME_SOR }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>İlgili Süreç</label>
+										<input type="text" class="form-control" maxlength="50" name="ILGILI_SUREC" id="ILGILI_SUREC" value="{{ @$kart_veri->ILGILI_SUREC }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Adı</label>
+										<input type="text" class="form-control" maxlength="50" required name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Türü-1</label>
+										<input type="text" class="form-control" maxlength="50" name="DOKUMAN_TURU_1" id="DOKUMAN_TURU_1" value="{{ @$kart_veri->DOKUMAN_TURU_1 }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Doküman İptal/İmha Tar</label>
+										<input type="date" class="form-control" name="DOK_IPTAL_TAR" id="DOK_IPTAL_TAR" value="{{ @$kart_veri->DOK_IPTAL_TAR }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Gözden Geç. Pery. (AY)</label>
+										<input type="text" class="form-control" maxlength="50" name="GOZ_GECIRME_PERY" id="GOZ_GECIRME_PERY" value="{{ @$kart_veri->GOZ_GECIRME_PERY }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>İlgili Prosedür</label>
+										<input type="text" class="form-control" maxlength="50" name="ILGILI_PROSEDUR" id="ILGILI_PROSEDUR" value="{{ @$kart_veri->ILGILI_PROSEDUR }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Revizyon No</label>
+										<input type="text" class="form-control" maxlength="50" name="REVIZYON_NO" id="REVIZYON_NO" value="{{ @$kart_veri->REVIZYON_NO }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Türü-2</label>
+										<input type="text" class="form-control" maxlength="50" name="DOKUMAN_TURU_2" id="DOKUMAN_TURU_2" value="{{ @$kart_veri->DOKUMAN_TURU_2 }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Durumu</label>
+										<input type="text" class="form-control" maxlength="50" name="DURUMU" id="DURUMU" value="{{ @$kart_veri->DURUMU }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Gözden Geç. Tar</label>
+										<input type="date" class="form-control" name="GOZ_GECIRME_TAR" id="GOZ_GECIRME_TAR" value="{{ @$kart_veri->GOZ_GECIRME_TAR }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>İlgili Talimat</label>
+										<input type="text" class="form-control" maxlength="50" name="ILGILI_TALIMAT" id="ILGILI_TALIMAT" value="{{ @$kart_veri->ILGILI_TALIMAT }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Revizyon Tarihi</label>
+										<input type="date" class="form-control" name="REVIZYON_TAR" id="REVIZYON_TAR" value="{{ @$kart_veri->REVIZYON_TAR }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Müşteri</label>
+										<input type="text" class="form-control" maxlength="50" name="MUSTERI_KOD" id="MUSTERI_KOD" value="{{ @$kart_veri->MUSTERI_KOD }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Arşiv Süresi (YIL)</label>
+										<input type="text" class="form-control" maxlength="50" name="ARSIV_SURESI" id="ARSIV_SURESI" value="{{ @$kart_veri->ARSIV_SURESI }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Gel. Gözden Geç. Tar</label>
+										<input type="date" class="form-control" name="GOZ_GECIRME_TAR" id="GOZ_GECIRME_TAR" value="{{ @$kart_veri->GOZ_GECIRME_TAR }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Doküman Sınıfı</label>
+										<input type="text" class="form-control" maxlength="50" name="DOKUMAN_SINIFI" id="DOKUMAN_SINIFI" value="{{ @$kart_veri->DOKUMAN_SINIFI }}">
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-12">
+										<label>Tedarikçi</label>
+										<input type="text" class="form-control" maxlength="50" name="TEDARIKCI_KOD" id="TEDARIKCI_KOD" value="{{ @$kart_veri->TEDARIKCI_KOD }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Hata Bildirimi</label>
+										<input type="text" class="form-control" maxlength="50" name="HATA_BILDIRIMI" id="HATA_BILDIRIMI" value="{{ @$kart_veri->HATA_BILDIRIMI }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Master Kod</label>
+										<input type="text" class="form-control" maxlength="50" name="MASTER_KOD" id="MASTER_KOD" value="{{ @$kart_veri->MASTER_KOD }}">
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12">
+										<label>Parça Adı</label>
+										<input type="text" class="form-control" maxlength="50" name="PARCA_ADI" id="PARCA_ADI" value="{{ @$kart_veri->PARCA_ADI }}">
+									</div>
+
 								</div>
+
 
 								<div class="row">
 									<div class="row">
@@ -248,8 +243,8 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="box box-warning">
-									<div class="box-header with-border gradient-orange" style="border-radius: 0px;">
-										<center><h4 style="color: white;"><b>PERSONEL</b></h4></center>
+									<div class="box-header with-border gradient-orange">
+										<center><h4 class="m-0" style="color: white;"><b>PERSONEL</b></h4></center>
 									</div>
 									<!-- /.box-header -->
 									<div class="box-body">
@@ -274,106 +269,102 @@
 							<div class="col-lg-9">
 								<div class="row">
 									<div class="box box-warning">
-										<div class="box-header with-border gradient-orange" style="border-radius: 0px;">
+										<div class="box-header with-border gradient-orange">
 											<center>
-												<h4>
+												<h4 class="m-0">
 													<b style="color: white;">DOSYA</b>
 												</h4>
 											</center>
 										</div>
 		
 										@php $dosyaTuruKodlari = DB::table($database.'gecoust')->where('EVRAKNO','DOSYATURLERI')->get(); @endphp
-
-						        <div class="row">
-					            <div class="row">
-					              <div class="box">
-					                <div class="box-body">
-					                  <!-- <form class="form-horizontal" enctype="multipart/form-data" method="POST" name="dosyaVerilerForm" id="dosyaVerilerForm"> -->
-						                  <div class="row">
-						                  	<div class="col-xs-2">
-						                      <select id="dosyaTuruKodu" name="dosyaTuruKodu" class="form-control js-example-basic-single" style="width: 100%;">
-						                        <option value=" ">Seç</option>
-							                      @php 
-								                      foreach ($dosyaTuruKodlari as $key => $veri) {
-								                        echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-								                      }
-							                      @endphp
-						                      </select>
-						                    </div>
-						                    <div class="col-xs-3">
-						                      <input type="text" maxlength="255" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
-						                      <input type="hidden" id="dosyaEvrakType" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
-						                      <input type="hidden" id="dosyaEvrakNo" name="dosyaEvrakNo" value="{{ $kart_veri->id ?? $kart_veri->EVRAKNO ?? '' }}">
-						                    </div>
-						                    <div class="col-xs-2">
-						                      <input type="file" class="form-control" id="dosyaFile" name="dosyaFile">
-						                    </div>
-						                    <div class="col-md-2 col-xs-2">
-								                  <input type="text" class="form-control input-sm" maxlength="16" name="dosya_firma" id="dosya_firma" required="" value="{{ $firma }}" disabled>
-								                  <input type="hidden" maxlength="16" class="form-control input-sm" name="dosya_firma" id="dosya_firma" required="" value="{{ $firma }}">
-								                </div>
-						                    <div class="col-xs-3 text-right">
-						                      <button type="button" class="btn btn-info" id="dosyaYukle" name="dosyaYukle">Dosya Yükle</button>
-						                    </div>
-						                  </div>
-					                  <!-- </form> -->
-					                </div>
-					              </div>
-					            </div>
-				            	<div class="col-md-2"></div>
-					          </div>
-
-				          	<div class="row">
-				             	@php
-				                if (isset($kart_veri->KOD)) { 
-				                	$dosyaEvrakNo = $kart_veri->KOD; 
-				                } else if (isset($kart_veri->id)) { $dosyaEvrakNo = $kart_veri->id; } else { $dosyaEvrakNo = ""; }
-				                $dosyalarVeri = DB::table($database.'dosyalar00')->where('EVRAKNO',$dosyaEvrakNo)->where('EVRAKTYPE',$ekranRumuz)->get();
-				             	@endphp
-
-					            <table class="table table-borderless table-hover text-center" id="baglantiliDokumanlarTable" name="baglantiliDokumanlarTable">
-					              <thead>
-					                <tr class="bg-primary">
-					                  <th style="width: 15%">Tür</th>
-					                  <th style="width: 45%">Açıklama</th>
-					                  <th style="width: 25%">Yüklenme Tarihi</th>
-					                  <th style="width: 15%">Dosya</th>
-					                </tr>
-					              </thead>
-					              <tfoot>
-					                <tr class="bg-info">
-					                  <th style="width: 15%">Tür</th>
-					                  <th style="width: 45%">Açıklama</th>
-					                  <th style="width: 25%">Yüklenme Tarihi</th>
-					                  <th style="width: 15%">Dosya</th>
-					                </tr>
-					              </tfoot>
-					              <tbody>
-					                @foreach ($dosyalarVeri as $key => $veri)
-					                	@php $fileUrl = asset('storage/' . $veri->DOSYA); @endphp
-					                  <tr id="dosya_{{ $veri->id }}">
-					                    <td>{{ $veri->DOSYATURU }}</td>
-					                    <td>{{ $veri->ACIKLAMA }}</td>
-					                    <td>{{ $veri->created_at }}</td>
-					                    <td>
-					                    	<a class="btn btn-info" href="{{ $fileUrl }}" target="_blank">
-						                    	<i class="fa fa-file-text"></i>
-						                    </a>
-						                    <button type="button" class="btn btn-danger" style="margin-left: 3px" name="dosyaSil" id="dosyaSil" value="{{ $veri->id }},{{$firma}}">
-						                    	<i class="fa fa-trash"></i>
-						                    </button>
-						                  </td>
-					                  </tr>
-					                @endforeach
-					              </tbody>
-					            </table>
+								<div class="row">
+									<div class="row">
+									<div class="box">
+										<div class="box-body">
+										<!-- <form class="form-horizontal" enctype="multipart/form-data" method="POST" name="dosyaVerilerForm" id="dosyaVerilerForm"> -->
+											<div class="row d-flex">
+												<div class="col-3">
+												<select id="dosyaTuruKodu" name="dosyaTuruKodu" class="form-control js-example-basic-single" style="width: 100%;">
+													<option value=" ">Seç</option>
+													@php 
+														foreach ($dosyaTuruKodlari as $key => $veri) {
+															echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+														}
+													@endphp
+												</select>
+												</div>
+												<div class="col-3">
+												<input type="text" maxlength="255" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
+												<input type="hidden" id="dosyaEvrakType" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
+												<input type="hidden" id="dosyaEvrakNo" name="dosyaEvrakNo" value="{{ $kart_veri->id ?? $kart_veri->EVRAKNO ?? '' }}">
+												<input type="hidden" maxlength="16" class="form-control input-sm" name="dosya_firma" id="dosya_firma" required="" value="{{ $firma }}">
+												</div>
+												<div class="col-3">
+												<input type="file" class="form-control" id="dosyaFile" name="dosyaFile">
+												</div>
+												<div class="col-3 text-right">
+												<button type="button" class="btn btn-info" id="dosyaYukle" name="dosyaYukle">Dosya Yükle</button>
+												</div>
+											</div>
+										<!-- </form> -->
 										</div>
-									</div>							
+									</div>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+
+								<div class="row">
+									@php
+									if (isset($kart_veri->KOD)) { 
+										$dosyaEvrakNo = $kart_veri->KOD; 
+									} else if (isset($kart_veri->id)) { $dosyaEvrakNo = $kart_veri->id; } else { $dosyaEvrakNo = ""; }
+									$dosyalarVeri = DB::table($database.'dosyalar00')->where('EVRAKNO',$dosyaEvrakNo)->where('EVRAKTYPE',$ekranRumuz)->get();
+									@endphp
+
+									<table class="table table-borderless table-hover text-center" id="baglantiliDokumanlarTable" name="baglantiliDokumanlarTable">
+									<thead>
+										<tr class="bg-primary">
+										<th style="width: 15%">Tür</th>
+										<th style="width: 45%">Açıklama</th>
+										<th style="width: 25%">Yüklenme Tarihi</th>
+										<th style="width: 15%">Dosya</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr class="bg-info">
+										<th style="width: 15%">Tür</th>
+										<th style="width: 45%">Açıklama</th>
+										<th style="width: 25%">Yüklenme Tarihi</th>
+										<th style="width: 15%">Dosya</th>
+										</tr>
+									</tfoot>
+									<tbody>
+										@foreach ($dosyalarVeri as $key => $veri)
+											@php $fileUrl = asset('storage/' . $veri->DOSYA); @endphp
+										<tr id="dosya_{{ $veri->id }}">
+											<td>{{ $veri->DOSYATURU }}</td>
+											<td>{{ $veri->ACIKLAMA }}</td>
+											<td>{{ $veri->created_at }}</td>
+											<td>
+												@if ($fileUrl)
+													<a class="btn btn-outline-primary" href="{{ $fileUrl }}" target="_blank"><i class="fa fa-file"></i></a>
+												@endif
+												<button type="button" class="btn btn-outline-danger btn-dosya-sil" id="dosyaSil" value="{{ $veri->id }},{{ $firma }}">
+													<i class="fa fa-trash"></i>
+												</button>
+											</td>
+										</tr>
+										@endforeach
+									</tbody>
+									</table>
+											</div>
+										</div>							
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 			</form>
 
 

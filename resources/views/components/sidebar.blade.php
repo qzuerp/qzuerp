@@ -65,7 +65,7 @@
            <li><a href="kart_tezgah"><i class="fa fa-circle-o"></i> Tezgah Kartı </a></li>
 
            <li><a href="kart_operasyon"><i class="fa fa-circle-o"></i> Operasyon Kartı</a></li>
-           <li><a href="dys"><i class="fa fa-circle-o"></i> Döküman Yönetimi </a></li>  
+           <li><a href="dys"><i class="fa fa-circle-o"></i> Doküman Yönetimi </a></li>  
          </ul>
          <ul class="sidebar-menu" data-widget="tree">
          </ul>

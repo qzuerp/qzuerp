@@ -1610,7 +1610,7 @@
 			$('#AP10').val('1');
 		}
 		</script>
-		{{-- Excel Döküman çekme yeni kod --}}
+		{{-- Excel Doküman çekme yeni kod --}}
 
 			{{-- <script>
 		      	// Tabloyu Excel formatında indirme

@@ -223,7 +223,7 @@
     <li class="treeview">
       <a href="#">
         <i class="bx bx-folder"></i>
-        <span class="links_name">Döküman Yön.</span>
+        <span class="links_name">Doküman Yön.</span>
         <span class="pull-right-container">
           <i class='bx bx-chevron-down'></i>
         </span>
@@ -231,7 +231,7 @@
       <span class="tooltip">Bakım</span>
       <ul class="treeview-menu">
         @if (in_array('DYS', $kullanici_read_yetkileri))
-          <li><a href="dys"><i class='bx bx-file'></i>Döküman Yönetim Kartı</a></li>
+          <li><a href="dys"><i class='bx bx-file'></i>Doküman Yönetim Kartı</a></li>
         @endif
       </ul>
     </li>

@@ -421,7 +421,7 @@
                           <div class="tab-pane" id="liste"></div>
                         {{-- Liste Finish --}}
 
-                        {{-- Bağlantılı Dökümanlar Start --}}
+                        {{-- Bağlantılı Dokümanlar Start --}}
                           {{-- <div class="tab-pane" id="baglantiliDokumanlar">
                             @include('layout.util.baglantiliDokumanlar')
                           </div> --}}
