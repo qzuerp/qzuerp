@@ -409,8 +409,6 @@ class stok68_controller extends Controller
               ]);
             }
             
-           
-            // dd($R_YMAMULCODE,$AD);
             // Fason depoya giris
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
