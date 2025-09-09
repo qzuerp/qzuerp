@@ -87,7 +87,7 @@
                         foreach ($evraklar as $key => $veri) {
 
                           if ($veri->id == @$kart_veri->id) {
-                            echo "<option value ='".$veri->id."' selected>".$veri->EVRAKNO."</option>";
+                            echo "<option value ='".$veri->id."' selected>".$veri->EVRAKNO." - ".$veri->CHSIPNO."</option>";
                           }
                           else {
                             echo "<option value ='".$veri->id."'>".$veri->EVRAKNO."</option>";
@@ -674,7 +674,7 @@
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
-                        echo "<td>".$suzVeri->EVRAKNO."</td>";
+                        echo "<td>".$suzVeri->EVRAKNO." - ".$suzVeri->CHSIPNO."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>"."<a class='btn btn-info' href='satissiparisi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";

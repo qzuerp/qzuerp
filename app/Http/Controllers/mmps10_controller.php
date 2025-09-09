@@ -853,7 +853,7 @@ class mmps10_controller extends Controller
         DB::table($firma.'mmps10e')->insert([
             'EVRAKNO' => $NEXT_EVRAKNO,
             'MAMULSTOKKODU' => $KOD[$i],
-            'MAMULSTOKADI' => $AD[$i],6
+            'MAMULSTOKADI' => $AD[$i],
             'HAVUZKODU' => $MPS->HAVUZKODU,
             'STATUS' => $MPS->STATUS,
             'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
