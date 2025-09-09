@@ -394,51 +394,76 @@
                             <!-- Process Cards -->
                             <div class="row process-row">
                               <!-- Ayar Kolonu -->
-                              <div class="col-md-4 process-col" id="ayar">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Ayar İşlemi</h5>
-                                  <div class="card-body pt-3" style="margin-top: 72px;">
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-warning" id="button1">
-                                        <i class="fas fa-play-circle"></i> Ayar Başladı
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="RECTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="RECTIME1" placeholder="Saat">
-                                    </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-warning" id="button2">
-                                        <i class="fas fa-stop-circle"></i> Ayar Bitti
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="ENDTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="ENDTIME1" placeholder="Saat">
+                              <div class="row justify-content-center">
+                                <div class="col-md-6 col-lg-4">
+                                  <div class="card h-100 shadow-sm rounded-3">
+                                    <h5 class="card-header">Ayar İşlemi</h5>
+                                    <div class="card-body">
+                                      <div class="mb-4">
+                                        <button type="button" class="btn mt-2 btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                          <i class="fas fa-play me-2"></i> Ayar Başladı
+                                        </button>
+                                        <div class="row g-2 mt-2">
+                                          <div class="col">
+                                            <input type="date" class="form-control text-center" id="RECTARIH1" placeholder="Tarih">
+                                          </div>
+                                          <div class="col">
+                                            <input type="time" class="form-control text-center" id="RECTIME1" placeholder="Saat">
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <button type="button" class="btn btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                          <i class="fas fa-stop me-2"></i> Ayar Bitti
+                                        </button>
+                                        <div class="row g-2 mt-2">
+                                          <div class="col">
+                                            <input type="date" class="form-control text-center" id="ENDTARIH1" placeholder="Tarih">
+                                          </div>
+                                          <div class="col">
+                                            <input type="time" class="form-control text-center" id="ENDTIME1" placeholder="Saat">
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-
                               <!-- Üretim Kolonu -->
                               <div class="col-md-4 process-col" id="uretim">
                                 <div class="h-100 card">
                                   <h5 class="card-header">Üretim İşlemi</h5>
-                                  <div class="card-body pt-3" style="margin-top: 72px;">
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-success" id="button3">
+                                  <div class="card-body pt-3" >
+                                    <div class="mb-3">
+                                      <button type="button" type="button" class="w-100 action-btn btn btn-success" id="button3">
                                         <i class="fas fa-play-circle"></i> Üretim Başladı
                                       </button>
-                                      <input type="date" class="form-control date-time-input" id="RECTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="RECTIME2" placeholder="Saat">
+                                      <div class="row g-2 mt-2">
+                                        <div class="col">
+                                            <input type="date" class="form-control date-time-input" id="RECTARIH2" placeholder="Tarih">
+                                        </div>
+                                        <div class="col">
+                                            <input type="time" class="form-control date-time-input" id="RECTIME2" placeholder="Saat">
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-success" id="button4">
+
+                                    <div>
+                                      <button type="button" type="button" class="w-100 action-btn btn btn-success" id="button4">
                                         <i class="fas fa-stop-circle"></i> Üretim Bitti
                                       </button>
-                                      <input type="date" class="form-control date-time-input" id="ENDTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="ENDTIME2" placeholder="Saat">
+                                      <div class="row g-2 mt-2">
+                                        <div class="col">
+                                            <input type="date" class="form-control date-time-input" id="ENDTARIH2" placeholder="Tarih">
+                                        </div>
+                                        <div class="col">
+                                            <input type="time" class="form-control date-time-input" id="ENDTIME2" placeholder="Saat">
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
+                            
                               <!-- Duruş Kolonu -->
                               <div class="col-md-4 process-col" id="durus">
                                 <div class="h-100 card">
@@ -456,19 +481,34 @@
                                         @endphp
                                       </select>
                                     </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-danger" id="button5">
-                                        <i class="fas fa-pause-circle"></i> Duruş Başladı
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="DRSTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="DRSTIME1" placeholder="Saat">
+                                    <div class="mb-3">
+                                        <div>
+                                            <button type="button" type="button" class="w-100 action-btn btn btn-danger" id="button5">
+                                                <i class="fas fa-pause-circle"></i> Duruş Başladı
+                                            </button>
+                                            <div class="row g-2 mt-2">
+                                                <div class="col">
+                                                    <input type="date" class="form-control date-time-input" id="DRSTARIH1" placeholder="Tarih">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="time" class="form-control date-time-input" id="DRSTIME1" placeholder="Saat">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-danger" id="button6">
-                                        <i class="fas fa-stop-circle"></i> Duruş Bitti
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="DRSTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="DRSTIME2" placeholder="Saat">
+
+                                    <div>
+                                        <button type="button" type="button" class="w-100 action-btn btn btn-danger" id="button6">
+                                            <i class="fas fa-stop-circle"></i> Duruş Bitti
+                                        </button>
+                                        <div class="row g-2 mt-2">
+                                            <div class="col">
+                                                <input type="date" class="form-control date-time-input" id="DRSTARIH2" placeholder="Tarih">
+                                            </div>
+                                            <div class="col">
+                                                <input type="time" class="form-control date-time-input" id="DRSTIME2" placeholder="Saat">
+                                            </div>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>

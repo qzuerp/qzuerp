@@ -238,7 +238,7 @@
                                     
                                     <div class="col-md-6 mb-2">
                                       <label for="kullanici_yetki" class="form-label">Yetki</label>
-                                      <select id="kullanici_yetki" class="select2">
+                                      <select id="kullanici_yetki" class="select2" name="kullanici_yetki">
                                         <option value="ADMIN" @php if ($kullanici_veri->perm == "ADMIN") { echo " selected"; } @endphp>Yönetici</option>
                                         <option value="USER" @php if ($kullanici_veri->perm == "USER") { echo " selected"; } @endphp>Kullanıcı</option>
                                       </select>
@@ -265,7 +265,7 @@
                                     <td><input type="checkbox" id="yetki_delete"></td>
                                   </tr>
                                   <tr><td>Cari Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read"  id="carikarti_read" name="yetki_read[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_read"  id="carikarti_read" name="F[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_write" id="carikarti_write" name="yetki_write[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="carikarti_delete" name="yetki_delete[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
@@ -616,7 +616,7 @@
                 </div>
                 <div class="form-group">
                   <label for="perm" class="col-form-label">Yetki:</label>
-                  <select id="perm" data-modal="modal_yenikullanici" class="form-control select2" name="perm" tabindex="-1"  >
+                  <select id="perm" class="form-control select2" name="perm">
                     <option value="USER">Kullanıcı</option>
                     <option value="ADMIN">Yönetici</option>
                   </select>
