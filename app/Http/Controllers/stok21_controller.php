@@ -639,10 +639,8 @@ class stok21_controller extends Controller
             'CIKAN_MIKTAR' => $CIKAN_MIKTAR[$i],
             'updated_at' => date('Y-m-d H:i:s'),
           ]);
-          DB::table($firma.'stok10a')->insert([
-            'EVRAKNO' => $EVRAKNO,
+          DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->where('TRNUM',$TRNUM[$i])->update([
             'SRNUM' => $SRNUM,
-            'TRNUM' => $TRNUM[$i],
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
@@ -658,43 +656,15 @@ class stok21_controller extends Controller
             'NUM3' => $NUM3[$i],
             'NUM4' => $NUM4[$i],
             'TARIH' => $TARIH,
-            'EVRAKTIPI' => 'STOK21T',
             'STOK_MIKTAR' => $SF_MIKTAR,
             'AMBCODE' => $AMBCODE_SEC,
             'LOCATION1' => $LOCATION1[$i],
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],
             'LOCATION4' => $LOCATION4[$i],
-            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
           ]);
-          // DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->where('TRNUM',$TRNUM[$i])->update([
-          //   'SRNUM' => $SRNUM,
-          //   'KOD' => $KOD[$i],
-          //   'STOK_ADI' => $STOK_ADI[$i],
-          //   'LOTNUMBER' => $LOTNUMBER[$i],
-          //   'SERINO' => $SERINO[$i],
-          //   'SF_MIKTAR' => $SF_MIKTAR,
-          //   'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-          //   'TEXT1' => $TEXT1[$i],
-          //   'TEXT2' => $TEXT2[$i],
-          //   'TEXT3' => $TEXT3[$i],
-          //   'TEXT4' => $TEXT4[$i],
-          //   'NUM1' => $NUM1[$i],
-          //   'NUM2' => $NUM2[$i],
-          //   'NUM3' => $NUM3[$i],
-          //   'NUM4' => $NUM4[$i],
-          //   'TARIH' => $TARIH,
-          //   'STOK_MIKTAR' => $SF_MIKTAR,
-          //   'AMBCODE' => $AMBCODE_SEC,
-          //   'LOCATION1' => $LOCATION1[$i],
-          //   'LOCATION2' => $LOCATION2[$i],
-          //   'LOCATION3' => $LOCATION3[$i],
-          //   'LOCATION4' => $LOCATION4[$i],
-          //   'updated_at' => date('Y-m-d H:i:s'),
-          // ]);
-
         }
-
       }
 
       foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
