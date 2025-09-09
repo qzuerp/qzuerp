@@ -596,7 +596,7 @@ class stok21_controller extends Controller
               if($SF_MIKTAR > $KAYITLI_SF_MIKTAR)
               {
                 $SONUC = $SF_MIKTAR - $KAYITLI_SF_MIKTAR;
-                dd($SONUC,$KAYITLI_SF_MIKTAR,$kontrol);
+                // dd($SONUC,$KAYITLI_SF_MIKTAR,$kontrol);
                 if($SONUC > $kontrol)
                 {
                     return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
