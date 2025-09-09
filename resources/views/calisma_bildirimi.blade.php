@@ -2411,6 +2411,10 @@
         $('#STOK_CODE').val('').trigger('change');
         $('#TO_OPERATOR').val('').trigger('change');
         $('#OPERASYON').val('').trigger('change');
+        
+        drawVerimlilikGauge({{ 0 }},'chart1','Ayar Verimliliği');
+        drawVerimlilikGauge({{ 0 }},'chart2','Üretim Verimliliği');
+        drawVerimlilikGauge({{ 0 }},'chart3','Toplam Verimliliği');
       }
       function exportTableToExcel(tableId)
       {

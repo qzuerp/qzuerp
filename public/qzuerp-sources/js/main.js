@@ -968,7 +968,7 @@ $(document).ready(function() {
 
   $('#dosyaYukle').on('click', function () {
     var tab = document.getElementById('firma').value;
-    console(tab);
+    console.log(tab);
     if (!tab || tab.trim() === "") {
       Swal.fire({
         title: "Uyarı",
