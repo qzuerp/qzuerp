@@ -8,7 +8,7 @@
   $kullanici_veri = DB::TABLE('users')->where('id', $user->id)->first();
   $database = trim($kullanici_veri->firma).".dbo.";
 
-  $ekran = "CLSMBLDRM";
+  $ekran = "CLSMBLDRMOPRT";
   $ekranRumuz = "calisma_bildirimi";
   $ekranAdi = "Çalışma Bildirimi"; 
   $ekranLink = "calisma_bildirimi";
@@ -342,7 +342,6 @@
                           }
 
                           .action-btn {
-                            margin-bottom: 5px;
                             padding: 0.5rem 1rem;
                             border-radius: var(--border-radius);
                             transition: var(--transition);
@@ -381,6 +380,12 @@
                               flex-direction: column;
                               gap: 0.5rem;
                             }
+                          }
+
+                          input.date-time-input {
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            appearance: none;
                           }
                         </style>
 

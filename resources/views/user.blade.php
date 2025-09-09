@@ -215,16 +215,37 @@
 
                         </div>
 
+                          <style>
+                          </style>
+
                         <div class="tab-pane" id="yetkiler">
                           <div class="row">
                             <div class="row">
-                              <div class="col-xs-4">
-                                <label>Yetki</label>
-                                <select id="kullanici_yetki" class="form-control select2" style="width: 100%; height: 30PX" name="kullanici_yetki" tabindex="-1"  >
-                                  <option value="ADMIN" @php if ($kullanici_veri->perm == "ADMIN") { echo " selected"; } @endphp>Yönetici</option>
-                                  <option value="USER" @php if ($kullanici_veri->perm == "USER") { echo " selected"; } @endphp>Kullanıcı</option>
-                                </select>
-                              </div>
+
+                                
+                                  
+                                <div class="container mt-4">
+                                  <div class="row g-3">
+                                    
+                                    
+                                    <div class="col-md-6">
+                                      <label for="searchBox" class="form-label">Yetkiler</label>
+                                      <div class="input-group">
+                                        <input type="text" id="searchBox" class="form-control" placeholder="Yetki ara">
+                                      </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="col-md-6 mb-2">
+                                      <label for="kullanici_yetki" class="form-label">Yetki</label>
+                                      <select id="kullanici_yetki" class="select2">
+                                        <option value="ADMIN" @php if ($kullanici_veri->perm == "ADMIN") { echo " selected"; } @endphp>Yönetici</option>
+                                        <option value="USER" @php if ($kullanici_veri->perm == "USER") { echo " selected"; } @endphp>Kullanıcı</option>
+                                      </select>
+                                    </div>
+                                    
+                                  </div>
+                                </div>
                             </div><br>
                             <div class="row"><br>
                               <table class="table table-striped" id="veriTable">
@@ -252,6 +273,11 @@
                                     <td><input type="checkbox"class="yetki_read"   id="calismabildirimi_read" name="yetki_read[]" value="CLSMBLDRM" @php if(in_array('CLSMBLDRM', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox"class="yetki_write"  id="calismabildirimi_write" name="yetki_write[]" value="CLSMBLDRM" @php if(in_array('CLSMBLDRM', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox"class="yetki_delete" id="calismabildirimi_delete" name="yetki_delete[]" value="CLSMBLDRM" @php if(in_array('CLSMBLDRM', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
+                                  </tr>
+                                  <tr><td>Çalışma Bildirimi Operatör</td>
+                                    <td><input type="checkbox"class="yetki_read"   id="calismabildirimi_read" name="yetki_read[]" value="CLSMBLDRMOPRT" @php if(in_array('CLSMBLDRMOPRT', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox"class="yetki_write"  id="calismabildirimi_write" name="yetki_write[]" value="CLSMBLDRMOPRT" @php if(in_array('CLSMBLDRMOPRT', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox"class="yetki_delete" id="calismabildirimi_delete" name="yetki_delete[]" value="CLSMBLDRMOPRT" @php if(in_array('CLSMBLDRMOPRT', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
                                   <tr><td>Kontakt Kartı</td>
                                     <td><input type="checkbox" class="yetki_read"   id="kontaktkarti_read" name="yetki_read[]" value="KNTKKART" @php if(in_array('KNTKKART', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
@@ -662,4 +688,14 @@
     
   </script>
 
+<script>
+  document.getElementById("searchBox").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#veriTable tbody tr:not(:first-child)");
+    rows.forEach(row => {
+      let text = row.textContent.toLowerCase();
+      row.style.display = text.includes(value) ? "" : "none";
+    });
+  });
+</script>
 @endsection

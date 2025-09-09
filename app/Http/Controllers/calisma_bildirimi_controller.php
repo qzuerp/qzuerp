@@ -14,6 +14,12 @@ class calisma_bildirimi_controller extends Controller {
     return view('calisma_bildirimi')->with('sonID', $sonID);
   
   }
+  public function index_oprt() {
+    $sonID=DB::table('sfdc31e')->min('ID');
+
+    return view('calisma_bildirimi_operator')->with('sonID', $sonID);
+  
+  }
 
   public function kartGetir(Request $request) {
 

@@ -758,6 +758,20 @@
               }
           });
       }, 60000);
+
+    flatpickr.localize(flatpickr.l10ns.tr);
+
+    flatpickr("input[type='time']", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true
+    });
+
+    flatpickr("input[type='date']", {
+      dateFormat: "d.m.Y",
+      locale: "tr"
+    });
   });
 
 </script>

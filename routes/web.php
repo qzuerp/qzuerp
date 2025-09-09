@@ -212,6 +212,7 @@ Auth::routes(['password.request' => false]);
   Route::get('kart_tezgah',[imlt00_controller::class,'index'])->name('kart_tezgah');
   Route::get('kart_kalibrasyon',[imlt00_kalibrasyon_controller::class,'index'])->name('kart_kalibrasyon');
   Route::get('calisma_bildirimi',[calisma_bildirimi_controller::class,'index'])->name('calisma_bildirimi');
+  Route::get('calisma_bildirimi_oprt',[calisma_bildirimi_controller::class,'index_oprt'])->name('calisma_bildirimi_oprt');
   Route::get('kart_stok',[stok00_controller::class,'index'])->name('kart_stok');
   Route::get('kart_depo',[gdef00_controller::class,'index'])->name('kart_depo');
   Route::get('kart_operasyon',[imlt01_controller::class,'index'])->name('kart_operasyon');

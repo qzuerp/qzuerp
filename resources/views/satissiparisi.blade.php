@@ -223,13 +223,13 @@
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
 
-                          <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                          <td><button type="button" class="btn btn-radius btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                              <select class="form-control select2" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
-                                <option value=" ">Seç</option>
+                              <select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                                <option value=" " >Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
                                     echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD." - ".$veri->AD."</option>";
@@ -237,8 +237,8 @@
                                 @endphp
                               </select>
                               <span class="d-flex -btn">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button">
-                                  <span class="fa-solid fa-magnifying-glass"  ></span>
+                                <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button">
+                                  <span class="fa-solid fa-magnifying-glass txt-radius"  ></span>
                                 </button>
                               </span>
                             </div>
