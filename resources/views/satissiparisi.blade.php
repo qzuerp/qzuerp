@@ -85,12 +85,11 @@
                     <select id="evrakSec" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
                       @php
                         foreach ($evraklar as $key => $veri) {
-
                           if ($veri->id == @$kart_veri->id) {
                             echo "<option value ='".$veri->id."' selected>".$veri->EVRAKNO." - ".$veri->CHSIPNO."</option>";
                           }
                           else {
-                            echo "<option value ='".$veri->id."'>".$veri->EVRAKNO."</option>";
+                            echo "<option value ='".$veri->id."'>".$veri->EVRAKNO." - ".$veri->CHSIPNO."</option>";
                           }
                         }
                       @endphp
