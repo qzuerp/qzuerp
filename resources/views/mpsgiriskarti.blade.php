@@ -63,7 +63,7 @@
 	$STATU_GK_veri = DB::table($database.'gecoust')->where('EVRAKNO','STATUS')->get();
 
 
-	if (isset($kart_veri)) {
+	if (isset($kart_veri)) { 
 
 		$ilkEvrak=DB::table($ekranTableE)->min('id');
 		$sonEvrak=DB::table($ekranTableE)->max('id');
@@ -203,11 +203,11 @@
 										<div class="form-group">
 											<label>Sipariş Art No</label>
 											<div class="d-flex ">
-												<input type="number" class="form-control" style="color:red" 
+												<input type="number" class="form-control txt-radius" style="color:red" 
 													maxlength="50" name="SIPARTNO" id="SIPARTNO" 
 													value="{{ @$kart_veri->SIPARTNO }}" readonly>
 												<span class="d-flex -btn">
-													<button class="btn btn-primary" id="modal_popupSelectModalBtn" data-bs-toggle="modal" 
+													<button class="btn btn-radius btn-primary" id="modal_popupSelectModalBtn" data-bs-toggle="modal" 
 															data-bs-target="#modal_popupSelectModal" type="button">
 														<i class="fa-solid fa-magnifying-glass"></i>
 													</button>
@@ -364,20 +364,33 @@
 											</ul>
 											<div class="tab-content">
 												<div class="active tab-pane" id="tab_1">
-													<div style="display:flex; gap:10px; margin:15px 0px;">
-														<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
-														<button type="button" class="btn btn-default" onclick="receteden_hesapla()" name="stokDusum" id="stokDusum"><i class="fa fa-plus-square" style="color: blue"></i> Ürün Ağacından Ekle</button>
-														<select class="form-control select2 js-example-basic-single"  onchange="MPSolustur(this.value)" name="stokDusum" id="stokDusum">
-															<option value=" ">Seç</option>
-															<option value="">Çok seviyeli MPS oluştur</option>
-															<!-- <option value="category2">MPS'den veya Ürün Ağaçlarından Hammaddeleri Hesapla</option>
-															<option value="category1">MPS'den fason operasyonlarını hesapla</option> -->
-															<!-- <option value="category3">Transferlerden veya MPS'den Hammaddeleri Hesapla</option>
-															<option value="category4">Transferlerden veya MPS'den Hammaddeleri Hesapla (Tüm Depolar)</option>
-															<option value="category5">Sadece MPS için Transfer Edilen Tüm Hammaddeleri Hesapla</option>
-															<option value="category6">Sadece MPS için Transfer Edilen Tüm Hammaddeleri Hesapla (Tüm Depolar)</option> -->
-														</select>
+													<div style="display:flex; justify-content:space-between; align-items:center; margin:15px 0; flex-wrap:wrap;">
+
+														<!-- Sol taraf (butonlar) -->
+														<div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+															<!-- Seçili Satırları Sil -->
+															<button type="button" class="btn btn-default delete-row" id="deleteRow" style="display:flex; align-items:center; gap:6px;">
+																<i class="fa fa-minus" style="color:red; font-size:14px;"></i>
+																<span>Seçili Satırları Sil</span>
+															</button>
+
+															<!-- Ürün Ağacından Ekle -->
+															<button type="button" class="btn btn-default" onclick="receteden_hesapla()" name="stokDusum" id="stokDusum" style="display:flex; align-items:center; gap:6px;">
+																<i class="fa fa-plus-square" style="color:blue; font-size:14px;"></i>
+																<span>Ürün Ağacından Ekle</span>
+															</button>
+														</div>
+
+														<!-- Sağ taraf (select) -->
+														<div>
+															<select class="form-control select2 js-example-basic-single" onchange="MPSolustur(this.value)" name="stokDusum" id="stokDusum" style="min-width:220px;">
+																<option value=" ">Seç</option>
+																<option value="">Çok seviyeli MPS oluştur</option>
+															</select>
+														</div>
 													</div>
+    
 													<div class="row">
 														<div class="row">
 															<table class="table table-bordered text-center" id="veriTable">
@@ -1271,7 +1284,7 @@
 										</tr>
 									</tfoot>
 									<tbody id="popupInfo">
-										{{-- burası boş olduğu için çekmiyor olabilir --}}
+										{{-- burası boş olduğu için çekmiyor olabilir --}} 
 									</tbody>
 								</table>
 							</div>
@@ -2400,14 +2413,6 @@
 					return;
 				}
 
-				Swal.fire({
-					title: 'Oluşturuluyor...',
-					text: 'Lütfen bekleyin',
-					allowOutsideClick: false,
-					didOpen: () => {
-						Swal.showLoading();
-					}
-				});
 
 				var KOD = [];
 				var AD  = [];
@@ -2423,19 +2428,47 @@
 					}
 				});
 
+				Swal.fire({
+					title: 'MPS Oluşturuluyor',
+					html: '<b>0</b> / '+KOD.length+' işlendi',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+						let b = Swal.getHtmlContainer().querySelector('b');
+						let i = 0;
+						let interval = setInterval(() => {
+							if (i < KOD.length) {
+								b.textContent = ++i;
+							} else {
+								clearInterval(interval);
+							}
+						}, 500);
+					}
+				});
+
 				$.ajax({
 					url:'/mps_olustur',
 					type:'post',
-					data:{EVRAKNO:{{@$kart_veri->EVRAKNO}},KOD:KOD,AD:AD},
-					success:function(res)
-					{
+					data:{
+						EVRAKNO: {{ @$kart_veri->EVRAKNO }},
+						KOD: KOD,
+						AD: AD
+					},
+					success:function(res) {
 						Swal.close();
+
 
 						Swal.fire({
 							title: "MPS(ler) Oluşturuldu",
-							text: "MPS(ler) "+res+" olarak oluşturuldu",
+							html: "Toplam <b>" + res.count + "</b> MPS oluşturuldu.<br><br>" +
+								"<p>MPSler listeleniyor lütfen bekleyin...</p>",
 							icon: "success",
-						})
+							showConfirmButton: false,
+							timer: 2000,
+							didClose: () => {
+								location.reload();
+							}
+						});
 					}
 				});
 			}
@@ -2449,7 +2482,7 @@
 			{
 				var tab_text = "";
 				var textRange; var j = 0;
-		  		tab = document.getElementById('example2'); // Excel'e çıkacak tablo id'si
+		  		tab = document.getElementById('example2');
 
 		  		for (j = 0 ; j < tab.rows.length ; j++) 
 		  		{
@@ -2521,7 +2554,7 @@
 					}
 				});
 			});
-		</script> --}}
+		</script>
 	  	{{-- Tabloda seçip textboxlara yazdıma işlemi --}}
 		<script>
 		    $(document).ready(function(){

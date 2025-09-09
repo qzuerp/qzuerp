@@ -140,6 +140,16 @@
           }
       });
 
+      $('#popupSelect2 tfoot th').each( function () {
+          var title = $(this).text();
+          if(title == "#") {
+            $(this).html( '<b>Git</b>' );
+          }
+          else {
+            $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />' );
+          }
+      });
+
       $('#popupInfo tfoot th').each( function () {
         var title = $(this).text();
         if(title == "#") {

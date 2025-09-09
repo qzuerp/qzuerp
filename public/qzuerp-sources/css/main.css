@@ -622,6 +622,11 @@
 			padding: 6px 10px !important;
 		}
 		
+
+    .tablo{
+    width: 100px;
+    }   
+
 		/* Tablo içindeki form elemanları için özel stiller */
 		.table .form-control,
 		.table .select2-container .select2-selection--single {
@@ -1121,7 +1126,7 @@
 }
 /* Tüm butonları outline görünümüne çevir */
 .btn {
-  padding: 0.6rem 1.0rem;
+  /* padding: 0.2rem 0.6rem; */
   border-radius: 0.5rem;
   background: transparent;
   color: black;
@@ -1134,8 +1139,10 @@
 /* Primary */
 .btn-primary {
   color: #4f46e5;
-  border-color: #4f46e5;
+  border-color: #4f46e5; 
+  height: 30px; 
 }
+
 .btn-primary i { color: #4f46e5 !important; transition: all 0.3s; }
 .btn-primary:hover {
   background-color: #4f46e5;
@@ -1190,6 +1197,21 @@
   color: #111;
 }
 .btn-warning:hover i { color: #fff !important; }
+
+/* radius-margin (btn text) */
+
+.mg-left{
+  margin-left: 10px;
+}
+
+.btn-radius{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.txt-radius{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 
 /* Info */
 .btn-info {
@@ -1625,26 +1647,7 @@ body:not(.sidebar-collapse) .home-section {
   margin: 0 !important;
 }
 
-.modal .btn-close {
-  position: absolute !important;
-  right: 1.5rem !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  background: var(--gray-100) !important;
-  border-radius: 50% !important;
-  width: 32px !important;
-  height: 32px !important;
-  opacity: 0.6 !important;
-  transition: all 0.2s ease !important;
-  border: none !important;
-  font-size: 12px !important;
-}
 
-.modal .btn-close:hover {
-  background: var(--gray-200) !important;
-  opacity: 1 !important;
-  transform: translateY(-50%) scale(1.05) !important;
-}
 
 .modal .modal-body {
   padding: 1.5rem !important;
@@ -1681,3 +1684,4 @@ body:not(.sidebar-collapse) .home-section {
 .modal.show .modal-dialog {
   transform: none !important;
 }
+

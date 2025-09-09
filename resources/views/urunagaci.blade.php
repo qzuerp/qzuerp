@@ -164,7 +164,7 @@
 							<div class="row mt-3">
 								<div class="row">
 									<label>Açıklama</label>
-									<input type="text" class="form-control" maxlength="50" 
+									<input type="text" class="form-control mg-left" maxlength="50" 
 										name="ACIKLAMA_E" id="ACIKLAMA_E" value="{{ @$kart_veri->ACIKLAMA }}">
 								</div>
 							</div>
@@ -239,7 +239,7 @@
 																		<input type="number" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
 																	</td>
 																	<td>
-																		<select  class="form-control select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
+																		<select  class="form-control txt-radius select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
 																			<option value=" ">Seç</option>
 																			<option value="H">H - Hammadde</option>
 																			<option value="I">I - Tezgah / İş Merk</option>
@@ -253,7 +253,7 @@
 																				
 																			</select>
 																			<span class="d-flex -btn">
-																				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><span class="fa-solid fa-magnifying-glass"  >
+																				<button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><span class="fa-solid fa-magnifying-glass"  >
 																				</span></button>
 																			</span>
 																		</div>
@@ -282,9 +282,9 @@
 																	</td>
 													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
-										                                    <input type="number" class="form-control" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+										                                    <input type="number" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
 										                                    <span class="d-flex -btn">
-										                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
+										                                        <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
 										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
 										                                        </button>
 										                                    </span>
@@ -746,9 +746,8 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="dimensionsModalLabel">Cisim Tipini ve Ölçüleri Girin</h5>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Kapat">
-								<span aria-hidden="true">&times;</span>
-							</button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"> 
+                </button>
 						</div>
 						<div class="modal-body">
 							<!-- Zaman formu - başlangıçta gizli -->

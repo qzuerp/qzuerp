@@ -966,22 +966,40 @@ function dosyalariGetir() {
 
 $(document).ready(function() {
 
-  $('#dosyaYukle').on('click', function() {
+  $('#dosyaYukle').on('click', function () {
+    var tab = document.getElementById('firma').value;
+    console(tab);
+    if (!tab || tab.trim() === "") {
+      Swal.fire({
+        title: "Uyarı",
+        html: "Dokuman eklemek için <br> önce evrakı kaydetmelisiniz",
+        icon: "warning",
+      });
+      return;
+    }
 
-    Swal.showLoading();
-
-    var table = $('#baglantiliDokumanlarTable').DataTable();
-
-    var formData = new FormData();
+    var dosyaFile = $('#dosyaFile')[0].files[0];
     var dosyaEvrakNo = $('#dosyaEvrakNo').val();
     var dosyaTuruKodu = $('#dosyaTuruKodu').val();
     var dosyaEvrakType = $('#dosyaEvrakType').val();
     var dosyaAciklama = $('#dosyaAciklama').val();
     var dosya_firma = $('#dosya_firma').val();
-    var dosyaFile = $('#dosyaFile')[0].files[0];
     var token = $('meta[name="csrf-token"]').attr('content');
 
+    if (!dosyaFile) {
+      Swal.fire("Hata", "Lütfen bir dosya seçiniz.", "error");
+      return;
+    }
 
+    if (!dosyaEvrakNo || !dosyaTuruKodu || !dosyaEvrakType || !dosya_firma) {
+      Swal.fire("Hata", "Tüm alanları doldurmanız gerekiyor.", "error");
+      return;
+    }
+
+    Swal.showLoading();
+
+    var table = $('#baglantiliDokumanlarTable').DataTable();
+    var formData = new FormData();
     formData.append('dosyaFile', dosyaFile);
     formData.append('dosyaEvrakNo', dosyaEvrakNo);
     formData.append('dosyaTuruKodu', dosyaTuruKodu);
@@ -996,19 +1014,11 @@ $(document).ready(function() {
       data: formData,
       processData: false,
       contentType: false,
-      success: function(response) {
+      success: function (response) {
         Swal.close();
+        mesaj('Dosya başarıyla sisteme yüklendi', 'success');
 
-        // Swal.fire({
-        //     position: 'top-end',
-        //     icon: 'success',
-        //     title: 'Dosya başarıyla sisteme yüklendi',
-        //     showConfirmButton: false,
-        //     timer: 1500
-        // })
-        mesaj('Dosya başarıyla sisteme yüklendi','success');
         const gelenDosyaBilgileri = response.split('|*|*|*|');
-
         const yeniSatir = $(`<tr id="dosya_${gelenDosyaBilgileri[0]}">
             <td>${dosyaTuruKodu}</td>
             <td>${dosyaAciklama}</td>
@@ -1018,11 +1028,13 @@ $(document).ready(function() {
                 <button type="button" class="btn btn-outline-danger btn-dosya-sil" style="margin-left: 3px" name="dosyaSil" value="${gelenDosyaBilgileri[0]},${dosya_firma}"><i class="fa fa-trash"></i></button>
             </td>
         </tr>`);
-
         table.row.add(yeniSatir).draw();
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire("Hata", "Dosya yüklenirken bir hata oluştu.", "error");
       }
     });
-
   });
 
 });

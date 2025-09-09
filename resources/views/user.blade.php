@@ -504,11 +504,10 @@
         <div class="modal fade" id="modal_kaydet">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span  >&times;</span>
-                </button>
+              <div class="modal-header d-flex justify-content-between">
                 <h4 class="modal-title">Kaydet</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"> 
+                </button>
               </div>
               <div class="modal-body">
                 <p>Kayıt edilsin mi?</p>
@@ -525,10 +524,9 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span  >&times;</span>
-                </button>
                 <h4 class="modal-title">Kullanıcı Sil</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"> 
+                </button>
               </div>
               <div class="modal-body">
                 <p>Kullanıcıyı silmek istediğinize emin misiniz?</p>
@@ -551,8 +549,7 @@
               <input type="hidden" name="firma" value="{{$kullanici_veri->firma}}">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Yeni Kullanıcı</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span  >&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"> 
                 </button>
               </div>
               <div class="modal-body">
@@ -593,7 +590,7 @@
                 </div>
                 <div class="form-group">
                   <label for="perm" class="col-form-label">Yetki:</label>
-                  <select id="perm" class="form-control select2" name="perm" tabindex="-1"  >
+                  <select id="perm" data-modal="modal_yenikullanici" class="form-control select2" name="perm" tabindex="-1"  >
                     <option value="USER">Kullanıcı</option>
                     <option value="ADMIN">Yönetici</option>
                   </select>

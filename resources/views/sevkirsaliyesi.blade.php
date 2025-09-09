@@ -906,15 +906,19 @@
               <div class="modal-header">
                 <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Seç</h4>
               </div>
-              <div class="modal-body">
-                <div class="row" style="overflow: auto">
-                  <table id="popupSelect2" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
+              <div class="modal-body p-2"> 
+                <div class="table-responsive">
+                  <table id="popupSelect2" 
+                        class="table table-hover text-center table-bordered mb-0" 
+                        style="width:100%; font-size: 0.8em;">
                     <thead>
                       <tr class="bg-primary">
                         <th>Evrak No</th>
                         <th>Tarih</th>
                         <th>Cari Kodu</th>
                         <th>Cari Adı</th>
+                        <th>Kod</th>
+                        <th>AD</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -923,29 +927,29 @@
                         <th>Tarih</th>
                         <th>Cari Kodu</th>
                         <th>Cari Adı</th>
+                        <th>Kod</th>
+                        <th>AD</th>
                       </tr>
                     </tfoot>
                     <tbody>
-                         @php
-      
+                          @php
+                            $sql_sorgu = "SELECT S40E.*,C00.AD,S40T.* FROM " . $database . "STOK40E S40E 
+                            LEFT JOIN " . $database . "cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
+                            LEFT JOIN " . $database . "STOK40T as S40T ON S40T.EVRAKNO = S40E.EVRAKNO";
 
-                    $sql_sorgu = "SELECT S40E.*,C00.AD FROM " . $database . "STOK40E S40E 
-                    LEFT JOIN " . $database . "cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE";
-
-                    $table = DB::select($sql_sorgu);
-                    foreach ($table as $key => $veri)
-                    {
-                      echo "<tr>";
-                      echo "<td>".trim($veri->EVRAKNO)."</td>";
-                      echo "<td>".$veri->TARIH."</td>";
-                      echo "<td>".$veri->CARIHESAPCODE."</td>";
-                      echo "<td>".$veri->AD."</td>";
-                      echo "</tr>";
-                    }
-                    
-                @endphp
-
-
+                            $table = DB::select($sql_sorgu);
+                            foreach ($table as $key => $veri)
+                            {
+                              echo "<tr>";
+                              echo "<td>".trim($veri->EVRAKNO)."</td>";
+                              echo "<td>".$veri->TARIH."</td>";
+                              echo "<td>".$veri->CARIHESAPCODE."</td>";
+                              echo "<td>".$veri->AD."</td>";
+                              echo "<td>".$veri->KOD."</td>";
+                              echo "<td>".$veri->STOK_ADI."</td>";
+                              echo "</tr>";
+                            }
+                        @endphp
                     </tbody>
                   </table>
                 </div>
@@ -1159,11 +1163,15 @@
           var createClickHandler = function(row) {
             return function() {
               var cell = row.getElementsByTagName("td")[0];
+              var cari = row.getElementsByTagName("td")[2];
 
               var EVRAKNO = cell.innerHTML;
-             
-
-              popupToDropdown(EVRAKNO,'SIP_NO_SEC','modal_popupSelectModal2');
+              var cari = cari.innerHTML;
+              $('#CARIHESAPCODE_E').val(cari).trigger('change');
+              setTimeout(() => {
+                $('#SIP_NO_SEC').val(EVRAKNO).trigger('change');
+              }, 1000);
+              $("#modal_popupSelectModal2").modal('hide');
             };
           };
           currentRow.onclick = createClickHandler(currentRow);
@@ -1370,41 +1378,44 @@
       $.ajax({
         url: '/stok60_siparisGetirETable',
         data: {'cariKodu': cariKodu, "_token": $('#token').val(),"firma":$('#firma').val()},
-        sasdataType: 'json',
         type: 'POST',
-
         success: function(data) {
+          try {
+              allData = JSON.parse(data);
+          } catch (e) {
+              console.error("JSON parse hatası:", e, data);
+              return;
+          }
 
-          var jsonData2 = JSON.parse(data);
-          console.log(jsonData2);
-          //Select'e ekle.
-          var htmlCode = "<option value = ''>Sipariş seç...</option>";
-
-          $.each(jsonData2, function(index, kartVerisi2) {
-            htmlCode += "<option value='"+kartVerisi2.EVRAKNO+"'>"+kartVerisi2.EVRAKNO+"</option>"
+          var selectHtml = "<option value=''>Sipariş seç...</option>";
+          $.each(allData, function(index, row) {
+              selectHtml += "<option value='"+(row.EVRAKNO ?? '')+"'>"+(row.EVRAKNO ?? '')+"</option>";
           });
+          $('#SIP_NO_SEC').empty().append(selectHtml);
 
-          $('#SIP_NO_SEC').empty();
-          $('#SIP_NO_SEC').append(htmlCode);
-
-          var htmlCode = "";
-
-          $.each(jsonData2, function(index, kartVerisi2){
-            htmlCode += "<tr>";
-            htmlCode += "<td>"+kartVerisi2.EVRAKNO+"</td>";
-            htmlCode += "<td>"+kartVerisi2.TARIH+"</td>";
-            htmlCode += "<td>"+kartVerisi2.CARIHESAPCODE+"</td>";
-            htmlCode += "<tr>";
-          });
-
-          $("#popupSelect2").DataTable().clear().destroy();
-          $("#popupSelect2 > tbody").append(htmlCode);
-          addRowHandlers2();
-        },
-        error: function(response){}
-
+      },
+      error: function(response){}
       });
     }
+
+    $(document).on("change", "#SIP_NO_SEC", function() {
+        var secilenEvrak = $(this).val();
+        var htmlCode = "";
+
+        $.each(allData, function(index, row) {
+            if (row.EVRAKNO === secilenEvrak) {
+                htmlCode += "<tr>";
+                htmlCode += "<td>"+(row.EVRAKNO ?? '')+"</td>";
+                htmlCode += "<td>"+(row.TARIH ?? '')+"</td>";
+                htmlCode += "<td>"+(row.CARIHESAPCODE ?? '')+"</td>";
+                htmlCode += "</tr>";
+            }
+        });
+
+        // $("#popupSelect2").DataTable().clear().destroy();
+        // $("#popupSelect2 > tbody").html(htmlCode);
+        // $("#popupSelect2").DataTable();
+    });
   </script>
   <script>
     

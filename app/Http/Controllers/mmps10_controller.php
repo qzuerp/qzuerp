@@ -814,78 +814,84 @@ class mmps10_controller extends Controller
           'PLANLANAN_MIKTAR' => $PLANLANAN_MIKTAR
       ]);
   }
-
-  public function mps_olustur(Request $request)
+  public function mps_olustur(Request $request,&$mpsCount = 0,$KAYNAK_MPS = '',&$visited = [])
   {
     if(Auth::check()) {
       $u = Auth::user();
     }
 
-    $KOD = $request->KOD;
-    $AD = $request->AD;
-    $EVRAKNO = $request->EVRAKNO;
+    @$KOD = $request->KOD;
+    @$AD = $request->AD;
+    @$EVRAKNO = $request->EVRAKNO;
     $firma = trim($u->firma).'.dbo.';
-    $EVRAKLAR = [];
 
+    $sonuclar = [];
+
+
+    $MPS = DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->first();
 
     for($i = 0;$i < count($KOD);$i++)
     {
+      $key = $KOD[$i] . '_' . $i + $mpsCount;
+
+      if(isset($visited[$key])) continue;
+      $visited[$key] = true;
+
       if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD[$i])->exists())
       {
-        $MPS = DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->first();
+        $SON_EVRAK=DB::table($firma.'mmps10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+        $SON_ID= $SON_EVRAK->EVRAKNO;
         
-        if($MPS) {
-          $SON_EVRAK=DB::table($firma.'mmps10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
-          $SON_ID= $SON_EVRAK->EVRAKNO;
-          
-          $SON_ID = (int)$SON_ID;
-          if ($SON_ID == NULL) {
-            $NEXT_EVRAKNO = 1;
-          }
-          else {
-            $NEXT_EVRAKNO = $SON_ID + 1;
-          }
-          $EVRAKLAR = $NEXT_EVRAKNO;
-          DB::table($firma.'mmps10e')->insert([
-              'EVRAKNO' => $NEXT_EVRAKNO,
-              'MAMULSTOKKODU' => $KOD[$i],
-              'MAMULSTOKADI' => $AD[$i],
-              'HAVUZKODU' => $MPS->HAVUZKODU,
-              'STATUS' => $MPS->STATUS,
-              'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
-              'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
-              'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
-              'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
-              'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
-              'PROJEKODU' => $MPS->PROJEKODU,
-              'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
-              'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
-              'EGBS_TARIH' => $MPS->EGBS_TARIH,
-              'EGBT_TARIH' => $MPS->EGBT_TARIH,
-              'PLBS_TARIH' => $MPS->PLBS_TARIH,
-              'REBS_TARIH' => $MPS->REBS_TARIH,
-              'REBT_TARIH' => $MPS->REBT_TARIH,
-              'GK_1' => $MPS->GK_1,
-              'GK_2' => $MPS->GK_2,
-              'GK_3' => $MPS->GK_3,
-              'GK_4' => $MPS->GK_4,
-              'GK_5' => $MPS->GK_5,
-              'GK_6' => $MPS->GK_6,
-              'GK_7' => $MPS->GK_7,
-              'GK_8' => $MPS->GK_8,
-              'GK_9' => $MPS->GK_9,
-              'GK_10' => $MPS->GK_10,
-              'NOT_1' => $MPS->NOT_1,
-              'NOT_2' => $MPS->NOT_2,
-              'MUSTERIKODU' => $MPS->MUSTERIKODU,
-              'SIPNO' => $MPS->SIPNO,
-              'SIPARTNO' => $MPS->SIPARTNO,
-              'LAST_TRNUM' => $MPS->LAST_TRNUM,
-              'created_at' => now(),
-              'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI
-          ]);
+        $SON_ID = (int)$SON_ID;
+        if ($SON_ID == NULL) {
+          $NEXT_EVRAKNO = 1;
         }
-        $MAX_ID = DB::table($firma.'mmps10e')->max('EVRAKNO');
+        else {
+          $NEXT_EVRAKNO = $SON_ID + 1;
+        }
+
+        DB::table($firma.'mmps10e')->insert([
+            'EVRAKNO' => $NEXT_EVRAKNO,
+            'MAMULSTOKKODU' => $KOD[$i],
+            'MAMULSTOKADI' => $AD[$i],6
+            'HAVUZKODU' => $MPS->HAVUZKODU,
+            'STATUS' => $MPS->STATUS,
+            'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
+            'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
+            'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
+            'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
+            'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
+            'PROJEKODU' => $MPS->PROJEKODU,
+            'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
+            'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
+            'EGBS_TARIH' => $MPS->EGBS_TARIH,
+            'EGBT_TARIH' => $MPS->EGBT_TARIH,
+            'PLBS_TARIH' => $MPS->PLBS_TARIH,
+            'REBS_TARIH' => $MPS->REBS_TARIH,
+            'REBT_TARIH' => $MPS->REBT_TARIH,
+            'GK_1' => $MPS->GK_1,
+            'GK_2' => $MPS->GK_2,
+            'GK_3' => $MPS->GK_3,
+            'GK_4' => $MPS->GK_4,
+            'GK_5' => $MPS->GK_5,
+            'GK_6' => $MPS->GK_6,
+            'GK_7' => $MPS->GK_7,
+            'GK_8' => $MPS->GK_8,
+            'GK_9' => $MPS->GK_9,
+            'GK_10' => $MPS->GK_10,
+            'NOT_1' => $MPS->NOT_1,
+            'NOT_2' => $MPS->NOT_2,
+            'MUSTERIKODU' => $MPS->MUSTERIKODU,
+            'SIPNO' => $MPS->SIPNO,
+            'SIPARTNO' => $MPS->SIPARTNO,
+            'LAST_TRNUM' => $MPS->LAST_TRNUM,
+            'created_at' => now(),
+            'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI,
+            'ANAMPS' => $EVRAKNO,
+            'KAYNAK_MPS' => $KAYNAK_MPS
+        ]);
+
+        $mpsCount++;
         $sql_sorgu = "
         SELECT
             m10e.EVRAKNO,
@@ -914,12 +920,12 @@ class mmps10_controller extends Controller
         LEFT JOIN ${firma}STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
         LEFT JOIN ${firma}imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
         LEFT JOIN ${firma}imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
-        WHERE m10e.EVRAKNO = ${MAX_ID}
+        WHERE m10e.EVRAKNO = ${NEXT_EVRAKNO}
           AND B01T.EVRAKNO IS NOT NULL
         ORDER BY B01T.SIRANO, B01T.BOMREC_INPUTTYPE ASC;";
 
         $table = DB::select($sql_sorgu);
-        // dd($table);
+        
         for ($j=0; $j < count($table); $j++) { 
           $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
           $JOBNO = $NEXT_EVRAKNO.$TRNUM;
@@ -968,7 +974,26 @@ class mmps10_controller extends Controller
           ]);
         }
       }
+
+      $hammaddeler = DB::select('
+          SELECT B01E.EVRAKNO, B01T.* 
+          FROM ' . $firma . 'bomu01e AS B01E
+          LEFT JOIN ' . $firma . 'bomu01t AS B01T ON B01E.EVRAKNO = B01T.EVRAKNO
+          WHERE B01E.MAMULCODE = ?;
+      ', [$KOD[$i]]);
+
+
+      foreach ($hammaddeler as $hm) {
+        $this->mps_olustur(new Request([
+            'KOD' => [$hm->BOMREC_KAYNAKCODE],
+            'AD' => [$hm->BOMREC_KAYNAKCODE],
+            'EVRAKNO' => $EVRAKNO
+        ]),$mpsCount,$SON_ID,$visited);
+      }
     }
-    return $EVRAKLAR;
+    return $sonuclar[] = [
+          'status' => 'ok',
+          'count' => $mpsCount,
+      ];;
   }
 }

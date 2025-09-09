@@ -214,7 +214,7 @@
                           </td>
                           <td style="min-width: 240px;">
                             <div class="d-flex ">
-                              <select class="form-control"  onchange="stokAdiGetir(this.value)" data-name="KOD" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+                              <select class="form-control txt-radius"  onchange="stokAdiGetir(this.value)" data-name="KOD" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
                                 <option value=" ">Seç</option>
                                 @php
                                 $stok00_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
@@ -225,7 +225,7 @@
                                 @endphp
                               </select>
                               <span class="d-flex -btn">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><span class="fa-solid fa-magnifying-glass"  >
+                                <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><span class="fa-solid fa-magnifying-glass"  >
                                 </span></button>
                               </span>
                             </div>
