@@ -209,7 +209,7 @@
                 <div class="tab-content" >
 
                   {{-- ÇALIŞMA BİLDİRİMİ BAŞLANGIÇ --}}
-                    <div class="active tab-pane" id="calisma_bildirimi">
+                    <div class="active tab-pane" id="calisma_bildirimi"> 
                       <div class="row">
                         <div class="row">
                           <div class="row ">
@@ -295,7 +295,6 @@
                               <label>Kalıp Kodu</label>
                               <input type="text" class="form-control " maxlength="16" name="KALIPKODU" id="KALIPKODU" value="{{ @$kart_veri->KALIPKODU }}">
                             </div>
-
                           </div>
                         </div>
                       </div>
@@ -303,841 +302,656 @@
                   {{-- ÇALIŞMA BİLDİRİMİ BİTİŞ --}}
 
                   {{-- SÜREÇ BİLGİLERİ BAŞLANGIÇ --}}
-                    <div class="tab-pane" id="surec_bilgileri">
+                  <div class="tab-pane" id="surec_bilgileri">
                       <div class="container-fluid">
-                        
-                        <style>
-                          :root {
-                            --primary-color: #3498db;
-                            --success-color: #2ecc71;
-                            --warning-color: #f39c12;
-                            --danger-color: #e74c3c;
-                            --light-gray: #f5f7fa;
-                            --border-radius: 8px;
-                            --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                            --transition: all 0.3s ease;
-                          }
-
-                          .form-group {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.75rem;
-                            margin-bottom: 1rem;
-                          }
-
-                          .date-time-input {
-                            padding: 0.5rem;
-                            border-radius: var(--border-radius);
-                            border: 1px solid #ddd;
-                            background-color: var(--light-gray);
-                            transition: var(--transition);
-                            flex: 1;
-                            min-width: 50px;
-                          }
-
-                          .date-time-input:focus {
-                            border-color: var(--primary-color);
-                            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-                            outline: none;
-                          }
-
-                          .action-btn {
-                            padding: 0.5rem 1rem;
-                            border-radius: var(--border-radius);
-                            transition: var(--transition);
-                            min-width: 120px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 0.5rem;
-                          }
-
-                          .action-btn:hover {
-                            transform: translateY(-2px);
-                          }
-
-                          .tools-section {
-                            background-color: white;
-                            border-radius: var(--border-radius);
-                            box-shadow: var(--box-shadow);
-                            padding: 1.5rem;
-                            margin-bottom: 1.5rem;
-                          }
-
-                          
-                          .action-btn-group {
-                            display:flex;
-                            gap: 0.5rem;
-                          }
-                          @media (max-width: 768px) {
-                            .form-group {
-                              flex-wrap: wrap;
-                            }
-                            .action-btn, .date-time-input {
-                              max-width: 100%;
-                            }
-                            .action-btn-group {
-                              flex-direction: column;
-                              gap: 0.5rem;
-                            }
-                          }
-
-                          input.date-time-input {
-                            -webkit-appearance: none;
-                            -moz-appearance: none;
-                            appearance: none;
-                          }
-                        </style>
-
-                        <div class="row">
-                          <div class="col-12">
-                            <!-- Process Cards -->
-                            <div class="row process-row">
-                              <!-- Ayar Kolonu -->
-                              <div class="row justify-content-center">
-                                <div class="col-md-6 col-lg-4">
-                                  <div class="card h-100 shadow-sm rounded-3">
-                                    <h5 class="card-header">Ayar İşlemi</h5>
-                                    <div class="card-body">
-                                      <div class="mb-4">
-                                        <button type="button" class="btn mt-2 btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
-                                          <i class="fas fa-play me-2"></i> Ayar Başladı
-                                        </button>
-                                        <div class="row g-2 mt-2">
-                                          <div class="col">
-                                            <input type="date" class="form-control text-center" id="RECTARIH1" placeholder="Tarih">
+                          <style>
+                              :root {
+                                  --primary-color: #3498db;
+                                  --success-color: #2ecc71;
+                                  --warning-color: #f39c12;
+                                  --danger-color: #e74c3c;
+                                  --light-gray: #f5f7fa;
+                                  --border-radius: 8px;
+                                  --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                  --transition: all 0.3s ease;
+                              }
+                              .form-group {
+                                  display: flex;
+                                  align-items: center;
+                                  gap: 0.75rem;
+                                  margin-bottom: 1rem;
+                              }
+                              .date-time-input {
+                                  padding: 0.5rem;
+                                  border-radius: var(--border-radius);
+                                  border: 1px solid #ddd;
+                                  background-color: var(--light-gray);
+                                  transition: var(--transition);
+                                  flex: 1;
+                                  min-width: 50px;
+                              }
+                              .date-time-input:focus {
+                                  border-color: var(--primary-color);
+                                  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+                                  outline: none;
+                              }
+                              .action-btn {
+                                  padding: 0.5rem 1rem;
+                                  border-radius: var(--border-radius);
+                                  transition: var(--transition);
+                                  min-width: 120px;
+                                  display: flex;
+                                  align-items: center;
+                                  justify-content: center;
+                                  gap: 0.5rem;
+                              }
+                              .action-btn:hover {
+                                  transform: translateY(-2px);
+                              }
+                              .tools-section {
+                                  background-color: white;
+                                  border-radius: var(--border-radius);
+                                  box-shadow: var(--box-shadow);
+                                  padding: 1.5rem;
+                                  margin-bottom: 1.5rem;
+                              }
+                              .action-btn-group {
+                                  display: flex;
+                                  gap: 0.5rem;
+                              }
+                              @media (max-width: 768px) {
+                                  .form-group {
+                                      flex-wrap: wrap;
+                                  }
+                                  .action-btn, .date-time-input {
+                                      max-width: 100%;
+                                  }
+                                  .action-btn-group {
+                                      flex-direction: column;
+                                      gap: 0.5rem;
+                                  }
+                              }
+                              input.date-time-input {
+                                  -webkit-appearance: none;
+                                  -moz-appearance: none;
+                                  appearance: none;
+                              }
+                          </style>
+                          <div class="row">
+                              <div class="col-12">
+                                  <!-- Process Cards -->
+                                  <div class="row process-row">
+                                      <!-- Ayar Kolonu -->
+                                      <div class="col-md-6 col-lg-4" id="ayar">
+                                          <div class="card h-100 shadow-sm rounded-3">
+                                              <h5 class="card-header">Ayar İşlemi</h5>
+                                              <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                                                  <div class="mb-3">
+                                                      <button type="button" class="btn mt-2 btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                          <i class="fas fa-play me-2"></i> Ayar Başladı
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control date-time-input text-center" id="RECTARIH1" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control date-time-input text-center" id="RECTIME1" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div>
+                                                      <button type="button" class="btn btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                          <i class="fas fa-stop me-2"></i> Ayar Bitti
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control date-time-input text-center" id="ENDTARIH1" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control date-time-input text-center" id="ENDTIME1" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
                                           </div>
-                                          <div class="col">
-                                            <input type="time" class="form-control text-center" id="RECTIME1" placeholder="Saat">
-                                          </div>
-                                        </div>
                                       </div>
-                                      <div>
-                                        <button type="button" class="btn btn-warning btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
-                                          <i class="fas fa-stop me-2"></i> Ayar Bitti
-                                        </button>
-                                        <div class="row g-2 mt-2">
-                                          <div class="col">
-                                            <input type="date" class="form-control text-center" id="ENDTARIH1" placeholder="Tarih">
+                                      <!-- Üretim Kolonu -->
+                                      <div class="col-md-6 col-lg-4" id="uretim">
+                                          <div class="card h-100 shadow-sm rounded-3">
+                                              <h5 class="card-header">Üretim İşlemi</h5>
+                                              <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                                                  <div class="mb-3">
+                                                      <button type="button" class="w-100 action-btn btn btn-success" id="button3">
+                                                          <i class="fas fa-play-circle"></i> Üretim Başladı
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="RECTARIH2" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="RECTIME2" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div>
+                                                      <button type="button" class="w-100 action-btn btn btn-success" id="button4">
+                                                          <i class="fas fa-stop-circle"></i> Üretim Bitti
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="ENDTARIH2" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="ENDTIME2" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
                                           </div>
-                                          <div class="col">
-                                            <input type="time" class="form-control text-center" id="ENDTIME1" placeholder="Saat">
-                                          </div>
-                                        </div>
                                       </div>
-                                    </div>
+                                      <!-- Duruş Kolonu -->
+                                      <div class="col-md-6 col-lg-4" id="durus">
+                                          <div class="card h-100 shadow-sm rounded-3">
+                                              <h5 class="card-header">Duruş İşlemi</h5>
+                                              <div class="card-body">
+                                                  <div class="mb-2 w-100">
+                                                      <label class="form-label fw-bold small">Duruş Sebebi</label>
+                                                      <select class="form-select w-100 select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
+                                                          <option value="" selected>Seç</option>
+                                                          @php
+                                                              $DURUSSEBEBI = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
+                                                              foreach ($DURUSSEBEBI as $key => $veri) {
+                                                                  echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                                              }
+                                                          @endphp
+                                                      </select>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <button type="button" class="w-100 action-btn btn btn-danger" id="button5">
+                                                          <i class="fas fa-pause-circle"></i> Duruş Başladı
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="DRSTARIH1" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="DRSTIME1" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div>
+                                                      <button type="button" class="w-100 action-btn btn btn-danger" id="button6">
+                                                          <i class="fas fa-stop-circle"></i> Duruş Bitti
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="DRSTARIH2" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="DRSTIME2" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
                                   </div>
-                                </div>
-                              <!-- Üretim Kolonu -->
-                              <div class="col-md-4 process-col" id="uretim">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Üretim İşlemi</h5>
-                                  <div class="card-body pt-3" >
-                                    <div class="mb-3">
-                                      <button type="button" type="button" class="w-100 action-btn btn btn-success" id="button3">
-                                        <i class="fas fa-play-circle"></i> Üretim Başladı
-                                      </button>
-                                      <div class="row g-2 mt-2">
-                                        <div class="col">
-                                            <input type="date" class="form-control date-time-input" id="RECTARIH2" placeholder="Tarih">
-                                        </div>
-                                        <div class="col">
-                                            <input type="time" class="form-control date-time-input" id="RECTIME2" placeholder="Saat">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div>
-                                      <button type="button" type="button" class="w-100 action-btn btn btn-success" id="button4">
-                                        <i class="fas fa-stop-circle"></i> Üretim Bitti
-                                      </button>
-                                      <div class="row g-2 mt-2">
-                                        <div class="col">
-                                            <input type="date" class="form-control date-time-input" id="ENDTARIH2" placeholder="Tarih">
-                                        </div>
-                                        <div class="col">
-                                            <input type="time" class="form-control date-time-input" id="ENDTIME2" placeholder="Saat">
-                                        </div>
-                                      </div>
-                                    </div>
+                                  <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
+                                      <div id="chart" style="height: 270px;"></div>
+                                      <div id="chart1" style="height: 270px;"></div>
+                                      <div id="chart2" style="height: 270px;"></div>
+                                      <div id="chart3" style="height: 270px;"></div>
                                   </div>
-                                </div>
+                                  <!-- Tools Section -->
+                                  <div class="tools-section">
+                                      <div class="row align-items-end">
+                                          <div class="col-md-12">
+                                              <label class="form-label fw-bold">İşlemler</label>
+                                              <div class="action-btn-group flex gap-2 flex-wrap">
+                                                  <button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('veri_table')">
+                                                      <i class="fas fa-file-excel"></i> Excel'e Aktar
+                                                  </button>
+                                                  <button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('veri_table')">
+                                                      <i class="fas fa-file-word"></i> Word'e Aktar
+                                                  </button>
+                                                  <button type="button" class="action-btn btn btn-primary" onclick="printTable('veri_table')">
+                                                      <i class="fas fa-print"></i> Yazdır
+                                                  </button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Tablo -->
+                                  <div class="table-responsive">
+                                      <table class="table table-hover" id="veri_table">
+                                          <thead>
+                                              <tr>
+                                                  <th>İşlem Türü</th>
+                                                  <th>Başlangıç Tarihi</th>
+                                                  <th>Başlangıç Saati</th>
+                                                  <th>Bitiş Tarihi</th>
+                                                  <th>Bitiş Saati</th>
+                                                  <th>Durma Sebebi</th>
+                                                  <th>Toplam Süre</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              @php
+                                                  $surecB = DB::table($ekranTableT)
+                                                      ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                                                      ->orderBy('BASLANGIC_SAATI', 'asc')
+                                                      ->get();
+                                                  $AYAR = 0;
+                                                  $URETIM = 0;
+                                                  $TOPLAM_SURE = 0;
+                                              @endphp
+                                              @foreach($surecB as $val)
+                                                  @php
+                                                      if($val->ISLEM_TURU == 'A') $AYAR += (float)$val->SURE;
+                                                      else if($val->ISLEM_TURU == 'U') $URETIM += (float)$val->SURE;
+                                                  @endphp
+                                                  <tr class="text-center">
+                                                      <td>
+                                                          <input type="hidden" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="{{$val->ISLEM_TURU}}" readonly>
+                                                          <input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU_SHOW" value="@switch($val->ISLEM_TURU) @case('A') AYAR @break @case('U') ÜRETİM @break @case('D') DURUŞ @break @default {{ $val->ISLEM_TURU }} @endswitch" readonly>
+                                                      </td>
+                                                      <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
+                                                      <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
+                                                      <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
+                                                      <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
+                                                      <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
+                                                      <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
+                                                      <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
+                                                  </tr>
+                                              @endforeach
+                                              @php
+                                                  $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
+                                                  @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
+                                                  @$URETIM_VERIMLILIK = ($URETIM > 0) ? ($MPS->R_MIKTAR0 / $URETIM) * 100 : 0;
+                                                  @$TOPLAM_VERIMLILIK = ($TOPLAM_SURE > 0) ? ($MPS->R_MIKTART / $TOPLAM_SURE) * 100 : 0;
+                                              @endphp
+                                          </tbody>
+                                      </table>
+                                  </div>
                               </div>
-                            
-                              <!-- Duruş Kolonu -->
-                              <div class="col-md-4 process-col" id="durus">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Duruş İşlemi</h5>
-                                  <div class="card-body pt-3">
-                                    <div class="mb-2">
-                                      <label class="form-label fw-bold small">Duruş Sebebi</label>
-                                      <select class="form-select select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
-                                        <option value="" selected>Seç</option>
-                                        @php
-                                        $DURUSSEBEBI=DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
-                                        foreach ($DURUSSEBEBI as $key => $veri) {
-                                          echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                                        }
-                                        @endphp
-                                      </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div>
-                                            <button type="button" type="button" class="w-100 action-btn btn btn-danger" id="button5">
-                                                <i class="fas fa-pause-circle"></i> Duruş Başladı
-                                            </button>
-                                            <div class="row g-2 mt-2">
-                                                <div class="col">
-                                                    <input type="date" class="form-control date-time-input" id="DRSTARIH1" placeholder="Tarih">
-                                                </div>
-                                                <div class="col">
-                                                    <input type="time" class="form-control date-time-input" id="DRSTIME1" placeholder="Saat">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <button type="button" type="button" class="w-100 action-btn btn btn-danger" id="button6">
-                                            <i class="fas fa-stop-circle"></i> Duruş Bitti
-                                        </button>
-                                        <div class="row g-2 mt-2">
-                                            <div class="col">
-                                                <input type="date" class="form-control date-time-input" id="DRSTARIH2" placeholder="Tarih">
-                                            </div>
-                                            <div class="col">
-                                                <input type="time" class="form-control date-time-input" id="DRSTIME2" placeholder="Saat">
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
-                              <div id="chart" style="height: 270px;"></div>
-                              <div id="chart1" style="height: 270px;"></div>
-                              <div id="chart2" style="height: 270px;"></div>
-                              <div id="chart3" style="height: 270px;"></div>
-                            </div>
-                            <!-- Tools Section -->
-                            <div class="tools-section">
-                              <div class="row align-items-end">
-                                <div class="col-md-12">
-                                  <label class="form-label fw-bold">İşlemler</label>
-                                  <div class="action-btn-group flex gap-2 flex-wrap">
-                                    <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('veri_table')">
-                                      <i class="fas fa-file-excel"></i> Excel'e Aktar
-                                    </button>
-                                    <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('veri_table')">
-                                      <i class="fas fa-file-word"></i> Word'e Aktar
-                                    </button>
-                                    <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('veri_table')">
-                                      <i class="fas fa-print"></i> Yazdır
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <!-- Tablo -->
-                            <div class="table-responsive">
-                              <table class="table table-hover" id="veri_table">
-                                <thead>
-                                  <tr>
-                                    <th>İşlem Türü</th>
-                                    <th>Başlangıç Tarihi</th>
-                                    <th>Başlangıç Saati</th>
-                                    <th>Bitiş Tarihi</th>
-                                    <th>Bitiş Saati</th>
-                                    <th>Durma Sebebi</th>
-                                    <th>Toplam Süre</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  @php
-                                    $surecB = DB::table($ekranTableT)
-                                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                                        ->orderBy('BASLANGIC_SAATI','asc')
-                                        ->get();
-                                    $AYAR = 0;
-                                    $URETIM = 0;
-                                    $TOPLAM_SURE = 0;
-
-                                  @endphp
-                                  @foreach($surecB as $val)
-                                    @php
-                                      if($val->ISLEM_TURU == 'A')
-                                        $AYAR += (float)$val->SURE;
-                                      else if($val->ISLEM_TURU == 'U')
-                                        $URETIM += (float)$val->SURE;
-                                    @endphp
-                                    <tr class="text-center">
-                                      <td>
-                                          <input type="hidden" 
-                                            style="width:100px; border:none; outline:none;" 
-                                            class="bg-transparent" 
-                                            name="ISLEM_TURU[]"
-                                            value="{{$val->ISLEM_TURU}}" 
-                                            readonly>
-                                          <input type="text" 
-                                            style="width:100px; border:none; outline:none;" 
-                                            class="bg-transparent" 
-                                            name="ISLEM_TURU_SHOW"
-                                            value="@switch($val->ISLEM_TURU)
-                                                      @case('A') AYAR @break
-                                                      @case('U') ÜRETİM @break
-                                                      @case('D') DURUŞ @break
-                                                      @default {{ $val->ISLEM_TURU }}
-                                                    @endswitch" 
-                                            readonly>
-                                      </td>
-                                      <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
-                                      <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
-                                      <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
-                                      <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
-                                      <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
-                                      <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
-                                      <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
-                                    </tr>
-                                  @endforeach
-                                  @php
-                                    $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
-
-                                    @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
-                                    @$URETIM_VERIMLILIK = ($URETIM > 0) ? ($MPS->R_MIKTAR0 / $URETIM) * 100 : 0;
-                                    @$TOPLAM_VERIMLILIK = ($TOPLAM_SURE > 0) ? ($MPS->R_MIKTART / $TOPLAM_SURE) * 100 : 0;
-                                  @endphp
-                                </tbody>
-                              </table>
-                            </div>
                           </div>
-                        </div>
                       </div>
-                    </div>
+                  </div>
                   {{-- SÜREÇ BİLGİLERİ BİTİŞ --}}
 
                   {{-- HATALAR BAŞLANGIÇ --}}
-                    <div class="tab-pane" id="hatalar">
-                      <div class="row">
-                        <div class="row">
-                            <table class="table table-striped text-center" id="veriTable">
-                              <thead>
-                                <tr>
-                                  <th>Ekle</th>
-                                  <th>Hata Sebebi</th>
-                                  <th>Bozuldan parça adı</th>
-                                  <th>Hatalı ürün adedi</th>
-                                </tr>
-                                <tr class="satirEkle" style="background-color:#3c8dbc">
-
-                                  <td><button type="button" type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
-                                  <td style="display:none;"></td>
-                                  <td>
-                                    <select id="GK_1" name="" class="form-control js-example-basic-single" style="width: 100%;">
-                                      <option value=" ">Seç</option>
-                                      @php
-                                      foreach ($MPSGK2_veri as $key => $veri) {
-                                        echo "<option value ='".$veri->KOD." - ".$veri->AD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                      }
-                                      @endphp
-                                    </select>
-                                  </td>
-                                
-                                  <td>
-                                    <select class="form-control select2"  ID="HATA_SEBEBI">
-                                      @php
-                                       $parcalar = DB::table($database.'mmps10t')
-                                       ->where('EVRAKNO', @$kart_veri->MPSNO)
-                                       ->where('R_KAYNAKTYPE', 'H')
-                                       ->get();
-                                      @endphp
-                                      @foreach ($parcalar as $parca)
-                                        <option value="{{ $parca->R_KAYNAKKODU }}">{{ $parca->R_KAYNAKKODU }} - {{ $parca->KAYNAK_AD }}</option>
-                                      @endforeach
-                                    </select>
-                                  </td>
-                                  <td>
-
-                                    <input type="number" class="form-control " maxlength="16" name="" ID="KALIPKODU2" value="">                  
-                                  </td>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                @php
-                                  //$t_veri = DB::table($ekranTableE)->where("EVRAKNO", @$kart_veri->EVRAKNO)->whereNotNull('GK_1')->whereNotNull('KALIPKODU2')->whereNotNull('KALIPKODU3')->get();
-                                @endphp
-                                <tr>
-                                  <!-- <td><button type="button" type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
-                                  <td style="display:none;"><input type="text" value="" name="TRNUM[]"></td>
-                                  <td><input type="text" class="form-control"  value="" name="GK_1[]" readonly></td>
-                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU2[]" readonly></td>
-                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU3[]" readonly></td> -->
-                                </tr>
-                              </tbody>
-                            </table>
-                        </div>
+                  <div class="tab-pane" id="hatalar">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-12">
+                                  <table class="table table-striped text-center" id="veriTable">
+                                      <thead>
+                                          <tr>
+                                              <th>Ekle</th>
+                                              <th>Hata Sebebi</th>
+                                              <th>Bozuk Parça Adı</th>
+                                              <th>Hatalı Ürün Adedi</th>
+                                          </tr>
+                                          <tr class="satirEkle" style="background-color:#3c8dbc">
+                                              <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                                              <td style="display:none;"></td>
+                                              <td>
+                                                  <select id="GK_1" name="" class="form-control js-example-basic-single" style="width: 100%;">
+                                                      <option value=" ">Seç</option>
+                                                      @php
+                                                          foreach ($MPSGK2_veri as $key => $veri) {
+                                                              echo "<option value ='".$veri->KOD." - ".$veri->AD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                                          }
+                                                      @endphp
+                                                  </select>
+                                              </td>
+                                              <td>
+                                                  <select class="form-control select2" id="HATA_SEBEBI">
+                                                      @php
+                                                          $parcalar = DB::table($database.'mmps10t')
+                                                              ->where('EVRAKNO', @$kart_veri->MPSNO)
+                                                              ->where('R_KAYNAKTYPE', 'H')
+                                                              ->get();
+                                                          foreach ($parcalar as $parca) {
+                                                              echo "<option value='".$parca->R_KAYNAKKODU."'>".$parca->R_KAYNAKKODU." - ".$parca->KAYNAK_AD."</option>";
+                                                          }
+                                                      @endphp
+                                                  </select>
+                                              </td>
+                                              <td>
+                                                  <input type="number" class="form-control" maxlength="16" name="" id="KALIPKODU2" value="">
+                                              </td>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr>
+                                              <!-- Add dynamic rows here -->
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
                       </div>
-                    </div>
+                  </div>
                   {{-- HATALAR BİTİŞ --}}
 
                   {{-- LİSTE BAŞLANGIÇ --}}
-                    <div class="tab-pane" id="liste">
-                      <div class="row">
-                        @php
-                          $table = DB::table($ekranTableE)->select('*')->get();
-                        @endphp
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >MPS Stok Kodu</label>
-                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'mmps10e')
-                              ->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->MAMULSTOKKODU) && 
-                                trim($veri->MAMULSTOKKODU) !== '') {
-                                  echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-control">
-                            @php
-                                echo "<option value =' ' selected> </option>";
-                                $evraklar = DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
-                                foreach ($evraklar as $key => $veri) {
-                                  if (!is_null($veri->MAMULSTOKKODU) && trim($veri->MAMULSTOKKODU) !== '') {
-                                    echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
-                                  }
-                                }
-                              @endphp
-                          </select>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Operatör</label>
-                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Operasyon</label>
-                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Tezgah Adı</label>
-                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Süreç Adı</label>
-                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-control">
-                            <option>Seç</option>
-                            <option value="A">Ayar | A</option>
-                            <option value="U">Üretim | U</option>
-                            <option value="D">Duruş | D</option>
-                          </select>
-                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-control">
-                              <option>Seç</option>
-                              <option value="A">Ayar | A</option>
-                              <option value="U">Üretim | U</option>
-                              <option value="D">Duruş | D</option>
-                          </select>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Başlama Tarihi</label>
-                          <input type="date" class="form-control" name="RECTARIH1_B" id="RECTARIH1_E">
-                          <input type="date" class="form-control" name="RECTARIH1_E" id="RECTARIH1_E">
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Başlama Saati</label>
-                          <input type="time" class="form-control" name="RECTIME1_B" id="RECTIME1_B">
-                          <input type="time" class="form-control" name="RECTIME1_E" id="RECTIME1_E">
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Bitiş Tarihi</label>
-                          <input type="date" class="form-control" name="ENDTARIH1_B" id="ENDTARIH1_B">
-                          <input type="date" class="form-control" name="ENDTARIH1_E" id="ENDTARIH1_E">
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Bitiş Saati</label>
-                          <input type="time" class="form-control" name="ENDTIME1_E" id="ENDTIME1_E">
-                          <input type="time" class="form-control" name="ENDTIME1_E" id="ENDTIME1_E">
-                        </div>
-
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Üretim Adeti</label>
-                          <input type="number" class="form-control" name="URETIM_B" id="URETIM_B">
-                          <input type="number" class="form-control" name="URETIM_E" id="URETIM_E">
-                        </div>
-                        
-                        <div class="col-sm-3 d-flex justify-content-center align-items-center">
-                          <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
-                            <i class='fa fa-filter' style='color: WHİTE'></i>
-                          &nbsp;&nbsp;--Süz--</button>
-                        </div>
-
-                        <div class="row " style="overflow: auto">
-
-                          @php
-                            if(isset($_GET['SUZ'])) {
-                          @endphp
-
-                          <table id="example2" class="table table-striped text-center" data-page-length="10">
-                            <thead>
-                              <tr class="bg-primary">
-                                <th></th>
-                                <th>Evrak No</th>
-                                <th>Evrak Tarihi</th>
-                                <th>MPS No</th>
-                                <th>Operatör</th>
-                                <th>Operasyon</th>
-                                <th>Tezgah Adı</th>
-                                <th>İşlem Statüsü</th>
-                                <th>Başlama Tarihi</th>
-                                <th>Başlama Saati</th>
-                                <th>Bitiş Tarihi</th>
-                                <th>Bitiş Saati</th>
-                                <th>Üretim Miktarı</th>
-                                <th>Git</th>
-                              </tr>
-                            </thead>
-                            <tfoot>
-                              <tr class="bg-primary">
-                                <th></th>
-                                <th>Evrak No</th>
-                                <th>Evrak Tarihi</th>
-                                <th>MPS No</th>
-                                <th>Operatör</th>
-                                <th>Operasyon</th>
-                                <th>Tezgah Adı</th>
-                                <th>İşlem Statüsü</th>
-                                <th>Başlama Tarihi</th>
-                                <th>Başlama Saati</th>
-                                <th>Bitiş Tarihi</th>
-                                <th>Bitiş Saati</th>
-                                <th>Üretim Miktarı</th>
-                                <th>Git</th>
-                              </tr>
-                            </tfoot>
-                            <tbody>
-
+                  <div class="tab-pane" id="liste">
+                      <div class="container-fluid">
+                          <div class="row">
                               @php
+                                  $table = DB::table($ekranTableE)->select('*')->get();
+                              @endphp
+                              <div class="col-sm-3">
+                                  <label for="MPSSTOKKODU_B">MPS Stok Kodu</label>
+                                  <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          $evraklar = DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->MAMULSTOKKODU) && trim($veri->MAMULSTOKKODU) !== '') {
+                                                  echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                                  <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->MAMULSTOKKODU) && trim($veri->MAMULSTOKKODU) !== '') {
+                                                  echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="TO_OPERATOR_B">Operatör</label>
+                                  <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          $evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                                  <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="OPERASYON_B">Operasyon</label>
+                                  <select name="OPERASYON_B" id="OPERASYON_B" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          $evraklar = DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                                  <select name="OPERASYON_E" id="OPERASYON_E" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="X_T_ISMERKEZI_B">Tezgah Adı</label>
+                                  <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          $evraklar = DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                                  <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-control">
+                                      <option value=" " selected> </option>
+                                      @php
+                                          foreach ($evraklar as $key => $veri) {
+                                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                                  echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                              }
+                                          }
+                                      @endphp
+                                  </select>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="D7_ISLEM_KODU_B">Süreç Adı</label>
+                                  <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-control">
+                                      <option>Seç</option>
+                                      <option value="A">Ayar | A</option>
+                                      <option value="U">Üretim | U</option>
+                                      <option value="D">Duruş | D</option>
+                                  </select>
+                                  <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-control">
+                                      <option>Seç</option>
+                                      <option value="A">Ayar | A</option>
+                                      <option value="U">Üretim | U</option>
+                                      <option value="D">Duruş | D</option>
+                                  </select>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="RECTARIH1_B">Başlama Tarihi</label>
+                                  <input type="date" class="form-control" name="RECTARIH1_B" id="RECTARIH1_B">
+                                  <input type="date" class="form-control" name="RECTARIH1_E" id="RECTARIH1_E">
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="RECTIME1_B">Başlama Saati</label>
+                                  <input type="time" class="form-control" name="RECTIME1_B" id="RECTIME1_B">
+                                  <input type="time" class="form-control" name="RECTIME1_E" id="RECTIME1_E">
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="ENDTARIH1_B">Bitiş Tarihi</label>
+                                  <input type="date" class="form-control" name="ENDTARIH1_B" id="ENDTARIH1_B">
+                                  <input type="date" class="form-control" name="ENDTARIH1_E" id="ENDTARIH1_E">
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="ENDTIME1_B">Bitiş Saati</label>
+                                  <input type="time" class="form-control" name="ENDTIME1_B" id="ENDTIME1_B">
+                                  <input type="time" class="form-control" name="ENDTIME1_E" id="ENDTIME1_E">
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="URETIM_B">Üretim Adeti</label>
+                                  <input type="number" class="form-control" name="URETIM_B" id="URETIM_B">
+                                  <input type="number" class="form-control" name="URETIM_E" id="URETIM_E">
+                              </div>
+                              <div class="col-sm-3 d-flex justify-content-center align-items-end">
+                                  <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
+                                      <i class="fa fa-filter" style="color: white"></i> &nbsp;&nbsp;--Süz--
+                                  </button>
+                              </div>
+                              <div class="row mt-3" style="overflow: auto">
+                                  @php
+                                      if (isset($_GET['SUZ'])) {
+                                          $database = trim($kullanici_veri->firma).".dbo.";
+                                          $MPSSTOKKODU_E = ''; $MPSSTOKKODU_B = '';
+                                          $TO_OPERATOR_E = ''; $TO_OPERATOR_B = '';
+                                          $OPERASYON_E = ''; $OPERASYON_B = '';
+                                          $X_T_ISMERKEZI_E = ''; $X_T_ISMERKEZI_B = '';
+                                          $D7_ISLEM_KODU_E = ''; $D7_ISLEM_KODU_B = '';
+                                          $GK_1_E = ''; $GK_1_B = '';
+                                          $RECTARIH1_E = ''; $RECTARIH1_B = '';
+                                          $RECTARIH2_E = ''; $RECTARIH2_B = '';
+                                          $RECTIME2_E = ''; $RECTIME2_B = '';
+                                          $RECTIME1_E = ''; $RECTIME1_B = '';
+                                          $ENDTARIH1_E = ''; $ENDTARIH1_B = '';
+                                          $ENDTIME1_E = ''; $ENDTIME1_B = '';
+                                          $ENDTARIH2_E = ''; $ENDTARIH2_B = '';
+                                          $ENDTIME2_E = ''; $ENDTIME2_B = '';
+                                          $URETIM_E = ''; $URETIM_B = '';
 
-                                $database = trim($kullanici_veri->firma).".dbo."; 
+                                          if(isset($_GET['$MPSSTOKKODU_B'])) { $MPSSTOKKODU_B = TRIM($_GET['$MPSSTOKKODU_B']); }
+                                          if(isset($_GET['$MPSSTOKKODU_E'])) { $MPSSTOKKODU_E = TRIM($_GET['$MPSSTOKKODU_E']); }
+                                          if(isset($_GET['TO_OPERATOR_B'])) { $TO_OPERATOR_B = TRIM($_GET['TO_OPERATOR_B']); }
+                                          if(isset($_GET['TO_OPERATOR_E'])) { $TO_OPERATOR_E = TRIM($_GET['TO_OPERATOR_E']); }
+                                          if(isset($_GET['OPERASYON_B'])) { $OPERASYON_B = TRIM($_GET['OPERASYON_B']); }
+                                          if(isset($_GET['OPERASYON_E'])) { $OPERASYON_E = TRIM($_GET['OPERASYON_E']); }
+                                          if(isset($_GET['X_T_ISMERKEZI_B'])) { $X_T_ISMERKEZI_B = TRIM($_GET['X_T_ISMERKEZI_B']); }
+                                          if(isset($_GET['X_T_ISMERKEZI_E'])) { $X_T_ISMERKEZI_E = TRIM($_GET['X_T_ISMERKEZI_E']); }
+                                          if(isset($_GET['D7_ISLEM_KODU_B'])) { $D7_ISLEM_KODU_B = TRIM($_GET['D7_ISLEM_KODU_B']); }
+                                          if(isset($_GET['D7_ISLEM_KODU_E'])) { $D7_ISLEM_KODU_E = TRIM($_GET['D7_ISLEM_KODU_E']); }
+                                          if(isset($_GET['GK_1_B'])) { $GK_1_B = TRIM($_GET['GK_1_B']); }
+                                          if(isset($_GET['GK_1_E'])) { $GK_1_E = TRIM($_GET['GK_1_E']); }
+                                          if(isset($_GET['RECTARIH1_B'])) { $RECTARIH1_B = TRIM($_GET['RECTARIH1_B']); }
+                                          if(isset($_GET['RECTARIH1_E'])) { $RECTARIH1_E = TRIM($_GET['RECTARIH1_E']); }
+                                          if(isset($_GET['RECTIME1_B'])) { $RECTIME1_B = TRIM($_GET['RECTIME1_B']); }
+                                          if(isset($_GET['RECTIME1_E'])) { $RECTIME1_E = TRIM($_GET['RECTIME1_E']); }
+                                          if(isset($_GET['RECTARIH2_B'])) { $RECTARIH2_B = TRIM($_GET['RECTARIH2_B']); }
+                                          if(isset($_GET['RECTARIH2_E'])) { $RECTARIH2_E = TRIM($_GET['RECTARIH2_E']); }
+                                          if(isset($_GET['RECTIME2_B'])) { $RECTIME2_B = TRIM($_GET['RECTIME2_B']); }
+                                          if(isset($_GET['RECTIME2_E'])) { $RECTIME2_E = TRIM($_GET['RECTIME2_E']); }
+                                          if(isset($_GET['ENDTARIH1_B'])) { $ENDTARIH1_B = TRIM($_GET['ENDTARIH1_B']); }
+                                          if(isset($_GET['ENDTARIH1_E'])) { $ENDTARIH1_E = TRIM($_GET['ENDTARIH1_E']); }
+                                          if(isset($_GET['ENDTIME1_B'])) { $ENDTIME1_B = TRIM($_GET['ENDTIME1_B']); }
+                                          if(isset($_GET['ENDTIME1_E'])) { $ENDTIME1_E = TRIM($_GET['ENDTIME1_E']); }
+                                          if(isset($_GET['ENDTARIH2_B'])) { $ENDTARIH2_B = TRIM($_GET['ENDTARIH2_B']); }
+                                          if(isset($_GET['ENDTARIH2_E'])) { $ENDTARIH2_E = TRIM($_GET['ENDTARIH2_E']); }
+                                          if(isset($_GET['ENDTIME2_B'])) { $ENDTIME2_B = TRIM($_GET['ENDTIME2_B']); }
+                                          if(isset($_GET['ENDTIME2_E'])) { $ENDTIME2_E = TRIM($_GET['ENDTIME2_E']); }
+                                          if(isset($_GET['URETIM_B'])) { $URETIM_B = TRIM($_GET['URETIM_B']); }
+                                          if(isset($_GET['URETIM_E'])) { $URETIM_E = TRIM($_GET['URETIM_E']); }
 
-                                $MPSSTOKKODU_E = '';
-                                $MPSSTOKKODU_B = '';
+                                          $sql_sorgu = 'SELECT * FROM '.$database.'sfdc31e as e LEFT JOIN sfdc31t as t on e.EVRAKNO = t.EVRAKNO WHERE 1 = 1';
 
-                                $TO_OPERATOR_E = '';
-                                $TO_OPERATOR_B = '';
+                                          if(Trim($MPSSTOKKODU_B) <> '') { $sql_sorgu .= " AND e.MAMULSTOKKODU >= '".$MPSSTOKKODU_B."' "; }
+                                          if(Trim($MPSSTOKKODU_E) <> '') { $sql_sorgu .= " AND e.MAMULSTOKKODU <= '".$MPSSTOKKODU_E."' "; }
+                                          if(Trim($TO_OPERATOR_B) <> '') { $sql_sorgu .= " AND t.TO_OPERATOR >= '".$TO_OPERATOR_B."' "; }
+                                          if(Trim($TO_OPERATOR_E) <> '') { $sql_sorgu .= " AND t.TO_OPERATOR <= '".$TO_OPERATOR_E."' "; }
+                                          if(Trim($OPERASYON_B) <> '') { $sql_sorgu .= " AND t.OPERASYON >= '".$OPERASYON_B."' "; }
+                                          if(Trim($OPERASYON_E) <> '') { $sql_sorgu .= " AND t.OPERASYON <= '".$OPERASYON_E."' "; }
+                                          if(Trim($X_T_ISMERKEZI_B) <> '') { $sql_sorgu .= " AND t.X_T_ISMERKEZI >= '".$X_T_ISMERKEZI_B."' "; }
+                                          if(Trim($X_T_ISMERKEZI_E) <> '') { $sql_sorgu .= " AND t.X_T_ISMERKEZI <= '".$X_T_ISMERKEZI_E."' "; }
+                                          if(Trim($D7_ISLEM_KODU_B) <> '') { $sql_sorgu .= " AND t.ISLEM_TURU >= '".$D7_ISLEM_KODU_B."' "; }
+                                          if(Trim($D7_ISLEM_KODU_E) <> '') { $sql_sorgu .= " AND t.ISLEM_TURU <= '".$D7_ISLEM_KODU_E."' "; }
+                                          if(Trim($GK_1_B) <> '') { $sql_sorgu .= " AND t.GK_1 >= '".$GK_1_B."' "; }
+                                          if(Trim($GK_1_E) <> '') { $sql_sorgu .= " AND t.GK_1 <= '".$GK_1_E."' "; }
+                                          if(Trim($RECTARIH1_B) <> '') { $sql_sorgu .= " AND t.BASLANGIC_TARIHI >= '".$RECTARIH1_B."' "; }
+                                          if(Trim($RECTARIH1_E) <> '') { $sql_sorgu .= " AND t.BASLANGIC_TARIHI <= '".$RECTARIH1_E."' "; }
+                                          if(Trim($RECTIME1_B) <> '') { $sql_sorgu .= " AND t.BASLANGIC_SAATI >= '".$RECTIME1_B."' "; }
+                                          if(Trim($RECTIME1_E) <> '') { $sql_sorgu .= " AND t.BASLANGIC_SAATI <= '".$RECTIME1_E."' "; }
+                                          if(Trim($RECTARIH2_B) <> '') { $sql_sorgu .= " AND t.BASLANGIC_TARIHI >= '".$RECTARIH2_B."' "; }
+                                          if(Trim($RECTARIH2_E) <> '') { $sql_sorgu .= " AND t.BASLANGIC_TARIHI <= '".$RECTARIH2_E."' "; }
+                                          if(Trim($RECTIME2_B) <> '') { $sql_sorgu .= " AND t.BASLANGIC_SAATI >= '".$RECTIME2_B."' "; }
+                                          if(Trim($RECTIME2_E) <> '') { $sql_sorgu .= " AND t.BASLANGIC_SAATI <= '".$RECTIME2_E."' "; }
+                                          if(Trim($ENDTARIH1_B) <> '') { $sql_sorgu .= " AND t.BITIS_TARIHI >= '".$ENDTARIH1_B."' "; }
+                                          if(Trim($ENDTARIH1_E) <> '') { $sql_sorgu .= " AND t.BITIS_TARIHI <= '".$ENDTARIH1_E."' "; }
+                                          if(Trim($ENDTIME1_B) <> '') { $sql_sorgu .= " AND t.BITIS_SAATI >= '".$ENDTIME1_B."' "; }
+                                          if(Trim($ENDTIME1_E) <> '') { $sql_sorgu .= " AND t.BITIS_SAATI <= '".$ENDTIME1_E."' "; }
+                                          if(Trim($ENDTARIH2_B) <> '') { $sql_sorgu .= " AND t.BITIS_TARIHI >= '".$ENDTARIH2_B."' "; }
+                                          if(Trim($ENDTARIH2_E) <> '') { $sql_sorgu .= " AND t.BITIS_TARIHI <= '".$ENDTARIH2_E."' "; }
+                                          if(Trim($ENDTIME2_B) <> '') { $sql_sorgu .= " AND t.BITIS_SAATI >= '".$ENDTIME2_B."' "; }
+                                          if(Trim($ENDTIME2_E) <> '') { $sql_sorgu .= " AND t.BITIS_SAATI <= '".$ENDTIME2_E."' "; }
+                                          if(Trim($URETIM_E) <> '' && is_numeric($URETIM_E)) { $sql_sorgu .= " AND t.SF_MIKTAR <= ".$URETIM_E." "; }
+                                          if(Trim($URETIM_B) <> '') { $sql_sorgu .= " AND t.SF_MIKTAR >= ".$URETIM_B." "; }
 
-                                $OPERASYON_E = ''; 
-                                $OPERASYON_B = '';
-
-                                $X_T_ISMERKEZI_E = '';
-                                $X_T_ISMERKEZI_B = '';
-
-                                $D7_ISLEM_KODU_E = '';
-                                $D7_ISLEM_KODU_B = '';
-
-                                $GK_1_E = '';
-                                $GK_1_B = '';
-
-                                $RECTARIH1_E = ''; 
-                                $RECTARIH1_B = '';
-
-                                $RECTARIH2_E = ''; 
-                                $RECTARIH2_B = '';
-
-                                $RECTIME2_E = ''; 
-                                $RECTIME2_B = '';
-
-                                $RECTIME1_E = ''; 
-                                $RECTIME1_B = '';
-                                
-                                $ENDTARIH1_E = ''; 
-                                $ENDTARIH1_B = '';
-                                
-                                $ENDTIME1_E = ''; 
-                                $ENDTIME1_B = '';
-
-                                $ENDTARIH2_E = ''; 
-                                $ENDTARIH2_B = '';
-                                
-                                $ENDTIME2_E = ''; 
-                                $ENDTIME2_B = '';
-
-                                $URETIM_E = ''; 
-                                $URETIM_B = '';
-
-                                if(isset($_GET['$MPSSTOKKODU_B'])) { $MPSSTOKKODU_B = TRIM($_GET['$MPSSTOKKODU_B']); }
-                                if(isset($_GET['$MPSSTOKKODU_E'])) { $MPSSTOKKODU_E = TRIM($_GET['$MPSSTOKKODU_E']); }
-
-                                if(isset($_GET['TO_OPERATOR_B'])) { $TO_OPERATOR_B = TRIM($_GET['TO_OPERATOR_B']); }
-                                if(isset($_GET['TO_OPERATOR_E'])) { $TO_OPERATOR_E = TRIM($_GET['TO_OPERATOR_E']); }
-
-                                if(isset($_GET['OPERASYON_B'])) { $OPERASYON_B = TRIM($_GET['OPERASYON_B']); }
-                                if(isset($_GET['OPERASYON_E'])) { $OPERASYON_E = TRIM($_GET['OPERASYON_E']); }
-
-                                if(isset($_GET['X_T_ISMERKEZI_B'])) { $X_T_ISMERKEZI_B = TRIM($_GET['X_T_ISMERKEZI_B']); }
-                                if(isset($_GET['X_T_ISMERKEZI_E'])) { $X_T_ISMERKEZI_E = TRIM($_GET['X_T_ISMERKEZI_E']); }
-
-                                if(isset($_GET['D7_ISLEM_KODU_B'])) { $D7_ISLEM_KODU_B = TRIM($_GET['D7_ISLEM_KODU_B']); }
-                                if(isset($_GET['D7_ISLEM_KODU_E'])) { $D7_ISLEM_KODU_E = TRIM($_GET['D7_ISLEM_KODU_E']); }
-
-                                if(isset($_GET['GK_1_B'])) { $GK_1_B = TRIM($_GET['GK_1_B']); }
-                                if(isset($_GET['GK_1_E'])) { $GK_1_E = TRIM($_GET['GK_1_E']); }
-
-                                if(isset($_GET['RECTARIH1_B'])) { $RECTARIH1_B = TRIM($_GET['RECTARIH1_B']); }
-                                if(isset($_GET['RECTARIH1_E'])) { $RECTARIH1_E = TRIM($_GET['RECTARIH1_E']); }
-
-                                if(isset($_GET['RECTIME1_B'])) { $RECTIME1_B = TRIM($_GET['RECTIME1_B']); }
-                                if(isset($_GET['RECTIME1_E'])) { $RECTIME1_E = TRIM($_GET['RECTIME1_E']); }
-
-                                if(isset($_GET['RECTIME2_B'])) { $RECTIME2_B = TRIM($_GET['RECTIME2_B']); }
-                                if(isset($_GET['RECTIME2_E'])) { $RECTIME2_E = TRIM($_GET['RECTIME2_E']); }
-
-                                if(isset($_GET['RECTARIH2_B'])) { $RECTARIH2_B = TRIM($_GET['RECTARIH2_B']); }
-                                if(isset($_GET['RECTARIH2_E'])) { $RECTARIH2_E = TRIM($_GET['RECTARIH2_E']); }
-
-                                if(isset($_GET['ENDTARIH1_B'])) { $ENDTARIH1_B = TRIM($_GET['ENDTARIH1_B']); }
-                                if(isset($_GET['ENDTARIH1_E'])) { $ENDTARIH1_E = TRIM($_GET['ENDTARIH1_E']); }
-
-                                if(isset($_GET['ENDTIME1_B'])) { $ENDTIME1_B = TRIM($_GET['ENDTIME1_B']); }
-                                if(isset($_GET['ENDTIME1_E'])) { $ENDTIME1_E = TRIM($_GET['ENDTIME1_E']); }
-
-                                if(isset($_GET['ENDTIME2_B'])) { $ENDTIME2_B = TRIM($_GET['ENDTIME2_B']); }
-                                if(isset($_GET['ENDTIME2_E'])) { $ENDTIME2_E = TRIM($_GET['ENDTIME2_E']); }
-
-                                if(isset($_GET['ENDTARIH2_B'])) { $ENDTARIH2_B = TRIM($_GET['ENDTARIH2_B']); }
-                                if(isset($_GET['ENDTARIH2_E'])) { $ENDTARIH2_E = TRIM($_GET['ENDTARIH2_E']); }
-
-                                if(isset($_GET['URETIM_B'])) { $URETIM_B = TRIM($_GET['URETIM_B']); }
-                                if(isset($_GET['URETIM_E'])) { $URETIM_E = TRIM($_GET['URETIM_E']); }
-
-                                // Sorguya $database değişkeni ekleniyor
-                                $sql_sorgu = 'SELECT * FROM '.$database.' sfdc31e as e LEFT JOIN sfdc31t as t on e.EVRAKNO = t.EVRAKNO WHERE 1 = 1';
-
-                                // Diğer koşulların sorguya eklenmesi
-                                if(Trim($MPSSTOKKODU_B) <> '') {
-                                    $sql_sorgu .= " AND $MPSSTOKKODU >= '".$MPSSTOKKODU_B."' ";
-                                }
-                                if(Trim($MPSSTOKKODU_E) <> '') {
-                                    $sql_sorgu .= " AND $MPSSTOKKODU <= '".$MPSSTOKKODU_E."' ";
-                                }
-
-                              if(Trim($TO_OPERATOR_B) <> '') {
-                                    $sql_sorgu .= " AND TO_OPERATOR >= '".$TO_OPERATOR_B."' ";
-                                }
-                                if(Trim($TO_OPERATOR_E) <> '') {
-                                    $sql_sorgu .= " AND TO_OPERATOR <= '".$TO_OPERATOR_E."' ";
-                                }
-
-                                if(Trim($OPERASYON_B) <> '') {
-                                    $sql_sorgu .= " AND OPERASYON >= '".$OPERASYON_B."' ";
-                                }
-                                if(Trim($OPERASYON_E) <> '') {
-                                    $sql_sorgu .= " AND OPERASYON <= '".$OPERASYON_E."' ";
-                                }
-
-                                if(Trim($X_T_ISMERKEZI_B) <> '') {
-                                    $sql_sorgu .= " AND X_T_ISMERKEZI >= '".$X_T_ISMERKEZI_B."' ";
-                                }
-                                if(Trim($X_T_ISMERKEZI_E) <> '') {
-                                    $sql_sorgu .= " AND X_T_ISMERKEZI <= '".$X_T_ISMERKEZI_E."' ";
-                                }
-
-                                if(Trim($GK_1_B) <> '') {
-                                    $sql_sorgu .= " AND GK_1 >= '".$GK_1_B."' ";
-                                }
-                                if(Trim($GK_1_E) <> '') {
-                                    $sql_sorgu .= " AND GK_1 <= '".$GK_1_E."' ";
-                                }
-
-                                if(Trim($RECTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH1 >= '".$RECTARIH1_B."' ";
-                                }
-                                if(Trim($RECTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH1 <= '".$RECTARIH1_E."' ";
-                                }
-
-                                if(Trim($RECTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND RECTIME1 >= '".$RECTIME1_B."' ";
-                                }
-                                if(Trim($RECTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND RECTIME1 <= '".$RECTIME1_E."' ";
-                                }
-
-                                if(Trim($RECTARIH2_B) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH2 >= '".$RECTARIH2_B."' ";
-                                }
-                                if(Trim($RECTARIH2_E) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH2 <= '".$RECTARIH2_E."' ";
-                                }
-
-                                if(Trim($RECTIME2_B) <> '') {
-                                    $sql_sorgu .= " AND RECTIME2 >= '".$RECTIME2_B."' ";
-                                }
-                                if(Trim($RECTIME2_E) <> '') {
-                                    $sql_sorgu .= " AND RECTIME2 <= '".$RECTIME2_E."' ";
-                                }
-
-                                if(Trim($ENDTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH1 >= '".$ENDTARIH1_B."' ";
-                                }
-                                if(Trim($ENDTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH1 <= '".$ENDTARIH1_E."' ";
-                                }
-                                if(Trim($ENDTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME1 >= '".$ENDTIME1_B."' ";
-                                }
-                                if(Trim($ENDTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME1 <= '".$ENDTIME1_E."' ";
-                                }
-
-                                if(Trim($ENDTARIH2_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH2 >= '".$ENDTARIH2_B."' ";
-                                }
-                                if(Trim($ENDTARIH2_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH2 <= '".$ENDTARIH2_E."' ";
-                                }
-                                if(Trim($ENDTIME2_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME2 >= '".$ENDTIME2_B."' ";
-                                }
-                                if(Trim($ENDTIME2_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME2 <= '".$ENDTIME2_E."' ";
-                                }
-
-                                if(Trim($URETIM_E) <> '' && is_numeric($URETIM_E)) {
-                                    $sql_sorgu .= " AND SF_MIKTAR <= ".$URETIM_E." ";
-                                }
-                                if(Trim($URETIM_B) <> '') {
-                                    $sql_sorgu .= " AND SF_MIKTAR >= '".$URETIM_B."' ";
-                                }
-                                
-
-                                $table = DB::select($sql_sorgu);                           
-
-                                foreach ($table as $table) {
-                                  echo "<tr>";
-                                  echo "<td></td>";
-                                  echo "<td><b>".$table->EVRAKNO."</b></td>";
-                                  echo "<td><b>".$table->TARIH."</b></td>";
-                                  echo "<td><b>".$table->STOK_CODE."</b></td>";
-                                  echo "<td><b>".$table->TO_OPERATOR."</b></td>";
-                                  echo "<td><b>".$table->OPERASYON."</b></td>";
-                                  echo "<td><b>".$table->TO_ISMERKEZI."</b></td>";
-                                  echo "<td><b>".$table->ISLEM_TURU."</b></td>";
-                                  echo "<td><b>".$table->BASLANGIC_TARIHI."</b></td>";
-                                  echo "<td><b>".$table->BASLANGIC_SAATI."</b></td>";
-                                  echo "<td><b>".$table->BITIS_TARIHI."</b></td>";
-                                  echo "<td><b>".$table->BITIS_SAATI."</b></td>";
-                                  echo "<td><b>".$table->SURE."</b></td>";
-                                  echo "<td><b><a class='btn btn-primary' href='calisma_bildirimi?ID=".$table->ID."'><i class='fa fa-chevron-circle-right'></i></a></b></td>";
-                                  echo "</tr>";
-                                }
-                              @endphp                          
-
-                            </tbody>
-
-                          </table>
-                          <div class="mt-3">
-                            <button type="button" class="btn btn-success" type="button" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
-                            <button type="button" class="btn btn-danger" type="button" onclick="exportTableToWord('example2')">Word'e Aktar</button>
-                            <button type="button" class="btn btn-primary" type="button" onclick="printTable('example2')">Yazdır</button>
+                                          $table = DB::select($sql_sorgu);
+                                      @endphp
+                                      <table id="example2" class="table table-striped text-center" data-page-length="10">
+                                          <thead>
+                                              <tr class="bg-primary">
+                                                  <th></th>
+                                                  <th>Evrak No</th>
+                                                  <th>Evrak Tarihi</th>
+                                                  <th>MPS No</th>
+                                                  <th>Operatör</th>
+                                                  <th>Operasyon</th>
+                                                  <th>Tezgah Adı</th>
+                                                  <th>İşlem Statüsü</th>
+                                                  <th>Başlama Tarihi</th>
+                                                  <th>Başlama Saati</th>
+                                                  <th>Bitiş Tarihi</th>
+                                                  <th>Bitiş Saati</th>
+                                                  <th>Üretim Miktarı</th>
+                                                  <th>Git</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              @foreach ($table as $row)
+                                                  <tr>
+                                                      <td></td>
+                                                      <td><b>{{ $row->EVRAKNO }}</b></td>
+                                                      <td><b>{{ $row->TARIH }}</b></td>
+                                                      <td><b>{{ $row->STOK_CODE }}</b></td>
+                                                      <td><b>{{ $row->TO_OPERATOR }}</b></td>
+                                                      <td><b>{{ $row->OPERASYON }}</b></td>
+                                                      <td><b>{{ $row->TO_ISMERKEZI }}</b></td>
+                                                      <td><b>{{ $row->ISLEM_TURU }}</b></td>
+                                                      <td><b>{{ $row->BASLANGIC_TARIHI }}</b></td>
+                                                      <td><b>{{ $row->BASLANGIC_SAATI }}</b></td>
+                                                      <td><b>{{ $row->BITIS_TARIHI }}</b></td>
+                                                      <td><b>{{ $row->BITIS_SAATI }}</b></td>
+                                                      <td><b>{{ $row->SURE }}</b></td>
+                                                      <td><b><a class="btn btn-primary" href="calisma_bildirimi?ID={{ $row->ID }}"><i class="fa fa-chevron-circle-right"></i></a></b></td>
+                                                  </tr>
+                                              @endforeach
+                                          </tbody>
+                                          <tfoot>
+                                              <tr class="bg-primary">
+                                                  <th></th>
+                                                  <th>Evrak No</th>
+                                                  <th>Evrak Tarihi</th>
+                                                  <th>MPS No</th>
+                                                  <th>Operatör</th>
+                                                  <th>Operasyon</th>
+                                                  <th>Tezgah Adı</th>
+                                                  <th>İşlem Statüsü</th>
+                                                  <th>Başlama Tarihi</th>
+                                                  <th>Başlama Saati</th>
+                                                  <th>Bitiş Tarihi</th>
+                                                  <th>Bitiş Saati</th>
+                                                  <th>Üretim Miktarı</th>
+                                                  <th>Git</th>
+                                              </tr>
+                                          </tfoot>
+                                      </table>
+                                      <div class="mt-3">
+                                          <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+                                          <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2')">Word'e Aktar</button>
+                                          <button type="button" class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+                                      </div>
+                                  @php
+                                      }
+                                  @endphp
+                              </div>
                           </div>
-                          @php
-                            }
-                          @endphp
-
-                        </div>
                       </div>
-                    </div>
+                  </div>
                   {{-- LİSTE BİTİŞ --}}
-                  
-                  {{-- BAĞLANTILI DokümanLAR BİTİŞ --}}
-                    <div class="tab-pane" id="baglantiliDokumanlar">
-                      <div class="row">
-                        <div class="row">
-                          <div class="row ">
-                            @include('layout.util.baglantiliDokumanlar')
-                          </div>                    
-                        </div>
-                      </div>
-                    </div>
-                  {{-- BAĞLANTILI DokümanLAR BİTİŞ --}}
 
+                  {{-- BAĞLANTILI DOKÜMANLAR BAŞLANGIÇ --}}
+                  <div class="tab-pane" id="baglantiliDokumanlar">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-12">
+                                  @include('layout.util.baglantiliDokumanlar')
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  {{-- BAĞLANTILI DOKÜMANLAR BİTİŞ --}}
                 </div>
               </div>
             </div>
@@ -1461,12 +1275,9 @@
     </script>
 
     <script>
-      // Üretim Arayüzü JavaScript Kodu
       var kontrol = false;
 
-      // DOM yüklendikten sonra çalıştır
       document.addEventListener('DOMContentLoaded', function() {
-        // Butonlara event listener'ları ekle
         document.getElementById("button1").addEventListener("click", function() {
           ayarBasladi();
         });

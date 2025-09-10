@@ -776,6 +776,20 @@
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('input[type="date"]').forEach(function(el) {
+        el.setAttribute("placeholder", "gg.aa.yyyy");
+    });
+
+    document.querySelectorAll('input[type="time"]').forEach(function(el) {
+        el.setAttribute("placeholder", "00.00");
+    });
+});
+
+
+</script>
+
   @include('layout.partials.footer', ['firmaAdi' => $firmaAdi])
   
 </body>
