@@ -304,272 +304,278 @@
 
                   {{-- SÜREÇ BİLGİLERİ BAŞLANGIÇ --}}
                     <div class="tab-pane" id="surec_bilgileri">
-                      <div class="container-fluid">
-                        
-                        <style>
-                          :root {
-                            --primary-color: #3498db;
-                            --success-color: #2ecc71;
-                            --warning-color: #f39c12;
-                            --danger-color: #e74c3c;
-                            --light-gray: #f5f7fa;
-                            --border-radius: 8px;
-                            --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                            --transition: all 0.3s ease;
-                          }
-
-                          .form-group {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.75rem;
-                            margin-bottom: 1rem;
-                          }
-
-                          .date-time-input {
-                            padding: 0.5rem;
-                            border-radius: var(--border-radius);
-                            border: 1px solid #ddd;
-                            background-color: var(--light-gray);
-                            transition: var(--transition);
-                            flex: 1;
-                            min-width: 50px;
-                          }
-
-                          .date-time-input:focus {
-                            border-color: var(--primary-color);
-                            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-                            outline: none;
-                          }
-
-                          .action-btn {
-                            margin-bottom: 5px;
-                            padding: 0.5rem 1rem;
-                            border-radius: var(--border-radius);
-                            transition: var(--transition);
-                            min-width: 120px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 0.5rem;
-                          }
-
-                          .action-btn:hover {
-                            transform: translateY(-2px);
-                          }
-
-                          .tools-section {
-                            background-color: white;
-                            border-radius: var(--border-radius);
-                            box-shadow: var(--box-shadow);
-                            padding: 1.5rem;
-                            margin-bottom: 1.5rem;
-                          }
-
-                          
-                          .action-btn-group {
-                            display:flex;
-                            gap: 0.5rem;
-                          }
-                          @media (max-width: 768px) {
-                            .form-group {
-                              flex-wrap: wrap;
-                            }
-                            .action-btn, .date-time-input {
-                              max-width: 100%;
-                            }
-                            .action-btn-group {
-                              flex-direction: column;
-                              gap: 0.5rem;
-                            }
-                          }
-                        </style>
-
-                        <div class="row">
-                          <div class="col-12">
-                            <!-- Process Cards -->
-                            <div class="row process-row">
-                              <!-- Ayar Kolonu -->
-                              <div class="col-md-4 process-col" id="ayar">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Ayar İşlemi</h5>
-                                  <div class="card-body pt-3" style="margin-top: 72px;">
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-warning" id="button1">
-                                        <i class="fas fa-play-circle"></i> Ayar Başladı
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="RECTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="RECTIME1" placeholder="Saat">
+                        <div class="container-fluid">
+                            <style>
+                                :root {
+                                    --primary-color: #3498db;
+                                    --success-color: #2ecc71;
+                                    --warning-color: #f39c12;
+                                    --danger-color: #e74c3c;
+                                    --light-gray: #f5f7fa;
+                                    --border-radius: 8px;
+                                    --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                    --transition: all 0.3s ease;
+                                }
+                                .form-group {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    margin-bottom: 1rem;
+                                }
+                                .date-time-input {
+                                    padding: 0.5rem;
+                                    border-radius: var(--border-radius);
+                                    border: 1px solid #ddd;
+                                    background-color: var(--light-gray);
+                                    transition: var(--transition);
+                                    flex: 1;
+                                    min-width: 50px;
+                                }
+                                .date-time-input:focus {
+                                    border-color: var(--primary-color);
+                                    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+                                    outline: none;
+                                }
+                                .action-btn {
+                                    padding: 0.5rem 1rem;
+                                    border-radius: var(--border-radius);
+                                    transition: var(--transition);
+                                    min-width: 120px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    gap: 0.5rem;
+                                }
+                                .action-btn:hover {
+                                    transform: translateY(-2px);
+                                }
+                                .tools-section {
+                                    background-color: white;
+                                    border-radius: var(--border-radius);
+                                    box-shadow: var(--box-shadow);
+                                    padding: 1.5rem;
+                                    margin-bottom: 1.5rem;
+                                }
+                                .action-btn-group {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                }
+                                @media (max-width: 768px) {
+                                    .form-group {
+                                        flex-wrap: wrap;
+                                    }
+                                    .action-btn, .date-time-input {
+                                        max-width: 100%;
+                                    }
+                                    .action-btn-group {
+                                        flex-direction: column;
+                                        gap: 0.5rem;
+                                    }
+                                }
+                                input.date-time-input {
+                                    -webkit-appearance: none;
+                                    -moz-appearance: none;
+                                    appearance: none;
+                                }
+                            </style>
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- Process Cards -->
+                                    <div class="row process-row">
+                                        <!-- Ayar Kolonu -->
+                                        <div class="col" id="ayar">
+                                            <div class="card h-100 shadow-sm rounded-3">
+                                                <h5 class="card-header">Ayar İşlemi</h5>
+                                                <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                                                    <div class="mb-3 w-100">
+                                                        <button type="button" id="button1" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                            <i class="fas fa-play me-2"></i> Ayar Başladı
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control date-time-input text-center" id="RECTARIH1" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control date-time-input text-center" id="RECTIME1" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-100">
+                                                        <button type="button" id="button2" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                            <i class="fas fa-stop me-2"></i> Ayar Bitti
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control date-time-input text-center" id="ENDTARIH1" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control date-time-input text-center" id="ENDTIME1" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Üretim Kolonu -->
+                                        <div class="col" id="uretim">
+                                            <div class="card h-100 shadow-sm rounded-3">
+                                                <h5 class="card-header">Üretim İşlemi</h5>
+                                                <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                                                    <div class="mb-3 w-100">
+                                                        <button type="button" class="w-100 action-btn btn h-50 btn-success" id="button3">
+                                                            <i class="fas fa-play-circle"></i> Üretim Başladı
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control text-center date-time-input" id="RECTARIH2" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control text-center date-time-input" id="RECTIME2" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-100">
+                                                        <button type="button" class="w-100 action-btn h-50 btn btn-success" id="button4">
+                                                            <i class="fas fa-stop-circle"></i> Üretim Bitti
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control text-center date-time-input" id="ENDTARIH2" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control text-center date-time-input" id="ENDTIME2" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Duruş Kolonu -->
+                                        <div class="col" id="durus">
+                                            <div class="card h-100 shadow-sm rounded-3">
+                                                <h5 class="card-header">Duruş İşlemi</h5>
+                                                <div class="card-body">
+                                                    <div class="mb-2 w-100">
+                                                        <select class="form-select w-100 select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
+                                                            <option value="" disabled selected>Duruş Sebebi</option>
+                                                            @php
+                                                                $DURUSSEBEBI = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
+                                                                foreach ($DURUSSEBEBI as $key => $veri) {
+                                                                    echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                                                }
+                                                            @endphp
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <button type="button" class="w-100 action-btn h-50 btn btn-danger" id="button5">
+                                                            <i class="fas fa-pause-circle"></i> Duruş Başladı
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control text-center date-time-input" id="DRSTARIH1" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control text-center date-time-input" id="DRSTIME1" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" class="w-100 action-btn btn h-50 btn-danger" id="button6">
+                                                            <i class="fas fa-stop-circle"></i> Duruş Bitti
+                                                        </button>
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="date" class="form-control text-center date-time-input" id="DRSTARIH2" placeholder="Tarih">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time" class="form-control text-center date-time-input" id="DRSTIME2" placeholder="Saat">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-warning" id="button2">
-                                        <i class="fas fa-stop-circle"></i> Ayar Bitti
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="ENDTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="ENDTIME1" placeholder="Saat">
+                                    <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
+                                        <div id="chart" style="height: 270px;"></div>
+                                        <div id="chart1" style="height: 270px;"></div>
+                                        <div id="chart2" style="height: 270px;"></div>
+                                        <div id="chart3" style="height: 270px;"></div>
                                     </div>
-                                  </div>
+                                    <!-- Tools Section -->
+                                    <div class="tools-section">
+                                        <div class="row align-items-end">
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-bold">İşlemler</label>
+                                                <div class="action-btn-group flex gap-2 flex-wrap">
+                                                    <button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('veri_table')">
+                                                        <i class="fas fa-file-excel"></i> Excel'e Aktar
+                                                    </button>
+                                                    <button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('veri_table')">
+                                                        <i class="fas fa-file-word"></i> Word'e Aktar
+                                                    </button>
+                                                    <button type="button" class="action-btn h-100 btn btn-primary" onclick="printTable('veri_table')">
+                                                        <i class="fas fa-print"></i> Yazdır
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Tablo -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="veri_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>İşlem Türü</th>
+                                                    <th>Başlangıç Tarihi</th>
+                                                    <th>Başlangıç Saati</th>
+                                                    <th>Bitiş Tarihi</th>
+                                                    <th>Bitiş Saati</th>
+                                                    <th>Durma Sebebi</th>
+                                                    <th>Toplam Süre</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $surecB = DB::table($ekranTableT)
+                                                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                                                        ->orderBy('BASLANGIC_SAATI', 'asc')
+                                                        ->get();
+                                                    $AYAR = 0;
+                                                    $URETIM = 0;
+                                                    $TOPLAM_SURE = 0;
+                                                @endphp
+                                                @foreach($surecB as $val)
+                                                    @php
+                                                        if($val->ISLEM_TURU == 'A') $AYAR += (float)$val->SURE;
+                                                        else if($val->ISLEM_TURU == 'U') $URETIM += (float)$val->SURE;
+                                                    @endphp
+                                                    <tr class="text-center">
+                                                        <td>
+                                                            <input type="hidden" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="{{$val->ISLEM_TURU}}" readonly>
+                                                            <input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU_SHOW" value="@switch($val->ISLEM_TURU) @case('A') AYAR @break @case('U') ÜRETİM @break @case('D') DURUŞ @break @default {{ $val->ISLEM_TURU }} @endswitch" readonly>
+                                                        </td>
+                                                        <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
+                                                        <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
+                                                        <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
+                                                        <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
+                                                        <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
+                                                        <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
+                                                        <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
+                                                    </tr>
+                                                @endforeach
+                                                @php
+                                                    $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
+                                                    @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
+                                                    @$URETIM_VERIMLILIK = ($URETIM > 0) ? ($MPS->R_MIKTAR0 / $URETIM) * 100 : 0;
+                                                    @$TOPLAM_VERIMLILIK = ($TOPLAM_SURE > 0) ? ($MPS->R_MIKTART / $TOPLAM_SURE) * 100 : 0;
+                                                @endphp
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                              </div>
-
-                              <!-- Üretim Kolonu -->
-                              <div class="col-md-4 process-col" id="uretim">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Üretim İşlemi</h5>
-                                  <div class="card-body pt-3" style="margin-top: 72px;">
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-success" id="button3">
-                                        <i class="fas fa-play-circle"></i> Üretim Başladı
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="RECTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="RECTIME2" placeholder="Saat">
-                                    </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-success" id="button4">
-                                        <i class="fas fa-stop-circle"></i> Üretim Bitti
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="ENDTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="ENDTIME2" placeholder="Saat">
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Duruş Kolonu -->
-                              <div class="col-md-4 process-col" id="durus">
-                                <div class="h-100 card">
-                                  <h5 class="card-header">Duruş İşlemi</h5>
-                                  <div class="card-body pt-3">
-                                    <div class="mb-2">
-                                      <label class="form-label fw-bold small">Duruş Sebebi</label>
-                                      <select class="form-select select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
-                                        <option value="" selected>Seç</option>
-                                        @php
-                                        $DURUSSEBEBI=DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
-                                        foreach ($DURUSSEBEBI as $key => $veri) {
-                                          echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                                        }
-                                        @endphp
-                                      </select>
-                                    </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-danger" id="button5">
-                                        <i class="fas fa-pause-circle"></i> Duruş Başladı
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="DRSTARIH1" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="DRSTIME1" placeholder="Saat">
-                                    </div>
-                                    <div class="form-group">
-                                      <button type="button" type="button" class="action-btn btn btn-danger" id="button6">
-                                        <i class="fas fa-stop-circle"></i> Duruş Bitti
-                                      </button>
-                                      <input type="date" class="form-control date-time-input" id="DRSTARIH2" placeholder="Tarih">
-                                      <input type="time" class="form-control date-time-input" id="DRSTIME2" placeholder="Saat">
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
                             </div>
-
-                            <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
-                              <div id="chart" style="height: 270px;"></div>
-                              <div id="chart1" style="height: 270px;"></div>
-                              <div id="chart2" style="height: 270px;"></div>
-                              <div id="chart3" style="height: 270px;"></div>
-                            </div>
-                            <!-- Tools Section -->
-                            <div class="tools-section">
-                              <div class="row align-items-end">
-                                <div class="col-md-12">
-                                  <label class="form-label fw-bold">İşlemler</label>
-                                  <div class="action-btn-group flex gap-2 flex-wrap">
-                                    <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('veri_table')">
-                                      <i class="fas fa-file-excel"></i> Excel'e Aktar
-                                    </button>
-                                    <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('veri_table')">
-                                      <i class="fas fa-file-word"></i> Word'e Aktar
-                                    </button>
-                                    <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('veri_table')">
-                                      <i class="fas fa-print"></i> Yazdır
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <!-- Tablo -->
-                            <div class="table-responsive">
-                              <table class="table table-hover" id="veri_table">
-                                <thead>
-                                  <tr>
-                                    <th>İşlem Türü</th>
-                                    <th>Başlangıç Tarihi</th>
-                                    <th>Başlangıç Saati</th>
-                                    <th>Bitiş Tarihi</th>
-                                    <th>Bitiş Saati</th>
-                                    <th>Durma Sebebi</th>
-                                    <th>Toplam Süre</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  @php
-                                    $surecB = DB::table($ekranTableT)
-                                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                                        ->orderBy('BASLANGIC_SAATI','asc')
-                                        ->get();
-                                    $AYAR = 0;
-                                    $URETIM = 0;
-                                    $TOPLAM_SURE = 0;
-
-                                  @endphp
-                                  @foreach($surecB as $val)
-                                    @php
-                                      if($val->ISLEM_TURU == 'A')
-                                        $AYAR += (float)$val->SURE;
-                                      else if($val->ISLEM_TURU == 'U')
-                                        $URETIM += (float)$val->SURE;
-                                    @endphp
-                                    <tr class="text-center">
-                                      <td>
-                                          <input type="hidden" 
-                                            style="width:100px; border:none; outline:none;" 
-                                            class="bg-transparent" 
-                                            name="ISLEM_TURU[]"
-                                            value="{{$val->ISLEM_TURU}}" 
-                                            readonly>
-                                          <input type="text" 
-                                            style="width:100px; border:none; outline:none;" 
-                                            class="bg-transparent" 
-                                            name="ISLEM_TURU_SHOW"
-                                            value="@switch($val->ISLEM_TURU)
-                                                      @case('A') AYAR @break
-                                                      @case('U') ÜRETİM @break
-                                                      @case('D') DURUŞ @break
-                                                      @default {{ $val->ISLEM_TURU }}
-                                                    @endswitch" 
-                                            readonly>
-                                      </td>
-                                      <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
-                                      <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
-                                      <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
-                                      <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
-                                      <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
-                                      <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
-                                      <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
-                                    </tr>
-                                  @endforeach
-                                  @php
-                                    $TOPLAM_SURE = (float)$AYAR + (float)$URETIM;
-
-                                    @$AYAR_VERIMLILIK = ($AYAR > 0) ? ($MPS->R_MIKTAR1 / $AYAR) * 100 : 0;
-                                    @$URETIM_VERIMLILIK = ($URETIM > 0) ? ($MPS->R_MIKTAR0 / $URETIM) * 100 : 0;
-                                    @$TOPLAM_VERIMLILIK = ($TOPLAM_SURE > 0) ? ($MPS->R_MIKTART / $TOPLAM_SURE) * 100 : 0;
-                                  @endphp
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
                   {{-- SÜREÇ BİLGİLERİ BİTİŞ --}}
 

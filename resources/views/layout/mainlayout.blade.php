@@ -23,6 +23,24 @@
 </head>
 <body class='skin-blue sidebar-mini sidebar-collapse'>
   <style>
+    .input-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon input {
+      padding-right: 2.2rem;
+    }
+
+    .input-icon i {
+      position: absolute;
+      right: 10px;
+      color: #888;
+      pointer-events: none;
+      transform: scale(0.80);
+    }
+
     .main {
         width: 100%;
         height: 100%;
@@ -573,220 +591,240 @@
 
   <!-- Loader Script -->
   <script>
-  $(document).ready(function () {
-    $('#loader').fadeOut(150);
-  });
+    $(document).ready(function () {
+      $('#loader').fadeOut(150);
+    });
 
-  let isNavigating = false;
-  const $loader = $('#loader');
-  const $body = $('body');
+    let isNavigating = false;
+    const $loader = $('#loader');
+    const $body = $('body');
 
-  const loaderManager = {
-    show() {
-      if (!isNavigating) {
-        isNavigating = true;
-        $loader.fadeIn(100);
+    const loaderManager = {
+      show() {
+        if (!isNavigating) {
+          isNavigating = true;
+          $loader.fadeIn(100);
+        }
+      },
+      
+      hide() {
+        isNavigating = false;
+        $loader.fadeOut(100);
+      },
+      
+      reset() {
+        this.hide();
+        clearTimeout(this.timeoutId);
       }
-    },
-    
-    hide() {
-      isNavigating = false;
-      $loader.fadeOut(100);
-    },
-    
-    reset() {
-      this.hide();
-      clearTimeout(this.timeoutId);
-    }
-  };
+    };
 
-  $(window).on('beforeunload', function() {
-    loaderManager.show();
-  });
+    $(window).on('beforeunload', function() {
+      loaderManager.show();
+    });
 
-  $(window).on('pageshow', function(e) {
-    if (e.originalEvent.persisted || window.performance.navigation.type === 2) {
+    $(window).on('pageshow', function(e) {
+      if (e.originalEvent.persisted || window.performance.navigation.type === 2) {
+        loaderManager.reset();
+      }
+    });
+
+    $(window).on('popstate', function() {
       loaderManager.reset();
-    }
-  });
+    });
 
-  $(window).on('popstate', function() {
-    loaderManager.reset();
-  });
+    $(document).ready(function() {
+      loaderManager.hide();
+    });
 
-  $(document).ready(function() {
-    loaderManager.hide();
-  });
+    $body.on('click', 'a', function(e) {
+      if (isNavigating) {
+        e.preventDefault();
+        return false;
+      }
 
-  $body.on('click', 'a', function(e) {
-    if (isNavigating) {
+      const $a = $(this);
+      const href = $a.attr('href');
+
+      if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
+        return;
+      }
+      if (!href || href === '#' || href === 'javascript:void(0)' || href === '') {
+        return;
+      }
+
+      if (href.startsWith('http') && !href.includes(window.location.hostname)) {
+        return;
+      }
+
+      if (href.startsWith('#')) {
+        return;
+      }
+
+      const currentPath = window.location.pathname + window.location.search + window.location.hash;
+      const isCurrentPage = href === currentPath || 
+                          href === window.location.pathname ||
+                          (href.includes('#') && href === currentPath);
+      
+      if (isCurrentPage) {
+        return;
+      }
+
+      if ($a.attr('download') || $a.attr('target') === '_blank') {
+        return;
+      }
+
       e.preventDefault();
-      return false;
-    }
+      
+      loaderManager.show();
+      
+      setTimeout(() => {
+        window.location.href = href;
+      }, 50);
+    });
+    $body.on('submit', 'form', function(e) {
+      if (e.defaultPrevented || isNavigating) return;
 
-    const $a = $(this);
-    const href = $a.attr('href');
+      const $form = $(this);
+      const action = $form.attr('action');
+      
+      if (!action || action === '#' || action === 'javascript:void(0)') {
+        return;
+      }
 
-    if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
-      return;
-    }
-    if (!href || href === '#' || href === 'javascript:void(0)' || href === '') {
-      return;
-    }
+      if ($form.data('ajax') || $form.hasClass('ajax-form')) {
+        return;
+      }
 
-    if (href.startsWith('http') && !href.includes(window.location.hostname)) {
-      return;
-    }
+      loaderManager.show();
+    });
 
-    if (href.startsWith('#')) {
-      return;
-    }
-
-    const currentPath = window.location.pathname + window.location.search + window.location.hash;
-    const isCurrentPage = href === currentPath || 
-                        href === window.location.pathname ||
-                        (href.includes('#') && href === currentPath);
-    
-    if (isCurrentPage) {
-      return;
-    }
-
-    if ($a.attr('download') || $a.attr('target') === '_blank') {
-      return;
-    }
-
-    e.preventDefault();
-    
-    loaderManager.show();
-    
-    setTimeout(() => {
-      window.location.href = href;
-    }, 50);
-  });
-  $body.on('submit', 'form', function(e) {
-    if (e.defaultPrevented || isNavigating) return;
-
-    const $form = $(this);
-    const action = $form.attr('action');
-    
-    if (!action || action === '#' || action === 'javascript:void(0)') {
-      return;
-    }
-
-    if ($form.data('ajax') || $form.hasClass('ajax-form')) {
-      return;
-    }
-
-    loaderManager.show();
-  });
-
-  $(window).on('error', function() {
-    loaderManager.reset();
-  });
-
-  let networkTimeout;
-  $(document).ajaxStart(function() {
-    networkTimeout = setTimeout(() => {
+    $(window).on('error', function() {
       loaderManager.reset();
-    }, 10000);
-  });
+    });
 
-  $(document).ajaxStop(function() {
-    clearTimeout(networkTimeout);
-  });
+    let networkTimeout;
+    $(document).ajaxStart(function() {
+      networkTimeout = setTimeout(() => {
+        loaderManager.reset();
+      }, 10000);
+    });
 
-  $(window).on('unload', function() {
-    $body.off('click', 'a');
-    $body.off('submit', 'form');
-  });
+    $(document).ajaxStop(function() {
+      clearTimeout(networkTimeout);
+    });
 
-  document.querySelectorAll('.nav-tabs').forEach(ul => {
-    const firstLink = ul.querySelector('.nav-link');
-    if (firstLink) firstLink.classList.add('active');
-  });
+    $(window).on('unload', function() {
+      $body.off('click', 'a');
+      $body.off('submit', 'form');
+    });
+
+    document.querySelectorAll('.nav-tabs').forEach(ul => {
+      const firstLink = ul.querySelector('.nav-link');
+      if (firstLink) firstLink.classList.add('active');
+    });
   </script>
 
-<!-- Loader Script -->
-<script>
-  $(document).ready(function () {
-    $('#loader').fadeOut(150);
-  });
+  <!-- Loader Script -->
+  <script>
+    $(document).ready(function () {
+      $('#loader').fadeOut(150);
+    });
 
-  $('a').on('click', function (e) {
-    const $a = $(this);
-    const href = $a.attr('href');
+    $('a').on('click', function (e) {
+      const $a = $(this);
+      const href = $a.attr('href');
 
-    if ($a.is('[data-evrak-kontrol]') && evrakDegisti) return;
+      if ($a.is('[data-evrak-kontrol]') && evrakDegisti) return;
 
-    e.preventDefault();
+      e.preventDefault();
 
-    if (href == '#' || href == 'javascript:void(0)' || href == '') return;
+      if (href == '#' || href == 'javascript:void(0)' || href == '') return;
 
-    const currentFull = window.location.pathname + window.location.hash;
-    const targetFull = href.includes('#') ? href : href + '#';
+      const currentFull = window.location.pathname + window.location.hash;
+      const targetFull = href.includes('#') ? href : href + '#';
 
-    if (currentFull === targetFull || href.startsWith('#')) return;
-
-    $('#loader').fadeIn(150);
-    window.location.href = href;
-  });
-
-  $('form').on('submit', function (e) {
-      if (e.defaultPrevented) return;
-
-      const action = $(this).attr('action');
-      if (!action || action === '#' || action === 'javascript:void(0)') return;
+      if (currentFull === targetFull || href.startsWith('#')) return;
 
       $('#loader').fadeIn(150);
-  });
-
-  document.querySelectorAll('.nav-tabs').forEach(ul => {
-    const firstLink = ul.querySelector('.nav-link');
-    if (firstLink) firstLink.classList.add('active');
-  });
-
-
-  $(document).ready(function () {
-      setInterval(function () {
-          $.ajax({
-              url: '/check-session',
-              method: 'GET',
-              success: function (res) {
-                  if (res.status === 'expired') {
-                      window.location.href = '/login';
-                  }
-              }
-          });
-      }, 60000);
-
-    flatpickr.localize(flatpickr.l10ns.tr);
-
-    flatpickr("input[type='time']", {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: "H:i",
-      time_24hr: true
+      window.location.href = href;
     });
 
-    flatpickr("input[type='date']", {
-      dateFormat: "d.m.Y",
-      locale: "tr"
-    });
-  });
+    $('form').on('submit', function (e) {
+        if (e.defaultPrevented) return;
 
-</script>
+        const action = $(this).attr('action');
+        if (!action || action === '#' || action === 'javascript:void(0)') return;
+
+        $('#loader').fadeIn(150);
+    });
+
+    document.querySelectorAll('.nav-tabs').forEach(ul => {
+      const firstLink = ul.querySelector('.nav-link');
+      if (firstLink) firstLink.classList.add('active');
+    });
+
+
+    $(document).ready(function () {
+        setInterval(function () {
+            $.ajax({
+                url: '/check-session',
+                method: 'GET',
+                success: function (res) {
+                    if (res.status === 'expired') {
+                        window.location.href = '/login';
+                    }
+                }
+            });
+        }, 60000);
+
+      flatpickr.localize(flatpickr.l10ns.tr);
+
+      flatpickr("input[type='time']", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+      });
+
+      flatpickr("input[type='date']", {
+        dateFormat: "d.m.Y",
+        locale: "tr"
+      });
+    });
+
+  </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('input[type="date"]').forEach(function(el) {
-        el.setAttribute("placeholder", "gg.aa.yyyy");
-    });
+  document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('input[type="date"]').forEach(function(el) {
+          let wrapper = document.createElement("div");
+          wrapper.classList.add("input-icon");
 
-    document.querySelectorAll('input[type="time"]').forEach(function(el) {
-        el.setAttribute("placeholder", "00.00");
-    });
-});
+          // inputu sar
+          el.parentNode.insertBefore(wrapper, el);
+          wrapper.appendChild(el);
 
+          let icon = document.createElement("i");
+          icon.className = "fa-regular fa-calendar";
+          wrapper.appendChild(icon);
+
+          el.setAttribute("placeholder", "gg.aa.yyyy");
+      });
+
+      document.querySelectorAll('input[type="time"]').forEach(function(el) {
+          let wrapper = document.createElement("div");
+          wrapper.classList.add("input-icon");
+
+          el.parentNode.insertBefore(wrapper, el);
+          wrapper.appendChild(el);
+
+          let icon = document.createElement("i");
+          icon.className = "fa-regular fa-clock";
+          wrapper.appendChild(icon);
+
+          el.setAttribute("placeholder", "00.00");
+      });
+  });
 
 </script>
 

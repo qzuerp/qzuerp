@@ -1,4 +1,4 @@
-<div class="dropup popup">
+<div class="dropend">
     <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa-solid fa-bars"></i>
     </button>

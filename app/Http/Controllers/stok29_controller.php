@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class stok29_controller extends Controller
@@ -27,7 +28,10 @@ class stok29_controller extends Controller
   public function siparisGetir(Request $request)
   {
     $EVRAKNO = $request->input('evrakNo');
-    $firma = $request->firma.'.dbo.';
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
     $veri=DB::table($firma.'stok46t')->where('EVRAKNO',$EVRAKNO)->get();
 
     return json_encode($veri);
@@ -36,7 +40,10 @@ class stok29_controller extends Controller
   public function siparisGetirETable(Request $request)
   {
     $CARI_KODU = $request->input('cariKodu');
-    $firma = $request->firma.'.dbo.';
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
     $veri=DB::table($firma.'stok46e')->where('CARIHESAPCODE',$CARI_KODU)->get();
 
     return json_encode($veri);

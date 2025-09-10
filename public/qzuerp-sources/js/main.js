@@ -1167,7 +1167,7 @@ function mesaj(str,type) {
 function detayBtnForJS(KOD) {
   return `
     <td>
-      <div class="dropdown">
+      <div class="dropdown dropend">
           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-bars"></i>
           </button>

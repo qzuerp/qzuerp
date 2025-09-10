@@ -211,15 +211,15 @@
 
 						<div class="box-body table-responsive">
 
-									<div class="nav-tabs-custom">
-										<ul class="nav nav-tabs">
-											<li class="nav-item"><a href="#irsaliye" id="irsaliyeTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
-								<li class=""><a href="#siparis" id="siparisTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
-								<li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
-								<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
-										</ul>
+							<div class="nav-tabs-custom">
+								<ul class="nav nav-tabs">
+									<li class="nav-item" id="irsaliyeTab"><a href="#irsaliye"  class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
+									<li class=""><a href="#siparis" id="siparisTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
+									<li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+									<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+								</ul>
 
-										<div class="tab-content">
+								<div class="tab-content">
 
 								<div class="active tab-pane" id="irsaliye">
 
@@ -444,7 +444,7 @@
 								</div>
 
 								<div class="tab-pane" id="siparis">
-									<div class="row">
+									<div class="row mb-2">
 										<div class="col-md-6">
 											<button type="button" class="btn btn-default" id="secilenleriAktar"><i class="fa fa-plus-square" style="color: blue"></i> Seçilenleri Ekle</button>
 										</div>
@@ -1073,16 +1073,16 @@
 		var getSelectedRows = $("#suzTable input:checked").parents("tr");
 		$("#veriTable tbody").append(getSelectedRows);
 
-		$("#irsaliyeTab").trigger("click");
+		$('#irsaliyeTab a').tab('show'); 
 		$('#suzTable tbody').empty();
 		$('#SIP_NO_SEC').val('').trigger('change');
       });
 
-      $("#irsaliyeTab").on('click', function() {
+    //   $("#irsaliyeTab").on('click', function() {
 
-        //$('#suzTable > tbody').empty();
+    //     $('#suzTable > tbody').empty();
 
-      });
+    //   });
 
     });
   </script>
@@ -1091,7 +1091,7 @@
     function siparisleriGetirETable(cariKodu) {
       $.ajax({
         url: '/stok29_siparisGetirETable',
-        data: {'cariKodu': cariKodu, "_token": $('#token').val(),"firma": $('#firma').val()},
+        data: {'cariKodu': cariKodu, "_token": $('#token').val()},
         sasdataType: 'json',
         type: 'POST',
 
@@ -1146,7 +1146,7 @@
       });
       $.ajax({
         url: '/stok29_siparisGetir',
-        data: {'evrakNo': evrakNo, "_token": $('#token').val(),'firma':$("#firma").val()},
+        data: {'evrakNo': evrakNo, "_token": $('#token').val()},
         sasdataType: 'json',
         type: 'POST',
 
@@ -1167,7 +1167,7 @@
 
             htmlCode += " <tr> ";
 
-            htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
+            htmlCode += " <td><input type='checkbox' checked name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
             htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='TRNUM[]' id='TRNUM' value='"+TRNUM_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"'></td> ";
