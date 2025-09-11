@@ -583,7 +583,6 @@
       });
     }
 
-    // Manuel tablo kontrol fonksiyonu (ihtiyaç halinde çağırılabilir)
     function manualTableCheck() {
       checkTableChanges();
     }
@@ -592,7 +591,7 @@
   <!-- Loader Script -->
   <script>
     $(document).ready(function () {
-      $('#loader').fadeOut(150);
+      $('#loader').fadeOut(200);
     });
 
     let isNavigating = false;
@@ -603,13 +602,13 @@
       show() {
         if (!isNavigating) {
           isNavigating = true;
-          $loader.fadeIn(100);
+          $loader.fadeIn(200);
         }
       },
       
       hide() {
         isNavigating = false;
-        $loader.fadeOut(100);
+        $loader.fadeOut(200);
       },
       
       reset() {
@@ -776,57 +775,50 @@
                 }
             });
         }, 60000);
-
-      flatpickr.localize(flatpickr.l10ns.tr);
-
-      flatpickr("input[type='time']", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-      });
-
-      flatpickr("input[type='date']", {
-        dateFormat: "Y-m-d",
-        locale: "tr"
-      });
     });
 
   </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll('input[type="date"]').forEach(function(el) {
-          let wrapper = document.createElement("div");
-          wrapper.classList.add("input-icon");
+  <script>
+    $(document).ready(function() {
+        flatpickr.localize(flatpickr.l10ns.tr);
 
-          // inputu sar
-          el.parentNode.insertBefore(wrapper, el);
-          wrapper.appendChild(el);
+        $("input[type='time']").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
 
-          let icon = document.createElement("i");
-          icon.className = "fa-regular fa-calendar";
-          wrapper.appendChild(icon);
+        $("input[type='date']").flatpickr({
+            dateFormat: "Y-m-d",
+            locale: "tr"
+        });
 
-          el.setAttribute("placeholder", "gg.aa.yyyy");
-      });
+        $("input[type='date']").each(function() {
+            var $el = $(this);
+            var $wrapper = $("<div>").addClass("input-icon");
+            $el.wrap($wrapper);
 
-      document.querySelectorAll('input[type="time"]').forEach(function(el) {
-          let wrapper = document.createElement("div");
-          wrapper.classList.add("input-icon");
+            var $icon = $("<i>").addClass("fa-regular fa-calendar");
+            $el.after($icon);
 
-          el.parentNode.insertBefore(wrapper, el);
-          wrapper.appendChild(el);
+            $el.attr("placeholder", "gg.aa.yyyy");
+        });
 
-          let icon = document.createElement("i");
-          icon.className = "fa-regular fa-clock";
-          wrapper.appendChild(icon);
+        $("input[type='time']").each(function() {
+            var $el = $(this);
+            var $wrapper = $("<div>").addClass("input-icon");
+            $el.wrap($wrapper);
 
-          el.setAttribute("placeholder", "00.00");
-      });
-  });
+            var $icon = $("<i>").addClass("fa-regular fa-clock");
+            $el.after($icon);
 
-</script>
+            $el.attr("placeholder", "00.00");
+        });
+    });
+  </script>
+
 
   @include('layout.partials.footer', ['firmaAdi' => $firmaAdi])
   

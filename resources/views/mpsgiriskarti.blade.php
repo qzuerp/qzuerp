@@ -383,12 +383,12 @@
 														</div>
 
 														<!-- Sağ taraf (select) -->
-														<div>
+														<!-- <div>
 															<select class="form-control select2 js-example-basic-single" onchange="MPSolustur(this.value)" name="stokDusum" id="stokDusum" style="min-width:220px;">
 																<option value=" ">Seç</option>
 																<option value="">Çok seviyeli MPS oluştur</option>
 															</select>
-														</div>
+														</div> -->
 													</div>
     
 													<div class="row">
@@ -1336,8 +1336,8 @@
 										$stok40t_evraklar = DB::table($database.'stok40t')
 										    ->leftJoin($database.'stok40e', $database.'stok40t.EVRAKNO', '=', $database.'stok40e.EVRAKNO')
 										    ->select(
-										        $database.'stok40t.*', 
-										        $database.'stok40e.*'
+										        $database.'stok40e.*',
+										        $database.'stok40t.*'
 										    )
 										    ->get();
 										foreach ($stok40t_evraklar as $key => $veri)
@@ -1351,7 +1351,7 @@
 										        <td>{{ $veri->SF_MIKTAR }}</td>
 										        <td>{{ $veri->SF_SF_UNIT }}</td>
 										        <td>{{ $veri->SF_BAKIYE }}</td>
-										        <td>{{ $veri->TARIH }}</td>
+										        <td>{{ $veri->TERMIN_TAR }}</td>
 										    </tr>
 										    @php
 										}
@@ -2261,7 +2261,9 @@
 					didOpen: () => {
 						Swal.showLoading();
 					}
-				});
+				}).then(() => {
+					MPSolustur();
+				});;
 
 			    var htmlCode = " ";
 			    @php
@@ -2371,7 +2373,7 @@
 			        
 			        htmlCode += "<td><input type='number' class='form-control' name='R_TMYMAMULMIKTAR[]' value='0'></td>";
 			        
-			        htmlCode += "<td><input type='number' class='form-control' name='R_BAKIYEYMAMULMIKTAR[]' value='0'></td>";
+			        htmlCode += "<td><input type='number' class='form-control' name='R_BAKIYEYMAMULMIKTAR[]' value='{{ $tableRow->PAKETSAYISI * $tableRow->PAKETICERIGI }}'></td>";
 			        
 			        htmlCode += "<td><input type='text' class='form-control' name='KALIPKODU[]' value='{{ $tableRow->KALIP_KODU1 }}'></td>";
 
@@ -2459,16 +2461,24 @@
 
 
 						Swal.fire({
-							title: "MPS(ler) Oluşturuldu",
-							html: "Toplam <b>" + res.count + "</b> MPS oluşturuldu.<br><br>" +
-								"<p>MPSler listeleniyor lütfen bekleyin...</p>",
+							title: "MPS(ler) Başarıyla Oluşturuldu!",
+							html: "Toplam <b>" + res.count + "</b> MPS başarıyla oluşturuldu.<br><br>" +
+								"MPS listesi güncelleniyor, lütfen bekleyin...",
 							icon: "success",
 							showConfirmButton: false,
 							timer: 2000,
 							didClose: () => {
-								location.reload();
+								var form = $('#verilerForm');
+								var extraInput = document.createElement("input");
+								extraInput.type = "hidden";
+								extraInput.name = "kart_islemleri";
+								extraInput.value = "kart_duzenle";
+								form.append(extraInput);
+								form.trigger('submit');
+
 							}
 						});
+
 					}
 				});
 			}

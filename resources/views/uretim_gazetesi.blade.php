@@ -138,8 +138,7 @@ LEFT JOIN agg_miktar AS A2
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
     {$whereSql}
     and M10T.R_KAYNAKTYPE = 'I'
-   AND   M10T.R_ACIK_KAPALI IS NULL
-ORDER BY M10E.SIPNO, M10T.EVRAKNO ASC;
+ORDER BY S40T.TERMIN_TAR asc, M10T.EVRAKNO desc, M10T.R_SIRANO ASC
 SQL;
 
 $stmt = $pdo->prepare($sql);
@@ -188,7 +187,12 @@ foreach ($rows as $r) {
                 'planSure' => $planSure, 'actSure' => $actSure,
                 'planMik' => $planMik, 'actMik' => $actMik
             ];
-        } 
+        } else {
+            // Aynı operasyon birden fazla satır gelirse topla
+            $g =& $grouped[$key]['ops'][$op];
+            $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
+            $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
+        }
     }
 }
 $groups = array_values($grouped);

@@ -28,7 +28,7 @@ class bomu01_controller extends Controller
     return json_encode($veri);
   }
 
-    public function createKaynakKodSelect(Request $request)
+  public function createKaynakKodSelect(Request $request)
   {
     $islem = $request->input('islem');
     $selectdata = "";
@@ -258,14 +258,17 @@ class bomu01_controller extends Controller
 
         print_r("Silme işlemi başarılı.");
 
-        $sonID=DB::table(trim($firma).'.dbo.'.'bomu01e')->min('EVRAKNO');
+        $sonID=DB::table(trim($firma).'.dbo.'.'bomu01e')->min('id');
 
         return redirect()->route('urunagaci', ['ID' => $sonID, 'silme' => 'ok']);
 
         break;
 
       case 'kart_olustur':
-
+        if(DB::table(trim($firma).'.dbo.'.'bomu01e')->where('MAMULCODE',$MAMULCODE)->where('AP10','1')->exists())
+        {
+          return redirect()->back()->with('error', 'Bu kod ile aktif bir ürün ağacı bulunmakta');
+        }
         //ID OLARAK DEGISECEK
         $SON_EVRAK=DB::table(trim($firma).'.dbo.'.'bomu01e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
         $SON_ID= $SON_EVRAK->EVRAKNO;

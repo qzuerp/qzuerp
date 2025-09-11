@@ -650,6 +650,7 @@
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
+                      <th>Müşteri Sipariş No</th>
                       <th>Tarih</th>
                       <th>Cari Kodu</th>
                       <th>#</th>
@@ -659,6 +660,7 @@
                   <tfoot>
                     <tr class="bg-info">
                       <th>Evrak No</th>
+                      <th>Müşteri Sipariş No</th>
                       <th>Tarih</th>
                       <th>Cari Kodu</th>
                       <th>#</th>
@@ -673,7 +675,8 @@
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
-                        echo "<td>".$suzVeri->EVRAKNO." - ".$suzVeri->CHSIPNO."</td>";
+                        echo "<td>".$suzVeri->EVRAKNO."</td>";
+                        echo "<td>".$suzVeri->CHSIPNO."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>"."<a class='btn btn-info' href='satissiparisi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";

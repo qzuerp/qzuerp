@@ -19,7 +19,12 @@
     margin: 0 !important;
   }
 
-
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+    pointer-events: none;
+  }
 
   input[readonly],
   textarea[readonly] {

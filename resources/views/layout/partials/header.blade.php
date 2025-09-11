@@ -1,10 +1,7 @@
 
 {{-- CSS Başlangıç --}}
     <!-- Temel CSS Kütüphaneleri -->
-    <!-- <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/bootstrap/bootstrap.min.css') }}"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">    
-    <!-- <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/font-awesome/css/font-awesome.min.css') }}"> -->
-    <!-- <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/Ionicons/ionicons.min.css') }}"> -->
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/bootsrap-5.3.7.css') }}">
 
     <!-- AdminLTE Tema -->
     <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/adminlte/AdminLTE.min.css') }}">
@@ -18,24 +15,20 @@
     <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/sweetalert2/sweetalert2.min.css') }}">
 
     <!-- DataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
-
-    <!-- iCheck -->
-    <!-- <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/iCheck/all.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/jvectormap/jquery-jvectormap.css') }}"> -->
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/dataTables-1.13.6.css') }}">
 
     <!-- iziToast -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/izitoast-1.4.0.css') }}">
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />      <!-- Ana CSS -->
     
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/flatpickr.css') }}">
 
     <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/main.css') }}">
 {{-- CSS Bitiş --}}
@@ -43,7 +36,7 @@
 {{-- JavaScript Başlangıç --}}
 
     <!-- jQuery Core (3.6.0) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}"></script>
 
     <!-- jQuery input mask eklentisi -->
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}"></script>
@@ -52,8 +45,8 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}"></script>
 
     <!-- Bootstrap -->
-    <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/bootstrap/bootstrap.min.js') }}"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
+
     <!-- AdminLTE -->
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}"></script>
@@ -65,8 +58,8 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}"></script>
 
     <!-- DataTables ve Eklentileri -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.html5.min.js') }}"></script>
@@ -74,29 +67,22 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/pdfmake.min.js') }}"></script>
 
-    <!-- Highcharts -->
-    <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/highCharts-1.11.0/highstock.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/highCharts-1.11.0/exporting.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/highCharts-1.11.0/accessibility.js') }}"></script> -->
 
     <!-- Yardımcı Kütüphaneler -->
-    <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/moment/moment.min.js') }}"></script> -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/iCheck/icheck.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/fastclick/fastclick.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/canvasjs/canvasjs.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}"></script>
 
     <!-- iziToast -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/tr.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}"></script>
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js"></script>
+
+    <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}"></script>   
+    <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}"></script>
     <!-- Ana Javascript -->
     <script src="{{ URL::asset('qzuerp-sources/js/main.js') }}"></script>
 {{-- JS Bitiş --}}
