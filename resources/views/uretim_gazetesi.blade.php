@@ -188,11 +188,11 @@ foreach ($rows as $r) {
                 'planMik' => $planMik, 'actMik' => $actMik
             ];
         }
-        // else {
-        //     $g =& $grouped[$key]['ops'][$op];
-        //     $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
-        //     $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
-        // }
+        else {
+            $g = $grouped[$key]['ops'][$op];
+            $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
+            $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
+        }
     }
 }
 $groups = array_values($grouped);
