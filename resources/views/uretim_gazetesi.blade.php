@@ -187,16 +187,15 @@ foreach ($rows as $r) {
                 'planSure' => $planSure, 'actSure' => $actSure,
                 'planMik' => $planMik, 'actMik' => $actMik
             ];
-        } else {
-            // Aynı operasyon birden fazla satır gelirse topla
-            $g =& $grouped[$key]['ops'][$op];
-            $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
-            $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
         }
+        // else {
+        //     $g =& $grouped[$key]['ops'][$op];
+        //     $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
+        //     $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
+        // }
     }
 }
 $groups = array_values($grouped);
-// Sıralama: Sipariş No ve MPS No
 usort($groups, function($a,$b){
     return [$a['sip_no'],$a['mps_no']] <=> [$b['sip_no'],$b['mps_no']];
 });
