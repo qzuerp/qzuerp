@@ -192,8 +192,6 @@ foreach ($rows as $r) {
             $g =& $grouped[$key]['ops'][$op];
             $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
             $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
-            $g['planMik']  = ($g['planMik']  ?? 0) + ($planMik  ?? 0);
-            $g['actMik']   = ($g['actMik']   ?? 0) + ($actMik   ?? 0);
         }
     }
 }
