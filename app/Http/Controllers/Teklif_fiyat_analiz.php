@@ -337,7 +337,7 @@ class Teklif_fiyat_analiz extends Controller
             $firma = trim($user->firma).'.dbo.';
             $veri = DB::table($firma.'stdm10t')
                 ->where('VALIDAFTERTARIH', '=', $request->input('TARIH'))
-                ->where('ENDEX', '=', $request->input('ENDEX'))
+                ->where('ENDEKS', '=', $request->input('ENDEX'))
                 ->where('EVRAKNO', '=', $request->input('EVRAKNO'))
             ->get();
 
@@ -414,40 +414,38 @@ class Teklif_fiyat_analiz extends Controller
     public function recetedenHesapla(Request $request)
     {
         $kod = $request->input('kod');
+        $MIKTAR = $request->miktar;
         $user = Auth::user();
         $database = trim($user->firma).'.dbo.';
+
         $sql = "
-            SELECT 
-                m10e.EVRAKNO,
+            SELECT
                 B01T.*,
                 (CASE WHEN B01T.SIRANO IS NULL THEN '  ' ELSE B01T.SIRANO END) AS R_SIRANO,
-                (CASE WHEN IM01.AD  IS NULL THEN ' ' ELSE IM01.AD END)  AS R_OPERASYON_IMLT01_AD,
-                (CASE WHEN B01T.BOMREC_OPERASYON  IS NULL THEN ' ' ELSE B01T.BOMREC_OPERASYON END) AS OPERASYON,
-                (CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END) KAYNAK_AD,
+                (CASE WHEN IM01.AD IS NULL THEN ' ' ELSE IM01.AD END) AS R_OPERASYON_IMLT01_AD,
+                (CASE WHEN B01T.BOMREC_OPERASYON IS NULL THEN ' ' ELSE B01T.BOMREC_OPERASYON END) AS OPERASYON,
+                (CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END) AS KAYNAK_AD,
                 B01T.ACIKLAMA AS KAYNAK_BIRIM,
-                M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS R_MIKTAR0,
-                M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK1 / B01E1.MAMUL_MIKTAR AS R_MIKTAR1,
-                M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK2 / B01E1.MAMUL_MIKTAR AS R_MIKTAR2,
-                (M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR) + (CASE WHEN B01T.BOMREC_KAYNAK0 IS NULL THEN 0 ELSE
-                M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR END ) AS R_MIKTART,
-                M10E.SF_TOPLAMMIKTAR * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS TI_SF_MIKTAR,
+                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS R_MIKTAR0,
+                ".$MIKTAR." * B01T.BOMREC_KAYNAK1 / B01E1.MAMUL_MIKTAR AS R_MIKTAR1,
+                ".$MIKTAR." * B01T.BOMREC_KAYNAK2 / B01E1.MAMUL_MIKTAR AS R_MIKTAR2,
+                (".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR)
+                + (CASE WHEN B01T.BOMREC_KAYNAK0 IS NULL THEN 0 ELSE
+                    ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR END ) AS R_MIKTART,
+                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS TI_SF_MIKTAR,
                 S002.IUNIT AS TI_SF_SF_UNIT,
                 S00.AD AS MAMULSTOKADI,
                 B01E1.MAMUL_MIKTAR
-            FROM " . $database . "mmps10e m10e
-            LEFT JOIN " . $database . "BOMU01E B01E1 ON B01E1.MAMULCODE = m10e.MAMULSTOKKODU
-            LEFT JOIN " . $database . "BOMU01E B01E2 ON B01E2.AD = m10e.MAMULSTOKADI
-            LEFT JOIN " . $database . "BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
-            LEFT JOIN " . $database . "STOK00 S00 ON S00.KOD = m10e.MAMULSTOKKODU
-            LEFT JOIN " . $database . "STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
-            LEFT JOIN " . $database . "imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
-            LEFT JOIN " . $database . "imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
-            WHERE m10e.MAMULSTOKKODU = ?
+            FROM ".$database."STOK00 S00
+            LEFT JOIN ".$database."BOMU01E B01E1 ON B01E1.MAMULCODE = S00.KOD
+            LEFT JOIN ".$database."BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
+            LEFT JOIN ".$database."STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
+            LEFT JOIN ".$database."imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
+            LEFT JOIN ".$database."imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
+            WHERE S00.KOD = ?
             AND B01T.EVRAKNO IS NOT NULL";
 
-
         $results = DB::select($sql, [$kod]);
-
         return response()->json($results);
     }
     
@@ -457,17 +455,16 @@ class Teklif_fiyat_analiz extends Controller
         $firma = trim($user->firma).'.dbo.';
         $kod = $request->input('KOD');
         $MaxevrakNo = DB::table($firma.'stdm10t')
-            ->where('kod', 'LIKE','%' . $kod . '%')
-            ->where('ENDEX', '=', $request->input('ENDEX'))
+            ->where('kod', $kod)
+            ->where('ENDEKS', '=', $request->input('ENDEX'))
             ->where('VALIDAFTERTARIH', '<=', $request->input('TARIH'))
             ->max('VALIDAFTERTARIH');
 
         $evrakNo = DB::table($firma.'stdm10t')
-            ->where('kod', 'LIKE','%' . $kod . '%')
-            ->where('ENDEX', '=', $request->input('ENDEX'))
+            ->where('kod', $kod)
+            ->where('ENDEKS', '=', $request->input('ENDEX'))
             ->where('VALIDAFTERTARIH', '=', $MaxevrakNo)
             ->first();
-            
         return response()->json([
             'success' => true,
             'veri' => $evrakNo

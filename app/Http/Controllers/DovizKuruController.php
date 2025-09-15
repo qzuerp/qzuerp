@@ -17,8 +17,8 @@ class DovizKuruController extends Controller
                 return [
                     'CurrencyCode' => $item['@attributes']['CurrencyCode'] ?? '',
                     'CurrencyName' => $item['CurrencyName'] ?? '',
-                    'BanknoteBuying' => is_array($item['BanknoteBuying']) ? '' : $item['BanknoteBuying'],
-                    'BanknoteSelling' => is_array($item['BanknoteSelling']) ? '' : $item['BanknoteSelling'],
+                    'ForexBuying' => is_array($item['ForexBuying']) ? '' : $item['ForexBuying'],
+                    'ForexSelling' => is_array($item['ForexSelling']) ? '' : $item['ForexSelling'],
                 ];
             });
 

@@ -22,8 +22,8 @@ class Maliyet extends Controller
 
         // Header bilgileri
         $EVRAKNO = $request->input('evrakSec');
-        $ENDEX = $request->input('ENDEX');
-        $tezgah_hammadde_kodu = $request->input('tezgah_hammadde_kodu');
+        $ENDEX = $request->input('ENDEKS');
+        $tezgah_hammadde_kodu = $request->input('TEZGAH_KODU');
         $KAYNAK_TYPE = $request->input('KAYNAK_TYPE');
 
         // Satır bilgileri array olarak
@@ -44,9 +44,9 @@ class Maliyet extends Controller
 
                 DB::table($firma.'stdm10e')->insert([
                     'EVRAKNO' => $EVRAKNO,
-                    'ENDEX' => $ENDEX,
-                    'tezgah_hammadde_kodu' => $tezgah_hammadde_kodu,
-                    'KAYNAK_TYPE' => $KAYNAK_TYPE
+                    'ENDEKS' => $ENDEX,
+                    'TEZGAH_KODU' => $tezgah_hammadde_kodu,
+                    // 'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
                 $max_id = DB::table($firma.'stdm10e')->max('EVRAKNO');
@@ -66,7 +66,7 @@ class Maliyet extends Controller
                             'MIKTAR' => $MIKTAR[$i],
                             'UNIT' => $UNIT[$i],
                             'TRNUM' => $TRNUM[$i],
-                            'ENDEX' => $ENDEX,
+                            'ENDEKS' => $ENDEX,
                             'kod' => $tezgah_hammadde_kodu
                         ]);
                     }
@@ -80,9 +80,9 @@ class Maliyet extends Controller
                 // E tablosunu güncelle
                 DB::table($firma.'stdm10e')->where('EVRAKNO', $EVRAKNO)->update([
                     'EVRAKNO' => $EVRAKNO,
-                    'ENDEX' => $ENDEX,
-                    'tezgah_hammadde_kodu' => $tezgah_hammadde_kodu,
-                    'KAYNAK_TYPE' => $KAYNAK_TYPE
+                    'ENDEKS' => $ENDEX,
+                    'TEZGAH_KODU' => $tezgah_hammadde_kodu,
+                    // 'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -122,7 +122,7 @@ class Maliyet extends Controller
                             'MIKTAR' => $MIKTAR[$i],
                             'UNIT' => $UNIT[$i],
                             'TRNUM' => $TRNUM[$i],
-                            'ENDEX' => $ENDEX,
+                            'ENDEKS' => $ENDEX,
                             'kod' => $tezgah_hammadde_kodu
                         ]);
                     }
@@ -140,7 +140,7 @@ class Maliyet extends Controller
                                 'PARABIRIMI' => $PARABIRIMI[$i],
                                 'MIKTAR' => $MIKTAR[$i],
                                 'UNIT' => $UNIT[$i],
-                                'ENDEX' => $ENDEX,
+                                'ENDEKS' => $ENDEX,
                                 'kod' => $tezgah_hammadde_kodu
                             ]);
                     }

@@ -376,6 +376,9 @@
                                     -moz-appearance: none;
                                     appearance: none;
                                 }
+                                .h-buton{
+                                  height: 55px;
+                                }
                             </style>
                             <div class="row">
                                 <div class="col-12">
@@ -387,7 +390,7 @@
                                                 <h5 class="card-header">Ayar İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
                                                     <div class="mb-3 w-100">
-                                                        <button type="button" id="button1" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                        <button type="button" id="button1" class="btn btn-warning h-buton btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-play me-2"></i> Ayar Başladı
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -400,7 +403,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="w-100">
-                                                        <button type="button" id="button2" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                        <button type="button" id="button2" class="btn btn-warning h-buton btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-stop me-2"></i> Ayar Bitti
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -421,7 +424,7 @@
                                                 <h5 class="card-header">Üretim İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
                                                     <div class="mb-3 w-100">
-                                                        <button type="button" class="w-100 action-btn btn h-50 btn-success" id="button3">
+                                                        <button type="button" class="w-100 action-btn btn h-buton btn-success" id="button3">
                                                             <i class="fas fa-play-circle"></i> Üretim Başladı
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -434,7 +437,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="w-100">
-                                                        <button type="button" class="w-100 action-btn h-50 btn btn-success" id="button4">
+                                                        <button type="button" class="w-100 action-btn h-buton btn btn-success" id="button4">
                                                             <i class="fas fa-stop-circle"></i> Üretim Bitti
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -466,7 +469,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <button type="button" class="w-100 action-btn h-50 btn btn-danger" id="button5">
+                                                        <button type="button" class="w-100 action-btn h-buton btn btn-danger" id="button5">
                                                             <i class="fas fa-pause-circle"></i> Duruş Başladı
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -479,7 +482,7 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <button type="button" class="w-100 action-btn btn h-50 btn-danger" id="button6">
+                                                        <button type="button" class="w-100 action-btn btn h-buton btn-danger" id="button6">
                                                             <i class="fas fa-stop-circle"></i> Duruş Bitti
                                                         </button>
                                                         <div class="row g-2 mt-2">

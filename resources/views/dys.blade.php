@@ -402,9 +402,9 @@
 
 											foreach ($evraklar as $key => $suzVeri) {
 												echo "<tr>";
-												echo "<td>".$suzVeri->REVIZYON_NO."</td>";
-												echo "<td>".$suzVeri->id."</td>";
-												echo "<td>".$suzVeri->DOKUMAN_ADI."</td>";
+													echo "<td>".$suzVeri->DOKUMAN_NO."</td>";
+													echo "<td>".$suzVeri->DOKUMAN_ADI."</td>";
+													echo "<td>".$suzVeri->REVIZYON_NO."</td>";
 												echo "<td>"."<a class='btn btn-info' href='dys?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
 												echo "</tr>";

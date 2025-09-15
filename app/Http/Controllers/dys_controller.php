@@ -32,6 +32,7 @@ class dys_controller extends Controller
     $firma = $request->input('firma').'.dbo.';
 
     $islem_turu = $request->kart_islemleri;
+    $id = $request->evrakSec;
     $DOKUMAN_NO = $request->input('DOKUMAN_NO');
     $DOKUMAN_ADI = $request->input('DOKUMAN_ADI');
     $REVIZYON_NO = $request->input('REVIZYON_NO');
@@ -80,19 +81,19 @@ class dys_controller extends Controller
     switch($islem_turu) {
     
       case 'kart_sil':
-FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'D');
+        FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'D');
 
-        DB::table($firma.'dys00')->where('DOKUMAN_NO',$DOKUMAN_NO)->delete();
+        DB::table($firma.'dys00')->where('id',$id)->delete();
 
         print_r("Silme işlemi başarılı.");
 
-        $sonID=DB::table($firma.'dys00')->min('DOKUMAN_NO');
-        return redirect()->route('dys', ['']);
+        $sonID=DB::table($firma.'dys00')->min('id');
+        return redirect()->route('dys', ['ID' => $sonID, 'silme' => 'ok']);
 
         // break;
 
       case 'kart_olustur':
-FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'C');
+        FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'C');
 
         DB::table($firma.'dys00')->insert([
           'DOKUMAN_NO' => $DOKUMAN_NO,
@@ -145,12 +146,12 @@ FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'C');
 
         $sonID=DB::table($firma.'dys00')->max('id');
         
-        return redirect()->route('dys', ['id' => $sonID, 'kayit' => 'ok']);
+        return redirect()->route('dys', ['ID' => $sonID, 'kayit' => 'ok']);
 
         // break;
 
       case 'kart_duzenle':
-FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'W');
+        FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'W');
 
         DB::table($firma.'dys00')->where('DOKUMAN_NO',$DOKUMAN_NO)->update([
           'DOKUMAN_NO' => $DOKUMAN_NO,

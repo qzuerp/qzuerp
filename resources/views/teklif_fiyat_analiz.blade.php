@@ -32,7 +32,6 @@
 			$sonID = DB::table($ekranTableE)->min('EVRAKNO');
 		}
 
-
 		$kart_veri = DB::table($ekranTableE)->where('EVRAKNO',$sonID)->first();
 
 		$evrakno = $sonID;
@@ -46,99 +45,6 @@
 
 		}
 	@endphp
-	<style>
-		.content-wrapper {
-			background-color: #f8f9fa;
-		}
-		tr:first-child  {
-			background-color: #e8f4ff !important;
-		}
-		.btn-custom {
-			padding: 8px 16px;
-			border-radius: 4px;
-			font-weight: 500;
-			transition: all 0.3s ease;
-			margin: 4px;
-			min-width: 120px;
-		}
-		
-		.btn-custom:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-		}
-		
-		.btn-primary.btn-custom {
-			background: #2196F3;
-			border-color: #2196F3;
-			color: white;
-		}
-		
-		.btn-primary.btn-custom:hover {
-			background: #1976D2;
-		}
-		
-		
-		
-		/* Tooltip stilleri */
-		[data-tooltip] {
-			position: relative;
-			cursor: help;
-		}
-		
-		[data-tooltip]:after {
-			content: attr(data-tooltip);
-			position: absolute;
-			bottom: 100%;
-			left: 50%;
-			transform: translateX(-50%);
-			padding: 5px 10px;
-			background: rgba(0,0,0,0.8);
-			color: white;
-			border-radius: 4px;
-			font-size: 12px;
-			white-space: nowrap;
-			opacity: 0;
-			visibility: hidden;
-			transition: all 0.2s ease;
-		}
-		
-		[data-tooltip]:hover:after {
-			opacity: 1;
-			visibility: visible;
-		}
-		
-		/* Responsive düzenlemeler */
-		@media (max-width: 768px) {
-			.box-body {
-				padding: 15px;
-			}
-			
-			.btn-custom {
-				width: 100%;
-				margin: 4px 0;
-			}
-			
-			.table-responsive {
-				margin-bottom: 0;
-				border-radius: 8px;
-			}
-		}
-		
-		/* Animasyonlar */
-		.fade-enter {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		
-		.fade-enter-active {
-			opacity: 1;
-			transform: translateY(0);
-			transition: all 0.3s ease;
-		}
-		
-		
-		
-	</style>
 
 	<div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
     	<div class="modal-dialog modal-lg">
@@ -243,7 +149,6 @@
         </div>
     </div>
 
-
 	<div class="content-wrapper" >
 		<section class="content">
 			<div style="margin-bottom: 20px;"> 
@@ -254,40 +159,37 @@
 			<form action="{{ route('maliyetlendire_islemler') }}" method="post" id="myForm">
 				@csrf
 				<div class="row">
-					<div class="col">
-						<div class="box box-danger">
+					<div class="col-12">
+						<div class="box box-danger mb-3">
 							<div class="box-body">
-								<div class="row ">
-
-									<div class="col-md-3 col-xs-3">
-										<select id="evrakSec" class="form-control select2 js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')">
+								<div class="row">
+									<div class="col-md-3">
+										<select id="evrakSec" class="form-control select2" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')">
 											@php
 												$evraklar = DB::table($ekranTableE)->orderBy('EVRAKNO', 'ASC')->get();
-												foreach ($evraklar as $key => $veri) {
-													if ($veri->EVRAKNO == @$kart_veri->EVRAKNO) {
-														echo "<option value='".$veri->EVRAKNO."' selected>".$veri->EVRAKNO."</option>";
-													} else {
-														echo "<option value='".$veri->EVRAKNO."'>".$veri->EVRAKNO."</option>";
-													}
+												foreach ($evraklar as $veri) {
+													$selected = ($veri->EVRAKNO == @$kart_veri->EVRAKNO) ? 'selected' : '';
+													echo "<option value='{$veri->EVRAKNO}' {$selected}>{$veri->EVRAKNO}</option>";
 												}
 											@endphp
 										</select>
 										<input type='hidden' value='{{ @$kart_veri->EVRAKNO }}' name='ID_TO_REDIRECT' id='ID_TO_REDIRECT'>
 									</div>
-									<div class="col-md-2 col-xs-2">
-										<a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
-										 
+									<div class="col-md-1">
+										<a class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz">
+											<i class="fa fa-filter text-white"></i>
+										</a>
 									</div>
-									<div class="col-md-2 col-xs-2">
-										<input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required value="{{ @$kullanici_veri->firma }}" readonly>
+									<div class="col-md-2">
+										<input type="text" class="form-control" maxlength="16" name="firma" id="firma" readonly value="{{ @$kullanici_veri->firma }}">
 									</div>
-									<div class="col-md-4 col-xs-4">
+									<div class="col-md-6">
 										@include('layout.util.evrakIslemleri')
 									</div>
-									
 								</div>
-								<div class="row " style="display: flex; justify-content: space-between; gap: 20px; margin-bottom: 10px;">
-									<div class="col-md-4 col-xs-4">
+
+								<div class="row">
+									<div class="col-md-4">
 										<label>Endeks</label>
 										<select class="form-control js-example-basic-single" name="ENDEX" id="ENDEX">
 											<option value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
@@ -296,40 +198,35 @@
 											<option value="TK sistemiyle hesaplanan TL stok maliyeti">TK sistemiyle hesaplanan TL stok maliyeti</option>
 										</select>
 									</div>
-									<div class="col-md-4 col-xs-4">
+									<div class="col-md-4">
 										<label for="tarih">Tarih</label>
-										<input type="date" name="TARIH" id="TARIH" class="form-control required" required data-isim="Tarih" value="{{ @$kart_veri->TARIH }}">
+										<input type="date" name="TARIH" id="TARIH" class="form-control" value="{{ @$kart_veri->TARIH }}">
 									</div>
-									<div class="col-md-4 col-xs-4">
+									<div class="col-md-4">
 										<label for="teklif">Teklif Birimi</label>
-										<select name="TEKLIF" id="teklif" class="form-control js-example-basic-single required" data-isim="Teklif Birimi" style="width: 100%;">
+										<select name="TEKLIF" id="teklif" class="form-control js-example-basic-single">
 											<option value="">Seç</option>
 											@php
 												$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
-												foreach ($kur_veri as $key => $veri) {
-													if ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) {
-														echo "<option value='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-													} else {
-														echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-													}
+												foreach ($kur_veri as $veri) {
+													$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
+													echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
 												}
 											@endphp
 										</select>
 									</div>
 								</div>
-								<div class="row " style="display: flex; justify-content: space-between; gap: 20px;">
-									<div class="col-md-4 col-xs-4">
+								
+								<div class="row">
+									<div class="col-md-4">
 										<label for="musteri">Müşteri</label>
 										<select name="MUSTERI" id="musteri" class="form-control js-example-basic-single">
 											<option value=" ">Seç</option>
 											@php
 												$musteriler = DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
-												foreach ($musteriler as $key => $veri) {
-													if ($veri->KOD == @$kart_veri->BASE_DF_CARIHESAP) {
-														echo "<option value='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
-													} else {
-														echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-													}
+												foreach ($musteriler as $veri) {
+													$selected = ($veri->KOD == @$kart_veri->BASE_DF_CARIHESAP) ? 'selected' : '';
+													echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} | {$veri->AD}</option>";
 												}
 											@endphp
 										</select>
@@ -338,33 +235,32 @@
 										@php
 											$musteri = explode('|', @$kart_veri->BASE_DF_CARIHESAP);
 										@endphp
-										<div class="col-md-4 col-xs-4">
+										<div class="col-md-4">
 											<label for="UNVAN_1">Ünvan 1</label>
 											<input type="text" name="UNVAN_1" id="UNVAN_1" class="form-control" placeholder="Ünvan 1" value="{{ $musteri[0] ?? '' }}">
 										</div>
-										<div class="col-md-4 col-xs-4">
+										<div class="col-md-4">
 											<label for="UNVAN_2">Ünvan 2</label>
 											<input type="text" name="UNVAN_2" id="UNVAN_2" class="form-control" placeholder="Ünvan 2" value="{{ $musteri[1] ?? '' }}">
 										</div>
 									@else
-										<div class="col-md-4 col-xs-4">
+										<div class="col-md-4">
 											<label for="UNVAN_1">Ünvan 1</label>
-											<input type="text" name="UNVAN_1" id="UNVAN_1" class="form-control" placeholder="Ünvan 1" value="" disabled>
+											<input type="text" name="UNVAN_1" id="UNVAN_1" class="form-control" disabled>
 										</div>
-										<div class="col-md-4 col-xs-4">
+										<div class="col-md-4">
 											<label for="UNVAN_2">Ünvan 2</label>
-											<input type="text" name="UNVAN_2" id="UNVAN_2" class="form-control" placeholder="Ünvan 2" value="" disabled>
-										</div>	
+											<input type="text" name="UNVAN_2" id="UNVAN_2" class="form-control" disabled>
+										</div>
 									@endif
-
 								</div>
-								
-								<div class="row " style="display: flex; justify-content: space-between; gap: 20px;">
-									<div class="col-md-6 col-xs-6">
+
+								<div class="row">
+									<div class="col-md-6">
 										<label for="not_1">Not 1</label>
 										<input type="text" name="NOT_1" id="NOT_1" class="form-control" placeholder="Not 1" value="{{ @$kart_veri->NOTES_1 }}">
 									</div>
-									<div class="col-md-6 col-xs-6">
+									<div class="col-md-6">
 										<label for="not_2">Not 2</label>
 										<input type="text" name="NOT_2" id="NOT_2" class="form-control" placeholder="Not 2" value="{{ @$kart_veri->NOTES_2 }}">
 									</div>
@@ -373,11 +269,12 @@
 						</div>
 					</div>
 
+
 					<div class="col">
 						<div class="box box-info">
 							<div class="box-body">
-								<div class="row" style="padding: 0px">
-									<div class="box-body table-responsive">
+								<div class="row">
+									<div class="table-responsive">
 										<div class="nav-tabs-custom">
 											<ul class="nav nav-tabs">
 												<li class="nav-item"><a href="#tab_1" id="tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
@@ -397,10 +294,10 @@
 															<tr >
 																<th>#</th>
 																<th style="min-width:150px; font-size: 13px !important;">Kaynak Tipi</th>
-																<th style="min-width:280px; font-size: 13px !important;">KOD</th>
-																<th style="min-width:120px; font-size: 13px !important;">Kod adı</th>
+																<th style="min-width:280px; font-size: 13px !important;">Stok Kodu</th>
+																<th style="min-width:200px; font-size: 13px !important;">Stok adı</th>
 																<th style="min-width:120px; font-size: 13px !important;">İşlem miktarı</th>
-																<th style="min-width:200px; font-size: 13px !important;">İşlem Birimi</th>
+																<th style="min-width:100px; font-size: 13px !important;">İşlem Birimi</th>
 																<th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
 																<th style="min-width:120px; font-size: 13px !important;">Tutar</th>
 																<th style="min-width:170px; font-size: 13px !important;">Para Birimi</th>
@@ -413,10 +310,10 @@
 																<th style="min-width:120px; font-size: 13px !important;">Stok temel birim</th>
 															</tr>
 															<tr class="satirEkle" style="background-color:#3c8dbc">
-																<th>
-																	<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
-																</th>
-																<th>
+																<td>
+																	<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+																</td>
+																<td>
 																	<select class="form-control select2 js-example-basic-single required" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
 																		<option value=" ">Seç</option>
 																		<option value="M">M - Mamul</option>
@@ -424,54 +321,55 @@
 																		<option value="I">I - Tezgah / İş Merk</option>
 																		<option value="Y">Y - Yan Ürün</option>
 																	</select>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<div class="d-flex  " style="display: flex;">
 																		<select class="form-control select2 js-example-basic-single required" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
 																			<option value=" ">Seç</option>
 																		</select>
+																		<input type="hidden" id="STOK_KOD">
 																		<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#a" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
 																	</div>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="text" class="form-control" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI" readonly>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="text" name="" id="ISLEM_MIKTARI" data-isim="İşlem Miktarı" class="form-control required number" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="text" name="" id="ISLEM_BIRIMI" data-isim="İşlem Birimi" class="form-control" value="" readonly>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="" id="FIYAT" class="form-control" value="" readonly>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="" id="TUTAR" class="form-control" value="" readonly>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="text" name="" id="PARA_BIRIMI" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="HACIM" id="HACIM" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="AMBALAJAGIRLIK" id="AMBALAJAGIRLIK" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="checkbox" name="AUTO" id="AUTO" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="number" name="STOKMIKTAR" id="STOKMIKTAR" class="form-control" value="">
-																</th>
-																<th>
+																</td>
+																<td>
 																	<input type="text" name="STOKTEMELBIRIM" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
-																</th>
+																</td>
 															</tr>
 														</thead>
 														<tbody>
@@ -515,7 +413,6 @@
 						</div>
 					</div>
 				</div>
-				
 			</form>
 		</section>
 	</div>
@@ -523,11 +420,7 @@
 
 <script>
 	@if(session('success'))
-		Swal.fire({
-			text: "{{session('success')}}",
-			icon: "success",
-			confirmButtonText:"Tamam"
-		});
+		mesaj({{session('success')}},'success')
 	@endif
 
 	var toplam = 0;
@@ -551,9 +444,10 @@
 		}
 		return kurCache.get(key);
 	}
+
 	async function maliyet_hesapla(kod, ad, tarih, endex, teklif) {
 		try {
-			var esasKod = kod.includes("|||") ? kod : kod + "|||" + ad;
+			var esasKod = kod;
 
 			const evraknoResponse = await $.ajax({
 				type: 'POST',
@@ -750,6 +644,7 @@
 	}
 
 	async function receteden_hesapla() {
+		console.log('1');
 		$("#veriTable tbody tr").each(function() {
 			let trnum = $(this).find('input[name="TRNUM[]"]').val();
 			updateLastTRNUM(trnum);
@@ -769,7 +664,7 @@
 			return;
 		}
 
-		const kodParcalari = kod.split('|');
+		const kodParcalari = kod.split('|||');
 		const islem_miktari = $('#veriTable > tbody > tr:first-child').find("input[name='ISLEM_MIKTARI[]']").val();
 		const tarih = $("#TARIH").val();
 		const teklif = $("#teklif").val();
@@ -789,9 +684,9 @@
 			const response = await $.ajax({
 				url: "{{ route('recetedenHesapla') }}",
 				type: 'POST',
-				dataType: 'json',
 				data: {
 					kod: kodParcalari[0],
+					miktar:islem_miktari,
 					_token: "{{ csrf_token() }}"
 				}
 			}).catch(err => {
@@ -805,31 +700,34 @@
 			}
 			esasMiktar = parseFloat(response[0].MAMUL_MIKTAR);
 			islemSatiri = $('#veriTable tbody tr:first-child').find('input[name="ISLEM_MIKTARI[]"]');
-			const htmlCode = response.map(table => `
-				<tr>
-					<td style='display: none;'><input type='hidden' maxlength='6' name='TRNUM[]' value='${getTRNUM()}'> </td>
-					<td style='display: none;'><input type="hidden" name="ESAS_MIKTAR" value="${esasMiktar}" ></td>
-					<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td>
-					<td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='${table.BOMREC_INPUTTYPE || ''}' readonly></td>
-					<td><input type='text' class='form-control' name='KOD[]' value='${table.BOMREC_KAYNAKCODE || ''}' readonly></td>
-					<td><input type='text' class='form-control' name='KODADI[]' value='${table.KAYNAK_AD || ''}' readonly></td>
-					<td>
-					<input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='${table.BOMREC_KAYNAK0 && table.MAMUL_MIKTAR ? (parseFloat(table.BOMREC_KAYNAK0) * islem_miktari) / parseFloat(table.MAMUL_MIKTAR) : 0}'></td>
-					<td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='${table.ACIKLAMA || ''}' readonly></td>
-					<td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='0'></td>
-					<td><input type='text'  class='form-control number hesaplanacakTutar' name='TUTAR[]' value='0' readonly></td>
-					<td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='${teklif}' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-					<td><input type='text' class='form-control' name='' value='' readonly></td>
-				</tr>
-			`).join('');
+			let htmlCode = '';
 
-			$("#veriTable > tbody").append(htmlCode); //append
+			response.forEach(table => {
+				htmlCode += `
+					<tr>
+						<td style='display: none;'><input type='hidden' maxlength='6' name='TRNUM[]' value='${getTRNUM()}'> </td>
+						<td style='display: none;'><input type="hidden" name="ESAS_MIKTAR" value="${esasMiktar}" ></td>
+						<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td>
+						<td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='${table.BOMREC_INPUTTYPE || ''}' readonly></td>
+						<td><input type='text' class='form-control' name='KOD[]' value='${table.BOMREC_KAYNAKCODE || ''}' readonly></td>
+						<td><input type='text' class='form-control' name='KODADI[]' value='${table.KAYNAK_AD || ''}' readonly></td>
+						<td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='${table.TI_SF_MIKTAR && table.MAMUL_MIKTAR ? (parseFloat(table.TI_SF_MIKTAR)) : 0}'></td>
+						<td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='${table.ACIKLAMA || ''}' readonly></td>
+						<td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='0'></td>
+						<td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='0' readonly></td>
+						<td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='${teklif}' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='' readonly></td>
+						<td><input type='text' class='form-control' name='' value='${table.ACIKLAMA || ''}' readonly></td>
+					</tr>
+				`;
+			});
+
+			$("#veriTable > tbody").append(htmlCode);
 			Swal.close();
 		} catch (error) {
 			console.error('Reçeteden Hesaplama Genel Hatası:', error);
@@ -863,7 +761,7 @@
 			// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 			htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 			htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='"+satirEkleInputs.KAYNAK_TIPI+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.KOD+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KOD+"' readonly></td> ";
 			htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='"+satirEkleInputs.KODADI+"' readonly></td> ";
 			htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
 			htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='"+satirEkleInputs.ISLEM_BIRIMI+"' readonly></td> ";
@@ -881,7 +779,7 @@
 
         	htmlCode += " </tr> ";
 
-			if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || satirEkleInputs.ISLEM_BIRIMI=="" || satirEkleInputs.PARA_BIRIMI=="" || !validateNumbers()) {
+			if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || !validateNumbers()) {
 				eksikAlanAlert();
 			}
 			else {
@@ -907,27 +805,9 @@
             if ($('#KAYNAK_TIPI').val() == 'I') {
                 $('#ISLEM_BIRIMI').val('SAAT');
             } else {
-                var kod = $('#KOD').val().split('|')[0];
-                var firma = document.getElementById("firma").value;
-                $.ajax({
-                    url: '/maliyetlendire_createKaynakKodSelect',
-                    type: 'POST',
-                    data: {
-                        'kod': kod,
-                        'islem': 'M',
-                        'firma': firma,
-                        '_token': $('#token').val()
-                    },
-                    success: function(response) {
-                    	console.log(response);
-                        $('#ISLEM_BIRIMI').val(response.selectdata);
-                        $('#STOKTEMELBIRIM').val(response.selectdata);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Hatası:", error);
-                        $('#ISLEM_BIRIMI').val('Hata!');
-                    }
-                });
+                var BIRIM = $('#KOD').val().split('|||')[2];
+				$('#ISLEM_BIRIMI').val(BIRIM);
+				$('#STOKTEMELBIRIM').val(BIRIM);
             }
         });
 		$('#teklif').change(function() {
@@ -1112,7 +992,7 @@
 
 		const veriler = veri.split("|||");
 
-		// $('#KOD').val(veriler[0]);
+		$('#STOK_KOD').val(veriler[0]);
 		$('#KODADI').val(veriler[1]);
 
 	}

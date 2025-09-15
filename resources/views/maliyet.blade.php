@@ -333,8 +333,8 @@
                                 foreach ($evraklar2 as $key => $suzVeri) {
                                         echo "<tr>";    
                                         echo "<td>".$suzVeri->EVRAKNO."</td>";
-                                        echo "<td>".$suzVeri->ENDEX."</td>";
-                                        echo "<td>".explode("|||", $suzVeri->tezgah_hammadde_kodu)[0]."</td>";
+                                        echo "<td>".$suzVeri->ENDEKS."</td>";
+                                        echo "<td>".explode("|||", $suzVeri->TEZGAH_KODU)[0]."</td>";
                                         echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 
                                         echo "</tr>";
@@ -403,11 +403,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Endeks</label>
-                                        <select class="form-control js-example-basic-single" name="ENDEX">
-                                            <option <?=@$kart_veri->ENDEX == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
-                                            <option <?=@$kart_veri->ENDEX == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
-                                            <option <?=@$kart_veri->ENDEX == "Hammadde Fiyat Endex" ? "selected" : ""?> value="Hammadde Fiyat Endex">Hammadde Fiyat Endeks</option>
-                                            <option <?=@$kart_veri->ENDEX == "TK sistemiyle hesaplanan TL stok maliyeti" ? "selected" : ""?> value="TK sistemiyle hesaplanan TL stok maliyeti">TK sistemiyle hesaplanan TL stok maliyeti</option>
+                                        <select class="form-control js-example-basic-single" name="ENDEKS">
+                                            <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
+                                            <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
+                                            <option <?=@$kart_veri->ENDEKS == "Hammadde Fiyat ENDEKS" ? "selected" : ""?> value="Hammadde Fiyat ENDEKS">Hammadde Fiyat Endeks</option>
+                                            <option <?=@$kart_veri->ENDEKS == "TK sistemiyle hesaplanan TL stok maliyeti" ? "selected" : ""?> value="TK sistemiyle hesaplanan TL stok maliyeti">TK sistemiyle hesaplanan TL stok maliyeti</option>
                                         </select>
                                     </div>
                                 </div>
@@ -426,9 +426,9 @@
                                     <div class="form-group">
                                         <label class="control-label">Tezgah/Hammadde Kodu</label>
                                         <select class="form-control select2 js-example-basic-single" name="" id="BOMREC_KAYNAKCODE_SHOW">
-                                            <option value="{{@$kart_veri->tezgah_hammadde_kodu}}" selected>{{@$kart_veri->tezgah_hammadde_kodu}}</option>
+                                            <option value="{{@$kart_veri->TEZGAH_KODU}}" selected>{{@$kart_veri->TEZGAH_KODU}}</option>
                                         </select>
-                                        <input type="hidden" name="tezgah_hammadde_kodu" id="tezgah_hammadde_kodu" value="{{@$kart_veri->tezgah_hammadde_kodu}}">
+                                        <input type="hidden" name="TEZGAH_KODU" id="tezgah_hammadde_kodu" value="{{@$kart_veri->TEZGAH_KODU}}">
                                     </div>
                                 </div>
                             </div>
@@ -719,28 +719,11 @@
         if ($('#BOMREC_INPUTTYPE_SHOW').val() == 'I') {
             $('#BIRIM').val('SAAT');
         } else {
-            var kod = kodVeri.split('|')[0];
-            var firma = document.getElementById("firma").value;
-            $.ajax({
-                url: '/maliyet_createKaynakKodSelect',
-                type: 'POST',
-                data: {
-                    'kod': kod,
-                    'islem': 'H',
-                    'firma': firma,
-                    '_token': $('#token').val()
-                },
-                success: function(response) {
-                    if(kodVeri !== " ")
-                        $('#BIRIM').val(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Hatası:", error);
-                    $('#BIRIM').val('');
-                }
-            });
+            var birim = kodVeri.split('|||')[2];
+            $('#BIRIM').val(birim);
         }
-        $('#tezgah_hammadde_kodu').val(kodVeri);
+        var kod = kodVeri.split('|||')[0];
+        $('#tezgah_hammadde_kodu').val(kod);
     }
 
     function ozelInput() {

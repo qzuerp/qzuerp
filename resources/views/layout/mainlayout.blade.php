@@ -783,38 +783,25 @@
     $(document).ready(function() {
         flatpickr.localize(flatpickr.l10ns.tr);
 
-        $("input[type='time']").flatpickr({
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
-        });
-
-        $("input[type='date']").flatpickr({
-            dateFormat: "Y-m-d",
-            locale: "tr"
-        });
-
-        $("input[type='date']").each(function() {
+        $("input[type='date'], input[type='time']").each(function() {
             var $el = $(this);
+
             var $wrapper = $("<div>").addClass("input-icon");
             $el.wrap($wrapper);
-
-            var $icon = $("<i>").addClass("fa-regular fa-calendar");
+            var $icon = $("<i>").addClass($el.attr('type') === 'time' ? 'fa-regular fa-clock' : 'fa-regular fa-calendar');
             $el.after($icon);
 
-            $el.attr("placeholder", "gg.aa.yyyy");
-        });
+            $el.attr("placeholder", $el.attr('type') === 'time' ? "00:00" : "gg.aa.yyyy");
 
-        $("input[type='time']").each(function() {
-            var $el = $(this);
-            var $wrapper = $("<div>").addClass("input-icon");
-            $el.wrap($wrapper);
-
-            var $icon = $("<i>").addClass("fa-regular fa-clock");
-            $el.after($icon);
-
-            $el.attr("placeholder", "00.00");
+            $el.flatpickr({
+                enableTime: $el.attr('type') === 'time',
+                noCalendar: $el.attr('type') === 'time',
+                dateFormat: $el.attr('type') === 'time' ? "H:i" : "Y-m-d", // veritabanına gönderilen format
+                altInput: $el.attr('type') === 'date', // sadece date için altInput
+                altFormat: "d.m.Y", // kullanıcıya gösterilecek format
+                time_24hr: true,
+                locale: "tr"
+            });
         });
     });
   </script>

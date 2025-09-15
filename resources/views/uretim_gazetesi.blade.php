@@ -175,23 +175,24 @@ foreach ($rows as $r) {
             'ops' => []
         ];
     }
+    
     $op = $r['R_OPERASYON'];
     if ($op !== null && $op !== '') {
-        $planSure = is_null($r['plan_sure']) ? null : (float)$r['plan_sure'];
-        $actSure  = is_null($r['gerceklenen_SURE']) ? null : (float)$r['gerceklenen_SURE'];
-        $planMik  = is_null($r['plan_miktar']) ? null : (float)$r['plan_miktar'];
-        $actMik   = is_null($r['gerceklesen_MIKTAR']) ? null : (float)$r['gerceklesen_MIKTAR'];
+        $planSure = is_null($r['plan_sure']) ? 0 : (float)$r['plan_sure'];
+        $actSure  = is_null($r['gerceklenen_SURE']) ? 0 : (float)$r['gerceklenen_SURE'];
+        $planMik  = is_null($r['plan_miktar']) ? 0 : (float)$r['plan_miktar'];
+        $actMik   = is_null($r['gerceklesen_MIKTAR']) ? 0 : (float)$r['gerceklesen_MIKTAR'];
 
         if (!isset($grouped[$key]['ops'][$op])) {
             $grouped[$key]['ops'][$op] = [
-                'planSure' => $planSure, 'actSure' => $actSure,
-                'planMik' => $planMik, 'actMik' => $actMik
+                'planSure' => $planSure, 
+                'actSure' => $actSure,
+                'planMik' => $planMik, 
+                'actMik' => $actMik
             ];
-        }
-        else {
-            $g = $grouped[$key]['ops'][$op];
-            $g['planSure'] = ($g['planSure'] ?? 0) + ($planSure ?? 0);
-            $g['actSure']  = ($g['actSure']  ?? 0) + ($actSure  ?? 0);
+        } else {
+            $grouped[$key]['ops'][$op]['planSure'] += $planSure;
+            $grouped[$key]['ops'][$op]['actSure'] += $actSure;
         }
     }
 }
