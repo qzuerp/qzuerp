@@ -407,7 +407,7 @@
                                             <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Hammadde Fiyat ENDEKS" ? "selected" : ""?> value="Hammadde Fiyat ENDEKS">Hammadde Fiyat Endeks</option>
-                                            <option <?=@$kart_veri->ENDEKS == "TK sistemiyle hesaplanan TL stok maliyeti" ? "selected" : ""?> value="TK sistemiyle hesaplanan TL stok maliyeti">TK sistemiyle hesaplanan TL stok maliyeti</option>
+                                            <option <?=@$kart_veri->ENDEKS == "TK sistemiyle hesaplanan stok maliyeti" ? "selected" : ""?> value="TK sistemiyle hesaplanan stok maliyeti">TK sistemiyle hesaplanan stok maliyeti</option>
                                         </select>
                                     </div>
                                 </div>

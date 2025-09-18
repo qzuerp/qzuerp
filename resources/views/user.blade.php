@@ -265,7 +265,7 @@
                                     <td><input type="checkbox" id="yetki_delete"></td>
                                   </tr>
                                   <tr><td>Cari Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read"  id="carikarti_read" name="F[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_read"  id="carikarti_read" name="yetki_read[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_write" id="carikarti_write" name="yetki_write[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="carikarti_delete" name="yetki_delete[]" value="CARIKART" @php if(in_array('CARIKART', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>

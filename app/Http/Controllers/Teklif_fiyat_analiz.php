@@ -27,6 +27,7 @@ class Teklif_fiyat_analiz extends Controller
         $TARIH = $request->input('TARIH');
         $TEKLIF = $request->input('TEKLIF');
         $MUSTERI = $request->input('MUSTERI');
+        $ENDEKS = $request->input('ENDEKS');
         $NOT_1 = $request->input('NOT_1');
         $NOT_2 = $request->input('NOT_2');
 
@@ -79,7 +80,8 @@ class Teklif_fiyat_analiz extends Controller
                     'NOTES_1' => $NOT_1,
                     'NOTES_2' => $NOT_2,
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
-                    'TEKLIF_TUTAR' => $TOPLAM_TUTAR
+                    'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
+                    'ENDEKS' => $ENDEKS
                 ]);
 
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
@@ -124,7 +126,8 @@ class Teklif_fiyat_analiz extends Controller
                     'NOTES_1' => $NOT_1,
                     'NOTES_2' => $NOT_2,
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
-                    'TEKLIF_TUTAR' => $TOPLAM_TUTAR
+                    'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
+                    'ENDEKS' => $ENDEKS
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır

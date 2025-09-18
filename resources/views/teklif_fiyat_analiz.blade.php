@@ -191,11 +191,11 @@
 								<div class="row">
 									<div class="col-md-4">
 										<label>Endeks</label>
-										<select class="form-control js-example-basic-single" name="ENDEX" id="ENDEX">
-											<option value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
-											<option value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
-											<option value="Hammadde Fiyat Endex">Hammadde Fiyat Endeks</option>
-											<option value="TK sistemiyle hesaplanan TL stok maliyeti">TK sistemiyle hesaplanan TL stok maliyeti</option>
+										<select class="form-control js-example-basic-single" name="ENDEKS" id="ENDEX">
+											<option <?=@$kart_veri->ENDEKS == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
+                                            <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
+                                            <option <?=@$kart_veri->ENDEKS == "Hammadde Fiyat ENDEKS" ? "selected" : ""?> value="Hammadde Fiyat ENDEKS">Hammadde Fiyat Endeks</option>
+                                            <option <?=@$kart_veri->ENDEKS == "TK sistemiyle hesaplanan stok maliyeti" ? "selected" : ""?> value="TK sistemiyle hesaplanan stok maliyeti">TK sistemiyle hesaplanan stok maliyeti</option>
 										</select>
 									</div>
 									<div class="col-md-4">
