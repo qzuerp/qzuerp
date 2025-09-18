@@ -93,6 +93,8 @@ class cari00_controller extends Controller
     $ACIKHESAPLIMITI = $request->input('ACIKHESAPLIMITI');
     $B_RISKLIMITI = $request->input('B_RISKLIMITI');
     $SPODEMESEKLI = $request->input('SPODEMESEKLI');
+    $DENETIM_TAR = $request->input('DENETIM_TAR');
+    $DENETIM_PERIYOT = $request->input('DENETIM_PERIYOT');
 
     switch($islem_turu) {
 
@@ -279,6 +281,8 @@ class cari00_controller extends Controller
             'ACIKHESAPLIMITI' => $ACIKHESAPLIMITI,
             'B_RISKLIMITI' => $B_RISKLIMITI,
             'SPODEMESEKLI' => $SPODEMESEKLI,
+            'DENETIM_TAR' => $DENETIM_TAR,
+            'DENETIM_PERIYOT' => $DENETIM_PERIYOT,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
     
@@ -337,6 +341,8 @@ class cari00_controller extends Controller
           'ACIKHESAPLIMITI' => $ACIKHESAPLIMITI,
           'B_RISKLIMITI' => $B_RISKLIMITI,
           'SPODEMESEKLI' => $SPODEMESEKLI,
+          'DENETIM_TAR' => $DENETIM_TAR,
+          'DENETIM_PERIYOT' => $DENETIM_PERIYOT,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
         // dd(DB::getQueryLog());

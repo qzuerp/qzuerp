@@ -112,19 +112,27 @@
 
 							<div class="row ">
 
-							  <div class="col-md-3 col-sm-4 col-xs-6">
+							  <div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Kod</label>
 									<input type="text" class="form-control" name="KOD" id="KOD" maxlength="16" required="" value="{{ @$kart_veri->KOD }}">
 									<!-- Bu kısım kod alanı güncellenmek istenirese eğer veritabanında eşleştirme yapılacak kısım -->
 									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16" required="" value="{{ @$kart_veri->KOD }}">
 							  </div>
-							 	<div class="col-md-3 col-sm-4 col-xs-6">
+							 	<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Cari Adı</label>
 									<input type="text" class="form-control"maxlength="100" name="AD" id="AD" required="" value="{{ @$kart_veri->AD }}" >
 							 	</div>
-								<div class="col-md-3 col-sm-4 col-xs-6">
+								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Ad2</label>
 									<input type="text" class="form-control"maxlength="100" name="AD2" id="AD2" value="{{ @$kart_veri->AD2 }}" >
+								</div>
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<label>Denetim Tarihi</label>
+									<input type="date" class="form-control"maxlength="100" name="DENETIM_TAR" id="DENETIM_TAR" value="{{ @$kart_veri->DENETIM_TAR }}" >
+								</div>
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<label>Denetim Periyodu</label>
+									<input type="text" class="form-control"maxlength="100" name="DENETIM_PERIYOT" id="DENETIM_PERIYOT" value="{{ @$kart_veri->DENETIM_PERIYOT }}" >
 								</div>
 								<div class="col-md-2 col-sm-1 col-xs-2">
 									<label>Aktif/Pasif</label>
