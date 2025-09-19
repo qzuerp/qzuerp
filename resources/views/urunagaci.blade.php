@@ -315,7 +315,7 @@
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
+																		<select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW" style="height: 30px; width:100%;">
 																			<option value=" " >Seç</option>
 																		</select>
 																		<input type="hidden" id="YMAMULCODE">
@@ -431,7 +431,7 @@
 																		<td class="d-flex">
 																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
 																			<span class="d-flex -btn">
-										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
+										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModalSatir" type="button">
 										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
 										                                        </button>
 										                                    </span>
@@ -440,7 +440,7 @@
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
-																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}" readonlytd>
+																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}" readonly></td>
 																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_1_SHOW_T" id="KALIPKODU_1_SHOW_T" value="{{ $veri->KALIP_KODU1 }}" ><input type="hidden" class="form-control" name="KALIPKODU_1[]" id="KALIPKODU_1" value="{{ $veri->KALIP_KODU1 ?? '' }}"></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_2_SHOW_T" id="KALIPKODU_2_SHOW_T" value="{{ $veri->KALIP_KODU2 }}" ><input type="hidden" class="form-control" name="KALIPKODU_2[]" id="KALIPKODU_2" value="{{ $veri->KALIP_KODU2 ?? '' }}"></td>
@@ -761,7 +761,7 @@
 						<div class="modal-body">
 							<!-- Zaman formu - başlangıçta gizli -->
 							<div id="timeForm" class="d-none">
-								<div class="form-group mb-3-sonra-sil">
+								<div class="form-group mb-1">
 									<label for="unit">Birim</label>
 									<select class="form-control" id="unit">
 										<option value="min">Dakika</option>
@@ -769,7 +769,7 @@
 									</select>
 								</div>
 								
-								<div class="form-group mb-3-sonra-sil d-flex gap-3">
+								<div class="form-group mb-1 d-flex gap-3">
 									<input type="text" id="oran" class="form-control" placeholder="İş Süresi"> 
 									<input type="text" id="oran2" class="form-control" placeholder="Ayar Süresi"> 
 									<input type="text" id="oran3" class="form-control" placeholder="Sök-Tak Süresi"> 
@@ -778,7 +778,7 @@
 
 							<!-- Boyut formu - başlangıçta gizli -->
 							<div id="dimensionsForm" class="d-none">
-								<div class="form-group mb-3-sonra-sil">
+								<div class="form-group mb-1">
 									<label for="shapeType">Cisim Tipi</label>
 									<select class="form-control" id="shapeType">
 										<option value="cuboid">Kübik</option>
@@ -787,22 +787,22 @@
 									</select>
 								</div>
 
-								<div class="form-group mb-3-sonra-sil">
+								<div class="form-group mb-1">
 									<label for="density">Yoğunluk (kg/m³)</label>
 									<input type="number" class="form-control" id="density" step="0.01" placeholder="Yoğunluk girin">
 								</div>
 
 								<!-- Kübik cisim inputları -->
 								<div id="cuboidInputs">
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_EN">En (m)</label>
 										<input type="number" class="form-control" id="B_EN" step="0.01" placeholder="En değeri">
 									</div>
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_BOY">Boy (m)</label>
 										<input type="number" class="form-control" id="B_BOY" step="0.01" placeholder="Boy değeri">
 									</div>
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_YUKSEKLIK">Yükseklik (m)</label>
 										<input type="number" class="form-control" id="B_YUKSEKLIK" step="0.01" placeholder="Yükseklik değeri">
 									</div>
@@ -810,11 +810,11 @@
 
 								<!-- Silindir inputları -->
 								<div id="cylinderInputs" class="d-none">
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_CAP">Çap (m)</label>
 										<input type="number" class="form-control" id="B_CAP" step="0.01" placeholder="Çap değeri">
 									</div>
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_YUKSEKLIK_CYL">Yükseklik (m)</label>
 										<input type="number" class="form-control" id="B_YUKSEKLIK_CYL" step="0.01" placeholder="Yükseklik değeri">
 									</div>
@@ -822,7 +822,7 @@
 
 								<!-- Küre inputları -->
 								<div id="sphereInputs" class="d-none">
-									<div class="form-group mb-3-sonra-sil">
+									<div class="form-group mb-1">
 										<label for="B_CAP_SPH">Çap (m)</label>
 										<input type="number" class="form-control" id="B_CAP_SPH" step="0.01" placeholder="Çap değeri">
 									</div>
@@ -833,6 +833,97 @@
 							<div class="text-center w-100">
 								<button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">İptal</button>
 								<button type="button" class="btn btn-success" onclick="calculateWeight()">HESAPLA</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Ağırlık Hesaplama Modal Satır -->
+			<div class="modal fade" id="dimensionsModalSatir" tabindex="-1" role="dialog" aria-labelledby="dimensionsModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="dimensionsModalLabel">Cisim Tipini ve Ölçüleri Girin</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"></button>
+							<input type="hidden" id="rowID">
+							<input type="hidden" id="rowTYPE">
+						</div>
+						<div class="modal-body">
+							<!-- Zaman formu - başlangıçta gizli -->
+							<div id="timeFormSatir" class="d-none">
+								<div class="form-group mb-1">
+									<label for="unit_SATIR">Birim</label>
+									<select class="form-control" id="unit_SATIR">
+										<option value="min">Dakika</option>
+										<option value="second">Saniye</option>
+									</select>
+								</div>
+								
+								<div class="form-group mb-1 d-flex gap-3">
+									<input type="text" id="oran_SATIR" class="form-control" placeholder="İş Süresi"> 
+									<input type="text" id="oran2_SATIR" class="form-control" placeholder="Ayar Süresi"> 
+									<input type="text" id="oran3_SATIR" class="form-control" placeholder="Sök-Tak Süresi"> 
+								</div>
+							</div>
+
+							<!-- Boyut formu - başlangıçta gizli -->
+							<div id="dimensionsFormSatir" class="d-none">
+								<div class="form-group mb-1">
+									<label for="shapeType_SATIR">Cisim Tipi</label>
+									<select class="form-control" id="shapeType_SATIR">
+										<option value="cuboid_SATIR">Kübik</option>
+										<option value="cylinder_SATIR">Silindir</option>
+										<option value="sphere_SATIR">Küre</option>
+									</select>
+								</div>
+
+								<div class="form-group mb-1">
+									<label for="density">Yoğunluk (kg/m³)</label>
+									<input type="number" class="form-control" id="density_SATIR" step="0.01" placeholder="Yoğunluk girin">
+								</div>
+
+								<!-- Kübik cisim inputları -->
+								<div id="cuboidInputs">
+									<div class="form-group mb-1">
+										<label for="B_EN">En (m)</label>
+										<input type="number" class="form-control" id="B_EN_SATIR" step="0.01" placeholder="En değeri">
+									</div>
+									<div class="form-group mb-1">
+										<label for="B_BOY">Boy (m)</label>
+										<input type="number" class="form-control" id="B_BOY_SATIR" step="0.01" placeholder="Boy değeri">
+									</div>
+									<div class="form-group mb-1">
+										<label for="B_YUKSEKLIK">Yükseklik (m)</label>
+										<input type="number" class="form-control" id="B_YUKSEKLIK_SATIR" step="0.01" placeholder="Yükseklik değeri">
+									</div>
+								</div>
+
+								<!-- Silindir inputları -->
+								<div id="cylinderInputs" class="d-none">
+									<div class="form-group mb-1">
+										<label for="B_CAP">Çap (m)</label>
+										<input type="number" class="form-control" id="B_CAP_SATIR" step="0.01" placeholder="Çap değeri">
+									</div>
+									<div class="form-group mb-1">
+										<label for="B_YUKSEKLIK_CYL">Yükseklik (m)</label>
+										<input type="number" class="form-control" id="B_YUKSEKLIK_CYL_SATIR" step="0.01" placeholder="Yükseklik değeri">
+									</div>
+								</div>
+
+								<!-- Küre inputları -->
+								<div id="sphereInputs" class="d-none">
+									<div class="form-group mb-1">
+										<label for="B_CAP_SPH">Çap (m)</label>
+										<input type="number" class="form-control" id="B_CAP_SPH_SATIR" step="0.01" placeholder="Çap değeri">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="text-center w-100">
+								<button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">İptal</button>
+								<button type="button" class="btn btn-success" onclick="calculateWeightLine()">HESAPLA</button>
 							</div>
 						</div>
 					</div>
@@ -969,7 +1060,6 @@
 						$('#timeForm').show().addClass('d-block');
 						break;
 					default:
-						// Hiçbir form gösterilmez, tümü gizli kalır
 						console.log('Bilinmeyen değer:', selectedValue);
 						break;
 				}
@@ -979,17 +1069,17 @@
 				var ID = $(this).data('id');
 				var selectedValue = $.trim($('#BOMREC_INPUTTYPE_SHOW_T-'+ID).val());
 
-				$('#timeForm, #dimensionsForm').hide().removeClass('d-block d-none');
-
+				$('#timeFormSatir, #dimensionsFormSatir').hide().removeClass('d-block d-none');
+				$('#rowID').val(ID);
+				$('#rowTYPE').val(selectedValue);
 				switch (selectedValue) {
 					case 'H':
-						$('#dimensionsForm').show().addClass('d-block');
+						$('#dimensionsFormSatir').show().addClass('d-block');
 						break;
 					case 'I':
-						$('#timeForm').show().addClass('d-block');
+						$('#timeFormSatir').show().addClass('d-block');
 						break;
 					default:
-						// Hiçbir form gösterilmez, tümü gizli kalır
 						console.log('Bilinmeyen değer:', selectedValue);
 						break;
 				}
@@ -1008,6 +1098,7 @@
 			{
 				$('#MAMULCODE_SHOW').val('').trigger('change');
 			}
+			
 		    function calculateWeight() {
 		        const shapeType = document.getElementById('shapeType').value;
 		        const unit = document.getElementById('unit').value;
@@ -1070,41 +1161,42 @@
 		    }
 
 			function calculateWeightLine() {
-				const shapeType = document.getElementById('shapeType').value;
-				const unit = document.getElementById('unit').value;
-				const oran = document.getElementById('oran').value;
-				const oran2 = document.getElementById('oran2').value;
-				const oran3 = document.getElementById('oran3').value;
-				const BOMREC_INPUTTYPE_SHOW = document.getElementById('BOMREC_INPUTTYPE_SHOW').value;
-				const density = parseFloat(document.getElementById('density').value) || 0;
+				const shapeType = document.getElementById('shapeType_SATIR').value;
+				const unit = document.getElementById('unit_SATIR').value;
+				const oran = document.getElementById('oran_SATIR').value;
+				const oran2 = document.getElementById('oran2_SATIR').value;
+				const oran3 = document.getElementById('oran3_SATIR').value;
+				const BOMREC_INPUTTYPE_SHOW = document.getElementById('rowTYPE').value;
+				const density = parseFloat(document.getElementById('density_SATIR').value) || 0;
+				const ID = $('#rowID').val();
 				let volume = 0;
 				if(BOMREC_INPUTTYPE_SHOW == "H")
 				{
 					// Kübik
 					if (shapeType === 'cuboid') {
-						const width = parseFloat(document.getElementById('B_EN').value) || 0;
-						const length = parseFloat(document.getElementById('B_BOY').value) || 0;
-						const height = parseFloat(document.getElementById('B_YUKSEKLIK').value) || 0;
+						const width = parseFloat(document.getElementById('B_EN_SATIR').value) || 0;
+						const length = parseFloat(document.getElementById('B_BOY_SATIR').value) || 0;
+						const height = parseFloat(document.getElementById('B_YUKSEKLIK_SATIR').value) || 0;
 						volume = width * length * height;
 					} 
 
 					// Silindirik
 					else if (shapeType === 'cylinder') {
-						const diameter = parseFloat(document.getElementById('B_CAP').value) || 0;
-						const height = parseFloat(document.getElementById('B_YUKSEKLIK_CYL').value) || 0;
+						const diameter = parseFloat(document.getElementById('B_CAP_SATIR').value) || 0;
+						const height = parseFloat(document.getElementById('B_YUKSEKLIK_CYL_SATIR').value) || 0;
 						const radius = diameter / 2;
 						volume = Math.PI * Math.pow(radius, 2) * height;
 					} 
 
 					// Küre
 					else if (shapeType === 'sphere') {
-						const diameter = parseFloat(document.getElementById('B_CAP_SPH').value) || 0;
+						const diameter = parseFloat(document.getElementById('B_CAP_SPH_SATIR').value) || 0;
 						const radius = diameter / 2;
 						volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
 					}
 
 					const weight = volume * density;
-					document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = weight.toFixed(2);
+					document.getElementById('BOMREC_KAYNAK0-'+ID).value = weight.toFixed(2);
 				}
 				else if(BOMREC_INPUTTYPE_SHOW == "I")
 				{
@@ -1113,21 +1205,21 @@
 						let saat = oran / 60;
 						let saat2 = oran2 / 60;
 						let saat3 = oran3 / 60;
-						document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK01_FILL-'+IDBOpenDBRequest.value = saat2.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK02_FILL-'+IDBOpenDBRequest.value = saat3.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK0-'+ID).value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01-'+ID).value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02-'+ID).value = saat3.toFixed(2);
 					}
 					else if(unit == 'second')
 					{
 						let saat = oran / 3600;
 						let saat2 = oran2 / 3600;
 						let saat3 = oran3 / 3600;
-						document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = saat.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK01_FILL-'+IDBOpenDBRequest.value = saat2.toFixed(2);
-						document.getElementById('BOMREC_KAYNAK02_FILL-'+IDBOpenDBRequest.value = saat3.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK0-'+ID).value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01-'+ID).value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02-'+ID).value = saat3.toFixed(2);
 					}
 				}
-				$('#dimensionsModal').modal('hide');
+				$('#dimensionsModalSatir').modal('hide');
 			}
 		</script>
 	{{-- Ağırlık Hesaplama --}}

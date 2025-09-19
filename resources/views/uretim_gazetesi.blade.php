@@ -106,6 +106,7 @@ agg_miktar AS (
     FROM sfdc31E AS E
     GROUP BY E.JOBNO, E.OPERASYON
 )
+(
 SELECT
     M10T.EVRAKNO AS mps_no,
     M10E.MAMULSTOKKODU AS mamul_kod,
@@ -120,6 +121,7 @@ SELECT
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
     M10T.R_OPERASYON,
+    M10T.R_SIRANO,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
@@ -137,8 +139,9 @@ LEFT JOIN agg_miktar AS A2
   ON A2.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
     {$whereSql}
+
     and M10T.R_KAYNAKTYPE = 'I'
-   AND   S40T.AK IS NULL
+    AND   S40T.AK IS NULL
 -- ORDER BY M10E.SIPNO, M10T.EVRAKNO ASC;
 Union All
 
@@ -156,6 +159,7 @@ SELECT
     S40.TERMIN_TAR AS termin,
     null as JOBNO,
     null as R_OPERASYON,
+    '999' as R_SIRANO,
     null AS plan_sure,
     null AS plan_miktar,
     null as gerceklenen_SURE,
@@ -166,6 +170,8 @@ LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
 LEFT JOIN cari00   AS C002   ON C002.KOD = S40E2.CARIHESAPCODE
 Where 1=1
 And S40.AK is null
+)
+ORDER BY R_SIRANO ASC, termin ASC, mps_no DESC
 SQL;
 
 $stmt = $pdo->prepare($sql);
@@ -817,7 +823,7 @@ usort($groups, function($a,$b){
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
-                                <td class="op-cell num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {
                                         $m = $g['ops'][$op];
