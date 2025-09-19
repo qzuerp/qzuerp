@@ -206,11 +206,11 @@
     var evrakDegisti = false;
     var originalValues = {};
     var elementCounter = 0;
-    var originalTableRowCounts = {}; // Tablo satır sayılarını saklamak için
+    var originalTableRowCounts = {};
 
     $(document).ready(function () {
       trackAllFormElements();
-      trackAllTables(); // Tabloları da takip et
+      trackAllTables();
       
       observeNewElements();
       
@@ -317,12 +317,10 @@
     }
 
     function getTableRowCount($table) {
-      // tbody varsa onun satırlarını say, yoksa table'ın direkt tr'lerini say
       var $tbody = $table.find('tbody');
       if ($tbody.length > 0) {
         return $tbody.find('tr').length;
       } else {
-        // thead'i hariç tut, sadece veri satırlarını say
         var $thead = $table.find('thead');
         var totalRows = $table.find('tr').length;
         var headerRows = $thead.find('tr').length;
@@ -341,7 +339,7 @@
         
         if (currentRowCount !== originalRowCount) {
           anyTableChanged = true;
-          return false; // break out of each loop
+          return false;
         }
       });
       
@@ -455,7 +453,7 @@
       }
       
       checkAllElements();
-      checkTableChanges(); // Tablo değişikliklerini de kontrol et
+      checkTableChanges();
     }
 
     function checkAllElements() {
@@ -490,7 +488,6 @@
             if (node.nodeType === 1) {
               var $node = $(node);
               
-              // Yeni form elementlerini takip et
               var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
               newElements.each(function() {
                 var $element = $(this);
@@ -499,7 +496,6 @@
                 }
               });
               
-              // Yeni tabloları takip et
               var newTables = $node.find('table').addBack().filter('table');
               newTables.each(function() {
                 var $table = $('#veriTable');
@@ -510,10 +506,8 @@
             }
           });
           
-          // Silinen nodeları kontrol et (tablo satırı silinirse)
           mutation.removedNodes.forEach(function(node) {
             if (node.nodeType === 1) {
-              // Bir tr elementi silindiyse tabloları tekrar kontrol et
               if (node.tagName === 'TR' || $(node).find('tr').length > 0) {
                 setTimeout(function() {
                   checkTableChanges();
@@ -533,14 +527,12 @@
     function resetEvrakDegisiklikFlag() {
       evrakDegisti = false;
       
-      // Form elementlerinin değerlerini resetle
       $('[data-tracked]').each(function() {
         var $element = $(this);
         var uniqueKey = $element.attr('data-unique-key');
         originalValues[uniqueKey] = getElementValue($element);
       });
       
-      // Tablo satır sayılarını resetle
       $('[data-table-tracked]').each(function() {
         var $table = $('#veriTable');
         var uniqueKey = $table.attr('data-table-unique-key');
@@ -556,7 +548,6 @@
       $(selector).removeAttr('data-skip-tracking');
     }
 
-    // Tablo için skip rule fonksiyonları
     function addTableSkipRule(selector) {
       $(selector).attr('data-skip-table-tracking', 'true');
     }

@@ -138,7 +138,34 @@ LEFT JOIN agg_miktar AS A2
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
     {$whereSql}
     and M10T.R_KAYNAKTYPE = 'I'
-ORDER BY S40T.TERMIN_TAR asc, M10T.EVRAKNO desc, M10T.R_SIRANO ASC
+   AND   S40T.AK IS NULL
+-- ORDER BY M10E.SIPNO, M10T.EVRAKNO ASC;
+Union All
+
+SELECT
+    null AS mps_no,
+    S40.KOD AS mamul_kod,
+    S002.AD AS mamul_ad,
+    S40E2.CARIHESAPCODE AS musteri_kod,
+    C002.AD AS musteri_ad,
+    S40.EVRAKNO AS sip_no,
+    S40.ARTNO AS sip_art_no,
+    S40.SF_MIKTAR AS sip_miktar,
+    S40.URETILEN_MIKTARI AS uretilen_miktar,
+    S40.SF_BAKIYE AS sip_bakiye,
+    S40.TERMIN_TAR AS termin,
+    null as JOBNO,
+    null as R_OPERASYON,
+    null AS plan_sure,
+    null AS plan_miktar,
+    null as gerceklenen_SURE,
+    null as gerceklesen_MIKTAR
+FROM STOK40T AS S40
+LEFT JOIN STOK40E  AS S40E2  ON S40E2.EVRAKNO = S40.EVRAKNO
+LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
+LEFT JOIN cari00   AS C002   ON C002.KOD = S40E2.CARIHESAPCODE
+Where 1=1
+And S40.AK is null
 SQL;
 
 $stmt = $pdo->prepare($sql);
@@ -526,14 +553,9 @@ usort($groups, function($a,$b){
     .op-cell {
         position: relative;
         font-weight: 600;
-        border-radius: var(--radius-sm);
+        /* border-radius: var(--radius-sm); */
         min-width: 120px;
-        background: linear-gradient(
-            to right,
-            rgba(49, 130, 206, 0.15) 0%,
-            rgba(49, 130, 206, 0.15) var(--p, 0%),
-            transparent var(--p, 0%)
-        );
+        background-color:rgba(49, 130, 206, 0.17);
         transition: all 0.3s ease;
     }
 
@@ -727,8 +749,10 @@ usort($groups, function($a,$b){
         <div class="toolbar">
             <div class="stats-badge">
                 Toplam Kayıt: <?= number_format(count($groups ?? []), 0, ',', '.') ?>
+                <button class="scenario-btn active" onclick="exportTableToExcel('rapor')" style="margin-left:12px">Excel'e Aktar</button>
             </div>
             
+
             <div class="scenario-tabs" id="scenarioButtons">
                 <button type="button" class="scenario-btn active" data-scn="sure"> Süre Analizi</button>
                 <button type="button" class="scenario-btn" data-scn="miktar"> Miktar Analizi</button>
@@ -793,7 +817,7 @@ usort($groups, function($a,$b){
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
-                                <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td class="op-cell num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {
                                         $m = $g['ops'][$op];
@@ -834,7 +858,14 @@ usort($groups, function($a,$b){
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+function exportTableToExcel(tableId)
+{
+    let table = document.getElementById(tableId)
+    let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+    XLSX.writeFile(wb, "tablo.xlsx");
+}
 (function(){
     const fmtNum  = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct0 = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });

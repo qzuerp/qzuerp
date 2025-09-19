@@ -315,7 +315,10 @@
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="YMAMULCODE" id="YMAMULCODE" class="form-control">
+																		<select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
+																			<option value=" " >Seç</option>
+																		</select>
+																		<input type="hidden" id="YMAMULCODE">
 																	</td>
 																	<td>
 																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
@@ -409,7 +412,7 @@
 																		<td><input type='checkbox' style='width:20px;height:20px;' name='record'></td>
 																		<td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
 																		<td><input type="number" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
-																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
+																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T-{{ $veri->id }}" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
 																		<td>
 																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}" disabled>
 																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE[]" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}">
@@ -425,13 +428,20 @@
 																			<input type="text" class="form-control" maxlength="50" name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
 																			<input type="hidden" class="form-control" maxlength="50" name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
 																		</td>																
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0" value="{{ $veri->BOMREC_KAYNAK0 }}"></td>
+																		<td class="d-flex">
+																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
+																			<span class="d-flex -btn">
+										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
+										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
+										                                        </button>
+										                                    </span>
+																		</td>
 																		<td><input type="text" class="form-control" maxlength='255' name="ACIKLAMA[]" id="ACIKLAMA" value="{{ $veri->STOK_BIRIM }}" readonly></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
-																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}"></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
+																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}" readonlytd>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_1_SHOW_T" id="KALIPKODU_1_SHOW_T" value="{{ $veri->KALIP_KODU1 }}" ><input type="hidden" class="form-control" name="KALIPKODU_1[]" id="KALIPKODU_1" value="{{ $veri->KALIP_KODU1 ?? '' }}"></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_2_SHOW_T" id="KALIPKODU_2_SHOW_T" value="{{ $veri->KALIP_KODU2 }}" ><input type="hidden" class="form-control" name="KALIPKODU_2[]" id="KALIPKODU_2" value="{{ $veri->KALIP_KODU2 ?? '' }}"></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_3_SHOW_T" id="KALIPKODU_3_SHOW_T" value="{{ $veri->KALIP_KODU3 }}" ><input type="hidden" class="form-control" name="KALIPKODU_3[]" id="KALIPKODU_3" value="{{ $veri->KALIP_KODU3 ?? '' }}"></td>
@@ -746,8 +756,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="dimensionsModalLabel">Cisim Tipini ve Ölçüleri Girin</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"> 
-                </button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<!-- Zaman formu - başlangıçta gizli -->
@@ -949,7 +958,6 @@
 
 			$('#BOMREC_INPUTTYPE_SHOW').on('change', function () {
 				var selectedValue = $.trim($(this).val());
-				console.log('Seçilen değer:', selectedValue);
 
 				$('#timeForm, #dimensionsForm').hide().removeClass('d-block d-none');
 
@@ -967,7 +975,25 @@
 				}
 			});
 
+			$('.hesaplama_btn_satir').on('click',function () {
+				var ID = $(this).data('id');
+				var selectedValue = $.trim($('#BOMREC_INPUTTYPE_SHOW_T-'+ID).val());
 
+				$('#timeForm, #dimensionsForm').hide().removeClass('d-block d-none');
+
+				switch (selectedValue) {
+					case 'H':
+						$('#dimensionsForm').show().addClass('d-block');
+						break;
+					case 'I':
+						$('#timeForm').show().addClass('d-block');
+						break;
+					default:
+						// Hiçbir form gösterilmez, tümü gizli kalır
+						console.log('Bilinmeyen değer:', selectedValue);
+						break;
+				}
+			});
 
 		    document.getElementById('shapeType').addEventListener('change', function () {
 		        const shapeType = this.value;
@@ -1042,6 +1068,67 @@
 				}
 		        $('#dimensionsModal').modal('hide');
 		    }
+
+			function calculateWeightLine() {
+				const shapeType = document.getElementById('shapeType').value;
+				const unit = document.getElementById('unit').value;
+				const oran = document.getElementById('oran').value;
+				const oran2 = document.getElementById('oran2').value;
+				const oran3 = document.getElementById('oran3').value;
+				const BOMREC_INPUTTYPE_SHOW = document.getElementById('BOMREC_INPUTTYPE_SHOW').value;
+				const density = parseFloat(document.getElementById('density').value) || 0;
+				let volume = 0;
+				if(BOMREC_INPUTTYPE_SHOW == "H")
+				{
+					// Kübik
+					if (shapeType === 'cuboid') {
+						const width = parseFloat(document.getElementById('B_EN').value) || 0;
+						const length = parseFloat(document.getElementById('B_BOY').value) || 0;
+						const height = parseFloat(document.getElementById('B_YUKSEKLIK').value) || 0;
+						volume = width * length * height;
+					} 
+
+					// Silindirik
+					else if (shapeType === 'cylinder') {
+						const diameter = parseFloat(document.getElementById('B_CAP').value) || 0;
+						const height = parseFloat(document.getElementById('B_YUKSEKLIK_CYL').value) || 0;
+						const radius = diameter / 2;
+						volume = Math.PI * Math.pow(radius, 2) * height;
+					} 
+
+					// Küre
+					else if (shapeType === 'sphere') {
+						const diameter = parseFloat(document.getElementById('B_CAP_SPH').value) || 0;
+						const radius = diameter / 2;
+						volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
+					}
+
+					const weight = volume * density;
+					document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = weight.toFixed(2);
+				}
+				else if(BOMREC_INPUTTYPE_SHOW == "I")
+				{
+					if(unit == 'min')
+					{
+						let saat = oran / 60;
+						let saat2 = oran2 / 60;
+						let saat3 = oran3 / 60;
+						document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01_FILL-'+IDBOpenDBRequest.value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02_FILL-'+IDBOpenDBRequest.value = saat3.toFixed(2);
+					}
+					else if(unit == 'second')
+					{
+						let saat = oran / 3600;
+						let saat2 = oran2 / 3600;
+						let saat3 = oran3 / 3600;
+						document.getElementById('BOMREC_KAYNAK0_FILL-'+IDBOpenDBRequest.value = saat.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK01_FILL-'+IDBOpenDBRequest.value = saat2.toFixed(2);
+						document.getElementById('BOMREC_KAYNAK02_FILL-'+IDBOpenDBRequest.value = saat3.toFixed(2);
+					}
+				}
+				$('#dimensionsModal').modal('hide');
+			}
 		</script>
 	{{-- Ağırlık Hesaplama --}}
 
@@ -1070,7 +1157,25 @@
 		// window.onload = addRowHandlers();
 
 		$(document).ready(function() {
-
+			$('#YMAMULCODE_SHOW').select2({
+				placeholder: 'Stok kodu seç...',
+				ajax: {
+					url: '/stok-kodu-custom-select',
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						return {
+							q: params.term
+						};
+					},
+					processResults: function (data) {
+						return {
+							results: data.results
+						};
+					},
+					cache: true
+				}
+			});
 			$('#MAMULCODE_SHOW').select2({
 				placeholder: 'Stok kodu seç...',
 				ajax: {
@@ -1142,7 +1247,7 @@
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+satirEkleInputs.PK_NO_FILL+"' style='color:blue;'></td>";
-        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+satirEkleInputs.YARI_MAMUL_MIKTARI_FILL+"' style='color:blue;'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK01[]' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK02[]' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"'></td> ";
@@ -1265,6 +1370,13 @@
 			$('#AD').val(veriler[1]);
 
 		} 
+		
+		function stokAdiGetir6(veri)
+		{
+			const veriler = veri.split("|||");
+
+			$('#YMAMULCODE').val(veriler[0]);
+		}
 	</script>
 
 </div>

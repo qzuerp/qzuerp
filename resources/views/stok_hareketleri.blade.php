@@ -39,14 +39,31 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 						<!-- <h5 class="box-title">Bordered Table</h5> -->
 						<div class="box-body">
 							<!-- <hr> -->
+								<div class="row align-items-end">
+									<div class="col-md-12">
+										<label class="form-label fw-bold">İşlemler</label>
+										<div class="action-btn-group flex gap-2 flex-wrap">
+										<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('evrakSuzTable')">
+											<i class="fas fa-file-excel"></i> Excel'e Aktar
+										</button>
+										<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('evrakSuzTable')">
+											<i class="fas fa-file-word"></i> Word'e Aktar
+										</button>
+										<!-- <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('evrakSuzTable')">
+											<i class="fas fa-print"></i> Yazdır
+										</button> -->
+										</div>
+									</div>
+								</div>
 								<div class="row " style="overflow: auto">
-
+									
 									<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10">
 										<thead>
 											<tr class="bg-primary">
 												<th>Tarih</th>
 												<th style="min-width: 150px">Kod</th>
 												<th style="min-width: 200px">Ad</th>
+												<th style="min-width: 200px">Ad 2</th>
 												<th style="min-width: 100px">Miktar</th>
 												<th style="min-width: 100px">Birim</th>
 												<th style="min-width: 100px">Evrak Tipi</th>
@@ -75,6 +92,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 												<th>Tarih</th>
 												<th>Kod</th>
 												<th>Ad</th>
+												<th>Ad 2</th>
 												<th>Miktar</th>
 												<th>Birim</th>
 												<th>Evrak Tipi</th>
@@ -102,13 +120,18 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 
 											@php
 
-											$evraklar=DB::table($database.'stok10a')->orderBy('created_at', 'desc')->get();
+												$evraklar = DB::table($database.'stok10a as s10')
+													->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+													->select('s10.*', 's0.NAME2')
+													->orderBy('s10.created_at', 'desc')
+													->get();
 
 											foreach ($evraklar as $key => $suzVeri) {
 													echo "<tr>";
 													echo "<td>".$suzVeri->created_at."</td>";
 													echo "<td><b>".$suzVeri->KOD."</b></td>";
 													echo "<td><b>".$suzVeri->STOK_ADI."</b></td>";
+													echo "<td><b>".$suzVeri->NAME2."</b></td>";
 													echo "<td style='color:blue'><b>".$suzVeri->SF_MIKTAR."</b></td>";
 													echo "<td><b>".$suzVeri->SF_SF_UNIT."</b></td>";
 													echo "<td>".$suzVeri->EVRAKTIPI."</td>";
@@ -154,6 +177,56 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 
 			</div>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+      function exportTableToExcel(tableId)
+      {
+        let table = document.getElementById(tableId)
+        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+        XLSX.writeFile(wb, "tablo.xlsx");
+      }
+      function exportTableToWord(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML;
+        let htmlContent = `<!DOCTYPE html>
+            <html>
+            <head><meta charset='UTF-8'></head>
+            <body>${table}</body>
+            </html>`;
 
+        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "tablo.doc";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      }
+      function printTable(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+        let newWindow = window.open("", "_blank"); // Yeni pencere aç
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Tablo Yazdır</title>
+                <style>
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                </style>
+            </head>
+            <body>
+                ${table}
+                <script>
+                    window.onload = function() { window.print(); window.onafterprint = window.close; };
+                <\/script>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
+      }
+	</script>
 
 @endsection

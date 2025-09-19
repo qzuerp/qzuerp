@@ -209,6 +209,7 @@
           "order": [[ 0, "desc" ]],
           dom: 'brtip',
           buttons: ['copy', 'excel', 'print'],
+          paging: false,
           language: {
             url: '{{ asset("tr.json") }}'
           },

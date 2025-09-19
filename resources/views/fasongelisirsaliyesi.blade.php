@@ -238,9 +238,10 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;Fason Süz</button>
                           </div>
 
-                          <table class="table table-bordered text-center" id="veriTable" >
+                          <table class="table table-bordered text-center overflow-visible" id="veriTable" >
                             <thead>
                               <tr>
+                                <th>#</th>
                                 <th>#</th>
                                 <th style="display:none;">Sıra</th>
                                 <th style="min-width:150px;">Stok Kodu</th>
@@ -270,6 +271,7 @@
 
                               <tr class="satirEkle" style="background-color:#3c8dbc">
 
+                                <td><input type="checkbox" name="" id=""></td>
                                 <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                 <td style="display:none;">
                                 </td>
@@ -381,6 +383,7 @@
                               @foreach ($t_kart_veri as $key => $veri)
                                 <tr>
                                   <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
+                                  <td>@include('components.detayBtn', ['KOD' => $veri->KOD])</td>
                                   <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
                                   <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                                   <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
@@ -470,17 +473,44 @@
 
                            @if(@$_GET["SUZ"])
 
-
+                          <div class="row align-items-end">
+                            <div class="col-md-12">
+                              <label class="form-label fw-bold">İşlemler</label>
+                              <div class="action-btn-group flex gap-2 flex-wrap">
+                                <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('listeleTable')">
+                                  <i class="fas fa-file-excel"></i> Excel'e Aktar
+                                </button>
+                                <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('listeleTable')">
+                                  <i class="fas fa-file-word"></i> Word'e Aktar
+                                </button>
+                                <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('listeleTable')">
+                                  <i class="fas fa-print"></i> Yazdır
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                            <table class="table table-bordered text-center" id="listeleTable">
                             <thead>
-                              <th>Kod</th>
-                              <th>Tedarikçi</th>
+                              <th>Evrak No</th>
                               <th>Tarih</th>
+                              <th>Fason Üretici Kod</th>
+                              <th>Fason Üretici Ad</th>
+                              <th>Stok Kodu</th>
+                              <th>Stok Adı</th>
+                              <th>Lot No</th>
+                              <th>Seri No</th>
+                              <th>Miktar</th>
                             </thead>
                             <tfoot>
-                              <th>Kod</th>
-                              <th>Tedarikçi</th>
+                              <th>Evrak No</th>
                               <th>Tarih</th>
+                              <th>Fason Üretici Kod</th>
+                              <th>Fason Üretici Ad</th>
+                              <th>Stok Kodu</th>
+                              <th>Stok Adı</th>
+                              <th>Lot No</th>
+                              <th>Seri No</th>
+                              <th>Miktar</th>
                             </tfoot>
                             <tbody>
                               @php
@@ -497,7 +527,17 @@
                                 if(isset($_GET['TARIH_E'])) { $TARIH_E = TRIM($_GET['TARIH_E']); }
 
 
-                                $sql_sorgu = 'SELECT * FROM '.$ekranTableT.' WHERE 1 = 1';
+                                $sql_sorgu = "
+                                    SELECT T.*, E.*, C.*
+                                    FROM {$ekranTableT} AS T
+                                    LEFT JOIN {$ekranTableE} AS E 
+                                        ON T.EVRAKNO = E.EVRAKNO
+                                    LEFT JOIN cari00 AS C
+                                        ON E.CARIHESAPCODE = C.KOD
+                                    WHERE 1 = 1
+                                ";
+
+
 
                                 if(Trim($KOD_B) <> '') {
                                     $sql_sorgu .= " AND KOD >= '".$KOD_B."' ";
@@ -519,9 +559,15 @@
                                 foreach ($table as $row) {
                                   @endphp
                                   <tr>
+                                    <td>{{ $row->EVRAKNO }}</td>
+                                    <td>{{ $row->TARIH }}</td>
+                                    <td>{{ $row->CARIHESAPCODE }}</td>
+                                    <td>{{ $row->AD }}</td>
                                     <td>{{ $row->KOD }}</td>
-                                    <td>{{ $row->SF_MIKTAR }}</td>
                                     <td>{{ $row->STOK_ADI }}</td>
+                                    <td>{{ $row->LOTNUMBER }}</td>
+                                    <td>{{ $row->SERINO }}</td>
+                                    <td>{{ $row->SF_MIKTAR }}</td>
                                   </tr>
                                   @php
                                 }
@@ -768,10 +814,11 @@
               <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Fason Seç</h4>
             </div>
             <div class="modal-body">
-              <div class="row" style="overflow: auto">
-                <table id="fasonSuz_table" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
+              <div class="row" style="overflow: visible">
+                <table id="fasonSuz_table" class="table table-hover text-center table-responsive overflow-visible" data-page-length="10" style="font-size: 0.8em;">
                   <thead>
                     <tr class="bg-primary">
+                      <th></th>
                       <th></th>
                       <th style="min-width:100px;">Stok Kodu</th>
                       <th style="min-width:100px;">Stok Adı</th>
@@ -829,6 +876,7 @@
             res.forEach(element => {
               htmlCode += "<tr>";
               htmlCode += "<td><input type='checkbox' class='seciliFason' style='width:20px;height:20px' name='hepsinisec'></td>";
+              htmlCode += detayBtnForJS(element.KOD);
               htmlCode += "<td style='display: none;'><input type='hidden' name='TRNUM[]' value='"+element.TRNUM+"'></td>";
               htmlCode += "<td><input type='text' class='form-control' value='"+element.KOD+"' disabled><input type='hidden' name='KOD[]' value='"+element.KOD+"'></td>";
               htmlCode += "<td><input type='text' class='form-control' value='"+element.STOK_ADI+"' disabled><input type='hidden' name='STOK_ADI[]' value='"+element.STOK_ADI+"'></td>";
@@ -1022,7 +1070,57 @@
       }
     </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
+      function exportTableToExcel(tableId)
+      {
+        let table = document.getElementById(tableId)
+        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+        XLSX.writeFile(wb, "tablo.xlsx");
+      }
+      function exportTableToWord(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML;
+        let htmlContent = `<!DOCTYPE html>
+            <html>
+            <head><meta charset='UTF-8'></head>
+            <body>${table}</body>
+            </html>`;
+
+        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "tablo.doc";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      }
+      function printTable(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+        let newWindow = window.open("", "_blank"); // Yeni pencere aç
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Tablo Yazdır</title>
+                <style>
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                </style>
+            </head>
+            <body>
+                ${table}
+                <script>
+                    window.onload = function() { window.print(); window.onafterprint = window.close; };
+                <\/script>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
+      }
+
       $(document).ready(function() {
         fasonSuz();
         // var table = $('#fasonSuz_table').DataTable({  
@@ -1092,6 +1190,7 @@
           var htmlCode  = " ";
           htmlCode += " <tr> ";
           htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+          htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";

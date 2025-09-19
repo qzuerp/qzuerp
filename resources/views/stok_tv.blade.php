@@ -37,6 +37,22 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 					<!-- <h5 class="box-title">Bordered Table</h5> -->
 					<div class="box-body">
 						<!-- <hr> -->
+						 <div class="row align-items-end">
+							<div class="col-md-12">
+								<label class="form-label fw-bold">İşlemler</label>
+								<div class="action-btn-group flex gap-2 flex-wrap">
+								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('evrakSuzTable')">
+									<i class="fas fa-file-excel"></i> Excel'e Aktar
+								</button>
+								<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('evrakSuzTable')">
+									<i class="fas fa-file-word"></i> Word'e Aktar
+								</button>
+								<!-- <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('evrakSuzTable')">
+									<i class="fas fa-print"></i> Yazdır
+								</button> -->
+								</div>
+							</div>
+						</div>
 						<div class="row " style="overflow: auto">
 
 							<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10">
@@ -44,6 +60,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 									<tr class="bg-primary">
 										<th style="min-width: 150px">Kod</th>
 										<th style="min-width: 200px">Ad</th>
+										<th style="min-width: 200px">Ad 2</th>
 										<th style="min-width: 100px">Miktar</th>
 										<th style="min-width: 100px">Birim</th>
 										<th style="min-width: 100px">Lot</th>
@@ -69,6 +86,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 									<tr class="bg-info">
 										<th>Kod</th>
 										<th>Ad</th>
+										<th>Ad 2</th>
 										<th>Miktar</th>
 										<th>Birim</th>
 										<th>Lot</th>
@@ -93,15 +111,59 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 								<tbody>
 									@php
 
-										$evraklar=DB::table($database.'stok10a')
-										->selectRaw('KOD, STOK_ADI, SUM(SF_MIKTAR) MIKTAR, SF_SF_UNIT, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4')
-										->groupBy('KOD', 'STOK_ADI', 'SF_SF_UNIT', 'LOTNUMBER','SERINO', 'AMBCODE', 'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4', 'NUM1', 'NUM2', 'NUM3', 'NUM4', 'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4')
-										->get();
+										$evraklar = DB::table($database.'stok10a as s10')
+											->selectRaw('
+												s10.KOD, 
+												s10.STOK_ADI, 
+												SUM(s10.SF_MIKTAR) as MIKTAR, 
+												s10.SF_SF_UNIT, 
+												s10.LOTNUMBER, 
+												s10.SERINO, 
+												s10.AMBCODE, 
+												s10.TEXT1, 
+												s10.TEXT2, 
+												s10.TEXT3, 
+												s10.TEXT4, 
+												s10.NUM1, 
+												s10.NUM2, 
+												s10.NUM3, 
+												s10.NUM4, 
+												s10.LOCATION1, 
+												s10.LOCATION2, 
+												s10.LOCATION3, 
+												s10.LOCATION4,
+												s0.NAME2
+											')
+											->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+											->groupBy(
+												's10.KOD', 
+												's10.STOK_ADI', 
+												's10.SF_SF_UNIT', 
+												's10.LOTNUMBER',
+												's10.SERINO', 
+												's10.AMBCODE', 
+												's10.TEXT1', 
+												's10.TEXT2', 
+												's10.TEXT3', 
+												's10.TEXT4', 
+												's10.NUM1', 
+												's10.NUM2', 
+												's10.NUM3', 
+												's10.NUM4', 
+												's10.LOCATION1', 
+												's10.LOCATION2', 
+												's10.LOCATION3', 
+												's10.LOCATION4',
+												's0.NAME2'
+											)
+											->get();
+
 
 										foreach ($evraklar as $key => $suzVeri) {
 											echo "<tr>";
 											echo "<td><b>".$suzVeri->KOD."</b></td>";
 											echo "<td><b>".$suzVeri->STOK_ADI."</b></td>";
+											echo "<td><b>".$suzVeri->NAME2."</b></td>";
 											echo "<td style='color:blue'><b>".$suzVeri->MIKTAR."</b></td>";
 											echo "<td><b>".$suzVeri->SF_SF_UNIT."</b></td>";
 											echo "<td>".$suzVeri->LOTNUMBER."</td>";
@@ -133,39 +195,56 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 			</div>
 		</div>
 	</section>
-	<script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+      function exportTableToExcel(tableId)
+      {
+        let table = document.getElementById(tableId)
+        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+        XLSX.writeFile(wb, "tablo.xlsx");
+      }
+      function exportTableToWord(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML;
+        let htmlContent = `<!DOCTYPE html>
+            <html>
+            <head><meta charset='UTF-8'></head>
+            <body>${table}</body>
+            </html>`;
 
-	//   $('#evrakSuzTable tfoot th').each( function () {
-	//     var title = $(this).text();
-	//     $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px;" placeholder="🔍" />' );
-	//     // $(this).html( '<input type="text" class="form-control"  />' );
-	//   });
+        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "tablo.doc";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-
-	//   $(document).ready(function() {
-	//   	// DataTable
-	//     var table = $('#evrakSuzTable').DataTable({
-	//       "order": [0, 'asc'],
-	//       dom: 'rtip',
-	//       buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print' ],
-	//       initComplete: function () {
-	//         // Apply the search
-	//         this.api().columns().every( function () {
-	//           var that = this;
-
-	//           $( 'input', this.footer() ).on( 'keyup change clear', function () {
-	//             if ( that.search() !== this.value ) {
-	//               that
-	//               .search( this.value )
-	//               .draw();
-	//             }
-	//           } );
-	//         } );
-	//       }
-	//     });
-
-	//   });
-
+      }
+      function printTable(tableId)
+      {
+        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+        let newWindow = window.open("", "_blank"); // Yeni pencere aç
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Tablo Yazdır</title>
+                <style>
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                </style>
+            </head>
+            <body>
+                ${table}
+                <script>
+                    window.onload = function() { window.print(); window.onafterprint = window.close; };
+                <\/script>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
+      }
 	</script>
 </div>
 

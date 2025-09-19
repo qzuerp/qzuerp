@@ -258,6 +258,7 @@ if (isset($kart_veri)) {
                       <thead>
                         <tr>
                           <th>#</th>
+                          <th>#</th>
                           <th style="display:none;">Sıra</th>
                           <th style="min-width:200px !important;">Stok Kodu</th>
                           <th>Stok Adı</th>
@@ -285,7 +286,7 @@ if (isset($kart_veri)) {
                         </tr>
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
-
+                          <td><input type="checkbox" name="" id=""></td>
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
@@ -396,7 +397,10 @@ if (isset($kart_veri)) {
                     <tbody>
                         @foreach ($t_kart_veri as $key => $veri)
                         <tr>
-                          <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
+                          <td>
+                            <input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value="">
+                          </td>
+                          <td>@include('components.detayBtn', ['KOD' => $veri->KOD])</td>
                           <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
                           <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                           <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
@@ -497,62 +501,90 @@ if (isset($kart_veri)) {
                       </div>
                     </div>
                     <table class="table table-bordered text-center" id="listeleTable">
-                    <thead>
-                      <th>Kod</th>
-                      <th>Ad</th>
-                      <th>Adet</th>
-                    </thead>
-                    <tfoot>
-                      <th>Kod</th>
-                      <th>Ad</th>
-                      <th>Adet</th>
-                    </tfoot>
-                    <tbody>
-                      @php
-                        $KOD_B = '';
-                        $KOD_E = '';
-
-                        if(isset($_GET['KOD_B'])) { $KOD_B = TRIM($_GET['KOD_B']); }
-                        if(isset($_GET['KOD_E'])) { $KOD_E = TRIM($_GET['KOD_E']); }
-                          
-                        if(isset($_GET['TEDARIKCI_B'])) { $TEDARIKCI_B = TRIM($_GET['TEDARIKCI_B']); }
-                        if(isset($_GET['TEDARIKCI_E'])) { $TEDARIKCI_E = TRIM($_GET['TEDARIKCI_E']); }
-
-                        if(isset($_GET['TARIH_B'])) { $TARIH_B = TRIM($_GET['TARIH_B']); }
-                        if(isset($_GET['TARIH_E'])) { $TARIH_E = TRIM($_GET['TARIH_E']); }
-
-
-                        $sql_sorgu = 'SELECT * FROM '.$ekranTableT.' WHERE 1 = 1';
-
-                        if(Trim($KOD_B) <> '') {
-                            $sql_sorgu .= " AND KOD >= '".$KOD_B."' ";
-                        }
-                        if(Trim($KOD_E) <> '') {
-                            $sql_sorgu .= " AND KOD <= '".$KOD_E."' ";
-                        }
-                        /*
-                        if(Trim($TARIH_B) <> '') {
-                            $sql_sorgu .= " AND KOD >= '".$TARIH_B."' ";
-                        }
-                        if(Trim($TARIH_E) <> '') {
-                            $sql_sorgu .= " AND KOD >= '".$TARIH_E."' ";
-                        }
-                        */
-                        $table = DB::select($sql_sorgu);
-
-                        
-                        foreach ($table as $row) {
-                          @endphp
-                          <tr>
-                            <td>{{ $row->KOD }}</td>
-                            <td>{{ $row->STOK_ADI }}</td>
-                            <td>{{ $row->SF_MIKTAR }}</td>
-                          </tr>
+                        <thead>
+                          <th>Evrak No</th>
+                          <th>Tarih</th>
+                          <th>Fason Üretici Kod</th>
+                          <th>Fason Üretici Ad</th>
+                          <th>Stok Kodu</th>
+                          <th>Stok Adı</th>
+                          <th>Lot No</th>
+                          <th>Seri No</th>
+                          <th>Miktar</th>
+                        </thead>
+                        <tfoot>
+                          <th>Evrak No</th>
+                          <th>Tarih</th>
+                          <th>Fason Üretici Kod</th>
+                          <th>Fason Üretici Ad</th>
+                          <th>Stok Kodu</th>
+                          <th>Stok Adı</th>
+                          <th>Lot No</th>
+                          <th>Seri No</th>
+                          <th>Miktar</th>
+                        </tfoot>
+                        <tbody>
                           @php
-                        }
-                      @endphp
-                    </tbody>
-                    </table>
+                            $KOD_B = '';
+                            $KOD_E = '';
+
+                            if(isset($_GET['KOD_B'])) { $KOD_B = TRIM($_GET['KOD_B']); }
+                            if(isset($_GET['KOD_E'])) { $KOD_E = TRIM($_GET['KOD_E']); }
+                              
+                            if(isset($_GET['TEDARIKCI_B'])) { $TEDARIKCI_B = TRIM($_GET['TEDARIKCI_B']); }
+                            if(isset($_GET['TEDARIKCI_E'])) { $TEDARIKCI_E = TRIM($_GET['TEDARIKCI_E']); }
+
+                            if(isset($_GET['TARIH_B'])) { $TARIH_B = TRIM($_GET['TARIH_B']); }
+                            if(isset($_GET['TARIH_E'])) { $TARIH_E = TRIM($_GET['TARIH_E']); }
+
+
+                            $sql_sorgu = "
+                                SELECT T.*, E.*, C.*
+                                FROM {$ekranTableT} AS T
+                                LEFT JOIN {$ekranTableE} AS E 
+                                    ON T.EVRAKNO = E.EVRAKNO
+                                LEFT JOIN cari00 AS C
+                                    ON E.CARIHESAPCODE = C.KOD
+                                WHERE 1 = 1
+                            ";
+
+
+
+                            if(Trim($KOD_B) <> '') {
+                                $sql_sorgu .= " AND KOD >= '".$KOD_B."' ";
+                            }
+                            if(Trim($KOD_E) <> '') {
+                                $sql_sorgu .= " AND KOD <= '".$KOD_E."' ";
+                            }
+                            /*
+                            if(Trim($TARIH_B) <> '') {
+                                $sql_sorgu .= " AND KOD >= '".$TARIH_B."' ";
+                            }
+                            if(Trim($TARIH_E) <> '') {
+                                $sql_sorgu .= " AND KOD >= '".$TARIH_E."' ";
+                            }
+                            */
+                            $table = DB::select($sql_sorgu);
+
+                            
+                            foreach ($table as $row) {
+                              @endphp
+                              <tr>
+                                <td>{{ $row->EVRAKNO }}</td>
+                                <td>{{ $row->TARIH }}</td>
+                                <td>{{ $row->CARIHESAPCODE }}</td>
+                                <td>{{ $row->AD }}</td>
+                                <td>{{ $row->KOD }}</td>
+                                <td>{{ $row->STOK_ADI }}</td>
+                                <td>{{ $row->LOTNUMBER }}</td>
+                                <td>{{ $row->SERINO }}</td>
+                                <td>{{ $row->SF_MIKTAR }}</td>
+                              </tr>
+                              @php
+                            }
+                          @endphp
+                        </tbody>
+                      </table>
                     @endif
                 </div>
                 
@@ -947,10 +979,11 @@ if (isset($kart_veri)) {
                         ->max('TRNUM');
                       @endphp
                       <div class="row" style="overflow: auto">
-                        <table id="fasonSelectt" class="table table-striped text-center" data-page-length="10">
+                        <table id="fasonSelectt" class="table table-striped text-center overflow-visible" data-page-length="10">
                           <thead>
                             <tr class="bg-primary">
                               <th><input type="checkbox" id="tumunuSec"></th>
+                              <th>#</th>
                               <th style="min-width:100px">Gönderilecek Malzeme Kodu</th>
                               <th style="min-width:100px">Gönderilecek Malzeme Adı</th>
                               <th style="min-width:100px">Miktar</th>
@@ -980,6 +1013,7 @@ if (isset($kart_veri)) {
                               @endphp
                               <tr>
                                 <td><input type="checkbox" class="seciliFason"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $TRNUM }}"></td>
+                                <td>@include('components.detayBtn', ['KOD' => $value->HAMMADDE])</td>
                                 <td><input type="text" class="form-control" name="KOD[]" value="{{ $value->HAMMADDE }}" readonly></td>
                                 <td><input type="text" class="form-control" name="STOK_ADI[]" value="{{ $value->AD }}" readonly></td>
                                 <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $value->MIKTAR }}"></td>
@@ -1018,56 +1052,58 @@ if (isset($kart_veri)) {
         {{-- Fason Seç finish --}}
 </section>
 
+@include('components/detayBtnLib')
+<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 function exportTableToExcel(tableId)
-      {
-        let table = document.getElementById(tableId)
-        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-        XLSX.writeFile(wb, "tablo.xlsx");
-      }
-      function exportTableToWord(tableId)
-      {
-        let table = document.getElementById(tableId).outerHTML;
-        let htmlContent = `<!DOCTYPE html>
-            <html>
-            <head><meta charset='UTF-8'></head>
-            <body>${table}</body>
-            </html>`;
+{
+  let table = document.getElementById(tableId)
+  let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+  XLSX.writeFile(wb, "tablo.xlsx");
+}
+function exportTableToWord(tableId)
+{
+  let table = document.getElementById(tableId).outerHTML;
+  let htmlContent = `<!DOCTYPE html>
+      <html>
+      <head><meta charset='UTF-8'></head>
+      <body>${table}</body>
+      </html>`;
 
-        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "tablo.doc";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+  let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+  let url = URL.createObjectURL(blob);
+  let link = document.createElement("a");
+  link.href = url;
+  link.download = "tablo.doc";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 
-      }
-      function printTable(tableId)
-      {
-        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
-        let newWindow = window.open("", "_blank"); // Yeni pencere aç
-        newWindow.document.write(`
-            <html>
-            <head>
-                <title>Tablo Yazdır</title>
-                <style>
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                </style>
-            </head>
-            <body>
-                ${table}
-                <script>
-                    window.onload = function() { window.print(); window.onafterprint = window.close; };
-                <\/script>
-            </body>
-            </html>
-        `);
-        newWindow.document.close();
-      }
+}
+function printTable(tableId)
+{
+  let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+  let newWindow = window.open("", "_blank"); // Yeni pencere aç
+  newWindow.document.write(`
+      <html>
+      <head>
+          <title>Tablo Yazdır</title>
+          <style>
+              table { width: 100%; border-collapse: collapse; }
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }
+          </style>
+      </head>
+      <body>
+          ${table}
+          <script>
+              window.onload = function() { window.print(); window.onafterprint = window.close; };
+          <\/script>
+      </body>
+      </html>
+  `);
+  newWindow.document.close();
+}
   function addRowHandlers2() {
     var table = document.getElementById("popupSelect2");
     var rows = table.getElementsByTagName("tr");
@@ -1484,6 +1520,7 @@ $(document).ready(function() {
     var htmlCode  = " ";
     htmlCode += " <tr> ";
     htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+    htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
     htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
