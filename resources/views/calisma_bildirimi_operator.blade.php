@@ -504,25 +504,7 @@
                                         <div id="chart2" style="height: 270px;"></div>
                                         <div id="chart3" style="height: 270px;"></div>
                                     </div>
-                                    <!-- Tools Section -->
-                                    <div class="tools-section">
-                                        <div class="row align-items-end">
-                                            <div class="col-md-12">
-                                                <label class="form-label fw-bold">İşlemler</label>
-                                                <div class="action-btn-group flex gap-2 flex-wrap">
-                                                    <button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('veri_table')">
-                                                        <i class="fas fa-file-excel"></i> Excel'e Aktar
-                                                    </button>
-                                                    <button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('veri_table')">
-                                                        <i class="fas fa-file-word"></i> Word'e Aktar
-                                                    </button>
-                                                    <button type="button" class="action-btn h-100 btn btn-primary" onclick="printTable('veri_table')">
-                                                        <i class="fas fa-print"></i> Yazdır
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <!-- Tablo -->
                                     <div class="table-responsive">
                                         <table class="table table-hover" id="veri_table">
@@ -785,6 +767,25 @@
                                         <i class="fa fa-filter" style="color: white"></i> &nbsp;&nbsp;--Süz--
                                     </button>
                                 </div>
+                                <!-- Tools Section -->
+                                    <div class="tools-section">
+                                        <div class="row align-items-end">
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-bold">İşlemler</label>
+                                                <div class="action-btn-group flex gap-2 flex-wrap">
+                                                    <button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('veri_table')">
+                                                        <i class="fas fa-file-excel"></i> Excel'e Aktar
+                                                    </button>
+                                                    <button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('veri_table')">
+                                                        <i class="fas fa-file-word"></i> Word'e Aktar
+                                                    </button>
+                                                    <button type="button" class="action-btn h-100 btn btn-primary" onclick="printTable('veri_table')">
+                                                        <i class="fas fa-print"></i> Yazdır
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </div>
                                 <div class="row mt-3" style="overflow: auto">
                                     @php
                                         if (isset($_GET['SUZ'])) {

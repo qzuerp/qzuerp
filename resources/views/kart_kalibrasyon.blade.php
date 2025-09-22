@@ -23,11 +23,15 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 $evrakno = null;
 
 if(isset($_GET['evrakno'])) {
-$evrakno = $_GET['evrakno'];
+  $evrakno = $_GET['evrakno'];
 }
 
 if(isset($_GET['ID'])) {
   $sonID = $_GET['ID'];
+}
+else
+{
+  $sonID = DB::table($ekranTableE)->min('id');
 }
 
 $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
@@ -331,366 +335,166 @@ if (isset($kart_veri)) {
                     $table = DB::table($database.'SRVKC0')->select('*')->get();
                   @endphp
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
-                  <div class="col-sm-3">
-                      <select name="KOD_B" id="KOD_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($table as $key => $veri) {
-                                  if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                      echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                  }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="KOD_E" id="KOD_E" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($table as $key => $veri) {
-                                  if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                      echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                  }
-                              }
-                          @endphp
-                      </select>
-                  </div> </br></br>
+                  <div class="container-fluid"><!-- container açılış -->
+  <div class="row"><!-- row açılış -->
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_1</label>
-                  <div class="col-sm-3">
-                      <select name="GK_1_B" id="GK_1_B" class="form-control">
-                          @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK1_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_1) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_1_E" id="GK_1_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK1_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_1) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+    <!-- Stok Kodu -->
+    <div class="col-sm-3"><!-- col açılış -->
+      <label for="KOD_B" class="col-form-label">Stok Kodu</label>
+      <select name="KOD_B" id="KOD_B" class="form-control">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($table as $key => $veri) {
+            if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_2</label>
-                  <div class="col-sm-3">
-                      <select name="GK_2_B" id="GK_2_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK2_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_2) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_2_E" id="GK_2_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK2_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_2) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+      <select name="KOD_E" id="KOD_E" class="form-control mt-2">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($table as $key => $veri) {
+            if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
+    </div><!-- col kapanış -->
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_3</label>
-                  <div class="col-sm-3">
-                      <select name="GK_3_B" id="GK_3_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK3_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_3) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_3_E" id="GK_3_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK3_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_3) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div> </br></br>
+    <!-- GK_1 -->
+    <div class="col-sm-3"><!-- col açılış -->
+      <label for="GK_1_B" class="col-form-label">GK_1</label>
+      <select name="GK_1_B" id="GK_1_B" class="form-control">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK1_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_1) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_4</label>
-                  <div class="col-sm-3">
-                      <select name="GK_4_B" id="GK_4_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                         echo "<option value =' ' selected> </option>";
-                              foreach ($GK4_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_4) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_4_E" id="GK_4_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK4_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_4) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+      <select name="GK_1_E" id="GK_1_E" class="form-control mt-2">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK1_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_1) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
+    </div><!-- col kapanış -->
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_5</label>
-                  <div class="col-sm-3">
-                      <select name="GK_5_B" id="GK_5_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK5_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_5) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_5_E" id="GK_5_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK5_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_5) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+    <!-- GK_2 -->
+    <div class="col-sm-3"><!-- col açılış -->
+      <label for="GK_2_B" class="col-form-label">GK_2</label>
+      <select name="GK_2_B" id="GK_2_B" class="form-control">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK2_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_2) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_6</label>
-                  <div class="col-sm-3">
-                      <select name="GK_6_B" id="GK_6_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK6_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_6) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_6_E" id="GK_6_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK6_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_6) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }                               
-                              @endphp
-                      </select>
-                  </div></br></br>
+      <select name="GK_2_E" id="GK_2_E" class="form-control mt-2">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK2_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_2) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
+    </div><!-- col kapanış -->
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_7</label>
-                  <div class="col-sm-3">
-                      <select name="GK_7_B" id="GK_7_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK7_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_7) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_7_E" id="GK_7_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK7_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_7) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+    <!-- GK_3 -->
+    <div class="col-sm-3"><!-- col açılış -->
+      <label for="GK_3_B" class="col-form-label">GK_3</label>
+      <select name="GK_3_B" id="GK_3_B" class="form-control">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK3_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_3) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_8</label>
-                  <div class="col-sm-3">
-                      <select name="GK_8_B" id="GK_8_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK8_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_8) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_8_E" id="GK_8_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK8_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_8) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+      <select name="GK_3_E" id="GK_3_E" class="form-control mt-2">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK3_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_3) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
+    </div><!-- col kapanış -->
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_9</label>
-                  <div class="col-sm-3">
-                      <select name="GK_9_B" id="GK_9_B" class="form-control">
-                          @php
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK9_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_9) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              
-                         }  
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                      <select name="GK_9_E" id="GK_9_E" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK9_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_9) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div></br></br>
+    <!-- GK_4 -->
+    <div class="col-sm-3"><!-- col açılış -->
+      <label for="GK_4_B" class="col-form-label">GK_4</label>
+      <select name="GK_4_B" id="GK_4_B" class="form-control">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK4_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_4) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">GK_10</label>
-                  <div class="col-sm-3">
-                      <select name="GK_10_B" id="GK_10_B" class="form-control">
-                          @php
-                          
-                          echo "<option value =' ' selected> </option>";
-                              foreach ($GK10_veri as $key => $veri) {
-                                 if ($veri->KOD == @$kart_veri->GK_10) {
-                                   echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                                 else {
-                                   echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                                 }
-                              }
-                          @endphp
-                      </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="GK_10_E" id="GK_10_E" class="form-control">
-                      @php                            
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($GK10_veri as $key => $veri) {
-                          if ($veri->KOD == @$kart_veri->GK_10) {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div>
+      <select name="GK_4_E" id="GK_4_E" class="form-control mt-2">
+        @php
+          echo "<option value =' ' selected> </option>";
+          foreach ($GK3_veri as $key => $veri) {
+            if ($veri->KOD == @$kart_veri->GK_3) {
+              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+            } else {
+              echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+            }
+          }
+        @endphp
+      </select>
+    </div><!-- col kapanış -->
+
+  </div><!-- row kapanış --> 
+  
+
+</div><!-- container kapanış -->
+<br>
+                   
+
                   <div class="col-sm-3">
                     <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
-                  </div><br><br><br>
+                  </div>
+                  
 
                   <div class="row " style="overflow: auto">
 
@@ -708,12 +512,7 @@ if (isset($kart_veri)) {
                           <th>GK_2</th>
                           <th>GK_3</th>
                           <th>GK_4</th>
-                          <th>GK_5</th>
-                          <th>GK_6</th>
-                          <th>GK_7</th>
-                          <th>GK_8</th>
-                          <th>GK_9</th>
-                          <th>GK_10</th>
+                          <th>Bir Sonraki Kalibrasyon Tarihi</th>
                           <th>#</th>
                         </tr>
                       </thead>
@@ -726,12 +525,7 @@ if (isset($kart_veri)) {
                           <th>GK_2</th>
                           <th>GK_3</th>
                           <th>GK_4</th>
-                          <th>GK_5</th>
-                          <th>GK_6</th>
-                          <th>GK_7</th>
-                          <th>GK_8</th>
-                          <th>GK_9</th>
-                          <th>GK_10</th>
+                          <th>Bir Sonraki Kalibrasyon Tarihi</th>
                           <th>#</th>
                         </tr>
                       </tfoot>
@@ -856,9 +650,11 @@ if (isset($kart_veri)) {
                           }
                           
                           $table = DB::select($sql_sorgu);
-                          
+                          \Carbon\Carbon::setLocale('tr');
                           foreach ($table as $table) {
-
+                            $hedefTarih = \Carbon\Carbon::parse($table->BIRSONRAKIKALIBRASYONTARIHI);
+                            $bugun = now();
+                            $kalanGun = $bugun->diffInDays($hedefTarih, false); 
                             echo "<tr>";
                             echo "<td><b>".$table->KOD."</b></td>";
                             echo "<td><b>".$table->AD."</b></td>";
@@ -866,12 +662,7 @@ if (isset($kart_veri)) {
                             echo "<td><b>".$table->GK_2."</b></td>";
                             echo "<td><b>".$table->GK_3."</b></td>";
                             echo "<td><b>".$table->GK_4."</b></td>";
-                            echo "<td><b>".$table->GK_5."</b></td>";
-                            echo "<td><b>".$table->GK_6."</b></td>";
-                            echo "<td><b>".$table->GK_7."</b></td>";
-                            echo "<td><b>".$table->GK_8."</b></td>";
-                            echo "<td><b>".$table->GK_9."</b></td>";
-                            echo "<td><b>".$table->GK_10."</b></td>";
+                            echo "<td><b>".$kalanGun." gün kaldı</b></td>";
                             
                             echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                             echo "</tr>";

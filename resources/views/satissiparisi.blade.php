@@ -511,7 +511,11 @@
                     <button type="submit" class="btn btn-success" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style="color: white"></i>&nbsp;&nbsp;--Süz--</button>        
                   </div>
                   <br><br><br>
-                      
+                      <div class="mt-3">
+                      <button class="btn btn-success" onclick="exportTableToExcel('example2', 'tablo_excel')">Excel'e Aktar</button>
+                      <button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
+                      <button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+                    </div>
                   <div class="row " style="overflow: auto">
 
                     @php
@@ -615,11 +619,7 @@
                       </tbody>
 
                     </table>
-                    <div class="mt-3">
-                      <button class="btn btn-success" onclick="exportTableToExcel('example2', 'tablo_excel')">Excel'e Aktar</button>
-                      <button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
-                      <button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
-                    </div>
+                    
                     @php
                       }
                     @endphp

@@ -202,7 +202,7 @@
 
     @yield('content') 
 
-  <script>
+<script>
     var evrakDegisti = false;
     var originalValues = {};
     var elementCounter = 0;
@@ -213,6 +213,15 @@
       trackAllTables();
       
       observeNewElements();
+      
+      // window.addEventListener('beforeunload', function (e) {
+      //   if (evrakDegisti) {
+      //     console.log('⚠️ Sayfa kapatılmaya çalışılıyor, evrak değişikliği tespit edildi');
+      //     e.preventDefault();
+      //     e.returnValue = 'Evrakta kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';
+      //     return e.returnValue;
+      //   }
+      // });
       
       $(document).on('click', '[data-evrak-kontrol]', function (e) {
 
@@ -265,15 +274,17 @@
     }
 
     function trackAllTables() {
-      $('table').each(function (index, element) {
-        trackTable($(element));
-      });
+      // Sadece veriTable'ı takip et
+      var $veriTable = $('#veriTable');
+      if ($veriTable.length > 0) {
+        trackTable($veriTable);
+      }
     }
 
     function trackTable($table) {
+      
       if ($table.attr('data-table-tracked')) return;
       
-      // Skip tablosunu atla
       if (shouldSkipTable($table)) {
         return;
       }
@@ -285,6 +296,7 @@
       
       // Başlangıç satır sayısını kaydet
       originalTableRowCounts[uniqueKey] = getTableRowCount($table);
+      
     }
 
     function shouldSkipTable($table) {
@@ -329,22 +341,26 @@
     }
 
     function checkTableChanges() {
-      var anyTableChanged = false;
+      // Sadece veriTable'ı kontrol et
+      var $veriTable = $('#veriTable');
+      if ($veriTable.length === 0) {
+        return;
+      }
       
-      $('[data-table-tracked]').each(function() {
-        var $table = $('#veriTable');
-        var uniqueKey = $table.attr('data-table-unique-key');
-        var currentRowCount = getTableRowCount($table);
-        var originalRowCount = originalTableRowCounts[uniqueKey];
+      // veriTable takip ediliyor mu kontrol et
+      if (!$veriTable.attr('data-table-tracked')) {
+        return;
+      }
+      
+      var uniqueKey = $veriTable.attr('data-table-unique-key');
+      var currentRowCount = getTableRowCount($veriTable);
+      var originalRowCount = originalTableRowCounts[uniqueKey];
+      
+      if (currentRowCount !== originalRowCount) {
         
-        if (currentRowCount !== originalRowCount) {
-          anyTableChanged = true;
-          return false;
+        if (!evrakDegisti) {
+          evrakDegisti = true;
         }
-      });
-      
-      if (anyTableChanged && !evrakDegisti) {
-        evrakDegisti = true;
       }
     }
 
@@ -448,8 +464,11 @@
         hasChanged = String(currentValue) !== String(originalValue);
       }
       
-      if (hasChanged && !evrakDegisti) {
-        evrakDegisti = true;
+      if (hasChanged) {
+        
+        if (!evrakDegisti) {
+          evrakDegisti = true;
+        }
       }
       
       checkAllElements();
@@ -498,8 +517,9 @@
               
               var newTables = $node.find('table').addBack().filter('table');
               newTables.each(function() {
-                var $table = $('#veriTable');
-                if (!$table.attr('data-table-tracked')) {
+                var $table = $(this);
+                // Sadece veriTable'ı takip et
+                if ($table.attr('id') === 'veriTable' && !$table.attr('data-table-tracked')) {
                   trackTable($table);
                 }
               });
@@ -534,7 +554,7 @@
       });
       
       $('[data-table-tracked]').each(function() {
-        var $table = $('#veriTable');
+        var $table = $(this); // $('#veriTable') yerine $(this) kullan
         var uniqueKey = $table.attr('data-table-unique-key');
         originalTableRowCounts[uniqueKey] = getTableRowCount($table);
       });
@@ -562,16 +582,15 @@
         var uniqueKey = $element.attr('data-unique-key');
         var currentValue = getElementValue($element);
         var originalValue = originalValues[uniqueKey];
-        console.log('Element:', uniqueKey, 'Current:', currentValue, 'Original:', originalValue);
       });
       
-      $('[data-table-tracked]').each(function() {
-        var $table = $('#veriTable');
-        var uniqueKey = $table.attr('data-table-unique-key');
-        var currentRowCount = getTableRowCount($table);
+      // Sadece veriTable'ı göster
+      var $veriTable = $('#veriTable');
+      if ($veriTable.length > 0 && $veriTable.attr('data-table-tracked')) {
+        var uniqueKey = $veriTable.attr('data-table-unique-key');
+        var currentRowCount = getTableRowCount($veriTable);
         var originalRowCount = originalTableRowCounts[uniqueKey];
-        console.log('Table:', uniqueKey, 'Current rows:', currentRowCount, 'Original rows:', originalRowCount);
-      });
+      }
     }
 
     function manualTableCheck() {

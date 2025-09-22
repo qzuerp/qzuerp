@@ -243,7 +243,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="box box-warning">
-									<div class="box-header with-border gradient-orange">
+									<div class="box-header with-border navbar-gradient-vice-versa">
 										<center><h4 class="m-0" style="color: white;"><b>PERSONEL</b></h4></center>
 									</div>
 									<!-- /.box-header -->
@@ -269,7 +269,7 @@
 							<div class="col-lg-9">
 								<div class="row">
 									<div class="box box-warning">
-										<div class="box-header with-border gradient-orange">
+										<div class="box-header with-border navbar-gradient-vice-versa">
 											<center>
 												<h4 class="m-0">
 													<b style="color: white;">DOSYA</b>

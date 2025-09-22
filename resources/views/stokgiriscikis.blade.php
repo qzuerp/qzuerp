@@ -517,7 +517,7 @@
                       <thead>
                         <tr class="bg-primary">
                           <th>Evrak No</th>
-                          <td>Stok Kodu</th>
+                          <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Giren Miktar</th>
                           <th>Çıkan Miktar</th>
