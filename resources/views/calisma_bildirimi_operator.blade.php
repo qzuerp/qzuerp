@@ -322,6 +322,10 @@
                                     margin-bottom: 1rem;
                                 }
                                 .date-time-input {
+                                    height: 45px !important;
+                                    padding-top: 6px;   /* opsiyonel, içeriğin ortalanması için */
+                                    padding-bottom: 6px; /* opsiyonel */
+                                    font-size: 14px;      /* opsiyonel, metin boyutu ayarlamak için */
                                     padding: 0.5rem;
                                     border-radius: var(--border-radius);
                                     border: 1px solid #ddd;
@@ -395,7 +399,7 @@
                                                         </button>
                                                         <div class="row g-2 mt-2">
                                                             <div class="col">
-                                                                <input type="date" class="form-control date-time-input text-center" id="RECTARIH1" placeholder="Tarih">
+                                                                <input type="date" class="form-control date-time-input text-center" id="RECTARIH1" style="height: 45px !important;" placeholder="Tarih">
                                                             </div>
                                                             <div class="col">
                                                                 <input type="time" class="form-control date-time-input text-center" id="RECTIME1" placeholder="Saat">
@@ -417,7 +421,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> 
+                                        
+  
                                         <!-- Üretim Kolonu -->
                                         <div class="col" id="uretim">
                                             <div class="card h-100 shadow-sm rounded-3">
@@ -429,7 +435,7 @@
                                                         </button>
                                                         <div class="row g-2 mt-2">
                                                             <div class="col">
-                                                                <input type="date" class="form-control text-center date-time-input" id="RECTARIH2" placeholder="Tarih">
+                                                                <input type="date" class="form-control h100 text-center date-time-input" id="RECTARIH2" placeholder="Tarih">
                                                             </div>
                                                             <div class="col">
                                                                 <input type="time" class="form-control text-center date-time-input" id="RECTIME2" placeholder="Saat">

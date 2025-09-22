@@ -327,12 +327,11 @@
     <div class="form-side">
       <div class="form-header">
         <h2>Giriş Yap</h2>
-        <p>Hesabına erişmek için bilgilerini gir aga!</p>
+        <p>Hesabına erişmek için bilgilerini gir!</p>
       </div>
 
       <form method="POST" action="{{ route('login') }}" id="loginForm">
         @csrf
-
         <div class="input-group">
           <label for="email">E-posta Adresi</label>
           <div class="input-wrapper">
@@ -340,7 +339,7 @@
             <i class="left-icon fas fa-envelope"></i>
           </div>
           @error('email')
-            <div class="error-message">Hatalı e-posta adresi girdin!</div>
+            <div class="error-message">{{ $message }}</div>
           @enderror
         </div>
 
@@ -352,7 +351,7 @@
             <i class="right-icon fas fa-eye-slash" id="togglePassword"></i>
           </div>
           @error('password')
-            <div class="error-message">Şifre yanlış aga!</div>
+            <div class="error-message">Şifre yanlış</div>
           @enderror
         </div>
 

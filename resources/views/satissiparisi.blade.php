@@ -202,8 +202,8 @@
                           <th>İşlem Mik.</th>
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
-                          <th>Fiyat</th>
-                          <th style="min-width: 120px;">Para Birimi</th>
+                          <!-- <th>Fiyat</th>
+                          <th style="min-width: 120px;">Para Birimi</th> -->
                           <th>Üretilen Miktar</th>
                           <th>Net Kapanan Miktar</th>
                           <!-- <th>Süre (dk)</th> -->
@@ -260,7 +260,7 @@
                           <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="number" name="SF_BAKIYE" id="SF_BAKIYE_SHOW" onchange="hesapla()" class="form-control" disabled>
                           </td>
-                          <td style="min-width: 150px">
+                          <!-- <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="number" name="FIYAT" data-name="FIYAT" id="FIYAT_SHOW"  class="form-control">
                           </td>
                           <td>
@@ -273,7 +273,7 @@
                                 }
                               @endphp
                             </select>
-                          </td>
+                          </td> -->
                           <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="number" data-name="SF_NETKAPANANMIK" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" class="form-control" disabled>
                           </td> 
@@ -335,7 +335,7 @@
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $t_veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $t_veri->SF_SF_UNIT }}"></td>
 
                             <td><input type="number" class="form-control" name="SF_BAKIYE_SHOW_T" value="{{ floor($t_veri->SF_MIKTAR - $t_veri->SF_NETKAPANANMIK) }}" disabled></td>
-                            <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $t_veri->FIYAT }}"></td>
+                            <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $t_veri->FIYAT }}"></td>
                             <td>
                               <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%;">
                                 <option value="">Seç</option>
@@ -349,7 +349,7 @@
                                   }
                                 @endphp
                               </select>
-                              </td>
+                            </td> -->
                               <td><input type="number" class="form-control" name="URETILEN_MIKTARI" value="{{ floor($t_veri->URETILEN_MIKTARI) }}" readonly></td>
                               <td><input type="number" class="form-control" name="SF_NETKAPANANMIK" value="{{ floor($t_veri->SF_NETKAPANANMIK) }}" readonly></td>
                             
@@ -982,8 +982,8 @@
             htmlCode += "<td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "' disabled>";
             htmlCode += "<input type='hidden' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "'></td>";
             htmlCode += "<td><input type='text' class='form-control' name='SF_BAKIYE_SHOW[]' value='" + satirEkleInputs.BAKIYE_FILL + "' disabled></td>";
-            htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
-            htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
+            // htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
+            // htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
             htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readonly></td> ";
             htmlCode += " <td><input type='number' class='form-control' name='URETILEN_MIKTARI[]' value='"+satirEkleInputs.URETILEN_MIKTARI_SHOW+"' readonly></td> ";
             htmlCode += " <td><input type='date' class='form-control' name='TERMIN_TAR[]' value='"+satirEkleInputs.TERMIN_TAR_FILL+"'></td> ";

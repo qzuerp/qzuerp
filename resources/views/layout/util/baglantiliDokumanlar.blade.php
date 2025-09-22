@@ -18,7 +18,7 @@
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-2">
-          <select id="dosyaTuruKodu" name="dosyaTuruKodu" class="form-select select2">
+          <select id="dosyaTuruKodu" data-skip-tracking="true" name="dosyaTuruKodu" class="form-select select2">
             <option value="">Seç</option>
             @foreach ($dosyaTuruKodlari as $veri)
               <option value="{{ $veri->KOD }}">{{ $veri->KOD }} - {{ $veri->AD }}</option>
@@ -26,15 +26,15 @@
           </select>
         </div>
         <div class="col-md-3">
-          <input type="text" maxlength="255" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
-          <input type="hidden" id="dosyaEvrakType" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
-          <input type="hidden" id="dosyaEvrakNo" name="dosyaEvrakNo" value="{{ $dosyaEvrakNo }}">
+          <input type="text" maxlength="255" data-skip-tracking="true" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
+          <input type="hidden" id="dosyaEvrakType" data-skip-tracking="true" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
+          <input type="hidden" id="dosyaEvrakNo" data-skip-tracking="true" name="dosyaEvrakNo" value="{{ $dosyaEvrakNo }}">
         </div>
         <div class="col-md-3">
-          <input type="file" class="form-control" id="dosyaFile" name="dosyaFile">
+          <input type="file" class="form-control" data-skip-tracking="true" id="dosyaFile" name="dosyaFile">
         </div>
         <div class="col-md-2">
-          <input type="text" class="form-control bg-light" value="{{ $firma }}" disabled>
+          <input type="text" class="form-control bg-light" data-skip-tracking="true" value="{{ $firma }}" disabled>
           <input type="hidden" id="dosya_firma" value="{{ $firma }}">
         </div>
         <div class="col-md-2 text-end">

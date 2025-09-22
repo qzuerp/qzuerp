@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+    @extends('layout.mainlayout')
 
 @php
     if (Auth::check()) {
@@ -162,7 +162,7 @@
                             <div class="box-body">
                                 <!-- <hr> -->
                                 <div class="row ">
-                                    <div class="col-md-4 col-xs-4">
+                                    <div class="col-md-2 col-xs-2">
                                         <select id="evrakSec" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value, '{{ $ekranLink }}')" >
                                             @php
                                             $evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
@@ -186,7 +186,7 @@
                                     <div class="col-md-2 col-xs-2">
                                         <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma }}">
                                     </div>
-                                    <div>
+                                <div class="col-5">
                                         @include('layout.util.evrakIslemleri')
                                     </div>
                                 </div>
