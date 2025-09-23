@@ -228,7 +228,7 @@
                           </td>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                              <select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                              <select class="form-control select2 txt-radius KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
                                 <option value=" " >Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
@@ -251,7 +251,7 @@
                           </td>
                          
                           <td style="min-width: 150px">
-                            <input class="SF_MIKTAR_FILL form-control" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                            <input class="SF_MIKTAR_FILL form-control SF_MIKTAR" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>

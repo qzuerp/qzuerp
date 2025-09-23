@@ -49,6 +49,7 @@ use App\Http\Controllers\Issiralama;
 use App\Http\Controllers\RaporlamaController;
 use App\Http\Controllers\deneme1;
 use App\Http\Controllers\uretim_gazetesi;
+use App\Http\Controllers\tmustr_controller;
 
 
 use Illuminate\Http\Request;
@@ -206,6 +207,11 @@ Auth::routes(['password.request' => false]);
   Route::get('/kart_stokk',[stok00_controller::class,'getstok00']);
 
   Route::group(['middleware' => ['auth']], function() {
+
+  Route::get('zorunlu_alan',[tmustr_controller::class,'index'])->name('zorunlu_alan');
+  Route::get('/tmustr/alanlar/{tablo}', [tmustr_controller::class, 'getAlanlar']);
+  Route::post('/tmustr_islemler', [tmustr_controller::class, 'islemler']);
+
 
   Route::get('is_siralama',[Issiralama::class,'index'])->name('is_siralama');
   Route::get('kart_cari',[cari00_controller::class,'index'])->name('kart_cari');

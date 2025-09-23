@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-2">
           <input type="text" class="form-control bg-light" data-skip-tracking="true" value="{{ $firma }}" disabled>
-          <input type="hidden" id="dosya_firma" value="{{ $firma }}">
+          <input type="hidden" id="dosya_firma" data-skip-tracking="true" value="{{ $firma }}">
         </div>
         <div class="col-md-2 text-end">
           <button type="button" class="btn btn-success w-100" id="dosyaYukle">Dosya Yükle</button>

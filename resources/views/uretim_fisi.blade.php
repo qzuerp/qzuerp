@@ -207,79 +207,78 @@ if (isset($kart_veri)) {
     </div>
   </div>
 
+  <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz3" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
 
-    <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz3" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <table id="popupSelect" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+              <thead>
+                <tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
+                  <th>Mps Evrak No</th>
+                  <th>Stok Kodu</th>
+                  <th>Stok Adı</th>
+                  <th>Sipariş No</th>
+                  <th>Sipariş Satır No</th>
+                  <th>Üretim Teslim Tarihi</th>
+                  <th>Toplam Miktar</th>
+                  <th>Tamamlanan Miktar</th>
+                </tr>
+              </thead>
 
-          <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <table id="popupSelect" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
-                <thead>
-                  <tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
-                    <th>Mps Evrak No</th>
-                    <th>Stok Kodu</th>
-                    <th>Stok Adı</th>
-                    <th>Sipariş No</th>
-                    <th>Sipariş Satır No</th>
-                    <th>Üretim Teslim Tarihi</th>
-                    <th>Toplam Miktar</th>
-                    <th>Tamamlanan Miktar</th>
-                  </tr>
-                </thead>
+              <tfoot>
+                <tr class="bg-info">
+                  <th>Mps Evrak No</th>
+                  <th>Stok Kodu</th>
+                  <th>Stok Adı</th>
+                  <th>Sipariş No</th>
+                  <th>Sipariş Satır No</th>
+                  <th>Üretim Teslim Tarihi</th>
+                  <th>Toplam Miktar</th>
+                  <th>Tamamlanan Miktar</th>
+                </tr>
+              </tfoot>
 
-                <tfoot>
-                  <tr class="bg-info">
-                    <th>Mps Evrak No</th>
-                    <th>Stok Kodu</th>
-                    <th>Stok Adı</th>
-                    <th>Sipariş No</th>
-                    <th>Sipariş Satır No</th>
-                    <th>Üretim Teslim Tarihi</th>
-                    <th>Toplam Miktar</th>
-                    <th>Tamamlanan Miktar</th>
-                  </tr>
-                </tfoot>
+              <tbody>
 
-                <tbody>
+                @php
 
-                  @php
-
-                  $evraklar3=DB::table($database.'mmps10e')
-                  ->orderBy("id","desc")
-                  ->get();
-                  
-                  foreach ($evraklar3 as $key => $suzVeri) {
-                    @endphp
-                    <tr>
-                      <td>{{$suzVeri->EVRAKNO}}</td>
-                      <td>{{$suzVeri->MAMULSTOKKODU}}</td>
-                      <td>{{$suzVeri->MAMULSTOKADI}}</td>
-                      <td>{{$suzVeri->SIPNO}}</td>
-                      <td>{{$suzVeri->SIPARTNO}}</td>
-                      <td>{{$suzVeri->URETIMDENTESTARIH}}</td>
-                      <td>{{$suzVeri->SF_TOPLAMMIKTAR}}</td>
-                      <td>{{$suzVeri->TAMAMLANAN_URETIM_FISI_MIKTARI}}</td>
-                    </tr>
-                    @php
-                  }
-
+                $evraklar3=DB::table($database.'mmps10e')
+                ->orderBy("id","desc")
+                ->get();
+                
+                foreach ($evraklar3 as $key => $suzVeri) {
                   @endphp
+                  <tr>
+                    <td>{{$suzVeri->EVRAKNO}}</td>
+                    <td>{{$suzVeri->MAMULSTOKKODU}}</td>
+                    <td>{{$suzVeri->MAMULSTOKADI}}</td>
+                    <td>{{$suzVeri->SIPNO}}</td>
+                    <td>{{$suzVeri->SIPARTNO}}</td>
+                    <td>{{$suzVeri->URETIMDENTESTARIH}}</td>
+                    <td>{{$suzVeri->SF_TOPLAMMIKTAR}}</td>
+                    <td>{{$suzVeri->TAMAMLANAN_URETIM_FISI_MIKTARI}}</td>
+                  </tr>
+                  @php
+                }
 
-                </tbody>
+                @endphp
 
-              </table>
-            </div>
+              </tbody>
+
+            </table>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
         </div>
       </div>
     </div>
+  </div>
 
   @include('layout.util.evrakContentHeader')
   @include('layout.util.logModal',['EVRAKTYPE' => 'STOK20', 'EVRAKNO' => @$kart_veri->EVRAKNO])

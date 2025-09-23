@@ -495,13 +495,29 @@ if (isset($kart_veri)) {
                     <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
                   </div>
                   
-
+                  
                   <div class="row " style="overflow: auto">
 
                     @php
                       if(isset($_GET['SUZ'])) {
                     @endphp
-
+                      
+                    <div class="row align-items-end">
+                      <div class="col-md-12">
+                        <label class="form-label fw-bold">İşlemler</label>
+                        <div class="action-btn-group flex gap-2 flex-wrap">
+                          <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('example2')">
+                            <i class="fas fa-file-excel"></i> Excel'e Aktar
+                          </button>
+                          <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('example2')">
+                            <i class="fas fa-file-word"></i> Word'e Aktar
+                          </button>
+                          <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('example2')">
+                            <i class="fas fa-print"></i> Yazdır
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
                     <table id="example2" class="table table-striped text-center" data-page-length="10">
                       <thead>
@@ -662,7 +678,7 @@ if (isset($kart_veri)) {
                             echo "<td><b>".$table->GK_2."</b></td>";
                             echo "<td><b>".$table->GK_3."</b></td>";
                             echo "<td><b>".$table->GK_4."</b></td>";
-                            echo "<td><b>".$kalanGun." gün kaldı</b></td>";
+                            echo "<td><b>".$kalanGun."</b></td>";
                             
                             echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                             echo "</tr>";
@@ -856,6 +872,7 @@ if (isset($kart_veri)) {
 
 
 <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 
   $(document).ready(function() {
@@ -899,6 +916,55 @@ if (isset($kart_veri)) {
 
   function ozelInput() {
     $('#KOD_ALANI').removeAttr('readonly');
+  }
+
+  function exportTableToExcel(tableId)
+  {
+    let table = document.getElementById(tableId)
+    let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+    XLSX.writeFile(wb, "tablo.xlsx");
+  }
+  function exportTableToWord(tableId)
+  {
+    let table = document.getElementById(tableId).outerHTML;
+    let htmlContent = `<!DOCTYPE html>
+        <html>
+        <head><meta charset='UTF-8'></head>
+        <body>${table}</body>
+        </html>`;
+
+    let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement("a");
+    link.href = url;
+    link.download = "tablo.doc";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  }
+  function printTable(tableId)
+  {
+    let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+    let newWindow = window.open("", "_blank"); // Yeni pencere aç
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>Tablo Yazdır</title>
+            <style>
+                table { width: 100%; border-collapse: collapse; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            </style>
+        </head>
+        <body>
+            ${table}
+            <script>
+                window.onload = function() { window.print(); window.onafterprint = window.close; };
+            <\/script>
+        </body>
+        </html>
+    `);
+    newWindow.document.close();
   }
 </script>
 

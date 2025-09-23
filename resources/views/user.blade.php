@@ -506,6 +506,12 @@
                                     <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="SSF" @php if(in_array('SSF', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
                                     <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="SSF" @php if(in_array('SSF', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
                                   </tr>
+                                  <tr>
+                                    <td>Zorunlu Alan Paneli</td>
+                                    <td><input type="checkbox" class="yetki_read"   id="DYS_read" name="yetki_read[]" value="TMUSTR" @php if(in_array('TMUSTR', $kullanici_read_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_write"  id="DYS_write" name="yetki_write[]" value="TMUSTR" @php if(in_array('TMUSTR', $kullanici_write_yetkileri)) echo " checked" @endphp></td>
+                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]" value="TMUSTR" @php if(in_array('TMUSTR', $kullanici_delete_yetkileri)) echo " checked" @endphp></td>
+                                  </tr>
                                 </tbody>
                               </table>
 
