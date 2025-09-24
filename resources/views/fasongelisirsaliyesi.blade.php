@@ -112,7 +112,7 @@
                     <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2"><i class="fa fa-filter" style="color: white;"></i></a>
                   </div>
                   <div class="col-md-2 col-xs-2">
-                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                   </div>
 
                   <div class="col-md-6 col-xs-6">
@@ -126,12 +126,12 @@
       
                     <div class="col-md-3 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH_E" required="" value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control" name="TARIH" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Alan Depo</label>
-                      <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="IMALATAMBCODE_E" id="IMALATAMBCODE_E" >
+                      <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="IMALATAMBCODE_E" id="IMALATAMBCODE_E" >
                         <option value="" selected>Seç</option>
                         @php
                           foreach ($depo_evraklar as $key => $veri) {
@@ -149,7 +149,7 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Fason Depo</label>
-                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
+                      <select onchange="fasonSuz()" class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
                         <option value="" selected>Seç</option>
                         @php
                           foreach ($depo_evraklar as $key => $veri) {

@@ -110,7 +110,7 @@ if (isset($kart_veri)) {
 										 
 				</div>
         <div class="col-md-2 col-xs-2">
-          <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+          <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
         </div>
       <div class="col-md-6 col-xs-6">
 				@include('layout.util.evrakIslemleri')
@@ -120,16 +120,16 @@ if (isset($kart_veri)) {
 <div class="row ">
   <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Tezgah Kodu / Cihaz Kodu</label>
-   <input type="text" class="form-control" name="KOD" id="KOD_ALANI" readonly maxlength="24" required="" value="{{ @$kart_veri->KOD }}">
+   <input type="text" class="form-control" name="KOD" id="KOD_ALANI" readonly maxlength="24"  value="{{ @$kart_veri->KOD }}">
  </div>
 
  <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Tezgah Adı / Cihaz Adı</label>
-   <input type="text" class="form-control" name="AD" id="AD" maxlength="50" required="" value="{{ @$kart_veri->AD }}" >
+   <input type="text" class="form-control" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}" >
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Seri No</label>
-   <input type="text" class="form-control" name="SERINO" id="SERINO" maxlength="40" required="" value="{{ @$kart_veri->SERINO }}" >
+   <input type="text" class="form-control" name="SERINO" id="SERINO" maxlength="40"  value="{{ @$kart_veri->SERINO }}" >
  </div>
  
  <div class="col-md-2 col-sm-1 col-xs-2">
@@ -213,12 +213,12 @@ if (isset($kart_veri)) {
 
         <div class="col-md-4 col-xs-6">
           <label>Model</label>
-          <input type="text" class="form-control" required="" maxlength="24" name="MODEL" id="MODEL" value="{{ @$kart_veri->MODEL }}" >
+          <input type="text" class="form-control"  maxlength="24" name="MODEL" id="MODEL" value="{{ @$kart_veri->MODEL }}" >
           </select>
         </div>
         {{-- <div class="col-md-2 col-sm-4 col-xs-6">
           <label>Kod</label>
-          <input type="text" class="form-control" name="KOD" id="KOD" required="" maxlength="24"  value="{{ @$kart_veri->KOD }}">
+          <input type="text" class="form-control" name="KOD" id="KOD"  maxlength="24"  value="{{ @$kart_veri->KOD }}">
         </div> --}}
 
        <div class="col-md-4 col-xs-6 col-sm-6">

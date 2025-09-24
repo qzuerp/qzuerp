@@ -94,8 +94,8 @@
                     </div>
                     
                     <div class="col-md-2 col-xs-2">
-                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="" required="" value="{{ @$kullanici_veri->firma }}" readonly>
-                      <input type="hidden" class="form-control input-sm" maxlength="16" name="firma" id="" required="" value="{{ @$kullanici_veri->firma }}" readonly>
+                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id=""  value="{{ @$kullanici_veri->firma }}" readonly>
+                      <input type="hidden" class="form-control input-sm" maxlength="16" name="firma" id=""  value="{{ @$kullanici_veri->firma }}" readonly>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       @include('layout.util.evrakIslemleri')
@@ -115,13 +115,13 @@
                 <div class="row">
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Evrak No</label>
-                    <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                    <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                     <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                   </div>
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Sipariş Artıkel No</label>
-                    <select class="form-control select2" required="" length="100 px" name="ARTNO_E" id="ARTNO">
+                    <select class="form-control select2"  length="100 px" name="ARTNO_E" id="ARTNO">
                       @php
                         echo "<option value =' '> </option>";
                         foreach ($siparisno as $key => $veri) {

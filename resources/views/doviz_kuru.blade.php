@@ -268,7 +268,7 @@
         }
 
         .modern-table tbody td {
-            padding: 16px 20px;
+            padding: 0px 2px;
             font-size: 14px;
             color: var(--text-primary);
             vertical-align: middle;
@@ -301,7 +301,7 @@
             position: relative;
             padding: 6px 12px;
             border-radius: 8px;
-            background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+            /* background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%); */
             display: inline-block;
             min-width: 80px;
             text-align: center;

@@ -129,8 +129,8 @@
 									<a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2"><i class="fa fa-filter" style="color: white;"></i></a>
 						</div>
 						<div class="col-md-2">
-						<input type="text" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" readonly>
-						<input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" readonly>
+						<input type="text" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" readonly>
+						<input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" readonly>
 						</div>
 							<div class="col-md-6 col-xs-6">
 								@include('layout.util.evrakIslemleri')
@@ -141,13 +141,13 @@
 						<div class="row ">
 							<div class="col-md-2 col-sm-3 col-xs-6">
 							<label>Fiş No</label>
-							<input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+							<input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
 							<input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
 							</div>
 
 							<div class="col-md-2 col-sm-3 col-xs-6">
 							<label>Tarih</label>
-							<input type="date" class="form-control" name="TARIH" id="TARIH_E" required="" value="{{ @$kart_veri->TARIH }}">
+							<input type="date" class="form-control" name="TARIH" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
 							</div>
 
 							<div class="col-md-2 col-sm-2 col-xs-6">

@@ -95,8 +95,8 @@
 									</div>	
 
 									<div class="col-md-2 col-xs-2">
-										<input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-										<input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+										<input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled>
+										<input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
 									</div>
 
 						      <div class="col-md-6 col-xs-6">
@@ -109,12 +109,12 @@
 									<div class="row">
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Kod</label>
-											<input type="text" class="form-control" name="KOD" id="KOD_ALANI" required="" maxlength="24"  value="{{ @$kart_veri->KOD }}" readonly>
+											<input type="text" class="form-control" name="KOD" id="KOD_ALANI"  maxlength="24"  value="{{ @$kart_veri->KOD }}" readonly>
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Stok Adı</label>
-											<input type="text" class="form-control" maxlength="50" name="AD" id="AD" required="" value="{{ @$kart_veri->AD }}" >
+											<input type="text" class="form-control" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
@@ -124,7 +124,7 @@
 
 										<div class="col-md-1 col-sm-1 col-xs-2">
 											<label>Birimi</label>
-											<select class="form-control  input-sm" style="width: 100%;" name="IUNIT" id="IUNIT" required="">
+											<select class="form-control  input-sm" style="width: 100%;" name="IUNIT" id="IUNIT" >
 												<option value="">Seç...</option>
 												<option value="AD" @if (@$kart_veri->IUNIT == "AD") selected @endif>AD - ADET</option>
 												<option value="F" @if (@$kart_veri->IUNIT == "F") selected @endif>F - FANTOM</option>

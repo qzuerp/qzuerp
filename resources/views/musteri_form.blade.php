@@ -184,7 +184,7 @@
 										 
                                     </div>
                                     <div class="col-md-2 col-xs-2">
-                                        <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma }}">
+                                        <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ $kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ $kullanici_veri->firma }}">
                                     </div>
                                 <div class="col-5">
                                         @include('layout.util.evrakIslemleri')
@@ -239,11 +239,11 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Adres:</strong> <input type="text" class="form-control" name="ADRES" value="{{@$kart_veri->ADRES}}" id="ADRES"></td>
-                                    <td><strong>Çağrı Tarihi:</strong> <input type="date" required="" class="form-control" name="CAGRI_TARIHI" value="{{@$kart_veri->CAGRI_TARIHI}}" id="CAGRI_TARIHI"></td>
+                                    <td><strong>Çağrı Tarihi:</strong> <input type="date"  class="form-control" name="CAGRI_TARIHI" value="{{@$kart_veri->CAGRI_TARIHI}}" id="CAGRI_TARIHI"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Yetkili:</strong> <input type="text" class="form-control" name="YETKILI" value="{{@$kart_veri->YETKILI}}" id="yetkili"></td>
-                                    <td><strong>Çağrıyı Alan:</strong> <input type="text" required="" class="form-control" name="CAGRIYI_ALAN" value="{{@$kart_veri->CAGRIYI_ALAN}}" id="CAGRIYI_ALAN"></td>
+                                    <td><strong>Çağrıyı Alan:</strong> <input type="text"  class="form-control" name="CAGRIYI_ALAN" value="{{@$kart_veri->CAGRIYI_ALAN}}" id="CAGRIYI_ALAN"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tel/Fax:</strong> <input type="text" class="form-control" name="TEL_FAX" value="{{@$kart_veri->TEL_FAX}}" id="TEL_FAX"></td>

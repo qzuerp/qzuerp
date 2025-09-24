@@ -107,8 +107,8 @@
                     </div>
 
                     <div class="col-md-2 col-xs-2">
-                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                      <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled>
+                      <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                       </div>
 
                       <div class="col-md-6 col-xs-6">
@@ -121,18 +121,18 @@
                     <div class="row ">
                       <div class="col-md-2 col-sm-3 col-xs-6">
                         <label>Fiş No</label>
-                        <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                        <input type="text" class="form-control EVRAKNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                         <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                       </div>
 
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Tarih</label>
-                        <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}" >
+                        <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
                       </div>
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Veren Depo</label>
-                        <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE"   style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -152,7 +152,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Alan Depo</label>
-                        <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single TARGETAMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARGETAMBCODE"  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -172,7 +172,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Nitelik</label>
-                        <select class="form-control select2 js-example-basic-single" required="" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
+                        <select class="form-control select2 js-example-basic-single NITELIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
                           <option value=" ">Seç</option>
                           @php
                             $evraklar=DB::table($database .'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
@@ -410,11 +410,11 @@
                               <tr>
                                 <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                                 <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                                <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
-                                <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
-                                <td><input type="text" class="form-control" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
+                                <td><input type="text" class="form-control KOD"  name="KOD_SHOW_T" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
+                                <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
+                                <td><input type="text" class="form-control LOTNUMBER" id='Lot-{{ $veri->id }}-CAM' data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
                                 <td class="d-flex ">
-                                  <input type="text" class="form-control" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
+                                  <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" value="{{ $veri->SERINO }}">
                                   <span class="d-flex -btn">
                                     <button class="btn btn-primary" onclick='veriCek("{{ $veri->KOD }}","{{ $veri->id }}-CAM")' data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4" type="button">
                                       <span class="fa-solid fa-magnifying-glass">
@@ -422,26 +422,26 @@
                                     </button>
                                   </span>
                                 </td>
-                                <td><input type="number" class="form-control" id='miktar-{{ $veri->id }}-CAM' readonly name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
-                                <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->STOK_BIRIM }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->STOK_BIRIM }}"></td>
-                                <td><input type="text" class="form-control" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
-                                <td><input type="text" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
-                                <td><input type="text" class="form-control" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
-                                <td><input type="text" class="form-control" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
-                                <td><input type="text" class="form-control" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
-                                <td><input type="text" class="form-control" name="LOCATION_NEW1_SHOW_T" value="{{ $veri->LOCATION_NEW1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW1[]" value="{{ $veri->LOCATION_NEW1 }}"></td>
-                                <td><input type="text" class="form-control" name="LOCATION_NEW2_SHOW_T" value="{{ $veri->LOCATION_NEW2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW2[]" value="{{ $veri->LOCATION_NEW2 }}"></td>
-                                <td><input type="text" class="form-control" name="LOCATION_NEW3_SHOW_T" value="{{ $veri->LOCATION_NEW3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW3[]" value="{{ $veri->LOCATION_NEW3 }}"></td>
-                                <td><input type="text" class="form-control" name="LOCATION_NEW4_SHOW_T" value="{{ $veri->LOCATION_NEW4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW4[]" value="{{ $veri->LOCATION_NEW4 }}"></td>
-                                <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
-                                <td><input type="text" class="form-control" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-                                <td><input type="text" class="form-control" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-                                <td><input type="text" class="form-control" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-                                <td><input type="text" class="form-control" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-                                <td><input type="number" class="form-control" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
-                                <td><input type="number" class="form-control" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-                                <td><input type="number" class="form-control" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-                                <td><input type="number" class="form-control" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                                <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' readonly name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
+                                <td><input type="text" class="form-control STOK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_BRİM" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->STOK_BIRIM }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->STOK_BIRIM }}"></td>
+                                <td><input type="text" class="form-control AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                                <td><input type="text LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+                                <td><input type="text LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="form-control" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                                <td><input type="text LOCATION3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" class="form-control" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
+                                <td><input type="text LOCATION4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" class="form-control" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
+                                <td><input type="text" class="form-control LOCATION_NEW1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW1" name="LOCATION_NEW1_SHOW_T" value="{{ $veri->LOCATION_NEW1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW1[]" value="{{ $veri->LOCATION_NEW1 }}"></td>
+                                <td><input type="text" class="form-control LOCATION_NEW2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW2" name="LOCATION_NEW2_SHOW_T" value="{{ $veri->LOCATION_NEW2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW2[]" value="{{ $veri->LOCATION_NEW2 }}"></td>
+                                <td><input type="text" class="form-control LOCATION_NEW3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW3" name="LOCATION_NEW3_SHOW_T" value="{{ $veri->LOCATION_NEW3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW3[]" value="{{ $veri->LOCATION_NEW3 }}"></td>
+                                <td><input type="text" class="form-control LOCATION_NEW4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" name="LOCATION_NEW4_SHOW_T" value="{{ $veri->LOCATION_NEW4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW4[]" value="{{ $veri->LOCATION_NEW4 }}"></td>
+                                <td><input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1"  name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                                <td><input type="text" class="form-control TEXT1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
+                                <td><input type="text" class="form-control TEXT2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
+                                <td><input type="text" class="form-control TEXT3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
+                                <td><input type="text" class="form-control TEXT4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
+                                <td><input type="number" class="form-control NUM1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
+                                <td><input type="number" class="form-control NUM2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
+                                <td><input type="number" class="form-control NUM3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
+                                <td><input type="number" class="form-control NUM4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
                                 <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                               </tr>
                             @endforeach

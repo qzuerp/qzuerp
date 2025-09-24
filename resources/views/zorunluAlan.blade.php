@@ -122,10 +122,10 @@
                         </h3>
                         <div class="card-tools">
                             <div class="btn-group" id="alan-tools" style="display: none;">
-                                <button type="button" class="btn btn-sm btn-success" id="select-all">
+                                <button type="button" class="btn  btn-success" id="select-all">
                                     <i class="fas fa-check-square"></i> Tümünü Seç
                                 </button>
-                                <button type="button" class="btn btn-sm btn-warning" id="select-none">
+                                <button type="button" class="btn  btn-warning" id="select-none">
                                     <i class="fas fa-square"></i> Tümünü Temizle
                                 </button>
                             </div>
@@ -170,7 +170,7 @@
         border-radius: 0.25rem;
         padding: 15px;
         background-color: #f8f9fa;
-        user-select: none;
+        /* user-select: none; */
     }
 
     .alan-checkbox-item {
@@ -203,7 +203,7 @@
         margin-bottom: 0;
         cursor: pointer;
         flex: 1;
-        user-select: none;
+        /* user-select: none; */
     }
 
     .form-check {
@@ -321,7 +321,7 @@ function renderAlanlar(alanlar) {
         var isChecked = item.checked ? 'checked' : '';
 
         html += `
-            <label for="alan_${columnName}" class="alan-checkbox-item">
+            <label for="alan_${columnName}" class="alan-checkbox-item ${isChecked ? 'selected' : ''}">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="alanlar[]" 
                            value="${columnName}" id="alan_${columnName}" ${isChecked}>

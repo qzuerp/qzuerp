@@ -102,7 +102,7 @@
 									</div>
 									{{-- Bu alan zorunlu --}}
 									<div class="col-md-2 col-xs-2">
-					                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma; }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ $kullanici_veri->firma; }}">
+					                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ $kullanici_veri->firma; }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ $kullanici_veri->firma; }}">
 					                </div>
 									<div>
 										@include('layout.util.evrakIslemleri')
@@ -111,11 +111,11 @@
 								<div class="row ">
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>MPS Ref No</label>
-										<input type="text" class="form-control input-sm" maxlength="16" name="EVRAKNO" id="EVRAKNO" required="" value="{{ @$kart_veri->EVRAKNO; }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="EVRAKNO" id="EVRAKNO" required="" value="{{ @$kart_veri->EVRAKNO; }}">
+										<input type="text" class="form-control input-sm" maxlength="16" name="EVRAKNO" id="EVRAKNO"  value="{{ @$kart_veri->EVRAKNO; }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="EVRAKNO" id="EVRAKNO"  value="{{ @$kart_veri->EVRAKNO; }}">
 									</div>
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Mamul Kodu</label>
-										<select class="form-control select2 js-example-basic-single" onchange="stokAdiGetir3(this.value)" name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" required="">
+										<select class="form-control select2 js-example-basic-single" onchange="stokAdiGetir3(this.value)" name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" >
 											<option value=" ">Seç</option>
 											@php
 											$stok00_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
@@ -224,7 +224,7 @@
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Miktar</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="SF_PAKETSAYISI" id="SF_PAKETSAYISI" required="" value="{{ @$kart_veri->SF_PAKETSAYISI; }}">
+									<input type="number" class="form-control input-sm" maxlength="50" name="SF_PAKETSAYISI" id="SF_PAKETSAYISI"  value="{{ @$kart_veri->SF_PAKETSAYISI; }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">

@@ -78,7 +78,7 @@
 
                 <div class="row ">
                   <div class="col-md-2 col-xs-2">
-                    <select id="evrakSec" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
+                    <select id="evrakSec" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
                       @php
                       foreach ($sevkirs_evraklar as $key => $veri) {
 
@@ -99,8 +99,8 @@
                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2"><i class="fa fa-filter" style="color: white;"></i></a>
                   </div>
                   <div class="col-md-2 col-xs-2">
-                    <input type="text" class="form-control input-sm" maxlength="16" name="firma_show" id="firma_show" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                    <input type="text" class="form-control input-sm" maxlength="16" name="firma_show" id="firma_show"  value="{{ @$kullanici_veri->firma }}" disabled>
+                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                   </div>
                   <div class="col-md-6 col-xs-6">
                     @include('layout.util.evrakIslemleri')
@@ -112,18 +112,18 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Fiş No</label>
-                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH_E" required="" value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control" name="TARIH" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-4 col-sm-4 col-xs-6">
                       <label>Depo</label>
-                      <select class="form-control select2 js-example-basic-single" style="width:100%;" required=""  name="AMBCODE_E" id="AMBCODE_E" >
+                      <select class="form-control select2 js-example-basic-single" style="width:100%;"   name="AMBCODE_E" id="AMBCODE_E" >
                         <option>Seç</option>
                         @php
                         foreach ($depo_evraklar as $key => $veri) {
@@ -141,7 +141,7 @@
 
                     <div class="col-md-3 col-sm-3 col-xs-3">
                       <label>Müşteri Kodu</label>
-                      <select class="form-control select2 js-example-basic-single" required="" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
+                      <select class="form-control select2 js-example-basic-single"  onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
                         <option>Seç</option>
                         @php
                           $evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
@@ -371,7 +371,7 @@
                                     @include('components.detayBtn', ['KOD' => $veri->KOD])
                                   </td>
                                   <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                                  <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
+                                  <td><input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                                   <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
                                   <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
                                   <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>

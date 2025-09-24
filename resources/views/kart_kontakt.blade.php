@@ -107,7 +107,7 @@
 										 
 				</div>
 				                  <div class="col-md-2 col-xs-2">
-                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                 </div>
       <div class="col-md-6 col-xs-6">
 				@include('layout.util.evrakIslemleri')
@@ -117,17 +117,17 @@
 <div class="row ">
   <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Evrak No</label>
-   <input type="text" class="form-control " name="EVRAKNO" id="EVRAKNO" maxlength="16" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
-	 <input type="hidden" class="form-control " name="EVRAKNO" id="EVRAKNO" maxlength="16" required="" value="{{ @$kart_veri->EVRAKNO }}">
+   <input type="text" class="form-control " name="EVRAKNO" id="EVRAKNO" maxlength="16"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+	 <input type="hidden" class="form-control " name="EVRAKNO" id="EVRAKNO" maxlength="16"  value="{{ @$kart_veri->EVRAKNO }}">
 
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Tarih</label>
-   <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}" >
+   <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
 	 <label>Ad Soyad</label>
-	 <input type="text" class="form-control"maxlength="50" name="AD_SOYAD" id="AD_SOYAD" required="" value="{{ @$kart_veri->AD_SOYAD }}" >
+	 <input type="text" class="form-control"maxlength="50" name="AD_SOYAD" id="AD_SOYAD"  value="{{ @$kart_veri->AD_SOYAD }}" >
  </div>
 
 </div>

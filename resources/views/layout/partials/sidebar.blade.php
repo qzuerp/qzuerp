@@ -287,6 +287,22 @@
 
     <li class="treeview">
       <a href="#">
+        <i class='bx bx-server'></i>
+        <span class="links_name">Sistem</span>
+        <span class="pull-right-container">
+          <i class='bx bx-chevron-down'></i>
+        </span>
+      </a>
+      <span class="tooltip">Sistem</span>
+      <ul class="treeview-menu">
+        @if (in_array('TMUSTR', $kullanici_read_yetkileri))
+          <li><a href="{{ route('zorunlu_alan') }}"><i class='bx bx-spreadsheet'></i> Zorunlu Alan Paneli</a></li>
+        @endif
+      </ul>
+    </li>
+
+    <li class="treeview">
+      <a href="#">
         <i class='bx bx-key'></i>
         <span class="links_name">Kullanıcılar</span>
         <span class="pull-right-container">

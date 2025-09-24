@@ -103,7 +103,7 @@
 										 
 								</div>
                 <div class="col-md-2 col-xs-2">
-                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                 </div>
 					      <div class="col-md-6 col-xs-6">
 									@include('layout.util.evrakIslemleri')
@@ -114,13 +114,13 @@
 
 							  <div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Kod</label>
-									<input type="text" class="form-control" name="KOD" id="KOD" maxlength="16" required="" value="{{ @$kart_veri->KOD }}">
+									<input type="text" class="form-control" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 									<!-- Bu kısım kod alanı güncellenmek istenirese eğer veritabanında eşleştirme yapılacak kısım -->
-									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16" required="" value="{{ @$kart_veri->KOD }}">
+									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 							  </div>
 							 	<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Cari Adı</label>
-									<input type="text" class="form-control"maxlength="100" name="AD" id="AD" required="" value="{{ @$kart_veri->AD }}" >
+									<input type="text" class="form-control"maxlength="100" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
 							 	</div>
 								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Ad2</label>

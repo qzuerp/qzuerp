@@ -104,7 +104,7 @@ if (isset($kart_veri)) {
 										 
         </div>
         <div class="col-md-2 col-xs-2">
-          <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+          <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
         </div>
       <div class="col-md-6 col-xs-6">
         @include('layout.util.evrakIslemleri')
@@ -117,13 +117,13 @@ if (isset($kart_veri)) {
           
           <div class="col-md-3 col-sm-3 col-xs-6">
             <label>Fiş No</label>
-            <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+            <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
             <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
           </div>
 
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Tarih</label>
-            <input type="date" class="form-control" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}">
+            <input type="date" class="form-control" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
           </div>
 
         </div>

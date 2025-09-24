@@ -91,8 +91,8 @@
                   </div>
 
                   <div class="col-md-2 col-xs-2">
-                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled>
+                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                   </div>
 
                   <div class="col-md-5 col-xs-5">
@@ -105,12 +105,12 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Evrak No</label>
-                      <input type="text" class="form-control" maxlength="24" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" readonly>
+                      <input type="text" class="form-control" maxlength="24" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" readonly>
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-6 col-sm-4 col-xs-6" style="display:flex; gap:10px;">

@@ -165,6 +165,7 @@
                       <ul class="nav nav-tabs">
                         <li class="nav-item" ><a href="#bilgiler" class="nav-link" data-bs-toggle="tab">Kullanıcı Bilgileri</a></li>
                         <li><a href="#yetkiler" class="nav-link" data-bs-toggle="tab">Yetkiler</a></li>
+                        <li><a href="#aktifKullanici" class="nav-link" data-bs-toggle="tab">Aktif Kullanıcılar</a></li>
                         <li class="nav-item" id="baglantiliDokumanlarTab">
                           <a class="nav-link" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab" href="#baglantiliDokumanlar">
                           <i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar
@@ -217,6 +218,38 @@
 
                           <style>
                           </style>
+
+                          <!-- Aktif Kullanıcılar -->
+                           <div class="tab-pane" id="aktifKullanici"> <!-- aktif kullanıcılar-->
+                            <div class="row">
+                              <table class="table table-striped">
+                                 <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col">Kullanıcı Adı</th>
+                                  <th scope="col">E-posta</th>
+                                  <th scope="col">Aktiflik Durumu</th>
+                                  <th scope="col">Son Görüntüleme</th>
+                                </tr>
+                                </thead>
+                                  @php
+                                  $users = DB::table('users')->where('is_logged_in','=',1)->get();
+                                  @endphp
+                                  <tbody>
+                                  @foreach($users as $user)
+                                  <tr> 
+                                    <td>{{$user->name}}</td>
+                                    <td>{{$user->email}}</td>
+                                    <td>{{$user->is_logged_in == 1 ? 'Aktif' : ''}} </td>
+                                    <td>{{$user->last_activity}} </td>
+                                  </tr>
+                                </tbody>
+                                @endforeach
+                              </table>
+                            </div>
+                           </div> <!-- aktif kullanıcılar-->
+
+
+
 
                         <div class="tab-pane" id="yetkiler">
                           <div class="row">

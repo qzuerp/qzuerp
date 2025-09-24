@@ -24,24 +24,7 @@ $ekranAdi = "Şifre Değiştir";
   @csrf
   <div class="row">
 
-   <div class="col">
-    <div class="box box-danger">
-      <div class="box-body">
-
-        <div class="row ">
-
-          <input id="kullanici_id_hid" maxlength="24" type="hidden" class="form-control" name="kullanici_id_hid" value="@php echo $user->id; @endphp">
-
-          <div class="col-md-2 col-sm-3 col-xs-6">
-            <label>Hesap Oluşturulma Tarihi</label>
-            <input type="datetime" class="form-control" id="kullanici_ols_tar" name="kullanici_ols_tar" value="@php echo $user->created_at; @endphp" disabled>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
+   
 
 
 </div>
@@ -70,17 +53,24 @@ $ekranAdi = "Şifre Değiştir";
 
                  <div class="row">
 
+                <div class="row">
+                  <div class="col-xs-4">
+                      <label>Hesap Oluşturulma Tarihi</label>
+                      <input type="datetime" class="form-control" data-tooltip="created_at" id="kullanici_ols_tar" name="kullanici_ols_tar" value="@php echo $user->created_at; @endphp" disabled>
+                  </div>
+                </div>
+
                    <div class="row">
                      <div class="col-xs-4">
                        <label>İsim</label>
-                       <input type="text" class="form-control" id="kullanici_isim" name="kullanici_isim" value="@php echo $user->name; @endphp" disabled>
+                       <input type="text" class="form-control name"  data-tooltip="name" id="kullanici_isim" name="kullanici_isim" value="@php echo $user->name; @endphp" disabled>
                      </div>
                    </div>
 
                    <div class="row">
                      <div class="col-xs-4">
                        <label>E-mail</label>
-                       <input type="email" class="form-control" id="kullanici_email" name="kullanici_email" value="@php echo $user->email; @endphp" disabled>
+                       <input type="email" class="form-control email" data-tooltip="email" id="kullanici_email" name="kullanici_email" value="@php echo $user->email; @endphp" disabled>
                      </div>
                    </div>
 
@@ -92,8 +82,10 @@ $ekranAdi = "Şifre Değiştir";
                    </div>
 
                    <div class="row">
+                    <div class="col-xs-4">
                      <br>
                      <button type="submit" class="btn btn-success" id="sifre_degistir" name="sifre_degistir">Kaydet</button>
+                   </div>
                    </div>
 
                  </div>

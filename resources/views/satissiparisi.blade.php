@@ -82,7 +82,7 @@
 
                 <div class="row ">
                   <div class="col-md-2 col-xs-2">
-                    <select id="evrakSec" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
+                    <select id="evrakSec" class="form-control js-example-basic-single " style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
                       @php
                         foreach ($evraklar as $key => $veri) {
                           if ($veri->id == @$kart_veri->id) {
@@ -104,8 +104,8 @@
                   </div>
 
                   <div class="col-md-2 col-xs-2">
-                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id=""  value="{{ @$kullanici_veri->firma }}" disabled>
+                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                   </div>
 
                   <div class="col-md-6 col-xs-6">
@@ -118,18 +118,18 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Fiş No</label>
-                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-4 col-sm-4 col-xs-6">
                       <label>Müşteri Kodu</label>
-                      <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
+                      <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
                         @php
                           $evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
 
@@ -148,7 +148,7 @@
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Müşteri Sipariş No</label>
-                      <input type="text" class="form-control" name="CHSIPNO" id="CHSIPNO" value="{{ @$kart_veri->CHSIPNO }}">
+                      <input type="text" class="form-control CHSIPNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CHSIPNO" name="CHSIPNO" id="CHSIPNO" value="{{ @$kart_veri->CHSIPNO }}">
                     </div>
 
                     <div class="col-md-2 col-sm-1 col-xs-2">
@@ -228,7 +228,7 @@
                           </td>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                              <select class="form-control select2 txt-radius KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                            <select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
                                 <option value=" " >Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
@@ -251,7 +251,7 @@
                           </td>
                          
                           <td style="min-width: 150px">
-                            <input class="SF_MIKTAR_FILL form-control SF_MIKTAR" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                            <input class="SF_MIKTAR_FILL form-control" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
@@ -330,7 +330,7 @@
                             <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $t_veri->KOD }}"></td>
                             <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $t_veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $t_veri->STOK_ADI }}"></td>
 
-                            <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
+                            <td><input type="number" class="form-control SF_MIKTAR" name="SF_MIKTAR[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
 
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $t_veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $t_veri->SF_SF_UNIT }}"></td>
 

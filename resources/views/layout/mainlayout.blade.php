@@ -196,295 +196,268 @@
     
   </div>
 
-  @include('layout.partials.header', ['firmaAdi' => $firmaAdi])
-  @include('layout.partials.sidebar', ['firmaAdi' => $firmaAdi])
+    @include('layout.partials.header', ['firmaAdi' => $firmaAdi])
+    @include('layout.partials.sidebar', ['firmaAdi' => $firmaAdi])
 
 
     @yield('content') 
 
-<script>
-    var evrakDegisti = false;
-    var originalValues = {};
-    var elementCounter = 0;
-    var originalTableRowCounts = {};
+  <script>
+      var evrakDegisti = false;
+      var originalValues = {};
+      var elementCounter = 0;
+      var originalTableRowCounts = {};
 
-    $(document).ready(function () {
-      trackAllFormElements();
-      trackAllTables();
-      
-      observeNewElements();
-      
-      // window.addEventListener('beforeunload', function (e) {
-      //   if (evrakDegisti) {
-      //     console.log('⚠️ Sayfa kapatılmaya çalışılıyor, evrak değişikliği tespit edildi');
-      //     e.preventDefault();
-      //     e.returnValue = 'Evrakta kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';
-      //     return e.returnValue;
-      //   }
-      // });
-      
-      $(document).on('click', '[data-evrak-kontrol]', function (e) {
+      $(document).ready(function () {
+        trackAllFormElements();
+        trackAllTables();
+        
+        observeNewElements();
+        
+        // window.addEventListener('beforeunload', function (e) {
+        //   if (evrakDegisti) {
+        //     console.log('⚠️ Sayfa kapatılmaya çalışılıyor, evrak değişikliği tespit edildi');
+        //     e.preventDefault();
+        //     e.returnValue = 'Evrakta kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';
+        //     return e.returnValue;
+        //   }
+        // });
+        
+        $(document).on('click', '[data-evrak-kontrol]', function (e) {
 
-        if (!evrakDegisti) return;
+          if (!evrakDegisti) return;
 
-        e.preventDefault();
-        const href = $(this).attr('href');
-        const $button = $(this);
+          e.preventDefault();
+          const href = $(this).attr('href');
+          const $button = $(this);
 
-        Swal.fire({
-          icon: 'warning',
-          title: 'Evrakta Değişiklik Var!',
-          text: 'Kaydetmeden çıkmak istiyor musun?',
-          showCancelButton: true,
-          confirmButtonText: 'Evet, çık',
-          cancelButtonText: 'Vazgeç'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            if (href) {
-              $('#loader').fadeIn(150);
-              window.location.href = href;
-            } else {
-              $button.trigger('devamEt');
+          Swal.fire({
+            icon: 'warning',
+            title: 'Evrakta Değişiklik Var!',
+            text: 'Kaydetmeden çıkmak istiyor musun?',
+            showCancelButton: true,
+            confirmButtonText: 'Evet, çık',
+            cancelButtonText: 'Vazgeç'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (href) {
+                $('#loader').fadeIn(150);
+                window.location.href = href;
+              } else {
+                $button.trigger('devamEt');
+              }
             }
-          }
+          });
         });
+
+        $('.smbButton').on('click', function(e) {
+            if (evrakDegisti) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              Swal.fire({
+                icon: 'warning',
+                title: 'Evrak Kaydedilmeli!',
+                text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
+                confirmButtonText: 'Tamam'
+              });
+              
+              return false;
+            }
+          });
       });
 
-      $('.smbButton').on('click', function(e) {
-          if (evrakDegisti) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            Swal.fire({
-              icon: 'warning',
-              title: 'Evrak Kaydedilmeli!',
-              text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
-              confirmButtonText: 'Tamam'
-            });
-            
-            return false;
-          }
+      function trackAllFormElements() {
+        $('input, textarea, select').each(function (index, element) {
+          trackElement($(element));
         });
-    });
-
-    function trackAllFormElements() {
-      $('input, textarea, select').each(function (index, element) {
-        trackElement($(element));
-      });
-    }
-
-    function trackAllTables() {
-      // Sadece veriTable'ı takip et
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length > 0) {
-        trackTable($veriTable);
       }
-    }
 
-    function trackTable($table) {
-      
-      if ($table.attr('data-table-tracked')) return;
-      
-      if (shouldSkipTable($table)) {
-        return;
+      function trackAllTables() {
+        // Sadece veriTable'ı takip et
+        var $veriTable = $('#veriTable');
+        if ($veriTable.length > 0) {
+          trackTable($veriTable);
+        }
       }
-      
-      var uniqueKey = generateTableUniqueKey($table);
-      
-      $table.attr('data-table-tracked', 'true');
-      $table.attr('data-table-unique-key', uniqueKey);
-      
-      // Başlangıç satır sayısını kaydet
-      originalTableRowCounts[uniqueKey] = getTableRowCount($table);
-      
-    }
 
-    function shouldSkipTable($table) {
-      // Tablo atlanacaksa (özel class'lar vs.)
-      if ($table.attr('data-skip-table-tracking') === 'true') {
-        return true;
+      function trackTable($table) {
+        
+        if ($table.attr('data-table-tracked')) return;
+        
+        if (shouldSkipTable($table)) {
+          return;
+        }
+        
+        var uniqueKey = generateTableUniqueKey($table);
+        
+        $table.attr('data-table-tracked', 'true');
+        $table.attr('data-table-unique-key', uniqueKey);
+        
+        // Başlangıç satır sayısını kaydet
+        originalTableRowCounts[uniqueKey] = getTableRowCount($table);
+        
       }
-      
-      var skipClasses = ['no-track-table', 'skip-table-tracking', 'ignore-table-changes'];
-      for (var i = 0; i < skipClasses.length; i++) {
-        if ($table.hasClass(skipClasses[i])) {
+
+      function shouldSkipTable($table) {
+        // Tablo atlanacaksa (özel class'lar vs.)
+        if ($table.attr('data-skip-table-tracking') === 'true') {
           return true;
         }
-      }
-      
-      return false;
-    }
-
-    function generateTableUniqueKey($table) {
-      var table = $table[0];
-      var id = $table.attr('id');
-      var classes = $table.attr('class') || '';
-      
-      if (id) {
-        return 'table_id_' + id;
-      } else {
-        elementCounter++;
-        return 'table_counter_' + elementCounter + '_' + classes.replace(/\s+/g, '_');
-      }
-    }
-
-    function getTableRowCount($table) {
-      var $tbody = $table.find('tbody');
-      if ($tbody.length > 0) {
-        return $tbody.find('tr').length;
-      } else {
-        var $thead = $table.find('thead');
-        var totalRows = $table.find('tr').length;
-        var headerRows = $thead.find('tr').length;
-        return totalRows - headerRows;
-      }
-    }
-
-    function checkTableChanges() {
-      // Sadece veriTable'ı kontrol et
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length === 0) {
-        return;
-      }
-      
-      // veriTable takip ediliyor mu kontrol et
-      if (!$veriTable.attr('data-table-tracked')) {
-        return;
-      }
-      
-      var uniqueKey = $veriTable.attr('data-table-unique-key');
-      var currentRowCount = getTableRowCount($veriTable);
-      var originalRowCount = originalTableRowCounts[uniqueKey];
-      
-      if (currentRowCount !== originalRowCount) {
         
-        if (!evrakDegisti) {
-          evrakDegisti = true;
+        var skipClasses = ['no-track-table', 'skip-table-tracking', 'ignore-table-changes'];
+        for (var i = 0; i < skipClasses.length; i++) {
+          if ($table.hasClass(skipClasses[i])) {
+            return true;
+          }
+        }
+        
+        return false;
+      }
+
+      function generateTableUniqueKey($table) {
+        var table = $table[0];
+        var id = $table.attr('id');
+        var classes = $table.attr('class') || '';
+        
+        if (id) {
+          return 'table_id_' + id;
+        } else {
+          elementCounter++;
+          return 'table_counter_' + elementCounter + '_' + classes.replace(/\s+/g, '_');
         }
       }
-    }
 
-    function trackElement($element) {
-      if ($element.attr('data-tracked')) return;
-      
-      if (shouldSkipElement($element)) {
-        return;
+      function getTableRowCount($table) {
+        var $tbody = $table.find('tbody');
+        if ($tbody.length > 0) {
+          return $tbody.find('tr').length;
+        } else {
+          var $thead = $table.find('thead');
+          var totalRows = $table.find('tr').length;
+          var headerRows = $thead.find('tr').length;
+          return totalRows - headerRows;
+        }
       }
-      
-      var uniqueKey = generateUniqueKey($element);
-      
-      $element.attr('data-tracked', 'true');
-      $element.attr('data-unique-key', uniqueKey);
-      
-      originalValues[uniqueKey] = getElementValue($element);
-      
-      $element.on('input change keyup paste', function() {
-        checkForChanges($(this), uniqueKey);
-      });
-      
-    }
 
-    function shouldSkipElement($element) {
-      if ($element.attr('data-skip-tracking') === 'true') {
-        return true;
+      function checkTableChanges() {
+        // Sadece veriTable'ı kontrol et
+        var $veriTable = $('#veriTable');
+        if ($veriTable.length === 0) {
+          return;
+        }
+        
+        // veriTable takip ediliyor mu kontrol et
+        if (!$veriTable.attr('data-table-tracked')) {
+          return;
+        }
+        
+        var uniqueKey = $veriTable.attr('data-table-unique-key');
+        var currentRowCount = getTableRowCount($veriTable);
+        var originalRowCount = originalTableRowCounts[uniqueKey];
+        
+        if (currentRowCount !== originalRowCount) {
+          
+          if (!evrakDegisti) {
+            evrakDegisti = true;
+          }
+        }
       }
-      
-      var skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
-      for (var i = 0; i < skipClasses.length; i++) {
-        if ($element.hasClass(skipClasses[i])) {
+
+      function trackElement($element) {
+        if ($element.attr('data-tracked')) return;
+        
+        if (shouldSkipElement($element)) {
+          return;
+        }
+        
+        var uniqueKey = generateUniqueKey($element);
+        
+        $element.attr('data-tracked', 'true');
+        $element.attr('data-unique-key', uniqueKey);
+        
+        originalValues[uniqueKey] = getElementValue($element);
+        
+        $element.on('input change keyup paste', function() {
+          checkForChanges($(this), uniqueKey);
+        });
+        
+      }
+
+      function shouldSkipElement($element) {
+        if ($element.attr('data-skip-tracking') === 'true') {
           return true;
         }
-      }
-      
-      var skipTypes = ['hidden', 'submit', 'button', 'reset', 'image'];
-      var inputType = $element.attr('type');
-      if (inputType && skipTypes.indexOf(inputType) !== -1) {
-        return true;
-      }
-      
-      var skipNames = ['_token', 'csrf_token', 'authenticity_token'];
-      var elementName = $element.attr('name');
-      if (elementName && skipNames.indexOf(elementName) !== -1) {
-        return true;
-      }
-      
-      var skipIds = ['search', 'filter', 'temp'];
-      var elementId = $element.attr('id');
-      if (elementId && skipIds.indexOf(elementId) !== -1) {
-        return true;
-      }
-      
-      if ($element.prop('readonly') || $element.prop('disabled')) {
-        return true;
-      }
-      
-      return false;
-    }
-
-    function generateUniqueKey($element) {
-      var element = $element[0];
-      var tagName = element.tagName.toLowerCase();
-      var id = $element.attr('id');
-      var name = $element.attr('name');
-      var type = $element.attr('type') || '';
-      
-      if (id) {
-        return tagName + '_id_' + id;
-      } else if (name) {
-        var sameNameElements = $('[name="' + name + '"]');
-        var elementIndex = sameNameElements.index(element);
-        return tagName + '_name_' + name + '_' + elementIndex;
-      } else {
-        elementCounter++;
-        return tagName + '_counter_' + elementCounter;
-      }
-    }
-
-    function getElementValue($element) {
-      var type = $element.attr('type');
-      
-      if (type === 'checkbox') {
-        return $element.is(':checked');
-      } else if (type === 'radio') {
-        return $element.is(':checked') ? $element.val() : null;
-      } else {
-        return $element.val() || '';
-      }
-    }
-
-    function checkForChanges($element, uniqueKey) {
-      var currentValue = getElementValue($element);
-      var originalValue = originalValues[uniqueKey];
-      
-      var hasChanged = false;
-      
-      if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
-        hasChanged = Boolean(currentValue) !== Boolean(originalValue);
-      } else {
-        hasChanged = String(currentValue) !== String(originalValue);
-      }
-      
-      if (hasChanged) {
         
-        if (!evrakDegisti) {
-          evrakDegisti = true;
+        var skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
+        for (var i = 0; i < skipClasses.length; i++) {
+          if ($element.hasClass(skipClasses[i])) {
+            return true;
+          }
+        }
+        
+        var skipTypes = ['hidden', 'submit', 'button', 'reset', 'image'];
+        var inputType = $element.attr('type');
+        if (inputType && skipTypes.indexOf(inputType) !== -1) {
+          return true;
+        }
+        
+        var skipNames = ['_token', 'csrf_token', 'authenticity_token'];
+        var elementName = $element.attr('name');
+        if (elementName && skipNames.indexOf(elementName) !== -1) {
+          return true;
+        }
+        
+        var skipIds = ['search', 'filter', 'temp'];
+        var elementId = $element.attr('id');
+        if (elementId && skipIds.indexOf(elementId) !== -1) {
+          return true;
+        }
+        
+        if ($element.prop('readonly') || $element.prop('disabled')) {
+          return true;
+        }
+        
+        return false;
+      }
+
+      function generateUniqueKey($element) {
+        var element = $element[0];
+        var tagName = element.tagName.toLowerCase();
+        var id = $element.attr('id');
+        var name = $element.attr('name');
+        var type = $element.attr('type') || '';
+        
+        if (id) {
+          return tagName + '_id_' + id;
+        } else if (name) {
+          var sameNameElements = $('[name="' + name + '"]');
+          var elementIndex = sameNameElements.index(element);
+          return tagName + '_name_' + name + '_' + elementIndex;
+        } else {
+          elementCounter++;
+          return tagName + '_counter_' + elementCounter;
         }
       }
-      
-      checkAllElements();
-      checkTableChanges();
-    }
 
-    function checkAllElements() {
-      var anyChanged = false;
-      
-      $('[data-tracked]').each(function() {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
+      function getElementValue($element) {
+        var type = $element.attr('type');
+        
+        if (type === 'checkbox') {
+          return $element.is(':checked');
+        } else if (type === 'radio') {
+          return $element.is(':checked') ? $element.val() : null;
+        } else {
+          return $element.val() || '';
+        }
+      }
+
+      function checkForChanges($element, uniqueKey) {
         var currentValue = getElementValue($element);
         var originalValue = originalValues[uniqueKey];
         
         var hasChanged = false;
+        
         if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
           hasChanged = Boolean(currentValue) !== Boolean(originalValue);
         } else {
@@ -492,110 +465,137 @@
         }
         
         if (hasChanged) {
-          anyChanged = true;
-          return false;
-        }
-      });
-      
-      evrakDegisti = anyChanged;
-    }
-
-    function observeNewElements() {
-      var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          mutation.addedNodes.forEach(function(node) {
-            if (node.nodeType === 1) {
-              var $node = $(node);
-              
-              var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
-              newElements.each(function() {
-                var $element = $(this);
-                if (!$element.attr('data-tracked')) {
-                  trackElement($element);
-                }
-              });
-              
-              var newTables = $node.find('table').addBack().filter('table');
-              newTables.each(function() {
-                var $table = $(this);
-                // Sadece veriTable'ı takip et
-                if ($table.attr('id') === 'veriTable' && !$table.attr('data-table-tracked')) {
-                  trackTable($table);
-                }
-              });
-            }
-          });
           
-          mutation.removedNodes.forEach(function(node) {
-            if (node.nodeType === 1) {
-              if (node.tagName === 'TR' || $(node).find('tr').length > 0) {
-                setTimeout(function() {
-                  checkTableChanges();
-                }, 10);
+          if (!evrakDegisti) {
+            evrakDegisti = true;
+          }
+        }
+        
+        checkAllElements();
+        checkTableChanges();
+      }
+
+      function checkAllElements() {
+        var anyChanged = false;
+        
+        $('[data-tracked]').each(function() {
+          var $element = $(this);
+          var uniqueKey = $element.attr('data-unique-key');
+          var currentValue = getElementValue($element);
+          var originalValue = originalValues[uniqueKey];
+          
+          var hasChanged = false;
+          if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
+            hasChanged = Boolean(currentValue) !== Boolean(originalValue);
+          } else {
+            hasChanged = String(currentValue) !== String(originalValue);
+          }
+          
+          if (hasChanged) {
+            anyChanged = true;
+            return false;
+          }
+        });
+        
+        evrakDegisti = anyChanged;
+      }
+
+      function observeNewElements() {
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1) {
+                var $node = $(node);
+                
+                var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
+                newElements.each(function() {
+                  var $element = $(this);
+                  if (!$element.attr('data-tracked')) {
+                    trackElement($element);
+                  }
+                });
+                
+                var newTables = $node.find('table').addBack().filter('table');
+                newTables.each(function() {
+                  var $table = $(this);
+                  // Sadece veriTable'ı takip et
+                  if ($table.attr('id') === 'veriTable' && !$table.attr('data-table-tracked')) {
+                    trackTable($table);
+                  }
+                });
               }
-            }
+            });
+            
+            mutation.removedNodes.forEach(function(node) {
+              if (node.nodeType === 1) {
+                if (node.tagName === 'TR' || $(node).find('tr').length > 0) {
+                  setTimeout(function() {
+                    checkTableChanges();
+                  }, 10);
+                }
+              }
+            });
           });
         });
-      });
-      
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    function resetEvrakDegisiklikFlag() {
-      evrakDegisti = false;
-      
-      $('[data-tracked]').each(function() {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
-        originalValues[uniqueKey] = getElementValue($element);
-      });
-      
-      $('[data-table-tracked]').each(function() {
-        var $table = $(this); // $('#veriTable') yerine $(this) kullan
-        var uniqueKey = $table.attr('data-table-unique-key');
-        originalTableRowCounts[uniqueKey] = getTableRowCount($table);
-      });
-    }
-
-    function addSkipRule(selector) {
-      $(selector).attr('data-skip-tracking', 'true');
-    }
-
-    function removeSkipRule(selector) {
-      $(selector).removeAttr('data-skip-tracking');
-    }
-
-    function addTableSkipRule(selector) {
-      $(selector).attr('data-skip-table-tracking', 'true');
-    }
-
-    function removeTableSkipRule(selector) {
-      $(selector).removeAttr('data-skip-table-tracking');
-    }
-
-    function showTrackedElements() {
-      $('[data-tracked]').each(function() {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
-        var currentValue = getElementValue($element);
-        var originalValue = originalValues[uniqueKey];
-      });
-      
-      // Sadece veriTable'ı göster
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length > 0 && $veriTable.attr('data-table-tracked')) {
-        var uniqueKey = $veriTable.attr('data-table-unique-key');
-        var currentRowCount = getTableRowCount($veriTable);
-        var originalRowCount = originalTableRowCounts[uniqueKey];
+        
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
       }
-    }
 
-    function manualTableCheck() {
-      checkTableChanges();
-    }
+      function resetEvrakDegisiklikFlag() {
+        evrakDegisti = false;
+        
+        $('[data-tracked]').each(function() {
+          var $element = $(this);
+          var uniqueKey = $element.attr('data-unique-key');
+          originalValues[uniqueKey] = getElementValue($element);
+        });
+        
+        $('[data-table-tracked]').each(function() {
+          var $table = $(this); // $('#veriTable') yerine $(this) kullan
+          var uniqueKey = $table.attr('data-table-unique-key');
+          originalTableRowCounts[uniqueKey] = getTableRowCount($table);
+        });
+      }
+
+      function addSkipRule(selector) {
+        $(selector).attr('data-skip-tracking', 'true');
+      }
+
+      function removeSkipRule(selector) {
+        $(selector).removeAttr('data-skip-tracking');
+      }
+
+      function addTableSkipRule(selector) {
+        $(selector).attr('data-skip-table-tracking', 'true');
+      }
+
+      function removeTableSkipRule(selector) {
+        $(selector).removeAttr('data-skip-table-tracking');
+      }
+
+      function showTrackedElements() {
+        $('[data-tracked]').each(function() {
+          var $element = $(this);
+          var uniqueKey = $element.attr('data-unique-key');
+          var currentValue = getElementValue($element);
+          var originalValue = originalValues[uniqueKey];
+        });
+        
+        // Sadece veriTable'ı göster
+        var $veriTable = $('#veriTable');
+        if ($veriTable.length > 0 && $veriTable.attr('data-table-tracked')) {
+          var uniqueKey = $veriTable.attr('data-table-unique-key');
+          var currentRowCount = getTableRowCount($veriTable);
+          var originalRowCount = originalTableRowCounts[uniqueKey];
+        }
+      }
+
+      function manualTableCheck() {
+        checkTableChanges();
+      }
   </script>
 
   <!-- Loader Script -->
@@ -790,12 +790,36 @@
   </script>
 
   <script>
-    $(document).ready(function() {
-        flatpickr.localize(flatpickr.l10ns.tr);
 
-        $("input[type='date'], input[type='time']").each(function() {
+    function initTooltips() {
+      // var olan tooltip instance'larını temizle
+      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+        const inst = bootstrap.Tooltip.getInstance(el);
+        if (inst) inst.dispose();
+      });
+
+      // yeniden oluştur (container: body önemli)
+      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+        new bootstrap.Tooltip(el, {
+          container: 'body',
+          trigger: 'hover focus'
+        });
+      });
+    }
+
+    $(document).ready(function() {
+    flatpickr.localize(flatpickr.l10ns.tr);
+
+    initTooltips();
+
+    $(document).on('select2:open', function(){
+        initTooltips();
+    });
+
+    $("input[type='date'], input[type='time']").each(function() {
             var $el = $(this);
 
+            // wrapper + ikon (senin koddan alındı)
             var $wrapper = $("<div>").addClass("input-icon");
             $el.wrap($wrapper);
             var $icon = $("<i>").addClass($el.attr('type') === 'time' ? 'fa-regular fa-clock' : 'fa-regular fa-calendar');
@@ -806,16 +830,321 @@
             $el.flatpickr({
                 enableTime: $el.attr('type') === 'time',
                 noCalendar: $el.attr('type') === 'time',
-                dateFormat: $el.attr('type') === 'time' ? "H:i" : "Y-m-d", // veritabanına gönderilen format
-                altInput: $el.attr('type') === 'date', // sadece date için altInput
-                altFormat: "d.m.Y", // kullanıcıya gösterilecek format
+                dateFormat: $el.attr('type') === 'time' ? "H:i" : "Y-m-d",
+                altInput: $el.attr('type') === 'date',
+                altFormat: "d.m.Y",
                 time_24hr: true,
-                locale: "tr"
+                locale: "tr",
+
+                onReady: function(selectedDates, dateStr, instance) {
+                    // orijinal ve alt input'ları güvenli al
+                    var orig = instance.input || instance._input || instance.element;
+                    var alt  = instance.altInput || orig;
+
+                    // sadece gerekli attribute'ları kopyala (data-*, title, aria-*)
+                    Array.from(orig.attributes).forEach(function(attr) {
+                        if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
+                            try { alt.setAttribute(attr.name, attr.value); } catch(e) {}
+                        }
+                    });
+
+                    // eğer altInput varsa bazı stilleri koru (opsiyonel)
+                    if (instance.altInput) {
+                        // örneğin placeholder'ı alt inputa aktarmak istersen
+                        if(orig.placeholder) alt.setAttribute('placeholder', orig.placeholder);
+                    }
+
+                    // tooltip'leri / popover'ları yeniden başlat
+                    initTooltips();
+                },
+
+                onOpen: function() {
+                    initTooltips();
+                },
+
+                onChange: function() {
+                    // eğer seçim sonrası tooltip güncellemesi gerekirse
+                    initTooltips();
+                }
             });
         });
     });
+
+
+    // Sayfa yüklendiğinde hem initTooltips çalışsın hem de select2 seçimlerine attribute kopyalansın
+    $(document).ready(function(){
+
+        // --- Select2 için ilk yüklemede attribute kopyala ---
+        $('.select2').each(function(){
+            var $select = $(this);
+            var $selection = $select.next('.select2').find('.select2-selection');
+
+            Array.from(this.attributes).forEach(function(attr){
+                if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
+                    try { $selection.attr(attr.name, attr.value); } catch(e){}
+                }
+            });
+        });
+
+        // Tooltips başlat
+        initTooltips();
+
+        // Eğer select2 sonradan dinamik eklenirse yine kopyala
+        $(document).on('select2:open select2:select', function(e){
+            var $select = $(e.target);
+            var $selection = $select.next('.select2').find('.select2-selection');
+
+            Array.from($select[0].attributes).forEach(function(attr) {
+                if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
+                    try { $selection.attr(attr.name, attr.value); } catch(e){}
+                }
+            });
+
+            initTooltips();
+        });
+    });
+
+
   </script>
 
+@if(isset($ekranTableE))
+<script>
+    @php
+        if (Auth::check()) {
+            $Zuser = Auth::user();
+        }
+        
+        $Zkullanici_veri = DB::table('users')->where('id',$Zuser->id)->first();
+        $db = trim($Zkullanici_veri->firma).".dbo.";
+        $ZORUNLU_ALANLARE = DB::table($db.'TMUSTRT')
+            ->where('TABLO_KODU', str_replace($db, '', $ekranTableE))
+            ->get();
+    @endphp
+
+    const zorunluAlanlar = @json($ZORUNLU_ALANLARE->pluck('ALAN_ADI'));
+    $(document).ready(function(){
+
+        zorunluAlanlar.forEach(function(alan){
+            $('.' + alan).addClass('validation');
+        });
+
+        $('#verilerForm').on('submit', function(e){
+            let isValid = true;
+
+            $('.validation').each(function(){
+                let $input = $(this);
+                let value = $input.val();
+                let isEmpty = false;
+
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    value = $input.val();
+                    
+                    if (value === null || 
+                        value === undefined || 
+                        value === '' || 
+                        value === '0' || 
+                        (Array.isArray(value) && value.length === 0) ||
+                        (Array.isArray(value) && value[0] === '') ||
+                        (typeof value === 'string' && value.trim() === '')) {
+                        isEmpty = true;
+                    }
+                } else {
+                    if(!value || 
+                       value.length === 0 || 
+                       value.trim?.() === '' || 
+                       value.trim?.() === ' '){
+                        isEmpty = true;
+                    }
+                }
+
+                if(isEmpty){
+                    $input.addClass('is-invalid').removeClass('is-valid');
+
+                    if ($input.hasClass('select2-hidden-accessible')) {
+                        $input.next('.select2-container').find('.select2-selection')
+                              .addClass('is-invalid').css('border-color', '#dc3545');
+                    }
+
+                    isValid = false;
+                } else {
+                    $input.removeClass('is-invalid').addClass('is-valid');
+                    if ($input.hasClass('select2-hidden-accessible')) {
+                        $input.next('.select2-container').find('.select2-selection')
+                              .removeClass('is-invalid').css('border-color', '#28a745');
+                    }
+                }
+            });
+
+            if(!isValid){
+                $('#loader').hide();
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        function validateInput($input) {
+            let value = $input.val();
+            let isEmpty = false;
+
+            if ($input.hasClass('select2-hidden-accessible')) {
+                if (value === null || 
+                    value === undefined || 
+                    value === '' || 
+                    value === '0' || 
+                    (Array.isArray(value) && value.length === 0) ||
+                    (Array.isArray(value) && value[0] === '') ||
+                    (typeof value === 'string' && value.trim() === '')) {
+                    isEmpty = true;
+                }
+            } else {
+                if(!value || 
+                   value.length === 0 || 
+                   value.trim?.() === '' || 
+                   value.trim?.() === ' '){
+                    isEmpty = true;
+                }
+            }
+
+            if(isEmpty){
+                $input.addClass('is-invalid').removeClass('is-valid');
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    $input.next('.select2-container').find('.select2-selection')
+                          .addClass('is-invalid').css('border-color', '#dc3545');
+                }
+            } else {
+                $input.removeClass('is-invalid').addClass('is-valid');
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    $input.next('.select2-container').find('.select2-selection')
+                          .removeClass('is-invalid').css('border-color', '#28a745');
+                }
+            }
+        }
+    });
+</script>
+@endif
+
+@if(isset($ekranTableT))
+<script>
+    @php
+        if (Auth::check()) {
+            $Zuser = Auth::user();
+        }
+        
+        $Zkullanici_veri = DB::table('users')->where('id',$Zuser->id)->first();
+        $db = trim($Zkullanici_veri->firma).".dbo.";
+        $ZORUNLU_ALANLART = DB::table($db.'TMUSTRT')
+            ->where('TABLO_KODU', str_replace($db, '', $ekranTableT))
+            ->get();
+    @endphp
+
+    const zorunluAlanlarT = @json($ZORUNLU_ALANLART->pluck('ALAN_ADI'));
+    $(document).ready(function(){
+
+        zorunluAlanlarT.forEach(function(alan){
+            $('.' + alan).addClass('validation');
+        });
+
+        $('#verilerForm').on('submit', function(e){
+            let isValid = true;
+
+            $('.validation').each(function(){
+                let $input = $(this);
+                let value = $input.val();
+                let isEmpty = false;
+
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    value = $input.val();
+                    
+                    if (value === null || 
+                        value === undefined || 
+                        value === '' || 
+                        value === '0' || 
+                        (Array.isArray(value) && value.length === 0) ||
+                        (Array.isArray(value) && value[0] === '') ||
+                        (typeof value === 'string' && value.trim() === '')) {
+                        isEmpty = true;
+                    }
+                } else {
+                    if(!value || 
+                       value.length === 0 || 
+                       value.trim?.() === '' || 
+                       value.trim?.() === ' '){
+                        isEmpty = true;
+                    }
+                }
+
+                if(isEmpty){
+                    $input.addClass('is-invalid').removeClass('is-valid');
+                    if ($input.hasClass('select2-hidden-accessible')) {
+                        $input.next('.select2-container').find('.select2-selection')
+                              .addClass('is-invalid').css('border-color', '#dc3545');
+                    }
+
+                    isValid = false;
+                } else {
+                    $input.removeClass('is-invalid').addClass('is-valid');
+                    if ($input.hasClass('select2-hidden-accessible')) {
+                        $input.next('.select2-container').find('.select2-selection')
+                              .removeClass('is-invalid').css('border-color', '#28a745');
+                    }
+                }
+            });
+
+            if(!isValid){
+                $('#loader').hide();
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        function validateInput($input) {
+            let value = $input.val();
+            let isEmpty = false;
+
+            if ($input.hasClass('select2-hidden-accessible')) {
+                if (value === null || 
+                    value === undefined || 
+                    value === '' || 
+                    value === '0' || 
+                    (Array.isArray(value) && value.length === 0) ||
+                    (Array.isArray(value) && value[0] === '') ||
+                    (typeof value === 'string' && value.trim() === '')) {
+                    isEmpty = true;
+                }
+            } else {
+                if(!value || 
+                   value.length === 0 || 
+                   value.trim?.() === '' || 
+                   value.trim?.() === ' '){
+                    isEmpty = true;
+                }
+            }
+
+            if(isEmpty){
+                $input.addClass('is-invalid').removeClass('is-valid');
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    $input.next('.select2-container').find('.select2-selection')
+                          .addClass('is-invalid').css('border-color', '#dc3545');
+                }
+            } else {
+                $input.removeClass('is-invalid').addClass('is-valid');
+                if ($input.hasClass('select2-hidden-accessible')) {
+                    $input.next('.select2-container').find('.select2-selection')
+                          .removeClass('is-invalid').css('border-color', '#28a745');
+                }
+            }
+        }
+    });
+
+    // Tüm tooltip’leri aktive et
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+
+</script>
+@endif
 
   @include('layout.partials.footer', ['firmaAdi' => $firmaAdi])
   

@@ -88,7 +88,7 @@
                 <div class="row ">
 
                   <div class="col-md-2 col-sm-4 col-xs-6"> 
-                    <select id="evrakSec" class="form-control js-example-basic-single" style="width:100%;" name="ID" onchange="evrakGetirRedirect(this.value, '{{ $ekranLink }}')">
+                    <select id="evrakSec" class="form-control js-example-basic-single EVRAKNO" style="width:100%;" name="ID" onchange="evrakGetirRedirect(this.value, '{{ $ekranLink }}')">
                       @php
                         $evraklar = DB::table($ekranTableE)
                         ->select('EVRAKNO', DB::raw('max(ID) as ID'))
@@ -118,8 +118,8 @@
                   </div>
                   
                   <div class="col-md-2 col-xs-2">
-                    <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                    <input type="text" class="form-control input-sm firma" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="firma" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled>
+                    <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                   </div>
                   <div class="col-md-6 col-xs-6">
                     @include('layout.util.evrakIslemleri')
@@ -131,11 +131,11 @@
 
                     <div class="col-md-2 col-sm-4 col-xs-6 ">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH" required=""value="{{ @$kart_veri->TARIH ?? @now()->format('d-m-Y') }}">
+                      <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH" value="{{ @$kart_veri->TARIH }}">
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-6"> 
                       <label>İş Merkezi Kodu</label>
-                      <select class="form-control select2 js-example-basic-single"  style="width: 100%;" name="TO_ISMERKEZI" id="X_T_ISMERKEZI" >
+                      <select class="form-control select2 js-example-basic-single KOD"  style="width: 100%;" name="TO_ISMERKEZI" id="X_T_ISMERKEZI" >
                         @php
                         $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
                         foreach ($imlt00_evraklar as $key => $veri) {
@@ -166,14 +166,14 @@
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>MPS No</label>
-                      <input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="MPSNO_SHOW" id="MPSNO" readonly value="{{ @$kart_veri->MPSNO }}" >
+                      <input type="text" class="form-control input-sm MPSNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" style="color:red" maxlength="50" name="MPSNO_SHOW" id="MPSNO" readonly value="{{ @$kart_veri->MPSNO }}" >
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>JOB No</label>
                       <div class="d-flex ">
-                        <input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW" required=""  value="{{ @$kart_veri->JOBNO }}" disabled>
-                        <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO" required="" value="{{ @$kart_veri->JOBNO }}" >
+                        <input type="text" class="form-control input-sm JOBNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="JOBNO" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW"   value="{{ @$kart_veri->JOBNO }}" disabled>
+                        <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO"  value="{{ @$kart_veri->JOBNO }}" >
                         <span class="d-flex -btn">
                           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" id="modal_popupSelectModalBtn" type="button">
                             <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -278,14 +278,14 @@
                               <label>Üretim Miktarı</label>
                               <input type="hidden" class="form-control input-sm" maxlength="50" name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}" >
                               <div class="d-flex gap-1">
-                                  <input type="text" class="form-control input-sm" style="color:red" maxlength="50" 
+                                  <input type="text" class="form-control input-sm SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" style="color:red" maxlength="50" 
                                         name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}">
 
                                   @php
                                       $MPS = DB::table($database.'mmps10t')->where('JOBNO', @$kart_veri->JOBNO)->first();
                                   @endphp
 
-                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm" style="color:red" maxlength="50" 
+                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm R_YMK_YMPAKETICERIGI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMK_YMPAKETICERIGI" style="color:red" maxlength="50" 
                                         value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
                               </div>
 
@@ -293,7 +293,7 @@
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
                               <label>Kalıp Kodu</label>
-                              <input type="text" class="form-control " maxlength="16" name="KALIPKODU" id="KALIPKODU" value="{{ @$kart_veri->KALIPKODU }}">
+                              <input type="text" class="form-control KALIPKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIPKODU" maxlength="16" name="KALIPKODU" id="KALIPKODU" value="{{ @$kart_veri->KALIPKODU }}">
                             </div>
                           </div>
                         </div>
@@ -543,14 +543,14 @@
                                                     <tr class="text-center">
                                                         <td>
                                                             <input type="hidden" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="{{$val->ISLEM_TURU}}" readonly>
-                                                            <input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU_SHOW" value="@switch($val->ISLEM_TURU) @case('A') AYAR @break @case('U') ÜRETİM @break @case('D') DURUŞ @break @default {{ $val->ISLEM_TURU }} @endswitch" readonly>
+                                                            <input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent ISLEM_TURU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ISLEM_TURU"  name="ISLEM_TURU_SHOW" value="@switch($val->ISLEM_TURU) @case('A') AYAR @break @case('U') ÜRETİM @break @case('D') DURUŞ @break @default {{ $val->ISLEM_TURU }} @endswitch" readonly>
                                                         </td>
-                                                        <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
-                                                        <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
-                                                        <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
-                                                        <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
-                                                        <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
-                                                        <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
+                                                        <td><input name="baslangic_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BASLANGIC_TARIHI" value="{{ $val->BASLANGIC_TARIHI }}" readonly></td>
+                                                        <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BASLANGIC_SAATI" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
+                                                        <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BITIS_TARIHI" value="{{ $val->BITIS_TARIHI }}" readonly></td>
+                                                        <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BITIS_SAATI" value="{{ $val->BITIS_SAATI }}" readonly></td>
+                                                        <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ISLEM_TURU" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
+                                                        <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SURE" value="{{ $val->SURE }}" readonly></td>
                                                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
                                                     </tr>
                                                 @endforeach

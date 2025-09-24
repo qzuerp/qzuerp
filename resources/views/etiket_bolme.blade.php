@@ -108,8 +108,8 @@
                     </div>
 
                     <div class="col-md-2 col-xs-2">
-                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}" disabled>
-                      <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma" required="" value="{{ @$kullanici_veri->firma }}">
+                      <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled>
+                      <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                     </div>
 
                     <div class="col-md-4 col-xs-4">
@@ -121,18 +121,18 @@
                     <div class="row ">
                       <div class="col-md-2 col-sm-3 col-xs-6">
                         <label>Fiş No</label>
-                        <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" required="" value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                        <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                         <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                       </div>
 
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Tarih</label>
-                        <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH" required="" value="{{ @$kart_veri->TARIH }}" >
+                        <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
                       </div>
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Veren Depo</label>
-                        <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -152,7 +152,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Alan Depo</label>
-                        <select class="form-control select2 js-example-basic-single" required=""  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -172,7 +172,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Nitelik</label>
-                        <select class="form-control select2 js-example-basic-single" required="" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
+                        <select class="form-control select2 js-example-basic-single"  style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
                           <option value=" ">Seç</option>
                           @php
                             $evraklar=DB::table($database .'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
