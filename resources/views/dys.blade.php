@@ -260,7 +260,7 @@
 										</div>
 										<div class="col-xs-12">
 											<label>Onaylayan</label>
-											<input type="text" class="form-control " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HAZIRLAYAN" maxlength="50" name="ONAYLAYAN" id="ONAYLAYAN" value="{{ @$kart_veri->ONAYLAYAN }}">
+											<input type="text" class="form-control KONTROL_EDEN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KONTROL_EDEN" maxlength="50" name="ONAYLAYAN" id="KONTROL_EDEN" value="{{ @$kart_veri->ONAYLAYAN }}">
 										</div>
 									</div>
 								</div>

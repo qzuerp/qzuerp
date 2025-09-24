@@ -48,7 +48,7 @@
         </thead>
         <tbody>
           @php
-            $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get()
+            $KALIBRASYONLAR = DB::table($database.'SRVKC0')->whereDate('kalibrasyon_tarihi', '>=', now()->subDays(30))->get()
           @endphp
           @foreach ($KALIBRASYONLAR as $KALIBRASYON)
             <tr>
