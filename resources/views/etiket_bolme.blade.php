@@ -132,7 +132,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Veren Depo</label>
-                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -152,7 +152,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Alan Depo</label>
-                        <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single TARGETAMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARGETAMBCODE"  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -172,7 +172,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Nitelik</label>
-                        <select class="form-control select2 js-example-basic-single"  style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
+                        <select class="form-control select2 js-example-basic-single NITELIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
                           <option value=" ">Seç</option>
                           @php
                             $evraklar=DB::table($database .'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
@@ -251,7 +251,7 @@
                               <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                               <td style="display:none;"></td>
                               <td style="min-width: 150px;">
-                                <select class="form-control" onchange="stokAdiGetir(this.value)" style=" height: 30PX" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+                                <select class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir(this.value)" style=" height: 30PX" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
                                   <option value=" ">Seç</option>
                                   @php
                                     $evraklar=DB::table($database .'stok00')->orderBy('id', 'ASC')->limit(50)->get();
@@ -264,24 +264,24 @@
                                 <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                                <input maxlength="50" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
                                 <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="12" style="color: red" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                                <input maxlength="12" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control LOTNUMBER">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                                <input maxlength="20" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="SERINO_FILL" id="SERINO_FILL" class="form-control LOTNUMBER">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="28" style="color: red" type="text" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                                <input maxlength="28" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control LOTNUMBER">
                               </td>
                               <td style="min-width: 150px">
                                 <input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
-                                <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+                                <input maxlength="6 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control LOTNUMBER" disabled>
                               </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation1()" name="AMBCODE_FILL" id="AMBCODE_FILL">
+                                <select class="form-control select2 js-example-basic-single AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" style=" height: 30PX" onchange="getLocation1()" name="AMBCODE_FILL" id="AMBCODE_FILL">
                                   <option value=" ">Seç</option>
                                   @php
                                     $evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
@@ -300,7 +300,7 @@
                                 </select>
                               </td>
                               <td style="min-width: 150px;">
-                                  <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation2()" name="LOCATION1_FILL" id="LOCATION1_FILL">
+                                  <select class="form-control select2 js-example-basic-single LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" style=" height: 30PX" onchange="getLocation2()" name="LOCATION1_FILL" id="LOCATION1_FILL">
                                     <option value=" ">Seç</option>
                                     @php
                                       $locat1_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -312,7 +312,7 @@
                                   </select>
                                 </td>
                                 <td style="min-width: 150px;">
-                                  <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation3()" name="LOCATION2_FILL" id="LOCATION2_FILL">
+                                  <select class="form-control select2 js-example-basic-single LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" style=" height: 30PX" onchange="getLocation3()" name="LOCATION2_FILL" id="LOCATION2_FILL">
                                     <option value=" ">Seç</option>
                                     @php
                                       $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -324,7 +324,7 @@
                                   </select>
                                 </td>
                                 <td style="min-width: 150px;">
-                                  <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation4()" name="LOCATION3_FILL" id="LOCATION3_FILL">
+                                  <select class="form-control select2 js-example-basic-single LOCATION3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" style=" height: 30PX" onchange="getLocation4()" name="LOCATION3_FILL" id="LOCATION3_FILL">
                                     <option value=" ">Seç</option>
                                     @php
                                       $locat3_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -336,7 +336,7 @@
                                   </select>
                                 </td>
                                 <td style="min-width: 150px;">
-                                  <select class="form-control select2 js-example-basic-single" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
+                                  <select class="form-control select2 js-example-basic-single LOCATION4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
                                     <option value=" ">Seç</option>
                                     @php
                                       $locat4_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -348,7 +348,7 @@
                                   </select>
                                 </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getNewLocation2()" name="LOCATION_NEW1_FILL" id="LOCATION_NEW1_FILL">
+                                <select class="form-control select2 js-example-basic-single LOCATION_NEW1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW1" style=" height: 30PX" onchange="getNewLocation2()" name="LOCATION_NEW1_FILL" id="LOCATION_NEW1_FILL">
                                   <option value=" ">Seç</option>
                                   @php
                                     $locat1_kodlar=DB::table($database .'gecoust')->where('EVRAKNO', 'LOCAT1')->orderBy('KOD', 'ASC')->get();
@@ -360,7 +360,7 @@
                                 </select>
                               </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getNewLocation3()" name="LOCATION_NEW2_FILL" id="LOCATION_NEW2_FILL">
+                                <select class="form-control select2 js-example-basic-single LOCATION_NEW2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW2" style=" height: 30PX" onchange="getNewLocation3()" name="LOCATION_NEW2_FILL" id="LOCATION_NEW2_FILL">
                                   <option value=" ">Seç</option>
                                   @php
                                     $locat2_kodlar=DB::table($database .'gecoust')->where('EVRAKNO', 'LOCAT2')->orderBy('KOD', 'ASC')->get();
@@ -372,7 +372,7 @@
                                 </select>
                               </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getNewLocation4()" name="LOCATION_NEW3_FILL" id="LOCATION_NEW3_FILL">
+                                <select class="form-control select2 js-example-basic-single LOCATION_NEW3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW3" style=" height: 30PX" onchange="getNewLocation4()" name="LOCATION_NEW3_FILL" id="LOCATION_NEW3_FILL">
                                   <option value=" ">Seç</option>
                                   @php
                                     $locat3_kodlar=DB::table($database .'gecoust')->where('EVRAKNO', 'LOCAT3')->orderBy('KOD', 'ASC')->get();
@@ -384,7 +384,7 @@
                                 </select>
                               </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" name="LOCATION_NEW4_FILL" id="LOCATION_NEW4_FILL">
+                                <select class="form-control select2 js-example-basic-single LOCATION_NEW4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" style=" height: 30PX" name="LOCATION_NEW4_FILL" id="LOCATION_NEW4_FILL">
                                   <option value=" ">Seç</option>
                                   @php
                                     $locat4_kodlar=DB::table($database .'gecoust')->where('EVRAKNO', 'LOCAT4')->orderBy('KOD', 'ASC')->get();
@@ -396,19 +396,19 @@
                                 </select>
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" id="NOT1_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" id="NOT1_FILL" class="form-control NOT1">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT2_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT3_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT4_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">

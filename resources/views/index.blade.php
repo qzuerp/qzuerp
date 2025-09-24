@@ -31,10 +31,25 @@
     @endif
 
     <div class="d-flex justify-content-between mb-3">
-        <h4>Kalibrasyon Takibi</h4>
-        <div>
-            <button id="btn-30" class="btn btn-primary btn-sm">Son 30 Gün</button>
-            <button id="btn-15" class="btn btn-warning btn-sm">Son 15 Gün</button>
+      <h4>Kalibrasyon Takibi</h4>
+        <div class="">
+          <div class="row align-items-end">
+              <div class="col-md-12">
+                <div class="action-btn-group flex gap-2 flex-wrap">
+                  <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('listeleTable')">
+                    <i class="fas fa-file-excel"></i> Excel'e Aktar
+                  </button>
+                  <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('listeleTable')">
+                    <i class="fas fa-file-word"></i> Word'e Aktar
+                  </button>
+                  <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('listeleTable')">
+                    <i class="fas fa-print"></i> Yazdır
+                  </button>
+                  <button id="btn-30" class="btn btn-default">Son 30 Gün</button>
+                  <button id="btn-15" class="btn btn-default">Son 15 Gün</button>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 
@@ -46,7 +61,14 @@
                 <th>Kalan Gün</th>
             </tr>
         </thead>
-        <tbody>
+        <tfoot>
+            <tr>
+                <th>Kod</th>
+                <th>Ad</th>
+                <th>Kalan Gün</th>
+            </tr>
+        </tfoot>
+        <tbody style="max-height:500px; overflow:auto;">
           @php
             $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get()
           @endphp
@@ -81,5 +103,56 @@
       $('#btn-30').click(function(){ filterKalibrasyon(30); });
       $('#btn-15').click(function(){ filterKalibrasyon(15); });
     });
+
+    function exportTableToExcel(tableId)
+    {
+      let table = document.getElementById(tableId)
+      let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+      XLSX.writeFile(wb, "tablo.xlsx");
+    }
+    function exportTableToWord(tableId)
+    {
+      let table = document.getElementById(tableId).outerHTML;
+      let htmlContent = `<!DOCTYPE html>
+          <html>
+          <head><meta charset='UTF-8'></head>
+          <body>${table}</body>
+          </html>`;
+
+      let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "tablo.doc";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    }
+    function printTable(tableId)
+    {
+      let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+      let newWindow = window.open("", "_blank"); // Yeni pencere aç
+      newWindow.document.write(`
+          <html>
+          <head>
+              <title>Tablo Yazdır</title>
+              <style>
+                  table { width: 100%; border-collapse: collapse; }
+                  th, td { border: 1px solid black; padding: 8px; text-align: left; }
+              </style>
+          </head>
+          <body>
+              ${table}
+              <script>
+                  window.onload = function() { window.print(); window.onafterprint = window.close; };
+              <\/script>
+          </body>
+          </html>
+      `);
+      newWindow.document.close();
+    }
   </script>
 @endsection
+
+
