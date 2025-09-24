@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <table class="table table-bordered" id="kalibrasyon-table">
+    <table class="table table-bordered" id="listeleTable">
         <thead>
             <tr>
                 <th>Kod</th>
@@ -66,9 +66,9 @@
   <script>
     $(document).ready(function(){
       function filterKalibrasyon(days) {
-          $('#kalibrasyon-table tbody tr').each(function(){
+          $('#listeleTable tbody tr').each(function(){
               var kalan = parseInt($(this).find('td:last').text());
-              if(kalan <= days && kalan => 0){
+              if(kalan <= days && kalan >= 0){  // negatifleri gizle
                   $(this).show();
               } else {
                   $(this).hide();
@@ -76,7 +76,7 @@
           });
       }
 
-      // filterKalibrasyon(30);
+      filterKalibrasyon(30);
 
       $('#btn-30').click(function(){ filterKalibrasyon(30); });
       $('#btn-15').click(function(){ filterKalibrasyon(15); });

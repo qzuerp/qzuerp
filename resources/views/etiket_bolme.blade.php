@@ -121,18 +121,18 @@
                     <div class="row ">
                       <div class="col-md-2 col-sm-3 col-xs-6">
                         <label>Fiş No</label>
-                        <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                        <input type="text" class="form-control EVRAKNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                         <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                       </div>
 
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Tarih</label>
-                        <input type="date" class="form-control"maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
+                        <input type="date" class="form-control TARIH" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
                       </div>
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Veren Depo</label>
-                        <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)" name="AMBCODE_E" id="AMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
