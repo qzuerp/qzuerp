@@ -48,12 +48,14 @@
         </thead>
         <tbody>
           @php
-            $KALIBRASYONLAR = DB::table($database.'SRVKC0')->whereDate('BIRSONRAKIKALIBRASYONTARIHI', '>=', now()->subDays(30))->get()
+            $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get()
           @endphp
           @foreach ($KALIBRASYONLAR as $KALIBRASYON)
-          <td>$KALIBRASYON->KOD<td>
-          <td>$KALIBRASYON->AD<td>
-          <td>{{ \Carbon\Carbon::parse($KALIBRASYON->BIRSONRAKIKALIBRASYONTARIHI)->diffInDays(now(), false) }}</td>
+            <tr>
+              <td>{{$KALIBRASYON->KOD}}</td>
+              <td>{{$KALIBRASYON->AD}}</td>
+              <td>{{ \Carbon\Carbon::parse($KALIBRASYON->BIRSONRAKIKALIBRASYONTARIHI)->diffInDays(now(), false) }}</td>
+            </tr>
           @endforeach
         </tbody>
     </table>
@@ -66,7 +68,7 @@
       function filterKalibrasyon(days) {
           $('#kalibrasyon-table tbody tr').each(function(){
               var kalan = parseInt($(this).find('td:last').text());
-              if(kalan <= days && kalan >= 0){
+              if(kalan <= days){
                   $(this).show();
               } else {
                   $(this).hide();
@@ -74,7 +76,7 @@
           });
       }
 
-      filterKalibrasyon(30);
+      // filterKalibrasyon(30);
 
       $('#btn-30').click(function(){ filterKalibrasyon(30); });
       $('#btn-15').click(function(){ filterKalibrasyon(15); });
