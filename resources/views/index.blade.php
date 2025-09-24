@@ -52,36 +52,37 @@
             </div>
         </div>
     </div>
-
-    <table class="table table-bordered" id="listeleTable">
-        <thead>
-            <tr>
-                <th>Kod</th>
-                <th>Ad</th>
-                <th>Kalan Gün</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Kod</th>
-                <th>Ad</th>
-                <th>Kalan Gün</th>
-            </tr>
-        </tfoot>
-        <tbody style="max-height:500px; overflow:auto;">
-          @php
-            $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get()
-          @endphp
-          @foreach ($KALIBRASYONLAR as $KALIBRASYON)
-            <tr>
-              <td>{{$KALIBRASYON->KOD}}</td>
-              <td>{{$KALIBRASYON->AD}}</td>
-              <td>{{ \Carbon\Carbon::parse($KALIBRASYON->BIRSONRAKIKALIBRASYONTARIHI)->diffInDays(now(), false) }}</td>
-            </tr>
-          @endforeach
-        </tbody>
-    </table>
-
+    <div style="overflow: auto; max-height: calc(100vh - 50px);">
+      <table class="table table-bordered" id="listeleTable">
+          <thead>
+              <tr>
+                  <th>Kod</th>
+                  <th>Ad</th>
+                  <th>Kalan Gün</th>
+              </tr>
+          </thead>
+          <tfoot>
+              <tr>
+                  <th>Kod</th>
+                  <th>Ad</th>
+                  <th>Kalan Gün</th>
+              </tr>
+          </tfoot>
+          <tbody style="max-height:500px; overflow:auto;">
+            @php
+              $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get()
+            @endphp
+            @foreach ($KALIBRASYONLAR as $KALIBRASYON)
+              <tr>
+                <td>{{$KALIBRASYON->KOD}}</td>
+                <td>{{$KALIBRASYON->AD}}</td>
+                <td>{{ \Carbon\Carbon::parse($KALIBRASYON->BIRSONRAKIKALIBRASYONTARIHI)->diffInDays(now(), false) }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+      </table>
+    </div>
+    
   </section>
   </div>
 

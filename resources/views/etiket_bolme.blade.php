@@ -399,28 +399,28 @@
                                 <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" id="NOT1_FILL" class="form-control NOT1">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" class="form-control TEXT1">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT2_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id="TEXT2_FILL" class="form-control TEXT2">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT3_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id="TEXT3_FILL" class="form-control TEXT3">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" id="TEXT4_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" id="TEXT4_FILL" class="form-control TEXT4">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" id="NUM1_FILL" class="form-control NUM1">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id="NUM2_FILL" class="form-control NUM2">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id="NUM3_FILL" class="form-control NUM3">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+                                <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id="NUM4_FILL" class="form-control NUM4">
                               </td>
                               <td>#</td>
 
