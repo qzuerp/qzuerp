@@ -792,13 +792,11 @@
   <script>
 
     function initTooltips() {
-      // var olan tooltip instance'larını temizle
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
         const inst = bootstrap.Tooltip.getInstance(el);
         if (inst) inst.dispose();
       });
 
-      // yeniden oluştur (container: body önemli)
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
         new bootstrap.Tooltip(el, {
           container: 'body',
@@ -964,7 +962,6 @@
                         $input.next('.select2-container').find('.select2-selection')
                               .addClass('is-invalid').css('border-color', '#dc3545');
                     }
-
                     isValid = false;
                 } else {
                     $input.removeClass('is-invalid').addClass('is-valid');
@@ -976,9 +973,10 @@
             });
 
             if(!isValid){
-                $('#loader').hide();
-                e.preventDefault();
-                e.stopPropagation();
+              mesaj('Lütfen tüm alanları doldurun!','error');
+              $('#loader').hide();
+              e.preventDefault();
+              e.stopPropagation();
             }
         });
 
