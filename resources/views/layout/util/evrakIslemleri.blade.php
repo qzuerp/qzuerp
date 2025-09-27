@@ -54,7 +54,12 @@
         @endif
         <td width="40">
           <div id="log" name="log">
-            <a class="pull-right" data-bs-toggle="modal" data-bs-target="#log"><i class="fa-solid fa-circle-info fa-2x"></i></a>
+            <a class="pull-right" data-bs-toggle="modal" data-bs-target="#info"><i class="fa-solid fa-circle-info fa-2x"></i></a>
+          </div>
+        </td>
+        <td width="40">
+          <div id="log" name="log">
+            <a class="pull-right" data-bs-toggle="modal" data-bs-target="#log"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></i></a>
           </div>
         </td>
         <td width="40">
