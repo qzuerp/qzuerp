@@ -20,14 +20,6 @@ $ekranLink = "uretim_gazetesi";
 @endphp
 
 <?php
-// ------------------------------------------------------------
-// Basit, tek dosyalık PHP raporu (SQL Server + PDO)
-// - Dinamik filtreler (sipariş no, müşteri kodu, mamul kodu, MPS no)
-// - R_OPERASYON başlıklarını tekilleyip sütunları pivot olarak oluşturur
-// - 4 senaryo arasında butonlarla geçiş (Süre, Miktar, %Miktar, %Süre)
-// - Hücrelerde tamamlanma oranına göre soldan dolgu (okunurluk dostu)
-// ------------------------------------------------------------
-
 // 1) Veritabanı bağlantısı (SQL Server – PDO sqlsrv)
 $server   = getenv('DB_SERVER')   ?: 'localhost';
 $db = $database;

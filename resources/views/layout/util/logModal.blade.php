@@ -1,4 +1,4 @@
-<div class="modal fade bd-example-modal-lg" id="log" tabindex="-1" role="dialog" aria-labelledby="log">
+<div class="modal fade bd-example-modal-lg" id="log1" tabindex="-1" role="dialog" aria-labelledby="log">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -46,6 +46,36 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bd-example-modal-lg" id="log" tabindex="-1" role="dialog" aria-labelledby="log">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Sayfa Tanıtım </h4>
+                <!-- <div class="alert alert-info" style="font-size: 14px;">
+                    <strong>İşlem Kodları:</strong> 
+                    <span><b>W</b> = Düzenleme, </span>
+                    <span><b>C</b> = Yeni Oluşturma, </span>
+                    <span><b>D</b> = Silme, </span>
+                    <span><b>P</b> = Yazdırma</span>
+                </div> -->
+            </div>
+
+            <div class="modal-body">
+                @php
+                    $tanitim = DB::table('INFO')->where('uygulama_kodu',$EVRAKTYPE)->first();
+                @endphp
+                {!! @$tanitim->icerik !!}
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $('#logSuzTable').DataTable({
         processing: true,

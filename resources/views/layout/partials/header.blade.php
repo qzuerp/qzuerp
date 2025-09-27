@@ -30,8 +30,11 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/flatpickr.css') }}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/main.css') }}">
+
 {{-- CSS Bitiş --}}
 
 {{-- JavaScript Başlangıç --}}
@@ -87,6 +90,9 @@
 
     <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}"></script>   
     <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
     <!-- Ana Javascript -->
     <script src="{{ URL::asset('qzuerp-sources/js/main.js') }}"></script>
 {{-- JS Bitiş --}}

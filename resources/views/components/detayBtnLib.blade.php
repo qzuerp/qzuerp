@@ -10,25 +10,25 @@
             <table id="DepoMevcutlari" class="table table-striped text-center" data-page-length="10">
                 <thead>
                     <tr class="bg-primary">
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Lot</th>
-                        <th>Seri No</th>
-                        <th>Depo</th>
-                        <th>Varyant Text 1</th>
-                        <th>Varyant Text 2</th>
-                        <th>Varyant Text 3</th>
-                        <th>Varyant Text 4</th>
-                        <th>Ölçü 1</th>
-                        <th>Ölçü 2</th>
-                        <th>Ölçü 3</th>
-                        <th>Ölçü 4</th>
-                        <th>Lok 1</th>
-                        <th>Lok 2</th>
-                        <th>Lok 3</th>
-                        <th>Lok 4</th>
+                        <th style="min-width:100px;">Kod</th>
+                        <th style="min-width:200px;">Ad</th>
+                        <th style="min-width:100px;">Miktar</th>
+                        <th style="min-width:100px;">Birim</th>
+                        <th style="min-width:100px;">Lot</th>
+                        <th style="min-width:100px;">Seri No</th>
+                        <th style="min-width:100px;">Depo</th>
+                        <th style="min-width:100px;">Varyant Text 1</th>
+                        <th style="min-width:100px;">Varyant Text 2</th>
+                        <th style="min-width:100px;">Varyant Text 3</th>
+                        <th style="min-width:100px;">Varyant Text 4</th>
+                        <th style="min-width:100px;">Ölçü 1</th>
+                        <th style="min-width:100px;">Ölçü 2</th>
+                        <th style="min-width:100px;">Ölçü 3</th>
+                        <th style="min-width:100px;">Ölçü 4</th>
+                        <th style="min-width:100px;">Lok 1</th>
+                        <th style="min-width:100px;">Lok 2</th>
+                        <th style="min-width:100px;">Lok 3</th>
+                        <th style="min-width:100px;">Lok 4</th>
                     </tr>
                 </thead>
 
@@ -82,28 +82,28 @@
             <table id="stokHarketleri" class="table table-striped text-center" data-page-length="10">
                 <thead>
                     <tr class="bg-primary">
-                        <th>Evrak No</th>
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Lot</th>
-                        <th>Seri No</th>
-                        <th>Depo</th>
-                        <th>Varyant Text 1</th>
-                        <th>Varyant Text 2</th>
-                        <th>Varyant Text 3</th>
-                        <th>Varyant Text 4</th>
-                        <th>Ölçü 1</th>
-                        <th>Ölçü 2</th>
-                        <th>Ölçü 3</th>
-                        <th>Ölçü 4</th>
-                        <th>Lok 1</th>
-                        <th>Lok 2</th>
-                        <th>Lok 3</th>
-                        <th>Lok 4</th>
-                        <th>Evrak tipi</th>
-                        <th>Tarih</th>
+                        <th style="min-width:100px;" >Evrak No</th>
+                        <th style="min-width:100px;" >Kod</th>
+                        <th style="min-width:200px;" >Ad</th>
+                        <th style="min-width:100px;" >Miktar</th>
+                        <th style="min-width:100px;" >Birim</th>
+                        <th style="min-width:100px;" >Lot</th>
+                        <th style="min-width:100px;" >Seri No</th>
+                        <th style="min-width:100px;" >Depo</th>
+                        <th style="min-width:100px;" >Varyant Text 1</th>
+                        <th style="min-width:100px;" >Varyant Text 2</th>
+                        <th style="min-width:100px;" >Varyant Text 3</th>
+                        <th style="min-width:100px;" >Varyant Text 4</th>
+                        <th style="min-width:100px;" >Ölçü 1</th>
+                        <th style="min-width:100px;" >Ölçü 2</th>
+                        <th style="min-width:100px;" >Ölçü 3</th>
+                        <th style="min-width:100px;" >Ölçü 4</th>
+                        <th style="min-width:100px;" >Lok 1</th>
+                        <th style="min-width:100px;" >Lok 2</th>
+                        <th style="min-width:100px;" >Lok 3</th>
+                        <th style="min-width:100px;" >Lok 4</th>
+                        <th style="min-width:100px;" >Evrak tipi</th>
+                        <th style="min-width:100px;" >Tarih</th>
                     </tr>
                 </thead>
 

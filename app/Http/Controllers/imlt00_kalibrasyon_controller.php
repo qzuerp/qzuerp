@@ -109,6 +109,7 @@ class imlt00_kalibrasyon_controller extends Controller
     $SERINO = $request->SERINO;
     $SORUMLU = $request->SORUMLU;
     $DEPARTMAN = $request->DEPARTMAN;
+    $KALIBRASYONBAKIMPERIYODU = $request->KALIBRASYONBAKIMPERIYODU;
 
     switch($islem_turu) {
 
@@ -232,7 +233,8 @@ class imlt00_kalibrasyon_controller extends Controller
           'MAKINE_SINIFI' => $MAKINE_SINIFI,
           'OLCUM_CIHAZI' => $OLCUM_CIHAZI,
           'SORUMLU' => $SORUMLU,
-          'DEPARTMAN' => $DEPARTMAN
+          'DEPARTMAN' => $DEPARTMAN,
+          'KALIBRASYONBAKIMPERIYODU' => $KALIBRASYONBAKIMPERIYODU
         ]);
 
         print_r("Kayıt işlemi başarılı.");
@@ -295,7 +297,8 @@ class imlt00_kalibrasyon_controller extends Controller
           'MAKINE_SINIFI' => $MAKINE_SINIFI,
           'OLCUM_CIHAZI' => $OLCUM_CIHAZI,
           'SORUMLU' => $SORUMLU,
-          'DEPARTMAN' => $DEPARTMAN
+          'DEPARTMAN' => $DEPARTMAN,
+          'KALIBRASYONBAKIMPERIYODU' => $KALIBRASYONBAKIMPERIYODU
         ]);
 
         print_r("Düzenleme işlemi başarılı.");

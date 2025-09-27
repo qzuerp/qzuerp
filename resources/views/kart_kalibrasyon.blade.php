@@ -317,9 +317,17 @@ if (isset($kart_veri)) {
         <input type="date" class="form-control" name="DEVREYEALMATARIHI" id="DEVREYEALMATARIHI" value="{{ @$kart_veri->DEVREYEALMATARIHI }}" >
       </div>
       <div class="col-xs-6 col-md-4">
-          <label>Kalibrasyon / Bakım Tarihi</label>
-          <input type="date" class="form-control" name="KALIBRASYONBAKIMTARIHI" id="KALIBRASYONBAKIMTARIHI" value="{{ @$kart_veri->KALIBRASYONBAKIMTARIHI }}" >
+        <label>Kalibrasyon / Bakım Tarihi</label>
+        <div class="d-flex w-100">
+          <input type="date" class="form-control w-100" name="KALIBRASYONBAKIMTARIHI" id="KALIBRASYONBAKIMTARIHI" value="{{ @$kart_veri->KALIBRASYONBAKIMTARIHI }}" >
+          <button type="button" class="btn btn-primary" id="TARIH_HESAPLA"><i class="fa-solid fa-calendar-days"></i></button>
         </div>
+      </div>
+
+      <div class="col-xs-6 col-md-4">
+        <label>Kalibrasyon Periyodu</label>
+        <input type="text" class="form-control w-100" name="KALIBRASYONBAKIMPERIYODU" id="KALIBRASYONBAKIMPERIYODU" value="{{ @$kart_veri->KALIBRASYONBAKIMPERIYODU }}" >
+      </div>
 
       <div class="col-md-4 col-xs-6 col-sm-6">
         <label>Birsonraki Kalibrasyon Bakım Tarihi</label>
@@ -871,6 +879,20 @@ if (isset($kart_veri)) {
       });
 
     }
+
+    let picker1 = flatpickr("#KALIBRASYONBAKIMTARIHI", {});
+    let picker2 = flatpickr("#BIRSONRAKIKALIBRASYONTARIHI", {});
+
+    $('#TARIH_HESAPLA').on('click', function () {
+      let ekYil = $('#KALIBRASYONBAKIMPERIYODU').val();
+      let bugun = new Date();
+      let ileriTarih = new Date(bugun);
+      ileriTarih.setFullYear(bugun.getFullYear() + ekYil);
+
+      picker1.setDate(bugun, true);       // true = input value'yu da günceller
+      picker2.setDate(ileriTarih, true);
+    });
+
   </script>
 
 

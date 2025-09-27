@@ -1,7 +1,7 @@
 </div>
     <footer class="main-footer footer-ayar row">
 
-      <strong>Copyright &copy; 2022-2023 QzuERP <a href="https:\\karakuzu.info" target="_blank">Karakuzu Bilişim</a></strong> Tüm Hakları Saklıdır.
+      <strong>Copyright &copy; {{ now()->year }} QzuERP <a href="https:\\karakuzu.info" target="_blank">Karakuzu Bilişim</a></strong> Tüm Hakları Saklıdır.
 
     </footer>
 
@@ -233,9 +233,6 @@
           "order": [[ 0, "desc" ]],
           dom: 'rtip',
           buttons: ['copy', 'excel', 'print'],
-          language: {
-            url: '{{ asset("tr.json") }}'
-          },
           language: {
             url: '{{ asset("tr.json") }}'
           },

@@ -298,10 +298,17 @@
         @if (in_array('TMUSTR', $kullanici_read_yetkileri))
           <li><a href="{{ route('zorunlu_alan') }}"><i class='bx bx-spreadsheet'></i> Zorunlu Alan Paneli</a></li>
         @endif
+        @if (in_array('INFO', $kullanici_read_yetkileri))
+          <li><a href="{{ route('info') }}"><i class="fa-solid fa-info"></i> Ekran Tanıtım Kart</a></li>
+        @endif
+         @if ($user->perm == "ADMIN")
+          <li><a href="user"><i class='fa fa-users'></i>Kullanıcılar</a></li>
+        @endif
+        <li><a href="change_password"><i class='bx bx-key'></i>Şifre Değiştir</a></li>
       </ul>
     </li>
 
-    <li class="treeview">
+    <!-- <li class="treeview">
       <a href="#">
         <i class='bx bx-key'></i>
         <span class="links_name">Kullanıcılar</span>
@@ -316,7 +323,7 @@
         @endif
         <li><a href="change_password"><i class='bx bx-key'></i>Şifre Değiştir</a></li>
       </ul>
-    </li>
+    </li> -->
 
     <li class="treeview">
   </ul>

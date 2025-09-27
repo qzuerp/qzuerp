@@ -45,120 +45,118 @@
     @include('layout.util.logModal',['EVRAKTYPE' => 'TMUSTR', 'EVRAKNO' => @$kart_veri->EVRAKNO])
     
     <section class="content">
-        <div class="container-fluid">
-            <form action="tmustr_islemler" method="POST" name="verilerForm" id="verilerForm">
-                @csrf
-                
-                <!-- Tablo Seçimi Kartı -->
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-database mr-2"></i>Tablo Bilgileri
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="tablo_kodu">
-                                        <i class="fas fa-table mr-1"></i>Tablo Kodu
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-control select2" name="TABLO_KODU" id="tablo_kodu" required>
-                                        <option value="">Tablo Seçiniz...</option>
-                                        @php
-                                            $TABLOLAR = DB::table($database.'table00')->orderBy('baslik')->get();
-                                        @endphp
-                                        @foreach ($TABLOLAR as $TABLO)
-                                            <option value="{{ $TABLO->tablo }}" 
-                                                {{ (@$kart_veri->TABLO_KODU == $TABLO->tablo) ? 'selected' : '' }}>
-                                                {{ $TABLO->baslik }} ({{ $TABLO->tablo }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <small class="form-text text-muted">Zorunlu alanları belirlemek istediğiniz tabloyu seçin</small>
-                                </div>
+        <form action="tmustr_islemler" method="POST" name="verilerForm" id="verilerForm">
+            @csrf
+            
+            <!-- Tablo Seçimi Kartı -->
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-database mr-2"></i>Tablo Bilgileri
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="tablo_kodu">
+                                    <i class="fas fa-table mr-1"></i>Tablo Kodu
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control select2" name="TABLO_KODU" id="tablo_kodu" required>
+                                    <option value="">Tablo Seçiniz...</option>
+                                    @php
+                                        $TABLOLAR = DB::table($database.'table00')->orderBy('baslik')->get();
+                                    @endphp
+                                    @foreach ($TABLOLAR as $TABLO)
+                                        <option value="{{ $TABLO->tablo }}" 
+                                            {{ (@$kart_veri->TABLO_KODU == $TABLO->tablo) ? 'selected' : '' }}>
+                                            {{ $TABLO->baslik }} ({{ $TABLO->tablo }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Zorunlu alanları belirlemek istediğiniz tabloyu seçin</small>
                             </div>
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="aciklama">
-                                        <i class="fas fa-comment mr-1"></i>Açıklama
-                                    </label>
-                                    <input type="text" 
-                                           name="aciklama" 
-                                           id="aciklama"
-                                           class="form-control" 
-                                           placeholder="Konfigürasyon açıklaması..."
-                                           value="{{ @$kart_veri->aciklama }}"
-                                           maxlength="255">
-                                    <small class="form-text text-muted">Bu konfigürasyon için açıklama giriniz (opsiyonel)</small>
-                                </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="aciklama">
+                                    <i class="fas fa-comment mr-1"></i>Açıklama
+                                </label>
+                                <input type="text" 
+                                        name="aciklama" 
+                                        id="aciklama"
+                                        class="form-control" 
+                                        placeholder="Konfigürasyon açıklaması..."
+                                        value="{{ @$kart_veri->aciklama }}"
+                                        maxlength="255">
+                                <small class="form-text text-muted">Bu konfigürasyon için açıklama giriniz (opsiyonel)</small>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- İşlem Butonları -->
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <button type="reset" class="btn btn-warning mr-2" id="form-reset">
-                                    <i class="fas fa-redo mr-1"></i>Sıfırla
-                                </button>
-                                <button type="submit" class="btn btn-success" id="form-submit" disabled>
-                                    <i class="fas fa-save mr-1"></i>Kaydet
-                                </button>
-                            </div>
+            <!-- İşlem Butonları -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 text-right">
+                            <button type="reset" class="btn btn-warning mr-2" id="form-reset">
+                                <i class="fas fa-redo mr-1"></i>Sıfırla
+                            </button>
+                            <button type="submit" class="btn btn-success" id="form-submit" disabled>
+                                <i class="fas fa-save mr-1"></i>Kaydet
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Tablo Alanları Kartı -->
-                <div class="card card-info card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-list-check mr-2"></i>Tablo Alanları
-                        </h3>
-                        <div class="card-tools">
-                            <div class="btn-group" id="alan-tools" style="display: none;">
-                                <button type="button" class="btn  btn-success" id="select-all">
-                                    <i class="fas fa-check-square"></i> Tümünü Seç
-                                </button>
-                                <button type="button" class="btn  btn-warning" id="select-none">
-                                    <i class="fas fa-square"></i> Tümünü Temizle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="alanlar-container">
-                            <div class="alert text-center">
-                                <i class="fas fa-info-circle fa-2x mb-2"></i>
-                                <h5>Tablo Seçimi Bekleniyor</h5>
-                                <p class="mb-0">Yukarıdan bir tablo seçerek o tablonun alanlarını görüntüleyebilirsiniz.</p>
-                            </div>
-                        </div>
-                        
-                        <div id="alanlar-loading" style="display: none;">
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="sr-only"></span>
-                                </div>
-                                <p class="mt-2 text-muted">Tablo alanları yükleniyor</p>
-                            </div>
-                        </div>
-
-                        <div id="secili-alanlar-ozet" style="display: none;">
-                            <div class="alert alert-success">
-                                <i class="fas fa-check-circle mr-2"></i>
-                                <span id="secili-alan-sayisi">0</span> alan seçildi
-                            </div>
+            <!-- Tablo Alanları Kartı -->
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-list-check mr-2"></i>Tablo Alanları
+                    </h3>
+                    <div class="card-tools">
+                        <div class="btn-group" id="alan-tools" style="display: none;">
+                            <button type="button" class="btn  btn-success" id="select-all">
+                                <i class="fas fa-check-square"></i> Tümünü Seç
+                            </button>
+                            <button type="button" class="btn  btn-warning" id="select-none">
+                                <i class="fas fa-square"></i> Tümünü Temizle
+                            </button>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+                <div class="card-body">
+                    <div id="alanlar-container">
+                        <div class="alert text-center">
+                            <i class="fas fa-info-circle fa-2x mb-2"></i>
+                            <h5>Tablo Seçimi Bekleniyor</h5>
+                            <p class="mb-0">Yukarıdan bir tablo seçerek o tablonun alanlarını görüntüleyebilirsiniz.</p>
+                        </div>
+                    </div>
+                    
+                    <div id="alanlar-loading" style="display: none;">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <p class="mt-2 text-muted">Tablo alanları yükleniyor</p>
+                        </div>
+                    </div>
+
+                    <div id="secili-alanlar-ozet" style="display: none;">
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span id="secili-alan-sayisi">0</span> alan seçildi
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </section>
 </div>
 
@@ -170,7 +168,7 @@
         border-radius: 0.25rem;
         padding: 15px;
         background-color: #f8f9fa;
-        /* user-select: none; */
+        user-select: none;
     }
 
     .alan-checkbox-item {

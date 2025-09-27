@@ -473,14 +473,22 @@ function inputTemizle() {
   $('#LAST_TRNUM2').val('000000');
   $('#LAST_TRNUM3').val('000000');
 
-  //yeniEvrakNo();
   const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // 0-11
-  const year = today.getFullYear();
 
-  const formattedDate = `${day}/${month}/${year}`;
+  // DD/MM/YYYY format istersen gene formatlarsın ama flatpickr direkt Date nesnesiyle çalışıyor
+  const formattedDate = today.toLocaleDateString('tr-TR'); 
+
+  // Eğer sadece <span> ya da <div> içindeyse
   $('#TARIH').text(formattedDate);
+  $('#TARIH_E').text(formattedDate);
+
+  // Eğer flatpickr input’larıysa
+  let pickerTarih = flatpickr("#TARIH", {});
+  let pickerTarihE = flatpickr("#TARIH_E", {});
+
+  pickerTarih.setDate(today, true);
+  pickerTarihE.setDate(today, true);
+
 }
 
 

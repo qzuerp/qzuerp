@@ -223,7 +223,7 @@
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
 
-                          <td><button type="button" class="btn btn-radius btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                          <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
                           <td style="min-width: 250px;">
@@ -275,10 +275,10 @@
                             </select>
                           </td> -->
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" data-name="SF_NETKAPANANMIK" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" class="form-control" disabled>
                           </td> 
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" data-name="URETILEN_MIKTARI" id="URETILEN_MIKTARI_SHOW" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" id="URETILEN_MIKTARI_SHOW" class="form-control" disabled>
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR" id="TERMIN_TAR_FILL" class="form-control">
