@@ -20,15 +20,27 @@
   
   // Kalibrasyon verileri
   $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get();
-  $kritik = 0; $yakin = 0; $normal = 0; $otuzgun = 0;
-  foreach($KALIBRASYONLAR as $k) {
-    $kalanGun = \Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI)->diffInDays(now(), false);
-    if($kalanGun <= 7) $kritik++;
-    elseif($kalanGun <= 15) $yakin++;
-    else $normal++;
-    
-    if($kalanGun > 0 && $kalanGun <= 30) $otuzgun++;
-  }
+  $kritik = 0; 
+    $yakin = 0; 
+    $normal = 0; 
+    $otuzgun = 0;
+
+    foreach ($KALIBRASYONLAR as $k) {
+        $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
+
+        if ($kalanGun >= 0 && $kalanGun <= 7) {
+            $kritik++;
+        } elseif ($kalanGun >= 0 && $kalanGun <= 15) {
+            $yakin++;
+        } elseif ($kalanGun >= 0) {
+            $normal++;
+        }
+
+        if ($kalanGun >= 0 && $kalanGun <= 30) {
+            $otuzgun++;
+        }
+    }
+
 @endphp
 
 <style>

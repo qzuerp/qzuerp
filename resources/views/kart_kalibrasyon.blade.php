@@ -523,7 +523,7 @@ if (isset($kart_veri)) {
                           <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('example2')">
                             <i class="fas fa-print"></i> Yazdır
                           </button>
-                        </div>""
+                        </div>
                       </div>
                     </div>
 
@@ -691,7 +691,7 @@ if (isset($kart_veri)) {
                             echo "<td><b>".$kalanGun."</b></td>";
                             echo "<td><b>".$table->DURUM."</b></td>";
                             
-                            echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+                            echo "<td>"."<a class='btn btn-info' href='kart_kalibrasyon?ID="."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                             echo "</tr>";
                           }
 
