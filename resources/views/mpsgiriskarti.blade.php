@@ -1338,7 +1338,7 @@
 										    ->select(
 										        $database.'stok40e.*',
 										        $database.'stok40t.*'
-										    )->where('stok40e.AK','A')
+										    )->where($database.'stok40e.AK','A')
 										    ->get();
 										foreach ($stok40t_evraklar as $key => $veri)
 										{
