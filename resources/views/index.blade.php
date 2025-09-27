@@ -28,15 +28,15 @@
     foreach ($KALIBRASYONLAR as $k) {
         $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
 
-        if ($kalanGun >= 0 && $kalanGun <= 7) {
+        if ($kalanGun <= 7) {
             $kritik++;
-        } elseif ($kalanGun >= 0 && $kalanGun <= 15) {
+        } elseif ($kalanGun <= 15) {
             $yakin++;
         } elseif ($kalanGun >= 0) {
             $normal++;
         }
 
-        if ($kalanGun >= 0 && $kalanGun <= 30) {
+        if ($kalanGun <= 30) {
             $otuzgun++;
         }
     }
