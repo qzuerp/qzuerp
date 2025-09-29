@@ -403,7 +403,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Endeks</label>
-                                        <select class="form-control js-example-basic-single" name="ENDEKS">
+                                        <select class="form-control js-example-basic-single ENDEKS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ENDEKS" name="ENDEKS">
                                             <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Hammadde Fiyat ENDEKS" ? "selected" : ""?> value="Hammadde Fiyat ENDEKS">Hammadde Fiyat Endeks</option>
@@ -414,7 +414,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Kaynak</label>
-                                        <select class="form-control select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="KAYNAK_TYPE" id="BOMREC_INPUTTYPE_SHOW">
+                                        <select class="form-control select2 js-example-basic-single KAYNAK_TYPE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAK_TYPE" onchange="getKaynakCodeSelect()" name="KAYNAK_TYPE" id="BOMREC_INPUTTYPE_SHOW">
                                             <option value=" ">Seç</option>
                                             <option value="H" {{@$kart_veri->KAYNAK_TYPE == 'H' ? 'selected' : ''}}>H - Hammadde</option>
                                             <option value="I" {{@$kart_veri->KAYNAK_TYPE == 'I' ? 'selected' : ''}}>I - Tezgah / İş Merk</option>
@@ -425,7 +425,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Tezgah/Hammadde Kodu</label>
-                                        <select class="form-control select2 js-example-basic-single" name="" id="BOMREC_KAYNAKCODE_SHOW">
+                                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" name="" id="BOMREC_KAYNAKCODE_SHOW">
                                             <option value="{{@$kart_veri->TEZGAH_KODU}}" selected>{{@$kart_veri->TEZGAH_KODU}}</option>
                                         </select>
                                         <input type="hidden" name="TEZGAH_KODU" id="tezgah_hammadde_kodu" value="{{@$kart_veri->TEZGAH_KODU}}">
@@ -436,6 +436,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="box box-info">
                 <div class="box-body">
                     <!-- Tab bölümü -->
@@ -470,10 +471,10 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                <input type="date" name="" id="GECERLILIK_TARIHI" data-isim="Geçerlilik Tarihi" class="form-control required">
+                                                <input type="date" name="" id="GECERLILIK_TARIHI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="VALIDAFTERTARIH" data-isim="Geçerlilik Tarihi" class="form-control VALIDAFTERTARIH  required">
                                             </td> 
                                             <td>
-                                                <select class="form-control select2 js-example-basic-single required" data-isim="Maliyet Unsuru" name="" id="MALIYET_UNSURU" style="width: 100%;" >
+                                                <select class="form-control select2 js-example-basic-single required UNSUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNSUR" data-isim="Maliyet Unsuru" name="" id="MALIYET_UNSURU" style="width: 100%;" >
                                                     <option value=" ">Seç</option>
                                                     <option value="HM">HM | Hammadde Maliyet</option>
                                                     <option value="IS">IS | İşçilik Maliyet</option>
@@ -481,10 +482,10 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" name="" id="TUTAR" class="form-control text-danger required number" data-isim="Tutar" maxlength="12">
+                                                <input type="text" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="TUTAR form-control text-danger required number" data-isim="Tutar" maxlength="12">
                                             </td>
                                             <td>
-                                                <select id="PARA_BIRIMI" class="form-control js-example-basic-single required" data-isim="Para Birimi" style="width: 100%;">
+                                                <select id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARABIRIMI" class="PARABIRIMI form-control js-example-basic-single required" data-isim="Para Birimi" style="width: 100%;">
                                                     <option value=" ">Seç</option>
                                                     @php
                                                         $kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -499,13 +500,13 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" name="" id="BIRIM" class="form-control"  readonly>
+                                                <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNIT" name="" id="BIRIM" class="UNIT form-control"  readonly>
                                             </td>
                                             <td>
-                                                <input type="text" name="" id="BAZ_MIKTAR" class="form-control required number" data-isim="Baz Miktarı">
+                                                <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MIKTAR" name="" id="BAZ_MIKTAR" class="MIKTAR form-control required number" data-isim="Baz Miktarı">
                                             </td>
                                             <td>
-                                                <input type="text" name="" id="ACIKLAMA" class="form-control">
+                                                <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" name="" id="ACIKLAMA" class="ACIKLAMA form-control">
                                             </td>
                                         </tr>
                                     </thead>
@@ -523,7 +524,7 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                <input type="date" class="form-control" name="GECERLILIK_TARIHI[]" value="{{ $satir->VALIDAFTERTARIH }}" >
+                                                <input type="date" class="VALIDAFTERTARIH form-control" name="GECERLILIK_TARIHI[]" value="{{ $satir->VALIDAFTERTARIH   }}" >
                                                 <input type="hidden" name="TRNUM[]" value="{{ $satir->TRNUM }}">
                                             </td>
                                             <td>
@@ -535,7 +536,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control number" name="TUTAR[]" value="{{ $satir->TUTAR }}" >
+                                                <input type="text" class="form-control number TUTAR" name="TUTAR[]" value="{{ $satir->TUTAR }}" >
                                             </td>
                                             <td>
                                                 <select name="PARA_BIRIMI[] js-example-basic-single" class="form-control" style="width: 100%;">
@@ -555,13 +556,13 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" name="BIRIM[]" value="{{ $satir->UNIT }}" readonly>
+                                                <input type="text"  class="form-control UNIT" name="BIRIM[]" value="{{ $satir->UNIT }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control number" name="BAZ_MIKTAR[]" value="{{ $satir->MIKTAR }}">
+                                                <input type="text" class="form-control number MIKTAR"  name="BAZ_MIKTAR[]" value="{{ $satir->MIKTAR }}">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" name="ACIKLAMA[]" value="{{ $satir->UNSUR_ACIKLAMA }}" >
+                                                <input type="text" class="form-control UNSUR_ACIKLAMA" name="ACIKLAMA[]" value="{{ $satir->UNSUR_ACIKLAMA }}" >
                                             </td>
                                         </tr>
                                         @endforeach

@@ -76,6 +76,7 @@ class stok63_controller extends Controller
     $AK = $request->AK;
     $LAST_TRNUM = $request->LAST_TRNUM;
     $TRNUM = $request->TRNUM;
+    $TERMIN_TAR = $request->TERMIN_TAR;
     
     if ($KOD == null) {
       $satir_say = 0;
@@ -195,6 +196,7 @@ class stok63_controller extends Controller
             'NUM2' => $NUM2[$i],
             'NUM3' => $NUM3[$i],
             'NUM4' => $NUM4[$i],
+            'TERMIN_TAR' => $TERMIN_TAR[$i],
             'created_at' => date('Y-m-d H:i:s'),
 
           ]);
@@ -398,6 +400,7 @@ class stok63_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'TERMIN_TAR' => $TERMIN_TAR[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -609,6 +612,7 @@ class stok63_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'TERMIN_TAR' => $TERMIN_TAR[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
 

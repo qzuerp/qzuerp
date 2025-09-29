@@ -108,18 +108,18 @@ if (isset($kart_veri)) {
         <div class="row ">
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Fiş No</label>
-            <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+            <input type="text" class="form-control EVRAKNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
             <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
           </div>
 
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Tarih</label>
-            <input type="date" class="form-control" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
+            <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
           </div>
 
           <div class="col-md-4 col-sm-4 col-xs-6">
             <label>Müşteri Kodu</label>
-            <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
+            <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE"  style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
                <option value ='' selected></option>
               @php
                 $evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();

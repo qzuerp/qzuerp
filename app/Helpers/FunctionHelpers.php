@@ -56,4 +56,49 @@ class FunctionHelpers
             'OTARIH' => $TARIH
         ]);
     }
+
+    public static function KodKontrol($KOD)
+    {
+        if(Auth::check())
+        {
+            $p = Auth::user();
+            $firma = trim($p->firma).'.dbo.';
+        }
+        if(DB::table($firma.'mmps10e')->where('MAMULSTOKKODU',$KOD)->exists())
+            return 'Bu kodun MPS bağlantısı bulunmakta';
+        else if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD)->exists())
+            return 'Bu kodun ürün ağacı bağlantısı bulunmakta';
+        else if(DB::table($firma.'bomu01t')->where('BOMREC_KAYNAKCODE',$KOD)->exists())
+            return 'Bu kodun ürün ağacı(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok40t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun ürün ağacı(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok26t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun depordan depoya transfer(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok25t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun etiket bölme(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok63t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun fason sevk irsaliyesi(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok68t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun fason geliş irsaliyesi(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok21t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun stok giriş-çıkış(Satır) bağlantısı bulunmakta';
+        else if(DB::table($firma.'sfdc31e')->where('KOD',$KOD)->exists())
+            return 'Bu kodun çalışma bildirimi bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok20t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun üretim fişi bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok60t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun sevk irsaliyesi bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok48t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun fiyat listesi bağlantısı bulunmakta';
+        else if(DB::table($firma.'tekl20tı')->where('KOD',$KOD)->exists())
+            return 'Bu kodun teklif fiyat analiz bağlantısı bulunmakta';
+        else if(DB::table($firma.'stdm10e')->where('TEZGAH_KODU',$KOD)->exists())
+            return 'Bu kodun maliyet tanımı bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok46t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun satın alma sipariş bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok29t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun satın alma irsaliyesi bağlantısı bulunmakta';
+        else if(DB::table($firma.'stok29t')->where('KOD',$KOD)->exists())
+            return 'Bu kodun satın alma irsaliyesi bağlantısı bulunmakta';
+    }
 }

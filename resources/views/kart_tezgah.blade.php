@@ -113,12 +113,12 @@ if (isset($kart_veri)) {
 							<div class="row ">
 							  <div class="col-md-3 col-sm-4 col-xs-6">
 							   <label>Tezgah Kodu</label>
-							   <input type="text" class="form-control" name="KOD" id="KOD" maxlength="24"  value="{{ @$kart_veri->KOD }}">
+							   <input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="24"  value="{{ @$kart_veri->KOD }}">
 							 </div>
 
 							 <div class="col-md-3 col-sm-4 col-xs-6">
 							   <label>Tezgah Adı</label>
-							   <input type="text" class="form-control" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}" >
+							   <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}" >
 							 </div>
 
 							 <div class="col-md-2 col-sm-1 col-xs-2">
@@ -131,7 +131,7 @@ if (isset($kart_veri)) {
 							<div class="col-md-3 col-sm-4 col-xs-6">
 								<label>Cihaz Tipi</label>
 								{{-- <input type="hidden" class="form-control "maxlength="50" name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
-								<select name="CIHAZTIPI" id="CIHAZTIPI" class="form-control select2">
+								<select name="CIHAZTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIHAZTIPI" id="CIHAZTIPI" class="CIHAZTIPI form-control select2">
 									<option>Seç</option>
 									<option>Tezgah</option>
 									<option>Kalıp</option>
@@ -190,7 +190,7 @@ if (isset($kart_veri)) {
          <!-- <p>Grup Kodu Tanımları</p> -->
          <div class="col-xs-6 col-md-3">
           <label>Toplam Tezgah Sayısı</label>
-          <input type="number" class="form-control "maxlength="50" name="B_MAKINASAYISI" id="B_MAKINASAYISI" value="{{ @$kart_veri->B_MAKINASAYISI }}" >
+          <input type="number" class="form-control B_MAKINASAYISI" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_MAKINASAYISI" name="B_MAKINASAYISI" id="B_MAKINASAYISI" value="{{ @$kart_veri->B_MAKINASAYISI }}" >
         </div>
 
 
@@ -198,7 +198,7 @@ if (isset($kart_veri)) {
           <label>İç/Dış Fason [I/D] ?</label>
           <!-- <input type="text" class="form-control "maxlength="50" name="ICDIS"  value="" > -->
           <input type="hidden" class="form-control "maxlength="10" name="ICDIS"   value="" >
-          <select name="ICDIS" id="ICDIS" class="form-control select2">
+          <select name="ICDIS" id="ICDIS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ICDIS" class="ICDIS form-control select2">
 						<option>İç</option>
             <option>Dış</option>
 
@@ -207,7 +207,7 @@ if (isset($kart_veri)) {
 
         <div class="col-md-4 col-xs-6">
           <label>Fasoncu Firma C/H Kodu</label>
-          <select class="form-control select2" name="DISISECHKOD" id="DISISECHKOD">
+          <select class="form-control select2 DISISECHKOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DISISECHKOD" name="DISISECHKOD" id="DISISECHKOD">
            <option value="">Seç...</option>
            @php
 
@@ -226,26 +226,26 @@ if (isset($kart_veri)) {
 
        <div class="col-md-2 col-xs-6 col-sm-6">
         <label>OEE Oranı</label>
-        <input type="number" class="form-control "maxlength="50" step="0.01" name="B_PLANCALISMAYUZDE" id="B_PLANCALISMAYUZDE" value="{{ @$kart_veri->B_PLANCALISMAYUZDE }}" >
+        <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_PLANCALISMAYUZDE" class="form-control B_PLANCALISMAYUZDE"maxlength="50" step="0.01" name="B_PLANCALISMAYUZDE" id="B_PLANCALISMAYUZDE" value="{{ @$kart_veri->B_PLANCALISMAYUZDE }}" >
       </div>
 
       <div class="col-md-2 col-xs-6  col-sm-6">
         <label>Operatör Türü</label>
-        <input type="text" class="form-control "maxlength="4" name="OPERATORTIPI" id="OPERATORTIPI" value="{{ @$kart_veri->OPERATORTIPI }}" >
+        <input type="text" class="form-control OPERATORTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OPERATORTIPI"maxlength="4" name="OPERATORTIPI" id="OPERATORTIPI" value="{{ @$kart_veri->OPERATORTIPI }}" >
       </div>
       <div class="col-md-3 col-xs-6">
         <label>Setup Operatör Türü</label>
-        <input type="text" class="form-control "maxlength="4" name="SETUPOPERATORTIPI" id="SETUPOPERATORTIPI" value="{{ @$kart_veri->SETUPOPERATORTIPI }}" >
+        <input type="text" class="form-control SETUPOPERATORTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SETUPOPERATORTIPI"maxlength="4" name="SETUPOPERATORTIPI" id="SETUPOPERATORTIPI" value="{{ @$kart_veri->SETUPOPERATORTIPI }}" >
 
       </div>
       <div class="col-md-3 col-xs-6  col-sm-6">
         <label>Çalışma Takvim Kodu</label>
-        <input type="text" class="form-control "maxlength="10" name="TAKVIMKODU" id="TAKVIMKODU" value="{{ @$kart_veri->TAKVIMKODU }}" >
+        <input type="text" class="form-control TAKVIMKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TAKVIMKODU"maxlength="10" name="TAKVIMKODU" id="TAKVIMKODU" value="{{ @$kart_veri->TAKVIMKODU }}" >
 
       </div>
       <div class="col-md-3 col-xs-6  col-sm-6">
         <label>Ortalama Setup Süresi</label>
-        <input type="number" class="form-control" step="0.01" name="B_SETUPSURE" id="B_SETUPSURE" value="{{ @$kart_veri->B_SETUPSURE }}" >
+        <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_SETUPSURE" class="form-control B_SETUPSURE" step="0.01" name="B_SETUPSURE" id="B_SETUPSURE" value="{{ @$kart_veri->B_SETUPSURE }}" >
       </div>
     </div>
   </div>

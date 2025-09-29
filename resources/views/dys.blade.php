@@ -278,8 +278,8 @@
 										</div>
 		
 										@php $dosyaTuruKodlari = DB::table($database.'gecoust')->where('EVRAKNO','DOSYATURLERI')->get(); @endphp
-								<div class="row">
-									<div class="row">
+								<div class="row mx-1">
+									
 									<div class="box">
 										<div class="box-body">
 										<!-- <form class="form-horizontal" enctype="multipart/form-data" method="POST" name="dosyaVerilerForm" id="dosyaVerilerForm"> -->
@@ -309,7 +309,6 @@
 											</div>
 										<!-- </form> -->
 										</div>
-									</div>
 									</div>
 									<div class="col-md-2"></div>
 								</div>

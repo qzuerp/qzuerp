@@ -30,6 +30,7 @@
         <form action="{{ url('info_islemler') }}" method="POST" name="verilerForm" id="verilerForm">
             @csrf
             <select class="select2 w-100" style="margin-bottom:20px;" name="EVRAKTYPE" id="EVRAKTYPE">
+              <option value="" disabled selected>Seç</option>
                 @php
                     $app_list = DB::table('gecoust')->where('EVRAKNO','APPLIST')->get();
                 @endphp
@@ -37,6 +38,7 @@
                     <option value="{{ $app->KOD }}" {{ $app->KOD == $table ? 'selected' : '' }}>{{ $app->AD }} ({{ $app->KOD }})</option>
                 @endforeach
             </select>
+            <hr>
             <div id="editor" style="height:400px; background:#fff;">{!! @$tanim->icerik !!}</div>
             <input type="hidden" name="content" id="content">
             <br>

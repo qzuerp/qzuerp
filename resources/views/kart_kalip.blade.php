@@ -101,12 +101,12 @@ if (isset($kart_veri)) {
 							<div class="row ">
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kalıp Kodu</label>
-									<input type="text" class="form-control" name="KOD" id="KOD"  maxlength="16"  value="{{ @$kart_veri->KOD }}">
+									<input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD"  maxlength="16"  value="{{ @$kart_veri->KOD }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kalıp Adı</label>
-									<input type="text" class="form-control" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
+									<input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
 								</div>
 
 								<div class="col-md-2 col-sm-1 col-xs-2">
@@ -121,12 +121,12 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Seri No</label>
-									<input type="text" class="form-control" maxlength="50" name="SERINO" id="SERINO" value="{{ @$kart_veri->SERINO }}">
+									<input type="text" class="form-control SERINO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" maxlength="50" name="SERINO" id="SERINO" value="{{ @$kart_veri->SERINO }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kalan Ömür</label>
-									<input type="number" class="form-control" maxlength="50" name="KALAN_OMUR" id="KALAN_OMUR" value="{{ @$kart_veri->KALAN_OMUR }}">
+									<input type="number" class="form-control KALAN_OMUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALAN_OMUR" maxlength="50" name="KALAN_OMUR" id="KALAN_OMUR" value="{{ @$kart_veri->KALAN_OMUR }}">
 								</div>
 
 							</div>
@@ -156,7 +156,7 @@ if (isset($kart_veri)) {
 											
 								<div class="col-md-3 col-xs-6  col-sm-4">
 									<label>Stok Kodu</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="STOK_KODU" id="STOK_KODU">
+									<select class="form-control js-example-basic-single STOK_KODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_KODU" style="width: 100%;" name="STOK_KODU" id="STOK_KODU">
 											@php
 												$evraklar=DB::table($database.'stok00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
 
@@ -174,7 +174,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Öncelik Seviyesi</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="ONCELIK_SEV" id="ONCELIK_SEV">
+									<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ONCELIK_SEV" style="width: 100%;" name="ONCELIK_SEV" id="ONCELIK_SEV">
 										<option value="">Seç...</option>
 										<option value="1" @if (@$kart_veri->ONCELIK_SEV == "1") selected @endif>1. Öncelik</option>
 										<option value="2" @if (@$kart_veri->ONCELIK_SEV == "2") selected @endif>2. Öncelik</option>
@@ -186,7 +186,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Sorumlu</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="SORUMLU_ICDIS" id="SORUMLU_ICDIS">
+									<select class="form-control js-example-basic-single SORUMLU_ICDIS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SORUMLU_ICDIS" style="width: 100%;" name="SORUMLU_ICDIS" id="SORUMLU_ICDIS">
 										<option value="">Seç...</option>
 										<option value="İç" @if (@$kart_veri->SORUMLU_ICDIS == "İç") selected @endif>İç</option>
 										<option value="Dış" @if (@$kart_veri->SORUMLU_ICDIS == "Dış") selected @endif>Dış</option>
@@ -195,7 +195,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Sorumlu Kişi</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="SORUMLU_KISI" id="SORUMLU_KISI">
+									<select class="form-control js-example-basic-single SORUMLU_KISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SORUMLU_KISI" style="width: 100%;" name="SORUMLU_KISI" id="SORUMLU_KISI">
 											@php
 												$evraklar=DB::table($database.'pers00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
 
@@ -213,7 +213,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Kalıp Kime Ait</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="KALIP_KIMEAIT" id="KALIP_KIMEAIT">
+									<select class="form-control js-example-basic-single KALIP_KIMEAIT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KIMEAIT" style="width: 100%;" name="KALIP_KIMEAIT" id="KALIP_KIMEAIT">
 										<option value="">Seç...</option>
 										<option value="Bize" @if (@$kart_veri->KALIP_KIMEAIT == "Bize") selected @endif>Bize</option>
 										<option value="Müşteriye" @if (@$kart_veri->KALIP_KIMEAIT == "Müşteriye") selected @endif>Müşteriye</option>
@@ -223,7 +223,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Üretici Firma</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="URETICI_FIRMA" id="URETICI_FIRMA">
+									<select class="form-control js-example-basic-single URETICI_FIRMA" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="URETICI_FIRMA" style="width: 100%;" name="URETICI_FIRMA" id="URETICI_FIRMA">
 											@php
 												$evraklar=DB::table($database.'cari00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
 
@@ -241,7 +241,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>İlgili Müşteri</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="ILG_MUSTERI" id="ILG_MUSTERI">
+									<select class="form-control js-example-basic-single ILG_MUSTERI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILG_MUSTERI" style="width: 100%;" name="ILG_MUSTERI" id="ILG_MUSTERI">
 											@php
 												$evraklar=DB::table($database.'cari00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
 
@@ -263,7 +263,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Kalıp Cinsi</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="KALIP_CINSI" id="KALIP_CINSI">
+									<select class="form-control js-example-basic-single KALIP_CINSI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_CINSI" style="width: 100%;" name="KALIP_CINSI" id="KALIP_CINSI">
 											@php
 
 												foreach ($KALIP_CINSI_veri as $key => $veri) {
@@ -280,7 +280,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Kalıp Sınıfı</label>
-									<select class="form-control js-example-basic-single" style="width: 100%;" name="KALIP_SINIFI" id="KALIP_SINIFI">
+									<select class="form-control js-example-basic-single KALIP_SINIFI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_SINIFI" style="width: 100%;" name="KALIP_SINIFI" id="KALIP_SINIFI">
 											@php
 
 												foreach ($KALIP_SINIFI_veri as $key => $veri) {
@@ -297,18 +297,18 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Önleyici Bakım Frekansı</label>
-									<input type="number" class="form-control" maxlength="50" name="ONL_BAKIM_FREK" id="ONL_BAKIM_FREK" value="{{ @$kart_veri->ONL_BAKIM_FREK }}">
+									<input type="number" class="form-control ONL_BAKIM_FREK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_KODU" maxlength="50" name="ONL_BAKIM_FREK" id="ONL_BAKIM_FREK" value="{{ @$kart_veri->ONL_BAKIM_FREK }}">
 								</div>
 
 								<div class="col-md-3">
 									<label>Planlanan Baskı Adedi</label>
-									<input type="number" class="form-control" maxlength="50" name="PLAN_BASKI_AD" id="PLAN_BASKI_AD" value="{{ @$kart_veri->PLAN_BASKI_AD }}">
+									<input type="number" class="form-control PLAN_BASKI_AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PLAN_BASKI_AD" maxlength="50" name="PLAN_BASKI_AD" id="PLAN_BASKI_AD" value="{{ @$kart_veri->PLAN_BASKI_AD }}">
 								</div>
 
 
-								<div class="row">
+								<div class="col-md-3">
 									<label>Not</label>
-									<input type="text" class="form-control" maxlength="50" name="NOTES_1" id="NOTES_1" value="{{ @$kart_veri->NOTES_1 }}">
+									<input type="text" class="form-control NOTES_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES_1" maxlength="50" name="NOTES_1" id="NOTES_1" value="{{ @$kart_veri->NOTES_1 }}">
 								</div>
 
 									</div>
@@ -321,7 +321,7 @@ if (isset($kart_veri)) {
 
 										<div class="col-md-2 col-xs-6  col-sm-4">
 											<label>Depo</label>
-											<select class="form-control js-example-basic-single" style="width: 100%;" name="DEPO" id="DEPO">
+											<select class="form-control js-example-basic-single"  style="width: 100%;" name="DEPO" id="DEPO">
 													@php
 												  $evraklar=DB::table($database.'gdef00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
 

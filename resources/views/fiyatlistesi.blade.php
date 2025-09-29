@@ -117,18 +117,18 @@ if (isset($kart_veri)) {
         <div class="row ">
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Fiş No</label>
-            <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+            <input type="text" class="form-control EVRAKNO" maxlength="24" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
             <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
           </div>
 
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Tarih</label>
-            <input type="date" class="form-control" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
+            <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
           </div>
 
           <div class="col-md-4 col-sm-4 col-xs-6">
             <label>Müşteri Kodu</label>
-            <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
+            <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE"  style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
                <option value =' ' selected>Seç</option>
               @php
                 $evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
@@ -217,7 +217,7 @@ if (isset($kart_veri)) {
                         </td>
                         <td style="min-width: 240px;">
                           <div class="d-flex ">
-                            <select class="form-control" style="width:100%;"  onchange="stokAdiGetir(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+                            <select class="form-control KOD" style="width:100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD"  onchange="stokAdiGetir(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
                               <option value=" ">Seç</option>
                               @php
                               $stok00_evraklar=DB::table($database.'stok00')->limit(50)->orderBy('id', 'ASC')->get();
@@ -235,16 +235,16 @@ if (isset($kart_veri)) {
                           <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                          <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
                           <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                         </td>
                         
                         <td style="min-width: 150px">
-                          <input maxlength="28" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                          <input maxlength="28" style="color: red" type="number" name="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICE" id="SF_MIKTAR_FILL" class="PRICE form-control">
                         </td>
                         <td style="min-width: 150px">
                           <div class="d-flex ">
-                          <select id="SF_SF_UNIT_FILL" name="SF_SF_UNIT_FILL" class="form-control js-example-basic-single" style="width: 100%;">
+                          <select id="SF_SF_UNIT_FILL" name="SF_SF_UNIT_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICE_UNIT" class="PRICE_UNIT form-control js-example-basic-single" style="width: 100%;">
                           <option value=" ">Seç</option>
                           @php
 
@@ -264,37 +264,37 @@ if (isset($kart_veri)) {
                        </div>
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="28" style="color: red" type="number"  name="" id="SF_BAKIYE_SHOW" class="form-control" >
+                          <input maxlength="28" style="color: red" type="number"  name="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICE2" id="SF_BAKIYE_SHOW" class="PRICE2 form-control" >
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="date" name="TERMIN_TAR_FILL" id="TERMIN_TAR_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GECERLILIK_TAR" name="TERMIN_TAR_FILL" id="TERMIN_TAR_FILL" class="GECERLILIK_TAR form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" id="NOT1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" name="NOT1_FILL" id="NOT1_FILL" class="NOT1 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="TEXT1 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" class="TEXT2 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" class="TEXT3 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" class="TEXT4 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM" name="NUM1_FILL" id="NUM1_FILL" class="NUM  form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" name="NUM2_FILL" id="NUM2_FILL" class="NUM2 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="NUM3 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="NUM4 sform-control">
                         </td>
                         <td>#</td>
 
@@ -306,21 +306,21 @@ if (isset($kart_veri)) {
                       <tr>
                         <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                        <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
-                        <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
-                        <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->PRICE }}"></td>
-                        <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->PRICE_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->PRICE_UNIT }}"></td>
-                        <td><input type="text" class="form-control" name="SF_BAKIYE[]" value="{{ $veri->PRICE2 }}"></td>
-                        <td><input type="date" class="form-control" name="TERMIN_TAR[]" value="{{ $veri->GECERLILIK_TAR }}"></td>
-                        <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
-                        <td><input type="text" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-                        <td><input type="text" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-                        <td><input type="text" class="form-control" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-                        <td><input type="text" class="form-control" name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-                        <td><input type="number" class="form-control" name="NUM[]" value="{{ $veri->NUM }}"></td>
-                        <td><input type="number" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-                        <td><input type="number" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-                        <td><input type="number" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                        <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
+                        <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
+                        <td><input type="number" class="form-control PRICE" name="SF_MIKTAR[]" value="{{ $veri->PRICE }}"></td>
+                        <td><input type="text" class="form-control PRICE_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->PRICE_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->PRICE_UNIT }}"></td>
+                        <td><input type="text" class="form-control PRICE2" name="SF_BAKIYE[]" value="{{ $veri->PRICE2 }}"></td>
+                        <td><input type="date" class="form-control GECERLILIK_TAR" name="TERMIN_TAR[]" value="{{ $veri->GECERLILIK_TAR }}"></td>
+                        <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                        <td><input type="text" class="form-control TEXT1" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
+                        <td><input type="text" class="form-control TEXT2" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
+                        <td><input type="text" class="form-control TEXT3" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
+                        <td><input type="text" class="form-control TEXT4" name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
+                        <td><input type="number" class="form-control NUM" name="NUM[]" value="{{ $veri->NUM }}"></td>
+                        <td><input type="number" class="form-control NUM2" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
+                        <td><input type="number" class="form-control NUM3" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
+                        <td><input type="number" class="form-control NUM4" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
                         <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                       </tr>
                     @endforeach

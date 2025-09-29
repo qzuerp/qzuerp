@@ -329,7 +329,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label>Not 1</label>
+											<label>{{ trim($user->firma) == 'yukselcnc' ? 'Yüksel Cnc İş Emri Numarası' : 'Not 1' }}</label>
 											<input type="text" class="form-control" maxlength="50" 
 												name="NOT_1" id="NOT_1" value="{{ @$kart_veri->NOT_1 }}">
 										</div>

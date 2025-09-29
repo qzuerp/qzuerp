@@ -114,25 +114,25 @@
 
 							  <div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Kod</label>
-									<input type="text" class="form-control" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
+									<input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 									<!-- Bu kısım kod alanı güncellenmek istenirese eğer veritabanında eşleştirme yapılacak kısım -->
 									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 							  </div>
 							 	<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Cari Adı</label>
-									<input type="text" class="form-control"maxlength="100" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
+									<input type="text" class="form-control AD"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
 							 	</div>
 								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Ad2</label>
-									<input type="text" class="form-control"maxlength="100" name="AD2" id="AD2" value="{{ @$kart_veri->AD2 }}" >
+									<input type="text" class="form-control AD2"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD2" name="AD2" id="AD2" value="{{ @$kart_veri->AD2 }}" >
 								</div>
 								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Denetim Tarihi</label>
-									<input type="date" class="form-control"maxlength="100" name="DENETIM_TAR" id="DENETIM_TAR" value="{{ @$kart_veri->DENETIM_TAR }}" >
+									<input type="date" class="form-control DENETIM_TAR"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DENETIM_TAR" name="DENETIM_TAR" id="DENETIM_TAR" value="{{ @$kart_veri->DENETIM_TAR }}" >
 								</div>
 								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Denetim Periyodu</label>
-									<input type="text" class="form-control"maxlength="100" name="DENETIM_PERIYOT" id="DENETIM_PERIYOT" value="{{ @$kart_veri->DENETIM_PERIYOT }}" >
+									<input type="text" class="form-control DENETIM_PERIYOT"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DENETIM_PERIYOT" name="DENETIM_PERIYOT" id="DENETIM_PERIYOT" value="{{ @$kart_veri->DENETIM_PERIYOT }}" >
 								</div>
 								<div class="col-md-2 col-sm-1 col-xs-2">
 									<label>Aktif/Pasif</label>
@@ -166,34 +166,34 @@
 										<div class="d-flex gap-3">
 											<label>
 												<input type="hidden" name="MUSTERI" value="0">
-						           				<input type="checkbox" name="MUSTERI" id="MUSTERI" class="" value="1" @if (@$kart_veri->MUSTERI == "1") checked @endif>
+						           				<input type="checkbox" name="MUSTERI" id="MUSTERI" class="MUSTERI" value="1" @if (@$kart_veri->MUSTERI == "1") checked @endif>
 												Müşteri
 											</label>
 											<label>
 												<input type="hidden" name="SATICI" value="0">
-												<input type="checkbox" name="SATICI" id="SATICI" class="" value="1" @if (@$kart_veri->SATICI == "1") checked @endif>
+												<input type="checkbox" name="SATICI" id="SATICI" class="SATICI" value="1" @if (@$kart_veri->SATICI == "1") checked @endif>
 												Tedarikçi
 											</label>
 											<label>
 												<input type="hidden" name="BANKA" value="0">
-												<input type="checkbox" name="BANKA" id="BANKA" class=""  value="1" @if (@$kart_veri->BANKA == "1") checked @endif>
+												<input type="checkbox" name="BANKA" id="BANKA" class="BANKA"  value="1" @if (@$kart_veri->BANKA == "1") checked @endif>
 												Banka
 											</label>
 											<label>
 												<input type="hidden" name="CEKTAKIP" value="0">
-												<input type="checkbox" name="CEKTAKIP" id="CEKTAKIP" class=""  value="1" @if (@$kart_veri->CEKTAKIP == "1") checked @endif>
+												<input type="checkbox" name="CEKTAKIP" id="CEKTAKIP" class="CEKTAKIP"  value="1" @if (@$kart_veri->CEKTAKIP == "1") checked @endif>
 												Çek takip
 											</label>
 											<label>
 												<input type="hidden" name="PERSONEL" value="0">
-												<input type="checkbox" name="PERSONEL" id="PERSONEL" class=""  value="1" @if (@$kart_veri->PERSONEL == "1") checked @endif>
+												<input type="checkbox" name="PERSONEL" id="PERSONEL" class="PERSONEL"  value="1" @if (@$kart_veri->PERSONEL == "1") checked @endif>
 												Personel
 											</label>
 					     			</div>
 
 										<div class="col-xs-6 col-md-6 col-sm-6">
 											<label>Adres</label>
-											<input type="text" class="form-control "maxlength="500" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}" >
+											<input type="text" class="form-control ADRES_1" maxlength="500" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_1" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}" >
 										</div>
 
 							      <div class="col-xs-6 col-md-3 col-sm-6">
@@ -211,7 +211,7 @@
 														}
 													@endphp
 							     		</select> -->
-							   			<input type="text" class="form-control "maxlength="50" name="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}" >
+							   			<input type="text" class="form-control ADRES_2"maxlength="50" name="ADRES_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}" >
 							   		</div>
 
 							     	<div class="col-xs-6 col-md-3 col-sm-6">
@@ -229,52 +229,52 @@
 													}
 												@endphp
 							      	</select> -->
-							      	<input type="text" class="form-control "maxlength="50" name="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}" >
+							      	<input type="text" class="form-control ADRES_3"maxlength="50" name="ADRES_3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}" >
 							    	</div>
 
 								    <div class="col-xs-6 col-md-3 col-sm-6">
 								      <label>Ülke</label>
-								      <input type="text" class="form-control "maxlength="50" name="ADRES_4" id="ADRES_4" value="{{ @$kart_veri->ADRES_4 }}" >
+								      <input type="text" class="form-control ADRES_4"maxlength="50" name="ADRES_4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_4" id="ADRES_4" value="{{ @$kart_veri->ADRES_4 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-3 col-sm-6">
 								      <label>Posta Kodu</label>
-								      <input type="text" class="form-control "maxlength="50" name="ADRES_5" id="ADRES_5" value="{{ @$kart_veri->ADRES_5 }}" >
+								      <input type="text" class="form-control ADRES_5"maxlength="50" name="ADRES_5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_5" id="ADRES_5" value="{{ @$kart_veri->ADRES_5 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-3">
 								      <label>Vergi Dairesi No</label>
-								      <input type="text" class="form-control "maxlength="10" name="VERGI_DAIRESI_NO" id="VERGI_DAIRESI_NO" disable value="{{ @$kart_veri->VERGI_DAIRESI_NO }}" >
+								      <input type="text" class="form-control VERGI_DAIRESI_NO"maxlength="10" name="VERGI_DAIRESI_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="VERGI_DAIRESI_NO" id="VERGI_DAIRESI_NO" disable value="{{ @$kart_veri->VERGI_DAIRESI_NO }}" >
 								    </div>
 
 									<div class="col-xs-6 col-md-3">
 								      <label>Vergi Dairesi </label>
-								      <input type="text" class="form-control "maxlength="100" name="VERGIDAIRESI" id="VERGIDAIRESI" disable value="{{ @$kart_veri->VERGIDAIRESI }}" >
+								      <input type="text" class="form-control VERGIDAIRESI"maxlength="100" name="VERGIDAIRESI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="VERGIDAIRESI" id="VERGIDAIRESI" disable value="{{ @$kart_veri->VERGIDAIRESI }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-2">
 								      <label>Telefon 1</label>
-								      <input type="text" class="form-control "maxlength="16" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}" >
+								      <input type="text" class="form-control TELEFONNO_1"maxlength="16" name="TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-2">
 								      <label>Telefon 2</label>
-								      <input type="text" class="form-control "maxlength="16" name="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}" >
+								      <input type="text" class="form-control TELEFONNO_2"maxlength="16" name="TELEFONNO_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-2">
 								      <label>FAX</label>
-								      <input type="text" class="form-control "maxlength="16" name="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}" >
+								      <input type="text" class="form-control FAXNO"maxlength="16" name="FAXNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}" >
 								    </div>
 
 									<div class="col-xs-6 col-md-3">
 								      <label>Vergi Numarası </label>
-								      <input type="text" class="form-control "maxlength="20" name="VERGINO" id="VERGINO" value="{{ @$kart_veri->VERGINO }}" >
+								      <input type="text" class="form-control VERGINO"maxlength="20" name="VERGINO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="VERGINO" id="VERGINO" value="{{ @$kart_veri->VERGINO }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-3">
 								      <label>TC No </label>
-								      <input type="text" class="form-control "maxlength="11" name="TCNO" id="TCNO" value="{{ @$kart_veri->TCNO }}" >
+								      <input type="text" class="form-control TCNO"maxlengTCNOth="11" name="TCNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TCNO" id="TCNO" value="{{ @$kart_veri->TCNO }}" >
 								    </div>
 								  </div>
 								</div>

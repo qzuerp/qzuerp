@@ -117,13 +117,13 @@ if (isset($kart_veri)) {
           
           <div class="col-md-3 col-sm-3 col-xs-6">
             <label>Fiş No</label>
-            <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+            <input type="text" class="form-control EVRAKNO" maxlength="24" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
             <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
           </div>
 
           <div class="col-md-2 col-sm-3 col-xs-6">
             <label>Tarih</label>
-            <input type="date" class="form-control" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
+            <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
           </div>
 
         </div>
@@ -177,7 +177,7 @@ if (isset($kart_veri)) {
                         <td style="display:none;">
                         </td>
                         <td style="min-width: 150px;">
-                          <select class="form-control select2 js-example-basic-single" style=" height: 30PX" name="AMBCODE_FILL" id="AMBCODE_FILL">
+                          <select class="form-control select2 js-example-basic-single AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" style=" height: 30PX" name="AMBCODE_FILL" id="AMBCODE_FILL">
                             <option value=" ">Seç</option>
                             @php
                               $depo_kodlar=DB::table($database.'gdef00')->where('AP10', '1')->orderBy('KOD', 'ASC')->get();
@@ -189,25 +189,25 @@ if (isset($kart_veri)) {
                           </select>
                         </td>
                         <td style="min-width: 150px;">
-                          <input type="text" style="color: red" class="form-control" name="LOCATION1_FILL" id="LOCATION1_FILL">
+                          <input type="text" style="color: red" class="form-control LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" name="LOCATION1_FILL" id="LOCATION1_FILL">
                         </td>
                         <td style="min-width: 150px;">
-                          <input type="text" style="color: red" class="form-control" name="LOCATION2_FILL" id="LOCATION2_FILL">
+                          <input type="text" style="color: red" class="form-control LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" name="LOCATION2_FILL" id="LOCATION2_FILL">
                         </td>
                         <td style="min-width: 150px;">
-                          <input type="text" style="color: red" class="form-control" name="LOCATION3_FILL" id="LOCATION3_FILL">
+                          <input type="text" style="color: red" class="form-control LOCATION3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" name="LOCATION3_FILL" id="LOCATION3_FILL">
                         </td>
                         <td style="min-width: 150px;">
-                          <input type="text" style="color: red" class="form-control" name="LOCATION4_FILL" id="LOCATION4_FILL">
+                          <input type="text" style="color: red" class="form-control LOCATION4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" name="LOCATION4_FILL" id="LOCATION4_FILL">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="HACIM_FILL" id="HACIM_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HACIM" name="HACIM_FILL" id="HACIM_FILL" class="form-control HACIM">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="MAXAGIRLIK_FILL" id="MAXAGIRLIK_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAXAGIRLIK" name="MAXAGIRLIK_FILL" id="MAXAGIRLIK_FILL" class="MAXAGIRLIK form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" name="NOTES_FILL" id="NOTES_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES" name="NOTES_FILL" id="NOTES_FILL" class="NOTES form-control">
                         </td>
                         <td>#</td>
 
@@ -220,14 +220,14 @@ if (isset($kart_veri)) {
                       <tr>
                         <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                        <td><input type="text" class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
-                        <td><input type="text" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
-                        <td><input type="text" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
-                        <td><input type="text" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
-                        <td><input type="text" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
-                        <td><input type="number" class="form-control" name="HACIM[]" value="{{ $veri->HACIM }}"></td>
-                        <td><input type="number" class="form-control" name="MAXAGIRLIK[]" value="{{ $veri->MAXAGIRLIK }}"></td>
-                        <td><input type="text" class="form-control" name="NOTES[]" value="{{ $veri->NOTES }}"></td>
+                        <td><input type="text" class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                        <td><input type="text" class="form-control LOCATION1" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+                        <td><input type="text" class="form-control LOCATION2" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                        <td><input type="text" class="form-control LOCATION3" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
+                        <td><input type="text" class="form-control LOCATION4" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
+                        <td><input type="number" class="form-control HACIM" name="HACIM[]" value="{{ $veri->HACIM }}"></td>
+                        <td><input type="number" class="form-control MAXAGIRLIK" name="MAXAGIRLIK[]" value="{{ $veri->MAXAGIRLIK }}"></td>
+                        <td><input type="text" class="form-control NOTES" name="NOTES[]" value="{{ $veri->NOTES }}"></td>
                         <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                       </tr>
                     @endforeach

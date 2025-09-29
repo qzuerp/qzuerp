@@ -108,15 +108,15 @@ if (isset($kart_veri)) {
                 <div class="row ">
                   <div class="col-md-3 col-sm-4 col-xs-6">
                     <label>Kod</label>
-                    <input type="text" class="form-control" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
+                    <input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
                   </div>
                   <div class="col-md-3 col-sm-4 col-xs-6">
                     <label>Personel Adı</label>
-                    <input type="text" class="form-control" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
+                    <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
                   </div>
                   <div class="col-md-2 col-sm-4 col-xs-6">
                     <label>Ünvanı</label>
-                    <input type="text" class="form-control" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
+                    <input type="text" class="form-control NAME2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="NAME2" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
                   </div>
                   <div class="col-md-1 col-sm-1 col-xs-6">
                     <label>Aktif/Pasif</label>
@@ -159,52 +159,52 @@ if (isset($kart_veri)) {
                   <div class="row">
                     <div class="col-md-3">
                       <label>İl</label>
-                      <select class="form-control select2" id="Iller" name="ADRES_IL" >
+                      <select class="form-control select2 ADRES_IL" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ADRES_IL" id="Iller" name="ADRES_IL" >
                           <option name="ADRES_IL" id="ADRES_IL" value="{{ @$kart_veri->ADRES_IL }}">{{ @$kart_veri->ADRES_IL }}</option>
                       </select>
                     </div>
 
                     <div class="col-md-3">
                       <label>İlçe</label>
-                      <select class="form-control select2" id="Ilceler" name="ADRES_ILCE" >
+                      <select class="form-control select2 ADRES_ILCE" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ADRES_ILCE" id="Ilceler" name="ADRES_ILCE" >
                           <option name="ADRES_ILCE" id="ADRES_ILCE" value="{{ @$kart_veri->ADRES_ILCE }}">{{ @$kart_veri->ADRES_ILCE }}</option>
                       </select>
                     </div>
                     <div class="col-md-3">
                       <label>Telefon 1</label>
-                      <input type="text" class="form-control " maxlength="16" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
+                      <input type="text" class="form-control TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="TELEFONNO_1" maxlength="16" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
                     </div>
                     <div class="col-md-3">
                       <label>Telefon 2</label>
-                      <input type="text" class="form-control " maxlength="16" name="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}">
+                      <input type="text" class="form-control TELEFONNO_2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="TELEFONNO_2" maxlength="16" name="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}">
                     </div>
                     <div class="col-md-3">
                       <label>e-Mail</label>
-                      <input type="text" class="form-control " maxlength="16" name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
+                      <input type="text" class="form-control EMAIL" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="EMAIL" maxlength="16" name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
                     </div>
                     <div class="col-md-3">
                       <label>Şehir Kodu</label>
-                      <input type="text" class="form-control " maxlength="16" name="SEHIRKODU" id="SEHIRKODU" value="{{ @$kart_veri->SEHIRKODU }}">
+                      <input type="text" class="form-control SEHIRKODU" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="SEHIRKODU" maxlength="16" name="SEHIRKODU" id="SEHIRKODU" value="{{ @$kart_veri->SEHIRKODU }}">
                     </div>
                     <div class="col-md-3">
                       <label>Fax No</label>
-                      <input type="text" class="form-control " maxlength="16" name="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}">
+                      <input type="text" class="form-control FAXNO" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="FAXNO" maxlength="16" name="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}">
                     </div>
                     <div class="col-md-3">
                       <label>Posta Kodu</label>
-                      <input type="text" class="form-control " maxlength="16" name="POSTAKODU" id="POSTAKODU" value="{{ @$kart_veri->POSTAKODU }}">
+                      <input type="text" class="form-control POSTAKODU" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="POSTAKODU" maxlength="16" name="POSTAKODU" id="POSTAKODU" value="{{ @$kart_veri->POSTAKODU }}">
                     </div>
                     <div class="col-md-6">
                       <label>Adres</label>
-                      <input type="text" class="form-control " maxlength="50" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
+                      <input type="text" class="form-control ADRES_1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ADRES_1" maxlength="50" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
                     </div>
                     <div class="col-md-6">
                       <label>Adres 2</label>
-                      <input type="text" class="form-control " maxlength="50" name="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}">
+                      <input type="text" class="form-control ADRES_2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ADRES_2" maxlength="50" name="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}">
                     </div>
                     <div class="col-md-6">
                       <label>Adres 3</label>
-                      <input type="text" class="form-control " maxlength="50" name="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}">
+                      <input type="text" class="form-control ADRES_3 " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ADRES_3" maxlength="50" name="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}">
                     </div>
                     <div class="col-md-6">
                       <br><br>

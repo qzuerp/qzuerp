@@ -114,12 +114,12 @@
  <div class="row ">
   <div class="col-md-3 col-sm-4 col-xs-6">
     <label>Kod</label>
-    <input type="text" class="form-control" name="KOD" id="KOD" maxlength="6"  value="{{ @$kart_veri->KOD }}">
+    <input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="6"  value="{{ @$kart_veri->KOD }}">
   </div>
 
   <div class="col-md-3 col-sm-4 col-xs-6">
     <label>Depo Adı</label>
-    <input type="text" class="form-control" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
+    <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
   </div>
 
   <div class="col-md-2 col-sm-1 col-xs-2">
@@ -158,7 +158,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 1</label>
 
-						 <select id="GK_1" name="GK_1" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_1" name="GK_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_1" class="GK_1 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -180,7 +180,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 2</label>
 
-						 <select id="GK_2" name="GK_2" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_2" name="GK_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_2" class="GK_2 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -202,7 +202,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 3</label>
 
-						 <select id="GK_3" name="GK_3" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_3" name="GK_3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_3" class="GK_3 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -224,7 +224,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 4</label>
 
-						 <select id="GK_4" name="GK_4" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_4" name="GK_4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_4" class="GK_4 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -246,7 +246,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 5</label>
 
-						 <select id="GK_5" name="GK_5" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_5" name="GK_5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_5" class="GK_5 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -268,7 +268,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 6</label>
 
-						 <select id="GK_6" name="GK_6" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_6" name="GK_6" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_6" class="GK_6 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -290,7 +290,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 7</label>
 
-						 <select id="GK_7" name="GK_7" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_7" name="GK_7" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_7" class="GK_7 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -312,7 +312,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 8</label>
 
-						 <select id="GK_8" name="GK_8" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_8" name="GK_8" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_8" class="GK_8 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -334,7 +334,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 9</label>
 
-						 <select id="GK_9" name="GK_9" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_9" name="GK_9" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_9" class="GK_9 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php
@@ -356,7 +356,7 @@
 						<div class="col-md-2 col-xs-4  col-sm-4">
 						 <label>Grup Kodu 10</label>
 
-						 <select id="GK_10" name="GK_10" class="form-control js-example-basic-single" style="width: 100%;">
+						 <select id="GK_10" name="GK_10" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_10" class="GK_10 form-control js-example-basic-single" style="width: 100%;">
 							 <option value=" ">Seç</option>
 
 							 @php

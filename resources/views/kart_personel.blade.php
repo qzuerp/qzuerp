@@ -71,7 +71,7 @@ if (isset($kart_veri)) {
     @include('layout.util.evrakContentHeader')
 		@include('layout.util.logModal',['EVRAKTYPE' => 'PERS00'])
     <section class="content">
-      <form class="form-horizontal mt-3" action="pers00_islemler" method="POST" name="verilerForm" id="verilerForm">
+      <form class="form-horizontal mt-3 " action="pers00_islemler" method="POST" name="verilerForm" id="verilerForm">
         @csrf
         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
           <div class="row">

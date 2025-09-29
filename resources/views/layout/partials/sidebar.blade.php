@@ -53,7 +53,7 @@
           <li><a href="etiket_bolme"><i class='bx bx-shuffle'></i>Etiket Bölme</a></li>
         @endif
         @if (in_array('ETKTKART', $kullanici_read_yetkileri))
-          <li><a href="etiket_karti"><i class='bx bx-shuffle'></i>Etiket Kartı</a></li>
+          <li><a href="etiketKarti"><i class='bx bx-purchase-tag'></i>Etiket Kartı</a></li>
         @endif
         @if (in_array('STKGRSCKS', $kullanici_read_yetkileri))
           <li><a href="stokgiriscikis"><i class='bx bx-import'></i>Stok Giriş-Çıkış</a></li>
