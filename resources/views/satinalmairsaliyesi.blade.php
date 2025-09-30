@@ -141,18 +141,18 @@
 						<div class="row ">
 							<div class="col-md-2 col-sm-3 col-xs-6">
 							<label>Fiş No</label>
-							<input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+							<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
 							<input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
 							</div>
 
 							<div class="col-md-2 col-sm-3 col-xs-6">
 							<label>Tarih</label>
-							<input type="date" class="form-control" name="TARIH" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
+							<input type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" class="form-control TARIH" name="TARIH" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
 							</div>
 
 							<div class="col-md-2 col-sm-2 col-xs-6">
 							<label>Depo</label>
-							<select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30PX" maxlength="6" name="AMBCODE_E" id="AMBCODE_E">
+							<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control select2 js-example-basic-single" style="width: 100%; height: 30PX" maxlength="6" name="AMBCODE_E" id="AMBCODE_E">
 								@php
 								$evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
 
@@ -171,7 +171,7 @@
 
 							<div class="col-md-4 col-sm-4 col-xs-6">
 							<label>Tedarikçi Kodu</label>
-							<select class="form-control select2 js-example-basic-single" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+							<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" class="CARIHESAPCODE form-control select2 js-example-basic-single" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
 								<option value="">Seç...</option>
 								@php
 								$evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();

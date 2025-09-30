@@ -10,7 +10,7 @@
 	$firma = trim($kullanici_veri->firma);
 	$ekran = "DYS";
 	$ekranRumuz = "DYS";
-	$ekranAdi = "Doküman Yönetimi";
+	$ekranAdi = "Doküman Yönetim Sistemi";
 	$ekranLink = "dys";
 	$ekranTableE = $database."dys00";
 	$ekranKayitSatirKontrol = "false";

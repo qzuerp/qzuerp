@@ -425,7 +425,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Tezgah/Hammadde Kodu</label>
-                                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" name="" id="BOMREC_KAYNAKCODE_SHOW">
+                                        <select class="form-control select2 js-example-basic-single TEZGAH_KODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" name="" id="BOMREC_KAYNAKCODE_SHOW">
                                             <option value="{{@$kart_veri->TEZGAH_KODU}}" selected>{{@$kart_veri->TEZGAH_KODU}}</option>
                                         </select>
                                         <input type="hidden" name="TEZGAH_KODU" id="tezgah_hammadde_kodu" value="{{@$kart_veri->TEZGAH_KODU}}">

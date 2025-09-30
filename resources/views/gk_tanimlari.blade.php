@@ -48,7 +48,11 @@ if (isset($kart_veri)) {
 @endphp
 
 @section('content')
-
+<style>
+  .buyukharf{
+    text-transform: uppercase;
+  }
+</style>
 <div class="content-wrapper">
 
   @include('layout.util.evrakContentHeader')
@@ -161,10 +165,10 @@ if (isset($kart_veri)) {
 		                        <td style="display:none;">
 		                        </td>
 		                        <td style="min-width: 150px;">
-															<input maxlength="50" style="color: red" type="text" name="KOD_FILL" id="KOD_FILL" class="form-control">
+															<input maxlength="50" style="color: red" type="text" name="KOD_FILL" id="KOD_FILL" class="buyukharf form-control">
 		                        </td>
 		                        <td style="min-width: 150px">
-															<input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL" class="form-control">
+															<input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL" class="buyukharf form-control">
 		                        </td>
 														<td></td>
 		                      </tr>
@@ -176,8 +180,8 @@ if (isset($kart_veri)) {
 		                      <tr>
 		                        <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
 		                        <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-		                        <td><input type="text" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
-		                        <td><input type="text" class="form-control" name="AD[]" value="{{ $veri->AD }}"></td>
+		                        <td><input type="text" class="form-control buyukharf" name="KOD[]" value="{{ $veri->KOD }}"></td>
+		                        <td><input type="text" class="form-control buyukharf" name="AD[]" value="{{ $veri->AD }}"></td>
 		                        <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 		                      </tr>
 		                    @endforeach
@@ -274,10 +278,10 @@ $(document).ready(function() {
 
     var htmlCode = "";
 		htmlCode += "<tr>";
-    htmlCode += "<td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td>";
+    htmlCode += "<td><input type='checkbox' style='width:20px;height:20px;' name='hepsinisec' id='hepsinisec'></td>";
     htmlCode += "<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td>";
-    htmlCode += "<td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.KOD_FILL+"'></td>";
-    htmlCode += "<td><input type='text' class='form-control' name='AD[]' value='"+satirEkleInputs.AD_FILL+"'></td>";
+    htmlCode += "<td><input type='text' class='form-control text-uppercase' name='KOD[]' value='"+satirEkleInputs.KOD_FILL+"'></td>";
+    htmlCode += "<td><input type='text' class='form-control text-uppercase' name='AD[]' value='"+satirEkleInputs.AD_FILL+"'></td>";
     htmlCode += "<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>";
     htmlCode += "</tr>";
 
