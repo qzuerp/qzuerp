@@ -66,7 +66,7 @@ class dosyalar00_controller extends Controller
         }
 
         if (count($indexToColumn) === 0) {
-            return response()->json(['error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.'], 422);
+            return response()->json(['error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.','excel ' => $headerRow,'table' => $tableColumnsLowerMap], 422);
         }
 
         $insertCount = 0;
