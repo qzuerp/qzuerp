@@ -27,7 +27,7 @@ class dosyalar00_controller extends Controller
         $chunkSize = 500;
         $blacklistColumns = ['id','created_at','updated_at'];
 
-        $firma.$table = $request->input('table');
+        $table = $firma.$request->input('table');
         $EVRAKNO = $request->input('EVRAKNO');
 
         if (in_array($table, $unallowedTables)) {
