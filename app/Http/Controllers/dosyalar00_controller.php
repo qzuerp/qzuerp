@@ -13,10 +13,10 @@ class dosyalar00_controller extends Controller
     public function import(Request $request)
     {
         if(Auth::check()) {
-         $u = Auth::user();
+            $u = Auth::user();
         }
-        $firma = trim($u->firma).'.dbo.';
-        
+        $firma = trim($u->firma);
+
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls,csv',
             'table' => 'required|string',
@@ -27,14 +27,21 @@ class dosyalar00_controller extends Controller
         $chunkSize = 500;
         $blacklistColumns = ['id','created_at','updated_at'];
 
-        $table = $firma.$request->input('table');
+        $tableName = $request->input('table');
+        $table = $firma . '.dbo.' . $tableName;
         $EVRAKNO = $request->input('EVRAKNO');
 
-        if (in_array($table, $unallowedTables)) {
+        if (in_array($tableName, $unallowedTables)) {
             return response()->json(['error' => 'Bu tabloya yükleme iznin yok.'], 422);
         }
 
-        $tableColumns = Schema::getColumnListing($table);
+        // --- Table columns using INFORMATION_SCHEMA.COLUMNS
+        $tableColumns = DB::table('INFORMATION_SCHEMA.COLUMNS')
+            ->where('TABLE_NAME', $tableName)
+            ->where('TABLE_SCHEMA', 'dbo') // SQL Server default schema
+            ->pluck('COLUMN_NAME')
+            ->toArray();
+
         $tableColumnsLowerMap = [];
         foreach ($tableColumns as $col) {
             $tableColumnsLowerMap[strtolower($col)] = $col;
@@ -66,7 +73,11 @@ class dosyalar00_controller extends Controller
         }
 
         if (count($indexToColumn) === 0) {
-            return response()->json(['error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.','excel ' => $headerRow,'table' => $tableColumnsLowerMap], 422);
+            return response()->json([
+                'error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.',
+                'excel' => $headerRow,
+                'table' => $tableColumnsLowerMap
+            ], 422);
         }
 
         $insertCount = 0;
@@ -74,35 +85,16 @@ class dosyalar00_controller extends Controller
         $batch = [];
 
         $specialTables = [
-            "tekl20tı",
-            "stdm10t",
-            "stok48t",
-            "stok40t",
-            "MMPS10S_T",
-            "bomu01t",
-            "mmos10t",
-            "stok60ti",
-            "sfdc31t",
-            "stok20t",
-            "mmps10t",
-            "stok21t",
-            "plan_t",
-            "stok26t",
-            "stok29t",
-            "stok46t",
-            "stok63t",
-            "QVAL10T",
-            "stok68t",
-            "stok69t",
-            "SRVKC0",
-            "stok25t"
+            "tekl20tı","stdm10t","stok48t","stok40t","MMPS10S_T","bomu01t","mmos10t",
+            "stok60ti","sfdc31t","stok20t","mmps10t","stok21t","plan_t","stok26t",
+            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","SRVKC0","stok25t"
         ];
-        if(in_array($table, $specialTables))
+
+        if(in_array($tableName, $specialTables))
         {
             $trNum = DB::table($table)->where('EVRAKNO',$EVRAKNO)->max('TRNUM');
             $trNum = $trNum ? (int)$trNum + 1 : 1;
         }
-           
 
         foreach ($dataRows as $rIndex => $row) {
             $rowData = [];
@@ -116,7 +108,7 @@ class dosyalar00_controller extends Controller
             foreach ($rowData as $v) { if ($v !== null && $v !== '') { $allNull = false; break; } }
             if ($allNull) continue;
 
-            if (in_array($table, $specialTables)) {
+            if (in_array($tableName, $specialTables)) {
                 $rowData['TRNUM'] = str_pad($trNum, 6, '0', STR_PAD_LEFT);
                 $trNum++;
                 if ($EVRAKNO) {
@@ -154,6 +146,7 @@ class dosyalar00_controller extends Controller
 
         return response()->json(['success' => $msg]);
     }
+
 
 
 
