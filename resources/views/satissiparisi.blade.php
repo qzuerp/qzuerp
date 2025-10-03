@@ -118,7 +118,7 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Fiş No</label>
-                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <input type="text" class="form-control EVRAKNO"  maxlength="24" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
@@ -160,16 +160,12 @@
                         </div>
                       </div>
                     </div>
-
-
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-12">
             <div  class="nav-tabs-custom box box-info">
@@ -228,7 +224,7 @@
                           </td>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                            <select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                            <select class="form-control select2 txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
                                 <option value=" " >Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
@@ -246,19 +242,19 @@
                           </td>
 
                           <td style="min-width: 150px">
-                            <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                            <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" class="STOK_ADI form-control" disabled>
                             <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                           </td>
                          
                           <td style="min-width: 150px">
-                            <input class="SF_MIKTAR_FILL form-control" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                            <input class="SF_MIKTAR_FILL form-control" maxlength="28" data-name="SF_MIKTAR" style="color: red" type="number" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" class="SF_SF_UNIT form-control" disabled>
                             <input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" name="SF_BAKIYE" id="SF_BAKIYE_SHOW" onchange="hesapla()" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" name="SF_BAKIYE" id="SF_BAKIYE_SHOW" onchange="hesapla()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="?" class="form-control" disabled>
                           </td>
                           <!-- <td style="min-width: 150px">
                             <input maxlength="6 "style="color: red" type="number" name="FIYAT" data-name="FIYAT" id="FIYAT_SHOW"  class="form-control">
@@ -275,40 +271,40 @@
                             </select>
                           </td> -->
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" name="SF_NETKAPANANMIK" id="SF_NETKAPANANMIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="URETILEN_MIKTARI" class="URETILEN_MIKTARI form-control" disabled>
                           </td> 
                           <td style="min-width: 150px">
-                            <input maxlength="6 "style="color: red" type="number" id="URETILEN_MIKTARI_SHOW" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="number" id="URETILEN_MIKTARI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_NETKAPANANMIK" class="SF_NETKAPANANMIK form-control" disabled>
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR" id="TERMIN_TAR_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR" id="TERMIN_TAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TERMIN_TAR" class="TERMIN_TAR form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" data-name="NOT1" id="NOT1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" data-name="NOT1" id="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" data-name="TEXT1" id="TEXT1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" data-name="TEXT1" id="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" class="TEXT1 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" data-name="TEXT2" id="TEXT2_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" data-name="TEXT2" id="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" class="TEXT2 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" data-name="TEXT3" id="TEXT3_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" data-name="TEXT3" id="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" class="TEXT3 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" data-name="TEXT4" id="TEXT4_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" data-name="TEXT4" id="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" class="TEXT4 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM1" id="NUM1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" data-name="NUM1" id="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" class="NUM1 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM2" id="NUM2_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" data-name="NUM2" id="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" class="NUM2 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM3" id="NUM3_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" data-name="NUM3" id="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" class="NUM3 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM4" id="NUM4_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" data-name="NUM4" id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" class="NUM4 form-control">
                           </td>
                           <td>#</td>
 
@@ -962,7 +958,7 @@
           },
           success: function(response) {
             // console.log(response);
-            satirEkleInputs.BAKIYE_FILL = response.bakiye || 0;
+            var BAKIYE_FILL = response.bakiye || satirEkleInputs.SF_MIKTAR_FILL;
             if(response.data3 != null)
             {
               satirEkleInputs.FIYAT_SHOW = response.data3['PRICE'] || 0;
@@ -981,7 +977,7 @@
             htmlCode += "<td><input type='number' class='form-control' name='SF_MIKTAR[]' value='" + satirEkleInputs.SF_MIKTAR_FILL + "'></td>";
             htmlCode += "<td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "' disabled>";
             htmlCode += "<input type='hidden' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "'></td>";
-            htmlCode += "<td><input type='text' class='form-control' name='SF_BAKIYE_SHOW[]' value='" + satirEkleInputs.BAKIYE_FILL + "' disabled></td>";
+            htmlCode += "<td><input type='text' class='form-control' name='SF_BAKIYE[]' value='" + BAKIYE_FILL + "' readonly></td>";
             // htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
             // htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
             htmlCode += " <td><input type='number' class='form-control' name='SF_NETKAPANANMIK[]' value='"+satirEkleInputs.SF_NETKAPANANMIK+"' readonly></td> ";

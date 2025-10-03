@@ -285,8 +285,7 @@
                                       $MPS = DB::table($database.'mmps10t')->where('JOBNO', @$kart_veri->JOBNO)->first();
                                   @endphp
 
-                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm R_YMK_YMPAKETICERIGI" style="color:red" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMK_YMPAKETICERIGI"
-                                        value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
+                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm" style="color:red" maxlength="50" value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
                               </div>
 
                             </div>

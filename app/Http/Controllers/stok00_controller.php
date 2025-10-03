@@ -230,10 +230,12 @@ class stok00_controller extends Controller
 
       case 'kart_sil':
         FunctionHelpers::Logla('STOK00',$KOD,'D');
+
         $msg = FunctionHelpers::KodKontrol($KOD);
 
-        if($msg)
-          return redirect()->back()->with('error',$msg);
+        if($msg) {
+          return redirect()->back()->with('error_swal', $msg);
+        }
 
         DB::table($firma.'stok00')->where('KOD',$KOD)->delete();
 

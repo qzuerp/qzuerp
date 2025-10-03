@@ -173,12 +173,23 @@ class stok20_controller extends Controller
               ->first();
 
           if (isset($SF_MIKTAR[$i])) {
-              DB::table($firma.'stok40t')
-                ->where('ARTNO', $MPS_MUSTERI->SIPARTNO)
-                ->update([
-                    'URETILEN_MIKTARI' => $SF_MIKTAR[$i],
-                ]);
+              $row = DB::table($firma.'stok40t')
+                  ->where('ARTNO', $MPS_MUSTERI->SIPARTNO)
+                  ->first();
+
+              if ($row) {
+                  $uretilenMiktar = $SF_MIKTAR[$i];
+                  $bakiye = floor($uretilenMiktar - $row->SF_NETKAPANANMIK);
+
+                  DB::table($firma.'stok40t')
+                      ->where('ARTNO', $MPS_MUSTERI->SIPARTNO)
+                      ->update([
+                          'URETILEN_MIKTARI' => $uretilenMiktar,
+                          'SF_BAKIYE'        => $bakiye,
+                      ]);
+              }
           }
+
 
           if (!isset($AMBCODE[$i]) || $AMBCODE[$i] === "") {
             $AMBCODE_SEC = $AMBCODE_E;

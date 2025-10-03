@@ -8,14 +8,13 @@
 	$kullanici_veri = DB::TABLE('users')->where('id', $user->id)->first();
 	$database = trim($kullanici_veri->firma).".dbo.";
 	$firma = trim($kullanici_veri->firma);
-	$ekran = "QLT02";
-	$ekranRumuz = "QLT02";
-	$ekranAdi = "Giriş Kalite Kontrol";
-	$ekranLink = "giris_kalite_kontrol";
-	$ekranTableE = $database."QVAL02E";
-	$ekranTableT = $database."QVAL02T";
+	$ekran = "FKK";
+	$ekranRumuz = "FKK";
+	$ekranAdi = "Final Kalite Kontrol";
+	$ekranLink = "final_kalite_kontrol";
+	$ekranTableE = $database."FKKE";
+	$ekranTableT = $database."FKKT";
 	$ekranKayitSatirKontrol = "true";
-
 
 
 	$kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
@@ -30,8 +29,8 @@
 
 	if(isset($_GET['ID'])) {
 		$sonID = $_GET['ID'];
-	}Else{
-		$sonID=DB::table($database.'QVAL02E')->min('ID');
+	}else{
+		$sonID=DB::table($ekranTableE)->min('ID');
 	}
 
 	$kart_veri = DB::table($ekranTableE)->where('ID',$sonID)->first();
@@ -60,10 +59,10 @@
 	<div class="content-wrapper" style="min-height: 822px;">
 
 		@include('layout.util.evrakContentHeader')
-		@include('layout.util.logModal',['EVRAKTYPE' => 'QVAL02','EVRAKNO'=>@$kart_veri->EVRAKNO])
+		@include('layout.util.logModal',['EVRAKTYPE' => 'FKK','EVRAKNO'=>@$kart_veri->EVRAKNO])
 		<section class="content">
 
-			<form class="form-horizontal" action="qval02_islemler" method="POST" name="verilerForm" id="verilerForm">
+			<form class="form-horizontal" action="fkk_islemler" method="POST" name="verilerForm" id="verilerForm">
 				@csrf
 				<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 				<div class="row">
@@ -72,7 +71,6 @@
 							<div class="box-body">
 								<div class="row mb-4">
 									<div class="col-md-3">
-										<label>Evrak Seç</label>
 										<select id="evrakSec" class="form-select select2" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')">
 											@foreach(DB::table($ekranTableE)->orderBy('ID')->get() as $veri)
 												<option value="{{ $veri->ID }}" {{ @$kart_veri->ID == $veri->ID ? 'selected' : '' }}>{{ $veri->EVRAKNO }}</option>
@@ -81,11 +79,10 @@
 										<input type="hidden" name="ID_TO_REDIRECT" value="{{ @$kart_veri->ID }}">
 										<input type="hidden" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
 									</div>
-									<div class="col-1 mt-4">
+									<div class="col-1">
 										<a class="btn btn-info mx-auto" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
 									</div>
 									<div class="col-md-4">
-										<label>Firma</label>
 										<input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
 										<input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
 									</div>
@@ -150,7 +147,7 @@
 										</div>
 										<div class="col-md-4">
 											<label>Miktar Kriter Türü</label>
-											<select name="MIKTAR_KRITER_TURU" class="form-select select2">
+											<select name="MIKTAR_KRITER_TURU " class="form-select select2">
 												<option disabled selected>Seçiniz</option>
 												<option>Adet</option>
 												<option>Kg</option>

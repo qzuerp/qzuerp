@@ -772,21 +772,6 @@
       if (firstLink) firstLink.classList.add('active');
     });
 
-
-    $(document).ready(function () {
-        setInterval(function () {
-            $.ajax({
-                url: '/check-session',
-                method: 'GET',
-                success: function (res) {
-                    if (res.status === 'expired') {
-                        window.location.href = '/login';
-                    }
-                }
-            });
-        }, 60000);
-    });
-
   </script>
 
   <script>
@@ -1140,7 +1125,19 @@
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 
-
+    $(document).ready(function () {
+        setInterval(function () {
+            $.ajax({
+                url: '/check-session',
+                method: 'GET',
+                success: function (res) {
+                    if (res.status === 'expired') {
+                      window.location.reload();
+                    }
+                }
+            });
+        }, 60000);
+    });
 </script>
 @endif
 

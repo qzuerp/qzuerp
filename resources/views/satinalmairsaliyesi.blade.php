@@ -268,7 +268,7 @@
 									</td>
 									<td style="min-width: 150px;">
 										<div class="d-flex ">
-										<select class="form-control" data-name="KOD" onchange="stokAdiGetir(this.value)"  style=" height: 30PX" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+										<select class="form-control KOD" data-name="KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir(this.value)"  style=" height: 30PX" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
 											<option value=" ">Seç</option>
 											@php
 											foreach ($stok_evraklar as $key => $veri) {
@@ -284,23 +284,23 @@
 										<input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+										<input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" class="form-control STOK_ADI" disabled>
 										<input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="12" style="color: red" data-name="LOTNUMBER" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+										<input maxlength="12" style="color: red" data-name="LOTNUMBER" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" class="form-control LOTNUMBER">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="20" style="color: red" data-name="SERINO" type="text" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+										<input maxlength="20" style="color: red" data-name="SERINO" type="text" name="SERINO_FILL" id="SERINO_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" class="form-control SERINO">
 									</td>
 									<td style="min-width: 150px">
-										<input tmaxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control number">
+										<input tmaxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" class="form-control number SF_MIKTAR">
 									</td>
 									<td style="min-width: 150px">
-										<input tmaxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT" id="FIYAT_SHOW" class="form-control number">
+										<input tmaxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT" id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="form-control number FIYAT">
 									</td>
 									<td>
-										<select name="" id="FIYAT_PB" class="form-control js-example-basic-single" data-name="FIYAT_PB" style="width: 100%; border-radius: 5px;">
+										<select name="" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT_PB" class="form-control js-example-basic-single FIYAT_PB" data-name="FIYAT_PB" style="width: 100%; border-radius: 5px;">
 										<option value="">Seç</option>
 										@php
 											$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -311,14 +311,14 @@
 										</select>
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+										<input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" class="form-control SF_SF_UNIT" disabled>
 										<input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-name="NOT1" id="NOT1_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-name="NOT1" id="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" class="form-control NOT1">
 									</td>
 									<td>
-										<select name="" id="MPS_KODU" class="form-control js-example-basic-single" data-name="MPS_KODU" style="width: 100%; border-radius: 5px;">
+										<select name="" id="MPS_KODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_KODU" class="MPS_KODU form-control js-example-basic-single" data-name="MPS_KODU" style="width: 100%; border-radius: 5px;">
 										<option value="">Seç</option>
 										@php
 											$kod_veri = DB::table($database.'mmps10e')->get();
@@ -329,46 +329,46 @@
 										</select>
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="LOCATION1" name="LOCATION1_FILL" id="LOCATION1_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="LOCATION1" name="LOCATION1_FILL" id="LOCATION1_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="LOCATION1 form-control">
 									</td>                           
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="LOCATION2" name="LOCATION2_FILL" id="LOCATION2_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="LOCATION2" name="LOCATION2_FILL" id="LOCATION2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control">
 									</td>                           
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="LOCATION3" name="LOCATION3_FILL" id="LOCATION3_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="LOCATION3" name="LOCATION3_FILL" id="LOCATION3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" class="LOCATION3 form-control">
 									</td>                           
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="LOCATION4" name="LOCATION4_FILL" id="LOCATION4_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="LOCATION4" name="LOCATION4_FILL" id="LOCATION4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" class="LOCATION4 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" class="TEXT1 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" class="TEXT2 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" class="TEXT3 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" data-name="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" data-name="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" class="TEXT4 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="number" data-name="NUM1" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="number" data-name="NUM1" name="NUM1_FILL" id="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" class="NUM1 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="number" data-name="NUM2" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="number" data-name="NUM2" name="NUM2_FILL" id="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" class="NUM2 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="number" data-name="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="number" data-name="NUM3" name="NUM3_FILL" id="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" class="NUM3 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="number" data-name="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="number" data-name="NUM4" name="NUM4_FILL" id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" class="NUM4 form-control">
 									</td>
 									<td style="min-width: 150px">
-										<input maxlength="255" style="color: red" type="text" name="SIPNO_FILL" data-name="SIPNO" id="SIPNO_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" name="SIPNO_FILL" data-name="SIPNO" id="SIPNO_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPNO" class="SIPNO form-control">
 									</td>
 									<td style="min-width: 150px; display: none;">
-										<input maxlength="255" style="color: red" type="text" name="SIPARTNO_FILL" data-name="SIPARTNO" id="SIPARTNO_FILL" class="form-control">
+										<input maxlength="255" style="color: red" type="text" name="SIPARTNO_FILL" data-name="SIPARTNO" id="SIPARTNO_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="SIPARTNO form-control">
 									</td>
 									<td>#</td>
 
@@ -422,7 +422,7 @@
 												@endphp
 											</select>
 										</td>
-										<td><input type="text" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+										<td><input type="text" class="form-control" name="	[]" value="{{ $veri->LOCATION1 }}"></td>
 										<td><input type="text" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
 										<td><input type="text" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
 										<td><input type="text" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>

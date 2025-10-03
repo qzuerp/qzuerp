@@ -140,7 +140,7 @@
 
     $('#evrakSuzTable tfoot th').each( function () {
       var title = $(this).text();
-      $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px;" placeholder="🔍" />' );
+      $(this).html( '<input type="text" class="form-control form-rounded"  style="font-size: 10px;" placeholder="🔍" />' );
       // $(this).html( '<input type="text" class="form-control"  />' );
     });
 

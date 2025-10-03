@@ -57,7 +57,7 @@ class FunctionHelpers
         ]);
     }
 
-    public static function KodKontrol($KOD)
+    public static function KodKontrol($KOD,$table = [])
     {
         if(!Auth::check()) return null;
 
@@ -65,36 +65,46 @@ class FunctionHelpers
         $firma = trim($p->firma).'.dbo.';
 
         $kontroller = [
-            ['table'=>'mmps10e', 'column'=>'MAMULSTOKKODU', 'evrak'=>'EVRAKNO', 'msg'=>'MPS bağlantısı'],
-            ['table'=>'bomu01e', 'column'=>'MAMULCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı bağlantısı'],
-            ['table'=>'bomu01t', 'column'=>'BOMREC_KAYNAKCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı'],
-            ['table'=>'stok40t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı'],
-            ['table'=>'stok26t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Depodan depoya transfer (Satır) bağlantısı'],
-            ['table'=>'stok25t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Etiket bölme (Satır) bağlantısı'],
-            ['table'=>'stok63t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fason sevk irsaliyesi (Satır) bağlantısı'],
-            ['table'=>'stok68t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fason geliş irsaliyesi (Satır) bağlantısı'],
-            ['table'=>'stok21t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Stok giriş-çıkış (Satır) bağlantısı'],
-            ['table'=>'sfdc31e', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Çalışma bildirimi bağlantısı'],
-            ['table'=>'stok20t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Üretim fişi bağlantısı'],
-            ['table'=>'stok60t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Sevk irsaliyesi bağlantısı'],
-            ['table'=>'stok48t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fiyat listesi bağlantısı'],
-            ['table'=>'tekl20tı', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Teklif fiyat analiz bağlantısı'],
-            ['table'=>'stdm10e', 'column'=>'TEZGAH_KODU', 'evrak'=>'EVRAKNO', 'msg'=>'Maliyet tanımı bağlantısı'],
-            ['table'=>'stok46t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Satın alma sipariş bağlantısı'],
-            ['table'=>'stok29t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Satın alma irsaliyesi bağlantısı'],
+            ['table'=>'mmps10e', 'column'=>'MAMULSTOKKODU', 'evrak'=>'EVRAKNO', 'msg'=>'MPS bağlantısı bulundu'],
+            ['table'=>'bomu01e', 'column'=>'MAMULCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı bağlantısı bulundu'],
+            ['table'=>'bomu01t', 'column'=>'BOMREC_KAYNAKCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı bulundu'],
+            ['table'=>'stok40t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı bulundu'],
+            ['table'=>'stok26t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Depodan depoya transfer (Satır) bağlantısı bulundu'],
+            ['table'=>'stok25t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Etiket bölme (Satır) bağlantısı bulundu'],
+            ['table'=>'stok63t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fason sevk irsaliyesi (Satır) bağlantısı bulundu'],
+            ['table'=>'stok68t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fason geliş irsaliyesi (Satır) bağlantısı bulundu'],
+            ['table'=>'stok21t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Stok giriş-çıkış (Satır) bağlantısı bulundu'],
+            ['table'=>'sfdc31e', 'column'=>'STOK_CODE', 'evrak'=>'EVRAKNO', 'msg'=>'Çalışma bildirimi bağlantısı bulundu'],
+            ['table'=>'stok20t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Üretim fişi bağlantısı bulundu'],
+            ['table'=>'stok60t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Sevk irsaliyesi (Satır) bağlantısı bulundu'],
+            ['table'=>'stok48t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fiyat listesi bağlantısı bulundu'],
+            ['table'=>'tekl20tı', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Teklif fiyat analiz bağlantısı bulundu'],
+            ['table'=>'stdm10e', 'column'=>'TEZGAH_KODU', 'evrak'=>'EVRAKNO', 'msg'=>'Maliyet tanımı bağlantısı bulundu'],
+            ['table'=>'stok46t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Satın alma sipariş bağlantısı bulundu'],
+            ['table'=>'stok29t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Satın alma irsaliyesi bağlantısı bulundu'],
         ];
 
-        foreach($kontroller as $kontrol) {
-            $row = DB::table($firma.$kontrol['table'])
-                ->where($kontrol['column'], $KOD)
-                ->first();
+        $messages = [];
 
-            if($row) {
-                $evrakNo = $row->{$kontrol['evrak']} ?? 'Bilgi yok';
-                return "Bu kodun {$kontrol['msg']} bulunmakta. Evrak No: {$evrakNo}";
+        foreach($kontroller as $kontrol) {
+            if(in_array($kontrol['table'],$table))
+                continue;
+            $rows = DB::table($firma.$kontrol['table'])
+                ->where($kontrol['column'], $KOD)
+                ->pluck($kontrol['evrak']);
+
+            if($rows->count() > 0) {
+                $evraklar = $rows->take(3)->implode(', ');
+                $extra = $rows->count() > 3 ? " (+".($rows->count()-3)." tane daha)" : "";
+                $messages[] = [
+                    'tip' => $kontrol['msg'],
+                    'evraklar' => $evraklar.$extra
+                ];
             }
         }
 
-        return null;
+        return count($messages) ? $messages : null;
     }
+
+
 }

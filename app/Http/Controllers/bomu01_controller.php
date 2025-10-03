@@ -12,18 +12,19 @@ class bomu01_controller extends Controller
   public function index()
   {
 
-    $sonID=DB::table('bomu01e')->min('id');
+    $sonID = DB::table('bomu01e')->min('id');
 
 
-    return view('urunagaci')->with('sonID', $sonID);;
+    return view('urunagaci')->with('sonID', $sonID);
+    ;
   }
 
   public function kartGetir(Request $request)
   {
     $id = $request->input('id');
-    $firma = $request->input('firma').'.dbo.';
-    
-    $veri=DB::table(trim($firma).'bomu01e')->where('id',$id)->first();
+    $firma = $request->input('firma') . '.dbo.';
+
+    $veri = DB::table(trim($firma) . 'bomu01e')->where('id', $id)->first();
 
     return json_encode($veri);
   }
@@ -34,45 +35,45 @@ class bomu01_controller extends Controller
     $selectdata = "";
     $selectdata2 = [];
 
-    $firma = $request->input('firma').'.dbo.';
-    switch($islem) {
+    $firma = $request->input('firma') . '.dbo.';
+    switch ($islem) {
 
       case 'H':
 
-        $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+        $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
         foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
 
-          $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+          $selectdata .= "<option value='" . $STOK00_VERI->KOD . "|||" . $STOK00_VERI->AD . "|||" . $STOK00_VERI->IUNIT . "'>" . $STOK00_VERI->KOD . " | " . $STOK00_VERI->AD . "</option>";
           $selectdata2[] = [
-              "KOD"   => $STOK00_VERI->KOD,
-              "AD"    => $STOK00_VERI->AD,
-              "IUNIT" => $STOK00_VERI->IUNIT
+            "KOD" => $STOK00_VERI->KOD,
+            "AD" => $STOK00_VERI->AD,
+            "IUNIT" => $STOK00_VERI->IUNIT
           ];
         }
         return response()->json([
-            'selectdata' => $selectdata,
-            'selectdata2' => $selectdata2
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
         ]);
 
         break;
 
       case 'I':
 
-        $IMLT00_VERILER=DB::table($firma.'imlt00')->orderBy('id', 'ASC')->get();
+        $IMLT00_VERILER = DB::table($firma . 'imlt00')->orderBy('id', 'ASC')->get();
 
         foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
 
-          $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
-            $selectdata2[] = [
-                "KOD"   => $IMLT00_VERI->KOD,
-                "AD"    => $IMLT00_VERI->AD,
-                "IUNIT" => "TZGH"
-            ];
+          $selectdata .= "<option value='" . $IMLT00_VERI->KOD . "|||" . $IMLT00_VERI->AD . "|||" . "TZGH" . "'>" . $IMLT00_VERI->KOD . " | " . $IMLT00_VERI->AD . "</option>";
+          $selectdata2[] = [
+            "KOD" => $IMLT00_VERI->KOD,
+            "AD" => $IMLT00_VERI->AD,
+            "IUNIT" => "TZGH"
+          ];
         }
         return response()->json([
-            'selectdata' => $selectdata,
-            'selectdata2' => $selectdata2
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
         ]);
         return $data;
 
@@ -80,20 +81,20 @@ class bomu01_controller extends Controller
 
       case 'Y':
 
-        $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+        $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
         foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
 
-          $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+          $selectdata .= "<option value='" . $STOK00_VERI->KOD . "|||" . $STOK00_VERI->AD . "|||" . $STOK00_VERI->IUNIT . "'>" . $STOK00_VERI->KOD . " | " . $STOK00_VERI->AD . "</option>";
           $selectdata2[] = [
-              "KOD"   => $STOK00_VERI->KOD,
-              "AD"    => $STOK00_VERI->AD,
-              "IUNIT" => $STOK00_VERI->IUNIT
+            "KOD" => $STOK00_VERI->KOD,
+            "AD" => $STOK00_VERI->AD,
+            "IUNIT" => $STOK00_VERI->IUNIT
           ];
         }
         return response()->json([
-            'selectdata' => $selectdata,
-            'selectdata2' => $selectdata2
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
         ]);
 
         break;
@@ -103,7 +104,7 @@ class bomu01_controller extends Controller
 
   /* public function createKaynakKodSelect(Request $request) {
 
-   
+
     $islem = $request->input('islem');
     $selectdata = "";
 
@@ -111,7 +112,7 @@ class bomu01_controller extends Controller
 
     $firma = $request->input('firma').'.dbo.';
 
-    
+
 
 
     switch($islem) {
@@ -161,7 +162,8 @@ class bomu01_controller extends Controller
     }
   } */
 
-  public function islemler(Request $request) {
+  public function islemler(Request $request)
+  {
 
     // dd(request()->all());
     $firma = $request->input('firma');
@@ -183,7 +185,7 @@ class bomu01_controller extends Controller
 
     $BOMREC_OPERASYON = $request->input('BOMREC_OPERASYON');
     $BOMREC_OPERASYON_AD = $request->input('BOMREC_OPERASYON_AD');
-    
+
     $BOMREC_YMAMULPS = $request->BOMREC_YMAMULPS;
     $BOMREC_YMAMULPM = $request->BOMREC_YMAMULPM;
 
@@ -212,18 +214,16 @@ class bomu01_controller extends Controller
 
     if ($BOMREC_KAYNAKCODE == null) {
       $satir_say = 0;
-    }
-
-    else {
+    } else {
       $satir_say = count($BOMREC_KAYNAKCODE);
     }
     // dd($satir_say);
-    switch($islem_turu) {
-      
+    switch ($islem_turu) {
+
 
       case 'listele':
-     
-        $firma = $request->input('firma').'.dbo.';
+
+        $firma = $request->input('firma') . '.dbo.';
         $EVRAKNO_E = $request->input('EVRAKNO_E');
         $EVRAKNO_B = $request->input('EVRAKNO_B');
         $BOMREC_INPUTTYPE_E = $request->input('BOMREC_INPUTTYPE_E');
@@ -236,13 +236,13 @@ class bomu01_controller extends Controller
 
         return redirect()->route('urunagaci', [
           'SUZ' => 'SUZ',
-          'EVRAKNO_B' => $EVRAKNO_B, 
+          'EVRAKNO_B' => $EVRAKNO_B,
           'EVRAKNO_E' => $EVRAKNO_E,
-          'BOMREC_INPUTTYPE_B' => $BOMREC_INPUTTYPE_B, 
-          'BOMREC_INPUTTYPE_E' => $BOMREC_INPUTTYPE_E,          
-          'TEZGAH_KODU_B' => $TEZGAH_KODU_B, 
+          'BOMREC_INPUTTYPE_B' => $BOMREC_INPUTTYPE_B,
+          'BOMREC_INPUTTYPE_E' => $BOMREC_INPUTTYPE_E,
+          'TEZGAH_KODU_B' => $TEZGAH_KODU_B,
           'TEZGAH_KODU_E' => $TEZGAH_KODU_E,
-          'KOD_B' => $KOD_B, 
+          'KOD_B' => $KOD_B,
           'KOD_E' => $KOD_E,
           'firma' => $firma,
         ]);
@@ -251,55 +251,58 @@ class bomu01_controller extends Controller
         break;
 
       case 'kart_sil':
-        FunctionHelpers::Logla('BOMU01',$EVRAKNO,'D');
+        FunctionHelpers::Logla('BOMU01', $EVRAKNO, 'D');
 
-        DB::table(trim($firma).'.dbo.'.'bomu01e')->where('EVRAKNO',$EVRAKNO)->delete();
-        DB::table(trim($firma).'.dbo.'.'bomu01t')->where('EVRAKNO',$EVRAKNO)->delete();
+        $msg = FunctionHelpers::KodKontrol($MAMULCODE,['bomu01t']);
+
+        if ($msg) {
+          return redirect()->back()->with('error_swal', $msg);
+        }
+
+        DB::table(trim($firma) . '.dbo.' . 'bomu01e')->where('EVRAKNO', $EVRAKNO)->delete();
+        DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->delete();
 
         print_r("Silme işlemi başarılı.");
 
-        $sonID=DB::table(trim($firma).'.dbo.'.'bomu01e')->min('id');
+        $sonID = DB::table(trim($firma) . '.dbo.' . 'bomu01e')->min('id');
 
         return redirect()->route('urunagaci', ['ID' => $sonID, 'silme' => 'ok']);
 
         break;
 
       case 'kart_olustur':
-        if(DB::table(trim($firma).'.dbo.'.'bomu01e')->where('MAMULCODE',$MAMULCODE)->where('AP10','1')->exists())
-        {
+        if (DB::table(trim($firma) . '.dbo.' . 'bomu01e')->where('MAMULCODE', $MAMULCODE)->where('AP10', '1')->exists()) {
           return redirect()->back()->with('error', 'Bu kod ile aktif bir ürün ağacı bulunmakta');
         }
         //ID OLARAK DEGISECEK
-        $SON_EVRAK=DB::table(trim($firma).'.dbo.'.'bomu01e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
-        $SON_ID= $SON_EVRAK->EVRAKNO;
+        $SON_EVRAK = DB::table(trim($firma) . '.dbo.' . 'bomu01e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+        $SON_ID = $SON_EVRAK->EVRAKNO;
 
         $SON_ID = (int) $SON_ID;
         if ($SON_ID == NULL) {
-            $EVRAKNO = 1;
+          $EVRAKNO = 1;
+        } else {
+          $EVRAKNO = $SON_ID + 1;
         }
+        FunctionHelpers::Logla('BOMU01', $SON_ID, 'C');
 
-        else {
-            $EVRAKNO = $SON_ID + 1;
-        }
-        FunctionHelpers::Logla('BOMU01',$SON_ID,'C');
-
-        DB::table(trim($firma).'.dbo.'.'bomu01e')->insert([
-        'EVRAKNO' => $EVRAKNO,
-        'MAMULCODE' => $MAMULCODE,
-        'AD' => $AD,
-        'AP10' => $AP10,
-        'MAMUL_MIKTAR' => $MAMUL_MIKTAR,
-        'ACIKLAMA' => $ACIKLAMA_E,
-        'LAST_TRNUM' => $LAST_TRNUM,
-        'created_at' => date('Y-m-d H:i:s'),
+        DB::table(trim($firma) . '.dbo.' . 'bomu01e')->insert([
+          'EVRAKNO' => $EVRAKNO,
+          'MAMULCODE' => $MAMULCODE,
+          'AD' => $AD,
+          'AP10' => $AP10,
+          'MAMUL_MIKTAR' => $MAMUL_MIKTAR,
+          'ACIKLAMA' => $ACIKLAMA_E,
+          'LAST_TRNUM' => $LAST_TRNUM,
+          'created_at' => date('Y-m-d H:i:s'),
         ]);
 
 
         for ($i = 0; $i < $satir_say; $i++) {
 
-          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
-          DB::table(trim($firma).'.dbo.'.'bomu01t')->insert([
+          DB::table(trim($firma) . '.dbo.' . 'bomu01t')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
@@ -314,7 +317,7 @@ class bomu01_controller extends Controller
             'BOMREC_YMAMULPM' => $BOMREC_YMAMULPM[$i],
             'BOMREC_KAYNAK1' => $BOMREC_KAYNAK01[$i],
             'BOMREC_KAYNAK2' => $BOMREC_KAYNAK02[$i],
-            'ACIKLAMA' => $ACIKLAMA[$i], 
+            'ACIKLAMA' => $ACIKLAMA[$i],
             'KALIP_KODU1' => $KALIP_KODU1[$i] ?? '',
             'KALIP_KODU2' => $KALIP_KODU2[$i] ?? '',
             'KALIP_KODU3' => $KALIP_KODU3[$i] ?? '',
@@ -335,15 +338,15 @@ class bomu01_controller extends Controller
 
         print_r("Kayıt işlemi başarılı.");
 
-        $sonID=DB::table(trim($firma).'.dbo.'.'bomu01e')->max('id');
+        $sonID = DB::table(trim($firma) . '.dbo.' . 'bomu01e')->max('id');
         return redirect()->route('urunagaci', ['ID' => $sonID, 'kayit' => 'ok']);
 
         break;
 
       case 'kart_duzenle':
-        FunctionHelpers::Logla('BOMU01',$EVRAKNO,'W');
+        FunctionHelpers::Logla('BOMU01', $EVRAKNO, 'W');
 
-        DB::table(trim($firma).'.dbo.'.'bomu01e')->where('EVRAKNO',$EVRAKNO)->update([
+        DB::table(trim($firma) . '.dbo.' . 'bomu01e')->where('EVRAKNO', $EVRAKNO)->update([
           'MAMULCODE' => $MAMULCODE,
           'AD' => $AD,
           'AP10' => $AP10,
@@ -361,14 +364,14 @@ class bomu01_controller extends Controller
 
         $currentTRNUMS = array();
         $liveTRNUMS = array();
-        $currentTRNUMSObj = DB::table(trim($firma).'.dbo.'.'bomu01t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+        $currentTRNUMSObj = DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
 
         foreach ($currentTRNUMSObj as $key => $veri) {
-          array_push($currentTRNUMS,$veri->TRNUM);
+          array_push($currentTRNUMS, $veri->TRNUM);
         }
 
         foreach ($TRNUM as $key => $veri) {
-          array_push($liveTRNUMS,$veri);
+          array_push($liveTRNUMS, $veri);
         }
 
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
@@ -376,12 +379,12 @@ class bomu01_controller extends Controller
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
 
         for ($i = 0; $i < $satir_say; $i++) {
-          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
-          if (in_array($TRNUM[$i],$newTRNUMS)) { 
-          //Yeni eklenen satirlar
+          if (in_array($TRNUM[$i], $newTRNUMS)) {
+            //Yeni eklenen satirlar
 
-            DB::table(trim($firma).'.dbo.'.'bomu01t')->insert([
+            DB::table(trim($firma) . '.dbo.' . 'bomu01t')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
@@ -417,10 +420,10 @@ class bomu01_controller extends Controller
 
           }
 
-          if (in_array($TRNUM[$i],$updateTRNUMS)) { 
-          //Guncellenecek satirlar
+          if (in_array($TRNUM[$i], $updateTRNUMS)) {
+            //Guncellenecek satirlar
 
-            DB::table(trim($firma).'.dbo.'.'bomu01t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
+            DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
               'SIRANO' => $SIRANO[$i],
               'BOMREC_INPUTTYPE' => $BOMREC_INPUTTYPE[$i],
@@ -456,19 +459,23 @@ class bomu01_controller extends Controller
 
         }
 
-        foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
+        foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
+          $KONTROL_KOD = DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->value('BOMREC_KAYNAKCODE');
+          $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['bomu01e']);
 
-          DB::table(trim($firma).'.dbo.'.'bomu01t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+          if ($msg) {
+            return redirect()->back()->with('error_swal', $msg);
+          }
+          DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
 
         }
 
         print_r("Düzenleme işlemi başarılı.");
 
-        $veri=DB::table(trim($firma).'.dbo.'.'bomu01e')->where('EVRAKNO',$EVRAKNO)->first();
+        $veri = DB::table(trim($firma) . '.dbo.' . 'bomu01e')->where('EVRAKNO', $EVRAKNO)->first();
         return redirect()->route('urunagaci', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
         break;
     }
-
   }
 }

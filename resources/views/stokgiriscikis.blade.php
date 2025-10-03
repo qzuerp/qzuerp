@@ -118,18 +118,18 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Fiş No</label>
-                      <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" class="form-control TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>Depo</label>
-                      <select class="form-control select2 js-example-basic-single"  onchange="getLocation1()" style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
+                      <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control select2 js-example-basic-single"  onchange="getLocation1()" style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
                         <option value=" ">Seç</option>
                         @php
                           $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
@@ -149,7 +149,7 @@
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>Nitelik</label>
-                      <select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30PX" name="NITELIK" id="NITELIK" >
+                      <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" class="NITELIK form-control select2 js-example-basic-single" style="width: 100%; height: 30PX" name="NITELIK" id="NITELIK" >
                         <option value=" ">Seç</option>
                         @php
                           $evraklar=DB::table($database.'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
@@ -222,7 +222,7 @@
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <th style="display:none;"></td>
                           <td style="min-width:150px;">                            
-                              <select class="form-control"  onchange="stokAdiGetir3(this.value)" data-name="KOD" id="STOK_KODU_SHOW" name="STOK_KODU_SHOW">
+                              <select class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir3(this.value)" data-name="KOD" id="STOK_KODU_SHOW" name="STOK_KODU_SHOW">
                                 <option value=" ">Seç</option>
                                 @php
                                   $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->limit(50)->get();
@@ -234,20 +234,20 @@
                               <input type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                           </td>
                           <td>
-                            <input maxlength="50" style="color: red" type="text" data-name="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                            <input maxlength="50" style="color: red" type="text" data-name="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" class="STOK_ADI form-control" disabled>
                             <input maxlength="50" style="color: red" type="hidden" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                           </td>
                           <td>
-                            <input maxlength="12" style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                            <input maxlength="12" style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" class="LOTNUMBER form-control">
                           </td>
                           <td>
-                            <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" disabled placeholder="" class="form-control">
+                            <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" disabled placeholder="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" class="SERINO form-control">
                           </td>
                           <td>
-                            <input maxlength="28" style="color: red" type="number" name="GIREN_MIKTAR_FILL" data-name="GIREN_MIKTAR" id="GIREN_MIKTAR_FILL" onchange ="girenMiktarAction(this.value)" class="form-control">
+                            <input maxlength="28" style="color: red" type="number" name="GIREN_MIKTAR_FILL" data-name="GIREN_MIKTAR" id="GIREN_MIKTAR_FILL" onchange ="girenMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GIREN_MIKTAR" class="GIREN_MIKTAR form-control">
                           </td>
                           <td>
-                            <input maxlength="28" style="color: red" type="number" name="CIKAN_MIKTAR_FILL" data-name="CIKAN_MIKTAR" id="CIKAN_MIKTAR_FILL" onchange ="cikanMiktarAction(this.value)" class="form-control">
+                            <input maxlength="28" style="color: red" type="number" name="CIKAN_MIKTAR_FILL" data-name="CIKAN_MIKTAR" id="CIKAN_MIKTAR_FILL" onchange ="cikanMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="CIKAN_MIKTAR form-control">
                           </td>
                           <!-- <td>
                             <input maxlength="28" style="color: red" type="hidden" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
@@ -255,10 +255,10 @@
                           </td> -->
                           <td>
                             <input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
-                            <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+                            <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" class="form-control SF_SF_UNIT" disabled>
                           </td>
                           <td>
-                            <select class="form-control select2 js-example-basic-single" style=" height: 30PX" data-name="AMBCODE" onchange="" name="AMBCODE_FILL" id="AMBCODE_FILL">
+                            <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control select2 js-example-basic-single" style=" height: 30PX" data-name="AMBCODE" onchange="" name="AMBCODE_FILL" id="AMBCODE_FILL">
                               <option value=" ">Seç</option>
                               @php
                                 $evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
@@ -275,7 +275,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="form-control select2 js-example-basic-single" data-name="LOCATION1" onchange="getLocation2()" style=" height: 30PX" onchange="" name="LOCATION1_FILL" id="LOCATION1_FILL">
+                            <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="LOCATION1 form-control select2 js-example-basic-single" data-name="LOCATION1" onchange="getLocation2()" style=" height: 30PX" onchange="" name="LOCATION1_FILL" id="LOCATION1_FILL">
                               <option value=" ">Seç</option>
                               @php
                                 $locat1_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -287,7 +287,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="form-control select2 js-example-basic-single" data-name="LOCATION2" onchange="getLocation3()" style=" height: 30PX" onchange="" name="LOCATION2_FILL" id="LOCATION2_FILL">
+                            <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control select2 js-example-basic-single" data-name="LOCATION2" onchange="getLocation3()" style=" height: 30PX" onchange="" name="LOCATION2_FILL" id="LOCATION2_FILL">
                               <option value=" ">Seç</option>
                               @php
                                 $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -299,7 +299,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="form-control select2 js-example-basic-single" data-name="LOCATION3" onchange="getLocation4()" style=" height: 30PX" onchange="" name="LOCATION3_FILL" id="LOCATION3_FILL">
+                            <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" class="LOCATION3 form-control select2 js-example-basic-single" data-name="LOCATION3" onchange="getLocation4()" style=" height: 30PX" onchange="" name="LOCATION3_FILL" id="LOCATION3_FILL">
                               <option value=" ">Seç</option>
                               @php
                                 $locat3_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -311,7 +311,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="form-control select2 js-example-basic-single" data-name="LOCATION4" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
+                            <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" class="LOCATION4 form-control select2 js-example-basic-single" data-name="LOCATION4" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
                               <option value=" ">Seç</option>
                               @php
                                 $locat4_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
@@ -323,31 +323,31 @@
                             </select>
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-name="NOT" id="NOT1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-name="NOT" id="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-name="TEXT1" id="TEXT1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-name="TEXT1" id="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" class="TEXT1 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-name="TEXT2" id="TEXT2_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-name="TEXT2" id="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" class="TEXT2 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" data-name="TEXT3" id="TEXT3_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" data-name="TEXT3" id="TEXT3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" class="TEXT3 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" data-name="TEXT4" id="TEXT4_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" data-name="TEXT4" id="TEXT4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" class="TEXT4 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" data-name="NUM1" id="NUM1_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" data-name="NUM1" id="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" class="NUM1 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" data-name="NUM2" id="NUM2_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" data-name="NUM2" id="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" class="NUM2 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" data-name="NUM3" id="NUM3_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" data-name="NUM3" id="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" class="NUM3 form-control">
                           </td>
                           <td>
-                            <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" data-name="NUM4" id="NUM4_FILL" class="form-control">
+                            <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" data-name="NUM4" id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" class="NUM4 form-control">
                           </td>
                           <td>#</td>
 
@@ -363,9 +363,9 @@
                             </td>
                             <!-- <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
                             <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                            <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
-                            <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
-                            <td><input type="text" class="form-control" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
+                            <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
+                            <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
+                            <td><input type="text" class="form-control LOTNUMBER" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
                             <td class="d-flex ">
                               <input type="text" class="form-control txt-radius" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
                               <span class="d-flex -btn">
@@ -375,24 +375,24 @@
                                 </button>
                               </span>
                             </td>
-                            <td><input type="text" class="form-control" name="GIREN_MIKTAR[]" value="{{ $veri->GIREN_MIKTAR }}" readonly></td>
-                            <td><input type="text" class="form-control" name="CIKAN_MIKTAR[]" value="{{ $veri->CIKAN_MIKTAR }}" readonly></td>
+                            <td><input type="text" class="form-control GIREN_MIKTAR" name="GIREN_MIKTAR[]" value="{{ $veri->GIREN_MIKTAR }}" readonly></td>
+                            <td><input type="text" class="form-control CIKAN_MIKTAR" name="CIKAN_MIKTAR[]" value="{{ $veri->CIKAN_MIKTAR }}" readonly></td>
                             <!-- <td><input type="number" class="form-control" name="SF_MIKTAR_SHOW_T" value="{{ $veri->SF_MIKTAR }}" disabled><input type="hidden" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td> -->
-                            <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
-                            <td><input type="text" class="form-control" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
-                            <td><input type="text" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
-                            <td><input type="text" class="form-control" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
-                            <td><input type="text" class="form-control" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
-                            <td><input type="text" class="form-control" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
-                            <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
-                            <td><input type="text" class="form-control" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-                            <td><input type="text" class="form-control" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-                            <td><input type="text" class="form-control" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-                            <td><input type="text" class="form-control" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-                            <td><input type="number" class="form-control" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
-                            <td><input type="number" class="form-control" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-                            <td><input type="number" class="form-control" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-                            <td><input type="number" class="form-control" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                            <td><input type="text" class="form-control SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
+                            <td><input type="text" class="form-control AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                            <td><input type="text" class="form-control LOCATION1" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+                            <td><input type="text" class="form-control LOCATION2" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                            <td><input type="text" class="form-control LOCATION3" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
+                            <td><input type="text" class="form-control LOCATION4" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
+                            <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                            <td><input type="text" class="form-control TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
+                            <td><input type="text" class="form-control TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
+                            <td><input type="text" class="form-control TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
+                            <td><input type="text" class="form-control TEXT4" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
+                            <td><input type="number" class="form-control NUM1" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
+                            <td><input type="number" class="form-control NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
+                            <td><input type="number" class="form-control NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
+                            <td><input type="number" class="form-control NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach

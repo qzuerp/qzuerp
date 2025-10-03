@@ -105,7 +105,7 @@
                             <button type="reset" class="btn btn-warning mr-2" id="form-reset">
                                 <i class="fas fa-redo mr-1"></i>Sıfırla
                             </button>
-                            <button type="submit" class="btn btn-success" id="form-submit" disabled>
+                            <button type="submit" class="btn btn-success" id="form-submit">
                                 <i class="fas fa-save mr-1"></i>Kaydet
                             </button>
                         </div>
@@ -240,7 +240,6 @@ $(document).ready(function(){
     // Checkbox değişikliklerini dinle
     $(document).on('change', 'input[name="alanlar[]"]', function(){
         updateSeciliAlanSayisi();
-        updateFormSubmitButton();
         
         // Görsel feedback
         $(this).closest('.alan-checkbox-item').toggleClass('selected', this.checked);
@@ -261,12 +260,6 @@ $(document).ready(function(){
         if(!tabloKodu) {
             e.preventDefault();
             showAlert('Lütfen bir tablo seçiniz.', 'warning');
-            return false;
-        }
-        
-        if(secilenAlanlar === 0) {
-            e.preventDefault();
-            showAlert('Lütfen en az bir alan seçiniz.', 'warning');
             return false;
         }
         
@@ -347,7 +340,6 @@ function resetAlanlarContainer() {
     `);
     $('#alan-tools').hide();
     $('#secili-alanlar-ozet').hide();
-    updateFormSubmitButton();
 }
 
 function showNoDataMessage() {
@@ -381,12 +373,6 @@ function updateSeciliAlanSayisi() {
     }
 }
 
-function updateFormSubmitButton() {
-    var tabloSecili = $('select[name="TABLO_KODU"]').val();
-    var alanSecili = $('input[name="alanlar[]"]:checked').length > 0;
-    
-    $('#form-submit').prop('disabled', !(tabloSecili && alanSecili));
-}
 
 function showAlert(message, type = 'info') {
     var alertHtml = `

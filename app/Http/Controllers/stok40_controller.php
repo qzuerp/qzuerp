@@ -285,8 +285,13 @@ class stok40_controller extends Controller
 
 
     foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
+      $KONTROL_KOD = DB::table($firma.'stok40t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->value('KOD');
+      $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['stok40t','bomu01e','bomu01t','stok20t','stok48t','stok60t','sfdc31e']);
 
-        DB::table($firma.'stok40t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+      if ($msg) {
+        return redirect()->back()->with('error_swal', $msg);
+      }
+      DB::table($firma.'stok40t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
 
     }
 

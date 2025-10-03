@@ -11,7 +11,7 @@
 	$ekran = "MPSGRS";
 	$ekranRumuz = "MMPS10";
 	$ekranAdi = "MPS Giriş Kartı";
-		$ekranLink = "mpsgiriskarti";
+	$ekranLink = "mpsgiriskarti";
 	$ekranTableE = $database."mmps10e";
 	$ekranTableT = $database."mmps10t";
 	$ekranKayitSatirKontrol = "true";
@@ -143,14 +143,15 @@
 											<select class="form-control MAMULSTOKKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULSTOKKODU" onchange="stokAdiGetir3(this.value)" 
 													name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" required>
 												<option value="">Seç</option>
-												@php
+												 @php
 													$stok00_evraklar = DB::table($database.'stok00')
 														->where('KOD', @$kart_veri->MAMULSTOKKODU)
 														->first();
-													
-													if ($stok00_evraklar && @$kart_veri->MAMULSTOKKODU == $stok00_evraklar->KOD) {
+
+													if ($stok00_evraklar) {
 														$optionValue = $stok00_evraklar->KOD . '|||' . $stok00_evraklar->AD . '|||' . $stok00_evraklar->SUPPLIERCODE;
-														echo "<option value='{$optionValue}' selected>{$stok00_evraklar->KOD}</option>";
+														$optionText  = $stok00_evraklar->KOD . ' - ' . $stok00_evraklar->AD;
+														echo "<option value='{$optionValue}' selected>{$optionText}</option>";
 													}
 												@endphp
 											</select>
@@ -1256,7 +1257,7 @@
 
 													</div>
 
-												</div><br>
+												</div>
 
 												<div class="tab-pane" id="baglantiliDokumanlar">
 													@include('layout.util.baglantiliDokumanlar')
@@ -2264,17 +2265,6 @@
 				}
 				$('#veriTable tbody').empty();
 
-				Swal.fire({
-					title: 'Yükleniyor...',
-					text: 'Lütfen bekleyin',
-					allowOutsideClick: false,
-					didOpen: () => {
-						Swal.showLoading();
-					}
-				}).then(() => {
-					MPSolustur();
-				});;
-
 			    var htmlCode = " ";
 			    @php
 			        $SRNUM = DB::table($database . 'mmps10t')->orderBy('id', 'ASC')->get();
@@ -2334,7 +2324,31 @@
 			        $table = DB::select($sql_sorgu);
 			        $sno = 0;
 			    @endphp
-			    // JavaScript kısmı ile PHP'den alınan tablo verilerini kullanarak HTML kodu oluşturuyoruz
+				
+				var tableData = @json($table);
+
+				if (!tableData || tableData.length === 0) {
+					Swal.close();
+					Swal.fire({
+						title: "Reçete bulunamadı",
+						text: "Bu koda ait reçete kaydı yok.",
+						icon: "info",
+						confirmButtonText:'Tamam'
+					});
+					return;
+				}
+
+				Swal.fire({
+					title: 'Yükleniyor...',
+					text: 'Lütfen bekleyin',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				}).then(() => {
+					MPSolustur();
+				});;
+
 			    @foreach ($table as $tableRow)
 			        var TRNUM_FILL = getTRNUM();
 			        htmlCode += "<tr>";

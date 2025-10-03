@@ -158,7 +158,6 @@ class cari00_controller extends Controller
 
       case 'kart_sil':
         FunctionHelpers::Logla('CARI00',$KOD,'D');
-        DB::table($firma.'cari00')->where('KOD',$KOD)->delete();
 
         print_r("Silme işlemi başarılı.");
 

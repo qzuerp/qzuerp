@@ -29,20 +29,21 @@
     <section class="content">
         <form action="{{ url('info_islemler') }}" method="POST" name="verilerForm" id="verilerForm">
             @csrf
-            <select class="select2 w-100" style="margin-bottom:20px;" name="EVRAKTYPE" id="EVRAKTYPE">
-              <option value="" disabled selected>Seç</option>
-                @php
-                    $app_list = DB::table('gecoust')->where('EVRAKNO','APPLIST')->get();
-                @endphp
-                @foreach ($app_list as $app)
-                    <option value="{{ $app->KOD }}" {{ $app->KOD == $table ? 'selected' : '' }}>{{ $app->AD }} ({{ $app->KOD }})</option>
-                @endforeach
-            </select>
+            <div class="d-flex gap-3">
+              <select class="select2 w-100" style="margin-bottom:20px;" name="EVRAKTYPE" id="EVRAKTYPE">
+                <option value="" disabled selected>Seç</option>
+                  @php
+                      $app_list = DB::table('gecoust')->where('EVRAKNO','APPLIST')->get();
+                  @endphp
+                  @foreach ($app_list as $app)
+                      <option value="{{ $app->KOD }}" {{ $app->KOD == $table ? 'selected' : '' }}>{{ $app->AD }} ({{ $app->KOD }})</option>
+                  @endforeach
+              </select>
+              <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
             <hr>
             <div id="editor" style="height:400px; background:#fff;">{!! @$tanim->icerik !!}</div>
             <input type="hidden" name="content" id="content">
-            <br>
-            <button type="submit" class="btn btn-primary">Kaydet</button>
         </form>
     </section>
 </div>

@@ -102,7 +102,7 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Kodu</label>
-										<input type="text" class="form-control DOKUMAN_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_NO" name="DOKUMAN_NO" required id="DOKUMAN_NO" maxlength="16" value="{{ @$kart_veri->DOKUMAN_NO }}">
+										<input type="text" class="form-control DOKUMAN_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_NO" name="DOKUMAN_NO"  id="DOKUMAN_NO" maxlength="16" value="{{ @$kart_veri->DOKUMAN_NO }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
@@ -127,7 +127,7 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Adı</label>
-										<input type="text" class="form-control DOKUMAN_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_ADI" maxlength="50" required name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
+										<input type="text" class="form-control DOKUMAN_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_ADI" maxlength="50"  name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">

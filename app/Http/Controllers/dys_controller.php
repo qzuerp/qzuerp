@@ -82,6 +82,7 @@ class dys_controller extends Controller
     
       case 'kart_sil':
         FunctionHelpers::Logla('DYS00',$PARCA_KODU .'-'. $DOKUMAN_ADI,'D');
+        
 
         DB::table($firma.'dys00')->where('id',$id)->delete();
 

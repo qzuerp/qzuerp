@@ -63,12 +63,14 @@ class tmustr_controller extends Controller
         DB::table($database.'TMUSTRT')
             ->where('TABLO_KODU', $request->TABLO_KODU)
             ->delete();
-
-        foreach ($request->alanlar as $alan) {
-            DB::table($database.'TMUSTRT')->insert([
-                'TABLO_KODU' => $request->TABLO_KODU,
-                'ALAN_ADI'   => $alan,
-            ]);
+        if($request->alanlar)
+        {
+            foreach ($request->alanlar as $alan) {
+                DB::table($database.'TMUSTRT')->insert([
+                    'TABLO_KODU' => $request->TABLO_KODU,
+                    'ALAN_ADI'   => $alan,
+                ]);
+            }
         }
 
         return back()->with('success', 'Kayıt güncellendi');

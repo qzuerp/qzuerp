@@ -44,6 +44,7 @@ use App\Http\Controllers\Maliyet;
 use App\Http\Controllers\Teklif_fiyat_analiz;
 use App\Http\Controllers\qval10_controller;
 use App\Http\Controllers\qval02_controller;
+use App\Http\Controllers\fkk_controller;
 use App\Http\Controllers\pers00_controller;
 use App\Http\Controllers\Issiralama;
 use App\Http\Controllers\RaporlamaController;
@@ -241,6 +242,8 @@ Auth::routes(['password.request' => false]);
   Route::post('bakiyeHesapla',[stok40_controller::class,'bakiyeHesapla'])->name('bakiyeHesapla');
   Route::get('urunagaci',[bomu01_controller::class,'index'])->name('urunagaci');
 
+  Route::post('/import', [App\Http\Controllers\dosyalar00_controller::class, 'import'])->name('import');
+
   Route::get('gecerlilokasyonlar',[stok69_controller::class,'index'])->name('gecerlilokasyonlar');
   Route::get('stokgiriscikis',[stok21_controller::class,'index'])->name('stokgiriscikis');
   Route::get('uretim_fisi',[stok20_controller::class,'index'])->name('uretim_fisi');
@@ -271,6 +274,10 @@ Auth::routes(['password.request' => false]);
   Route::post('qval02_islemler',[qval02_controller::class,'islemler']);
   Route::post('sablonGetir',[qval02_controller::class,'sablonGetir']);
 
+  Route::get('final_kalite_kontrol', [fkk_controller::class, 'index'])->name('final_kalite_kontrol');
+  Route::post('fkk_islemler',[fkk_controller::class,'islemler']);
+  Route::post('sablonGetir',[fkk_controller::class,'sablonGetir']);
+
   Route::get('user',[KullaniciIslemleri::class,'index'])->name('user');
 
   Route::get('toplu_mps_girisi',[toplumps_controller::class,'index'])->name('toplu_mps_girisi');
@@ -284,7 +291,12 @@ Auth::routes(['password.request' => false]);
   Route::get('/maliyet',[Maliyet::class,'index']);
 
 
-
+  Route::get('/check-session', function () {
+    if (auth()->check()) {
+        return response()->json(['status' => 'active']);
+    }
+    return response()->json(['status' => 'expired']);
+  });
 
   // Route::get('/sayfa', [YourController::class, 'metodAdi']);
 
@@ -294,15 +306,4 @@ Auth::routes(['password.request' => false]);
   //Route::view('satissiparisi','satissiparisi');
   //Route::view('urunagaci','urunagaci');
   Route::view('change_password','change_password');
-
-
-
-});
-
-
-Route::get('/check-session', function () {
-  if (auth()->check()) {
-      return response()->json(['status' => 'active']);
-  }
-  return response()->json(['status' => 'expired']);
 });

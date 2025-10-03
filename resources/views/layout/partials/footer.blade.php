@@ -10,6 +10,27 @@
     <script>
       document.title = '{{ $ekranAdi }} - {{ $firmaAdi }}';
     </script>
+    @if (session('error_swal'))
+    <script>
+        let errors = @json(session('error_swal'));
+
+        let html = "<ul style='text-align:left'>";
+        errors.forEach(e => {
+            html += `<li><b>${e.tip}:</b> ${e.evraklar}</li>`;
+        });
+        html += "</ul>";
+
+        Swal.fire({
+            icon: 'warning',
+            title: "Bu kod silinemez!",
+            html: html,
+            confirmButtonText: "Tamam"
+        });
+    </script>
+    @endif
+
+
+
     @if (session('error'))
       <script>
         iziToast.success({
@@ -30,6 +51,25 @@
         });
       </script>
 
+    @elseif(session('success'))
+      <script>
+        iziToast.success({
+          // title: 'Başarılı!',
+          message: '{{ session('success') }}',
+          position: 'topRight',
+          timeout: 5000,
+          progressBar: true,
+          transitionIn: 'fadeInUp',
+          transitionOut: 'fadeOut',
+          close: true,
+          backgroundColor: '#f9f9f9', 
+          titleColor: '#333',         
+          messageColor: '#555',       
+          progressBarColor: '#4CAF50',
+          iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
+          closeOnEscape: true
+        });
+      </script>
 
     @elseif (isset($_GET['kayit']) && $_GET['kayit'] == "ok")
       <script>

@@ -204,6 +204,9 @@
         @if (in_array('QLT02', $kullanici_read_yetkileri))
           <li><a href="giris_kalite_kontrol"><i class='fa-solid fa-clipboard-check'></i>Giriş Kalite Kontrol</a></li>
         @endif
+        @if (in_array('FKK', $kullanici_read_yetkileri))
+          <li><a href="final_kalite_kontrol"><i class='fa-solid fa-check-double'></i>Final Kalite Kontrol</a></li>
+        @endif
       </ul>
     </li>
 
