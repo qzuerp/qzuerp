@@ -152,6 +152,7 @@ Auth::routes(['password.request' => false]);
   Route::post('gdef00_kartGetir',[gdef00_controller::class,'kartGetir']);
   Route::post('imlt01_kartGetir',[imlt01_controller::class,'kartGetir']);
   Route::post('stok29_kartGetir',[stok29_controller::class,'kartGetir']);
+  Route::post('stok29_kalite_kontrolu',[stok29_controller::class,'kalite_kontrolu']);
   Route::post('stok40_kartGetir',[stok40_controller::class,'kartGetir']);
   Route::post('stok46_kartGetir',[stok46_controller::class,'kartGetir']);
   Route::post('stok60_kartGetir',[stok60_controller::class,'kartGetir']);

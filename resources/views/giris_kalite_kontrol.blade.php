@@ -84,12 +84,12 @@
 									<div class="col-1 mt-4">
 										<a class="btn btn-info mx-auto" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-2">
 										<label>Firma</label>
 										<input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
 										<input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
 									</div>
-									<div class="col-md-4 d-flex align-items-end justify-content-end">
+									<div class="col-md-6 d-flex align-items-end justify-content-end">
 										@include('layout.util.evrakIslemleri')
 									</div>
 								</div>

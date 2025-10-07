@@ -130,7 +130,7 @@ class stok29_controller extends Controller
         break;
 
       case 'kart_sil':
-FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
+    FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
 
         DB::table($firma.'stok29e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok29t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -555,6 +555,73 @@ FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
         return view('etiketKarti', ['data' => $data]);
     }
 
-}
+  }
 
+  public function kalite_kontrolu(Request $request)
+  {
+    // dd($request->all());
+    $EVRAKNO = $request->EVRAKNO;
+    $KOD = $request->KOD;
+    $OLCUM_NO = $request->OLCUM_NO;
+    $ALAN_TURU = $request->ALAN_TURU;
+    $UZUNLUK = $request->UZUNLUK;
+    $DESIMAL = $request->DESIMAL;
+    $OLCUM_SONUC = $request->OLCUM_SONUC;
+    $OLCUM_SONUC_TARIH = $request->OLCUM_SONUC_TARIH;
+    $MIN_DEGER = $request->MIN_DEGER;
+    $MAX_DEGER = $request->MAX_DEGER;
+    $GECERLI_KOD = $request->GECERLI_KOD;
+    $OLCUM_BIRIMI = $request->OLCUM_BIRIMI;
+    $GK_1 = $request->GK_1;
+    $REFERANS_DEGER1 = $request->REFERANS_DEGER1;
+    $REFERANS_DEGER2 = $request->REFERANS_DEGER2;
+    $VTABLEINPUT = $request->VTABLEINPUT;
+    $QVALINPUTTYPE = $request->QVALINPUTTYPE;
+    $KRITERMIK_OPT = $request->KRITERMIK_OPT;
+    $KRITERMIK_1 = $request->KRITERMIK_1;
+    $KRITERMIK_2 = $request->KRITERMIK_2;
+    $QVALCHZTYPE = $request->QVALCHZTYPE;
+    $NOT = $request->NOT;
+    $DURUM = $request->DURUM;
+    $ONAY_TARIH = $request->ONAY_TARIH;
+    $OR_TRNUM = $request->OR_TRNUM;
+    $TRNUM = isset($request->TRNUM) ? $request->TRNUM : [];
+
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+
+    for ($i = 0; $i < count($TRNUM); $i++) {
+      DB::table($firma.'QVAL02T')->insert([
+        'EVRAKNO' => $EVRAKNO,
+        'TRNUM' => $TRNUM[$i],
+        'QS_VARCODE'             => $KOD[$i],
+        'QS_VARINDEX'            => $OLCUM_NO[$i],
+        'QS_VARTYPE'             => $ALAN_TURU[$i],
+        'QS_VARLEN'              => $UZUNLUK[$i],
+        'QS_VARSIG'              => $DESIMAL[$i],
+        'QS_VALUE'               => $OLCUM_SONUC[$i],
+        'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
+        'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
+        'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
+        'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i],
+        'QS_UNIT'                => $OLCUM_BIRIMI[$i],
+        'QS_GK1'                 => $GK_1[$i],
+        'REFDEGER1'              => $REFERANS_DEGER1[$i],
+        'REFDEGER2'              => $REFERANS_DEGER2[$i],
+        'VTABLEINPUT'            => $VTABLEINPUT[$i],
+        'QVALINPUTTYPE'          => $QVALINPUTTYPE[$i],
+        'KRITERMIK_OPT'          => $KRITERMIK_OPT[$i],
+        'KRITERMIK_1'            => $KRITERMIK_1[$i],
+        'KRITERMIK_2'            => $KRITERMIK_2[$i],
+        'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
+        'NOTES'                  => $NOT[$i],
+        'DURUM'                  => $DURUM[$i],
+        'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
+        'OR_TRNUM'      => $OR_TRNUM[$i]
+      ]);
+    }
+    return redirect()->back()->with('success', 'Kayıt Başarılı');
+  }
 }

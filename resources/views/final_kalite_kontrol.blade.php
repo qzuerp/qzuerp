@@ -82,11 +82,11 @@
 									<div class="col-1">
 										<a class="btn btn-info mx-auto" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-2">
 										<input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
 										<input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
 									</div>
-									<div class="col-md-4 d-flex align-items-end justify-content-end">
+									<div class="col-md-6 d-flex align-items-end justify-content-end">
 										@include('layout.util.evrakIslemleri')
 									</div>
 								</div>
@@ -458,6 +458,7 @@
 						cache: true
 					}
 				});
+
 				$('#sablonGetirBtn').on('click', function () {
 					var KOD = $('#STOK_KODU_SHOW').val();
 					var KIRTER2 = $('#KRITERCODE_2').val();
@@ -555,8 +556,6 @@
 						
 					});
 				});
-
-
 
 				$('#popupSelectt').DataTable({
 					"order": [[ 0, "desc" ]],

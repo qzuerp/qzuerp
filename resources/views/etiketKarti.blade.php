@@ -24,12 +24,12 @@
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 1px;
+    align-items: end;
+    padding: 0px;
     font-size: 7.5px;
     page-break-inside: avoid;
     margin: 0;
-    margin-top:0.5px;
+    paddin-top:1px;
   }
   h1,h2,h3
   {
@@ -93,7 +93,7 @@
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
         width: 1.3,
-        height: 25,
+        height: 45,
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",

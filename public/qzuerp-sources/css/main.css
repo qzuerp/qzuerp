@@ -444,7 +444,12 @@
 		.box-info {
 			border-top: 3px solid #17a2b8;
 		}
-		
+		.dropdown-menu
+    {
+      transition: all 0.255s ease;
+      border-color: rgba(0, 0, 0, 0.175);
+      
+    }
 		.form-control {
 			border-radius: 4px;
 			border: 1px solid #ddd;

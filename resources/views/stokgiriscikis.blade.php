@@ -409,111 +409,130 @@
                     $table = DB::table($ekranTableT)->get();
                     $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
                   @endphp
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
+                <div class="row mb-3">
                   <div class="col-sm-3">
-                    <select name="KOD_B" id="KOD_B" class="form-control">
-                      @php
-                        echo "<option value =' ' selected> </option>";
+                    <label for="minDeger" class="col-form-label">Stok Kodu</label>
+                    <div>
+                      <select name="KOD_B" id="KOD_B" class="form-control">
+                        @php
+                          echo "<option value =' ' selected> </option>";
+                            foreach ($table as $key => $veri) {
+                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
+                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+                              }
+                            }
+                        @endphp
+                      </select>
+                    </div>
+                    <div>
+                      <select name="KOD_E" id="KOD_E" class="form-control">
+                        @php
+                          echo "<option value =' ' selected> </option>";
                           foreach ($table as $key => $veri) {
                             if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+                              echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
                             }
                           }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="KOD_E" id="KOD_E" class="form-control">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($table as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div></br></br>
-                  <label for="minDeger" class="col-sm-2 col-form-label">Depo</label>
-                  <div class="col-sm-3">
-                    <select name="DEPO_B" id="DEPO_B" class="form-control">
-                      @php
-
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($ambcode_evraklar as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->AMBCODE) {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="DEPO_E" id="DEPO_E" class="form-control">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($ambcode_evraklar as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->AMBCODE) {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div><br><br>
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Tarih</label>
-                  <div class="col-sm-3">
-                    <select name="TARIH_B" id="TARIH_B" class="form-control">
-                      @php
-
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($ambcode_evraklar as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->AMBCODE) {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="TARIH_E" id="TARIH_E" class="form-control">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($ambcode_evraklar as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->AMBCODE) {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
+                        @endphp
+                      </select>
+                    </div>
                   </div>
 
                   <div class="col-sm-3">
+                    <label for="minDeger" class="col-sm-2 col-form-label">Depo</label>
+                    <div>
+                      <select name="DEPO_B" id="DEPO_B" class="form-control">
+                        @php
+
+                          echo "<option value =' ' selected> </option>";
+                          foreach ($ambcode_evraklar as $key => $veri) {
+
+                            if ($veri->KOD == @$kart_veri->AMBCODE) {
+                              echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                            else {
+                              echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                          }
+                        @endphp
+                      </select>
+                    </div>
+                    <div>
+                      <select name="DEPO_E" id="DEPO_E" class="form-control">
+                        @php
+                          echo "<option value =' ' selected> </option>";
+                          foreach ($ambcode_evraklar as $key => $veri) {
+
+                            if ($veri->KOD == @$kart_veri->AMBCODE) {
+                              echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                            else {
+                              echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                          }
+                        @endphp
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <label for="minDeger" class="col-sm-2 col-form-label">Tarih</label>
+                    <div>
+                      <select name="TARIH_B" id="TARIH_B" class="form-control">
+                        @php
+
+                          echo "<option value =' ' selected> </option>";
+                          foreach ($ambcode_evraklar as $key => $veri) {
+
+                            if ($veri->KOD == @$kart_veri->AMBCODE) {
+                              echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                            else {
+                              echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                          }
+                        @endphp
+                      </select>
+                    </div>
+                    <div>
+                      <select name="TARIH_E" id="TARIH_E" class="form-control">
+                        @php
+                          echo "<option value =' ' selected> </option>";
+                          foreach ($ambcode_evraklar as $key => $veri) {
+
+                            if ($veri->KOD == @$kart_veri->AMBCODE) {
+                              echo "<option value ='".$veri->KOD."' >".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                            else {
+                              echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                            }
+                          }
+                        @endphp
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                  <div>
                     <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
                   </div> 
+
                   <div class="row " style="overflow: auto">
 
                     @php
                       if(isset($_GET['SUZ'])) {
                     @endphp
-                    <table id="example2" class="table table-striped text-center" style="margin:0; width: 100%;" data-page-length="10">
+                    <div class="action-btn-group flex gap-2 flex-wrap mt-3">
+                      <button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('listeleTable')">
+                        <i class="fas fa-file-excel"></i> Excel'e Aktar
+                      </button>
+                      <button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('listeleTable')">
+                        <i class="fas fa-file-word"></i> Word'e Aktar
+                      </button>
+                      <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('listeleTable')">
+                        <i class="fas fa-print"></i> Yazdır
+                      </button>
+                    </div>
+                    <table id="listeleTable" class="table table-striped text-center" style="margin:0; width: 100%;" data-page-length="10">
                       <thead>
                         <tr class="bg-primary">
                           <th>Evrak No</th>
@@ -1291,8 +1310,56 @@
         return (sa);
     }
   </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
+    exportTableToExcel(tableId)
+    {
+      let table = document.getElementById(tableId)
+      let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+      XLSX.writeFile(wb, "tablo.xlsx");
+    }
+    function exportTableToWord(tableId)
+    {
+      let table = document.getElementById(tableId).outerHTML;
+      let htmlContent = `<!DOCTYPE html>
+          <html>
+          <head><meta charset='UTF-8'></head>
+          <body>${table}</body>
+          </html>`;
 
+      let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "tablo.doc";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    }
+    function printTable(tableId)
+    {
+      let table = document.getElementById(tableId).outerHTML; // Tabloyu al
+      let newWindow = window.open("", "_blank"); // Yeni pencere aç
+      newWindow.document.write(`
+          <html>
+          <head>
+              <title>Tablo Yazdır</title>
+              <style>
+                  table { width: 100%; border-collapse: collapse; }
+                  th, td { border: 1px solid black; padding: 8px; text-align: left; }
+              </style>
+          </head>
+          <body>
+              ${table}
+              <script>
+                  window.onload = function() { window.print(); window.onafterprint = window.close; };
+              <\/script>
+          </body>
+          </html>
+      `);
+      newWindow.document.close();
+    }
     function veriCek(kod,id) {
       Swal.fire({
           text: 'Lütfen bekleyin',
