@@ -393,6 +393,14 @@
                             <td><input type="number" class="form-control NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
                             <td><input type="number" class="form-control NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
                             <td><input type="number" class="form-control NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                            @php 
+                              $img = DB::table($database.'dosyalar00')
+                              ->where('EVRAKNO',@$veri  ->KOD)
+                              ->where('EVRAKTYPE','STOK00')
+                              ->where('DOSYATURU','GORSEL')
+                              ->first();
+                            @endphp
+                            <td><img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" class="rounded" width="75"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach
