@@ -741,7 +741,7 @@
                             if (Trim($GK_10_E) <> '') {
                               $sql_sorgu = $sql_sorgu . "AND GK_10 <= '" . $GK_10_E . "'";
                             }
-                            $sql_sorgu .= "AND DURUM != 'ISKARTA'"
+                            $sql_sorgu .= "AND DURUM != 'ISKARTA'";
                             $table = DB::select($sql_sorgu);
                             \Carbon\Carbon::setLocale('tr');
                             foreach ($table as $table) {
