@@ -105,18 +105,18 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Evrak No</label>
-                      <input type="text" class="form-control" maxlength="24" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" readonly>
+                      <input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" readonly>
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" class="form-control" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-6 col-sm-4 col-xs-6" style="display:flex; gap:10px;">
                       <div>
                         <label for="">Operasyon Kodu</label>
-                        <select class="form-control select2 js-example-basic-single" required=" " name="R_OPERASYON" id="R_OPERASYON" >
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" required=" " name="R_OPERASYON" id="R_OPERASYON" >
                           <option value="">Operasyon Kodu Seç...</option>
                           @php
 
@@ -137,7 +137,7 @@
                       </div>
                       <div>
                         <label for="">Tezgah Kodu</label>
-                        <select class="form-control select2 js-example-basic-single" required=" " name="R_TEZGAH" id="R_TEZGAH" >
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" required=" " name="R_TEZGAH" id="R_TEZGAH" >
                           <option value="">Tezgah Kodu Seç...</option>
                           @php
 
@@ -161,7 +161,7 @@
                         <div class="d-flex ">
                           <div class="" aria-checked="false" aria-disabled="false" style="position: relative;">
                             <input type='hidden' value='A' name='AK'>
-                            <input type="checkbox" class="" name="AK" id="AK" value="K" @if (@$kart_veri->AK == "K") checked @endif>
+                            <input type="checkbox" class="" name="AK" id="AK"  value="K" @if (@$kart_veri->AK == "K") checked @endif>
                           </div>
                         </div>
                         <label>Kapalı</label>
@@ -220,12 +220,12 @@
                                     </th>
                                     <th style="max-width: 100px;">
                                       <div>
-                                        <input maxlength="15" style="color:red;" type="number" name="SIRANO_SHOW" id="SIRANO_SHOW" class="form-control">
+                                        <input maxlength="15" style="color:red;" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" name="SIRANO_SHOW" id="SIRANO_SHOW" class="form-control">
                                       </div>
                                     </th>
                                     <th style="max-width: 100px;">
                                       <div>
-                                        <select class="form-control select2 js-example-basic-single" name="TEZGAH_KODU_SHOW" id="TEZGAH_KODU_SHOW">
+                                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" name="TEZGAH_KODU_SHOW" id="TEZGAH_KODU_SHOW">
                                           <option>Seç...</option>
                                           @php
                                             foreach ($imlt00_evraklar as $key => $veri) {
@@ -245,13 +245,13 @@
                                     </th>
                                     <th style="min-width: 100px;">
                                       <div>
-                                        <input type="text" class="form-control" style="color: red" name="TEZGAH_ADI_SHOW" id="TEZGAH_ADI_SHOW" readonly>
+                                        <input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_ADI" style="color: red" name="TEZGAH_ADI_SHOW" id="TEZGAH_ADI_SHOW" readonly>
                                         <input type="hidden" class="form-control" min="0" style="color: red" name="TEZGAH_ADI_FILL" id="TEZGAH_ADI_FILL">
                                       </div>
                                     </th>
                                     <th style="max-width: 100px;">
                                       <div class="d-flex ">
-                                        <input type="text" class="form-control input-sm" style="color:red" name="MPSNO" id="MPSNO_SHOW" readonly value="{{ @$kart_veri->MPSNO }}" >
+                                        <input type="text" class="form-control input-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" style="color:red" name="MPSNO" id="MPSNO_SHOW" readonly value="{{ @$kart_veri->MPSNO }}" >
                                         <span class="d-flex -btn">
                                           <button class="btn btn-primary" data-bs-toggle="modal" onclick="getMPSToEvrak()" data-bs-target="#modal_popupSelectModal" type="button">
                                             <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -262,12 +262,12 @@
                                     </th>
                                     <th style="max-width: 100px;">
                                       <div>
-                                        <input type="number" class="form-control" style="color:red" min="0" name="R_BAKIYEYMAMULMIKTAR_FILL" id="R_BAKIYEYMAMULMIKTAR_FILL">
+                                        <input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_BAKIYEYMAMULMIKTAR" style="color:red" min="0" name="R_BAKIYEYMAMULMIKTAR_FILL" id="R_BAKIYEYMAMULMIKTAR_FILL">
                                       </div>
                                     </th>
                                     <th style="max-width: 100px;">
                                       <div>
-                                        <input type="number" class="form-control" style="color:red" min="0" name="R_YMAMULMIKTAR_FILL" id="R_YMAMULMIKTAR_FILL">
+                                        <input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMAMULMIKTAR" style="color:red" min="0" name="R_YMAMULMIKTAR_FILL" id="R_YMAMULMIKTAR_FILL">
                                       </div>
                                     </th>
                                     <th>#</th>

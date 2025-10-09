@@ -82,7 +82,7 @@
 							<!-- Üst Kontrol Paneli -->
 							<div class="row mb-3-sonra-sil">
 								<div class="col-md-2">
-									<select id="evrakSec" class="form-control js-example-basic-single" 
+									<select id="evrakSec" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control js-example-basic-single" 
 											name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
 										@php
 											$evraklar = DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
@@ -120,7 +120,7 @@
 								<!-- Ürün Bilgileri -->
 								<div class="col-md-4">
 									<label>Reçete Ürün Kodu</label>
-									<select class="form-control" onchange="stokAdiGetir5(this.value)" 
+									<select class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULCODE" onchange="stokAdiGetir5(this.value)" 
 											name="MAMULCODE_SHOW" id="MAMULCODE_SHOW">
 										<option value="">Seç</option>
 										@php
@@ -139,14 +139,14 @@
 
 								<div class="col-md-4">
 									<label>Ürün Adı</label>
-									<input type="text" class="form-control text-danger" maxlength="50" 
+									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" class="form-control text-danger" maxlength="50" 
 										name="AD_SHOW" id="AD_SHOW" value="{{ @$kart_veri->AD }}" disabled>
 									<input type="hidden" name="AD" id="AD" value="{{ @$kart_veri->AD }}">
 								</div>
 
 								<div class="col-md-2">
 									<label>Esas Miktar</label>
-									<input type="number" class="form-control" maxlength="50" 
+									<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMUL_MIKTAR" class="form-control" maxlength="50" 
 										name="MAMUL_MIKTAR" id="MAMUL_MIKTAR" value="{{ @$kart_veri->MAMUL_MIKTAR }}">
 								</div>
 								
@@ -164,7 +164,7 @@
 							<div class="row mt-3">
 								<div class="row">
 									<label>Açıklama</label>
-									<input type="text" class="form-control mg-left" maxlength="50" 
+									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" class="form-control mg-left" maxlength="50" 
 										name="ACIKLAMA_E" id="ACIKLAMA_E" value="{{ @$kart_veri->ACIKLAMA }}">
 								</div>
 							</div>
@@ -236,10 +236,10 @@
 																		<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
+																		<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
 																	</td>
 																	<td>
-																		<select  class="form-control txt-radius select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
+																		<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_INPUTTYPE" class="form-control txt-radius select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
 																			<option value=" ">Seç</option>
 																			<option value="H">H - Hammadde</option>
 																			<option value="I">I - Tezgah / İş Merk</option>
@@ -249,7 +249,7 @@
 																	</td>
 																	<td>
 																		<div class="d-flex ">
-																			<select class="form-control js-example-basic-single"  onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW">
+																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW">
 																				
 																			</select>
 																			<span class="d-flex -btn">
@@ -260,10 +260,10 @@
 																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
 																			<option value=" ">Seç</option>
 																			@php
 																			$imlt01_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
@@ -278,11 +278,11 @@
 																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
 																	</td>
 													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
-										                                    <input type="number" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
 										                                    <span class="d-flex -btn">
 										                                        <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
 										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -303,28 +303,28 @@
 																			<option>SAAT</option>
 																			<option>F</option>
 																		</select> -->
-																		<input type="text" class="form-control" readonly id="ACIKLAMA_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_BIRIM" readonly id="ACIKLAMA_FILL">
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="0">
+																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPS" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="0">
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="0">
+																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPM" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="0">
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
+																		<input type="number" class="form-control"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK1" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<select class="form-control select2 txt-radius" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW" style="height: 30px; width:100%;">
+																		<select class="form-control select2 txt-radius" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULCODE" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW" style="height: 30px; width:100%;">
 																			<option value=" " >Seç</option>
 																		</select>
 																		<input type="hidden" id="YMAMULCODE">
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
+																		<input type="number" class="form-control" maxlength="255" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK2" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_1_FILL" id="KALIPKODU_1_FILL">
+																		<select class="form-control select2 js-example-basic-single"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KODU1" style="color: blue" name="KALIPKODU_1_FILL" id="KALIPKODU_1_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
 																			$kalip00_evraklar=DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
@@ -338,7 +338,7 @@
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_2_FILL" id="KALIPKODU_2_FILL">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KODU2" style="color: blue" name="KALIPKODU_2_FILL" id="KALIPKODU_2_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
 																			$kalip00_evraklar=DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
@@ -352,7 +352,7 @@
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_3_FILL" id="KALIPKODU_3_FILL">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KODU3" style="color: blue" name="KALIPKODU_3_FILL" id="KALIPKODU_3_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
 																			$kalip00_evraklar=DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
@@ -366,7 +366,7 @@
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" style="color: blue" name="KALIPKODU_4_FILL" id="KALIPKODU_4_FILL">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KODU4" style="color: blue" name="KALIPKODU_4_FILL" id="KALIPKODU_4_FILL">
 																			<option value=" ">Seç...</option>
 																			@php
 																			$kalip00_evraklar=DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
@@ -380,28 +380,28 @@
 																		</select>
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="number" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="number" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
 																	</td>
 																	<td style="min-width: 150px; ">
-																		<input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+																		<input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
 																	</td>
 																	<td>#</td>
 																</tr>

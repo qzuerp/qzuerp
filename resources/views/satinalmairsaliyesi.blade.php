@@ -1052,20 +1052,37 @@
 		
 		let currentIndex = 0;
 
+		function confirmUnsavedChanges(callback) {
+			let currentState = JSON.stringify(getTableState());
+			if (lastSavedState && currentState !== lastSavedState) {
+				Swal.fire({
+					title: "Değişiklikler kaydedilmedi!",
+					text: "Devam edersen yaptığın değişiklikler kaybolacak.",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Devam Et",
+					cancelButtonText: "İptal"
+				}).then(result => {
+					if (result.isConfirmed) callback();
+				});
+			} else {
+				callback();
+			}
+		}
+
 		$('.upButton').on('click', function () {
-			currentIndex = Math.max(currentIndex - 1, 0);
-			let KOD = kodValues[currentIndex];
-			console.log(KOD);
-			loadSablon(KOD);
+			confirmUnsavedChanges(() => {
+				currentIndex = Math.max(currentIndex - 1, 0);
+				loadSablon(kodValues[currentIndex]);
+			});
 		});
 
 		$('.downButton').on('click', function () {
-			currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
-			let KOD = kodValues[currentIndex];
-			console.log(KOD);
-			loadSablon(KOD);
+			confirmUnsavedChanges(() => {
+				currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
+				loadSablon(kodValues[currentIndex]);
+			});
 		});
-
 
 		$('.sablonGetirBtn').on('click', function () {
 			let KOD = $(this).data('kod');
@@ -1079,6 +1096,19 @@
 
 			loadSablon(KOD);
 		});
+		
+		let lastSavedState = null;
+
+		function getTableState() {
+			return Array.from(document.querySelectorAll('#gkk_table input, #gkk_table select'))
+				.map(el => ({
+					name: el.name,
+					value: el.type === 'checkbox'
+						? (el.checked ? '1' : '0')
+						: (el.value === undefined || el.value === null ? '' : el.value.trim())
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name));
+		}
 
 		function loadSablon(KOD) {
 			Swal.fire({
@@ -1107,12 +1137,12 @@
 						mesaj('Şablon bilgileri bulunamadı');
 						return;
 					}
-					
+					let htmlCode = '';
 					res.forEach(function (veri, index) {
 						var TRNUM_FILL = getTRNUM();
 						let rowIndex = index;
 
-						let htmlCode = "<tr>";
+						htmlCode += "<tr>";
 						htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
 						htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
@@ -1156,14 +1186,18 @@
 						htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIH ?? ''}"></td>`;
 						htmlCode += "</tr>";
 
-						$("#gkk_table > tbody").append(htmlCode);
 					});
+					$("#gkk_table > tbody").append(htmlCode);
+					lastSavedState = JSON.stringify(getTableState());
 				},
 				error: function (xhr) {
 					console.error("Hata:", xhr.responseText);
 				},
 				complete: function () {
 					Swal.close();
+					setTimeout(() => {
+						lastSavedState = JSON.stringify(getTableState());
+					}, 100);
 				}
 			});
 		}

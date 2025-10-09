@@ -344,12 +344,12 @@ if (isset($kart_veri)) {
               
               <div class="col-md-2 col-sm-3 col-xs-6">
                 <label>Tarih</label>
-                <input type="date" class="form-control" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
+                <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH_E" id="TARIH_E"  value="{{ @$kart_veri->TARIH }}">
               </div>
 
               <div class="col-md-2 col-sm-4 col-xs-6">
                 <label>Mamul Depo</label>
-                <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
+                <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE"  style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
                   <option value="">Seç</option>
                   @php
 
@@ -369,7 +369,7 @@ if (isset($kart_veri)) {
 
               <div class="col-md-2 col-sm-4 col-xs-6">
                 <label>Imalat Depo</label>
-                <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="IMALATAMBCODE" id="IMALATAMBCODE" >
+                <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IMALATAMBCODE"  style="width: 100%; height: 30PX" name="IMALATAMBCODE" id="IMALATAMBCODE" >
                   <option value="">Seç</option>
                   @php
                   $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
@@ -388,7 +388,7 @@ if (isset($kart_veri)) {
               
               <div class="col-md-2 col-sm-4 col-xs-6">
                 <label>Yan Mamul Depo</label>
-                <select class="form-control select2 js-example-basic-single"   style="width: 100%; height: 30PX" name="YANMAMULAMBCODE" id="YANMAMULAMBCODE" >
+                <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="YANMAMULAMBCODE"  style="width: 100%; height: 30PX" name="YANMAMULAMBCODE" id="YANMAMULAMBCODE" >
                   <option value="">Seç</option>
                   @php
                   $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
@@ -408,7 +408,7 @@ if (isset($kart_veri)) {
 
               <div class="col-md-2 col-sm-4 col-xs-6">
                 <label>Nitelik</label>
-                <select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30PX" name="NITELIK" id="NITELIK" >
+                <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" style="width: 100%; height: 30PX" name="NITELIK" id="NITELIK" >
                   <option value=" ">Seç</option>
                   @php
                   $evraklar=DB::table($database.'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
@@ -425,18 +425,11 @@ if (isset($kart_veri)) {
                   @endphp
                 </select>
               </div>
-
-
-
             </div>
-
             </div>
           </div>
         </div>
-
-
       </div>
-
       <div class="col-12">
         <div class="box box-info">
           <div  class="nav-tabs-custom">
@@ -452,7 +445,7 @@ if (isset($kart_veri)) {
 
                   <div class="col my-2">
                     <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
-                  </div>
+                  </div>
                   
 
                   <table class="table table-bordered text-center" id="veriTable" style="width:100%;font-size:7pt; overflow:visible; border-radius:10px;" >
@@ -461,6 +454,7 @@ if (isset($kart_veri)) {
                       <tr>
                         <th>#</th>
                         <th style="display:none;">Sıra</th>
+                        <th>GKK</th>
                         <th style="min-width:200px !important;">İş Emri</th>
                         <th>Stok Kodu</th>
                         <th>Stok Adı</th>
@@ -486,11 +480,11 @@ if (isset($kart_veri)) {
                       <tr class="satirEkle" style="background-color:#3c8dbc">
 
                         <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
-
+                        <td><i class="fa-solid fa-check"></i></td>
                         <td style="display:none;"></td>
 
                         <td style="min-width: 150px;" class="d-flex ">
-                          <select class="form-control select2 js-example-basic-single" data-name="IS_EMRI" style="width: 100%; height: 30px;" name="IS_EMRI_FILL" id="IS_EMRI_FILL" onchange="stokAdiGetir(this.value)">
+                          <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ISEMRINO" data-name="IS_EMRI" style="width: 100%; height: 30px;" name="IS_EMRI_FILL" id="IS_EMRI_FILL" onchange="stokAdiGetir(this.value)">
                             <option value=" ">Seç</option>
                             @php
                             $evraklar=DB::table($database.'MMPS10E as e')
@@ -512,65 +506,65 @@ if (isset($kart_veri)) {
                         </td>
 
                         <td style="min-width: 150px;">
-                          <input style="color: red" type="text" data-name="KOD" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control" readonly>
+                          <input style="color: red" type="text" data-name="KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control" readonly>
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="50" style="color: red" type="text" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control"  readonly>
+                          <input maxlength="50" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control"  readonly>
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="12" style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                          <input maxlength="12" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" placeholder="Otomotik Üretilicek" id="SERINO_FILL" class="form-control" readonly>
+                          <input maxlength="20" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" name="SERINO_FILL" placeholder="Otomotik Üretilicek" id="SERINO_FILL" class="form-control" readonly>
                         </td> 
                         <td style="min-width: 150px">
-                          <input maxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                          <input maxlength="28" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
 
                         </td>
                         <td style="min-width: 150px">
                           <input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
-                          <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+                          <input maxlength="6 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
                         </td>
 
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_VR_R1" data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" data-name="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_VR_R2" data-name="TEXT2" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" data-name="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_VR_R3" data-name="TEXT3" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="text" data-name="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_VR_R4" data-name="TEXT4" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" data-name="NUM1" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_NUM1" data-name="NUM1" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" data-name="NUM2" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_NUM2" data-name="NUM2" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" data-name="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_NUM3" data-name="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" data-name="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
-                        </td>
-
-                        <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="" data-name="LOCATION1" id="LOKT1_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_VRI_NUM4" data-name="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
                         </td>
 
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="" data-name="LOCATION2" id="LOKT2_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" name="" data-name="LOCATION1" id="LOKT1_FILL" class="form-control">
                         </td>
 
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="" data-name="LOCATION3" id="LOKT3_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" name="" data-name="LOCATION2" id="LOKT2_FILL" class="form-control">
                         </td>
 
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" name="" data-name="LOCATION4" id="LOKT4_FILL" class="form-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" name="" data-name="LOCATION3" id="LOKT3_FILL" class="form-control">
+                        </td>
+
+                        <td style="min-width: 150px">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" name="" data-name="LOCATION4" id="LOKT4_FILL" class="form-control">
                         </td>
                         <td>#</td>
 
@@ -585,6 +579,7 @@ if (isset($kart_veri)) {
                           @include('components.detayBtn', ['KOD' => $veri->KOD])
                         </td>
                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+                        <td><button type="button" class="btn btn-default border-0 sablonGetirBtn" data-kod="{{ $veri->KOD }}"><i class="fa-solid fa-clipboard-check" style="color: green;"></i></button></td>
                         <td>
                           <input type="text" class="form-control" name="IS_EMRI_SHOW_T" value="{{ $veri->ISEMRINO }}" disabled>
                           <input type="hidden" class="form-control" name="IS_EMRI[]" value="{{ $veri->ISEMRINO }}">
@@ -968,7 +963,89 @@ if (isset($kart_veri)) {
 
 
 </section>
+<div class="modal fade bd-example-modal-xl" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="modal_gkk"  >
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form action="stok29_kalite_kontrolu" method="post">
+        @csrf
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check' style='color: blue'></i>&nbsp;&nbsp;Giriş Kalite Kontrol</h4>
+        </div>
+          <div class="modal-body">
+          <!-- İşlem Bilgileri -->
+          <div class="card mb-2 shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-1 px-2 d-flex align-items-center" style="font-size: 0.9em;">
+              <strong>İşlem Bilgileri</strong>
+            </div>
+            <div class="card-body py-2 px-3" style="font-size: 0.8em;">
+              <div class="d-flex flex-wrap gap-3 align-items-center">
+              <div><strong>Kod:</strong> <span id="ISLEM_KODU" class="text-secondary"></span></div>
+              <div><strong>Adı:</strong> <span id="ISLEM_ADI" class="text-secondary"></span></div>
+              <div><strong>Lot:</strong> <span id="ISLEM_LOTU" class="text-secondary"></span></div>
+              <div><strong>Seri:</strong> <span id="ISLEM_SERI" class="text-secondary"></span></div>
+              <div><strong>Miktar:</strong> <span id="ISLEM_MIKTARI" class="text-secondary"></span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Tablo Alanı -->
+          <div class="d-flex gap-2">
+            <div class="flex-grow-1" style="overflow-x: auto;">
+            <table id="gkk_table" class="table table-sm table-hover align-middle text-center" style="font-size: 0.85em;">
+              <thead class="table-light sticky-top">
+              <tr>
+                <th><i class="fa-solid fa-plus"></i></th>
+                <th style="min-width: 150px;">Kod</th>
+                <th style="min-width: 150px;">Ölçüm No</th>
+                <th style="min-width: 120px;">Alan Türü</th>
+                <th style="min-width: 120px;">Uzunluk</th>
+                <th style="min-width: 220px;">Alan Ondalık Sayısı</th>
+                <th style="min-width: 120px;">Ölçüm Sonucu</th>
+                <th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
+                <th style="min-width: 120px;">Minimum Değer</th>
+                <th style="min-width: 220px;">Maksimum Değer</th>
+                <th style="min-width: 120px;">Zorunlu Mu</th>
+                <th style="min-width: 220px;">Test Ölçüm Birim</th>
+                <th style="min-width: 250px;">Kalite Parametresi Grup Kodu</th>
+                <th style="min-width: 220px;">Referans Değer Başlangıç</th>
+                <th style="min-width: 220px;">Referans Değer Bitiş</th>
+                <th style="min-width: 120px;">Tablo Türü</th>
+                <th style="min-width: 250px;">Kalite Parametresi Giriş Türü</th>
+                <th style="min-width: 200px;">Miktar Kriter Türü</th>
+                <th style="min-width: 200px;">Miktar Kriter - 1</th>
+                <th style="min-width: 200px;">Miktar Kriter - 2</th>
+                <th style="min-width: 200px;">Ölçüm Cihaz Tipi</th>
+                <th style="min-width: 100px;">Not</th>
+                <th style="min-width: 100px;">Durum</th>
+                <th style="min-width: 100px;">Onay Tarihi</th>
+                <th>#</th>
+              </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+            </div>
 
+            <!-- Yukarı / Aşağı Tuşları -->
+            <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm upButton" title="Önceki Kod">
+                <i class="fa-solid fa-chevron-up"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm downButton" title="Sonraki Kod">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+          </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @include('components/detayBtnLib')
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 <script>
@@ -1066,6 +1143,163 @@ if (isset($kart_veri)) {
   });
 
   $(document).ready(function() {
+    let kodValues = Array.from(document.querySelectorAll('#veriTable input[name^="KOD[]"]')).map(i => i.value);
+		let adValues = Array.from(document.querySelectorAll('#veriTable input[name^="STOK_ADI[]"]')).map(i => i.value);
+		let lotValues = Array.from(document.querySelectorAll('#veriTable input[name^="LOTNUMBER[]"]')).map(i => i.value);
+		let seriValues = Array.from(document.querySelectorAll('#veriTable input[name^="SERINO[]"]')).map(i => i.value);
+		let miktarValues = Array.from(document.querySelectorAll('#veriTable input[name^="SF_MIKTAR[]"]')).map(i => i.value);
+		let trnumValues = Array.from(document.querySelectorAll('#veriTable input[name^="TRNUM[]')).map(i => i.value);
+		let currentIndex = 0;
+
+		function confirmUnsavedChanges(callback) {
+			let currentState = JSON.stringify(getTableState());
+			if (lastSavedState && currentState !== lastSavedState) {
+				Swal.fire({
+					title: "Değişiklikler kaydedilmedi!",
+					text: "Devam edersen yaptığın değişiklikler kaybolacak.",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Devam Et",
+					cancelButtonText: "İptal"
+				}).then(result => {
+					if (result.isConfirmed) callback();
+				});
+			} else {
+				callback();
+			}
+		}
+
+		$('.upButton').on('click', function () {
+			confirmUnsavedChanges(() => {
+				currentIndex = Math.max(currentIndex - 1, 0);
+				loadSablon(kodValues[currentIndex]);
+			});
+		});
+
+		$('.downButton').on('click', function () {
+			confirmUnsavedChanges(() => {
+				currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
+				loadSablon(kodValues[currentIndex]);
+			});
+		});
+
+		$('.sablonGetirBtn').on('click', function () {
+			let KOD = $(this).data('kod');
+			$('#modal_gkk').modal('show');
+			let foundIndex = kodValues.indexOf(KOD);
+			if (foundIndex !== -1) {
+				currentIndex = foundIndex;
+			} else {
+				currentIndex = 0;
+			}
+
+			loadSablon(KOD);
+		});
+		
+		let lastSavedState = null;
+
+		function getTableState() {
+			return Array.from(document.querySelectorAll('#gkk_table input, #gkk_table select'))
+				.map(el => ({
+					name: el.name,
+					value: el.type === 'checkbox'
+						? (el.checked ? '1' : '0')
+						: (el.value === undefined || el.value === null ? '' : el.value.trim())
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name));
+		}
+
+		function loadSablon(KOD) {
+			Swal.fire({
+				title: 'Yükleniyor...',
+				text: 'Lütfen bekleyin',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading();
+				}
+			});
+			$("#gkk_table > tbody").empty();
+			$('#ISLEM_KODU').text(KOD);
+			$('#ISLEM_ADI').text(adValues[currentIndex]);
+			$('#ISLEM_LOTU').text(lotValues[currentIndex]);
+			$('#ISLEM_SERI').text(seriValues[currentIndex]);
+			$('#ISLEM_MIKTARI').text(miktarValues[currentIndex]);
+			$.ajax({
+				url: '/sablonGetir',
+				type: 'post',
+				data: {
+					KOD: KOD,
+					_token: $('meta[name="csrf-token"]').attr('content')
+				},
+				success: function (res) {
+					if (res.length === 0) {
+						mesaj('Şablon bilgileri bulunamadı');
+						return;
+					}
+					let htmlCode = '';
+					res.forEach(function (veri, index) {
+						var TRNUM_FILL = getTRNUM();
+						let rowIndex = index;
+
+						htmlCode += "<tr>";
+						htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
+						htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
+						htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+
+						let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
+						htmlCode += `<td class="text-center">
+							<input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
+							<input type="checkbox" name="GECERLI_KOD[${rowIndex}]" value="1" ${isChecked}>
+						</td>`;
+
+						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
+						htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ $kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM[${rowIndex}]" value="${trnumValues[rowIndex] ?? ''}">`;
+
+						let durum = veri.DURUM ?? '';
+						htmlCode += `<td>
+							<select name="DURUM[${rowIndex}]" class="form-select">
+								<option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
+								<option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
+								<option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
+							</select>
+						</td>`;
+
+						htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIH ?? ''}"></td>`;
+						htmlCode += "</tr>";
+
+					});
+					$("#gkk_table > tbody").append(htmlCode);
+					lastSavedState = JSON.stringify(getTableState());
+				},
+				error: function (xhr) {
+					console.error("Hata:", xhr.responseText);
+				},
+				complete: function () {
+					Swal.close();
+					setTimeout(() => {
+						lastSavedState = JSON.stringify(getTableState());
+					}, 100);
+				}
+			});
+		}
 
     $("#addRow2").on('click', function() {
 

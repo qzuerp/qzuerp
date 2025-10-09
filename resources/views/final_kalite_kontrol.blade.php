@@ -91,7 +91,7 @@
 									</div>
 								</div>
 
-								<div class="border rounded p-3 mb-4 position-relative">
+								<div class="border rounded p-2 mb-4 position-relative">
 
 									<div class="row g-2">
 										<div class="col-md-4">
@@ -138,7 +138,7 @@
 								</div>
 
 
-								<div class="border rounded p-3 mb-4">
+								<div class="border rounded p-2 mb-4">
 									<h6 class="text-muted mb-3-sonra-sil">Ürün ve İşlem Bilgileri</h6>
 									<div class="row g-2">
 										<div class="col-md-4">

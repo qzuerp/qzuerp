@@ -115,13 +115,13 @@
                 <div class="row">
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Evrak No</label>
-                    <input type="text" class="form-control" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                    <input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                     <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                   </div>
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Sipariş Artıkel No</label>
-                    <select class="form-control select2"  length="100 px" name="ARTNO_E" id="ARTNO">
+                    <select class="form-control select2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ARTIKELNO"  length="100 px" name="ARTNO_E" id="ARTNO">
                       @php
                         echo "<option value =' '> </option>";
                         foreach ($siparisno as $key => $veri) {
@@ -138,7 +138,7 @@
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Cari Hesap Kodu</label>
-                    <select class="form-control select2 js-example-basic-single" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+                    <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HESAPKODU" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
                       @php
                         echo "<option value =' '> </option>";
                         foreach ($cari00 as $key => $veri) {
@@ -155,7 +155,7 @@
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Stok Kodu</label>
-                    <select class="form-control select2" name="STOK_KOD" id="KOD" >
+                    <select class="form-control select2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOKKODU" name="STOK_KOD" id="KOD" >
                       @php
                           echo "<option value =' '> </option>";
                           foreach ($stok00 as $key => $veri) {
@@ -172,23 +172,23 @@
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Tarih</label>
-                    <input type="date" class="form-control" name="TARIH" id="TARIH" value="{{ @$kart_veri->TARIH }}">
+                    <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH" value="{{ @$kart_veri->TARIH }}">
                   </div>
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>İmalat Teslim Tarihi</label>
-                    <input type="date" class="form-control" name="IMLTTARIH" id="IMLTTARIH" value="{{ @$kart_veri->IMALATTARIHI }}">
+                    <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IMALATTARIHI" name="IMLTTARIH" id="IMLTTARIH" value="{{ @$kart_veri->IMALATTARIHI }}">
                   </div>
 
                   <div class="col-md-2 col-sm-2 col-xs-2 ">
                     <label>Müşteri Teslim Tarihi</label>
-                    <input type="date" class="form-control" name="TESLIM_TAR" id="TESLIM_TAR" value="{{ @$kart_veri->MUSTERITARIHI }}">
+                    <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERITARIHI" name="TESLIM_TAR" id="TESLIM_TAR" value="{{ @$kart_veri->MUSTERITARIHI }}">
                   </div>
 
                   <div class="col-md-3 col-sm-2 col-xs-2">
                     <div class="col-md-5 col-sm-5 col-xs-5">
                       <label>Açık/Kapalı</label>
-                      <select class="form-control select2 w-100" name="AK" id="AK">
+                      <select class="form-control select2 w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AK" name="AK" id="AK">
                         <option></option>
                         <option {{ @$kart_veri->AK == "Açık" ? "selected" : ""}}>Açık</option>
                         <option {{ @$kart_veri->AK == "Kapalı" ? "selected" : ""}}>Kapalı</option>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="col-md-5 col-sm-5 col-xs-5">
                       <label>Var/Yok</label>
-                      <select class="form-control select2 w-100" name="VY" id="VY">
+                      <select class="form-control select2 w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="VY" name="VY" id="VY">
                         <option></option>
                         <option {{ @$kart_veri->VY == "Var" ? "selected" : ""}}>Var</option>
                         <option {{ @$kart_veri->VY == "Yok" ? "selected" : ""}}>Yok</option>
@@ -258,7 +258,7 @@
                                     <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                     <td style="display: none;"></td>
                                     <td style="width: 150px;">
-                                      <select class="form-seleect select2" name="ARTNO_SHOW" id="ARTNO_SHOW">
+                                      <select class="form-seleect select2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ARTIKELNO" name="ARTNO_SHOW" id="ARTNO_SHOW">
                                         <option value="">Seç</option>
                                         @php
                                           $siparisno = DB::table('stok40t')->orderBy('id', 'ASC')->get();
@@ -278,7 +278,7 @@
 
                                     <td style="width: 150px;">
                                       <in>
-                                        <select class="form-seleect select2" onchange="stokAdiGetir3(this.value)" name="MUSTERIKODU_SHOW" id="MUSTERIKODU_SHOW" >
+                                        <select class="form-seleect select2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERIKODU" onchange="stokAdiGetir3(this.value)" name="MUSTERIKODU_SHOW" id="MUSTERIKODU_SHOW" >
                                           <option value=" ">Seç</option>
                                           @php
                                           $cari00_evraklar = DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
@@ -292,15 +292,15 @@
                                       </in>
                                     </td>
                                     <td style="min-width: 150px">
-                                      <input  type="text" class="form-control" length="100" style="color: red" name="MUSTERIADI_SHOW" id="MUSTERIADI_SHOW" readonly>
+                                      <input  type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERIADI" class="form-control" length="100" style="color: red" name="MUSTERIADI_SHOW" id="MUSTERIADI_SHOW" readonly>
                                     </td>
                                     <td style="width: 150px">
-                                      <input length="100" style="color: red" type="date" name="TERMIN_TAR_FILL" id="TERMIN_TAR_FILL" class="form-control">
+                                      <input length="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TERMINTAR" style="color: red" type="date" name="TERMIN_TAR_FILL" id="TERMIN_TAR_FILL" class="form-control">
                                     </td>
 
                                     <td style="width: 150px">
                                       <div>
-                                        <select class="form-select select2" onchange="stokAdiGetir4(this.value)" name="KOD_SHOW" id="KOD_SHOW">
+                                        <select class="form-select select2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOKKODU" onchange="stokAdiGetir4(this.value)" name="KOD_SHOW" id="KOD_SHOW">
                                           <option value="">Seç</option>
                                           @php
                                           $stok60t_evraklar = DB::table('stok60t')->orderBy('id', 'ASC')->get();
@@ -315,10 +315,10 @@
                                       </div>
                                     </td>
                                     <td style="width: 150px">
-                                      <input  type="text" class="form-control" length="100" style="color: red" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" readonly>
+                                      <input  type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOKADI" class="form-control" length="100" style="color: red" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" readonly>
                                     </td>
                                     <td style="width: 150px">
-                                      <input style="color: red" type="number" name="SF_MIKTAR_SHOW" id="SF_MIKTAR_SHOW" class="form-control">
+                                      <input style="color: red" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" type="number" name="SF_MIKTAR_SHOW" id="SF_MIKTAR_SHOW" class="form-control">
                                     </td>
                                     <td style="width: 30 px;"></td>
                                   </tr> 
@@ -332,25 +332,25 @@
                                         <input type="hidden" id="" name="TRNUM[]" value="{{ $veri->TRNUM }}">
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="ARTNO[]" value="{{ $veri->ARTIKELNO }}" readonly>
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="ARTNO[]" value="{{ $veri->ARTIKELNO }}" readonly>
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="MUSTERIKODU[]" value="{{ $veri->MUSTERIKODU }}">
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="MUSTERIKODU[]" value="{{ $veri->MUSTERIKODU }}">
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="MUSTERIADI[]" value="{{ $veri->MUSTERIADI }}">
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="MUSTERIADI[]" value="{{ $veri->MUSTERIADI }}">
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="TERMIN_TAR[]" value="{{ $veri->TERMINTAR }}" readonly>
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="TERMIN_TAR[]" value="{{ $veri->TERMINTAR }}" readonly>
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="KOD[]" value="{{ $veri->STOKKODU }}" readonly>
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="KOD[]" value="{{ $veri->STOKKODU }}" readonly>
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOKADI }}" readonly>
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOKADI }}" readonly>
                                       </td>
                                       <td>
-                                        <input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
+                                        <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
                                       </td>
                                       <td>
                                         <button type="button" class="btn btn-default delete-row" id="deleteSingleRow">

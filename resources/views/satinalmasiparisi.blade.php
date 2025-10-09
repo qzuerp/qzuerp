@@ -1015,8 +1015,6 @@
     <script>
 
       $(document).ready(function () {
-
-
         $('#evrakSec').select2({
           placeholder: 'Stok kodu seç...',
           ajax: {
@@ -1036,7 +1034,6 @@
             cache: true
           }
         });
-
 
         var sayi = 0;
 

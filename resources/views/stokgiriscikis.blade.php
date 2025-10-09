@@ -118,18 +118,18 @@
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Fiş No</label>
-                      <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control EVRAKNO" maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="form-control " maxlength="24"  name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
                     <div class="col-md-2 col-sm-3 col-xs-6">
                       <label>Tarih</label>
-                      <input type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" class="form-control TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
+                      <input type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" class="form-control " name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>Depo</label>
-                      <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control select2 js-example-basic-single"  onchange="getLocation1()" style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
+                      <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="form-control select2 js-example-basic-single"  onchange="getLocation1()" style="width: 100%; height: 30PX" name="AMBCODE_E" id="AMBCODE_E" >
                         <option value=" ">Seç</option>
                         @php
                           $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
@@ -393,14 +393,6 @@
                             <td><input type="number" class="form-control NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
                             <td><input type="number" class="form-control NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
                             <td><input type="number" class="form-control NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
-                            @php 
-                              $img = DB::table($database.'dosyalar00')
-                              ->where('EVRAKNO',@$veri  ->KOD)
-                              ->where('EVRAKTYPE','STOK00')
-                              ->where('DOSYATURU','GORSEL')
-                              ->first();
-                            @endphp
-                            <td><img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" class="rounded" width="75"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach

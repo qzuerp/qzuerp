@@ -372,6 +372,7 @@
 												<li class=""><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Mps tezgah ve operasyonlar</a></li>
 												<li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 												<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+												<li id="bagliDokumanlarTab" class=""><a href="#bagliDokumanlar" id="bagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Bağlı Dokümanlar</a></li>
 											</ul>
 											<div class="tab-content">
 												<div class="active tab-pane" id="tab_1">
@@ -1261,6 +1262,56 @@
 
 												<div class="tab-pane" id="baglantiliDokumanlar">
 													@include('layout.util.baglantiliDokumanlar')
+												</div>
+												<div class="tab-pane" id="bagliDokumanlar">
+													@php
+														$mamul = $kart_veri->MAMULSTOKKODU;
+														$dosyalar = DB::table($database.'dosyalar00')->where('EVRAKNO', $mamul)->get();
+													@endphp
+
+													<div class="card shadow-sm mt-4">
+														<div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+															<h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
+														</div>
+														<div class="card-body">
+															<table class="table table-striped align-middle text-center" id="baglantiliDokumanlarTable">
+																<thead class="table-light">
+																<tr>
+																	<th style="width: 15%">Tür</th>
+																	<th style="width: 45%">Açıklama</th>
+																	<th style="width: 25%">Yüklenme Tarihi</th>
+																	<th style="width: 15%">İşlem</th>
+																</tr>
+																</thead>
+																<tfoot>
+																<tr>
+																	<th style="width: 15%">Tür</th>
+																	<th style="width: 45%">Açıklama</th>
+																	<th style="width: 25%">Yüklenme Tarihi</th>
+																	<th style="width: 15%">İşlem</th>
+																</tr>
+																</tfoot>
+																<tbody>
+																	@foreach ($dosyalar as $veri)
+																		@php $fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null; @endphp
+																		<tr id="dosya_{{ $veri->id }}">
+																			<td>{{ $veri->DOSYATURU }}</td>
+																			<td>{{ $veri->ACIKLAMA }}</td>
+																			<td>{{ $veri->created_at }}</td>
+																			<td>
+																				@if ($fileUrl)
+																					<a class="btn btn-outline-primary" href="{{ $fileUrl }}" target="_blank"><i class="fa fa-file"></i></a>
+																				@endif
+																				<!-- <button type="button" class="btn btn-outline-danger btn-dosya-sil" id="dosyaSil" value="{{ $veri->id }},{{ $database }}">
+																					<i class="fa fa-trash"></i>
+																				</button> -->
+																			</td>
+																		</tr>
+																	@endforeach
+																</tbody>
+															</table>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>

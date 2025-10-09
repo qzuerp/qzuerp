@@ -191,7 +191,7 @@
 								<div class="row">
 									<div class="col-md-4">
 										<label>Endeks</label>
-										<select class="form-control js-example-basic-single" name="ENDEKS" id="ENDEX">
+										<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ENDEKS" name="ENDEKS" id="ENDEX">
 											<option <?=@$kart_veri->ENDEKS == "Son Satın Alma Fiyati" ? "selected" : ""?> value="Son Satın Alma Fiyati">Son Satın Alma Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Son Satın Alma Siparis Fiyati" ? "selected" : ""?> value="Son Satın Alma Siparis Fiyati">Son Satın Alma Siparis Fiyati</option>
                                             <option <?=@$kart_veri->ENDEKS == "Hammadde Fiyat ENDEKS" ? "selected" : ""?> value="Hammadde Fiyat ENDEKS">Hammadde Fiyat Endeks</option>
@@ -200,11 +200,11 @@
 									</div>
 									<div class="col-md-4">
 										<label for="tarih">Tarih</label>
-										<input type="date" name="TARIH" id="TARIH" class="form-control" value="{{ @$kart_veri->TARIH }}">
+										<input type="date" name="TARIH" id="TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" class="form-control" value="{{ @$kart_veri->TARIH }}">
 									</div>
 									<div class="col-md-4">
 										<label for="teklif">Teklif Birimi</label>
-										<select name="TEKLIF" id="teklif" class="form-control js-example-basic-single">
+										<select name="TEKLIF" id="teklif" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEKLIF_FIYAT_PB" class="form-control js-example-basic-single">
 											<option value="">Seç</option>
 											@php
 												$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -220,8 +220,8 @@
 								<div class="row">
 									<div class="col-md-4">
 										<label for="musteri">Müşteri</label>
-										<select name="MUSTERI" id="musteri" class="form-control js-example-basic-single">
-											<option value=" ">Seç</option>
+										<select name="MUSTERI" id="musteri" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BASE_DF_CARIHESAP" class="form-control js-example-basic-single">
+											<option value=" " >Seç</option>
 											@php
 												$musteriler = DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
 												foreach ($musteriler as $veri) {
@@ -237,20 +237,20 @@
 										@endphp
 										<div class="col-md-4">
 											<label for="UNVAN_1">Ünvan 1</label>
-											<input type="text" name="UNVAN_1" id="UNVAN_1" class="form-control" placeholder="Ünvan 1" value="{{ $musteri[0] ?? '' }}">
+											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNVAN_1" name="UNVAN_1" id="UNVAN_1" class="form-control" placeholder="Ünvan 1" value="{{ $musteri[0] ?? '' }}">
 										</div>
 										<div class="col-md-4">
 											<label for="UNVAN_2">Ünvan 2</label>
-											<input type="text" name="UNVAN_2" id="UNVAN_2" class="form-control" placeholder="Ünvan 2" value="{{ $musteri[1] ?? '' }}">
+											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNVAN_2" name="UNVAN_2" id="UNVAN_2" class="form-control" placeholder="Ünvan 2" value="{{ $musteri[1] ?? '' }}">
 										</div>
 									@else
 										<div class="col-md-4">
 											<label for="UNVAN_1">Ünvan 1</label>
-											<input type="text" name="UNVAN_1" id="UNVAN_1" class="form-control" disabled>
+											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNVAN_1" name="UNVAN_1" id="UNVAN_1" class="form-control" disabled>
 										</div>
 										<div class="col-md-4">
 											<label for="UNVAN_2">Ünvan 2</label>
-											<input type="text" name="UNVAN_2" id="UNVAN_2" class="form-control" disabled>
+											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UNVAN_2" name="UNVAN_2" id="UNVAN_2" class="form-control" disabled>
 										</div>
 									@endif
 								</div>
@@ -258,11 +258,11 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label for="not_1">Not 1</label>
-										<input type="text" name="NOT_1" id="NOT_1" class="form-control" placeholder="Not 1" value="{{ @$kart_veri->NOTES_1 }}">
+										<input type="text"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES_1" name="NOT_1" id="NOT_1" class="form-control" placeholder="Not 1" value="{{ @$kart_veri->NOTES_1 }}">
 									</div>
 									<div class="col-md-6">
 										<label for="not_2">Not 2</label>
-										<input type="text" name="NOT_2" id="NOT_2" class="form-control" placeholder="Not 2" value="{{ @$kart_veri->NOTES_2 }}">
+										<input type="text"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES_2" name="NOT_2" id="NOT_2" class="form-control" placeholder="Not 2" value="{{ @$kart_veri->NOTES_2 }}">
 									</div>
 								</div>
 							</div>
@@ -314,7 +314,7 @@
 																	<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
 																</td>
 																<td>
-																	<select class="form-control select2 js-example-basic-single required" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
+																	<select class="form-control select2 js-example-basic-single required" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
 																		<option value=" ">Seç</option>
 																		<option value="M">M - Mamul</option>
 																		<option value="H">H - Hammadde</option>
@@ -324,7 +324,7 @@
 																</td>
 																<td>
 																	<div class="d-flex  " style="display: flex;">
-																		<select class="form-control select2 js-example-basic-single required" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
+																		<select class="form-control select2 js-example-basic-single required" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
 																			<option value=" ">Seç</option>
 																		</select>
 																		<input type="hidden" id="STOK_KOD">
@@ -332,43 +332,43 @@
 																	</div>
 																</td>
 																<td>
-																	<input type="text" class="form-control" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI" readonly>
+																	<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_AD1" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI" readonly>
 																</td>
 																<td>
-																	<input type="text" name="" id="ISLEM_MIKTARI" data-isim="İşlem Miktarı" class="form-control required number" value="">
+																	<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control required number" value="">
 																</td>
 																<td>
-																	<input type="text" name="" id="ISLEM_BIRIMI" data-isim="İşlem Birimi" class="form-control" value="" readonly>
+																	<input type="text" name="" id="ISLEM_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi" class="form-control" value="" readonly>
 																</td>
 																<td>
-																	<input type="number" name="" id="FIYAT" class="form-control" value="" readonly>
+																	<input type="number" name="" id="FIYAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="form-control" value="" readonly>
+																</td>
+																<td> 
+																	<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="" readonly>
 																</td>
 																<td>
-																	<input type="number" name="" id="TUTAR" class="form-control" value="" readonly>
+																	<input type="text" name="" id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICEUNIT" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
 																</td>
 																<td>
-																	<input type="text" name="" id="PARA_BIRIMI" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
+																	<input type="number" name="NETAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="number" name="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
+																	<input type="number" name="BRUTAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="number" name="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
+																	<input type="number" name="HACIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HACIM" id="HACIM" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="number" name="HACIM" id="HACIM" class="form-control" value="">
+																	<input type="number" name="AMBALAJAGIRLIK"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBALAJ_AGIRLIGI" id="AMBALAJAGIRLIK" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="number" name="AMBALAJAGIRLIK" id="AMBALAJAGIRLIK" class="form-control" value="">
+																	<input type="checkbox" name="AUTO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_AUTOCALC" id="AUTO" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="checkbox" name="AUTO" id="AUTO" class="form-control" value="">
+																	<input type="number" name="STOKMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_STOK_MIKTAR" id="STOKMIKTAR" class="form-control" value="">
 																</td>
 																<td>
-																	<input type="number" name="STOKMIKTAR" id="STOKMIKTAR" class="form-control" value="">
-																</td>
-																<td>
-																	<input type="text" name="STOKTEMELBIRIM" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
+																	<input type="text" name="STOKTEMELBIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD_STOK00_IUNIT" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
 																</td>
 															</tr>
 														</thead>
