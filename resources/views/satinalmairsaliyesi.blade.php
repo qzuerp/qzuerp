@@ -937,11 +937,11 @@
 								</div>
 								<div class="card-body py-2 px-3" style="font-size: 0.8em;">
 									<div class="d-flex flex-wrap gap-3 align-items-center">
-									<div><strong>Kod:</strong> <span id="ISLEM_KODU" class="text-secondary"></span></div>
-									<div><strong>Adı:</strong> <span id="ISLEM_ADI" class="text-secondary"></span></div>
-									<div><strong>Lot:</strong> <span id="ISLEM_LOTU" class="text-secondary"></span></div>
-									<div><strong>Seri:</strong> <span id="ISLEM_SERI" class="text-secondary"></span></div>
-									<div><strong>Miktar:</strong> <span id="ISLEM_MIKTARI" class="text-secondary"></span></div>
+									<div><strong>Kod</strong> <input type='text' readonly class="form-control" id="ISLEM_KODU" name="ISLEM_KODU"></div>
+									<div><strong>Adı</strong> <input type='text' readonly class="form-control" id="ISLEM_ADI" name="ISLEM_ADI"></div>
+									<div><strong>Lot</strong> <input type='text' readonly class="form-control" id="ISLEM_LOTU" name="ISLEM_LOTU"></div>
+									<div><strong>Seri</strong> <input type='text' readonly class="form-control" id="ISLEM_SERI" name="ISLEM_SERI"></div>
+									<div><strong>Miktar</strong> <input type='text' readonly class="form-control" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI"></div>
 									</div>
 								</div>
 							</div>
@@ -1120,11 +1120,11 @@
 				}
 			});
 			$("#gkk_table > tbody").empty();
-			$('#ISLEM_KODU').text(KOD);
-			$('#ISLEM_ADI').text(adValues[currentIndex]);
-			$('#ISLEM_LOTU').text(lotValues[currentIndex]);
-			$('#ISLEM_SERI').text(seriValues[currentIndex]);
-			$('#ISLEM_MIKTARI').text(miktarValues[currentIndex]);
+			$('#ISLEM_KODU').val(KOD);
+			$('#ISLEM_ADI').val(adValues[currentIndex]);
+			$('#ISLEM_LOTU').val(lotValues[currentIndex]);
+			$('#ISLEM_SERI').val(seriValues[currentIndex]);
+			$('#ISLEM_MIKTARI').val(miktarValues[currentIndex]);
 			$.ajax({
 				url: '/sablonGetir',
 				type: 'post',

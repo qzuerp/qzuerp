@@ -587,14 +587,33 @@ class stok29_controller extends Controller
     $OR_TRNUM = $request->OR_TRNUM;
     $TRNUM = isset($request->TRNUM) ? $request->TRNUM : [];
 
+    // E
+    $ISLEM_KODU   = $request->ISLEM_KODU;
+    $ISLEM_ADI    = $request->ISLEM_ADI;
+    $ISLEM_LOTU   = $request->ISLEM_LOTU;
+    $ISLEM_SERI   = $request->ISLEM_SERI;
+    $ISLEM_MIKTARI = $request->ISLEM_MIKTARI;
+
+
     if(Auth::check()) {
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
 
+    $NEXT_EVRAKNO = (DB::table($firma.'qval02e')->max('EVRAKNO') ?? 0) + 1;
+
+    DB::table($firma.'QVAL02E')->insert([
+        'EVRAKNO' => $NEXT_EVRAKNO,
+        'KOD' => $ISLEM_KODU,
+        'KOD_STOK00_AD' => $ISLEM_ADI,
+        'LOTNUMBER' => $ISLEM_LOTU,
+        'SERINO' => $ISLEM_SERI,
+        'SF_MIKTAR' => $ISLEM_MIKTARI
+    ]);
+
     for ($i = 0; $i < count($TRNUM); $i++) {
       DB::table($firma.'QVAL02T')->insert([
-        'BAGLANTILI_EVRAKNO' => $EVRAKNO,
+        'EVRAKNO' => $NEXT_EVRAKNO,
         'TRNUM' => $TRNUM[$i],
         'QS_VARCODE'             => $KOD[$i],
         'QS_VARINDEX'            => $OLCUM_NO[$i],
@@ -619,7 +638,9 @@ class stok29_controller extends Controller
         'NOTES'                  => $NOT[$i],
         'DURUM'                  => $DURUM[$i],
         'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
-        'OR_TRNUM'      => $OR_TRNUM[$i]
+        'OR_TRNUM'      => $OR_TRNUM[$i],
+        'BAGLANTILI_EVRAKNO' => $EVRAKNO,
+        'EVRAKTYPE' => 'STOK29'
       ]);
     }
     return redirect()->back()->with('success', 'Kayıt Başarılı');
