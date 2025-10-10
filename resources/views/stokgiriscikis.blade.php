@@ -383,7 +383,6 @@
                             <td><input type="text" class="form-control LOCATION1" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
                             <td>
                               <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control select2 js-example-basic-single" data-name="LOCATION2" style=" height: 30PX" onchange="" name="LOCATION2[]" id="">
-                                <option value=" ">Seç</option>
                                 @php
                                   $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 
