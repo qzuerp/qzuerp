@@ -592,11 +592,9 @@ class stok29_controller extends Controller
     }
     $firma = trim($u->firma).'.dbo.';
 
-    
-
     for ($i = 0; $i < count($TRNUM); $i++) {
       DB::table($firma.'QVAL02T')->insert([
-        'EVRAKNO' => $EVRAKNO,
+        'BAGLANTILI_EVRAKNO' => $EVRAKNO,
         'TRNUM' => $TRNUM[$i],
         'QS_VARCODE'             => $KOD[$i],
         'QS_VARINDEX'            => $OLCUM_NO[$i],

@@ -17,7 +17,7 @@
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="excel-tab" data-bs-toggle="tab" data-bs-target="#excelAktar" type="button" role="tab" aria-controls="excelAktar" aria-selected="false">
-        <i class="fa fa-table me-2"></i>Excel Aktar
+        <i class="fa fa-table me-2"></i>Excel'den Aktar
       </button>
     </li>
   </ul>
