@@ -255,7 +255,7 @@
 
                       <div class="col-md-4 col-xs-6  col-sm-6">
                         <label>Özellikler 1</label>
-                        <input type="text" class="form-control OZELLIKLER1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OZELLIKLER1" maxlength="30" name="OZELLIKLER1" id="OZELLIKLER1"
+                        <input type="text" class="form-control OZELLIK1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OZELLIK1" maxlength="30" name="OZELLIKLER1" id="OZELLIKLER1"
                           value="{{ @$kart_veri->OZELLIK1 }}">
                       </div>
                       <div class="col-md-4 col-xs-6  col-sm-6">
@@ -265,7 +265,7 @@
                       </div>
                       <div class="col-md-4 col-xs-6  col-sm-6">
                         <label>Özellikler 3</label>
-                        <input type="text" class="form-control OZELLIKLER3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OZELLIKLER3" maxlength="30" name="OZELLIKLER3" id="OZELLIKLER3"
+                        <input type="text" class="form-control OZELLIK3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OZELLIK3" maxlength="30" name="OZELLIKLER3" id="OZELLIKLER3"
                           value="{{ @$kart_veri->OZELLIK3 }}">
                       </div>
 

@@ -381,7 +381,27 @@
                             <td><input type="text" class="form-control SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
                             <td><input type="text" class="form-control AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                             <td><input type="text" class="form-control LOCATION1" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
-                            <td><input type="text" class="form-control LOCATION2" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                            <td>
+                              <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control select2 js-example-basic-single" data-name="LOCATION2" onchange="getLocation3()" style=" height: 30PX" onchange="" name="LOCATION2[]" id="">
+                                <option value=" ">Seç</option>
+                                @php
+                                  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+
+                                  foreach ($locat2_kodlar as $key => $Lveri) {
+                                    if($Lveri->LOCATION2 == $veri->LOCATION2)
+                                    {
+                                      echo "<option value ='".$Lveri->LOCATION2."' selected>".$Lveri->LOCATION2."</option>";
+                                    }
+                                    else
+                                    {
+                                      echo "<option value ='".$Lveri->LOCATION2."'>".$Lveri->LOCATION2."</option>";
+                                    }
+                                  }
+                                @endphp
+                              </select>
+                              <!-- <input type="text" class="form-control LOCATION2" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled>
+                              <input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"> -->
+                            </td>
                             <td><input type="text" class="form-control LOCATION3" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
                             <td><input type="text" class="form-control LOCATION4" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
                             <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
