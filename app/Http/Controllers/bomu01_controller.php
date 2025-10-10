@@ -461,7 +461,7 @@ class bomu01_controller extends Controller
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
           $KONTROL_KOD = DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->value('BOMREC_KAYNAKCODE');
-          $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['bomu01t']);
+          $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['bomu01t','bomu01e']);
 
           if ($msg) {
             return redirect()->back()->with('error_swal', $msg);
