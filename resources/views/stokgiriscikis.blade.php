@@ -222,7 +222,7 @@
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <th style="display:none;"></td>
                           <td style="min-width:150px;">                            
-                              <select class="form-control select2 KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir3(this.value)" data-name="KOD" id="STOK_KODU_SHOW" name="STOK_KODU_SHOW">
+                              <select class="form-control select2 KOD w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir3(this.value)" data-name="KOD" id="STOK_KODU_SHOW" name="STOK_KODU_SHOW">
                                 <option value=" ">Seç</option>
                                 @php
                                   $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->limit(50)->get();
