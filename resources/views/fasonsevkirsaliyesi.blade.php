@@ -270,7 +270,7 @@ if (isset($kart_veri)) {
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>Depo</th>
-                          <th>Sipariş No</th>
+                          <th>MPS numarası</th>
                           <th>Lokasyon 1</th>
                           <th>Lokasyon 2</th>
                           <th>Lokasyon 3</th>

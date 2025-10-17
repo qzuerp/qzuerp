@@ -563,16 +563,12 @@ class stok29_controller extends Controller
     $EVRAKNO = $request->EVRAKNO;
     $KOD = $request->KOD;
     $OLCUM_NO = $request->OLCUM_NO;
-    $ALAN_TURU = $request->ALAN_TURU;
-    $UZUNLUK = $request->UZUNLUK;
-    $DESIMAL = $request->DESIMAL;
     $OLCUM_SONUC = $request->OLCUM_SONUC;
     $OLCUM_SONUC_TARIH = $request->OLCUM_SONUC_TARIH;
     $MIN_DEGER = $request->MIN_DEGER;
     $MAX_DEGER = $request->MAX_DEGER;
     $GECERLI_KOD = $request->GECERLI_KOD;
     $OLCUM_BIRIMI = $request->OLCUM_BIRIMI;
-    $GK_1 = $request->GK_1;
     $REFERANS_DEGER1 = $request->REFERANS_DEGER1;
     $REFERANS_DEGER2 = $request->REFERANS_DEGER2;
     $VTABLEINPUT = $request->VTABLEINPUT;
@@ -593,6 +589,7 @@ class stok29_controller extends Controller
     $ISLEM_LOTU   = $request->ISLEM_LOTU;
     $ISLEM_SERI   = $request->ISLEM_SERI;
     $ISLEM_MIKTARI = $request->ISLEM_MIKTARI;
+    $TEDARIKCI = $request->TEDARIKCI;
 
 
     if(Auth::check()) {
@@ -608,7 +605,8 @@ class stok29_controller extends Controller
         'KOD_STOK00_AD' => $ISLEM_ADI,
         'LOTNUMBER' => $ISLEM_LOTU,
         'SERINO' => $ISLEM_SERI,
-        'SF_MIKTAR' => $ISLEM_MIKTARI
+        'SF_MIKTAR' => $ISLEM_MIKTARI,
+        'KRITER3' => $TEDARIKCI
     ]);
 
     for ($i = 0; $i < count($TRNUM); $i++) {
@@ -617,19 +615,14 @@ class stok29_controller extends Controller
         'TRNUM' => $TRNUM[$i],
         'QS_VARCODE'             => $KOD[$i],
         'QS_VARINDEX'            => $OLCUM_NO[$i],
-        'QS_VARTYPE'             => $ALAN_TURU[$i],
-        'QS_VARLEN'              => $UZUNLUK[$i],
-        'QS_VARSIG'              => $DESIMAL[$i],
         'QS_VALUE'               => $OLCUM_SONUC[$i],
         'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
         'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
         'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
         'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i],
         'QS_UNIT'                => $OLCUM_BIRIMI[$i],
-        'QS_GK1'                 => $GK_1[$i],
         'REFDEGER1'              => $REFERANS_DEGER1[$i],
         'REFDEGER2'              => $REFERANS_DEGER2[$i],
-        'VTABLEINPUT'            => $VTABLEINPUT[$i],
         'QVALINPUTTYPE'          => $QVALINPUTTYPE[$i],
         'KRITERMIK_OPT'          => $KRITERMIK_OPT[$i],
         'KRITERMIK_1'            => $KRITERMIK_1[$i],

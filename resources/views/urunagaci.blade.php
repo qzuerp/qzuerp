@@ -211,12 +211,12 @@
 																	<th style="min-width:300px">Operasyon Kodu</th>
 																	<th style="min-width:300px">Operasyon Adı</th>
 																	<th style="min-width:80px">HM Miktar/İş Süresi</th>
+																	<th style="min-width:80px">Ayar Süresi</th>
+																	<th style="min-width:80px">Yükleme Süresi</th>
 																	<th style="min-width:110px">İş Br</th>
 																	<th style="min-width:110px">PK No</th>
 																	<th style="min-width:110px">Yarı mamul miktarı</th>
-																	<th style="min-width:80px">Ayar Süresi</th>
-																	<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
-																	<th style="min-width:80px">Yükleme Süresi</th>
+																	<th style="min-width:" >Operasyon sonucu YM kodu</th>
 																	<th style="min-width:300px">Kalıp Kodu 1</th>
 																	<th style="min-width:300px">Kalıp Kodu 2</th>
 																	<th style="min-width:300px">Kalıp Kodu 3</th>
@@ -436,12 +436,12 @@
 										                                        </button>
 										                                    </span>
 																		</td>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
 																		<td><input type="text" class="form-control" maxlength='255' name="ACIKLAMA[]" id="ACIKLAMA" value="{{ $veri->STOK_BIRIM }}" readonly></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}" readonly></td>
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_1_SHOW_T" id="KALIPKODU_1_SHOW_T" value="{{ $veri->KALIP_KODU1 }}" ><input type="hidden" class="form-control" name="KALIPKODU_1[]" id="KALIPKODU_1" value="{{ $veri->KALIP_KODU1 ?? '' }}"></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_2_SHOW_T" id="KALIPKODU_2_SHOW_T" value="{{ $veri->KALIP_KODU2 }}" ><input type="hidden" class="form-control" name="KALIPKODU_2[]" id="KALIPKODU_2" value="{{ $veri->KALIP_KODU2 ?? '' }}"></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_3_SHOW_T" id="KALIPKODU_3_SHOW_T" value="{{ $veri->KALIP_KODU3 }}" ><input type="hidden" class="form-control" name="KALIPKODU_3[]" id="KALIPKODU_3" value="{{ $veri->KALIP_KODU3 ?? '' }}"></td>
@@ -1337,12 +1337,12 @@
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+satirEkleInputs.PK_NO_FILL+"' style='color:blue;'></td>";
-        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+satirEkleInputs.YARI_MAMUL_MIKTARI_FILL+"' style='color:blue;'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK01[]' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK02[]' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' readonly value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+satirEkleInputs.PK_NO_FILL+"' style='color:blue;'></td>";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+satirEkleInputs.YARI_MAMUL_MIKTARI_FILL+"' style='color:blue;'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_1_SHOW_T' value='"+satirEkleInputs.KALIPKODU_1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_1[]' value='"+satirEkleInputs.KALIPKODU_1_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_2_SHOW_T' value='"+satirEkleInputs.KALIPKODU_2_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_2[]' value='"+satirEkleInputs.KALIPKODU_2_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_3_SHOW_T' value='"+satirEkleInputs.KALIPKODU_3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_3[]' value='"+satirEkleInputs.KALIPKODU_3_FILL+"'></td> ";

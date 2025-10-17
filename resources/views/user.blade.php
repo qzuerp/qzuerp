@@ -225,22 +225,24 @@
                               <table class="table table-striped">
                                  <thead class="thead-dark">
                                 <tr>
-                                  <th scope="col">Kullanıcı Adı</th>
-                                  <th scope="col">E-posta</th>
-                                  <th scope="col">Aktiflik Durumu</th>
-                                  <th scope="col">Son Görüntüleme</th>
+                                  <th scope="col text-center">Kullanıcı Adı</th>
+                                  <th scope="col text-center">E-posta</th>
+                                  <th scope="col text-center">Aktiflik Durumu</th>
+                                  <th scope="col text-center">Son Görüntüleme</th>
+                                  <th scope="col text-center">İşlemler</th>
                                 </tr>
                                 </thead>
                                   @php
-                                  $users = DB::table('users')->where('is_logged_in','=',1)->get();
+                                  $users = DB::table('users')->where('is_logged_in','=',1)->where('firma',trim($kullanici_veri->firma))->get();
                                   @endphp
                                   <tbody>
                                   @foreach($users as $user)
-                                  <tr> 
+                                  <tr class="text-center"> 
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
                                     <td>{{$user->is_logged_in == 1 ? 'Aktif' : ''}} </td>
                                     <td>{{$user->last_activity}} </td>
+                                    <td><button type="button" data-user-id="{{$user->id}}" class="btn btn-default userLogout">Çıkış Yaptır <i class="fa-solid fa-right-from-bracket"></i></button></td>
                                   </tr>
                                 </tbody>
                                 @endforeach
@@ -693,7 +695,16 @@
           </div>
         </div>
       </div>
-
+<style>
+  /* Spinner için basit CSS */
+  .spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+</style>
     </section>
   </div>
   <script>
@@ -702,6 +713,28 @@
       var id = document.getElementById("kullaniciSec").value;
       window.location.href = "user?ID="+id;
     }
+
+    $('.userLogout').on('click', function() {
+        var $btn = $(this);
+        var originalHtml = $btn.html();
+        var ID = $btn.data('user-id');
+
+        $btn.prop('disabled', true).html('Çıkış Yapılıyor... <span class="spinner-border spinner-border-sm"></span>');
+
+        $.ajax({
+            url: 'logout_user',
+            type: 'get',
+            data: {userID: ID},
+            success: function(res) {
+                $btn.html('Çıkış Yapıldı <i class="fa-solid fa-check"></i>');
+            },
+            error: function() {
+                $btn.prop('disabled', false).html(originalHtml);
+                alert('Bir hata oluştu!');
+            }
+        });
+    });
+
 
     $('#yetki_read').on("change", function() {
         $(".yetki_read").prop("checked", $(this).prop("checked"));

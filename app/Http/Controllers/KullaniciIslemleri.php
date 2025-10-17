@@ -6,6 +6,7 @@ use App\Helpers\FunctionHelpers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class KullaniciIslemleri extends Controller
@@ -21,6 +22,27 @@ class KullaniciIslemleri extends Controller
 
     // return view('user');
     return view('user')->with('sonID', $sonID);
+  }
+
+  public function logout_user(Request $request)
+  {
+      $u = Auth::user();
+      if(!$u) return response()->json(['error' => 'not_authenticated']);
+
+      $firma = trim($u->firma).'.dbo.';
+      $affected1 = DB::table($firma.'sessions')
+        ->where('user_id', $request->userID)
+        ->update(['user_id' => null]);;
+
+      $affected2 = DB::table('users')
+          ->where('id', $request->userID)
+          ->update(['is_logged_in' => 0,'remember_token' => null]);
+
+      return response()->json([
+          'status' => 'ok',
+          'updated_sessions' => $affected1,
+          'updated_users' => $affected2
+      ]);
   }
 
   // veri kayıt güncelleme işlemleri

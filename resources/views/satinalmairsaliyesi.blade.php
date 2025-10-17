@@ -937,11 +937,12 @@
 								</div>
 								<div class="card-body py-2 px-3" style="font-size: 0.8em;">
 									<div class="d-flex flex-wrap gap-3 align-items-center">
-									<div><strong>Kod</strong> <input type='text' readonly class="form-control" id="ISLEM_KODU" name="ISLEM_KODU"></div>
-									<div><strong>Adı</strong> <input type='text' readonly class="form-control" id="ISLEM_ADI" name="ISLEM_ADI"></div>
-									<div><strong>Lot</strong> <input type='text' readonly class="form-control" id="ISLEM_LOTU" name="ISLEM_LOTU"></div>
-									<div><strong>Seri</strong> <input type='text' readonly class="form-control" id="ISLEM_SERI" name="ISLEM_SERI"></div>
-									<div><strong>Miktar</strong> <input type='text' readonly class="form-control" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI"></div>
+										<div><strong>Kod</strong> <input type='text' readonly class="form-control" id="ISLEM_KODU" name="ISLEM_KODU"></div>
+										<div><strong>Adı</strong> <input type='text' readonly class="form-control" id="ISLEM_ADI" name="ISLEM_ADI"></div>
+										<div><strong>Lot</strong> <input type='text' readonly class="form-control" id="ISLEM_LOTU" name="ISLEM_LOTU"></div>
+										<div><strong>Seri</strong> <input type='text' readonly class="form-control" id="ISLEM_SERI" name="ISLEM_SERI"></div>
+										<div><strong>Miktar</strong> <input type='text' readonly class="form-control" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI"></div>
+										<input type="hidden" id='TEDARIKCI' name="TEDARIKCI">
 									</div>
 								</div>
 							</div>
@@ -952,21 +953,16 @@
 									<thead class="table-light sticky-top">
 									<tr>
 										<th><i class="fa-solid fa-plus"></i></th>
+										<th style="min-width: 120px;">Zorunlu Mu</th>
 										<th style="min-width: 150px;">Kod</th>
 										<th style="min-width: 150px;">Ölçüm No</th>
-										<th style="min-width: 120px;">Alan Türü</th>
-										<th style="min-width: 120px;">Uzunluk</th>
-										<th style="min-width: 220px;">Alan Ondalık Sayısı</th>
-										<th style="min-width: 120px;">Ölçüm Sonucu</th>
-										<th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
 										<th style="min-width: 120px;">Minimum Değer</th>
 										<th style="min-width: 220px;">Maksimum Değer</th>
-										<th style="min-width: 120px;">Zorunlu Mu</th>
+										<th style="min-width: 120px;">Ölçüm Sonucu</th>
+										<th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
 										<th style="min-width: 220px;">Test Ölçüm Birim</th>
-										<th style="min-width: 250px;">Kalite Parametresi Grup Kodu</th>
 										<th style="min-width: 220px;">Referans Değer Başlangıç</th>
 										<th style="min-width: 220px;">Referans Değer Bitiş</th>
-										<th style="min-width: 120px;">Tablo Türü</th>
 										<th style="min-width: 250px;">Kalite Parametresi Giriş Türü</th>
 										<th style="min-width: 200px;">Miktar Kriter Türü</th>
 										<th style="min-width: 200px;">Miktar Kriter - 1</th>
@@ -1120,16 +1116,22 @@
 				}
 			});
 			$("#gkk_table > tbody").empty();
+
+			var KIRTER3 = $('#CARIHESAPCODE_E').val();
+
 			$('#ISLEM_KODU').val(KOD);
 			$('#ISLEM_ADI').val(adValues[currentIndex]);
 			$('#ISLEM_LOTU').val(lotValues[currentIndex]);
 			$('#ISLEM_SERI').val(seriValues[currentIndex]);
 			$('#ISLEM_MIKTARI').val(miktarValues[currentIndex]);
+			$('#TEDARIKCI').val(KIRTER3);
+
 			$.ajax({
 				url: '/sablonGetir',
 				type: 'post',
 				data: {
 					KOD: KOD,
+					KIRTER3: KIRTER3,
 					_token: $('meta[name="csrf-token"]').attr('content')
 				},
 				success: function (res) {
@@ -1145,27 +1147,23 @@
 						htmlCode += "<tr>";
 						htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
 						htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
-						htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
-
 						let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
 						htmlCode += `<td class="text-center">
 							<input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
 							<input type="checkbox" name="GECERLI_KOD[${rowIndex}]" value="1" ${isChecked}>
 						</td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
+						htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" readonly name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+						htmlCode += `<td><input type="number" class="form-control" readonly name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
+						htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
+
+						
 
 						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
 						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;

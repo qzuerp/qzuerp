@@ -93,9 +93,8 @@
 										@include('layout.util.evrakIslemleri')
 									</div>
 								</div>
-
-								<div class="border rounded p-3 mb-4 position-relative">
-
+								<!-- Bu alan kaldırılmak zorunda kaldık js tarafında da süz buttonu için kodları da bulunmakta -->
+								<!-- <div class="border rounded p-3 mb-4 position-relative">
 									<div class="row g-2">
 										<div class="col-md-4">
 											<label class="form-label">Kriter 1</label>
@@ -138,7 +137,7 @@
 											</button>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 
 								<div class="border rounded p-3 mb-4">

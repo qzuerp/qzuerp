@@ -260,12 +260,14 @@ class qval02_controller extends Controller
         $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
 
+        $kod = explode('|||', $request->KOD)[0] ?? null;
+        $tedarikci = $request->TEDARIKCI ?? null;
+
         return DB::table($firma.'QVAL10E as e')
             ->leftJoin($firma.'QVAL10T as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
-            ->where('e.KRITERCODE_1', explode('|||',$request->KOD)[0])
-            ->where('e.KRITERCODE_2', explode('|||',$request->KIRTER2)[0])
-            ->where('e.KRITERCODE_3', explode('|||',$request->KIRTER3)[0])
+            ->where('e.KRITERCODE_1', explode('|||', $request->KOD)[0])
+            ->orWhere('e.KRITERCODE_3', $request->KIRTER3)
             ->get();
-    }
 
+    }
 }

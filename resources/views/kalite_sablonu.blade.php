@@ -531,6 +531,11 @@
 					$('#OZEL_ACIKLAMA_FILL').val(kod[1]);
 				});
 			});
+
+			function ozelInput()
+			{
+				$('select').val('').trigger('change');
+			}
 		</script>
 	<!-- JS -->
 @endsection

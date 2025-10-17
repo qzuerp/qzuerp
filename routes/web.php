@@ -21,7 +21,7 @@ use App\Http\Controllers\stok69_controller;
 use App\Http\Controllers\stok20_controller;
 use App\Http\Controllers\stok21_controller;
 use App\Http\Controllers\stok26_controller;
-use App\Http\Controllers\stok25_controller;
+use App\Http\ontrollers\stok25_controller;
 use App\Http\Controllers\bomu01_controller;
 use App\Http\Controllers\mmps10_controller;
 use App\Http\Controllers\kontakt00_controller;
@@ -280,7 +280,7 @@ Auth::routes(['password.request' => false]);
   Route::post('sablonGetir',[fkk_controller::class,'sablonGetir']);
 
   Route::get('user',[KullaniciIslemleri::class,'index'])->name('user');
-
+  Route::get('logout_user', [KullaniciIslemleri::class, 'logout_user']);
   Route::get('toplu_mps_girisi',[toplumps_controller::class,'index'])->name('toplu_mps_girisi');
 
   Route::get('tezgahisplanlama',[tezgah_is_planlama_controller::class,'index'])->name('tezgahisplanlama');

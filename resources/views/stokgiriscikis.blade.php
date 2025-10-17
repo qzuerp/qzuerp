@@ -247,7 +247,7 @@
                             <input maxlength="28" style="color: red" type="number" name="GIREN_MIKTAR_FILL" data-name="GIREN_MIKTAR" id="GIREN_MIKTAR_FILL" onchange ="girenMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GIREN_MIKTAR" class="GIREN_MIKTAR form-control">
                           </td>
                           <td>
-                            <input maxlength="28" style="color: red" type="number" name="CIKAN_MIKTAR_FILL" data-name="CIKAN_MIKTAR" id="CIKAN_MIKTAR_FILL" onchange ="cikanMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="CIKAN_MIKTAR form-control">
+                            <input maxlength="28" style="color: red" type="number" name="CIKAN_MIKTAR_FILL" data-name="CIKAN_MIKTAR" id="CIKAN_MIKTAR_FILL" onchange ="cikanMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIKAN_MIKTAR" class="CIKAN_MIKTAR form-control">
                           </td>
                           <!-- <td>
                             <input maxlength="28" style="color: red" type="hidden" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
@@ -1331,7 +1331,7 @@
   </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    exportTableToExcel(tableId)
+    function exportTableToExcel(tableId)
     {
       let table = document.getElementById(tableId)
       let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});

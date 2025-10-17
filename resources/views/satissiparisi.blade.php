@@ -172,6 +172,7 @@
               <ul class="nav nav-tabs">
                 <li class="nav-item" ><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Satış Sipariş</a></li>
                 <li class="nav-item {{ in_array('SSF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
+                <li class="nav-item" ><a href="#ihtiyac" class="nav-link" data-bs-toggle="tab">Sipariş ihtiyaçları</a></li>
                 <li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
               </ul>
@@ -369,6 +370,94 @@
                   </div>
                 </div>
                   
+                <div class="tab-pane" id="ihtiyac">
+                  <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Siparişini oluştur</button>
+                  @php
+                        $sql = "
+                          WITH RecursiveBOM AS (
+                              SELECT
+                                  S40T.EVRAKNO AS SiparisEvrakNo,
+                                  S40T.KOD AS NihaiMamulKodu,
+                                  S40T.SF_MIKTAR AS NihaiMamulSiparisMiktari,
+                                  B01T.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
+                                  B01T.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
+                                  B01E.MAMUL_MIKTAR AS MamulMiktarReçete,
+                                  (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
+                                  B01T.BOMREC_INPUTTYPE AS KaynakTipi,
+                                  1 AS Seviye
+                              FROM STOK40T S40T
+                              LEFT JOIN BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
+                              LEFT JOIN BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
+                              WHERE (S40T.AK IS NULL OR S40T.AK = 'A')
+                                AND B01T.BOMREC_KAYNAKCODE IS NOT NULL
+
+                              UNION ALL
+
+                              SELECT
+                                  RB.SiparisEvrakNo,
+                                  RB.NihaiMamulKodu,
+                                  RB.NihaiMamulSiparisMiktari,
+                                  B01T_Alt.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
+                                  B01T_Alt.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
+                                  B01E_Alt.MAMUL_MIKTAR AS MamulMiktarReçete,
+                                  (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
+                                  (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END) AS KaynakTipi,
+                                  RB.Seviye + 1 AS Seviye
+                              FROM RecursiveBOM RB
+                              INNER JOIN BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
+                              INNER JOIN BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
+                          )
+                          SELECT
+                              RB.SiparisEvrakNo,
+                              RB.Seviye,
+                              RB.NihaiMamulKodu,
+                              RB.NihaiMamulSiparisMiktari,
+                              RB.KaynakTipi,
+                              RB.HM_YM_Kodu AS HammaddeKodu,
+                              SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
+                          FROM RecursiveBOM RB
+                          WHERE RB.SiparisEvrakNo = ?
+                          GROUP BY
+                              RB.SiparisEvrakNo,
+                              RB.Seviye,
+                              RB.NihaiMamulKodu,
+                              RB.NihaiMamulSiparisMiktari,
+                              RB.KaynakTipi,
+                              RB.HM_YM_Kodu
+                          ORDER BY
+                              RB.SiparisEvrakNo,
+                              RB.NihaiMamulKodu,
+                              HammaddeKodu
+                      ";
+
+                      $sonuc = DB::select($sql, [$kart_veri->EVRAKNO]);
+                  @endphp
+
+                  <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Seviye</th>
+                            <th>Nihai Mamul</th>
+                            <th>Hammadde Kodu</th>
+                            <th>Tip</th>
+                            <th>Toplam Miktar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sonuc as $satir)
+                            <tr>
+                                <td>{{ $satir->Seviye }}</td>
+                                <td>{{ $satir->NihaiMamulKodu }}</td>
+                                <td>{{ $satir->HammaddeKodu }}</td>
+                                <td>{{ $satir->KaynakTipi }}</td>
+                                <td>{{ number_format($satir->ToplamHammaddeMiktari, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                </div>
+
                 <div class="tab-pane " id="fiyatlar">
                   <table class="table table-bordered text-center" id="fiyatlar_table" style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
                     <thead>
@@ -633,6 +722,60 @@
           </div>
         </div>
       </form>
+
+      <div class="modal fade bd-example-modal-lg" id="satin_alma_olustur" tabindex="-1" role="dialog" aria-labelledby="satin_alma_olustur">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col-md-4 col-sm-4 col-xs-6">
+                    <label>Tedarikçi Kodu</label>
+                    <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
+                      data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
+                      name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" data-modal="satin_alma_olustur">
+                      @php
+                        $evraklar = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
+
+                        foreach ($evraklar as $key => $veri) {
+                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
+                            echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
+                          } else {
+                            echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
+                          }
+                        }
+                      @endphp
+                    </select>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Seviye</th>
+                            <th>Nihai Mamul</th>
+                            <th>Hammadde Kodu</th>
+                            <th>Tip</th>
+                            <th>Toplam Miktar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Satın Alma Siparişlerini Oluştur</button>
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
         <div class="modal-dialog modal-lg">

@@ -48,11 +48,6 @@
 @endphp
 
 @section('content')
-  <style>
-    .buyukharf {
-      text-transform: uppercase;
-    }
-  </style>
   <div class="content-wrapper">
 
     @include('layout.util.evrakContentHeader')
@@ -174,11 +169,11 @@
                           </td>
                           <td style="min-width: 150px;">
                             <input maxlength="50" style="color: red" type="text" name="KOD_FILL" id="KOD_FILL"
-                              class="buyukharf form-control">
+                              class=" form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL"
-                              class="buyukharf form-control">
+                              class=" form-control">
                           </td>
                           <td></td>
                         </tr>
@@ -192,9 +187,9 @@
                                 name="D7[]" value=""></td>
                             <td style="display: none;"><input type="hidden" class="form-control" maxlength="6"
                                 name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                            <td><input type="text" class="form-control buyukharf" name="KOD[]" value="{{ $veri->KOD }}">
+                            <td><input type="text" class="form-control " name="KOD[]" value="{{ $veri->KOD }}">
                             </td>
-                            <td><input type="text" class="form-control buyukharf" name="AD[]" value="{{ $veri->AD }}"></td>
+                            <td><input type="text" class="form-control " name="AD[]" value="{{ $veri->AD }}"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i
                                   class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>

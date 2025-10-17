@@ -398,12 +398,6 @@
                                   <td class="d-flex ">
                                     <input type="text" class="form-control SERINO"   id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}" disabled>
                                     <input type="hidden" class="form-control" id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}">
-                                    <span class="d-flex -btn">
-                                      <button class="btn btn-primary" data-bs-toggle="modal" onclick="veriCek('{{ $veri->KOD }}', '{{ $veri->id }}')" data-bs-target="#modal_popupSelectModal4" type="button">
-                                        <span class="fa-solid fa-magnifying-glass"  >
-                                        </span>
-                                      </button>
-                                    </span>
                                   </td>
                                   <td><input type="text" id='depo-{{ $veri->id }}' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text" readonly class="form-control MPSNO" name="JOBNO[]" value="{{ @$veri->MPSNO }}"></td>
@@ -814,7 +808,7 @@
               <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Fason Seç</h4>
             </div>
             <div class="modal-body">
-              <div class="row" style="overflow: visible">
+              <div class="row" style="overflow: auto">
                 <table id="fasonSuz_table" class="table table-hover text-center table-responsive overflow-visible" data-page-length="10" style="font-size: 0.8em;">
                   <thead>
                     <tr class="bg-primary">
@@ -829,7 +823,7 @@
                       <th style="min-width:100px;">Lot No</th>
                       <th style="min-width:100px;">Seri No</th>
                       <th style="min-width:100px;">Depo</th>
-                      <th style="min-width:100px;">Sipariş No</th>
+                      <th style="min-width:100px;">MPS numarası</th>
                       <th style="min-width:100px;">Lokasyon 1</th>
                       <th style="min-width:100px;">Lokasyon 2</th>
                       <th style="min-width:100px;">Lokasyon 3</th>
@@ -1031,11 +1025,6 @@
               htmlCode += " <td><input type='text' class='form-control' id='Lot-"+TRNUM_FILL+"' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"' disabled><input type='hidden' class='form-control' id='Lot-"+TRNUM_FILL+"' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
               htmlCode += " <td class='d-flex '>" +
                 "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' value='" +satirEkleInputs.SERINO_FILL + "' readonly>" +
-                "<span class='d-flex -btn'>" +
-                "<button class='btn btn-primary' onclick='veriCek(\"" + satirEkleInputs.STOK_KODU_FILL + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>" +
-                "<span class='fa-solid fa-magnifying-glass'></span>" +
-                "</button>" +
-                "</span>" +
                 "</td>";
               htmlCode += " <td><input type='text' class='form-control' id='depo-"+TRNUM_FILL+"' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' disabled><input type='hidden' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='SIPNO[]' value='"+satirEkleInputs.SIP_FILL+"' disabled><input type='hidden' class='form-control' name='SIPNO[]' value='"+satirEkleInputs.SIP_FILL+"'></td> ";
