@@ -14,11 +14,12 @@ class info_controller extends Controller
 
     public function islemler(Request $request)
     {
-        if(DB::table('INFO')->where('uygulama_kodu','STOK40')->exists())
+        $EVRAKTYPE = $request->EVRAKTYPE;
+        if(DB::table('INFO')->where('uygulama_kodu',$EVRAKTYPE)->exists())
         {
-            DB::table('INFO')->where('uygulama_kodu','STOK40')->update([
+            DB::table('INFO')->where('uygulama_kodu',$EVRAKTYPE)->update([
                 'icerik' => $request->content,
-                'uygulama_kodu' => 'STOK40',
+                'uygulama_kodu' => $EVRAKTYPE,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -27,7 +28,7 @@ class info_controller extends Controller
         {
             DB::table('INFO')->insert([
                 'icerik' => $request->content,
-                'uygulama_kodu' => 'STOK40',
+                'uygulama_kodu' => $EVRAKTYPE,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

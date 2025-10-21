@@ -132,7 +132,8 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 												s10.LOCATION2, 
 												s10.LOCATION3, 
 												s10.LOCATION4,
-												s0.NAME2
+												s0.NAME2,
+												s0.id
 											')
 											->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
 											->groupBy(
@@ -154,9 +155,11 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 												's10.LOCATION2', 
 												's10.LOCATION3', 
 												's10.LOCATION4',
-												's0.NAME2'
+												's0.NAME2',
+												's0.id'
 											)
 											->get();
+
 
 
 										foreach ($evraklar as $key => $suzVeri) {
@@ -181,7 +184,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 											echo "<td>".$suzVeri->LOCATION2."</td>";
 											echo "<td>".$suzVeri->LOCATION3."</td>";
 											echo "<td>".$suzVeri->LOCATION4."</td>";
-											echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+											echo "<td><a class='btn btn-info' href='kart_stok?ID={$suzVeri->id}' target='_blank'><i class='fa fa-chevron-circle-right text-white'></i></a></td>";
 											echo "</tr>";
 										}
 

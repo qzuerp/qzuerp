@@ -371,71 +371,77 @@
                 </div>
                   
                 <div class="tab-pane" id="ihtiyac">
-                  <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Siparişini oluştur</button>
+                  <button class="btn btn-default mb-2" id="satin_alma_olustur_btn" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Siparişini oluştur</button>
                   @php
-                        $sql = "
-                          WITH RecursiveBOM AS (
-                              SELECT
-                                  S40T.EVRAKNO AS SiparisEvrakNo,
-                                  S40T.KOD AS NihaiMamulKodu,
-                                  S40T.SF_MIKTAR AS NihaiMamulSiparisMiktari,
-                                  B01T.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
-                                  B01T.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
-                                  B01E.MAMUL_MIKTAR AS MamulMiktarReçete,
-                                  (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
-                                  B01T.BOMREC_INPUTTYPE AS KaynakTipi,
-                                  1 AS Seviye
-                              FROM STOK40T S40T
-                              LEFT JOIN BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
-                              LEFT JOIN BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
-                              WHERE (S40T.AK IS NULL OR S40T.AK = 'A')
-                                AND B01T.BOMREC_KAYNAKCODE IS NOT NULL
+                      $sql = "
+                        WITH RecursiveBOM AS (
+                          SELECT
+                              S40T.EVRAKNO AS SiparisEvrakNo,
+                              S40T.KOD AS NihaiMamulKodu,
+                              S40T.SF_MIKTAR AS NihaiMamulSiparisMiktari,
+                              B01T.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
+                              B01T.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
+                              B01E.MAMUL_MIKTAR AS MamulMiktarReçete,
+                              (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
+                              B01T.BOMREC_INPUTTYPE AS KaynakTipi,
+                              1 AS Seviye
+                          FROM STOK40T S40T
+                          LEFT JOIN BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
+                          LEFT JOIN BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
+                          WHERE (S40T.AK IS NULL OR S40T.AK = 'A')
+                            AND B01T.BOMREC_KAYNAKCODE IS NOT NULL
 
-                              UNION ALL
+                          UNION ALL
 
-                              SELECT
-                                  RB.SiparisEvrakNo,
-                                  RB.NihaiMamulKodu,
-                                  RB.NihaiMamulSiparisMiktari,
-                                  B01T_Alt.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
-                                  B01T_Alt.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
-                                  B01E_Alt.MAMUL_MIKTAR AS MamulMiktarReçete,
-                                  (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
-                                  (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END) AS KaynakTipi,
-                                  RB.Seviye + 1 AS Seviye
-                              FROM RecursiveBOM RB
-                              INNER JOIN BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
-                              INNER JOIN BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
-                          )
                           SELECT
                               RB.SiparisEvrakNo,
-                              RB.Seviye,
                               RB.NihaiMamulKodu,
                               RB.NihaiMamulSiparisMiktari,
-                              RB.KaynakTipi,
-                              RB.HM_YM_Kodu AS HammaddeKodu,
-                              SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
+                              B01T_Alt.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
+                              B01T_Alt.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
+                              B01E_Alt.MAMUL_MIKTAR AS MamulMiktarReçete,
+                              (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
+                              (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END) AS KaynakTipi,
+                              RB.Seviye + 1 AS Seviye
                           FROM RecursiveBOM RB
-                          WHERE RB.SiparisEvrakNo = ?
-                          GROUP BY
-                              RB.SiparisEvrakNo,
-                              RB.Seviye,
-                              RB.NihaiMamulKodu,
-                              RB.NihaiMamulSiparisMiktari,
-                              RB.KaynakTipi,
-                              RB.HM_YM_Kodu
-                          ORDER BY
-                              RB.SiparisEvrakNo,
-                              RB.NihaiMamulKodu,
-                              HammaddeKodu
+                          INNER JOIN BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
+                          INNER JOIN BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
+                      )
+                      SELECT
+                          ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
+                          RB.SiparisEvrakNo,
+                          RB.Seviye,
+                          RB.NihaiMamulKodu,
+                          RB.NihaiMamulSiparisMiktari,
+                          RB.KaynakTipi,
+                          RB.HM_YM_Kodu AS HammaddeKodu,
+                          S00.AD AS HammaddeAdi,
+                          S00.IUNIT AS HammaddeBirimi,
+                          SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
+                      FROM RecursiveBOM RB
+                      LEFT JOIN STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
+                      WHERE RB.SiparisEvrakNo = ?
+                      GROUP BY
+                          RB.SiparisEvrakNo,
+                          RB.Seviye,
+                          RB.NihaiMamulKodu,
+                          RB.NihaiMamulSiparisMiktari,
+                          RB.KaynakTipi,
+                          RB.HM_YM_Kodu,
+                          S00.AD,
+                          S00.IUNIT
+                      ORDER BY
+                          RB.SiparisEvrakNo,
+                          RB.NihaiMamulKodu,
+                          HammaddeKodu;
                       ";
-
                       $sonuc = DB::select($sql, [$kart_veri->EVRAKNO]);
                   @endphp
 
-                  <table class="table table-bordered">
+                  <table class="table table-bordered" id="ihtiyac_table">
                     <thead>
                         <tr>
+                            <th><input type="checkbox" id="ihtiyac-"></th>
                             <th>Seviye</th>
                             <th>Nihai Mamul</th>
                             <th>Hammadde Kodu</th>
@@ -445,13 +451,16 @@
                     </thead>
                     <tbody>
                         @foreach($sonuc as $satir)
-                            <tr>
-                                <td>{{ $satir->Seviye }}</td>
-                                <td>{{ $satir->NihaiMamulKodu }}</td>
-                                <td>{{ $satir->HammaddeKodu }}</td>
-                                <td>{{ $satir->KaynakTipi }}</td>
-                                <td>{{ number_format($satir->ToplamHammaddeMiktari, 2) }}</td>
-                            </tr>
+                          <tr>
+                              <td><input type="checkbox" class="ms-1 ihtiyac_check"></td>
+                              <td><input type="text" name="Seviye[]" value="{{ $satir->Seviye }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="HammaddeKodu[]" value="{{ $satir->HammaddeKodu }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="KaynakTipi[]" value="{{ $satir->KaynakTipi }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="ToplamHammaddeMiktari[]" value="{{ number_format($satir->ToplamHammaddeMiktari, 2) }}" class="form-control form-control-sm text-end" readonly></td>
+                              <input type="hidden" name="STOK_ADI[]" value="{{ $satir->HammaddeAdi }}">
+                              <input type="hidden" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}">
+                          </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -514,6 +523,7 @@
 
                   </table>
                 </div>
+
                 <div class="tab-pane" id="liste">
                   @php
                     $stok00 = DB::table($database.'stok00')->get();
@@ -716,7 +726,6 @@
                   @include('layout.util.baglantiliDokumanlar')
 
                 </div>
-
               </div>
             </div>
           </div>
@@ -752,14 +761,14 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                  <table class="table table-bordered">
+                  <table class="table table-bordered" id="modal_ihtiyac_table">
                     <thead>
                         <tr>
-                            <th>Seviye</th>
-                            <th>Nihai Mamul</th>
-                            <th>Hammadde Kodu</th>
-                            <th>Tip</th>
-                            <th>Toplam Miktar</th>
+                            <th>Stok Kodu</th>
+                            <th>Stok Adı</th>
+                            <th>İşlem Br.</th>
+                            <th>İşlem Mik.</th>
+                            <th>TERMIN TAR.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -963,6 +972,21 @@
           $('#SF_SF_UNIT_FILL').val(veriler[2]);
         }
     $(document).ready(function() {
+
+      $('#satin_alma_olustur_btn').on('click', function() {
+          var getSelectedRows = $('#ihtiyac_table input:checked').parents("tr");
+
+          getSelectedRows.each(function() {
+              var hammadde = $(this).find('input[name="HammaddeKodu[]"]').val();
+              var hammadde = $(this).find('input[name="STOK_ADI[]"]').val();
+              var hammadde = $(this).find('input[name="IUNIT[]"]').val();
+              var tip = $(this).find('input[name="KaynakTipi[]"]').val();
+              var miktar = $(this).find('input[name="ToplamHammaddeMiktari[]"]').val();
+
+              $("#modal_ihtiyac_table tbody").append($(this));
+          });
+      });
+
 
       $('#popupSelectt').DataTable({
         "order": [[ 0, "desc" ]],

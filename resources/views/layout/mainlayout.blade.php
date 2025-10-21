@@ -647,7 +647,6 @@
 
     $body.on('click', 'a', function(e) {
       if (isNavigating) {
-        e.preventDefault();
         return false;
       }
 
@@ -657,6 +656,11 @@
       if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
         return;
       }
+      
+      if ($a.attr('target') === '_blank' || $a.attr('download')) {
+        return;
+      }
+
       if (!href || href === '#' || href === 'javascript:void(0)' || href === '') {
         return;
       }
@@ -678,17 +682,13 @@
         return;
       }
 
-      if ($a.attr('download') || $a.attr('target') === '_blank') {
-        return;
-      }
-
       e.preventDefault();
       
       loaderManager.show();
       
       setTimeout(() => {
         window.location.href = href;
-      }, 50);
+      }, 2);
     });
     $body.on('submit', 'form', function(e) {
       if (e.defaultPrevented || isNavigating) return;

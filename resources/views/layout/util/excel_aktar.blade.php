@@ -321,8 +321,8 @@ $(document).ready(function() {
                 submitBtn.prop('disabled', false);
                 
                 let errMsg = 'Bir hata oluştu!';
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    errMsg = Object.values(xhr.responseJSON.errors).join('<br>');
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errMsg = Object.values(xhr.responseJSON.error).join('');
                 } else if (xhr.responseJSON && xhr.responseJSON.message) {
                     errMsg = xhr.responseJSON.message;
                 }
