@@ -739,47 +739,45 @@
               <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
             </div>
             <div class="modal-body">
-              <div class="row mb-3">
-                <div class="col-md-4 col-sm-4 col-xs-6">
-                    <label>Tedarikçi Kodu</label>
-                    <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
-                      data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
-                      name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" data-modal="satin_alma_olustur">
-                      @php
-                        $evraklar = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
+              <form method="post" action="siparisten_talep_olustur" id="siparisten_talep_olustur">
+                @csrf
+                <div class="row mb-3">
+                  <div class="col-md-4 col-sm-4 col-xs-6">
+                      <label>Talep Eden</label>
+                      <select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30PX"
+                        name="TALEP_EDEN" data-modal="satin_alma_olustur">
+                        @php
+                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO','TLPEDN')->get();
 
-                        foreach ($evraklar as $key => $veri) {
-                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                            echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                          } else {
+                          foreach ($evraklar as $key => $veri) {
                             echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
                           }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <table class="table table-bordered" id="modal_ihtiyac_table">
-                    <thead>
-                        <tr>
-                            <th>Stok Kodu</th>
-                            <th>Stok Adı</th>
-                            <th>İşlem Br.</th>
-                            <th>İşlem Mik.</th>
-                            <th>TERMIN TAR.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      
-                    </tbody>
-                  </table>
+                        @endphp
+                      </select>
+                    </div>
                 </div>
-              </div>
+                <div class="row">
+                  <div class="col-12">
+                    <table class="table table-bordered" id="modal_ihtiyac_table">
+                      <thead>
+                          <tr>
+                              <th>Stok Kodu</th>
+                              <th>Stok Adı</th>
+                              <th>İşlem Br.</th>
+                              <th>İşlem Mik.</th>
+                              <!-- <th>TERMIN TAR.</th> -->
+                          </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Satın Alma Siparişlerini Oluştur</button>
+              <button type="submit" form="siparisten_talep_olustur" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Satın Alma Siparişlerini Oluştur</button>
               <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
             </div>
           </div>
@@ -974,18 +972,29 @@
     $(document).ready(function() {
 
       $('#satin_alma_olustur_btn').on('click', function() {
-          var getSelectedRows = $('#ihtiyac_table input:checked').parents("tr");
+          $("#modal_ihtiyac_table tbody").empty();
+          
+          var getSelectedRows = $('#ihtiyac_table input:checked').closest("tr");
 
           getSelectedRows.each(function() {
-              var hammadde = $(this).find('input[name="HammaddeKodu[]"]').val();
-              var hammadde = $(this).find('input[name="STOK_ADI[]"]').val();
-              var hammadde = $(this).find('input[name="IUNIT[]"]').val();
-              var tip = $(this).find('input[name="KaynakTipi[]"]').val();
+              var hammaddeKodu = $(this).find('input[name="HammaddeKodu[]"]').val();
+              var stokAdi = $(this).find('input[name="STOK_ADI[]"]').val();
+              var birim = $(this).find('input[name="IUNIT[]"]').val();
               var miktar = $(this).find('input[name="ToplamHammaddeMiktari[]"]').val();
 
-              $("#modal_ihtiyac_table tbody").append($(this));
+              var yeniSatir = `
+                  <tr>
+                      <td><input type='text' name='STOK_KODU[]' value='${hammaddeKodu}' class='form-control' readonly/></td>
+                      <td><input type='text' name='STOK_ADI[]' value='${stokAdi}' class='form-control' readonly/></td>
+                      <td><input type='text' name='BIRIM[]' value='${birim}' class='form-control' readonly/></td>
+                      <td><input type='text' name='SF_MIKTAR[]' value='${miktar}' class='form-control' readonly/></td>
+                  </tr>
+              `;
+
+              $("#modal_ihtiyac_table tbody").append(yeniSatir);
           });
       });
+
 
 
       $('#popupSelectt').DataTable({

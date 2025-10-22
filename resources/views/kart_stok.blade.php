@@ -109,22 +109,22 @@
 									<div class="row">
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Kod</label>
-											<input type="text" class="form-control" name="KOD" id="KOD_ALANI"  maxlength="24"  value="{{ @$kart_veri->KOD }}" readonly>
+											<input type="text" class="form-control" name="KOD" id="KOD_ALANI"  maxlength="24"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD"  value="{{ @$kart_veri->KOD }}" readonly>
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Stok Adı</label>
-											<input type="text" class="form-control" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
+											<input type="text" class="form-control" maxlength="50" name="AD" id="AD"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD"  value="{{ @$kart_veri->AD }}" >
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Ad2</label>
-											<input type="text" class="form-control" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
+											<input type="text" class="form-control" maxlength="50" name="NAME2" id="NAME2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NAME2" value="{{ @$kart_veri->NAME2 }}">
 										</div>
 
 										<div class="col-md-1 col-sm-1 col-xs-2">
 											<label>Birimi</label>
-											<select class="form-control  input-sm" style="width: 100%;" name="IUNIT" id="IUNIT" >
+											<select class="form-control  input-sm" style="width:100%;"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IUNIT"  name="IUNIT" id="IUNIT" >
 												<option value="">Seç...</option>
 												<option value="AD" @if (@$kart_veri->IUNIT == "AD") selected @endif>AD - ADET</option>
 												<option value="F" @if (@$kart_veri->IUNIT == "F") selected @endif>F - FANTOM</option>
@@ -138,12 +138,12 @@
 
 										<div class="col-md-1 col-sm-4 col-xs-6">
 											<label>Rev No</label>
-											<input type="text" maxlength="6" class="form-control" name="REVNO" id="REVNO" value="{{ @$kart_veri->REVNO }}">
+											<input type="text" maxlength="6" class="form-control" name="REVNO"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="REVNO" id="REVNO" value="{{ @$kart_veri->REVNO }}">
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Rev Tar</label>
-											<input type="date" class="form-control" name="REVTAR" id="REVTAR" value="{{ @$kart_veri->REVTAR }}">
+											<input type="date" class="form-control" name="REVTAR" id="REVTAR"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="REVTAR" value="{{ @$kart_veri->REVTAR }}">
 										</div>
 
 										<div class="col-md-1 col-sm-1 col-xs-2">
@@ -168,15 +168,16 @@
 									</div>
 								</div>
 
-								<div class="row" style="display: flex; align-items: center; max-width:100%; margin:auto;">
+									<!-- style="display: flex; align-items: center; max-width:100%; margin:auto;" -->	
+									<div class="row">
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>İlk Num Tar</label>
-										<input type="date" class="form-control" name="ILKNUMTAR" id="ILKNUMTAR" value="{{ @$kart_veri->ILKNUMTAR }}">
+										<input type="date" class="form-control" name="ILKNUMTAR" id="ILKNUMTAR"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILKNUMTAR" value="{{ @$kart_veri->ILKNUMTAR }}">
 									</div>
 
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Seriye Geçiş Tar</label>
-										<input type="date" class="form-control" name="SERIGECTAR" id="SERIGECTAR" value="{{ @$kart_veri->SERIGECTAR }}">
+										<input type="date" class="form-control" name="SERIGECTAR" id="SERIGECTAR"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERIGECTAR" value="{{ @$kart_veri->SERIGECTAR }}">
 									</div>
 
 									<div class="col-md-8" style="text-align: right;">
@@ -237,7 +238,7 @@
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 1</label>
 
-													<select id="GK_1" name="GK_1" class="form-control select2 js-example-basic-single" style="width: 100%;">
+													<select id="GK_1" name="GK_1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_1" class="form-control select2 js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 
 														@php
@@ -254,7 +255,7 @@
 												</div>
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 2</label>
-													<select id="GK_2" name="GK_2" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_2" name="GK_2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_2" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 
 														@php
@@ -273,7 +274,7 @@
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 3</label>
 
-													<select id="GK_3" name="GK_3" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_3" name="GK_3"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_3" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 
 														@php
@@ -291,7 +292,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 4</label>
-													<select id="GK_4" name="GK_4" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_4" name="GK_4"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_4" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 
 														@php
@@ -309,7 +310,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 5</label>
-													<select id="GK_5" name="GK_5" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_5" name="GK_5"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_5" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 
 														@php
@@ -327,7 +328,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 6</label>
-													<select id="GK_6" name="GK_6" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_6" name="GK_6"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_6" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 														@php
 															foreach ($GK6_veri as $key => $veri) {
@@ -345,7 +346,7 @@
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 7</label>
 
-													<select id="GK_7" name="GK_7" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_7" name="GK_7"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_7" class="form-control js-example-basic-single" style="width: 100%;">
 													<option value=" ">Seç</option>
 													@php
 														foreach ($GK7_veri as $key => $veri) {
@@ -362,7 +363,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 													<label>Grup Kodu 8</label>
-													<select id="GK_8" name="GK_8" class="form-control js-example-basic-single" style="width: 100%;">
+													<select id="GK_8" name="GK_8"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_8" class="form-control js-example-basic-single" style="width: 100%;">
 														<option value=" ">Seç</option>
 														@php
 															foreach ($GK8_veri as $key => $veri) {
@@ -379,7 +380,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 												<label>Grup Kodu 9</label>
-												<select id="GK_9" name="GK_9" class="form-control js-example-basic-single" style="width: 100%;">
+												<select id="GK_9" name="GK_9"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_9" class="form-control js-example-basic-single" style="width: 100%;">
 													<option value=" ">Seç</option>
 													@php
 													foreach ($GK9_veri as $key => $veri) {
@@ -396,7 +397,7 @@
 
 												<div class="col-md-2 col-xs-4  col-sm-4">
 												<label>Grup Kodu 10</label>
-												<select id="GK_10" name="GK_10" class="form-control js-example-basic-single" style="width: 100%;">
+												<select id="GK_10" name="GK_10"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_10" class="form-control js-example-basic-single" style="width: 100%;">
 													<option value=" ">Seç</option>
 													@php
 														foreach ($GK10_veri as $key => $veri) {

@@ -11,7 +11,7 @@
     @else
       <img src="{{URL::asset('/assets/img/qzu_logo.png')}}" class="img-circle" width='50' alt="User Image">
     @endif
-    <div class="logo_name ms-3">QZUErp</div>
+    <div class="logo_name ms-3"><b>QZU</b>ERP</div>
   </div>
   <ul class="nav-list">
     <li>

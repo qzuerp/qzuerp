@@ -155,10 +155,6 @@ class stok21_controller extends Controller
     else {
       $satir_say = count($KOD);
     }
-    if($satir_say > 40)
-    {
-      return redirect()->route('stokgiriscikis')->with('error','Maksimum evrak limitine ulaştınız. Devam edebilmek için yeni bir evrak oluşturun.');
-    }
 
     switch($islem_turu) {
 

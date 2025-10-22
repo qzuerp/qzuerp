@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,55 @@ class stok40_controller extends Controller
     return json_encode($veri);
   }
 
+  public function siparisten_talep_olustur(Request $request)
+  {
+    $TALEP_EDEN = $request->TALEP_EDEN;
+    $STOK_KODU = $request->STOK_KODU;
+    $STOK_ADI = $request->STOK_ADI;
+    $BIRIM = $request->BIRIM;
+    $SF_MIKTAR = $request->SF_MIKTAR;
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+
+    $SON_EVRAK=DB::table($firma.'stok47e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+    $SON_ID= $SON_EVRAK->EVRAKNO;
+
+    $SON_ID = (int) $SON_ID;
+    if ($SON_ID == NULL) {
+      $EVRAKNO = 1;
+    }
+    else {
+      $EVRAKNO = $SON_ID + 1;
+    }
+
+    DB::table($firma.'stok47e')->insert([
+      'EVRAKNO' => $EVRAKNO,
+      'TARIH' => date('Y-m-d'),
+      'CARIHESAPCODE' => $TALEP_EDEN,
+      'created_at' => date('Y-m-d H:i:s'),
+    ]);
+
+
+    for ($i = 0; $i < count($STOK_KODU); $i++) {
+
+      $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+
+      DB::table($firma.'stok47t')->insert([
+        'EVRAKNO' => $EVRAKNO,
+        'SRNUM' => $SRNUM,
+        'TRNUM' => $SRNUM,
+        'KOD' => $STOK_KODU[$i],
+        'STOK_ADI' => $STOK_ADI[$i],
+        'SF_SF_UNIT' => $BIRIM[$i],
+        'SF_MIKTAR' => $SF_MIKTAR[$i],
+        'created_at' => date('Y-m-d H:i:s'),
+        'NETKAPANANMIK' => 0
+      ]);
+    }
+    return redirect()->back()->with('success','Talepler Başarıyla Oluşturuldu');
+  }
   public function islemler(Request $request)
   {
     // dd(request()->all());

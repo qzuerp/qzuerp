@@ -169,7 +169,7 @@ class imlt00_kalibrasyon_controller extends Controller
         break;
 
       case 'kart_sil':
-        FunctionHelpers::Logla('IMLT002',$KOD,'D');
+        FunctionHelpers::Logla('SRVKC0',$KOD,'D');
 
         DB::table($firma.'SRVKC0')->where('KOD',$KOD)->delete();
 
@@ -181,7 +181,7 @@ class imlt00_kalibrasyon_controller extends Controller
         break;
 
       case 'kart_olustur':
-        FunctionHelpers::Logla('IMLT002',$KOD,'C');
+        FunctionHelpers::Logla('SRVKC0',$KOD,'C');
 
         DB::table($firma.'SRVKC0')->insert([
           'KOD' => $KOD,
@@ -245,7 +245,7 @@ class imlt00_kalibrasyon_controller extends Controller
         break;
 
       case 'kart_duzenle':
-        FunctionHelpers::Logla('IMLT002',$KOD,'W');
+        FunctionHelpers::Logla('SRVKC0',$KOD,'W');
 
         DB::table($firma.'SRVKC0')->where('KOD',$KOD)->update([
           'KOD' => $KOD,

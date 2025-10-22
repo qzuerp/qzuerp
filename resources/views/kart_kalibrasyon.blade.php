@@ -68,7 +68,7 @@
   <div class="content-wrapper">
 
     @include('layout.util.evrakContentHeader')
-    @include('layout.util.logModal', ['EVRAKTYPE' => 'IMLT002', 'EVRAKNO' => @$kart_veri->EVRAKNO])
+    @include('layout.util.logModal', ['EVRAKTYPE' => 'SRVKC0', 'EVRAKNO' => @$kart_veri->EVRAKNO])
 
     <section class="content">
       <form class="form-horizontal" action="imlt00_kalibrasyon_islemler" method="POST" name="verilerForm"

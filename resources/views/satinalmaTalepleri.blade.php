@@ -12,7 +12,7 @@
   $ekran = "SATINALMTALEP";
   $ekranRumuz = "STOK47";
   $ekranAdi = "Satın Alma Talepleri";
-  $ekranLink = "satinalmaTalep";
+  $ekranLink = "satinalmaTalepleri";
   $ekranTableE = $database . "stok47e";
   $ekranTableT = $database . "stok47t";
   $ekranKayitSatirKontrol = "true";
