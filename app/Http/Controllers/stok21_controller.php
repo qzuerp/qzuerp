@@ -230,63 +230,66 @@ class stok21_controller extends Controller
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
 
-        $s1 = DB::table($firma.'stok10a')
-          ->where('KOD',$KOD[$i])
-          ->where('LOTNUMBER',$LOTNUMBER[$i])
-          ->where('SERINO',$SERINO[$i])
-          ->where('AMBCODE',$AMBCODE[$i])
-          ->where('NUM1',$NUM1[$i])
-          ->where('NUM2',$NUM2[$i])
-          ->where('NUM3',$NUM3[$i])
-          ->where('NUM4',$NUM4[$i])
-          ->where('TEXT1',$TEXT1[$i])
-          ->where('TEXT2',$TEXT2[$i])
-          ->where('TEXT3',$TEXT3[$i])
-          ->where('TEXT4',$TEXT4[$i])
-          ->where('LOCATION1',$LOCATION1[$i])
-          ->where('LOCATION2',$LOCATION2[$i])
-          ->where('LOCATION3',$LOCATION3[$i])
-          ->where('LOCATION4',$LOCATION4[$i])
-          ->sum('SF_MIKTAR');
-
-        $s2 = DB::table($firma.'stok10a')
-              ->where('KOD',$KOD[$i])
-                ->where('KOD',$KOD[$i])
-                ->where('LOTNUMBER',$LOTNUMBER[$i])
-                ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE[$i])
-                ->where('NUM1',$NUM1[$i])
-                ->where('NUM2',$NUM2[$i])
-                ->where('NUM3',$NUM3[$i])
-                ->where('NUM4',$NUM4[$i])
-                ->where('TEXT1',$TEXT1[$i])
-                ->where('TEXT2',$TEXT2[$i])
-                ->where('TEXT3',$TEXT3[$i])
-                ->where('TEXT4',$TEXT4[$i])
-                ->where('LOCATION1',$LOCATION1[$i])
-                ->where('LOCATION2',$LOCATION2[$i])
-                ->where('LOCATION3',$LOCATION3[$i])
-                ->where('LOCATION4',$LOCATION4[$i])
-                ->where('EVRAKNO',$EVRAKNO)
-                ->where('EVRAKTIPI','STOK20TI')
-                ->where('TRNUM',$TRNUM[$i])
-              ->sum('SF_MIKTAR');
-        
-        $kontrol = $s1 + (-1 * $s2);
-
-        // dd([
-        //   's1' => $s1,
-        //   's2' => $s2,
-        //   'Miktar' => $SF_MIKTAR,
-        //   'Giren' => $GIREN_MIKTAR[$i],
-        //   'Çıktan' => $CIKAN_MIKTAR[$i],
-        //   'Kontrol' => $kontrol
-        // ]);
-        
-        $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
-        if($SF_MIKTAR > $kontrol && $SF_MIKTAR < 0)
+        if($CIKAN_MIKTAR[$i])
         {
-          return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+          $s1 = DB::table($firma.'stok10a')
+            ->where('KOD',$KOD[$i])
+            ->where('LOTNUMBER',$LOTNUMBER[$i])
+            ->where('SERINO',$SERINO[$i])
+            ->where('AMBCODE',$AMBCODE[$i])
+            ->where('NUM1',$NUM1[$i])
+            ->where('NUM2',$NUM2[$i])
+            ->where('NUM3',$NUM3[$i])
+            ->where('NUM4',$NUM4[$i])
+            ->where('TEXT1',$TEXT1[$i])
+            ->where('TEXT2',$TEXT2[$i])
+            ->where('TEXT3',$TEXT3[$i])
+            ->where('TEXT4',$TEXT4[$i])
+            ->where('LOCATION1',$LOCATION1[$i])
+            ->where('LOCATION2',$LOCATION2[$i])
+            ->where('LOCATION3',$LOCATION3[$i])
+            ->where('LOCATION4',$LOCATION4[$i])
+            ->sum('SF_MIKTAR');
+
+          $s2 = DB::table($firma.'stok10a')
+                ->where('KOD',$KOD[$i])
+                  ->where('KOD',$KOD[$i])
+                  ->where('LOTNUMBER',$LOTNUMBER[$i])
+                  ->where('SERINO',$SERINO[$i])
+                  ->where('AMBCODE',$AMBCODE[$i])
+                  ->where('NUM1',$NUM1[$i])
+                  ->where('NUM2',$NUM2[$i])
+                  ->where('NUM3',$NUM3[$i])
+                  ->where('NUM4',$NUM4[$i])
+                  ->where('TEXT1',$TEXT1[$i])
+                  ->where('TEXT2',$TEXT2[$i])
+                  ->where('TEXT3',$TEXT3[$i])
+                  ->where('TEXT4',$TEXT4[$i])
+                  ->where('LOCATION1',$LOCATION1[$i])
+                  ->where('LOCATION2',$LOCATION2[$i])
+                  ->where('LOCATION3',$LOCATION3[$i])
+                  ->where('LOCATION4',$LOCATION4[$i])
+                  ->where('EVRAKNO',$EVRAKNO)
+                  ->where('EVRAKTIPI','STOK20TI')
+                  ->where('TRNUM',$TRNUM[$i])
+                ->sum('SF_MIKTAR');
+          
+          $kontrol = $s1 + (-1 * $s2);
+
+          // dd([
+          //   's1' => $s1,
+          //   's2' => $s2,
+          //   'Miktar' => $SF_MIKTAR,
+          //   'Giren' => $GIREN_MIKTAR[$i],
+          //   'Çıktan' => $CIKAN_MIKTAR[$i],
+          //   'Kontrol' => $kontrol
+          // ]);
+          
+          $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
+          if($SF_MIKTAR > $kontrol && $SF_MIKTAR < 0)
+          {
+            return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+          }
         }
 
 
@@ -419,65 +422,58 @@ class stok21_controller extends Controller
 
 
         if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
-
-          $s1 = DB::table($firma.'stok10a')
-            ->where('KOD',$KOD[$i])
-            ->where('LOTNUMBER',$LOTNUMBER[$i])
-            ->where('SERINO',$SERINO[$i])
-            ->where('AMBCODE',$AMBCODE[$i])
-            ->where('NUM1',$NUM1[$i])
-            ->where('NUM2',$NUM2[$i])
-            ->where('NUM3',$NUM3[$i])
-            ->where('NUM4',$NUM4[$i])
-            ->where('TEXT1',$TEXT1[$i])
-            ->where('TEXT2',$TEXT2[$i])
-            ->where('TEXT3',$TEXT3[$i])
-            ->where('TEXT4',$TEXT4[$i])
-            ->where('LOCATION1',$LOCATION1[$i])
-            ->where('LOCATION2',$LOCATION2[$i])
-            ->where('LOCATION3',$LOCATION3[$i])
-            ->where('LOCATION4',$LOCATION4[$i])
-            ->sum('SF_MIKTAR');
-
-          $s2 = DB::table($firma.'stok10a')
-                ->where('KOD',$KOD[$i])
-                  ->where('KOD',$KOD[$i])
-                  ->where('LOTNUMBER',$LOTNUMBER[$i])
-                  ->where('SERINO',$SERINO[$i])
-                  ->where('AMBCODE',$AMBCODE[$i])
-                  ->where('NUM1',$NUM1[$i])
-                  ->where('NUM2',$NUM2[$i])
-                  ->where('NUM3',$NUM3[$i])
-                  ->where('NUM4',$NUM4[$i])
-                  ->where('TEXT1',$TEXT1[$i])
-                  ->where('TEXT2',$TEXT2[$i])
-                  ->where('TEXT3',$TEXT3[$i])
-                  ->where('TEXT4',$TEXT4[$i])
-                  ->where('LOCATION1',$LOCATION1[$i])
-                  ->where('LOCATION2',$LOCATION2[$i])
-                  ->where('LOCATION3',$LOCATION3[$i])
-                  ->where('LOCATION4',$LOCATION4[$i])
-                  ->where('EVRAKNO',$EVRAKNO)
-                  ->where('EVRAKTIPI','STOK20TI')
-                  ->where('TRNUM',$TRNUM[$i])
-                ->sum('SF_MIKTAR');
-          
-          $kontrol = $s1 + (-1 * $s2);
-
-          // dd([
-          //   's1' => $s1,
-          //   's2' => $s2,
-          //   'Miktar' => $SF_MIKTAR,
-          //   'Giren' => $GIREN_MIKTAR[$i],
-          //   'Çıktan' => $CIKAN_MIKTAR[$i],
-          //   'Kontrol' => $kontrol
-          // ]);
-          
-
-          if($SF_MIKTAR > $kontrol && $SF_MIKTAR < 0)
+          if($CIKAN_MIKTAR[$i])
           {
-            return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+            $s1 = DB::table($firma.'stok10a')
+              ->where('KOD',$KOD[$i])
+              ->where('LOTNUMBER',$LOTNUMBER[$i])
+              ->where('SERINO',$SERINO[$i])
+              ->where('AMBCODE',$AMBCODE[$i])
+              ->where('NUM1',$NUM1[$i])
+              ->where('NUM2',$NUM2[$i])
+              ->where('NUM3',$NUM3[$i])
+              ->where('NUM4',$NUM4[$i])
+              ->where('TEXT1',$TEXT1[$i])
+              ->where('TEXT2',$TEXT2[$i])
+              ->where('TEXT3',$TEXT3[$i])
+              ->where('TEXT4',$TEXT4[$i])
+              ->where('LOCATION1',$LOCATION1[$i])
+              ->where('LOCATION2',$LOCATION2[$i])
+              ->where('LOCATION3',$LOCATION3[$i])
+              ->where('LOCATION4',$LOCATION4[$i])
+              ->sum('SF_MIKTAR');
+
+            $s2 = DB::table($firma.'stok10a')
+                  ->where('KOD',$KOD[$i])
+                    ->where('KOD',$KOD[$i])
+                    ->where('LOTNUMBER',$LOTNUMBER[$i])
+                    ->where('SERINO',$SERINO[$i])
+                    ->where('AMBCODE',$AMBCODE[$i])
+                    ->where('NUM1',$NUM1[$i])
+                    ->where('NUM2',$NUM2[$i])
+                    ->where('NUM3',$NUM3[$i])
+                    ->where('NUM4',$NUM4[$i])
+                    ->where('TEXT1',$TEXT1[$i])
+                    ->where('TEXT2',$TEXT2[$i])
+                    ->where('TEXT3',$TEXT3[$i])
+                    ->where('TEXT4',$TEXT4[$i])
+                    ->where('LOCATION1',$LOCATION1[$i])
+                    ->where('LOCATION2',$LOCATION2[$i])
+                    ->where('LOCATION3',$LOCATION3[$i])
+                    ->where('LOCATION4',$LOCATION4[$i])
+                    ->where('EVRAKNO',$EVRAKNO)
+                    ->where('EVRAKTIPI','STOK20TI')
+                    ->where('TRNUM',$TRNUM[$i])
+                  ->sum('SF_MIKTAR');
+            
+            $kontrol = $s1 + (-1 * $s2);
+
+            if($SF_MIKTAR > $kontrol && $SF_MIKTAR < 0)
+            {
+              return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+            }
           }
+
 
           DB::table($firma.'stok21t')->insert([
             'EVRAKNO' => $EVRAKNO,
@@ -541,72 +537,74 @@ class stok21_controller extends Controller
         }
 
         if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
-
-          $KAYITLI_SF_MIKTAR = DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
-          // if($KOD[$i] == 'HBZ571')
-          //   dd($KAYITLI_SF_MIKTAR);
-          if($KAYITLI_SF_MIKTAR != $SF_MIKTAR)
+          if($CIKAN_MIKTAR[$i])
           {
-              $s1 = DB::table($firma.'stok10a')
-                  ->where('KOD',$KOD[$i])
-                  ->where('LOTNUMBER',$LOTNUMBER[$i])
-                  ->where('SERINO',$SERINO[$i])
-                  ->where('AMBCODE',$AMBCODE[$i])
-                  ->where('NUM1',$NUM1[$i])
-                  ->where('NUM2',$NUM2[$i])
-                  ->where('NUM3',$NUM3[$i])
-                  ->where('NUM4',$NUM4[$i])
-                  ->where('TEXT1',$TEXT1[$i])
-                  ->where('TEXT2',$TEXT2[$i])
-                  ->where('TEXT3',$TEXT3[$i])
-                  ->where('TEXT4',$TEXT4[$i])
-                  ->where('LOCATION1',$LOCATION1[$i])
-                  ->where('LOCATION2',$LOCATION2[$i])
-                  ->where('LOCATION3',$LOCATION3[$i])
-                  ->where('LOCATION4',$LOCATION4[$i])
-                  ->sum('SF_MIKTAR');
+            $KAYITLI_SF_MIKTAR = DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
+            // if($KOD[$i] == 'HBZ571')
+            //   dd($KAYITLI_SF_MIKTAR);
+            if($KAYITLI_SF_MIKTAR != $SF_MIKTAR)
+            {
+                $s1 = DB::table($firma.'stok10a')
+                    ->where('KOD',$KOD[$i])
+                    ->where('LOTNUMBER',$LOTNUMBER[$i])
+                    ->where('SERINO',$SERINO[$i])
+                    ->where('AMBCODE',$AMBCODE[$i])
+                    ->where('NUM1',$NUM1[$i])
+                    ->where('NUM2',$NUM2[$i])
+                    ->where('NUM3',$NUM3[$i])
+                    ->where('NUM4',$NUM4[$i])
+                    ->where('TEXT1',$TEXT1[$i])
+                    ->where('TEXT2',$TEXT2[$i])
+                    ->where('TEXT3',$TEXT3[$i])
+                    ->where('TEXT4',$TEXT4[$i])
+                    ->where('LOCATION1',$LOCATION1[$i])
+                    ->where('LOCATION2',$LOCATION2[$i])
+                    ->where('LOCATION3',$LOCATION3[$i])
+                    ->where('LOCATION4',$LOCATION4[$i])
+                    ->sum('SF_MIKTAR');
 
-              $s2 = DB::table($firma.'stok10a')
-                  ->where('KOD',$KOD[$i])
-                  ->where('LOTNUMBER',$LOTNUMBER[$i])
-                  ->where('SERINO',$SERINO[$i])
-                  ->where('AMBCODE',$AMBCODE[$i])
-                  ->where('NUM1',$NUM1[$i])
-                  ->where('NUM2',$NUM2[$i])
-                  ->where('NUM3',$NUM3[$i])
-                  ->where('NUM4',$NUM4[$i])
-                  ->where('TEXT1',$TEXT1[$i])
-                  ->where('TEXT2',$TEXT2[$i])
-                  ->where('TEXT3',$TEXT3[$i])
-                  ->where('TEXT4',$TEXT4[$i])
-                  ->where('LOCATION1',$LOCATION1[$i])
-                  ->where('LOCATION2',$LOCATION2[$i])
-                  ->where('LOCATION3',$LOCATION3[$i])
-                  ->where('LOCATION4',$LOCATION4[$i])
-                  ->where('EVRAKNO',$EVRAKNO)
-                  ->where('EVRAKTIPI','STOK20TI')
-                  ->where('TRNUM',$TRNUM[$i])
-              ->sum('SF_MIKTAR');
-              
-              $kontrol = $s1 + (-1 * $s2);
-              if($SF_MIKTAR > $KAYITLI_SF_MIKTAR)
-              {
-                $SONUC = $SF_MIKTAR - $KAYITLI_SF_MIKTAR;
-                // dd($SONUC,$KAYITLI_SF_MIKTAR,$kontrol);
-                if($SONUC > $kontrol)
+                $s2 = DB::table($firma.'stok10a')
+                    ->where('KOD',$KOD[$i])
+                    ->where('LOTNUMBER',$LOTNUMBER[$i])
+                    ->where('SERINO',$SERINO[$i])
+                    ->where('AMBCODE',$AMBCODE[$i])
+                    ->where('NUM1',$NUM1[$i])
+                    ->where('NUM2',$NUM2[$i])
+                    ->where('NUM3',$NUM3[$i])
+                    ->where('NUM4',$NUM4[$i])
+                    ->where('TEXT1',$TEXT1[$i])
+                    ->where('TEXT2',$TEXT2[$i])
+                    ->where('TEXT3',$TEXT3[$i])
+                    ->where('TEXT4',$TEXT4[$i])
+                    ->where('LOCATION1',$LOCATION1[$i])
+                    ->where('LOCATION2',$LOCATION2[$i])
+                    ->where('LOCATION3',$LOCATION3[$i])
+                    ->where('LOCATION4',$LOCATION4[$i])
+                    ->where('EVRAKNO',$EVRAKNO)
+                    ->where('EVRAKTIPI','STOK20TI')
+                    ->where('TRNUM',$TRNUM[$i])
+                ->sum('SF_MIKTAR');
+                
+                $kontrol = $s1 + (-1 * $s2);
+                if($SF_MIKTAR > $KAYITLI_SF_MIKTAR)
                 {
-                    return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
-                }
-              }
-              else
-              {
-                  $SONUC = $KAYITLI_SF_MIKTAR - $SF_MIKTAR;
-                  if($SONUC < $kontrol)
+                  $SONUC = $SF_MIKTAR - $KAYITLI_SF_MIKTAR;
+                  // dd($SONUC,$KAYITLI_SF_MIKTAR,$kontrol);
+                  if($SONUC > $kontrol)
                   {
-                      return redirect()->back()->with('error', 'Hata2: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+                      return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
                   }
-              }
-              
+                }
+                else
+                {
+                    $SONUC = $KAYITLI_SF_MIKTAR - $SF_MIKTAR;
+                    if($SONUC < $kontrol)
+                    {
+                        return redirect()->back()->with('error', 'Hata2: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
+                    }
+                }
+                
+            }
           }
 
           DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
