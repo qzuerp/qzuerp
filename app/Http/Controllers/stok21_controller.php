@@ -761,6 +761,7 @@ class stok21_controller extends Controller
           'SERINO' => $SERINO,
           'MPS_BILGISI' => $MPS_BILGISI,
           'MIKTAR' => $SF_MIKTAR,
+          'LOTNO' => $LOTNUMBER,
           'ID' => 'stokgiriscikis?ID='.$request->ID_TO_REDIRECT
         ];
         FunctionHelpers::Logla('STOK21',$EVRAKNO,'P',$TARIH);

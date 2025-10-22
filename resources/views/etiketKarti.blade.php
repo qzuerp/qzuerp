@@ -23,32 +23,64 @@
     height: 3cm;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
-    align-items: end;
-    padding: 0px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2mm;
     font-size: 7.5px;
     page-break-inside: avoid;
     margin: 0;
-    paddin-top:1px;
-  }
-  h1,h2,h3
-  {
-    margin:0;
-    padding:0;
-  }
-  h2.
-  .info {
-    max-width: 200px;
   }
 
-  .card .barcode {
-    transform-origin: center;
+  h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
   }
+
+  h2 {
+    font-size: 7px;
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 8px;
+    font-weight: bold;
+    margin: 0.5mm 0;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .logo-container {
+    width: 100%;
+    height: 1mm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1mm;
+  }
+
+  .logo {
+    max-width: 5mm;
+    max-height: 3mm;
+    object-fit: contain;
+  }
+
+  .text-content {
+    text-align: center;
+    margin-bottom: -0.5mm;
+  }
+
   .barcode {
     display: block;
     margin: 0 auto;
+    width: 100%;
+    height: 8mm;
   }
-
 </style>
 
 <div id="yazdirilicak">
@@ -71,11 +103,15 @@
 
   <div class="card">
     <div class="info">
-      <center>
+      <div class="logo-container">
+        <img src="{{URL::asset('/assets/img/yukselcnc_LOGO.jpeg')}}" alt="Logo" class="logo">
+        <b>YÜKSEL CNC</b>
+      </div>
+      
+      <div class="text-content">
         <h2>{{ $data['KOD'][$i] ?? '' }}</h2>
-
-        <h1>{{ $data['STOK_ADI'][$i] ?? '' }}</h1>
-      </center>
+        <h2>{{ $data['LOTNO'][$i] ?? '' }}</h2>
+      </div>
 
       <svg class="barcode" data-value="{{ $barcodeVal }}"></svg>
     </div>
@@ -93,7 +129,7 @@
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
         width: 1.3,
-        height: 45,
+        height: 25,
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",

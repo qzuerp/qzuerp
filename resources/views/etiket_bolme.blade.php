@@ -152,7 +152,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Alan Depo</label>
-                        <select class="form-control select2 js-example-basic-single TARGETAMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARGETAMBCODE"  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARGETAMBCODE"  style="width: 100%; height: 30px" onchange="getNewLocation1()" name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" required>
                           <option value=" ">Seç</option>
                           @php
                             $ambcode_evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();

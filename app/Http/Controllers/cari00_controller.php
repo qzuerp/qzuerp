@@ -315,7 +315,7 @@ class cari00_controller extends Controller
           'GK_2' => $GK_2,
           'GK_3' => $GK_3,
           'GK_4' => $GK_4,
-          'GK_5' => $GK_5,
+          'GK_5' => $GK_5, 
           'GK_6' => $GK_6,
           'GK_7' => $GK_7,
           'GK_8' => $GK_8,

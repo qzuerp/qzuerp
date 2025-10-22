@@ -98,7 +98,7 @@ class stok25_controller extends Controller
             'EVRAKNO' => $EVRAKNO,
             'TARIH' => $TARIH,
             'AMBCODE' => $AMBCODE_E,
-            'TARGETAMBCODE' => $TARGETAMBCODE,
+            'TARGETAMBCODE' => $TARGETAMBCODE_E,
             'NITELIK' => $NITELIK,
             'LAST_TRNUM' => $LAST_TRNUM,
             'created_at' => date('Y-m-d H:i:s'),

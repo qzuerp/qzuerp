@@ -152,11 +152,11 @@
 
                 <div class="row ">
                   <!-- 
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                          <label>Kullanıcı ID</label>
-                          <input id="kullanici_id" maxlength="24"type="text" class="form-control" name="kullanici_id" value="@php echo $kullanici_veri->id; @endphp" disabled>
+                          <div class="col-md-2 col-sm-3 col-xs-6">
+                            <label>Kullanıcı ID</label>
+                            <input id="kullanici_id" maxlength="24"type="text" class="form-control" name="kullanici_id" value="@php echo $kullanici_veri->id; @endphp" disabled>
 
-                        </div> -->
+                          </div> -->
 
 
                 </div>
@@ -1075,34 +1075,36 @@
   <script>
     //şifre
     document.addEventListener('DOMContentLoaded', function () {
-      const form = document.getElementById('yenikullaniciForm');
-      const password = document.getElementById('password-new');
-      const passwordConfirm = document.getElementById('password-confirm-new');
-      const sifreUyarisi = document.getElementById('sifreUyarisi');
+    const form = document.getElementById('yenikullaniciForm');
+    const password = document.getElementById('password-new');
+    const passwordConfirm = document.getElementById('password-confirm-new');
+    const sifreUyarisi = document.getElementById('sifreUyarisi');
 
-      // Şifreleri anlık kontrol et
-      function sifreKontrol() {
-        if (password.value !== passwordConfirm.value) {
-          sifreUyarisi.style.display = 'block';
-        } else {
-          sifreUyarisi.style.display = 'none';
-        }
-      }
+    let timeout = null;
 
-      password.addEventListener('input', sifreKontrol);
-      passwordConfirm.addEventListener('input', sifreKontrol);
-
-      // Form submit kontrolü
-      form.addEventListener('submit', function (e) {
-        if (password.value !== passwordConfirm.value) {
-          $('#loader').hide();
-          e.preventDefault(); // Form gönderilmesin
-          sifreUyarisi.style.display = 'block';
-        } else {
-          sifreUyarisi.style.display = 'none';
-        }
-      });
+    // Şifreleri sadece onay kısmına yazarken, yarım saniye gecikmeli kontrol et
+    passwordConfirm.addEventListener('input', function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            if (password.value !== passwordConfirm.value) {
+                sifreUyarisi.style.display = 'block';
+            } else {
+                sifreUyarisi.style.display = 'none';
+            }
+        }, 500);
     });
+
+    // Form gönderme kontrolü
+    form.addEventListener('submit', function (e) {
+        if (password.value !== passwordConfirm.value) {
+            e.preventDefault();
+            $('#loader').hide();
+            sifreUyarisi.style.display = 'block';
+        } else {
+            sifreUyarisi.style.display = 'none';
+        }
+    });
+});
     //bitiş
 
     //eposta
