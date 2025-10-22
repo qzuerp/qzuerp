@@ -138,7 +138,7 @@ h1 {
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",
-        fontSize:20
+        fontSize:35px
       });
     });
 
