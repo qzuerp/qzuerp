@@ -133,7 +133,7 @@ h1 {
     document.querySelectorAll(".barcode").forEach(barcode => {
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
-        width: 1.3,
+        width: 1.8,
         height: 42,
         displayValue: true,
         background: "#ffffff",
