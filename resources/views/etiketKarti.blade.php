@@ -28,7 +28,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1mm;
-  font-size: 7.5px;
+  /* font-size: 7.5px; */
   page-break-inside: avoid;
   margin: 0;
 }
@@ -40,13 +40,13 @@ h1, h2, h3 {
 }
 
 h2 {
-  font-size: 6.5px;
+  /* font-size: 6.5px; */
   font-weight: bold;
   line-height: 1.1;
 }
 
 h1 {
-  font-size: 7.5px;
+  /* font-size: 7.5px; */
   font-weight: bold;
   margin: 0.3mm 0;
   line-height: 1.1;
@@ -138,7 +138,7 @@ h1 {
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",
-        fontSize:10
+        fontSize:14
       });
     });
 
