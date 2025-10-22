@@ -5,82 +5,87 @@
   $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
   $database = trim($kullanici_veri->firma) . ".dbo.";
 @endphp
+
 <style>
   @media print {
-    @page { size: 5cm 3cm; margin: 0; }
-    body { margin: 0; padding: 0; }
-  }
+  @page { size: 5cm 3cm; margin: 0; }
+  body { margin: 0; padding: 0; }
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-  }
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
 
-  .card {
-    width: 5cm;
-    height: 3cm;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 2mm;
-    font-size: 7.5px;
-    page-break-inside: avoid;
-    margin: 0;
-  }
+.card {
+  width: 5cm;
+  height: 3cm;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1mm;
+  font-size: 7.5px;
+  page-break-inside: avoid;
+  margin: 0;
+}
 
-  h1, h2, h3 {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
 
-  h2 {
-    font-size: 7px;
-    font-weight: bold;
-  }
+h2 {
+  font-size: 6.5px;
+  font-weight: bold;
+  line-height: 1.1;
+}
 
-  h1 {
-    font-size: 8px;
-    font-weight: bold;
-    margin: 0.5mm 0;
-  }
+h1 {
+  font-size: 7.5px;
+  font-weight: bold;
+  margin: 0.3mm 0;
+  line-height: 1.1;
+}
 
-  .info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
-  .logo-container {
-    width: 100%;
-    height: 1mm;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1mm;
-  }
+.logo-container {
+  width: 100%;
+  height: 6mm;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5mm;
+}
 
-  .logo {
-    max-width: 5mm;
-    max-height: 3mm;
-    object-fit: contain;
-  }
+.logo {
+  max-width: 12mm;
+  max-height: 6mm;
+  object-fit: contain;
+}
 
-  .text-content {
-    text-align: center;
-    margin-bottom: -0.5mm;
-  }
+.text-content {
+  text-align: center;
+  margin-bottom: 0.5mm;
+}
 
-  .barcode {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    height: 8mm;
-  }
+.barcode {
+  display: block;
+  margin: 0 auto;
+  width: 45mm;
+  height: 12mm;
+}
 </style>
 
 <div id="yazdirilicak">
@@ -143,7 +148,7 @@
       window.onafterprint = () => window.close(); 
     }, 500);
   };
-  window.onafterprint = function() {
-      window.history.back();
-  };
+  // window.onafterprint = function() {
+  //     window.history.back();
+  // };
 </script>
