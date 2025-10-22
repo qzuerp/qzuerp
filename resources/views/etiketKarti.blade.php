@@ -134,7 +134,7 @@ h1 {
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
         width: 1.3,
-        height: 25,
+        height: 30,
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",
