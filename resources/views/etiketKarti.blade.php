@@ -134,11 +134,11 @@ h1 {
       JsBarcode(barcode, barcode.dataset.value, {
         format: "CODE128",
         width: 1.8,
-        height: 42,
+        height: 40,
         displayValue: true,
         background: "#ffffff",
         lineColor: "#343a40",
-        fontSize:14
+        fontSize:20
       });
     });
 
