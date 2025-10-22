@@ -28,7 +28,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1mm;
-  font-size: 7.5px;
+  font-size: 9.5px;
   page-break-inside: avoid;
   margin: 0;
 }
@@ -77,7 +77,7 @@ h1 {
 
 .text-content {
   text-align: center;
-  margin-bottom: 0.5mm;
+  margin-bottom: -0.5mm;
 }
 
 .barcode {
@@ -110,7 +110,7 @@ h1 {
     <div class="info">
       <div class="logo-container">
         <img src="{{URL::asset('/assets/img/yukselcnc_LOGO.jpeg')}}" alt="Logo" class="logo">
-        <b>YÜKSEL CNC</b>
+        <h2>YÜKSEL CNC</h2>
       </div>
       
       <div class="text-content">
@@ -148,7 +148,7 @@ h1 {
       window.onafterprint = () => window.close(); 
     }, 500);
   };
-  // window.onafterprint = function() {
-  //     window.history.back();
-  // };
+  window.onafterprint = function() {
+      window.history.back();
+  };
 </script>
