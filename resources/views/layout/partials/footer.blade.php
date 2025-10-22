@@ -7,7 +7,35 @@
 
     <div class="control-sidebar-bg"></div>
 
+    <div class="modal fade bd-example-modal-lg" id="dokuman_modal" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-images" style='color: blue'></i> Resim</h4>
+          </div>
+
+          <div class="modal-body">
+            <img src="" alt="Dosya Önizleme" class="w-100 rounded">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
     <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.btn-preview').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const url = btn.dataset.url;
+            document.querySelector('#dokuman_modal img').src = url;
+          });
+        });
+      });
+
       document.title = '{{ $ekranAdi }} - {{ $firmaAdi }}';
     </script>
     @if (session('error_swal'))

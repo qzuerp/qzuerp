@@ -375,7 +375,7 @@
                                 </button>
                               </span>
                             </td>
-                            <td><input type="text" class="form-control GIREN_MIKTAR" name="GIREN_MIKTAR[]" value="{{ $veri->GIREN_MIKTAR }}" readonly></td>
+                            <td><input type="text" class="form-control GIREN_MIKTAR" name="GIREN_MIKTAR[]" value="{{ $veri->GIREN_MIKTAR }}"></td>
                             <td><input type="text" class="form-control CIKAN_MIKTAR" name="CIKAN_MIKTAR[]" value="{{ $veri->CIKAN_MIKTAR }}" readonly></td>
                             <!-- <td><input type="number" class="form-control" name="SF_MIKTAR_SHOW_T" value="{{ $veri->SF_MIKTAR }}" disabled><input type="hidden" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td> -->
                             <td><input type="text" class="form-control SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>

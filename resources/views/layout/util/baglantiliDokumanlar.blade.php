@@ -80,21 +80,39 @@
             </tfoot>
             <tbody>
               @foreach ($dosyalarVeri as $veri)
-                @php $fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null; @endphp
+                @php
+                    $fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null;
+                    $extension = strtolower(pathinfo($veri->DOSYA, PATHINFO_EXTENSION));
+                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                @endphp
                 <tr id="dosya_{{ $veri->id }}">
-                  <td>{{ $veri->DOSYATURU }}</td>
-                  <td>{{ $veri->ACIKLAMA }}</td>
-                  <td>{{ $veri->created_at }}</td>
-                  <td>
-                    @if ($fileUrl)
-                      <a class="btn btn-outline-primary" href="{{ $fileUrl }}" target="_blank"><i class="fa fa-file"></i></a>
-                    @endif
-                    <button type="button" class="btn btn-outline-danger btn-dosya-sil" id="dosyaSil" value="{{ $veri->id }},{{ $firma }}">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </td>
+                    <td>{{ $veri->DOSYATURU }}</td>
+                    <td>{{ $veri->ACIKLAMA }}</td>
+                    <td>{{ $veri->created_at }}</td>
+                    <td>
+                        @if ($fileUrl)
+                            @if ($isImage)
+                                <button type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#dokuman_modal"
+                                        class="btn btn-outline-primary btn-preview"
+                                        data-url="{{ $fileUrl }}">
+                                    <i class="fa fa-image"></i>
+                                </button>
+                            @else
+                                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            @endif
+                        @endif
+                        <button type="button" class="btn btn-outline-danger btn-dosya-sil" id="dosyaSil"
+                                value="{{ $veri->id }},{{ $firma }}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
                 </tr>
-              @endforeach
+            @endforeach
+
             </tbody>
           </table>
         </div>
