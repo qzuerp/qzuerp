@@ -28,7 +28,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1mm;
-  font-size: 10.5px;
+  font-size: 7.5px;
   page-break-inside: avoid;
   margin: 0;
 }
