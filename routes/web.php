@@ -57,6 +57,15 @@ use App\Http\Controllers\info_controller;
 
 use Illuminate\Http\Request;
 
+// eposta
+Route::post('/kontrol-email', function (\Illuminate\Http\Request $request) {
+    $email = $request->input('email');
+    $exists = \App\Models\User::where('email', $email)->exists();
+    return response()->json(['exists' => $exists]);
+})->name('kontrol-email');
+
+
+
 
 Route::get('/', function () {
   return redirect('/index');
