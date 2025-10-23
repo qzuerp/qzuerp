@@ -399,7 +399,22 @@
                                 <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" id="NOT1_FILL" class="form-control NOT1">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" class="form-control TEXT1">
+                                <select class="form-control select2 js-example-basic-single TEXT1" style="width: 100%;" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL">
+                                  <option value="" selected></option>
+                                  @php
+                                    $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+
+                                    foreach ($pers00_evraklar as $key => $veri) {
+
+                                      if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
+                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                      else {
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                    }
+                                  @endphp
+                                </select>
                               </td>
                               <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id="TEXT2_FILL" class="form-control TEXT2">
@@ -1301,7 +1316,7 @@
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW3_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW3[]' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW4_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW4[]' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
-        		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
