@@ -172,7 +172,7 @@
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
                         <label>Nitelik</label>
-                        <select class="form-control select2 js-example-basic-single NITELIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK" required>
+                        <select class="form-control select2 js-example-basic-single NITELIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK" style="width: 100%; height: 30px" name="NITELIK" id="NITELIK">
                           <option value=" ">Seç</option>
                           @php
                             $evraklar=DB::table($database .'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
