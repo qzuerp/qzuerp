@@ -209,7 +209,7 @@
                         		<div class="tab-content">
                           			<div class="active tab-pane" id="veri">
 										<div style="overflow: auto;">
-											<table class="table table-striped text-center" id="veriTable">
+											<table class="table table-hover text-center" id="veriTable">
 												<thead>
 													<tr>
 														<th><i class="fa-solid fa-plus"></i></th>
@@ -352,7 +352,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+							<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
 								<thead>
 									<tr class="bg-primary">
 										<th>Evrak no</th>
@@ -407,7 +407,7 @@
 				</div>
 				<div class="modal-body">
 				<div class="row" style="overflow: auto">
-					<table id="popupSelectt" class="table table-striped text-center" data-page-length="10">
+					<table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
 					<thead>
 						<tr class="bg-primary">
 						<th>Kod</th>

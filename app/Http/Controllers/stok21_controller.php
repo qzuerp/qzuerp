@@ -148,6 +148,11 @@ class stok21_controller extends Controller
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->input('TRNUM');
     
+    $TESLIM_ALAN = $request->TESLIM_ALAN;
+    $TEZGAH = $request->TEZGAH;
+    $MPS_NO = $request->MPS_NO;
+    $PARCA_KODU = $request->PARCA_KODU;
+    
     if ($KOD == null) {
       $satir_say = 0;
     }
@@ -332,6 +337,10 @@ class stok21_controller extends Controller
           'SERINO' => $SERINO[$i],
           'SF_MIKTAR' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+          'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+          'TEZGAH' => $TEZGAH[$i],
+          'MPS_NO' => $MPS_NO[$i],
+          'PARCA_KODU' => $PARCA_KODU[$i],
           'TEXT1' => $TEXT1[$i],
           'TEXT2' => $TEXT2[$i],
           'TEXT3' => $TEXT3[$i],
@@ -485,6 +494,10 @@ class stok21_controller extends Controller
             'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => $SF_MIKTAR,
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+            'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+            'TEZGAH' => $TEZGAH[$i],
+            'MPS_NO' => $MPS_NO[$i],
+            'PARCA_KODU' => $PARCA_KODU[$i],
             'TEXT1' => $TEXT1[$i],
             'TEXT2' => $TEXT2[$i],
             'TEXT3' => $TEXT3[$i],
@@ -615,6 +628,10 @@ class stok21_controller extends Controller
             'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => $SF_MIKTAR,
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+            'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+            'TEZGAH' => $TEZGAH[$i],
+            'MPS_NO' => $MPS_NO[$i],
+            'PARCA_KODU' => $PARCA_KODU[$i],
             'TEXT1' => $TEXT1[$i],
             'TEXT2' => $TEXT2[$i],
             'TEXT3' => $TEXT3[$i],

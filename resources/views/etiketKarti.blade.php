@@ -99,7 +99,6 @@ h1 {
   @php
     if($data['SERINO'][$i] == NULL){
       $NEWSERINO = DB::table($database.'D7KIDSLB')->max('id');
-      $NEWSERINO++;
       $barcodeVal = str_pad($NEWSERINO, 12, '0', STR_PAD_LEFT);
     } else {
       $barcodeVal = str_pad($data['SERINO'][$i], 12, '0', STR_PAD_LEFT);

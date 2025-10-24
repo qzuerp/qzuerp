@@ -245,7 +245,7 @@
                         <!-- Aktif Kullanıcılar -->
                         <div class="tab-pane" id="aktifKullanici"> <!-- aktif kullanıcılar-->
                           <div class="row">
-                            <table class="table table-striped">
+                            <table class="table table-hover">
                               <thead class="thead-dark">
                                 <tr>
                                   <th scope="col text-center">Kullanıcı Adı</th>
@@ -312,7 +312,7 @@
                               </div>
                             </div><br>
                             <div class="row"><br>
-                              <table class="table table-striped" id="veriTable">
+                              <table class="table table-hover" id="veriTable">
                                 <thead class="thead-dark">
                                   <tr>
                                     <th scope="col">Ekran</th>

@@ -207,6 +207,10 @@
                           <th style="min-width:150px">Lokasyon 3</th>
                           <th style="min-width:150px">Lokasyon 4</th>
                           <th style="min-width:150px">Not</th>
+                          <th>Teslim Alan Kişi</th>
+                          <th>Tezgah</th>
+                          <th style="min-width:120px;">Mps No</th>
+                          <th style="min-width:120px;">Parça Kodu</th>
                           <th style="min-width:150px">Varyant Text 1</th>
                           <th style="min-width:150px">Varyant Text 2</th>
                           <th style="min-width:150px">Varyant Text 3</th>
@@ -217,8 +221,7 @@
                           <th style="min-width:150px">Ölçü 4</th>
                         </tr>
 
-                        <tr class="satirEkle" style="background-color:#3c8dbc">
-
+                        <tr class="satirEkle">
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <th style="display:none;"></td>
                           <td style="min-width:150px;">                            
@@ -325,6 +328,63 @@
                           <td>
                             <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-name="NOT" id="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">
                           </td>
+                          <td style="min-width: 150px">
+                            <select class="form-control select2 js-example-basic-single TESLIM_ALAN" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TESLIM_ALAN" id="TESLIM_ALAN_FILL">
+                              <option value="" selected></option>
+                              @php
+                                $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+
+                                foreach ($pers00_evraklar as $key => $veri) {
+
+                                  if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
+                                    echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                                  }
+                                  else {
+                                    echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                  }
+                                }
+                              @endphp
+                            </select>
+                          </td>
+                          <td style="min-width: 150px">
+                            <select class="form-control select2 js-example-basic-single TEZGAH" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH" id="TEZGAH_FILL">
+                              <option value="" selected></option>
+                              @php
+                                $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+                                foreach ($imlt00_evraklar as $key => $veri) {
+                                  if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) 
+                                  {
+                                    echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
+                                  }
+                                  else 
+                                  {
+                                    echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";
+                                  }
+                                }
+                              @endphp
+                            </select>
+                          </td>
+                          <td class="d-flex ">
+                            <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
+                            <span class="d-flex -btn">
+                              <button class="btn btn-radius btn-primary"  data-bs-toggle="modal"  data-bs-target="#modal_mpsSuz" type="button">
+                                <span class="fa-solid fa-magnifying-glass">
+                                </span>
+                              </button>
+                            </span>
+                          </td>
+                          <td>
+                            <input type="hidden" id="PARCAKODU_FILL">
+                            <select class="form-control select2 PARCAKODU w-100" onchange="stokAdiGetir4(this.value)" data-name="PARCAKODU" id="PARCAKODU_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARCAKODU">
+                                <option value=" ">Seç</option>
+                                @php
+                                  $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->limit(50)->get();
+                                  foreach ($stok_evraklar as $key => $veri) {
+                                    echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD."|||".$veri->AD."</option>";
+                                  }
+                                @endphp
+                              </select>
+                          </td>
                           <td>
                             <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" data-name="TEXT1" id="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" class="TEXT1 form-control">
                           </td>
@@ -404,6 +464,10 @@
                             <td><input type="text" class="form-control LOCATION3" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
                             <td><input type="text" class="form-control LOCATION4" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
                             <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                            <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ $veri->TESLIM_ALAN }}"></td>
+                            <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
+                            <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
+                            <td><input type="text" class="form-control" name="PARCA_KODU[]" value="{{ $veri->PARCA_KODU }}" readonly></td>
                             <td><input type="text" class="form-control TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
                             <td><input type="text" class="form-control TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
                             <td><input type="text" class="form-control TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -551,7 +615,7 @@
                         <i class="fas fa-print"></i> Yazdır
                       </button>
                     </div>
-                    <table id="listeleTable" class="table table-striped text-center" style="margin:0; width: 100%;" data-page-length="10">
+                    <table id="listeleTable" class="table table-hover text-center" style="margin:0; width: 100%;" data-page-length="10">
                       <thead>
                         <tr class="bg-primary">
                           <th>Evrak No</th>
@@ -669,6 +733,61 @@
         </div>
       </form>
 
+      <div class="modal fade bd-example-modal-lg" id="modal_mpsSuz" tabindex="-1" role="dialog" aria-labelledby="modal_mpsSuz"  >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;MPS Seç</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <!-- table-striped -->
+                <table id="popupInfo" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th>Evrak No</th>
+                      <th>Mamul Kodu</th>
+                      <th>Mamul Adı</th>
+                    </tr>
+                  </thead>
+
+                  <tfoot>
+                    <tr class="bg-info">
+                      <th>Evrak No</th>
+                      <th>Mamul Kodu</th>
+                      <th>Mamul Adı</th>
+                    </tr>
+                  </tfoot>
+
+                  <tbody>
+
+                    @php
+
+                      $evraklar=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
+
+                      foreach ($evraklar as $key => $suzVeri) {
+                          echo "<tr>";
+                            echo "<td>".$suzVeri->EVRAKNO."</td>";
+                            echo "<td>".$suzVeri->MAMULSTOKKODU."</td>";
+                            echo "<td>".$suzVeri->MAMULSTOKADI."</td>";
+                          echo "</tr>";
+                      }
+
+                    @endphp
+
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -678,7 +797,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -734,7 +853,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable2" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -805,7 +924,7 @@
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
-                  <table id="seriNoSec" class="table table-striped text-center" data-page-length="10">
+                  <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
                     <thead>
                       <tr class="bg-primary">
                         <th>ID</th>
@@ -877,6 +996,16 @@
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
   <script>
     $(document).ready(function() {
+
+      $(document).on('click', '#popupInfo tbody tr', function() {
+        var EVRAKNO = $(this).find('td:eq(0)').text().trim();
+        var KOD = $(this).find('td:eq(1)').text().trim();
+        
+        $('#MPS_NO_FILL').val(EVRAKNO);
+        $('#PARCAKODU_SHOW').prop('disabled',true);
+        $('#modal_mpsSuz').modal('hide');
+      });
+
       $('#seriNoSec tbody').on('click', 'tr', function () {
           var $row = $(this);
           var $cells = $row.find('td');
@@ -966,6 +1095,10 @@
         htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' style='color:blue;' readonly></td> ";
         htmlCode += " <td><input type='text' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOCATION4_FILL+"' style='color:blue;' readonly></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TESLIM_ALAN[]' value='"+satirEkleInputs.TESLIM_ALAN_FILL+"' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TEZGAH[]' value='"+satirEkleInputs.TEZGAH_FILL+"' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='MPS_NO[]' value='"+satirEkleInputs.MPS_NO_FILL+"' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='PARCA_KODU[]' value='"+satirEkleInputs.PARCAKODU_FILL+"' readonly></td> ";
     		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
     		htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
     		htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
@@ -998,7 +1131,12 @@
       $('#STOK_ADI_FILL').val(veriler[1]);
       $('#SF_SF_UNIT_SHOW').val(veriler[2]);
       $('#SF_SF_UNIT_FILL').val(veriler[2]);
+    }
 
+    function stokAdiGetir4(veri) {
+      const veriler = veri.split("|||");
+      //$('#STOK_KODU_SHOW').val(veriler[0]);
+      $('#PARCAKODU_FILL').val(veriler[0]);
     }
 
     function ozelInput() {
@@ -1432,6 +1570,26 @@
 
     $(document).ready(function() {
       $('#STOK_KODU_SHOW').select2({
+          placeholder: 'Stok kodu seç...',
+          ajax: {
+              url: '/stok-kodu-custom-select',
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                  return {
+                      q: params.term
+                  };
+              },
+              processResults: function (data) {
+                  return {
+                      results: data.results
+                  };
+              },
+              cache: true
+          }
+      });
+
+      $('#PARCAKODU_SHOW').select2({
           placeholder: 'Stok kodu seç...',
           ajax: {
               url: '/stok-kodu-custom-select',

@@ -563,7 +563,7 @@
                     <div class="tab-pane" id="hatalar">
                       <div class="row">
                         <div class="row">
-                            <table class="table table-striped text-center" id="veriTable">
+                            <table class="table table-hover text-center" id="veriTable">
                               <thead>
                                 <tr>
                                   <th>Ekle</th>
@@ -813,7 +813,7 @@
                             if(isset($_GET['SUZ'])) {
                           @endphp
 
-                          <table id="example2" class="table table-striped text-center" data-page-length="10">
+                          <table id="example2" class="table table-hover text-center" data-page-length="10">
                             <thead>
                               <tr class="bg-primary">
                                 <th></th>
@@ -1115,7 +1115,7 @@
             <!-- Evrak Süz Buton -->
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size:0.8em;">
+                <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size:0.8em;">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>

@@ -55,7 +55,7 @@
             </div>
             <div class="modal-body">
                     <div class="row">
-                    <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                    <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                         <thead>
                             <tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
 								<th>Evrak No</th>
@@ -118,7 +118,7 @@
             </div>
             <div class="modal-body">
                     <div class="row">
-                    <table id="popupSelect" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                    <table id="popupSelect" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                         <thead>
                             <tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
 								<th>KOD</th>

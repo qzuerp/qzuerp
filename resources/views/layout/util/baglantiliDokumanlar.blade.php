@@ -61,7 +61,7 @@
           <h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
         </div>
         <div class="card-body">
-          <table class="table table-striped align-middle text-center" id="baglantiliDokumanlarTable">
+          <table class="table table-hover align-middle text-center" id="baglantiliDokumanlarTable">
             <thead class="table-light">
               <tr>
                 <th style="width: 15%">Tür</th>

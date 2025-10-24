@@ -372,7 +372,7 @@ if (isset($kart_veri)) {
               </div>
               <div class="modal-body">
                 <div class="row">
-                <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -431,7 +431,7 @@ if (isset($kart_veri)) {
               </div>
               <div class="modal-body">
                 <div class="row">
-                <table id="evrakSuzTable2" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>

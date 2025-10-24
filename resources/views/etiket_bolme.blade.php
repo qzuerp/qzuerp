@@ -63,6 +63,15 @@
     box-shadow: inset 0 0 rgb(49, 49, 49) !important;
     transition: background 0.3s ease, box-shadow 0.3s ease !important;
   }
+
+  #popupInfo tbody tr
+  {
+    cursor: pointer;
+  }
+  #popupInfo tbody tr:active
+  {
+    transform: scale(0.98);
+  }
 </style>
   <div class="content-wrapper">
 
@@ -235,6 +244,9 @@
                               <th>Yeni Lokasyon 3</th>
                               <th>Yeni Lokasyon 4</th>
                               <th>Not</th>
+                              <th>Teslim Alan Kişi</th>
+                              <th>Tezgah</th>
+                              <th style="min-width:120px;">Mps No</th>
                               <th>Varyant Text 1</th>
                               <th>Varyant Text 2</th>
                               <th>Varyant Text 3</th>
@@ -246,7 +258,7 @@
                               <th>#</th>
                             </tr>
 
-                            <tr class="satirEkle" style="background-color:#3c8dbc">
+                            <tr class="satirEkle">
 
                               <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                               <td style="display:none;"></td>
@@ -399,7 +411,7 @@
                                 <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" id="NOT1_FILL" class="form-control NOT1">
                               </td>
                               <td style="min-width: 150px">
-                                <select class="form-control select2 js-example-basic-single TEXT1" style="width: 100%;" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL">
+                                <select class="form-control select2 js-example-basic-single TESLIM_ALAN" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TESLIM_ALAN" id="TESLIM_ALAN_FILL">
                                   <option value="" selected></option>
                                   @php
                                     $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
@@ -415,6 +427,36 @@
                                     }
                                   @endphp
                                 </select>
+                              </td>
+                              <td style="min-width: 150px">
+                                <select class="form-control select2 js-example-basic-single TEZGAH" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH" id="TEZGAH_FILL">
+                                  <option value="" selected></option>
+                                  @php
+                                    $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+                                    foreach ($imlt00_evraklar as $key => $veri) {
+                                      if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) 
+                                      {
+                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
+                                      }
+                                      else 
+                                      {
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";
+                                      }
+                                    }
+                                  @endphp
+                                </select>
+                              </td>
+                              <td class="d-flex ">
+                                <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
+                                <span class="d-flex -btn">
+                                  <button class="btn btn-radius btn-primary"  data-bs-toggle="modal"  data-bs-target="#modal_mpsSuz" type="button">
+                                    <span class="fa-solid fa-magnifying-glass">
+                                    </span>
+                                  </button>
+                                </span>
+                              </td>
+                              <td style="min-width: 150px">
+                                <input class="form-control TEXT1" style="width: 100%;" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" />
                               </td>
                               <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id="TEXT2_FILL" class="form-control TEXT2">
@@ -471,6 +513,9 @@
                                 <td><input type="text" class="form-control" name="LOCATION_NEW3_SHOW_T" value="{{ $veri->LOCATION_NEW3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW3[]" value="{{ $veri->LOCATION_NEW3 }}"></td>
                                 <td><input type="text" class="form-control" name="LOCATION_NEW4_SHOW_T" value="{{ $veri->LOCATION_NEW4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW4[]" value="{{ $veri->LOCATION_NEW4 }}"></td>
                                 <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                                <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ $veri->TESLIM_ALAN }}"></td>
+                                <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
+                                <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
                                 <td><input type="text" class="form-control" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
                                 <td><input type="text" class="form-control" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
                                 <td><input type="text" class="form-control" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -599,7 +644,7 @@
                       @php
                         if(isset($_GET['SUZ'])) {
                       @endphp
-                      <table id="example2" class="table table-striped text-center" data-page-length="10">
+                      <table id="example2" class="table table-hover text-center" data-page-length="10">
                         <thead>
                           <tr class="bg-primary">
                             <th>Evrak No</th>
@@ -779,7 +824,7 @@
                 <input type="hidden" id="toplam-mik">
               </div>
               <div style="overflow:auto;">
-                <table class="table table-striped text-center" id="hizli_islem_tablo">
+                <table class="table table-hover text-center" id="hizli_islem_tablo">
                   <thead>
                     <tr class="bg-primary">
                       <th style="min-width: 75px">Kod</th>
@@ -905,7 +950,7 @@
                 <input type="hidden" id="num-4H">
               </div>
               <div style="overflow:auto;">
-                <table class="table table-striped text-center" id="hizli_islem_tablo">
+                <table class="table table-hover text-center" id="hizli_islem_tablo">
                   <thead>
                     <tr class="bg-primary">
                       <th style="min-width: 75px">Kod</th>
@@ -952,7 +997,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -999,6 +1044,61 @@
         </div>
       </div>
 
+      <div class="modal fade bd-example-modal-lg" id="modal_mpsSuz" tabindex="-1" role="dialog" aria-labelledby="modal_mpsSuz"  >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;MPS Seç</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <!-- table-striped -->
+                <table id="popupInfo" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th>Evrak No</th>
+                      <th>Mamul Kodu</th>
+                      <th>Mamul Adı</th>
+                    </tr>
+                  </thead>
+
+                  <tfoot>
+                    <tr class="bg-info">
+                      <th>Evrak No</th>
+                      <th>Mamul Kodu</th>
+                      <th>Mamul Adı</th>
+                    </tr>
+                  </tfoot>
+
+                  <tbody>
+
+                    @php
+
+                      $evraklar=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
+
+                      foreach ($evraklar as $key => $suzVeri) {
+                          echo "<tr>";
+                            echo "<td>".$suzVeri->EVRAKNO."</td>";
+                            echo "<td>".$suzVeri->MAMULSTOKKODU."</td>";
+                            echo "<td>".$suzVeri->MAMULSTOKADI."</td>";
+                          echo "</tr>";
+                      }
+
+                    @endphp
+
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz2"  >
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -1008,7 +1108,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable2" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -1080,30 +1180,30 @@
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
-                  <table id="seriNoSec" class="table table-striped text-center" data-page-length="10">
+                  <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
                     <thead>
                       <tr class="bg-primary">
-                        <th>ID</th>
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Lot</th>
-                        <th>Seri No</th>
-                        <th>Depo</th>
-                        <th>Varyant Text 1</th>
-                        <th>Varyant Text 2</th>
-                        <th>Varyant Text 3</th>
-                        <th>Varyant Text 4</th>
-                        <th>Ölçü 1</th>
-                        <th>Ölçü 2</th>
-                        <th>Ölçü 3</th>
-                        <th>Ölçü 4</th>
-                        <th>Lok 1</th>
-                        <th>Lok 2</th>
-                        <th>Lok 3</th>
-                        <th>Lok 4</th>
-                        <th>#</th>
+                        <th style="min-width:100px;" >ID</th>
+                        <th style="min-width:100px;" >Kod</th>
+                        <th style="min-width:200px;" >Ad</th>
+                        <th style="min-width:100px;" >Miktar</th>
+                        <th style="min-width:100px;" >Birim</th>
+                        <th style="min-width:100px;" >Lot</th>
+                        <th style="min-width:100px;" >Seri No</th>
+                        <th style="min-width:100px;" >Depo</th>
+                        <th style="min-width:100px;" >Varyant Text 1</th>
+                        <th style="min-width:100px;" >Varyant Text 2</th>
+                        <th style="min-width:100px;" >Varyant Text 3</th>
+                        <th style="min-width:100px;" >Varyant Text 4</th>
+                        <th style="min-width:100px;" >Ölçü 1</th>
+                        <th style="min-width:100px;" >Ölçü 2</th>
+                        <th style="min-width:100px;" >Ölçü 3</th>
+                        <th style="min-width:100px;" >Ölçü 4</th>
+                        <th style="min-width:100px;" >Lok 1</th>
+                        <th style="min-width:100px;" >Lok 2</th>
+                        <th style="min-width:100px;" >Lok 3</th>
+                        <th style="min-width:100px;" >Lok 4</th>
+                        <th style="min-width:100px;" >#</th>
                       </tr>
                     </thead>
 
@@ -1180,6 +1280,14 @@
 
       <script>
         $(document).ready(function() {
+
+          $(document).on('click', '#popupInfo tbody tr', function() {
+            var EVRAKNO = $(this).find('td:eq(0)').text().trim();
+            
+            $('#MPS_NO_FILL').val(EVRAKNO);
+            $('#modal_mpsSuz').modal('hide');
+          });
+
           $('#seriNoSec tbody').on('click', 'tr', function () {
               var $row = $(this);
               var $cells = $row.find('td');
@@ -1316,6 +1424,9 @@
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW3_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW3[]' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW4_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW4[]' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TESLIM_ALAN[]' value='"+satirEkleInputs.TESLIM_ALAN_FILL+"' readonly></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TEZGAH[]' value='"+satirEkleInputs.TEZGAH_FILL+"' readonly></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='MPS_NO[]' value='"+satirEkleInputs.MPS_NO_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";

@@ -15,7 +15,7 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <table id="logSuzTable" class="table table-striped text-center" data-page-length="10">
+                    <table id="logSuzTable" class="table table-hover text-center" data-page-length="10">
                         <thead>
                             <tr class="bg-primary">
                                 <th>Evrak No</th>

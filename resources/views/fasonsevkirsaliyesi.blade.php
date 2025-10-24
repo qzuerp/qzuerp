@@ -619,7 +619,7 @@ if (isset($kart_veri)) {
                           </div>
                           <div class="modal-body">
                             <div class="row">
-                            <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                            <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                               <thead>
                                 <tr class="bg-primary">
                                   <th>Evrak No</th>
@@ -681,7 +681,7 @@ if (isset($kart_veri)) {
               </div>
               <div class="modal-body">
                 <div class="row">
-                <table id="evrakSuzTable2" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
                       <th>Evrak No</th>
@@ -756,7 +756,7 @@ if (isset($kart_veri)) {
                   </div>
                   <div class="modal-body">
                     <div class="row" style="overflow: auto">
-                      <table id="popupSelectt" class="table table-striped text-center" data-page-length="10">
+                      <table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
                         <thead>
                           <tr class="bg-primary">
                             <th>Kod</th>
@@ -834,7 +834,7 @@ if (isset($kart_veri)) {
                 </div>
                 <div class="modal-body">
                   <div class="row" style="overflow:auto;">
-                    <table id="seriNoSec" class="table table-striped text-center" data-page-length="10">
+                    <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
                       <thead>
                         <tr class="bg-primary">
                           <th>ID</th>
@@ -987,7 +987,7 @@ if (isset($kart_veri)) {
                         ->max('TRNUM');
                       @endphp
                       <div class="row" style="overflow: auto">
-                        <table id="fasonSelectt" class="table table-striped text-center overflow-visible" data-page-length="10">
+                        <table id="fasonSelectt" class="table table-hover text-center overflow-visible" data-page-length="10">
                           <thead>
                             <tr class="bg-primary">
                               <th><input type="checkbox" id="tumunuSec"></th>

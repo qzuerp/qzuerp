@@ -31,6 +31,11 @@ class dosyalar00_controller extends Controller
         $table = $firma . '.dbo.' . $tableName;
         $EVRAKNO = $request->input('EVRAKNO');
 
+        if($table == 'STOK00')
+        {
+            // Stok kartı için daha önce bu kodda açılmış stok var mı diye kontrol ettirmemiz lazım
+        }
+
         if (in_array($tableName, $unallowedTables)) {
             return response()->json(['error' => 'Bu tabloya yükleme iznin yok.'], 422);
         }

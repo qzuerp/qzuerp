@@ -584,7 +584,7 @@
                                 if(isset($_GET['SUZ'])) {
                               @endphp
                         
-                              <table id="example2" class="table table-striped text-center" data-page-length="500" style="font-size: 0.75em">
+                              <table id="example2" class="table table-hover text-center" data-page-length="500" style="font-size: 0.75em">
                                 
                                 <thead>
                                   <tr class="bg-primary">
@@ -703,7 +703,7 @@
               </div>
               <div class="modal-body">
                 <div class="row">
-                  <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                  <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                     <thead>
                       <tr class="bg-primary">
                         <th>Evrak No</th>
@@ -765,7 +765,7 @@
               </div>
               <div class="modal-body">
                 <div class="row">
-                  <table id="evrakSuzTable2" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+                  <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
                     <thead>
                       <tr class="bg-primary">
                         <th>Evrak No</th>
@@ -1030,7 +1030,7 @@
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
-                  <table id="seriNoSec" class="table table-striped text-center" data-page-length="10">
+                  <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
                     <thead>
                       <tr class="bg-primary">
                         <th>ID</th>

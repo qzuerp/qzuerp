@@ -41,7 +41,7 @@
 						<div class="box-body">
 							<div class="row " style="overflow: auto">
 
-								<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10">
+								<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10">
 									<thead>
 										<tr class="bg-primary">
 											<th style="min-width: 150px">Kod</th>

@@ -811,7 +811,7 @@
 		@php
 			if(isset($_GET['SUZ'])) {
 		@endphp
-			<table id="example2" class="table table-striped text-center" data-page-length="10">
+			<table id="example2" class="table table-hover text-center" data-page-length="10">
 				<thead>
 					<tr class="bg-primary">
 						<th>Kod</th>
@@ -1032,7 +1032,7 @@
 						      </div>
 						      <div class="modal-body">
 										<div class="row">
-											<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+											<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
 												<thead>
 													<tr class="bg-primary">
 														<th>Evrak No</th>

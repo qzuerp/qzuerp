@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body">
         <div class="row" style="overflow:auto;">
-            <table id="DepoMevcutlari" class="table table-striped text-center" data-page-length="10">
+            <table id="DepoMevcutlari" class="table table-hover text-center" data-page-length="10">
                 <thead>
                     <tr class="bg-primary">
                         <th style="min-width:100px;">Kod</th>
@@ -79,7 +79,7 @@
         </div>
         <div class="modal-body">
         <div class="row" style="overflow:auto;">
-            <table id="stokHarketleri" class="table table-striped text-center" data-page-length="10">
+            <table id="stokHarketleri" class="table table-hover text-center" data-page-length="10">
                 <thead>
                     <tr class="bg-primary">
                         <th style="min-width:100px;" >Evrak No</th>

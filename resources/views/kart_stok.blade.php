@@ -1087,7 +1087,7 @@
 											@php
 												if(isset($_GET['SUZ'])) {
 											@endphp
-											<table id="example2" class="table table-striped text-center" data-page-length="10">
+											<table id="example2" class="table table-hover text-center" data-page-length="10">
 												<thead>
 													<tr class="bg-primary">
 														<th>Kod</th>
@@ -1297,9 +1297,10 @@
 
 						<div class="modal-body">
 							<div class="row">
-								<table id="evrakSuzTablee" class="table table-striped text-center" data-page-length="10">
+								<table id="evrakSuzTablee" class="table table-hover text-center" data-page-length="10">
 									<thead>
 										<tr class="bg-primary">
+											<th>id</th>
 											<th>Kod</th>
 											<th>Ad</th>
 											<th>Birim</th>
@@ -1521,6 +1522,7 @@
     				scrollX: false,
 					ajax: '/evraklar-veri',
 					columns: [
+						{ data: 'id', name: 'id' },
 						{ data: 'KOD', name: 'KOD' },
 						{ data: 'AD', name: 'AD' },
 						{ data: 'IUNIT', name: 'IUNIT' },

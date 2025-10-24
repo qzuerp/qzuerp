@@ -1160,7 +1160,7 @@
 														@php
 															if(isset($_GET['SUZ'])) {
 														@endphp
-															<table id="example2" class="table table-striped text-center" data-page-length="10">
+															<table id="example2" class="table table-hover text-center" data-page-length="10">
 																<thead>
 																	<tr class="bg-primary">
 																		<th>Evrak No</th>
@@ -1274,7 +1274,7 @@
 															<h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
 														</div>
 														<div class="card-body">
-															<table class="table table-striped align-middle text-center" id="baglantiliDokumanlarTable">
+															<table class="table table-hover align-middle text-center" id="baglantiliDokumanlarTable">
 																<thead class="table-light">
 																<tr>
 																	<th style="width: 15%">Tür</th>
@@ -1439,7 +1439,7 @@
 
 						<div class="modal-body">
 							<div class="row">
-								<table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.8em">
+								<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
 									<thead>
 										<tr class="bg-primary">
 											<th>EVRAKNO</th>

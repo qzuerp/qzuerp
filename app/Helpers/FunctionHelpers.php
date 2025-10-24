@@ -68,7 +68,7 @@ class FunctionHelpers
             ['table'=>'mmps10e', 'column'=>'MAMULSTOKKODU', 'evrak'=>'EVRAKNO', 'msg'=>'MPS bağlantısı bulundu'],
             ['table'=>'bomu01e', 'column'=>'MAMULCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı bağlantısı bulundu'],
             ['table'=>'bomu01t', 'column'=>'BOMREC_KAYNAKCODE', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı bulundu'],
-            ['table'=>'stok40t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Ürün ağacı (Satır) bağlantısı bulundu'],
+            ['table'=>'stok40t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Satış Sipariş (Satır) bağlantısı bulundu'],
             ['table'=>'stok26t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Depodan depoya transfer (Satır) bağlantısı bulundu'],
             ['table'=>'stok25t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Etiket bölme (Satır) bağlantısı bulundu'],
             ['table'=>'stok63t', 'column'=>'KOD', 'evrak'=>'EVRAKNO', 'msg'=>'Fason sevk irsaliyesi (Satır) bağlantısı bulundu'],

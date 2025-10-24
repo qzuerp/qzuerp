@@ -7,7 +7,7 @@
     @if($results->isEmpty())
         <div class="alert alert-warning">Kriterlere uygun veri bulunamadı.</div>
     @else
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     @foreach($selectFields as $field)

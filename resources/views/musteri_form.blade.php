@@ -106,7 +106,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <table id="evrakSuzTable" class="table table-striped text-center" data-page-length="10" style="font-size: 0.6em" aria-describedby="evrakSuzTable_info">
+                                <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.6em" aria-describedby="evrakSuzTable_info">
                                     <thead>
                                         <tr class="bg-primary">
                                             <th>Evrak No</th>
