@@ -233,8 +233,8 @@ class stok21_controller extends Controller
       }
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-
-
+      
+        $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
         if($CIKAN_MIKTAR[$i])
         {
           $s1 = DB::table($firma.'stok10a')
@@ -280,17 +280,7 @@ class stok21_controller extends Controller
                 ->sum('SF_MIKTAR');
           
           $kontrol = $s1 + (-1 * $s2);
-
-          // dd([
-          //   's1' => $s1,
-          //   's2' => $s2,
-          //   'Miktar' => $SF_MIKTAR,
-          //   'Giren' => $GIREN_MIKTAR[$i],
-          //   'Çıktan' => $CIKAN_MIKTAR[$i],
-          //   'Kontrol' => $kontrol
-          // ]);
           
-          $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
           if($SF_MIKTAR > $kontrol && $SF_MIKTAR < 0)
           {
             return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR) . ') adete düşerek eksiye geçecektir!');
