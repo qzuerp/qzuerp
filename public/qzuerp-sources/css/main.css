@@ -449,7 +449,7 @@
 		}
 		.dropdown-menu
     {
-      transition: all 0.255s ease;
+      transition: all 0.05s ease;
       border-color: rgba(0, 0, 0, 0.175);
       
     }

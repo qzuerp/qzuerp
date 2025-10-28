@@ -96,7 +96,6 @@
     <!-- Ana Javascript -->
     <script src="{{ URL::asset('qzuerp-sources/js/main.js') }}"></script>
 {{-- JS Bitiş --}}
-
 <style>
     :root {
         --primary-color: #3c8dbc;
@@ -106,13 +105,13 @@
         --border-light: #e9ecef;
         --shadow-light: 0 2px 10px rgba(0,0,0,0.08);
         --shadow-medium: 0 4px 20px rgba(0,0,0,0.12);
-        --border-radius: 12px;
+        --border-radius: 8px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Modern Header */
     .modern-header {
-        background:linear-gradient(135deg, #3c8dbc 0%, #2c7aaa 100%);
+        background: linear-gradient(135deg, #3c8dbc 0%, #2c7aaa 100%);
         backdrop-filter: blur(10px);
         box-shadow: var(--shadow-light);
         height: 50px;
@@ -143,14 +142,14 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-        color: var(--text-dark);
+        color: #fff;
         font-weight: 700;
         font-size: 1.5rem;
         transition: var(--transition);
     }
 
     .logo-link:hover {
-        color: var(--primary-color);
+        opacity: 0.9;
         text-decoration: none;
     }
 
@@ -162,163 +161,225 @@
         padding: 0.5rem;
         border-radius: 8px;
         transition: var(--transition);
+        cursor: pointer;
     }
 
     .sidebar-toggle:hover {
-        background:rgba(44, 62, 80, 0.12);
+        background: rgba(255, 255, 255, 0.15);
     }
 
-    .user-dropdown {
+    .modern-header .dropdown {
         position: relative;
     }
 
-    .user-toggle {
+    .modern-header .dropdown-toggle {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        background: none;
-        border: none;
-        padding: 0.4rem 0.9rem;
-        border-radius: var(--border-radius);
-        transition: var(--transition);
-        color: #fff;
-        text-decoration: none;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 10px !important;
+        padding: 8px 14px !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #fff !important;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
     }
 
-    .user-toggle:hover {
-        background:rgba(44, 62, 80, 0.12);
-        transform: translateY(-1px);
+    .modern-header .dropdown-toggle:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid var(--border-light);
-        transition: var(--transition);
-        object-fit: cover;
+    .modern-header .dropdown-toggle:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
     }
 
-    .user-toggle:hover .user-avatar {
-        border-color: var(--primary-color);
-        box-shadow: 0 4px 12px rgba(60, 141, 188, 0.3);
+    .modern-header .dropdown-toggle::after {
+        margin-left: 4px;
+        font-size: 11px;
+        transition: transform 0.3s ease;
+        border-top-color: #fff;
     }
 
-    .user-name {
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin: 0;
+    .modern-header .dropdown-toggle[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.25) !important;
     }
 
-    .dropdown-icon {
-        font-size: 0.8rem;
-        transition: var(--transition);
-    }
-
-    .user-dropdown.show .dropdown-icon {
+    .modern-header .dropdown-toggle[aria-expanded="true"]::after {
         transform: rotate(180deg);
     }
 
-    .user-dropdown-menu {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: white;
-        min-width: 320px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-medium);
-        border: 1px solid var(--border-light);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px) scale(0.95);
-        transition: var(--transition);
-        z-index: 1060;
-        margin-top: 0.5rem;
-    }
-
-    .user-dropdown.show .user-dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
-    }
-
-    .dropdown-user-header {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        color: white;
-        padding: 2rem;
-        text-align: center;
-        border-radius: var(--border-radius) var(--border-radius) 0 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .dropdown-user-avatar {
-        width: 80px;
-        height: 80px;
+    .modern-header .user-avatar {
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        margin-bottom: 1rem;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.5);
         transition: var(--transition);
     }
 
-    .dropdown-user-name {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+    .modern-header .dropdown-toggle:hover .user-avatar {
+        border-color: #fff;
+        transform: scale(1.05);
     }
 
-    .dropdown-user-role {
-        font-size: 0.9rem;
-        opacity: 0.9;
-    }
-
-    .dropdown-user-footer {
-        padding: 1.5rem;
-        background: #fafbfc;
-        border-radius: 0 0 var(--border-radius) var(--border-radius);
-    }
-
-    .footer-btn {
-        width: 100%;
-        padding: 0.75rem;
-        border-radius: 8px;
+    .modern-header .user-name {
         font-weight: 500;
-        font-size: 0.9rem;
-        transition: var(--transition);
+        font-size: 14px;
+        color: #fff;
+        letter-spacing: 0.3px;
+    }
+
+    .modern-header .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        min-width: 260px;
+        padding: 8px;
+        margin: 0;
+        overflow: hidden;
+        /* animation: headerDropdownFadeIn 0.3s ease; */
+    }
+
+    @keyframes headerDropdownFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modern-header .dropdown-menu li {
+        list-style: none;
+        padding: 0;
+        color: #6c757d;
+        font-size: 13px;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .modern-header .dropdown-menu-user {
+        min-width: 280px;
+        padding: 0;
+    }
+
+    .modern-header .dropdown-user-header {
+        background: linear-gradient(135deg, #3c8dbc 0%, #2c7aaa 100%);
+        padding: 24px 20px !important;
+        text-align: center;
+        border-radius: 12px 12px 0 0;
+        margin: 0;
+    }
+
+    .modern-header .dropdown-user-header .user-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.4);
+        margin-bottom: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-header .dropdown-user-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 4px;
+        letter-spacing: 0.3px;
+    }
+
+    .modern-header .dropdown-user-role {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.9);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 6px;
+    }
+
+    .modern-header .dropdown-item-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text-dark);
         text-decoration: none;
+        transition: all 0.2s ease !important;
+        font-size: 14px;
+        border-radius: 8px;
+        margin: 4px 8px;
     }
 
-    .footer-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .modern-header .dropdown-item-user:hover {
+        background: #f0f7ff;
+        color: var(--primary-color);
+        transform: translateX(4px);
     }
 
-    .btn-profile {
-        background: var(--primary-color);
-        border: 1px solid var(--primary-color);
-        color: white;
+    .modern-header .dropdown-item-user i {
+        width: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: #7f8c8d;
+        transition: color 0.2s ease;
     }
 
-    .btn-logout {
-        background: #dc3545;
-        border: 1px solid #dc3545;
-        color: white;
+    .modern-header .dropdown-item-user:hover i {
+        color: var(--primary-color);
+    }
+
+    .modern-header .dropdown-divider {
+        height: 1px;
+        background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+        margin: 8px 16px;
+        border: none;
+    }
+
+    .modern-header .fa-bell {
+        font-size: 18px;
+        animation: headerBellRing 2s ease-in-out infinite;
+    }
+
+    @keyframes headerBellRing {
+        0%, 100% { transform: rotate(0deg); }
+        10%, 30% { transform: rotate(-10deg); }
+        20%, 40% { transform: rotate(10deg); }
+        50% { transform: rotate(0deg); }
     }
 
     @media (max-width: 768px) {
-        .user-name { display: none; }
-        .user-dropdown-menu { 
-            right: 0; 
-            left: auto; 
-            min-width: 280px; 
-            margin-top: 0.5rem;
+        .modern-header .user-name {
+            display: none !important;
         }
+        
+        .modern-header .dropdown-menu-user {
+            min-width: 240px;
+        }
+
+        .modern-header .dropdown-toggle {
+            padding: 6px 10px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
         .header-container {
             padding: 0 1rem;
+        }
+
+        .logo-lg {
+            display: none !important;
         }
     }
 </style>
@@ -337,49 +398,71 @@
                 </a>
             </div>
 
-            <div class="user-dropdown" id="userDropdown">
-                <a href="#" class="user-toggle" id="userDropdownToggle">
-                    @if(trim($user->firma) == 'yukselcnc')
-                        <img src="{{URL::asset('/assets/img/yukselcnc_LOGO.jpeg')}}" class="user-avatar" alt="User yuksel">
-                    @else
-                        <img src="{{URL::asset('/qzuerp-sources/img/qzu_logo.png')}}" class="user-avatar" alt="User Image">
-                    @endif
-                    <span class="user-name d-none d-sm-block">{{ $user->name }}</span>
-                    <i class="fa fa-angle-down dropdown-icon"></i>
-                </a>
-                
-                <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <div class="dropdown-user-header">
-                        @if(trim($user->firma) == 'yukselcnc')
-                            <img src="{{URL::asset('/assets/img/yukselcnc_LOGO.jpeg')}}" class="dropdown-user-avatar" alt="User Image">
+            <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
+                @php
+                    $FIRMA = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($user->firma))->first();
+                @endphp
+
+                @if($FIRMA)
+                    <img src="{{ asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="{{ $FIRMA->FIRMA_ADI }}">
+                    <a href="index" class="logo-link">
+                        <span class="logo-mini" style="color: #f2f2f2;"><b>{{ $FIRMA->FIRMA_ADI }}</b></span>
+                    </a>
+                @endif
+            </div>
+
+            <div class="d-flex align-items-center" style="gap: 8px;">
+                <!-- Bildirim Dropdown -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="notiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notiDropdown">
+                        <li>Bildirim özelliği yakında aktif hale getirilecektir.</li>
+                    </ul>
+                </div>
+
+                <!-- Kullanıcı Dropdown -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if($FIRMA)
+                            <img src="{{ URL::asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User">
                         @else
-                            <img src="{{URL::asset('/qzuerp-sources/img/qzu_logo.png')}}" class="dropdown-user-avatar" alt="User Image">
+                            <img src="{{ URL::asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="User Image">
                         @endif
-                        <div class="dropdown-user-name">{{ $user->name }}</div>
-                        <div class="dropdown-user-role">
-                            @if ($user->perm == "ADMIN")
-                                <i class="fa fa-shield"></i> Yönetici
-                            @else
-                                <i class="fa fa-user"></i> Kullanıcı
-                            @endif
-                        </div>
-                    </div>
+                        <span class="user-name d-none d-sm-block">{{ $user->name }}</span>
+                    </button>
                     
-                    <div class="dropdown-user-footer">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <a href="change_password" class="footer-btn btn-profile">
-                                    <i class="fa fa-user"></i> {{ __('Profil') }}
-                                </a>
+                    <ul class="dropdown-menu dropdown-menu-user dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li class="dropdown-user-header">
+                            @if($FIRMA)
+                                <img src="{{ URL::asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User">
+                            @else
+                                <img src="{{ URL::asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="QZUERP">
+                            @endif
+                            <div class="dropdown-user-name">{{ $user->name }}</div>
+                            <div class="dropdown-user-role">
+                                @if ($user->perm == "ADMIN")
+                                    <i class="fa fa-shield"></i> <span>Yönetici</span>
+                                @else
+                                    <i class="fa fa-user"></i> <span>Kullanıcı</span>
+                                @endif
                             </div>
-                            <div class="col-6">
-                                <a class="footer-btn btn-logout" href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fa fa-sign-out"></i> {{ __('Çıkış') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="change_password" class="dropdown-item-user">
+                                <i class="fa fa-user"></i>
+                                <span>{{ __('Profil') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item-user" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out"></i>
+                                <span>{{ __('Çıkış') }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -389,30 +472,3 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var dropdownToggle = document.getElementById('userDropdownToggle');
-    var dropdown = document.querySelector('.user-dropdown');
-    
-    if (dropdownToggle && dropdown) {
-        dropdownToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropdown.classList.toggle('show');
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && dropdown.classList.contains('show')) {
-                dropdown.classList.remove('show');
-            }
-        });
-    }
-    });
-</script>

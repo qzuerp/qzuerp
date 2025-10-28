@@ -269,7 +269,7 @@
 							<div class="col-lg-9">
 								<div class="row">
 									<div class="box box-warning">
-										<div class="box-header with-border navbar-gradient-vice-versa">
+										<div class="box-header with-border navbar-gradient-vice-versa rounded">
 											<center>
 												<h4 class="m-0">
 													<b style="color: white;">DOSYA</b>

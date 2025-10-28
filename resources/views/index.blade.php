@@ -17,446 +17,551 @@
     $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
     $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
     $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
-    
-    // KART YAPISI
-    $kartlar = [];
 
-    // 1. KART: Kalibrasyon
+    // Kalibrasyon verileri
     $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get();
     $kalibrasyon_data = [
         'kritik' => 0,
         'yakin' => 0, 
-        'otuzgun' => 0
+        'otuzgun' => 0,
+        'toplam' => $KALIBRASYONLAR->count()
+    ];
+
+    // Aylık kalibrasyon verileri (son 12 ay)
+    $kalibrasyon_aylik = [
+        'kritik' => array_fill(0, 12, 0),
+        'yakin' => array_fill(0, 12, 0),
+        'normal' => array_fill(0, 12, 0)
     ];
 
     foreach ($KALIBRASYONLAR as $k) {
         $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
         
+        // Tarih bilgisinden ay bilgisini al
+        $kalibrasyonTarihi = \Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI);
+        $ayIndex = \Carbon\Carbon::now()->month - 1; // 0-11 arası index
+        
         if ($kalanGun <= 7) {
             $kalibrasyon_data['kritik']++;
+            // Gelecek tarih için aya göre kategorize et
+            $hedefAy = $kalibrasyonTarihi->month - 1;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $kalibrasyon_aylik['kritik'][$hedefAy]++;
+            }
         } 
-        elseif ($kalanGun >= 0 && $kalanGun <= 15) {
+        elseif ($kalanGun > 7 && $kalanGun <= 15) {
             $kalibrasyon_data['yakin']++;
+            $hedefAy = $kalibrasyonTarihi->month - 1;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $kalibrasyon_aylik['yakin'][$hedefAy]++;
+            }
         }
-        elseif ($kalanGun >= 0 && $kalanGun <= 30) {
+        elseif ($kalanGun > 15 && $kalanGun <= 30) {
             $kalibrasyon_data['otuzgun']++;
+            $hedefAy = $kalibrasyonTarihi->month - 1;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $kalibrasyon_aylik['normal'][$hedefAy]++;
+            }
         }
     }
 
-    $kartlar[] = [
-        'id' => 'kalibrasyon',
-        'baslik' => 'Kalibrasyon Durumu',
-        'aciklama' => 'Bakım takibi',
-        'icon' => 'fa-gauge-high',
-        'color' => '#6366f1',
-        'deger_30' => $kalibrasyon_data['otuzgun'],
-        'deger_15' => $kalibrasyon_data['yakin'],
-        'kritik' => $kalibrasyon_data['kritik'] > 0,
-        'link' => 'kart_kalibrasyon?SUZ=SUZ&firma='.$database.'#liste',
-        'buton_15' => 'Son 15 günü gör',
-        'buton_30' => 'Son 30 günü gör'
-    ];
-
-    // 2. KART: Fason Sevk
+    // Fason sevk verileri
     $FASONSEVKLER = DB::table($database.'stok63t')->get();
     $fason_data = [
         'kritik' => 0,
         'yakin' => 0,
-        'otuzgun' => 0
+        'otuzgun' => 0,
+        'toplam' => $FASONSEVKLER->count()
+    ];
+
+    // Aylık fason verileri
+    $fason_aylik = [
+        'tamamlanan' => array_fill(0, 12, 0),
+        'bekleyen' => array_fill(0, 12, 0),
+        'geciken' => array_fill(0, 12, 0)
     ];
 
     foreach ($FASONSEVKLER as $f) {
         $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($f->TERMIN_TAR), false);
         
+        $terminTarihi = \Carbon\Carbon::parse($f->TERMIN_TAR);
+        $hedefAy = $terminTarihi->month - 1;
+        
         if ($kalanGun <= 7) {
             $fason_data['kritik']++;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $fason_aylik['geciken'][$hedefAy]++;
+            }
         } 
-        elseif ($kalanGun >= 0 && $kalanGun <= 15) {
+        elseif ($kalanGun > 7 && $kalanGun <= 15) {
             $fason_data['yakin']++;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $fason_aylik['bekleyen'][$hedefAy]++;
+            }
         }
-        elseif ($kalanGun >= 0 && $kalanGun <= 30) {
+        elseif ($kalanGun > 15 && $kalanGun <= 30) {
             $fason_data['otuzgun']++;
+            if ($hedefAy >= 0 && $hedefAy < 12) {
+                $fason_aylik['tamamlanan'][$hedefAy]++;
+            }
         }
     }
 
-    $kartlar[] = [
-        'id' => 'fason-sevk',
-        'baslik' => 'Fason Sevk Durumu',
-        'aciklama' => 'Sevkiyat takibi',
-        'icon' => 'fa-truck-fast',
-        'color' => '#8b5cf6',
-        'deger_30' => $fason_data['otuzgun'],
-        'deger_15' => $fason_data['yakin'],
-        'kritik' => $fason_data['kritik'] > 0,
-        'link' => 'fasonsevkirsaliyesi?SUZ=SUZ&firma='.$database.'#liste',
-        'buton_15' => 'Son 15 günü gör',
-        'buton_30' => 'Son 30 günü gör'
+    // İstatistikler
+    $stats = [
+        ['title' => 'Toplam Kalibrasyon', 'value' => $kalibrasyon_data['toplam'], 'icon' => 'fa-gauge-high', 'color' => '#3b82f6'],
+        ['title' => 'Kritik Durumlar', 'value' => $kalibrasyon_data['kritik'] + $fason_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444'],
+        ['title' => 'Fason Sevkler', 'value' => $fason_data['toplam'], 'icon' => 'fa-truck-fast', 'color' => '#8b5cf6'],
+        ['title' => 'Bekleyen İşlemler', 'value' => $kalibrasyon_data['yakin'] + $fason_data['yakin'], 'icon' => 'fa-clock', 'color' => '#f59e0b']
     ];
-
 @endphp
 
 <style>
-  /* Dashboard Header */
-  .dashboard-header {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      border-left: 4px solid #6366f1;
-  }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-  .dashboard-header h2 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 6px;
-  }
+    .content-wrapper {
+        background: #f8fafc;
+        min-height: 100vh;
+        padding: 20px;
+    }
 
-  .dashboard-header p {
-      font-size: 0.95rem;
-      color: #64748b;
-      margin: 0;
-  }
+    /* Header */
+    .page-header {
+        background: white;
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #e5e7eb;
+    }
 
-  /* Grid Container */
-  .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 24px;
-      margin-bottom: 24px;
-  }
+    .page-header h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 4px;
+    }
 
-  /* Stats Card */
-  .stats-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      transition: all 0.2s ease;
-      border: 1px solid #e2e8f0;
-      position: relative;
-      overflow: hidden;
-      min-height: 240px;
-      display: flex;
-      flex-direction: column;
-  }
+    .page-header p {
+        font-size: 14px;
+        color: #6b7280;
+    }
 
-  .stats-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+    }
 
-  .stats-card.danger {
-      background: #fefefe;
-      animation: pulse 1.0s infinite ease-in-out;
-  }
+    .stat-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.2s ease;
+    }
 
-  @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-  }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
-  /* Card Content Wrapper */
-  .card-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-  }
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: white;
+        flex-shrink: 0;
+    }
 
-  /* Card Header */
-  .card-header-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-  }
+    .stat-info {
+        flex: 1;
+        min-width: 0;
+    }
 
-  .card-info {
-      flex: 1;
-      min-width: 0;
-  }
+    .stat-info h3 {
+        font-size: 13px;
+        color: #6b7280;
+        font-weight: 500;
+        margin-bottom: 4px;
+    }
 
-  /* Card Icon */
-  .card-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--card-color);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: white;
-      flex-shrink: 0;
-      margin-left: 16px;
-  }
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
 
-  .stats-card.danger .card-icon {
-      background: #ef4444;
-  }
+    /* Bottom Charts */
+    .bottom-charts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
 
-  /* Stats Number */
-  .stats-number {
-      font-size: 2.75rem;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1;
-      margin-bottom: auto;
-  }
+    .chart-card-large {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.2s ease;
+    }
 
-  .stats-card.danger .stats-number {
-      color: #ef4444;
-  }
+    .chart-card-large:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
 
-  .stats-card h6 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #334155;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
+    .chart-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #fafbfc;
+    }
 
-  .stats-card small {
-      font-size: 0.875rem;
-      color: #64748b;
-      display: block;
-  }
+    .chart-header h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-  /* Card Footer */
-  .card-footer-section {
-      display: flex;
-      gap: 8px;
-      padding-top: 20px;
-      border-top: 1px solid #f1f5f9;
-      margin-top: 20px;
-  }
+    .chart-header h3 i {
+        color: #6b7280;
+    }
 
-  /* Toggle Button */
-  .toggle-btn {
-      flex: 1;
-      background: #f8fafc;
-      color: #475569;
-      border: 1px solid #e2e8f0;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-  }
+    .chart-body {
+        padding: 20px;
+    }
 
-  .toggle-btn:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-  }
+    .chart-container-large {
+        height: 350px;
+        width: 100%;
+    }
 
-  .toggle-btn:active {
-      transform: scale(0.98);
-  }
+    /* Quick Actions */
+    .quick-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e5e7eb;
+    }
 
-  .stats-card.danger .toggle-btn:hover {
-      background: #fef2f2;
-      border-color: #fecaca;
-      color: #dc2626;
-  }
+    .action-btn {
+        flex: 1;
+        padding: 10px 16px;
+        background: #3b82f6;
+        border: 1px solid #3b82f6;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
 
-  /* Card Link */
-  .card-link {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--card-color);
-      color: white;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      flex-shrink: 0;
-  }
+    .action-btn:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
 
-  .card-link:hover {
-      opacity: 0.9;
-      transform: translateX(2px);
-      color: white;
-  }
+    /* Info Box */
+    .info-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 16px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 16px;
+    }
 
-  .stats-card.danger .card-link {
-      background: #ef4444;
-  }
+    .info-box h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-  /* Critical Badge */
-  .critical-badge {
-      display: inline-block;
-      background: #fef2f2;
-      color: #dc2626;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      border: 1px solid #fecaca;
-  }
+    .info-item {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        font-size: 13px;
+        backdrop-filter: blur(10px);
+    }
 
-  /* Hidden Class */
-  .kalan-sayi {
-      display: none;
-  }
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
 
-  /* Responsive */
-  @media (max-width: 992px) {
-      .dashboard-grid {
-          grid-template-columns: 1fr;
-      }
-  }
+    .info-item strong {
+        font-weight: 600;
+    }
 
-  @media (max-width: 768px) {
-      .dashboard-header {
-          padding: 20px;
-      }
+    /* Responsive */
+    @media (max-width: 768px) {
+        .content-wrapper {
+            padding: 12px;
+        }
 
-      .dashboard-header h2 {
-          font-size: 1.5rem;
-      }
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
 
-      .stats-number {
-          font-size: 2.25rem;
-      }
+        .bottom-charts {
+            grid-template-columns: 1fr;
+        }
 
-      .dashboard-grid {
-          gap: 16px;
-      }
-
-      .stats-card {
-          min-height: 220px;
-      }
-  }
-
-  @media (max-width: 480px) {
-      .card-footer-section {
-          flex-direction: column;
-      }
-
-      .card-link {
-          width: 100%;
-      }
-
-      .toggle-btn {
-          font-size: 0.8rem;
-          padding: 8px 12px;
-      }
-  }
+        .chart-container-large {
+            height: 280px;
+        }
+    }
 </style>
 
 <div class="content-wrapper">
-  <section class="content">
+    <section class="content">
 
-    @if (isset($_GET['hata']) && $_GET['hata'] == "yetkisizgiris")
-        <div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <h4><i class="icon fa fa-ban"></i> Hata!</h4>
-            Bu ekran için görüntüleme yetkiniz bulunmuyor!
+        @if (isset($_GET['hata']) && $_GET['hata'] == "yetkisizgiris")
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4><i class="icon fa fa-ban"></i> Hata!</h4>
+                Bu ekran için görüntüleme yetkiniz bulunmuyor!
+            </div>
+        @endif
+
+        <!-- Header -->
+        <div class="page-header">
+            <h1>Hoş Geldiniz, {{ $kullanici_veri->name }}</h1>
+            <p class="m-0" id="current-time">Yükleniyor...</p>
         </div>
-    @endif
 
-    <div class="dashboard-header">
-        <h2>Selam {{ $kullanici_veri->name }}!</h2>
-        <p id="current-time">Tarih ve Saat yükleniyor...</p>
-    </div>
-
-    <div class="dashboard-grid">
-        @foreach($kartlar as $kart)
-        <div class="stats-card {{ $kart['kritik'] ? 'danger' : '' }}" 
-             data-kart-id="{{ $kart['id'] }}"
-             style="--card-color: {{ $kart['color'] }}">
-            
-            <div class="card-content">
-                <div class="card-header-section">
-                    <div class="card-info">
-                        @if($kart['kritik'])
-                        <div class="critical-badge">
-                            <i class="fa-solid fa-circle-exclamation"></i> KRİTİK
-                        </div>
-                        @endif
-                        <h6>{{ $kart['baslik'] }}</h6>
-                        <small>{{ $kart['aciklama'] }}</small>
-                    </div>
-                    <div class="card-icon">
-                        <i class="fa-solid {{ $kart['icon'] }}"></i>
-                    </div>
+        <!-- Stats -->
+        <div class="stats-grid">
+            @foreach($stats as $stat)
+            <div class="stat-card">
+                <div class="stat-icon" style="background: {{ $stat['color'] }}">
+                    <i class="fa-solid {{ $stat['icon'] }}"></i>
                 </div>
-
-                <div class="deger-30 stats-number kalan-sayi">{{ $kart['deger_30'] }}</div>
-                <div class="deger-15 stats-number kalan-sayi">{{ $kart['deger_15'] }}</div>
-
-                <div class="card-footer-section">
-                    <button class="toggle-btn" data-state="30">
-                        {{ $kart['buton_15'] }}
-                    </button>
-                    <a class="card-link" href="{{ $kart['link'] }}" title="Detaylı görüntüle">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
+                <div class="stat-info">
+                    <h3>{{ $stat['title'] }}</h3>
+                    <div class="stat-value">{{ $stat['value'] }}</div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
 
-  </section>
+        <!-- Bottom Charts -->
+        <div class="bottom-charts">
+            
+            <!-- Aylık Trend -->
+            <div class="chart-card-large">
+                <div class="chart-header">
+                    <h3>
+                        <i class="fa-solid fa-chart-line"></i>
+                        Aylık Kalibrasyon Trendi
+                    </h3>
+                </div>
+                <div class="chart-body">
+                    
+                    <div id="aylikChart" class="chart-container-large"></div>
+                    <div class="quick-actions">
+                        <a href="kart_kalibrasyon?SUZ=SUZ&firma={{ $database }}#liste" class="action-btn">
+                            <i class="fa-solid fa-arrow-right"></i> Detaylı Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fason Sevkiyat Trendi -->
+            <div class="chart-card-large">
+                <div class="chart-header">
+                    <h3>
+                        <i class="fa-solid fa-chart-column"></i>
+                        Fason Sevkiyat Analizi
+                    </h3>
+                </div>
+                <div class="chart-body">
+                    
+                
+                    <div id="fasonChart" class="chart-container-large"></div>
+                    <div class="quick-actions">
+                        <a href="fasonsevkirsaliyesi?SUZ=SUZ&firma={{ $database }}#liste" class="action-btn">
+                            <i class="fa-solid fa-arrow-right"></i> Detaylı Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
 </div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
 
 <script>
     $(document).ready(function(){
-        $('.stats-card').each(function(){
-            const $card = $(this);
-            const $btn = $card.find('.toggle-btn');
-            const $deger30 = $card.find('.deger-30');
-            const $deger15 = $card.find('.deger-15');
-            
-            // Başlangıçta 30 günlük veriyi göster
-            $deger30.removeClass('kalan-sayi').show();
-            $deger15.addClass('kalan-sayi').hide();
-            
-            $btn.click(function(){
-                const currentState = $(this).data('state');
-                
-                if(currentState === '30') {
-                    // 15 güne geç
-                    $deger30.addClass('kalan-sayi').hide();
-                    $deger15.removeClass('kalan-sayi').show();
-                    $btn.text("Son 30 günü gör");
-                    $(this).data('state', '15');
-                } else {
-                    // 30 güne geç
-                    $deger15.addClass('kalan-sayi').hide();
-                    $deger30.removeClass('kalan-sayi').show();
-                    $btn.text("Son 15 günü gör");
-                    $(this).data('state', '30');
-                }
-            });
-        });
-
+        // Tarih ve saat
         function updateTime() {
             const now = new Date();
-            const dateString = now.toLocaleDateString('tr-TR', { 
+            const options = { 
                 weekday: 'long', 
                 year: 'numeric', 
                 month: 'long', 
-                day: 'numeric' 
-            });
-            const timeString = now.toLocaleTimeString('tr-TR');
-            document.getElementById('current-time').innerHTML = dateString + ' • ' + timeString;
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            $('#current-time').text(now.toLocaleDateString('tr-TR', options));
         }
+        
         setInterval(updateTime, 1000);
         updateTime();
+
+        // Global Highcharts ayarları
+        Highcharts.setOptions({
+            lang: {
+                months: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+                shortMonths: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+            }
+        });
+
+        // PHP'den gelen gerçek veriler
+        var kalibrasyonKritik = @json($kalibrasyon_aylik['kritik']);
+        var kalibrasyonYakin = @json($kalibrasyon_aylik['yakin']);
+        var kalibrasyonNormal = @json($kalibrasyon_aylik['normal']);
+
+        var fasonTamamlanan = @json($fason_aylik['tamamlanan']);
+        var fasonBekleyen = @json($fason_aylik['bekleyen']);
+        var fasonGeciken = @json($fason_aylik['geciken']);
+
+        // Aylık Trend Line Chart (Gerçek Verilerle)
+        Highcharts.chart('aylikChart', {
+            chart: {
+                type: 'spline',
+                height: 350
+            },
+            title: {
+                text: null
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+            },
+            yAxis: {
+                title: {
+                    text: 'Kalibrasyon Sayısı'
+                }
+            },
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [{
+                name: 'Kritik (0-7 gün)',
+                data: kalibrasyonKritik,
+                color: '#ef4444',
+                marker: {
+                    symbol: 'circle'
+                }
+            }, {
+                name: 'Yaklaşan (8-15 gün)',
+                data: kalibrasyonYakin,
+                color: '#f59e0b',
+                marker: {
+                    symbol: 'square'
+                }
+            }, {
+                name: 'Normal (16-30 gün)',
+                data: kalibrasyonNormal,
+                color: '#22c55e',
+                marker: {
+                    symbol: 'diamond'
+                }
+            }]
+        });
+
+        // Fason Sevkiyat Column Chart (Gerçek Verilerle)
+        Highcharts.chart('fasonChart', {
+            chart: {
+                type: 'column',
+                height: 350
+            },
+            title: {
+                text: null
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+            },
+            yAxis: {
+                title: {
+                    text: 'Sevkiyat Sayısı'
+                }
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    borderRadius: 4,
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            series: [{
+                name: 'Tamamlanan',
+                data: fasonTamamlanan,
+                color: '#22c55e'
+            }, {
+                name: 'Bekleyen',
+                data: fasonBekleyen,
+                color: '#f59e0b'
+            }, {
+                name: 'Geciken',
+                data: fasonGeciken,
+                color: '#ef4444'
+            }]
+        });
     });
 </script>
 

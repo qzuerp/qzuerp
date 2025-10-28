@@ -291,6 +291,13 @@
 										                                </div>
 										                            </td>
 																	<td>
+																		<input type="number" class="form-control"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK1" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
+																	</td>
+																	<td>
+																		<input type="number" class="form-control" maxlength="255" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK2" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
+																	</td>
+
+																	<td>
 																		<!-- <select class="form-control select2 js-example-basic-single" style="color: red" name="ACIKLAMA_FILL" id="ACIKLAMA_FILL">
 																			<option value=" ">Seç</option>
 																			<option>AD</option>
@@ -303,26 +310,24 @@
 																			<option>SAAT</option>
 																			<option>F</option>
 																		</select> -->
-																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_BIRIM" readonly id="ACIKLAMA_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" readonly id="ACIKLAMA_FILL">
 																	</td>
+																	
 																	<td>
 																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPS" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="0">
 																	</td>
 																	<td>
 																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPM" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="0">
 																	</td>
-																	<td>
-																		<input type="number" class="form-control"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK1" maxlength="255" style="color: red" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
-																	</td>
+																	
+																	
 																	<td style="min-width: 150px; ">
 																		<select class="form-control select2 txt-radius" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULCODE" data-name="KOD" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW" style="height: 30px; width:100%;">
 																			<option value=" " >Seç</option>
 																		</select>
 																		<input type="hidden" id="YMAMULCODE">
 																	</td>
-																	<td>
-																		<input type="number" class="form-control" maxlength="255" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK2" style="color: red" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
-																	</td>
+																	
 																	<td>
 																		<select class="form-control select2 js-example-basic-single"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIP_KODU1" style="color: blue" name="KALIPKODU_1_FILL" id="KALIPKODU_1_FILL">
 																			<option value=" ">Seç...</option>

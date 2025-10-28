@@ -25,6 +25,32 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 @endphp
 
 @section('content')
+<style>
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+#overlay img {
+  max-width: 100vw;
+  max-height: 100vh;
+  transform: scale(3);
+  transition: transform 0.25s ease;
+}
+#overlay.show img {
+  transform: scale(1);
+}
+</style>
+
+<div id="overlay"></div>
+
 
 <div class="content-wrapper" style="min-height: 822px;">
 
@@ -78,6 +104,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 										<th style="min-width: 100px">Lok 2</th>
 										<th style="min-width: 100px">Lok 3</th>
 										<th style="min-width: 100px">Lok 4</th>
+										<th style="min-width: 100px">Görsel</th>
 										<th>#</th>
 									</tr>
 								</thead>
@@ -104,13 +131,13 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 										<th>Lok 2</th>
 										<th>Lok 3</th>
 										<th>Lok 4</th>
+										<th>Görsel</th>
 										<th>#</th>
 									</tr>
 								</tfoot>
 
 								<tbody>
 									@php
-
 										$evraklar = DB::table($database.'stok10a as s10')
 											->selectRaw('
 												s10.KOD, 
@@ -137,58 +164,63 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 											')
 											->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
 											->groupBy(
-												's10.KOD', 
-												's10.STOK_ADI', 
-												's10.SF_SF_UNIT', 
-												's10.LOTNUMBER',
-												's10.SERINO', 
-												's10.AMBCODE', 
-												's10.TEXT1', 
-												's10.TEXT2', 
-												's10.TEXT3', 
-												's10.TEXT4', 
-												's10.NUM1', 
-												's10.NUM2', 
-												's10.NUM3', 
-												's10.NUM4', 
-												's10.LOCATION1', 
-												's10.LOCATION2', 
-												's10.LOCATION3', 
-												's10.LOCATION4',
-												's0.NAME2',
-												's0.id'
+												's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
+												's10.SERINO','s10.AMBCODE','s10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
+												's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
+												's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
+												's0.NAME2','s0.id'
 											)
 											->get();
 
+										$kodlar = $evraklar->pluck('KOD')->toArray();
 
-
-										foreach ($evraklar as $key => $suzVeri) {
-											echo "<tr>";
-											echo "<td><b>".$suzVeri->KOD."</b></td>";
-											echo "<td><b>".$suzVeri->STOK_ADI."</b></td>";
-											echo "<td><b>".$suzVeri->NAME2."</b></td>";
-											echo "<td style='color:blue'><b>".$suzVeri->MIKTAR."</b></td>";
-											echo "<td><b>".$suzVeri->SF_SF_UNIT."</b></td>";
-											echo "<td>".$suzVeri->LOTNUMBER."</td>";
-											echo "<td>".$suzVeri->SERINO."</td>";
-											echo "<td>".$suzVeri->AMBCODE."</td>";
-											echo "<td>".$suzVeri->TEXT1."</td>";
-											echo "<td>".$suzVeri->TEXT2."</td>";
-											echo "<td>".$suzVeri->TEXT3."</td>";
-											echo "<td>".$suzVeri->TEXT4."</td>";
-											echo "<td>".$suzVeri->NUM1."</td>";
-											echo "<td>".$suzVeri->NUM2."</td>";
-											echo "<td>".$suzVeri->NUM3."</td>";
-											echo "<td>".$suzVeri->NUM4."</td>";
-											echo "<td>".$suzVeri->LOCATION1."</td>";
-											echo "<td>".$suzVeri->LOCATION2."</td>";
-											echo "<td>".$suzVeri->LOCATION3."</td>";
-											echo "<td>".$suzVeri->LOCATION4."</td>";
-											echo "<td><a class='btn btn-info' href='kart_stok?ID={$suzVeri->id}' target='_blank'><i class='fa fa-chevron-circle-right text-white'></i></a></td>";
-											echo "</tr>";
-										}
-
+										$gorseller = DB::table($database.'dosyalar00')
+											->whereIn('EVRAKNO', $kodlar)
+											->where('EVRAKTYPE', 'STOK00')
+											->where('DOSYATURU', 'GORSEL')
+											->get()
+											->keyBy('EVRAKNO');
 									@endphp
+
+										@foreach ($evraklar as $suzVeri)
+											@php
+												$img = $gorseller[$suzVeri->KOD] ?? null;
+												$imgSrc = $img ? asset('dosyalar/'.$img->DOSYA) : '';
+											@endphp
+											<tr>
+												<td><b>{{ $suzVeri->KOD }}</b></td>
+												<td><b>{{ $suzVeri->STOK_ADI }}</b></td>
+												<td><b>{{ $suzVeri->NAME2 }}</b></td>
+												<td style="color:blue"><b>{{ $suzVeri->MIKTAR }}</b></td>
+												<td><b>{{ $suzVeri->SF_SF_UNIT }}</b></td>
+												<td>{{ $suzVeri->LOTNUMBER }}</td>
+												<td>{{ $suzVeri->SERINO }}</td>
+												<td>{{ $suzVeri->AMBCODE }}</td>
+												<td>{{ $suzVeri->TEXT1 }}</td>
+												<td>{{ $suzVeri->TEXT2 }}</td>
+												<td>{{ $suzVeri->TEXT3 }}</td>
+												<td>{{ $suzVeri->TEXT4 }}</td>
+												<td>{{ $suzVeri->NUM1 }}</td>
+												<td>{{ $suzVeri->NUM2 }}</td>
+												<td>{{ $suzVeri->NUM3 }}</td>
+												<td>{{ $suzVeri->NUM4 }}</td>
+												<td>{{ $suzVeri->LOCATION1 }}</td>
+												<td>{{ $suzVeri->LOCATION2 }}</td>
+												<td>{{ $suzVeri->LOCATION3 }}</td>
+												<td>{{ $suzVeri->LOCATION4 }}</td>
+												<td>
+													@if ($imgSrc)
+														<img id="kart_img" src="{{ $imgSrc }}" alt="" width="100">
+													@endif
+												</td>
+												<td>
+													<a class="btn btn-info" href="kart_stok?ID={{ $suzVeri->id }}" target="_blank">
+														<i class="fa fa-chevron-circle-right text-white"></i>
+													</a>
+												</td>
+											</tr>
+										@endforeach
+
 								</tbody>
 							</table>
 
@@ -199,6 +231,22 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 		</div>
 	</section>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+	<script>
+		document.addEventListener('click', e => {
+			const overlay = document.getElementById('overlay');
+
+			if (e.target.tagName === 'IMG' && e.target.id === 'kart_img') {
+				const clone = e.target.cloneNode(true);
+				overlay.innerHTML = '';
+				overlay.appendChild(clone);
+				overlay.style.display = 'flex';
+			}
+			else if (e.target.id === 'overlay') {
+				overlay.style.display = 'none';
+				overlay.innerHTML = '';
+			}
+		});
+	</script>
     <script>
       function exportTableToExcel(tableId)
       {
