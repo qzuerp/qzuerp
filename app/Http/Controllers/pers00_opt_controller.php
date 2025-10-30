@@ -147,7 +147,7 @@ class pers00_opt_controller extends Controller
       print_r("Silme işlemi başarılı.");
 
       $sonID=DB::table($firma.'pers00')->min('id');
-      return redirect()->route('kart_personel', ['ID' => $sonID, 'silme' => 'ok']);
+      return redirect()->route('kart_operator', ['ID' => $sonID, 'silme' => 'ok']);
 
     break;
 
