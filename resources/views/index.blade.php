@@ -135,6 +135,7 @@
         padding: 20px 24px;
         border-radius: 8px;
         margin-bottom: 20px;
+        margin-top:0px;
         border: 1px solid #e5e7eb;
     }
 

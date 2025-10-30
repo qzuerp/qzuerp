@@ -53,6 +53,7 @@ use App\Http\Controllers\deneme1;
 use App\Http\Controllers\uretim_gazetesi;
 use App\Http\Controllers\tmustr_controller;
 use App\Http\Controllers\info_controller;
+use App\Http\Controllers\NotificationController;
 
 
 use Illuminate\Http\Request;
@@ -241,6 +242,7 @@ Auth::routes(['password.request' => false]);
   Route::get('kart_operasyon',[imlt01_controller::class,'index'])->name('kart_operasyon');
   Route::get('kart_personel',[pers00_pers_controller::class,'index'])->name('kart_personel');
   Route::get('kart_operator',[pers00_opt_controller::class,'index'])->name('kart_operator');
+  Route::post('pers00_opt_islemler',[pers00_opt_controller::class,'islemler'])->name('islemler');
   Route::get('kart_kontakt',[kontakt00_controller::class,'index'])->name('kart_kontakt');
   Route::get('kart_kalip',[kalip00_controller::class,'index'])->name('kart_kalip');
 
@@ -320,4 +322,6 @@ Auth::routes(['password.request' => false]);
   //Route::view('satissiparisi','satissiparisi');
   //Route::view('urunagaci','urunagaci');
   Route::view('change_password','change_password');
+
+  Route::get('/notifications/stream', [App\Http\Controllers\NotificationController::class, 'stream']);
 });

@@ -22,7 +22,9 @@ class stok00_controller extends Controller
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
-    $veriler = DB::table($firma.'stok00')->select('id', 'KOD', 'AD', 'IUNIT');
+    $veriler = DB::table($firma.'stok00')
+      ->select('id', 'KOD', 'AD', 'IUNIT')
+      ->get();
     return DataTables::of($veriler)->make(true);
   }
 

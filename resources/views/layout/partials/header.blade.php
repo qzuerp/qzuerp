@@ -468,7 +468,31 @@
         </div>
     </header>
 </div>
+<script>
+    const eventSource = new EventSource("/notifications/stream");
+    const notiList = document.getElementById("notiList");
+    const notiCount = document.getElementById("notiCount");
 
+    eventSource.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        notiList.innerHTML = ""; // önce eskiyi temizle
+        let count = 0;
+
+        data.forEach(n => {
+            count++;
+            let li = document.createElement("li");
+            li.classList.add("dropdown-item");
+            li.innerHTML = `<b>${n.title}</b>: ${n.message}`;
+            li.onclick = function() {
+                markAsRead(n.id); // tıklayınca okundu yap
+            }
+            notiList.appendChild(li);
+        });
+
+        notiCount.textContent = count;
+    };
+
+</script>
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
