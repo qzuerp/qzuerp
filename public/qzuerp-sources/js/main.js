@@ -1130,46 +1130,58 @@ $(document).ready(function(){
       $('header').css('opacity', opacity);
     });
 });
-function mesaj(str,type) {
-  if(type=="success")
-  {
-    iziToast.success({
-      // title: 'Başarılı!',
-      message: str,
-      position: 'topRight',
-      timeout: 5000,
-      progressBar: true,
-      transitionIn: 'fadeInUp',
-      transitionOut: 'fadeOut',
-      close: true,
-      backgroundColor: '#f9f9f9',
-      titleColor: '#333',
-      messageColor: '#555',
-      progressBarColor: '#4CAF50',
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
-      closeOnEscape: true
-    });
-  }
-  else if(type=="error")
-  {
-    iziToast.success({
-      // title: 'Başarılı!',
-      message: str,
-      position: 'topRight',
-      timeout: 5000,
-      progressBar: true,
-      transitionIn: 'fadeInUp',
-      transitionOut: 'fadeOut',
-      close: true,
-      backgroundColor: '#f9f9f9',
-      titleColor: '#333',
-      messageColor: '#555',
-      progressBarColor: '#fd0100',
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845648.png',
-      closeOnEscape: true
-    });
-  }
+function mesaj(str, type) {
+    if (type == "success") {
+        iziToast.success({
+            message: str,
+            position: 'topRight',
+            timeout: 5000,
+            progressBar: true,
+            transitionIn: 'fadeInUp',
+            transitionOut: 'fadeOut',
+            close: true,
+            backgroundColor: '#f9f9f9',
+            titleColor: '#333',
+            messageColor: '#555',
+            progressBarColor: '#4CAF50',
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
+            closeOnEscape: true
+        });
+    } else if (type == "error") {
+        iziToast.error({
+            message: str,
+            position: 'topRight',
+            timeout: 5000,
+            progressBar: true,
+            transitionIn: 'fadeInUp',
+            transitionOut: 'fadeOut',
+            close: true,
+            backgroundColor: '#f9f9f9',
+            titleColor: '#333',
+            messageColor: '#555',
+            progressBarColor: '#fd0100',
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845648.png',
+            closeOnEscape: true
+        });
+    } else if (type == "info") {
+        iziToast.info({
+            message: str,
+            position: 'topRight',
+            timeout: 5000,
+            progressBar: true,
+            transitionIn: 'fadeInUp',
+            transitionOut: 'fadeOut',
+            close: true,
+            backgroundColor: '#f9f9f9',
+            titleColor: '#333',
+            messageColor: '#555',
+            progressBarColor: '#2196F3',
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845655.png',
+            closeOnEscape: true
+        });
+    }
 }
+
 
 
 function detayBtnForJS(KOD) {

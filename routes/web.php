@@ -323,5 +323,6 @@ Auth::routes(['password.request' => false]);
   //Route::view('urunagaci','urunagaci');
   Route::view('change_password','change_password');
 
-  Route::get('/notifications/stream', [App\Http\Controllers\NotificationController::class, 'stream']);
+  Route::get('/notifications/poll', [NotificationController::class, 'poll']); // Yeni
+  Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead']);
 });

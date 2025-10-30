@@ -106,7 +106,7 @@ if (isset($kart_veri)) {
                 </div>
                 
                 <div class="row ">
-                  <div class="col-md-3 col-sm-4 col-xs-6">
+                  <div class="col-md-2 col-sm-3 col-xs-5">
                     <label>Kod</label>
                     <input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
                   </div>
@@ -118,6 +118,17 @@ if (isset($kart_veri)) {
                     <label>Ünvanı</label>
                     <input type="text" class="form-control NAME2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="NAME2" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
                   </div>
+
+                  <div class="col-md-2 col-sm-4 col-xs-6">
+                    <label>İşe Başlangıç Tarihi</label>
+                    <input type="date" class="form-control START_DATE" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="START_DATE" maxlength="50" name="START_DATE" id="START_DATE" value="{{ @$kart_veri->START_DATE }}">
+                  </div>
+
+                  <div class="col-md-2 col-sm-4 col-xs-6">
+                    <label>İşten Çıkış Tarihi</label>
+                    <input type="date" class="form-control END_DATE" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="END_DATE" maxlength="50" name="END_DATE" id="END_DATE" value="{{ @$kart_veri->END_DATE }}">
+                  </div>
+
                   <div class="col-md-1 col-sm-1 col-xs-6">
                     <label>Aktif/Pasif</label>
                     <div class="d-flex 1-*-">
@@ -125,7 +136,7 @@ if (isset($kart_veri)) {
                      <input type="checkbox" class="" name="AP10" id="AP10" value="1" @if (@$kart_veri->AP10 == "1") checked @endif>
                    </div>
                  </div>
-                <div class="col-3 d-flex justify-content-center">
+                <div class="col-12 d-flex justify-content-end">
                   @php
                     $resim = DB::table($database.'dosyalar00')
                       ->where('EVRAKNO', @$kart_veri->KOD)

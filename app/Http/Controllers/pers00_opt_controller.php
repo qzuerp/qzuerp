@@ -77,6 +77,8 @@ class pers00_opt_controller extends Controller
     $KONTAKTNAME_2 = $request->input('KONTAKTNAME_2');
     $KONTAKTGOREVI_2 = $request->input('KONTAKTGOREVI_2');
     $KONTAKTBOLUMU_2 = $request->input('KONTAKTBOLUMU_2');
+    $START_DATE = $request->input('START_DATE');
+    $END_DATE = $request->input('END_DATE');
 
     switch($islem_turu) {
 
@@ -190,6 +192,8 @@ class pers00_opt_controller extends Controller
       'KONTAKTNAME_2' => $KONTAKTNAME_2,
       'KONTAKTGOREVI_2' => $KONTAKTGOREVI_2,
       'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
+      'START_DATE' => $START_DATE,
+      'END_DATE' => $END_DATE,
       'created_at' => date('Y-m-d H:i:s'),
       ]);
 
@@ -201,7 +205,7 @@ class pers00_opt_controller extends Controller
     break;
 
     case 'kart_duzenle':
-FunctionHelpers::Logla('PERS00',$KOD,'W');
+    FunctionHelpers::Logla('PERS00',$KOD,'W');
 
     DB::table($firma.'pers00')->where('KOD',$KOD)->update([
       'KOD' => $KOD,
@@ -235,6 +239,8 @@ FunctionHelpers::Logla('PERS00',$KOD,'W');
       'KONTAKTNAME_2' => $KONTAKTNAME_2,
       'KONTAKTGOREVI_2' => $KONTAKTGOREVI_2,
       'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
+      'START_DATE' => $START_DATE,
+      'END_DATE' => $END_DATE,
       'updated_at' => date('Y-m-d H:i:s'),
     ]);
 

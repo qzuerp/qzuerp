@@ -268,6 +268,7 @@
         font-size: 13px;
         text-align: center;
         border-radius: 8px;
+        margin:3px 0px;
     }
 
     .modern-header .dropdown-menu-user {
@@ -382,6 +383,108 @@
             display: none !important;
         }
     }
+
+     .notification-dropdown .dropdown-menu {
+        border: none;
+        border-radius: 12px;
+    }
+    
+    .notification-dropdown .dropdown-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    
+    .notification-dropdown .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .notification-dropdown .dropdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    .notification-dropdown .badge {
+        font-size: 0.65rem;
+        padding: 0.25em 0.5em;
+        min-width: 18px;
+        left:80%;
+        top:9px;
+    }
+    
+    .notification-item {
+        display: flex;
+        gap: 10px;
+        align-items: start;
+    }
+    
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .notification-content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .notification-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+        color: #212529;
+    }
+    
+    .notification-message {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .notification-time {
+        font-size: 0.75rem;
+        color: #adb5bd;
+    }
+    
+    .notification-unread {
+        background-color: #e7f3ff;
+    }
+    
+    .notification-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #0d6efd;
+        border-radius: 50%;
+        margin-top: 6px;
+    }
+
+    /* Scrollbar stil */
+    #notiList::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #notiList::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    #notiList::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+    }
+    
+    #notiList::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
 </style>
 
 <div class="wrapper">
@@ -413,14 +516,25 @@
 
             <div class="d-flex align-items-center" style="gap: 8px;">
                 <!-- Bildirim Dropdown -->
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="notiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-bell"></i>
+                <div class="dropdown notification-dropdown">
+                    <button class="btn dropdown-toggle position-relative" type="button" id="notiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bell fs-5"></i>
+                        <span id="notiCount" class="badge bg-danger position-absolute translate-middle rounded-pill" style="display: none;">0</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notiDropdown">
-                        <li>Bildirim özelliği yakında aktif hale getirilecektir.</li>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notiDropdown" id="notiList" style="width: 350px; max-height: 400px; overflow-y: auto;">
+                        <li class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Bildirimler</span>
+                            <a href="#" id="markAllRead" class="text-primary text-decoration-none small">Tümünü Okundu İşaretle</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li id="emptyState" class="text-center py-4 text-muted">
+                            <i class="fa-solid fa-bell-slash fs-1 mb-2"></i>
+                            <p class="mb-0">Henüz bildiriminiz yok</p>
+                        </li>
                     </ul>
                 </div>
+                <audio id="notiSound" src="{{ asset('sounds/confident-543.mp3') }}" preload="auto"></audio>
+
 
                 <!-- Kullanıcı Dropdown -->
                 <div class="dropdown">
@@ -468,31 +582,262 @@
         </div>
     </header>
 </div>
+
 <script>
-    const eventSource = new EventSource("/notifications/stream");
-    const notiList = document.getElementById("notiList");
-    const notiCount = document.getElementById("notiCount");
+    $(document).ready(function() {
+        let lastId = 0;
+        let isPolling = false;
+        let isFirstLoad = true;
+        const originalTitle = document.title;
+        let titleInterval = null;
 
-    eventSource.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        notiList.innerHTML = ""; // önce eskiyi temizle
-        let count = 0;
+        const notiList = document.getElementById("notiList");
+        const notiCount = document.getElementById("notiCount");
+        const notiSound = document.getElementById("notiSound");
+        const emptyState = document.getElementById("emptyState");
 
-        data.forEach(n => {
-            count++;
-            let li = document.createElement("li");
-            li.classList.add("dropdown-item");
-            li.innerHTML = `<b>${n.title}</b>: ${n.message}`;
-            li.onclick = function() {
-                markAsRead(n.id); // tıklayınca okundu yap
+        // Badge'i göster/gizle
+        function updateBadge(count) {
+            if (count > 0) {
+                notiCount.textContent = count > 99 ? '99+' : count;
+                notiCount.style.display = 'inline-block';
+            } else {
+                notiCount.style.display = 'none';
             }
-            notiList.appendChild(li);
+        }
+
+        // Empty state göster/gizle
+        function toggleEmptyState() {
+            const items = notiList.querySelectorAll('.notification-item');
+            if (items.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        // Zaman farkını hesapla (örn: "2 dakika önce")
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return 'Az önce';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return minutes + ' dakika önce';
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return hours + ' saat önce';
+            const days = Math.floor(hours / 24);
+            if (days < 7) return days + ' gün önce';
+            const weeks = Math.floor(days / 7);
+            if (weeks < 4) return weeks + ' hafta önce';
+            return 'Bir ay önce';
+        }
+
+        // Bildirim tipi ikonları
+        function getNotificationIcon(type) {
+            const icons = {
+                'info': '<i class="fa-solid fa-info-circle text-primary"></i>',
+                'success': '<i class="fa-solid fa-check-circle text-success"></i>',
+                'warning': '<i class="fa-solid fa-exclamation-triangle text-warning"></i>',
+                'error': '<i class="fa-solid fa-times-circle text-danger"></i>',
+                'default': '<i class="fa-solid fa-bell text-secondary"></i>'
+            };
+            return icons[type] || icons['default'];
+        }
+
+        // Başlık animasyonu
+        function updateTitleNotification(count) {
+            if (titleInterval) {
+                clearInterval(titleInterval);
+            }
+            
+            if (count > 0) {
+                let toggle = false;
+                titleInterval = setInterval(() => {
+                    document.title = toggle ? originalTitle : `(${count}) Bildirim`;
+                    toggle = !toggle;
+                }, 1000);
+            } else {
+                document.title = originalTitle;
+            }
+        }
+
+        function stopTitleNotification() {
+            if (titleInterval) {
+                clearInterval(titleInterval);
+                titleInterval = null;
+                document.title = originalTitle;
+            }
+        }
+
+        // Ses çalma
+        async function playNotificationSound() {
+            try {
+                notiSound.currentTime = 0;
+                const playPromise = notiSound.play();
+                // if (playPromise !== undefined) {
+                //     await playPromise;
+                // }
+            } catch (error) {
+                console.error('Ses çalınamadı:', error);
+            }
+        }
+
+        // Sayfa focus olduğunda
+        window.addEventListener('focus', function() {
+            stopTitleNotification();
         });
 
-        notiCount.textContent = count;
-    };
+        // Long polling
+        async function pollNotifications() {
+            if (isPolling) return;
+            isPolling = true;
 
+            try {
+                const response = await fetch(`/notifications/poll?lastId=${lastId}`);
+                const data = await response.json();
+
+                if (data.notifications.length > 0) {
+                    lastId = data.lastId;
+                    
+                    // Bildirimleri ekle
+                    data.notifications.forEach(n => {
+                        let li = document.createElement("li");
+                        li.classList.add("dropdown-item", "notification-item", "notification-unread");
+                        li.dataset.id = n.id;
+                        
+                        li.innerHTML = `
+                            <div class="notification-icon bg-light">
+                                ${getNotificationIcon(n.type || 'default')}
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">${n.title}</div>
+                                <div class="notification-message">${n.message}</div>
+                                <div class="notification-time">${timeAgo(n.created_at)}</div>
+                            </div>
+                            <div class="notification-dot"></div>
+                        `;
+                        
+                        // Header'dan sonra ekle
+                        const divider = notiList.querySelector('.dropdown-divider');
+                        divider.parentNode.insertBefore(li, divider.nextSibling);
+                    });
+
+                    // Sayıyı güncelle
+                    const currentCount = parseInt(notiCount.textContent) || 0;
+                    const newTotalCount = currentCount + data.notifications.length;
+                    updateBadge(newTotalCount);
+
+                    // Empty state'i gizle
+                    toggleEmptyState();
+
+                    // İlk yükleme değilse ses çal
+                    // if (!isFirstLoad) {
+                    // }
+                    playNotificationSound();
+
+                    // Title güncelle
+                    if (!document.hasFocus()) {
+                        updateTitleNotification(newTotalCount);
+                    }
+                }
+                
+                // if (isFirstLoad) {
+                //     isFirstLoad = false;
+                // }
+                
+            } catch (error) {
+                console.error('Bildirim alınamadı:', error);
+            } finally {
+                isPolling = false;
+            }
+        }
+
+        // Bildirime tıklandığında
+        $(document).on('click', '.notification-item', function() {
+            const li = $(this);
+            const notificationId = li.data('id');
+            
+            // Okunmamış işaretini kaldır
+            li.removeClass('notification-unread');
+            li.find('.notification-dot').remove();
+            
+            // Sayıyı azalt
+            const currentCount = parseInt(notiCount.textContent) || 0;
+            if (currentCount > 0) {
+                updateBadge(currentCount - 1);
+            }
+            
+            // Backend'e okundu bilgisi gönder
+            fetch('/notifications/mark-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify({ ids: [notificationId] })
+            });
+        });
+
+        // Tümünü okundu işaretle
+        $('#markAllRead').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const unreadItems = $('.notification-item.notification-unread');
+            const ids = unreadItems.map(function() {
+                return $(this).data('id');
+            }).get();
+            
+            if (ids.length > 0) {
+                unreadItems.removeClass('notification-unread');
+                unreadItems.find('.notification-dot').remove();
+                updateBadge(0);
+                stopTitleNotification();
+                
+                // Backend'e gönder
+                fetch('/notifications/mark-read', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    body: JSON.stringify({ ids: ids })
+                });
+            }
+        });
+
+        // Dropdown açıldığında
+        $('#notiDropdown').on('click', function() {
+            stopTitleNotification();
+        });
+
+        // Ses izni
+        $(document).one('click', function() {
+            notiSound.play().then(() => {
+                notiSound.pause();
+                notiSound.currentTime = 0;
+            }).catch(e => {});
+        });
+
+        // İlk yükleme
+        pollNotifications();
+        setInterval(pollNotifications, 5000);
+
+        // Visibility change
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                stopTitleNotification();
+                pollNotifications();
+            }
+        });
+
+        // İlk yüklemede empty state'i göster
+        toggleEmptyState();
+    });
 </script>
+
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
