@@ -431,6 +431,8 @@
     .notification-content {
         flex: 1;
         min-width: 0;
+        text-decoration: none;
+        text-align: start;
     }
     
     .notification-title {
@@ -711,11 +713,11 @@
                             <div class="notification-icon bg-light">
                                 ${getNotificationIcon(n.type || 'default')}
                             </div>
-                            <div class="notification-content">
-                                <div class="notification-title">${n.title}</div>
-                                <div class="notification-message">${n.message}</div>
+                            <a href='${n.url || '#'}' class="notification-content">
+                                <div class="notification-title text-truncate">${n.title}</div>
+                                <div class="notification-message text-truncate">${n.message}</div>
                                 <div class="notification-time">${timeAgo(n.created_at)}</div>
-                            </div>
+                            </a>
                             <div class="notification-dot"></div>
                         `;
                         
@@ -733,9 +735,9 @@
                     toggleEmptyState();
 
                     // İlk yükleme değilse ses çal
-                    // if (!isFirstLoad) {
-                    // }
-                    playNotificationSound();
+                    if (!isFirstLoad) {
+                        playNotificationSound();
+                    }
 
                     // Title güncelle
                     if (!document.hasFocus()) {
@@ -743,9 +745,9 @@
                     }
                 }
                 
-                // if (isFirstLoad) {
-                //     isFirstLoad = false;
-                // }
+                if (isFirstLoad) {
+                    isFirstLoad = false;
+                }
                 
             } catch (error) {
                 console.error('Bildirim alınamadı:', error);

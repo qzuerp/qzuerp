@@ -5,16 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Auth;
+
 
 class NotificationController extends Controller
 {
     // Alternatif: Polling yaklaşımı (Daha verimli)
     public function poll(Request $request)
     {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+
         $user = auth()->user();
         $lastId = (int) $request->query('lastId', 0);
 
-        $notifications = DB::table('notifications')
+        $notifications = DB::table($firma.'notifications')
             ->where('read', 0)
             ->where('id', '>', $lastId)
             ->orderBy('id', 'desc')
@@ -31,8 +38,11 @@ class NotificationController extends Controller
     public function markAsRead(Request $request)
     {
         $user = auth()->user();
-        
-        DB::table('notifications')
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        DB::table($firma.'notifications')
             ->where('user_id', $user->id)
             ->whereIn('id', $request->input('ids', []))
             ->update(['read' => 1]);
