@@ -656,8 +656,8 @@
             
             if (count > 0) {
                 let toggle = false;
+                document.title = toggle ? originalTitle : `(${count}) Bildirim`;
                 titleInterval = setInterval(() => {
-                    document.title = toggle ? originalTitle : `(${count}) Bildirim`;
                     toggle = !toggle;
                 }, 1000);
             } else {

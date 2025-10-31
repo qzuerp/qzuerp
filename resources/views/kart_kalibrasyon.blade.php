@@ -342,8 +342,8 @@
                       </div>
 
                       <div class="col-xs-6 col-md-4">
-                        <label>Kalibrasyon Periyodu</label>
-                        <input type="text" class="form-control KALIBRASYONBAKIMPERIYODU w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIBRASYONBAKIMPERIYODU" name="KALIBRASYONBAKIMPERIYODU"
+                        <label>Kalibrasyon Periyodu(YIL)</label>
+                        <input type="number" class="form-control KALIBRASYONBAKIMPERIYODU w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIBRASYONBAKIMPERIYODU" name="KALIBRASYONBAKIMPERIYODU"
                           id="KALIBRASYONBAKIMPERIYODU" value="{{ @$kart_veri->KALIBRASYONBAKIMPERIYODU }}">
                       </div>
 
@@ -955,14 +955,15 @@
     let picker2 = flatpickr("#BIRSONRAKIKALIBRASYONTARIHI", {});
 
     $('#TARIH_HESAPLA').on('click', function () {
-      let ekYil = $('#KALIBRASYONBAKIMPERIYODU').val();
+      let ekYil = parseInt($('#KALIBRASYONBAKIMPERIYODU').val(), 10);
       let bugun = new Date();
       let ileriTarih = new Date(bugun);
       ileriTarih.setFullYear(bugun.getFullYear() + ekYil);
 
-      picker1.setDate(bugun, true);       // true = input value'yu da günceller
+      picker1.setDate(bugun, true);
       picker2.setDate(ileriTarih, true);
     });
+
 
   </script>
 
