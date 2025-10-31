@@ -956,13 +956,16 @@
 
     $('#TARIH_HESAPLA').on('click', function () {
       let ekYil = parseInt($('#KALIBRASYONBAKIMPERIYODU').val(), 10);
-      let bugun = new Date();
-      let ileriTarih = new Date(bugun);
-      ileriTarih.setFullYear(bugun.getFullYear() + ekYil);
+      let baslangicTarih = picker1.selectedDates[0]; // flatpickr'den tarih alıyoruz
+      if (!baslangicTarih) return;
 
-      picker1.setDate(bugun, true);
+      let ileriTarih = new Date(baslangicTarih);
+      ileriTarih.setFullYear(baslangicTarih.getFullYear() + ekYil);
+
       picker2.setDate(ileriTarih, true);
     });
+
+
 
 
   </script>

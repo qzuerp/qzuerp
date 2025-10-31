@@ -371,7 +371,7 @@
                 </div>
                   
                 <div class="tab-pane" id="ihtiyac">
-                  <button class="btn btn-default mb-2" id="satin_alma_olustur_btn" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Siparişini oluştur</button>
+                  <button class="btn btn-default mb-2" id="satin_alma_olustur_btn" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Talebi oluştur</button>
                   @php
                       $sql = "
                         WITH RecursiveBOM AS (
@@ -442,24 +442,24 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="ihtiyac-"></th>
-                            <th>Seviye</th>
+                            <th style="max-width:75px !impportant; width:75px;">Seviye</th>
                             <th>Nihai Mamul</th>
                             <th>Hammadde Kodu</th>
-                            <th>Tip</th>
+                            <th>Hammadde Adı</th>
                             <th>Toplam Miktar</th>
+                            <th>Birim</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($sonuc as $satir)
                           <tr>
                               <td><input type="checkbox" class="ms-1 ihtiyac_check"></td>
-                              <td><input type="text" name="Seviye[]" value="{{ $satir->Seviye }}" class="form-control form-control-sm" readonly></td>
+                              <td style="max-width:75px !impportant; width:75px;"><input type="text" name="Seviye[]" value="{{ $satir->Seviye }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="HammaddeKodu[]" value="{{ $satir->HammaddeKodu }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="KaynakTipi[]" value="{{ $satir->KaynakTipi }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="STOK_ADI[]" value="{{ $satir->HammaddeAdi }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="ToplamHammaddeMiktari[]" value="{{ number_format($satir->ToplamHammaddeMiktari, 2) }}" class="form-control form-control-sm text-end" readonly></td>
-                              <input type="hidden" name="STOK_ADI[]" value="{{ $satir->HammaddeAdi }}">
-                              <input type="hidden" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}">
+                              <td><input type="text" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}" class="form-control form-control-sm text-end" readonly></td>
                           </tr>
                         @endforeach
                     </tbody>

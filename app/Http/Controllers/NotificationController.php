@@ -23,10 +23,11 @@ class NotificationController extends Controller
 
         $notifications = DB::table($firma.'notifications')
             ->where('read', 0)
+            ->where('target_user_id', $user->id)
             ->where('id', '>', $lastId)
             ->orderBy('id', 'desc')
             ->limit(10)
-            ->get(['id', 'title', 'message', 'created_at']);
+            ->get();
 
         return response()->json([
             'notifications' => $notifications,
@@ -43,7 +44,7 @@ class NotificationController extends Controller
         }
         $firma = trim($u->firma).'.dbo.';
         DB::table($firma.'notifications')
-            ->where('user_id', $user->id)
+            ->where('target_user_id', $user->id)
             ->whereIn('id', $request->input('ids', []))
             ->update(['read' => 1]);
 

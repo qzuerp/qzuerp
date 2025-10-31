@@ -46,6 +46,8 @@ class stok40_controller extends Controller
     }
     $firma = trim($u->firma).'.dbo.';
 
+
+    
     $SON_EVRAK=DB::table($firma.'stok47e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
     $SON_ID= $SON_EVRAK->EVRAKNO;
 
@@ -57,12 +59,13 @@ class stok40_controller extends Controller
       $EVRAKNO = $SON_ID + 1;
     }
 
-    DB::table($firma.'stok47e')->insert([
-      'EVRAKNO' => $EVRAKNO,
-      'TARIH' => date('Y-m-d'),
-      'CARIHESAPCODE' => $TALEP_EDEN,
-      'created_at' => date('Y-m-d H:i:s'),
+    $Talep_id = DB::table($firma.'stok47e')->insertGetId([
+        'EVRAKNO' => $EVRAKNO,
+        'TARIH' => date('Y-m-d'),
+        'CARIHESAPCODE' => $TALEP_EDEN,
+        'created_at' => date('Y-m-d H:i:s'),
     ]);
+
 
 
     for ($i = 0; $i < count($STOK_KODU); $i++) {
@@ -81,6 +84,28 @@ class stok40_controller extends Controller
         'NETKAPANANMIK' => 0
       ]);
     }
+
+    $ids = DB::table('users')
+    ->where('write_perm', 'LIKE', '%|SATINALMSIP|%')
+    ->orWhere('write_perm', 'LIKE', 'SATINALMSIP|%')
+    ->orWhere('write_perm', 'LIKE', '%|SATINALMSIP')
+    ->orWhere('write_perm', '=', 'SATINALMSIP')
+    ->select('id', 'name')
+    ->get();
+
+
+    foreach($ids as $id)
+    {
+      DB::table($firma.'notifications')->insert([
+        'title' => 'Yeni satın alma talebi oluşturuldu',
+        'message' => $u->name.' yeni bir satın alma talebi oluşturdu.',
+        'target_user_id' => $id->id,
+        'url' => 'satinalmaTalepleri?ID='.$Talep_id,
+        'created_at' => now(),
+        'updated_at' => now()
+      ]);
+    }
+
     return redirect()->back()->with('success','Talepler Başarıyla Oluşturuldu');
   }
   public function islemler(Request $request)

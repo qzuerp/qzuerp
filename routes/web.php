@@ -54,6 +54,7 @@ use App\Http\Controllers\uretim_gazetesi;
 use App\Http\Controllers\tmustr_controller;
 use App\Http\Controllers\info_controller;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\efn_controler;
 
 
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ Route::get('/', function () {
   return redirect('/index');
 });
 
-
+Route::get('/api/data', [efn_controler::class, 'index']);
 
 Route::get('/raporlama', [RaporlamaController::class, 'index'])->name('raporlama.index');
 Route::post('/raporlama/run', [RaporlamaController::class, 'run'])->name('raporlama.run');
