@@ -191,7 +191,7 @@ if (isset($kart_veri)) {
                     </div>
                     <div class="col-md-3">
                       <label>e-Mail</label>
-                      <input type="text" class="form-control EMAIL" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="EMAIL" maxlength="16" name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
+                      <input type="text" class="form-control EMAIL" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="EMAIL"  name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
                     </div>
                     <div class="col-md-3">
                       <label>Şehir Kodu</label>

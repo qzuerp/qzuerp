@@ -425,7 +425,7 @@
                             <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                             <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
                             <td><input type="text" class="form-control LOTNUMBER" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
-                            <td class="d-flex ">
+                            <td class="d-flex">
                               <input type="text" class="form-control txt-radius" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
                               <span class="d-flex -btn">
                                 <button class="btn btn-radius btn-primary" onclick='veriCek("{{ $veri->KOD }}","{{ $veri->id }}-CAM")' data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4" type="button">
