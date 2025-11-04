@@ -167,7 +167,7 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Fason Üretici</label>
-                      <select onchange="fasonSuz()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" class="CARIHESAPCODE form-control select2 js-example-basic-single" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+                      <select onchange="fasonSuz()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" class="CARIHESAPCODE form-control select2 js-example-basic-single" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
                         <option value="">Seç...</option>
                         @php
                           foreach ($cari_evraklar as $key => $veri) {
@@ -990,6 +990,7 @@
         $('#suzTable > tbody').empty();
 
         var evrakNo = document.getElementById("SIP_NO_SEC").value;
+        
         //var evrakNo = document.getElementById("CARIHESAPCODE_E").value;
       	//alert(evrakNo);
 
@@ -1013,7 +1014,7 @@
     				$.each(jsonData2, function(index, kartVerisi2) {
 
     					htmlCode += "	<tr> ";
-    					htmlCode += "	<td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW' required='' value=''></td> ";
+    					htmlCode += "	<td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW'  value=''></td> ";
     					htmlCode += "	<td><input type='text' class='form-control' name='KOD[]' value='"+kartVerisi2.KOD+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+kartVerisi2.KOD+"'></td> ";
     					htmlCode += "	<td><input type='text' class='form-control' name='STOK_ADI[]' value='"+kartVerisi2.STOK_ADI+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+kartVerisi2.STOK_ADI+"'></td> ";
               htmlCode += "	<td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+kartVerisi2.SF_BAKIYE+"'></td> ";

@@ -741,8 +741,15 @@
                             if (Trim($GK_10_E) <> '') {
                               $sql_sorgu = $sql_sorgu . "AND GK_10 <= '" . $GK_10_E . "'";
                             }
+                            
+                            if (isset($_GET['tarih']) && $_GET['tarih'] == '1') {
+                                $sql_sorgu .= "AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) BETWEEN 0 AND 7 ";
+                            }
+
+
                             $sql_sorgu .= "AND DURUM != 'ISKARTA'";
                             $table = DB::select($sql_sorgu);
+                            
                             \Carbon\Carbon::setLocale('tr');
                             foreach ($table as $table) {
                               $hedefTarih = \Carbon\Carbon::parse($table->BIRSONRAKIKALIBRASYONTARIHI);

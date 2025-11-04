@@ -110,7 +110,7 @@
     // İstatistikler
     $stats = [
         ['title' => 'Toplam Kalibrasyon', 'value' => $kalibrasyon_data['toplam'], 'icon' => 'fa-gauge-high', 'color' => '#3b82f6'],
-        ['title' => 'Kritik Durumlar', 'value' => $kalibrasyon_data['kritik'] + $fason_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444'],
+        ['title' => 'Kritik Kalibrasyonlar', 'value' => $kalibrasyon_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444'],
         ['title' => 'Fason Sevkler', 'value' => $fason_data['toplam'], 'icon' => 'fa-truck-fast', 'color' => '#8b5cf6'],
         ['title' => 'Bekleyen İşlemler', 'value' => $kalibrasyon_data['yakin'] + $fason_data['yakin'], 'icon' => 'fa-clock', 'color' => '#f59e0b']
     ];

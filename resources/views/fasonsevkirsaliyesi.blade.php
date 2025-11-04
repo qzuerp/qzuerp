@@ -1284,7 +1284,7 @@ function siparisleriGetir() {
           htmlCode += "	<tr> ";
 
           htmlCode += "	<td><input type='checkbox' name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
-          htmlCode += "	<td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW' required='' value=''></td> ";
+          htmlCode += "	<td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW'  value=''></td> ";
           htmlCode += "	<td><input type='text' class='form-control' name='KOD[]' value='"+kartVerisi2.KOD+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+kartVerisi2.KOD+"'></td> ";
           htmlCode += "	<td><input type='text' class='form-control' name='STOK_ADI[]' value='"+kartVerisi2.STOK_ADI+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+kartVerisi2.STOK_ADI+"'></td> ";
           htmlCode += "	<td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+kartVerisi2.SF_BAKIYE+"'></td> ";

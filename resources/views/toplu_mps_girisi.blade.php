@@ -711,7 +711,7 @@
               htmlCode += " <tr> ";
 
               htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
-              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW' required='' value=''></td> ";
+              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='EVRAKNO_ROW[]' id='EVRAKNO_ROW'  value=''></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"' readonly></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"' readonly></td> ";
               htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
