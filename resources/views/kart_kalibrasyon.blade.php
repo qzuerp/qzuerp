@@ -747,8 +747,6 @@
                                               AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) <= 7 ";
                             }
 
-
-
                             $sql_sorgu .= "AND DURUM != 'ISKARTA'";
                             $table = DB::select($sql_sorgu);
                             
@@ -767,7 +765,7 @@
                               echo "<td><b>" . $kalanGun . "</b></td>";
                               echo "<td><b>" . $table->DURUM . "</b></td>";
 
-                              echo "<td>" . "<a class='btn btn-info' href='kart_kalibrasyon?ID=" . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+                              echo "<td>" . "<a class='btn btn-info' href='kart_kalibrasyon?ID='{{$table->id}}><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
                               echo "</tr>";
                             }
 

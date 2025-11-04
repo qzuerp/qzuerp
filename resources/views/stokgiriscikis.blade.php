@@ -871,6 +871,11 @@
                       <th>Lot</th>
                       <th>Miktar</th>
                       <th>Tarih</th>
+                      <th>Depo</th>
+                      <th>Lokasyon 1</th>
+                      <th>Lokasyon 2</th>
+                      <th>Lokasyon 3</th>
+                      <th>Lokasyon 4</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -891,6 +896,11 @@
                         echo "<td>".$suzVeri->LOTNUMBER."</td>";
                         echo "<td>".$suzVeri->SF_MIKTAR."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
+                        echo "<td>".$suzVeri->AMBCODE."</td>";
+                        echo "<td>".$suzVeri->LOCATION1."</td>";
+                        echo "<td>".$suzVeri->LOCATION2."</td>";
+                        echo "<td>".$suzVeri->LOCATION3."</td>";
+                        echo "<td>".$suzVeri->LOCATION4."</td>";
 
 
                         echo "<td>"."<a class='btn btn-info' href='".$ekranLink."?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
