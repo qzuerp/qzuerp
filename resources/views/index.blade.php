@@ -110,7 +110,7 @@
     // İstatistikler
     $stats = [
         ['title' => 'Toplam Kalibrasyon', 'value' => $kalibrasyon_data['toplam'], 'icon' => 'fa-gauge-high', 'color' => '#3b82f6'],
-        ['title' => 'Kritik Kalibrasyonlar', 'value' => $kalibrasyon_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444'],
+        ['title' => 'Kritik Kalibrasyonlar', 'value' => $kalibrasyon_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444', 'link' => "kart_kalibrasyon?SUZ=SUZ&firma={$database}&tarih=1#liste"],
         ['title' => 'Fason Sevkler', 'value' => $fason_data['toplam'], 'icon' => 'fa-truck-fast', 'color' => '#8b5cf6'],
         ['title' => 'Bekleyen İşlemler', 'value' => $kalibrasyon_data['yakin'] + $fason_data['yakin'], 'icon' => 'fa-clock', 'color' => '#f59e0b']
     ];
@@ -168,6 +168,7 @@
         align-items: center;
         gap: 16px;
         transition: all 0.2s ease;
+        text-decoration:none;
     }
 
     .stat-card:hover {
@@ -363,7 +364,7 @@
         <!-- Stats -->
         <div class="stats-grid">
             @foreach($stats as $stat)
-            <div class="stat-card">
+            <a href="{{ $stat['link'] ?? '#' }}" class="stat-card">
                 <div class="stat-icon" style="background: {{ $stat['color'] }}">
                     <i class="fa-solid {{ $stat['icon'] }}"></i>
                 </div>
@@ -371,7 +372,7 @@
                     <h3>{{ $stat['title'] }}</h3>
                     <div class="stat-value">{{ $stat['value'] }}</div>
                 </div>
-            </div>
+            </a>
             @endforeach
         </div>
 

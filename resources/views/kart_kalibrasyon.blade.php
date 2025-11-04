@@ -743,7 +743,7 @@
                             }
                             
                             if (isset($_GET['tarih']) && $_GET['tarih'] == '1') {
-                                $sql_sorgu .= "AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) BETWEEN 0 AND 7 ";
+                                $sql_sorgu .= "AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) < 7 ";
                             }
 
 
