@@ -743,8 +743,10 @@
                             }
                             
                             if (isset($_GET['tarih']) && $_GET['tarih'] == '1') {
-                                $sql_sorgu .= "AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) <= 7 ";
+                                $sql_sorgu .= "AND BIRSONRAKIKALIBRASYONTARIHI IS NOT NULL 
+                                              AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) <= 7 ";
                             }
+
 
 
                             $sql_sorgu .= "AND DURUM != 'ISKARTA'";
