@@ -860,6 +860,11 @@
                       <th>Lot</th>
                       <th>Miktar</th>
                       <th>Tarih</th>
+                      <th>Depo</th>
+                      <th>Lokasyon 1</th>
+                      <th>Lokasyon 2</th>
+                      <th>Lokasyon 3</th>
+                      <th>Lokasyon 4</th>
                       <th>#</th>
                     </tr>
                   </thead>
