@@ -70,6 +70,9 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('evrakSuzTable')">
 									<i class="fas fa-file-excel"></i> Excel'e Aktar
 								</button>
+								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportAllTableToExcel('evrakSuzTable')">
+									<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
+								</button>
 								<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('evrakSuzTable')">
 									<i class="fas fa-file-word"></i> Word'e Aktar
 								</button>
@@ -254,6 +257,29 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
         let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
         XLSX.writeFile(wb, "tablo.xlsx");
       }
+
+	function exportAllTableToExcel(tableId) {
+		let wasDataTable = $.fn.DataTable.isDataTable('#' + tableId);
+		let tableElement = document.getElementById(tableId);
+
+		if (wasDataTable) {
+			$('#' + tableId).DataTable().destroy();
+		}
+
+		// Excel'e aktar
+		let wb = XLSX.utils.table_to_book(tableElement, { sheet: "Sayfa1" });
+		XLSX.writeFile(wb, "Stok Listesi.xlsx");
+
+		if (wasDataTable) {
+			$('#' + tableId).DataTable({
+				paging: true,
+				info: true,
+				searching: false,
+				lengthChange: false,
+			});
+		}
+	}
+
       function exportTableToWord(tableId)
       {
         let table = document.getElementById(tableId).outerHTML;

@@ -37,7 +37,10 @@
  
 	$kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
 
-	$t_kart_veri=DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+	$t_kart_veri = DB::table($ekranTableT)
+    ->where('EVRAKNO', '=', (string) $kart_veri->EVRAKNO)
+    ->orderBy('id', 'ASC')
+    ->get();
 
 	$t_kart_veri = DB::table($ekranTableT . ' as t')
 		->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
@@ -47,7 +50,10 @@
 		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM")
 		->get();
 
-	$evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
+	$evraklar = DB::table($ekranTableE)
+    ->orderBy('EVRAKNO', 'ASC')
+    ->get();
+
 
 	$GK1_veri = DB::table($database.'gecoust')->where('EVRAKNO','MPSGK1')->get();
 	$GK2_veri = DB::table($database.'gecoust')->where('EVRAKNO','MPSGK2')->get();
@@ -126,7 +132,7 @@
 									</div>
 									
 									<div class="col-md-6">
-										@include('layout.util.evrakIslemleri')
+										@include('layout.util.evrakIslemleriMPS')
 									</div>
 								</div>
 

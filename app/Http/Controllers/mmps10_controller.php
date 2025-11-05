@@ -345,7 +345,7 @@ class mmps10_controller extends Controller
       case 'kart_sil':
         FunctionHelpers::Logla('MMPS10',$EVRAKNO,'D');
 
-        $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t']);
+        $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t']);
 
         if ($msg) {
           return redirect()->back()->with('error_swal', $msg);
@@ -362,17 +362,29 @@ class mmps10_controller extends Controller
 
         // break;
       case 'kart_olustur':
-        $SON_EVRAK=DB::table($firma.'mmps10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
-        $SON_ID= $SON_EVRAK->EVRAKNO;
-        
-        $SON_ID = (int) $SON_ID;
-        if ($SON_ID == NULL) {
-          $EVRAKNO = 1;
+        // dd($request->all());
+        $tarihKodu = date('ymd'); // Günün tarihi: 251105
+        $tipKodu = $request->MPSEVRAKTYPE; // U veya F
+
+        // Bugünün tarih koduyla başlayan evrakları bul
+        $sonEvrak = DB::table($firma.'mmps10e')
+            ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
+            ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
+            ->first();
+
+        // Bugün için varsa son numarayı al, yoksa 1'den başlat
+        if ($sonEvrak && $sonEvrak->EVRAKNO) {
+            $parca = explode('-', $sonEvrak->EVRAKNO);
+            $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
+        } else {
+            $sayac = 1;
         }
-        else {
-          $EVRAKNO = $SON_ID + 1;
-        }
-        FunctionHelpers::Logla('MMPS10',$SON_ID,'C');
+
+        // Yeni evrak numarasını oluştur
+        $EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
+
+
+        FunctionHelpers::Logla('MMPS10',$EVRAKNO,'C');
 
         DB::table($firma.'mmps10e')->insert([
           //'firma' => $firma,
