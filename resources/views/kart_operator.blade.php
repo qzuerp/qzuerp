@@ -67,6 +67,7 @@ if (isset($kart_veri)) {
     <form class="form-horizontal" action="pers00_opt_islemler" method="POST" name="verilerForm" id="verilerForm">
       @csrf
       <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+      <input type="hidden" name="user_id"  value="{{ $sonID }}">
       <div class="row">
         <div class="col">
           <div class="box box-danger">

@@ -207,7 +207,7 @@ class pers00_opt_controller extends Controller
     case 'kart_duzenle':
     FunctionHelpers::Logla('PERS00',$KOD,'W');
 
-    DB::table($firma.'pers00')->where('KOD',$KOD)->update([
+    DB::table($firma.'pers00')->where('id',$request->user_id)->update([
       'KOD' => $KOD,
       'AD' => $AD,
       'AP10' => $AP10,
@@ -246,7 +246,7 @@ class pers00_opt_controller extends Controller
 
       print_r("Düzenleme işlemi başarılı.");
 
-      $veri=DB::table($firma.'pers00')->where('KOD',$KOD)->first();
+      $veri=DB::table($firma.'pers00')->where('id',$request->input('user_id'))->first();
       return redirect()->route('kart_operator', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
     break;
