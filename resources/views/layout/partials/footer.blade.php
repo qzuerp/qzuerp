@@ -1,30 +1,134 @@
-</div>
-    <footer class="main-footer footer-ayar row">
-
-      <strong>Copyright &copy; {{ now()->year }} QzuERP <a href="https:\\karakuzu.info" target="_blank">Karakuzu Bilişim</a></strong> Tüm Hakları Saklıdır.
-
-    </footer>
-
-    <div class="control-sidebar-bg"></div>
-
-    <div class="modal fade bd-example-modal-lg" id="dokuman_modal" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-images" style='color: blue'></i> Resim</h4>
-          </div>
-
-          <div class="modal-body">
-            <img src="" alt="Dosya Önizleme" class="w-100 rounded">
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
-          </div>
-        </div>
-      </div>
+<!-- SÜPER İNCE SABİT FOOTER - FİNAL VERSİYON -->
+<footer class="ultra-footer">
+  <div class="footer-inner">
+    
+    <!-- Sol taraf -->
+    <div class="left-side">
+      <span class="copyright-mini">
+        © {{ now()->year }} <strong>QzuERP</strong> • 
+        <a href="https://karakuzu.info" target="_blank">Karakuzu Bilişim</a>
+      </span>
     </div>
+
+    <!-- Orta - Canlı saat + GÜNÜN TARİHİ -->
+    <div class="center-side">
+      <span id="live-clock">00:00:00</span>
+      <span class="separator">|</span>
+      <span id="today-date">7 Kasım 2025, Cuma</span>
+    </div>
+
+    <!-- Sağ taraf - Yukarı çık butonu -->
+    <div class="right-side">
+      <button id="go-top" title="Yukarı çık"><i class="fa-solid fa-angle-up"></i></button>
+    </div>
+  </div>
+</footer>
+
+<style>
+/* ULTRA İNCE SABİT FOOTER */
+.ultra-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(248, 249, 250, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #dee2e6;
+  padding: 6px 16px;
+  z-index: 99;
+  margin-left:80px;
+  font-family: system-ui, -apple-system, sans-serif;
+  box-shadow: 0 -3px 15px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12.5px;
+}
+
+.left-side { background:#fff !important; }
+.left-side a {
+  color: #007bff;
+  text-decoration: none;
+}
+.left-side a:hover { text-decoration: underline; }
+
+.center-side {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.right-side button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.right-side button:hover {
+  background: rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+/* Mobil */
+@media (max-width: 768px) {
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+  .ultra-footer { 
+    padding: 8px 12px;
+    margin-left: 0 !important; /* mobilde sidebar yoksa kaymasın */
+  }
+}
+
+/* Body boşluk - footer yapışmasın */
+body { padding-bottom: 70px !important; }
+</style>
+
+<script>
+// 1. Canlı saat
+function updateClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString('tr-TR', { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+  });
+  document.getElementById('live-clock').textContent = time;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// 2. Günün tarihi (Türkçe + gün adı)
+function updateDate() {
+  const now = new Date();
+  const gunler = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  
+  const tarih = `${now.getDate()} ${aylar[now.getMonth()]} ${now.getFullYear()}, ${gunler[now.getDay()]}`;
+  document.getElementById('today-date').textContent = tarih;
+}
+updateDate(); // ilk yüklemede çalışsın
+
+// 3. Yukarı çık butonu
+document.getElementById('go-top').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
   
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -429,6 +533,3 @@
       });
 
     </script>
-
-  </body>
-</html>

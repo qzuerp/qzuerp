@@ -13,7 +13,7 @@ class tezgah_is_planlama_controller extends Controller
 
         $sonID = DB::table('plan_e')->min('id');
 
-        return view('tezgah_is_planlama')->with('sonID', $sonID);
+        return view('tezgah_is_plan')->with('sonID', $sonID);
     }
 
     public function kartGetir(Request $request) {

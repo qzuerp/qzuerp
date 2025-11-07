@@ -98,6 +98,9 @@
         @if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
           <li><a href="tezgahisplanlama"><i class='bx bx-calendar-check'></i>Tezgah İş Planlama</a></li>
         @endif
+        @if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
+          <li><a href="tezgahisplanlama"><i class='bx bx-calendar-check'></i>Tezgah İş Planlama (Geliştiriliyor...)</a></li>
+        @endif
         @if (in_array('CLSMBLDRM', $kullanici_read_yetkileri))
           <li><a href="calisma_bildirimi"><i class='bx bx-notification'></i>Çalışma Bildirimi</a></li>
         @endif
