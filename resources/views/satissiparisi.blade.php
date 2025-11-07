@@ -622,6 +622,7 @@
                         <tr class="bg-primary">
                           <th>Sipariş No</th>
                           <th>Tedarikçi</th>
+                          <th>Müşteri Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Lot No</th>
@@ -638,6 +639,7 @@
                         <tr class="bg-info">
                         <th>Sipariş No</th>
                           <th>Tedarikçi</th>
+                          <th>Müşteri Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Lot No</th>
@@ -667,7 +669,7 @@
                           if (isset($_GET['TARIH_B'])) {$TARIH_B = TRIM($_GET['TARIH_B']);}
                           if (isset($_GET['TARIH_E'])) {$TARIH_E = TRIM($_GET['TARIH_E']);}
 
-                          $sql_sorgu = ' SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S40T.* FROM ' . $database . ' STOK40E S40E
+                          $sql_sorgu = ' SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.* FROM ' . $database . ' STOK40E S40E
                             LEFT JOIN ' . $database . ' cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
                             LEFT JOIN ' . $database . '  STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
                             WHERE 1=1';
@@ -698,6 +700,7 @@
                             echo "<tr>";
                             echo "<td><b>" . $table->EVRAKNO . "</b></td>";
                             echo "<td><b>" . $table->TEDARIKCI . "</b></td>";
+                            echo "<td><b>" . $table->CHSIPNO . "</b></td>";
                             echo "<td><b>" . $table->KOD . "</b></td>";
                             echo "<td><b>" . $table->STOK_ADI . "</b></td>";
                             echo "<td><b>" . $table->LOTNUMBER . "</b></td>";
