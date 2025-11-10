@@ -46,7 +46,17 @@
 	$GK8_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK8')->get();
 	$GK9_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK9')->get();
 	$GK10_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK10')->get();
-
+	$GK11_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK11')->get();
+	$GK12_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK12')->get();
+	$GK13_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK13')->get();
+	$GK14_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK14')->get();
+	$GK15_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK15')->get();
+	$GK16_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK16')->get();
+	$GK17_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK17')->get();
+	$GK18_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK18')->get();
+	$GK19_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK19')->get();
+	$GK20_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK20')->get();
+	
 	if (isset($kart_veri)) {
 
 		$ilkEvrak=DB::table($ekranTableE)->min('id');
@@ -220,6 +230,9 @@
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#liste">Liste</a>
 									</li>
+									<li class="nav-item">
+										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#ders">Öğrenilmiş Dersler</a>
+									</li>
 									<li class="nav-item" id="baglantiliDokumanlarTab">
 										<a class="nav-link" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab" href="#baglantiliDokumanlar">
 										<i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar
@@ -229,188 +242,27 @@
 
 
 								<div class="tab-content">
-
-									<div class="active tab-pane" id="grupkodu">
-
+									<div class="active tab-pane overflow-hidden" id="grupkodu">
 										<div class="row">
 											<div class="row">
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 1</label>
-
-													<select id="GK_1" name="GK_1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_1" class="form-control select2 js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-
-														@php
-															foreach ($GK1_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_1) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+												@for($i = 1; $i <= 20; $i++)
+													<div class="col-md-2 col-xs-4 col-sm-4">
+														<label>Grup Kodu {{ $i }}</label>
+														<select id="GK_{{ $i }}" name="GK_{{ $i }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_{{ $i }}" class="form-control js-example-basic-single" style="width: 100%;">
+															<option value=" ">Seç</option>
+															@php
+																$variable = 'GK' . $i . '_veri';
+																if (isset($$variable)) {
+																	foreach ($$variable as $key => $veri) {
+																		$selected = ($veri->KOD == @$kart_veri->{'GK_'.$i}) ? 'selected' : '';
+																		echo "<option value='".$veri->KOD."' ".$selected.">".$veri->KOD." - ".$veri->AD."</option>";
+																	}
 																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 2</label>
-													<select id="GK_2" name="GK_2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_2" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
+															@endphp
+														</select>
+													</div>
+												@endfor
 
-														@php
-															foreach ($GK2_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_2) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 3</label>
-
-													<select id="GK_3" name="GK_3"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_3" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-
-														@php
-															foreach ($GK3_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_3) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 4</label>
-													<select id="GK_4" name="GK_4"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_4" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-
-														@php
-															foreach ($GK4_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_4) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 5</label>
-													<select id="GK_5" name="GK_5"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_5" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-
-														@php
-															foreach ($GK5_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_5) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 6</label>
-													<select id="GK_6" name="GK_6"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_6" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-														@php
-															foreach ($GK6_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_6) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 7</label>
-
-													<select id="GK_7" name="GK_7"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_7" class="form-control js-example-basic-single" style="width: 100%;">
-													<option value=" ">Seç</option>
-													@php
-														foreach ($GK7_veri as $key => $veri) {
-															if ($veri->KOD == @$kart_veri->GK_7) {
-																echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-															}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-													<label>Grup Kodu 8</label>
-													<select id="GK_8" name="GK_8"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_8" class="form-control js-example-basic-single" style="width: 100%;">
-														<option value=" ">Seç</option>
-														@php
-															foreach ($GK8_veri as $key => $veri) {
-																if ($veri->KOD == @$kart_veri->GK_8) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-														@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-												<label>Grup Kodu 9</label>
-												<select id="GK_9" name="GK_9"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_9" class="form-control js-example-basic-single" style="width: 100%;">
-													<option value=" ">Seç</option>
-													@php
-													foreach ($GK9_veri as $key => $veri) {
-														if ($veri->KOD == @$kart_veri->GK_9) {
-																echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-														}
-														else {
-															echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-														}
-													}
-													@endphp
-													</select>
-												</div>
-
-												<div class="col-md-2 col-xs-4  col-sm-4">
-												<label>Grup Kodu 10</label>
-												<select id="GK_10" name="GK_10"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_10" class="form-control js-example-basic-single" style="width: 100%;">
-													<option value=" ">Seç</option>
-													@php
-														foreach ($GK10_veri as $key => $veri) {
-															if ($veri->KOD == @$kart_veri->GK_10) {
-																	echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-																else {
-																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																}
-															}
-													@endphp
-													</select>
-												</div>
 
 											</div>
 										</div>
@@ -1274,6 +1126,10 @@
 												}
 											@endphp
 										</div>
+									</div>
+									
+									<div class="tab-pane" id="ders">
+										
 									</div>
 
 									<div class="tab-pane" id="baglantiliDokumanlar">

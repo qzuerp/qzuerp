@@ -1,7 +1,7 @@
 @section('evrakIslemleri')
 <style>
   .evrak-toolbar {
-    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    /* background: linear-gradient(to bottom, #ffffff, #f8f9fa); */
   }
   
   .evrak-actions {

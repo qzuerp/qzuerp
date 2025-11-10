@@ -356,9 +356,12 @@
         @endif
 
         <!-- Header -->
-        <div class="page-header">
-            <h1>Hoş Geldiniz, {{ $kullanici_veri->name }}</h1>
-            <p class="m-0" id="current-time">Yükleniyor...</p>
+        <div class="page-header d-flex justify-content-between">
+            <div>
+                <h1>Hoş Geldiniz, {{ $kullanici_veri->name }}</h1>
+                <p class="m-0" id="current-time">Yükleniyor...</p>
+            </div>
+            <img width="150" class="rounded-2" src="https://www.shutterstock.com/image-photo/black-white-photograph-gazi-mustafa-600nw-2672730885.jpg" alt="">
         </div>
 
         <!-- Stats -->
