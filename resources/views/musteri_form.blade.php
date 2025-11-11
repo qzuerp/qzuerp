@@ -97,7 +97,7 @@
         @include('layout.util.logModal',['EVRAKTYPE' => 'SRV00','EVRAKNO'=>@$kart_veri->EVRAKNO])
         <section class="content">
 
-                        <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+            <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
@@ -161,7 +161,6 @@
                 <div class="row">
                     <div class="col">
                         <div class="box box-danger">
-                            <!-- <h5 class="box-title">Bordered Table</h5> -->
                             <div class="box-body">
                                 <!-- <hr> -->
                                 <div class="row ">
@@ -184,7 +183,6 @@
                                     </div>
                                     <div class="col-md-2 col-xs-2">
                                         <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
-										 
                                     </div>
                                     <div class="col-md-2 col-xs-2">
                                         <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ $kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ $kullanici_veri->firma }}">

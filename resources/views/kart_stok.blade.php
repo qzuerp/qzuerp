@@ -66,6 +66,7 @@
 
 	}
 
+  $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();
 @endphp
 
 @section('content')
@@ -1129,7 +1130,163 @@
 									</div>
 									
 									<div class="tab-pane" id="ders">
-										
+										@php
+											$cgc70_veri = DB::table($database.'cgc70')->where('STOK_KODU',@$kart_veri->KOD)->first();
+											$lokasyonlar = json_decode($cgc70_veri->LOKASYONLAR ?? '[]');
+										@endphp
+										<div class="row">
+											<!-- Üst Bilgiler -->
+											<div class="row ">
+												<div class="col-md-3">
+													<label class="form-label">Başlama Tarihi</label>
+													<input type="date" class="form-control" name="baslama_tarihi" value="{{ @$cgc70_veri->BASLAMA_TARIHI }}">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Şikayet / Olay</label>
+													<input type="text" class="form-control" name="sikayet_no" value="{{ @$cgc70_veri->SIKAYET_NO }}">
+												</div>
+											</div>
+
+											<!-- Problem Sahibinin Bilgisi -->
+											<h6 class="fw-bold mt-4">Problem Sahibinin Bilgisi</h6>
+											<div class="row ">
+												<div class="col-md-3">
+													<label class="form-label">Firma İsmi</label>
+													<input type="text" class="form-control" name="firma_adi" value="{{ @$cgc70_veri->FIRMA_ADI }}">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Lokasyon / Tanımlayıcı</label>
+													<input type="text" class="form-control" name="lokasyon" value="{{ @$cgc70_veri->LOKASYON }}">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Takım Lideri İsmi</label>
+													<input type="text" class="form-control" name="takim_lideri" value="{{ @$cgc70_veri->TAKIM_LIDERI }}">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Telefon / E-posta</label>
+													<input type="text" class="form-control" name="iletisim" value="{{ @$cgc70_veri->ILETISIM }}">
+												</div>
+											</div>
+
+											<!-- Ürün Bilgisi -->
+											<h6 class="fw-bold mt-4">Ürün Bilgisi</h6>
+											<div class="row ">
+												<div class="col-md-3">
+													<label class="form-label">Stok Kodu</label>
+													<select class="form-control select2 KOD" name="" onchange="stokAdiGetir3(this.value)" style="height: 30px; width:100%;">
+														@foreach ($stok_evraklar as $veri)
+															@if(@$cgc70_veri->STOK_KODU == $veri->KOD)
+															<option selected value="{{ $veri->KOD }}|||{{ $veri->AD }}|||{{ $veri->IUNIT }}">{{ $veri->KOD }} - {{ $veri->AD }}</option>
+															@else
+															<option value="{{ $veri->KOD }}|||{{ $veri->AD }}|||{{ $veri->IUNIT }}">{{ $veri->KOD }} - {{ $veri->AD }}</option>
+															@endif
+														@endforeach
+													</select>
+													<input style="color: red" type="hidden" name="" value="{{ @$cgc70_veri->STOK_KODU }}">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Stok Adı</label>
+													<input type="text" name="" id="" class="form-control" value="{{ @$cgc70_veri->STOK_ADI }}" readonly>
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">Program İsmi</label>
+													<input type="text" class="form-control" name="program_adi" value="{{ @$cgc70_veri->PROGRAM_ADI }}">
+												</div>
+											</div>
+
+											<!-- Problem Tanımlama -->
+											<h6 class="fw-bold mt-4">Problem Tanımlama</h6>
+											<div class="">
+												<label class="form-label">Müşteri etkisi / Şikayeti</label>
+												<textarea class="form-control" name="musteri_sikayet" rows="2">{{ @$cgc70_veri->MUSTERI_SIKAYET }}</textarea>
+											</div>
+											<div class="">
+												<label class="form-label">Müşteri Gerekliliği</label>
+												<textarea class="form-control" name="musteri_gereklilik" rows="2">{{ @$cgc70_veri->MUSTERI_GEREKLILIK }}</textarea>
+											</div>
+											<div class="">
+												<label class="form-label">Müşteri Gerekliliğinden Sapma</label>
+												<textarea class="form-control" name="sapma" rows="2">{{ @$cgc70_veri->SAPMA }}</textarea>
+											</div>
+											<div class="">
+												<label class="form-label">Problem nerede / ne zaman oluşuyor?</label>
+												<textarea class="form-control" name="problem_yer_zaman" rows="2">{{ @$cgc70_veri->PROBLEM_YER_ZAMAN }}</textarea>
+											</div>
+											<div class="row ">
+												<div class="col-md-6">
+													<label class="form-label">Problemin sıklığı</label>
+													<input type="text" class="form-control" name="siklik" value="{{ @$cgc70_veri->SIKLIK }}">
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Problem çözme amaç ifadesi & hedef zaman</label>
+													<input type="text" class="form-control" name="hedef_zaman" value="{{ @$cgc70_veri->HEDEF_ZAMAN }}">
+												</div>
+											</div>
+											<div class="">
+												<label class="form-label">Problem değerlendirme ölçüm metodu</label>
+												<textarea class="form-control" name="olcum_metodu" rows="2">{{ @$cgc70_veri->OLCUM_METODU }}</textarea>
+											</div>
+
+
+											<!-- Sınırlandırma -->
+											<h6 class="fw-bold mt-4">Sınırlandırma</h6>
+											<div class="table-responsive ">
+												<table class="table table-bordered align-middle text-center">
+													<thead class="table-light">
+														<tr>
+															<th>#</th>
+															<th>Lokasyon</th>
+															<th>Potansiyel Miktar</th>
+															<th>Gerçek Miktar</th>
+															<th>Detaylar</th>
+														</tr>
+													</thead>
+													<tbody>
+														@for($i = 0; $i < 6; $i++)
+															@php
+																$row = $lokasyonlar[$i] ?? null;
+															@endphp
+															<tr>
+																<td>{{ $i + 1 }}</td>
+																<td><input type="text" class="form-control" name="lokasyon_{{ $i + 1 }}" value="{{ $row->lokasyon ?? '' }}"></td>
+																<td><input type="number" class="form-control" name="pot_miktar_{{ $i + 1 }}" value="{{ $row->pot_miktar ?? '' }}"></td>
+																<td><input type="number" class="form-control" name="gercek_miktar_{{ $i + 1 }}" value="{{ $row->gercek_miktar ?? '' }}"></td>
+																<td><input type="text" class="form-control" name="detay_{{ $i + 1 }}" value="{{ $row->detay ?? '' }}"></td>
+															</tr>
+														@endfor
+													</tbody>
+												</table>
+											</div>
+
+											<!-- Hata Modu Analizi -->
+											<h6 class="fw-bold mt-4">Hata Modu Analizi</h6>
+											<div class="">
+												<label class="form-label">Ürün uygunsuzluğuyla sonuçlanan hata modu</label>
+												<textarea class="form-control" name="hata_modu" rows="2">{{ @$cgc70_veri->HATA_MODU }}</textarea>
+											</div>
+											<div class="">
+												<label class="form-label">Hata Modu Nedeni</label>
+												<textarea class="form-control" name="hata_nedeni" rows="2">{{ @$cgc70_veri->HATA_NEDENI }}</textarea>
+											</div>
+
+											<!-- 3x5 Neden Analizi -->
+											<h6 class="fw-bold mt-4">3x5 Neden Analizi Sonuçları</h6>
+											<div class="row ">
+												<div class="col-md-4">
+													<label class="form-label">Kaçma Kök Nedeni</label>
+													<input type="text" class="form-control" name="kkn" value="{{ @$cgc70_veri->KKN }}">
+												</div>
+												<div class="col-md-4">
+													<label class="form-label">Oluşma Kök Nedeni</label>
+													<input type="text" class="form-control" name="okn" value="{{ @$cgc70_veri->OKN }}">
+												</div>
+												<div class="col-md-4">
+													<label class="form-label">Sistematik Kök Nedeni</label>
+													<input type="text" class="form-control" name="skn" value="{{ @$cgc70_veri->SKN }}">
+												</div>
+											</div>
+
+										</div>
 									</div>
 
 									<div class="tab-pane" id="baglantiliDokumanlar">

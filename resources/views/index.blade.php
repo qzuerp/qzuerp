@@ -358,10 +358,14 @@
         <!-- Header -->
         <div class="page-header d-flex justify-content-between">
             <div>
-                <h1>Hoş Geldiniz, {{ $kullanici_veri->name }}</h1>
-                <p class="m-0" id="current-time">Yükleniyor...</p>
+                <h1>Hoş Geldin, {{ $kullanici_veri->name }}</h1>
+                <div class="center-side fs-6">
+                    <span class="live-clock">Yükleniyor...</span>
+                    <span class="separator"></span>
+                    <span class="today-date"></span>
+                </div>
             </div>
-            <img width="150" class="rounded-2" src="https://www.shutterstock.com/image-photo/black-white-photograph-gazi-mustafa-600nw-2672730885.jpg" alt="">
+            <!-- <img width="130" class="rounded-1" src="https://www.shutterstock.com/image-photo/black-white-photograph-gazi-mustafa-600nw-2672730885.jpg" alt=""> -->
         </div>
 
         <!-- Stats -->

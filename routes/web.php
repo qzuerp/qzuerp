@@ -55,6 +55,7 @@ use App\Http\Controllers\tmustr_controller;
 use App\Http\Controllers\info_controller;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\efn_controler;
+use App\Http\Controllers\cgc70_controller;
 
 
 use Illuminate\Http\Request;
@@ -90,6 +91,8 @@ Route::post('/raporlama/template/update/{id}', [RaporlamaController::class, 'upd
 
 Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_gazetesi.index');
 
+Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
+Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
 
 Auth::routes(['password.request' => false]);
 

@@ -13,6 +13,9 @@ class NotificationController extends Controller
     // Alternatif: Polling yaklaşımı (Daha verimli)
     public function poll(Request $request)
     {
+        if (!$request->ajax()) {
+            return redirect('/');
+        }
         if(Auth::check()) {
             $u = Auth::user();
         }

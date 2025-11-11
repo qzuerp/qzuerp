@@ -253,7 +253,7 @@ if (isset($kart_veri)) {
 
                       <button type="button" class="btn btn-default delete-row mb-2" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
                       <button type="button" data-bs-target="#modal_fason" data-bs-toggle="modal" class="btn btn-default mb-2" id="deleteRow"><i class="fa fa-check" style="color: red"></i>&nbsp;Fason Seç</button>
-
+                      <h6 class="text-danger"><b>Fason ölçüm sonuçları ve ilgili dökümanlarla birlikte fason raporlarının sisteme girilmesi zorunludur.</b></h6>
                     <table class="table table-bordered text-center" id="veriTable" >
                       <thead>
                         <tr>
@@ -377,20 +377,16 @@ if (isset($kart_veri)) {
                             <input maxlength="255" type="hidden" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255 "style="color: red" type="number" name="NUM1_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" id="NUM1_SHOW" class="NUM1 form-control" disabled>
-                            <input maxlength="255" type="hidden" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+                            <input maxlength="255" type="text" id="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" class="NUM1 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255 "style="color: red" type="number" name="NUM2_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id="NUM2_SHOW" class="NUM2 form-control" disabled>
-                            <input maxlength="255" type="hidden" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+                            <input maxlength="255" type="text" id="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" class="NUM2 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255 "style="color: red" type="number" name="NUM3_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id="NUM3_SHOW" class="NUM3 form-control" disabled>
-                            <input maxlength="255" type="hidden" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+                            <input maxlength="255" type="text" id="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" class="NUM3 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255 "style="color: red" type="number" name="NUM4_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id="NUM4_SHOW" class="NUM4 form-control" disabled>
-                            <input maxlength="255" type="hidden" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+                            <input maxlength="255" type="text" id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" class="NUM4 form-control">
                           </td>
                           <td>#</td>
 

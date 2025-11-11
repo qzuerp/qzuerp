@@ -697,7 +697,12 @@
             isPolling = true;
 
             try {
-                const response = await fetch(`/notifications/poll?lastId=${lastId}`);
+                const response = await fetch(`/notifications/poll?lastId=${lastId}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
                 const data = await response.json();
 
                 if (data.notifications.length > 0) {
