@@ -772,6 +772,42 @@
       if (firstLink) firstLink.classList.add('active');
     });
 
+
+    function adjustZoom() {
+      const width = window.innerWidth;
+      let zoom = 1;
+
+      if (width < 600) zoom = 0.7;      // telefon
+      else if (width < 900) zoom = 0.8; // tablet
+      else if (width < 1400) zoom = 0.9;  // laptop
+      else zoom = 1.1;                  // geniş ekran
+
+      document.body.style.zoom = zoom;
+    }
+
+    // window.addEventListener('resize', adjustZoom);
+    // window.addEventListener('load', adjustZoom);
+
+    saveRecentPage('{{ $ekranAdi }}','{{ $ekranLink }}')
+
+    function saveRecentPage(title, url, icon = 'fa-file') {
+      if(url == 'index')
+        return;
+        let recent = JSON.parse(localStorage.getItem('recentPages') || '[]');
+        
+        recent = recent.filter(item => item.url !== url);
+        
+        recent.unshift({
+            title: title,
+            url: url,
+            icon: icon,
+            timestamp: new Date().getTime()
+        });
+        
+        recent = recent.slice(0, 5);
+        
+        localStorage.setItem('recentPages', JSON.stringify(recent));
+    }
   </script>
 
   <script>

@@ -26,27 +26,27 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 
 @section('content')
 <style>
-#overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-}
-#overlay img {
-  max-width: 100vw;
-  max-height: 100vh;
-  transform: scale(3);
-  transition: transform 0.25s ease;
-}
-#overlay.show img {
-  transform: scale(1);
-}
+	#overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.8);
+		display: none;
+		justify-content: center;
+		align-items: center;
+		z-index: 99999;
+	}
+	#overlay img {
+		max-width: 100vw;
+		max-height: 100vh;
+		transform: scale(3);
+		transition: transform 0.25s ease;
+	}
+	#overlay.show img {
+		transform: scale(1);
+	}
 </style>
 
 <div id="overlay"></div>
@@ -177,13 +177,19 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 
 										$kodlar = $evraklar->pluck('KOD')->toArray();
 
-										$gorseller = DB::table($database.'dosyalar00')
-											->whereIn('EVRAKNO', $kodlar)
-											->where('EVRAKTYPE', 'STOK00')
-											->where('DOSYATURU', 'GORSEL')
-											->get()
-											->keyBy('EVRAKNO');
+										$gorseller = collect();
+										foreach (array_chunk($kodlar, 2000) as $chunk) {
+											$part = DB::table($database.'dosyalar00')
+												->whereIn('EVRAKNO', $chunk)
+												->where('EVRAKTYPE', 'STOK00')
+												->where('DOSYATURU', 'GORSEL')
+												->get();
+											$gorseller = $gorseller->merge($part);
+										}
+
+										$gorseller = $gorseller->keyBy('EVRAKNO');
 									@endphp
+
 
 										@foreach ($evraklar as $suzVeri)
 											@php

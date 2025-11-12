@@ -32,7 +32,32 @@
   $t_kart_veri=DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
   $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
   $mmps_evraklar=DB::table($database.'mmps10t')->orderBy('id', 'ASC')->get();
-  $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+
+  $tezgahlar = DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+
+    $tezgahIsler = [];
+    foreach($tezgahlar as $tezgah) {
+        // her tezgah için işleri çek
+        $jobs = DB::table('preplan_t as p')
+            ->join('mmps10t as m', 'p.JOBNO', '=', 'm.JOBNO')
+            ->where('p.TEZGAH_KODU', $tezgah->KOD)
+            ->select(
+                'm.JOBNO',
+                'm.R_SIRANO',
+                'm.R_MIKTART',
+                'm.EVRAKNO',
+                'm.R_OPERASYON',
+                'm.R_YMAMULMIKTAR',
+                'm.R_ACIK_KAPALI'
+            )
+            ->orderByRaw("CASE WHEN m.R_ACIK_KAPALI = 'K' THEN 1 ELSE 0 END ASC")
+            ->orderBy('p.SIRANO', 'ASC')
+            ->get();
+
+        $tezgahIsler[$tezgah->KOD] = $jobs;
+    }
+
+
   if (isset($kart_veri)) {
     $ilkEvrak=DB::table($ekranTableE)->min('id');
     $sonEvrak=DB::table($ekranTableE)->max('id');
@@ -41,45 +66,6 @@
   }
 @endphp
 <style>
-  .extra-tools {
-        position: fixed;
-        bottom: 45px;
-        right: 20px;
-        display: flex;
-        gap: 8px;
-        z-index: 1000;
-    }
-    
-    .extra-tools .btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        color
-    }
-    
-    .extra-tools .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    .btn-stats {
-        background: #fff;
-    }
-    
-    .btn-auto {
-        background: #fff;
-    }
-    
-    .btn-export {
-        background: #fff;
-    }
   .board { 
     display: grid; 
     grid-template-columns: 320px 1fr; 
@@ -130,7 +116,14 @@
     cursor: move;
     position: relative;
   }
-  
+  .job-card.done
+  {
+    border-left: 4px solid rgb(102, 155, 52);
+  }
+  .job-card.done:hover
+  {
+    border-left-color: rgb(77, 117, 40);
+  }
   .job-card:hover {
     border-left-color: #764ba2;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -447,7 +440,6 @@
     margin: 0;
   }
 </style>
-
 @section('content')
 <div class="content-wrapper">
     @include('layout.util.evrakContentHeader')
@@ -464,9 +456,8 @@
         <span id="toastMessage"></span>
     </div>
 
-    <div class="sync-status" id="syncStatus">
-        <i class="fa fa-check-circle"></i>
-        <span id="syncStatusText">Tüm değişiklikler kaydedildi</span>
+    <div class="changes-badge" id="changesBadge">
+        <i class="fa fa-exclamation-triangle"></i> Kaydedilmemiş değişiklikler var!
     </div>
 
     <section class="content">
@@ -514,35 +505,22 @@
                                 <div class="panel">
                                     <div class="panel-header">
                                         <span><i class="fa fa-inbox"></i> Atanmamış İşler</span>
-                                        <span class="badge" id="unassignedCount">0</span>
+                                        <span class="badge text-black" id="unassignedCount">0</span>
                                     </div>
                                     <div class="panel-body">
-                                        <div id="unassigned" class="list connected" data-area="unassigned">
+                                        <div id="unassigned" class="list connected">
                                             @php
-                                                // Önce atanmış işleri al
-                                                $atanmisIsler = DB::table($ekranTableT)
-                                                    ->where('EVRAKNO', @$kart_veri->EVRAKNO)
-                                                    ->pluck('JOBNO')
-                                                    ->toArray();
-                                                
-                                                // Tüm işleri al
-                                                $JOBS = DB::table($database.'mmps10t')
-                                                    ->where('R_KAYNAKTYPE','I')
+                                                $JOBS = DB::table($database.'mmps10t as m')
+                                                    ->leftJoin('preplan_t as p', 'm.JOBNO', '=', 'p.JOBNO')
+                                                    ->where('m.R_KAYNAKTYPE', 'I')
+                                                    ->whereNull('p.JOBNO')
+                                                    ->select('m.*')
                                                     ->get();
                                             @endphp
                                             @if($JOBS->count() > 0)
                                                 @foreach($JOBS as $JOB)
-                                                    @if(!in_array($JOB->JOBNO, $atanmisIsler))
-                                                    <div class="job-card" 
-                                                         data-isno="{{ $JOB->JOBNO }}" 
-                                                         data-rsira="{{ $JOB->R_SIRANO }}" 
-                                                         data-sure="{{ $JOB->R_MIKTART }}" 
-                                                         data-evrakno="{{ $JOB->EVRAKNO }}" 
-                                                         data-operasyon="{{ $JOB->R_OPERASYON }}" 
-                                                         data-hedef="{{ $JOB->R_YMAMULMIKTAR }}"
-                                                         data-planid="">
+                                                    <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" data-isno="{{ $JOB->JOBNO }}" data-rsira="{{ $JOB->R_SIRANO }}" data-sure="{{ $JOB->R_MIKTART }}" data-evrakno="{{ $JOB->EVRAKNO }}" data-operasyon="{{ $JOB->R_OPERASYON }}" data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
                                                         <span class="job-badge">{{ $JOB->R_SIRANO }}</span>
-                                                        <span class="save-indicator"><i class="fa fa-spinner fa-spin"></i></span>
                                                         <div class="job-title">{{ $JOB->JOBNO }}</div>
                                                         <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
                                                         <div class="job-meta">
@@ -550,83 +528,60 @@
                                                             <span><i class="fa fa-bullseye"></i> {{ $JOB->R_YMAMULMIKTAR }}</span>
                                                         </div>
                                                     </div>
-                                                    @endif
                                                 @endforeach
                                             @else
                                                 <div class="empty-state">
                                                     <i class="fa fa-check-circle"></i>
-                                                    <p>Hiç iş bulunamadı!</p>
+                                                    <p>Tüm işler atandı!</p>
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <div class="panel">
                                     <div class="panel-header">
                                         <span><i class="fa fa-cogs"></i> Tezgahlar</span>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="pool row" data-pool="PRODUCTION">
-                                            @if($imlt00_evraklar->count() > 0)
-                                                @foreach($imlt00_evraklar as $imlt00)
-                                                    <div class="col-4 workcenter" data-wc="{{ $imlt00->KOD }}" data-cap="24">
+                                        <div class="pool row" data-pool="FREZE">
+                                            @if($tezgahlar->count() > 0)
+                                                @foreach($tezgahlar as $tezgah)
+                                                    <div class="col-md-6 col-4 workcenter" data-wc="{{ $tezgah->KOD }}" data-cap="24">
                                                         <div class="wc-head">
                                                             <div class="wc-title">
                                                                 <i class="fa fa-wrench"></i>
-                                                                <span>{{ $imlt00->KOD }} - {{ $imlt00->AD }}</span>
+                                                                <span>{{ $tezgah->KOD }} - {{ $tezgah->AD }}</span>
                                                             </div>
                                                             <div class="wc-metric">0/24s</div>
                                                         </div>
-                                                        <div class="list connected droppable" data-area="{{ $imlt00->KOD }}">
-                                                            @php
-                                                                // Bu tezgaha atanmış işleri getir
-                                                                $tezgahIsleri = DB::table($ekranTableT)
-                                                                    ->where('EVRAKNO', @$kart_veri->EVRAKNO)
-                                                                    ->where('TEZGAH_KODU', $imlt00->KOD)
-                                                                    ->orderBy('id', 'ASC')
-                                                                    ->get();
-                                                            @endphp
-                                                            @foreach($tezgahIsleri as $planIs)
-                                                                @php
-                                                                    $jobDetay = DB::table($database.'mmps10t')
-                                                                        ->where('JOBNO', $planIs->JOBNO)
-                                                                        ->first();
-                                                                @endphp
-                                                                @if($jobDetay)
-                                                                <div class="job-card" 
-                                                                     data-isno="{{ $jobDetay->JOBNO }}" 
-                                                                     data-rsira="{{ $jobDetay->R_SIRANO }}" 
-                                                                     data-sure="{{ $jobDetay->R_MIKTART }}" 
-                                                                     data-evrakno="{{ $jobDetay->EVRAKNO }}" 
-                                                                     data-operasyon="{{ $jobDetay->R_OPERASYON }}" 
-                                                                     data-hedef="{{ $jobDetay->R_YMAMULMIKTAR }}"
-                                                                     data-planid="{{ $planIs->id }}">
-                                                                    <span class="job-badge">{{ $jobDetay->R_SIRANO }}</span>
-                                                                    <span class="save-indicator"><i class="fa fa-spinner fa-spin"></i></span>
-                                                                    <div class="job-title">{{ $jobDetay->JOBNO }}</div>
-                                                                    <div class="job-info">{{ $jobDetay->R_OPERASYON }} · Evrak: {{ $jobDetay->EVRAKNO }}</div>
+                                                        <div class="list connected droppable">
+                                                            @foreach($tezgahIsler[$tezgah->KOD] ?? [] as $JOB)
+                                                                <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" 
+                                                                    data-isno="{{ $JOB->JOBNO }}" 
+                                                                    data-rsira="{{ $JOB->R_SIRANO }}" 
+                                                                    data-sure="{{ $JOB->R_MIKTART }}" 
+                                                                    data-evrakno="{{ $JOB->EVRAKNO }}" 
+                                                                    data-operasyon="{{ $JOB->R_OPERASYON }}" 
+                                                                    data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
+                                                                    <span class="job-badge">{{ $JOB->R_SIRANO }}</span>
+                                                                    <div class="job-title">{{ $JOB->JOBNO }}</div>
+                                                                    <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
                                                                     <div class="job-meta">
-                                                                        <span><i class="fa fa-clock-o"></i> {{ $jobDetay->R_MIKTART }}s</span>
-                                                                        <span><i class="fa fa-bullseye"></i> {{ $jobDetay->R_YMAMULMIKTAR }}</span>
+                                                                        <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART }}s</span>
+                                                                        <span><i class="fa fa-bullseye"></i> {{ $JOB->R_YMAMULMIKTAR }}</span>
                                                                     </div>
                                                                 </div>
-                                                                @endif
                                                             @endforeach
                                                         </div>
                                                     </div>
                                                 @endforeach
+
                                             @else
                                                 <div class="empty-state">
                                                     <i class="fa fa-info-circle"></i>
                                                     <p>Tanımlı tezgah bulunamadı</p>
                                                 </div>
                                             @endif
-                                        </div>
-                                        <div class="action-buttons">
-                                            <button type="button" class="btn btn-save-plan" onclick="topluKaydet()" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white;">
-                                                <i class="fa fa-save"></i> Toplu Kaydet
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -635,6 +590,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="plan_data" id="plan_data">
         </form>
     </section>
 </div>
@@ -684,35 +640,18 @@
     </div>
 </div>
 
-<div class="extra-tools">
-    <button type="button" class="btn btn-stats" onclick="showStats()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="İstatistikler">
-        <i class="fa fa-bar-chart"></i>
-    </button>
-    <button type="button" class="btn btn-auto" onclick="autoDistribute()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Otomatik Dağıt">
-        <i class="fa fa-magic"></i>
-    </button>
-    <button type="button" class="btn btn-export" onclick="exportPlan()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Dışa Aktar">
-        <i class="fa fa-download"></i>
-    </button>
-    <button type="button" class="btn btn-export" onclick="tumunuSil()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Tümünü Sil">
-        <i class="fa fa-trash"></i>
-    </button>
-</div>
-
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
 <script>
-    const EVRAKNO = "{{ @$kart_veri->EVRAKNO }}";
-    const CSRF_TOKEN = "{{ csrf_token() }}";
-    let saveQueue = [];
-    let isSaving = false;
+    let hasChanges = false;
+    let planData = [];
+    let initialState = null;
 
     $(function(){
         initializeSortable();
+        saveInitialState();
         refreshUtilization();
         updateUnassignedCount();
-        updateSyncStatus('synced', 'Tüm değişiklikler kaydedildi');
     });
-
     function initializeSortable() {
         $(".connected").sortable({
             connectWith: ".connected",
@@ -725,134 +664,54 @@
             },
             stop: function(e, ui){
                 ui.item.removeClass("dragging");
-                
-                // Hedef alan bilgisini al
-                const targetArea = ui.item.closest('.list').data('area');
-                const targetWc = ui.item.closest('.workcenter').data('wc');
-                
-                // Sıra numarasını hesapla
-                const newIndex = ui.item.index() + 1;
-                
-                // AJAX ile kaydet
-                saveJobPosition(ui.item, targetArea, targetWc, newIndex);
+                markAsChanged();
             },
-            receive: function(e, ui){
+            receive: function(e, ui) { 
                 refreshUtilization();
                 updateUnassignedCount();
+                markAsChanged();
+                saveJobs($(this));
             },
-            update: function(e, ui){
-                if (this === ui.item.parent()[0] && !ui.sender) {
+            update: function(e, ui) {
+                if (!ui.sender)
+                {
                     refreshUtilization();
-                    
-                    // Sıra değişikliğinde tüm kartları güncelle
-                    updateAllPositionsInContainer($(this));
+                    markAsChanged();
+                    saveJobs($(this));
                 }
             },
             over: function(){ $(this).addClass("hover"); },
             out: function(){ $(this).removeClass("hover"); }
         }).disableSelection();
     }
+    function saveJobs($list) {
+        let isHavuz = $list.hasClass('unassigned');
+        let jobs = [];
 
-    // İş pozisyonunu AJAX ile kaydet
-    function saveJobPosition($card, targetArea, targetWc, sira) {
-        const jobData = {
-            _token: CSRF_TOKEN,
-            action: 'save_position',
-            evrakno: EVRAKNO,
-            jobno: $card.data('isno'),
-            rsira: $card.data('rsira'),
-            sure: $card.data('sure'),
-            operasyon: $card.data('operasyon'),
-            hedef: $card.data('hedef'),
-            tezgah: targetWc || null,
-            havuz: targetArea === 'unassigned' ? null : 'PRODUCTION',
-            sira: sira,
-            planid: $card.data('planid') || null
-        };
-
-        // Kayıt göstergesi
-        $card.find('.save-indicator').fadeIn();
-        $card.addClass('saving');
-        updateSyncStatus('syncing', 'Kaydediliyor...');
+        $list.find('.job-card').each(function(index) {
+            jobs.push({
+                isno: $(this).data('isno'),
+                rsira: $(this).data('rsira'),
+                sure: $(this).data('sure'),
+                evrakno: {{   $kart_veri->EVRAKNO }},
+                operasyon: $(this).data('operasyon'),
+                hedef: $(this).data('hedef'),
+                yeni_sira: index + 1,
+                hedef_tezgah: isHavuz ? null : $list.parent().data('wc')
+            });
+        });
 
         $.ajax({
-            url: '{{ url("tezgah_is_planlama_ajax") }}',
+            url: '/is_atama',
             type: 'POST',
-            data: jobData,
-            success: function(response) {
-                if(response.success) {
-                    // Plan ID'yi güncelle
-                    $card.data('planid', response.planid);
-                    $card.attr('data-planid', response.planid);
-                    
-                    // Kayıt başarılı göstergesi
-                    setTimeout(function() {
-                        $card.find('.save-indicator').fadeOut();
-                        $card.removeClass('saving');
-                        updateSyncStatus('synced', 'Kaydedildi');
-                        
-                        // 2 saniye sonra durumu gizle
-                        setTimeout(function() {
-                            if(!isSaving && saveQueue.length === 0) {
-                                updateSyncStatus('synced', 'Tüm değişiklikler kaydedildi');
-                            }
-                        }, 2000);
-                    }, 500);
-                } else {
-                    handleSaveError($card, response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                handleSaveError($card, 'Bağlantı hatası: ' + error);
-            }
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), jobs: jobs },
+            success: function(resp) { console.log('Yeni sıralama kaydedildi:', resp); },
+            error: function(xhr) { console.error('Hata:', xhr.responseText); }
         });
     }
-
-    // Bir container içindeki tüm pozisyonları güncelle
-    function updateAllPositionsInContainer($container) {
-        const targetArea = $container.data('area');
-        const targetWc = $container.closest('.workcenter').data('wc');
-        
-        $container.find('.job-card').each(function(index) {
-            const $card = $(this);
-            const newSira = index + 1;
-            
-            // Sadece sıra değiştiyse kaydet
-            if($card.data('current-sira') !== newSira) {
-                $card.data('current-sira', newSira);
-                saveJobPosition($card, targetArea, targetWc, newSira);
-            }
-        });
+    function saveInitialState() {
+        initialState = collectPlanData();
     }
-
-    // Hata durumunda
-    function handleSaveError($card, message) {
-        $card.find('.save-indicator').fadeOut();
-        $card.removeClass('saving');
-        updateSyncStatus('error', 'Kayıt hatası!');
-        showToast(message || 'Kayıt sırasında bir hata oluştu', 'error');
-        
-        // 3 saniye sonra durumu gizle
-        setTimeout(function() {
-            updateSyncStatus('synced', 'Tüm değişiklikler kaydedildi');
-        }, 3000);
-    }
-
-    // Sync durumu güncelle
-    function updateSyncStatus(status, text) {
-        const $syncStatus = $('#syncStatus');
-        $syncStatus.removeClass('syncing synced error').addClass(status);
-        
-        let icon = 'fa-check-circle';
-        if(status === 'syncing') icon = 'fa-spinner fa-spin';
-        if(status === 'error') icon = 'fa-exclamation-circle';
-        
-        $syncStatus.find('i').attr('class', 'fa ' + icon);
-        $('#syncStatusText').text(text);
-        
-        $syncStatus.fadeIn();
-    }
-
     function refreshUtilization() {
         $(".workcenter").each(function(){
             let cap = parseFloat($(this).data("cap")) || 0;
@@ -869,12 +728,77 @@
             metric.toggleClass("warn", total > cap);
         });
     }
-
     function updateUnassignedCount() {
         const count = $("#unassigned .job-card").length;
         $("#unassignedCount").text(count);
     }
+    function collectPlanData() {
+        const data = [];
+        
+        $(".workcenter").each(function(){
+            const wc = $(this).data("wc");
+            const pool = $(this).closest(".pool").data("pool");
+            let sira = 1;
+            
+            $(this).find(".job-card").each(function(){
+                data.push({
+                    isNo: $(this).data("isno"),
+                    rSiraNo: $(this).data("rsira"),
+                    evrakNo: $(this).data("evrakno"),
+                    operasyon: $(this).data("operasyon"),
+                    sure: parseFloat($(this).data("sure")) || 0,
+                    hedef: $(this).data("hedef"),
+                    tezgah: wc,
+                    havuz: pool,
+                    sira: sira++
+                });
+            });
+        });
+        
+        return data;
+    }
+    function markAsChanged() {
+        hasChanges = true;
+        // $("#changesBadge").fadeIn();
+    }
+    function sifirla() {
+    //   if (!hasChanges) {
+    //       showToast('Sıfırlanacak değişiklik yok!', 'warning');
+    //       return;
+    //   }
+      Swal.fire({
+          title: 'Planı Sıfırla',
+          text: 'Tüm değişiklikler geri alınacak. Emin misiniz?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#f44336',
+          cancelButtonColor: '#999',
+          confirmButtonText: 'Evet, Sıfırla',
+          cancelButtonText: 'İptal'
+      }).then((result) => {
+          if (result.isConfirmed) {
+            showLoading(true);
+            
+            // Tüm kartları atanmamış havuzuna taşı
+            $(".workcenter .job-card").each(function(){
+                $("#unassigned").append($(this));
+            });
 
+            setTimeout(function() {
+            refreshUtilization();
+            updateUnassignedCount();
+            hasChanges = false;
+            showLoading(false);
+            }, 500);
+
+            $.ajax({
+                url:'isleri_sifirla',
+                type:'post',
+                data:{EVRAKNO:'{{ $kart_veri->EVRAKNO }}'}
+            });
+          }
+      });
+  }
     function showLoading(show) {
         if (show) {
             $("#loadingOverlay").css('display', 'flex').hide().fadeIn(200);
@@ -882,7 +806,6 @@
             $("#loadingOverlay").fadeOut(200);
         }
     }
-
     function showToast(message, type = 'success') {
         const $toast = $("#toastNotification");
         const $message = $("#toastMessage");
@@ -896,7 +819,6 @@
             $toast.fadeOut(300);
         }, 3000);
     }
-
     function getToastIcon(type) {
         switch(type) {
             case 'success': return 'check-circle';
@@ -905,198 +827,45 @@
             default: return 'info-circle';
         }
     }
-
-    // Toplu kaydetme fonksiyonu (tüm plan'ı bir seferde kaydet)
-    function topluKaydet() {
-        Swal.fire({
-            title: 'Planı Toplu Kaydet',
-            text: 'Tüm atamalar kaydedilecek. Devam edilsin mi?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#4CAF50',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Evet, Kaydet',
-            cancelButtonText: 'İptal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                showLoading(true);
-                updateSyncStatus('syncing', 'Toplu kaydediliyor...');
-                
-                const planData = [];
-                
-                $(".workcenter").each(function(){
-                    const wc = $(this).data("wc");
-                    const pool = $(this).closest(".pool").data("pool");
-                    let sira = 1;
-                    
-                    $(this).find(".job-card").each(function(){
-                        planData.push({
-                            evrakno: EVRAKNO,
-                            jobno: $(this).data("isno"),
-                            rsira: $(this).data("rsira"),
-                            sure: parseFloat($(this).data("sure")) || 0,
-                            operasyon: $(this).data("operasyon"),
-                            hedef: $(this).data("hedef"),
-                            tezgah: wc,
-                            havuz: pool,
-                            sira: sira++,
-                            planid: $(this).data("planid") || null
-                        });
-                    });
-                });
-
-                $.ajax({
-                    url: '{{ url("tezgah_is_planlama_ajax") }}',
-                    type: 'POST',
-                    data: {
-                        _token: CSRF_TOKEN,
-                        action: 'save_bulk',
-                        evrakno: EVRAKNO,
-                        plan_data: JSON.stringify(planData)
-                    },
-                    success: function(response) {
-                        showLoading(false);
-                        if(response.success) {
-                            updateSyncStatus('synced', 'Toplu kayıt başarılı!');
-                            showToast('Plan başarıyla kaydedildi!', 'success');
-                            
-                            // Plan ID'leri güncelle
-                            if(response.planids) {
-                                response.planids.forEach(function(item) {
-                                    $('.job-card[data-isno="' + item.jobno + '"]').attr('data-planid', item.planid).data('planid', item.planid);
-                                });
-                            }
-                            
-                            setTimeout(function() {
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            updateSyncStatus('error', 'Kayıt hatası!');
-                            showToast(response.message || 'Kayıt hatası', 'error');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        showLoading(false);
-                        updateSyncStatus('error', 'Bağlantı hatası!');
-                        showToast('Bağlantı hatası: ' + error, 'error');
-                    }
-                });
-            }
-        });
+    function debugPlan() {
+        const data = collectPlanData();
+        console.log('Plan Data:', data);
+        console.log('Has Changes:', hasChanges);
     }
-
-    // Tümünü sil
-    function tumunuSil() {
-        Swal.fire({
-            title: 'Tüm Planı Sil',
-            text: 'Bu evraktaki tüm atamalar silinecek. Emin misiniz?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f44336',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Evet, Sil',
-            cancelButtonText: 'İptal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                showLoading(true);
-                updateSyncStatus('syncing', 'Siliniyor...');
-
-                $.ajax({
-                    url: '{{ url("tezgah_is_planlama_ajax") }}',
-                    type: 'POST',
-                    data: {
-                        _token: CSRF_TOKEN,
-                        action: 'delete_all',
-                        evrakno: EVRAKNO
-                    },
-                    success: function(response) {
-                        showLoading(false);
-                        if(response.success) {
-                            updateSyncStatus('synced', 'Plan silindi!');
-                            showToast('Tüm plan başarıyla silindi!', 'success');
-                            
-                            // Tüm kartları atanmamış havuzuna taşı
-                            $(".workcenter .job-card").each(function(){
-                                $(this).attr('data-planid', '').data('planid', '');
-                                $("#unassigned").append($(this));
-                            });
-                            
-                            refreshUtilization();
-                            updateUnassignedCount();
-                            
-                            setTimeout(function() {
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            updateSyncStatus('error', 'Silme hatası!');
-                            showToast(response.message || 'Silme hatası', 'error');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        showLoading(false);
-                        updateSyncStatus('error', 'Bağlantı hatası!');
-                        showToast('Bağlantı hatası: ' + error, 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    // Tek bir işi sil
-    function deleteJob(jobno, planid) {
-        if(!planid) {
-            showToast('Bu iş henüz kaydedilmemiş!', 'warning');
-            return;
+    $(document).on('keydown', function(e) {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            kaydetPlan();
         }
-
-        Swal.fire({
-            title: 'İşi Sil',
-            text: 'Bu iş atanmamış havuzuna gönderilecek. Devam edilsin mi?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f44336',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Evet, Sil',
-            cancelButtonText: 'İptal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const $card = $('.job-card[data-isno="' + jobno + '"]');
-                $card.find('.save-indicator').fadeIn();
-                $card.addClass('saving');
-                updateSyncStatus('syncing', 'Siliniyor...');
-
-                $.ajax({
-                    url: '{{ url("tezgah_is_planlama_ajax") }}',
-                    type: 'POST',
-                    data: {
-                        _token: CSRF_TOKEN,
-                        action: 'delete_job',
-                        planid: planid
-                    },
-                    success: function(response) {
-                        if(response.success) {
-                            $card.attr('data-planid', '').data('planid', '');
-                            $("#unassigned").append($card);
-                            $card.find('.save-indicator').fadeOut();
-                            $card.removeClass('saving');
-                            
-                            refreshUtilization();
-                            updateUnassignedCount();
-                            updateSyncStatus('synced', 'İş silindi!');
-                            showToast('İş başarıyla silindi!', 'success');
-                        } else {
-                            handleSaveError($card, response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        handleSaveError($card, 'Bağlantı hatası: ' + error);
-                    }
-                });
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            sifirla();
+        }
+    });
+    $(document).on('click', '.job-card', function(e) {
+        if (!$(this).hasClass('ui-sortable-helper')) {
+            // Buraya iş detayları modal açabilirsiniz
+            console.log('İş detayları:', {
+                isNo: $(this).data('isno'),
+                evrakNo: $(this).data('evrakno'),
+                operasyon: $(this).data('operasyon'),
+                sure: $(this).data('sure'),
+                hedef: $(this).data('hedef')
+            });
+        }
+    });
+    function filterWorkcenters(searchTerm) {
+        const term = searchTerm.toLowerCase();
+        
+        $(".workcenter").each(function() {
+            const wcName = $(this).find('.wc-title').text().toLowerCase();
+            if (wcName.includes(term)) {
+                $(this).show();
+            } else {
+                $(this).hide();
             }
         });
     }
-
-    // İstatistikler
     function calculateStats() {
         let totalJobs = 0;
         let assignedJobs = 0;
@@ -1131,33 +900,24 @@
             overCapacityCount: overCapacityCount
         };
     }
-
     function showStats() {
         const stats = calculateStats();
         const message = `
-            <div style="text-align: left;">
-                <strong>Plan İstatistikleri:</strong><br><br>
-                📊 Toplam İş: <strong>${stats.totalJobs}</strong><br>
-                ✅ Atanan: <strong>${stats.assignedJobs}</strong><br>
-                ⏳ Atanmayan: <strong>${stats.unassignedJobs}</strong><br>
-                ⏱️ Toplam Süre: <strong>${stats.totalTime}s</strong><br>
-                ⚠️ Kapasite Aşan Tezgah: <strong>${stats.overCapacityCount}</strong>
-            </div>
+            <strong>Plan İstatistikleri:</strong><br>
+            Toplam İş: ${stats.totalJobs}<br>
+            Atanan: ${stats.assignedJobs}<br>
+            Atanmayan: ${stats.unassignedJobs}<br>
+            Toplam Süre: ${stats.totalTime}s<br>
+            Kapasite Aşan Tezgah: ${stats.overCapacityCount}
         `;
         
-        Swal.fire({
-            title: 'İstatistikler',
-            html: message,
-            icon: 'info',
-            confirmButtonText: 'Tamam'
-        });
+        showToast(message, 'info');
     }
 
-    // Otomatik dağıt
     function autoDistribute() {
         Swal.fire({
             title: 'Otomatik Dağıt',
-            text: 'İşler otomatik olarak tezgahlara dağıtılacak. Devam edilsin mi?',
+            text: 'İşler otomatik olarak tezgahlara dağıtılacak. Mevcut plan silinecek. Devam edilsin mi?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#00c6ff',
@@ -1167,7 +927,11 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 showLoading(true);
-                updateSyncStatus('syncing', 'Otomatik dağıtılıyor...');
+                
+                // Önce tüm işleri havuza al
+                $(".workcenter .job-card").each(function(){
+                    $("#unassigned").append($(this));
+                });
                 
                 // Basit round-robin dağıtım
                 const $workcenters = $(".workcenter .list");
@@ -1175,16 +939,7 @@
                 
                 $("#unassigned .job-card").each(function(){
                     if ($workcenters.length > 0) {
-                        const $target = $workcenters.eq(currentIndex);
-                        $target.append($(this));
-                        
-                        // Pozisyonu kaydet
-                        const targetArea = $target.data('area');
-                        const targetWc = $target.closest('.workcenter').data('wc');
-                        const newSira = $target.find('.job-card').length;
-                        
-                        saveJobPosition($(this), targetArea, targetWc, newSira);
-                        
+                        $workcenters.eq(currentIndex).append($(this));
                         currentIndex = (currentIndex + 1) % $workcenters.length;
                     }
                 });
@@ -1192,115 +947,87 @@
                 setTimeout(function() {
                     refreshUtilization();
                     updateUnassignedCount();
+                    markAsChanged();
                     showLoading(false);
-                    updateSyncStatus('synced', 'Otomatik dağıtım tamamlandı!');
-                    showToast('İşler otomatik olarak dağıtıldı!', 'success');
-                }, 1000);
+                }, 800);
             }
         });
     }
-
-    // Planı dışa aktar
     function exportPlan() {
-        const data = [];
-        
-        $(".workcenter").each(function(){
-            const wc = $(this).data("wc");
-            const pool = $(this).closest(".pool").data("pool");
-            let sira = 1;
-            
-            $(this).find(".job-card").each(function(){
-                data.push({
-                    isNo: $(this).data("isno"),
-                    rSiraNo: $(this).data("rsira"),
-                    evrakNo: $(this).data("evrakno"),
-                    operasyon: $(this).data("operasyon"),
-                    sure: parseFloat($(this).data("sure")) || 0,
-                    hedef: $(this).data("hedef"),
-                    tezgah: wc,
-                    havuz: pool,
-                    sira: sira++
-                });
-            });
-        });
-        
+        const data = collectPlanData();
         const stats = calculateStats();
         
         const exportData = {
             plan: data,
             stats: stats,
             date: new Date().toISOString(),
-            evrak: EVRAKNO
+            evrak: $('#evrakSec option:selected').text()
         };
         
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", "plan_" + EVRAKNO + "_" + new Date().getTime() + ".json");
+        downloadAnchor.setAttribute("download", "plan_" + exportData.evrak + ".json");
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
         
         showToast('Plan dışa aktarıldı!', 'success');
     }
-
-    // Klavye kısayolları
-    $(document).on('keydown', function(e) {
-        if (e.ctrlKey && e.key === 's') {
-            e.preventDefault();
-            topluKaydet();
-        }
-        if (e.ctrlKey && e.key === 'i') {
-            e.preventDefault();
-            showStats();
-        }
-    });
-
-    // İş kartına tıklama - detayları göster
-    $(document).on('click', '.job-card', function(e) {
-        if (!$(this).hasClass('ui-sortable-helper') && !$(this).hasClass('dragging')) {
-            const jobData = {
-                isNo: $(this).data('isno'),
-                evrakNo: $(this).data('evrakno'),
-                operasyon: $(this).data('operasyon'),
-                sure: $(this).data('sure'),
-                hedef: $(this).data('hedef'),
-                rsira: $(this).data('rsira'),
-                planid: $(this).data('planid')
-            };
-            
-            const detailHtml = `
-                <div style="text-align: left;">
-                    <strong>İş Detayları:</strong><br><br>
-                    🔖 İş No: <strong>${jobData.isNo}</strong><br>
-                    📄 Evrak: <strong>${jobData.evrakNo}</strong><br>
-                    🔧 Operasyon: <strong>${jobData.operasyon}</strong><br>
-                    ⏱️ Süre: <strong>${jobData.sure}s</strong><br>
-                    🎯 Hedef: <strong>${jobData.hedef}</strong><br>
-                    📊 Sıra: <strong>${jobData.rsira}</strong><br>
-                    ${jobData.planid ? '💾 Plan ID: <strong>' + jobData.planid + '</strong>' : '⚠️ Henüz kaydedilmemiş'}
-                </div>
-            `;
-            
-            Swal.fire({
-                title: 'İş Bilgileri',
-                html: detailHtml,
-                icon: 'info',
-                showCancelButton: jobData.planid ? true : false,
-                confirmButtonText: 'Tamam',
-                cancelButtonText: 'Sil',
-                cancelButtonColor: '#f44336'
-            }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.cancel && jobData.planid) {
-                    deleteJob(jobData.isNo, jobData.planid);
-                }
-            });
-        }
-    });
-
-    // Sayfa yüklendiğinde tooltip'leri etkinleştir
-    $(document).ready(function() {
-        $('[data-bs-toggle="tooltip"]').tooltip();
-    });
 </script>
+<style>
+    .extra-tools {
+        position: fixed;
+        bottom: 45px;
+        right: 20px;
+        display: flex;
+        gap: 8px;
+        z-index: 1000;
+    }
+    
+    .extra-tools .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color
+    }
+    
+    .extra-tools .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .btn-stats {
+        background: #fff;
+    }
+    
+    .btn-auto {
+        background: #fff;
+    }
+    
+    .btn-export {
+        background: #fff;
+    }
+</style>
+<div class="extra-tools">
+    <button type="button" class="btn btn-stats" onclick="showStats()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="İstatistikler">
+        <i class="fa fa-bar-chart"></i>
+    </button>
+    <!-- <button type="button" class="btn btn-auto" onclick="autoDistribute()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Otomatik Dağıt">
+        <i class="fa fa-magic"></i>
+    </button> -->
+    <button type="button" class="btn btn-export" onclick="exportPlan()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Dışa Aktar">
+        <i class="fa fa-download"></i>
+    </button>
+    <button type="button" class="btn btn-export" onclick="sifirla()" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-title="Planı Sıfırla">
+        <i class="fa fa-refresh"></i>
+    </button>
+</div>
 @endsection

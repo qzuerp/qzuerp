@@ -5,6 +5,7 @@ use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class tezgah_is_planlama_controller extends Controller
 {
@@ -16,6 +17,42 @@ class tezgah_is_planlama_controller extends Controller
         return view('tezgah_is_plan')->with('sonID', $sonID);
     }
 
+    public function is_atama(Request $request)
+    {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        $jobs = $request->jobs;
+        foreach ($jobs as $job) {
+            // Eğer hedef_tezgah null ise sil
+            if(empty($job['hedef_tezgah'])) {
+                DB::table($firma.'preplan_t')->where('JOBNO', $job['isno'])->delete();
+            } else {
+                DB::table($firma.'preplan_t')->updateOrInsert(
+                    ['JOBNO' => $job['isno']],
+                    [
+                        'SIRANO' => $job['yeni_sira'],
+                        'EVRAKNO' => $job['evrakno'],
+                        'JOBNO' => $job['isno'],
+                        'TEZGAH_KODU' => $job['hedef_tezgah'],
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        }
+        return 'success';
+    }
+    public function isleri_sifirla(Request $request)
+    {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+
+        $EVRAKNO = $request->EVRAKNO;
+        DB::table($firma.'preplan_t')->where('EVRAKNO',$EVRAKNO)->delete();
+    }
     public function kartGetir(Request $request) {
 
         $id = $request->input('id');
@@ -81,7 +118,7 @@ class tezgah_is_planlama_controller extends Controller
 
         $islem_turu = $request->kart_islemleri;
         $firma = $request->input('firma').'.dbo.';
-        $EVRAKNO = $request->input('EVRAKNO_E_SHOW');
+        $EVRAKNO = $request->input('evrakSec');
         $TARIH = $request->input('TARIH');
         $JOBNO = $request->input('JOBNO');
         $SIRANO = $request->input('SIRANO');
@@ -161,7 +198,7 @@ class tezgah_is_planlama_controller extends Controller
                 // break;
 
             case 'kart_sil':
-FunctionHelpers::Logla('PLAN',$EVRAKNO,'D',$TARIH);
+                FunctionHelpers::Logla('PLAN',$EVRAKNO,'D',$TARIH);
 
                 DB::table($firma.'plan_e')->where('EVRAKNO', $EVRAKNO)->delete();
                 DB::table($firma.'plan_t')->where('EVRAKNO', $EVRAKNO)->delete();
@@ -246,7 +283,7 @@ FunctionHelpers::Logla('PLAN',$EVRAKNO,'D',$TARIH);
                 // break;
 
             case 'kart_duzenle':
-FunctionHelpers::Logla('PLAN',$EVRAKNO,'W',$TARIH);
+                FunctionHelpers::Logla('PLAN',$EVRAKNO,'W',$TARIH);
 
                 DB::table($firma.'plan_e')
                 ->where("EVRAKNO",$EVRAKNO)
@@ -256,72 +293,20 @@ FunctionHelpers::Logla('PLAN',$EVRAKNO,'W',$TARIH);
                     'updated_at'=> date('Y-m-d H:i:s'),
                 ]);
 
-                if (!isset($TRNUM)) {
-                    $TRNUM = array();
-                }
+                $rows = DB::table($firma.'preplan_t')->where('EVRAKNO', $EVRAKNO)->get();
 
-                $currentTRNUMS = array();
-                $liveTRNUMS = array();
-                $currentTRNUMSObj = DB::table($firma.'plan_t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+                $insertData = $rows->map(function($row) {
+                    return [
+                        'EVRAKNO'     => $row->EVRAKNO,
+                        'JOBNO'       => $row->JOBNO,
+                        'SIRANO'      => $row->SIRANO,
+                        'TEZGAH_KODU' => $row->TEZGAH_KODU,
+                        'updated_at'  => now(),
+                    ];
+                })->toArray();
 
-                foreach ($currentTRNUMSObj as $key => $veri) {
-                    array_push($currentTRNUMS,$veri->TRNUM);
-                }
-            
-                foreach ($TRNUM as $key => $veri) {
-                    array_push($liveTRNUMS,$veri);
-                }
-            
-                $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
-                $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
-                $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+                DB::table($firma.'plan_t')->insert($insertData);
 
-                // dd([
-                //     "TRNUM" => $TRNUM,
-                //     "Delete" => $deleteTRNUMS,
-                //     "Insert" => $newTRNUMS,
-                //     "update" => $updateTRNUMS,
-                // ]);
-
-                for ($i=0; $i < $satir_say; $i++) { 
-                    if(in_array($TRNUM[$i],$newTRNUMS))
-                    {
-                        DB::table($firma.'plan_t')->insert([
-                            'TRNUM' => $TRNUM[$i],
-                            'EVRAKNO' => $EVRAKNO,
-                            'TEZGAH_KODU' => $TEZGAH_KODU[$i],
-                            'R_OPERASYON' => $R_OPERASYON,
-                            'MPSNO' => $MPSNO[$i],
-                            'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
-                            'R_YMAMULMIKTAR' => $R_YMAMULMIKTAR[$i],
-                            'TEZGAH_ADI' => $TEZGAH_ADI[$i],
-                            // 'JOBNO' => $JOBNO[$i],
-                            'SIRANO' => $SIRANO[$i]
-                        ]);
-                    }
-                    if(in_array($TRNUM[$i],$updateTRNUMS))
-                    {
-                        DB::table($firma.'plan_t')
-                        ->where("EVRAKNO",$EVRAKNO)
-                        ->where("TRNUM",$TRNUM[$i])
-                        ->update([
-                            // 'JOBNO' => $JOBNO,
-                            'EVRAKNO' => $EVRAKNO,
-                            'R_YMAMULMIKTAR' => $R_YMAMULMIKTAR[$i],
-                            'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
-                            'TEZGAH_KODU' => $TEZGAH_KODU[$i],
-                            'MPSNO' => $MPSNO[$i],
-                            'TEZGAH_ADI' => $TEZGAH_ADI[$i],
-                            'SIRANO' => $SIRANO[$i]
-                            // 'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-                    }
-                }
-                foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
-                    DB::table($firma.'plan_t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
-                }
-
-                print_r("Düzenleme işlemi başarılı.");
 
                 $veri=DB::table($firma.'plan_e')->where('EVRAKNO',$EVRAKNO)->first();
                 return redirect()->route('tezgahisplanlama', ['ID' => $veri->id ?? 1, 'duzenleme' => 'ok']);

@@ -37,13 +37,11 @@
     foreach ($KALIBRASYONLAR as $k) {
         $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
         
-        // Tarih bilgisinden ay bilgisini al
         $kalibrasyonTarihi = \Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI);
-        $ayIndex = \Carbon\Carbon::now()->month - 1; // 0-11 arası index
+        $ayIndex = \Carbon\Carbon::now()->month - 1;
         
         if ($kalanGun <= 7) {
             $kalibrasyon_data['kritik']++;
-            // Gelecek tarih için aya göre kategorize et
             $hedefAy = $kalibrasyonTarihi->month - 1;
             if ($hedefAy >= 0 && $hedefAy < 12) {
                 $kalibrasyon_aylik['kritik'][$hedefAy]++;
@@ -206,6 +204,118 @@
         color: #111827;
     }
 
+    /* Son Kullanılanlar Kartı */
+    .recent-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        width:35%;
+    }
+
+    .recent-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #fafbfc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .recent-header h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .recent-header h3 i {
+        color: #6b7280;
+    }
+
+    .clear-recent {
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 12px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+
+    .clear-recent:hover {
+        background: #f3f4f6;
+        color: #ef4444;
+    }
+
+    .recent-list {
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .recent-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 6px;
+        background: #f9fafb;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .recent-item:hover {
+        background: #f3f4f6;
+        transform: translateX(4px);
+    }
+
+    .recent-item-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .recent-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .recent-item-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 2px;
+    }
+
+    .recent-item-time {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .empty-recent {
+        padding: 32px;
+        text-align: center;
+        color: #9ca3af;
+    }
+
+    .empty-recent i {
+        font-size: 48px;
+        margin-bottom: 12px;
+        opacity: 0.5;
+    }
+
     /* Bottom Charts */
     .bottom-charts {
         display: grid;
@@ -263,30 +373,20 @@
     }
 
     .action-btn {
-        flex: 1;
-        padding: 10px 16px;
-        background: #3b82f6;
-        border: 1px solid #3b82f6;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 500;
-        color: white;
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 12px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        text-decoration:none;
     }
 
     .action-btn:hover {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        background: #f3f4f6;
+        color:rgb(71, 68, 239);
     }
 
     /* Info Box */
@@ -361,11 +461,10 @@
                 <h1>Hoş Geldin, {{ $kullanici_veri->name }}</h1>
                 <div class="center-side fs-6">
                     <span class="live-clock">Yükleniyor...</span>
-                    <span class="separator"></span>
+                    <span class="separator">|</span>
                     <span class="today-date"></span>
                 </div>
             </div>
-            <!-- <img width="130" class="rounded-1" src="https://www.shutterstock.com/image-photo/black-white-photograph-gazi-mustafa-600nw-2672730885.jpg" alt=""> -->
         </div>
 
         <!-- Stats -->
@@ -384,7 +483,7 @@
         </div>
 
         <!-- Bottom Charts -->
-        <div class="bottom-charts">
+        <div class="bottom-charts mb-3">
             
             <!-- Aylık Trend -->
             <div class="chart-card-large">
@@ -395,7 +494,6 @@
                     </h3>
                 </div>
                 <div class="chart-body">
-                    
                     <div id="aylikChart" class="chart-container-large"></div>
                     <div class="quick-actions">
                         <a href="kart_kalibrasyon?SUZ=SUZ&firma={{ $database }}#liste" class="action-btn">
@@ -414,8 +512,6 @@
                     </h3>
                 </div>
                 <div class="chart-body">
-                    
-                
                     <div id="fasonChart" class="chart-container-large"></div>
                     <div class="quick-actions">
                         <a href="fasonsevkirsaliyesi?SUZ=SUZ&firma={{ $database }}#liste" class="action-btn">
@@ -427,29 +523,100 @@
 
         </div>
 
+        <!-- Son Kullanılanlar Kartı -->
+        <div class="recent-card">
+            <div class="recent-header">
+                <h3>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Son Kullanılanlar
+                </h3>
+                <button class="clear-recent" onclick="clearRecentPages()">
+                    <i class="fa-solid fa-trash-can"></i> Temizle
+                </button>
+            </div>
+            <div class="recent-list" id="recentList">
+                <div class="empty-recent">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>Henüz hiç sayfa ziyaret etmediniz</p>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 
 <script>
-    $(document).ready(function(){
-        // Tarih ve saat
-        function updateTime() {
-            const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            $('#current-time').text(now.toLocaleDateString('tr-TR', options));
+
+
+    function loadRecentPages() {
+        const recent = JSON.parse(localStorage.getItem('recentPages') || '[]');
+        const recentList = document.getElementById('recentList');
+        
+        if (recent.length === 0) {
+            recentList.innerHTML = `
+                <div class="empty-recent">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>Henüz hiç sayfa ziyaret etmediniz</p>
+                </div>
+            `;
+            return;
         }
         
-        setInterval(updateTime, 1000);
-        updateTime();
+        recentList.innerHTML = recent.map(item => {
+            const timeAgo = getTimeAgo(item.timestamp);
+            return `
+                <a href="${item.url}" class="recent-item">
+                    <div class="recent-item-icon">
+                        <i class="fa-solid ${item.icon}"></i>
+                    </div>
+                    <div class="recent-item-info">
+                        <div class="recent-item-title">${item.title}</div>
+                        <div class="recent-item-time">${timeAgo}</div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+    }
+
+    function getTimeAgo(timestamp) {
+        const now = new Date().getTime();
+        const diff = Math.floor((now - timestamp) / 1000); // saniye cinsinden
+        
+        if (diff < 60) return 'Az önce';
+        if (diff < 3600) return Math.floor(diff / 60) + ' dakika önce';
+        if (diff < 86400) return Math.floor(diff / 3600) + ' saat önce';
+        return Math.floor(diff / 86400) + ' gün önce';
+    }
+
+    function clearRecentPages() {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: "Son kullanılanlar listesi tamamen temizlenecek!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Evet, Temizle',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('recentPages');
+                loadRecentPages();
+                Swal.fire({
+                    title: 'Temizlendi!',
+                    text: 'Son kullanılanlar listesi başarıyla temizlendi.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        // Son kullanılanları yükle
+        loadRecentPages();
 
         // Global Highcharts ayarları
         Highcharts.setOptions({
@@ -572,6 +739,12 @@
             }]
         });
     });
+</script>
+
+<!-- DİĞER SAYFALARDA KULLANMAK İÇİN -->
+<script>
+    // Örnek kullanım - Her sayfanın başına ekleyin:
+    // saveRecentPage('Kalibrasyon Listesi', 'kart_kalibrasyon', 'fa-gauge-high');
 </script>
 
 @endsection

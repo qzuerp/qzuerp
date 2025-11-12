@@ -152,6 +152,8 @@ Auth::routes(['password.request' => false]);
   Route::post('sfdc31_e_islemler',[calisma_bildirimi_controller::class,'islemler']);
   Route::post('toplumps_islemler',[toplumps_controller::class,'islemler']);
   Route::post('tezgah_is_planlama_islemler',[tezgah_is_planlama_controller::class,'islemler']);
+  Route::post('is_atama',[tezgah_is_planlama_controller::class,'is_atama']);
+  Route::post('isleri_sifirla',[tezgah_is_planlama_controller::class,'isleri_sifirla']);
 
   Route::post('etiketKarti_islemler',[Etiket_Karti_controller::class,'islemler'])->name('etiket_Karti_islemler');
 
