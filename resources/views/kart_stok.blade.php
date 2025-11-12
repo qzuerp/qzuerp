@@ -1173,7 +1173,7 @@
 											<div class="row ">
 												<div class="col-md-3">
 													<label class="form-label">Stok Kodu</label>
-													<select class="form-control select2 KOD" name="" onchange="stokAdiGetir3(this.value)" style="height: 30px; width:100%;">
+													<select class="form-control select2 KOD" name="" style="height: 30px; width:100%;">
 														@foreach ($stok_evraklar as $veri)
 															@if(@$cgc70_veri->STOK_KODU == $veri->KOD)
 															<option selected value="{{ $veri->KOD }}|||{{ $veri->AD }}|||{{ $veri->IUNIT }}">{{ $veri->KOD }} - {{ $veri->AD }}</option>
