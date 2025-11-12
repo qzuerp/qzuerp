@@ -10,7 +10,7 @@ $database = trim($kullanici_veri->firma).".dbo.";
 
 $ekran = "STKHRKT";
 $ekranAdi = "Stok Hareketleri";
-
+$ekranLink = "stok_hareketleri";
 
 
 $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
