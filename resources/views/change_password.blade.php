@@ -6,7 +6,7 @@ $user = Auth::user();
 
 $ekran = "sifreDegistir";
 $ekranAdi = "Şifre Değiştir";
-
+$ekranLink = "change_password";
 @endphp
 
 @extends('layout.mainlayout')

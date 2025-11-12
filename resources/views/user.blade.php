@@ -10,6 +10,7 @@
   $ekran = "kullaniciTanimlari";
   $ekranAdi = "Kullanıcı Tanımları";
   $ekranRumuz = "USERS";
+  $ekranLink = "user";
   $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
   $database = trim($kullanici_veri->firma) . ".dbo.";
 
