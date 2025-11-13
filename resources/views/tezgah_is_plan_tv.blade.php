@@ -541,12 +541,7 @@
                             <div class="job {{ $statusClass }}">
                                 <div class="job-image-wrapper">
                                     @if($resim && isset($resim->DOSYA))
-                                        <img src="data:image/jpeg;base64,{{ base64_encode($resim->DOSYA) }}" alt="İş resmi" class="job-image">
-                                    @elseif($resim && isset($resim->DOSYAADI))
-                                        <img src="{{ asset('uploads/' . $resim->DOSYAADI) }}" alt="İş resmi" class="job-image">
-                                    @else
-                                        <img src="https://via.placeholder.com/64?text=?" alt="Resim yok" class="job-image">
-                                    @endif
+                                        <img src="{{ isset($resim->DOSYA) ? asset('dosyalar/'.$resim->DOSYA) : '' }}" alt="İş resmi" class="job-image">
                                     <div class="status-dot"></div>
                                 </div>
                                 
