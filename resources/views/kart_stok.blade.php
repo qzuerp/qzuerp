@@ -74,7 +74,7 @@
 	<div class="content-wrapper" style="min-height: 822px;">
 
 		@include('layout.util.evrakContentHeader')
-		@include('layout.util.logModal',['EVRAKTYPE' => 'STOK00','EVRAKNO'=>@$kart_veri->EVRAKNO])
+		@include('layout.util.logModal',['EVRAKTYPE' => 'STOK00','EVRAKNO'=>@$kart_veri->KOD])
 
 		<section class="content">
 			<form class="form-horizontal" action="stok00_islemler" method="POST" name="verilerForm" id="verilerForm">
