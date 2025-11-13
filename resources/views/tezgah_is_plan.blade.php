@@ -506,7 +506,7 @@
                                         <div id="unassigned" class="list connected">
                                             @php
                                                 $JOBS = DB::table($database.'mmps10t as m')
-                                                    ->leftJoin('preplan_t as p', 'm.JOBNO', '=', 'p.JOBNO')
+                                                    ->leftJoin($database.'preplan_t as p', 'm.JOBNO', '=', 'p.JOBNO')
                                                     ->where('m.R_KAYNAKTYPE', 'I')
                                                     ->whereNull('p.JOBNO')
                                                     ->select('m.*')
