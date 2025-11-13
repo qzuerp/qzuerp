@@ -38,8 +38,8 @@
     $tezgahIsler = [];
     foreach($tezgahlar as $tezgah) {
         // her tezgah için işleri çek
-        $jobs = DB::table('preplan_t as p')
-            ->join('mmps10t as m', 'p.JOBNO', '=', 'm.JOBNO')
+        $jobs = DB::table($database.'preplan_t as p')
+            ->join($database.'mmps10t as m', 'p.JOBNO', '=', 'm.JOBNO')
             ->where('p.TEZGAH_KODU', $tezgah->KOD)
             ->where('p.EVRAKNO',$kart_veri->EVRAKNO)
             ->select(
