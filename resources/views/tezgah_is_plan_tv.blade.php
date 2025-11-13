@@ -542,6 +542,7 @@
                                 <div class="job-image-wrapper">
                                     @if($resim && isset($resim->DOSYA))
                                         <img src="{{ isset($resim->DOSYA) ? asset('dosyalar/'.$resim->DOSYA) : '' }}" alt="İş resmi" class="job-image">
+                                    @endif
                                     <div class="status-dot"></div>
                                 </div>
                                 
