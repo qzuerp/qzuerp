@@ -392,7 +392,7 @@
         }
     </style>
     <script>
-        const RELOAD_INTERVAL = 60;
+        const RELOAD_INTERVAL = 160;
         let countdown = RELOAD_INTERVAL;
         
         function updateClock() {
@@ -518,30 +518,55 @@
                             @php
                                 $BILDIRIM = DB::table($database.'sfdc31e')
                                     ->where('JOBNO', $JOB->JOBNO)
-                                    ->exists();
-                                
+                                    ->first();
+
                                 $resim = DB::table($database.'dosyalar00')
                                     ->where('EVRAKTYPE','STOK00')
                                     ->where('EVRAKNO',$JOB->R_YMAMULKODU)
                                     ->where('DOSYATURU','GORSEL')
                                     ->first();
-                                
+
+                                $operatorAd = null;
+                                if ($BILDIRIM && $BILDIRIM->TO_OPERATOR) {
+                                    $operator = DB::table($database.'pers00')
+                                        ->where('KOD', $BILDIRIM->TO_OPERATOR)
+                                        ->select('AD')
+                                        ->first();
+                                    $operatorAd = $operator->AD ?? null;
+                                }
+
                                 if($JOB->R_ACIK_KAPALI == 'K') {
                                     $statusClass = 'done';
                                     $statusText = 'Tamamlandı';
                                 } elseif($BILDIRIM) {
                                     $statusClass = 'running';
                                     $statusText = 'Devam Ediyor';
+
+                                    $start = Carbon::parse($BILDIRIM->created_at);
+                                    $now = Carbon::now();
+                                    $minutes = $start->diffInMinutes($now);
+
+                                    if ($minutes < 60) {
+                                        $statusText .= " ({$minutes} dk)";
+                                    } else {
+                                        $hours = floor($minutes / 60);
+                                        $mins = $minutes % 60;
+                                        $statusText .= " ({$hours} sa {$mins} dk)";
+                                    }
+
+                                    if ($operatorAd) {
+                                        $statusText .= " - {$operatorAd}";
+                                    }
                                 } else {
                                     $statusClass = 'waiting';
                                     $statusText = 'Bekliyor';
                                 }
                             @endphp
-                            
+
                             <div class="job {{ $statusClass }}">
                                 <div class="job-image-wrapper">
                                     @if($resim && isset($resim->DOSYA))
-                                        <img src="{{ isset($resim->DOSYA) ? asset('dosyalar/'.$resim->DOSYA) : '' }}" alt="İş resmi" class="job-image">
+                                        <img src="{{ asset('dosyalar/'.$resim->DOSYA) }}" alt="İş resmi" class="job-image">
                                     @endif
                                     <div class="status-dot"></div>
                                 </div>
@@ -558,6 +583,7 @@
                                 <div class="empty-state-text">Henüz planlanmış iş bulunmuyor</div>
                             </div>
                         @endforelse
+
                     </div>
                 </div>
             @endforeach

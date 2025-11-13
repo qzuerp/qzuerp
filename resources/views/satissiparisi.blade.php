@@ -385,9 +385,9 @@
                               (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
                               B01T.BOMREC_INPUTTYPE AS KaynakTipi,
                               1 AS Seviye
-                          FROM STOK40T S40T
-                          LEFT JOIN BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
-                          LEFT JOIN BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
+                          FROM {$database}STOK40T S40T
+                          LEFT JOIN {$database}BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
+                          LEFT JOIN {$database}BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
                           WHERE (S40T.AK IS NULL OR S40T.AK = 'A')
                             AND B01T.BOMREC_KAYNAKCODE IS NOT NULL
 
@@ -404,8 +404,8 @@
                               (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END) AS KaynakTipi,
                               RB.Seviye + 1 AS Seviye
                           FROM RecursiveBOM RB
-                          INNER JOIN BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
-                          INNER JOIN BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
+                          INNER JOIN {$database}BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
+                          INNER JOIN {$database}BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
                       )
                       SELECT
                           ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
@@ -419,7 +419,7 @@
                           S00.IUNIT AS HammaddeBirimi,
                           SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
                       FROM RecursiveBOM RB
-                      LEFT JOIN STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
+                      LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
                       WHERE RB.SiparisEvrakNo = ?
                       GROUP BY
                           RB.SiparisEvrakNo,
@@ -434,6 +434,7 @@
                           RB.SiparisEvrakNo,
                           RB.NihaiMamulKodu,
                           HammaddeKodu;
+
                       ";
                       $sonuc = DB::select($sql, [$kart_veri->EVRAKNO]);
                   @endphp
