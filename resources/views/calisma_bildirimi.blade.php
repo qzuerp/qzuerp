@@ -1273,30 +1273,32 @@
                 
                 <tbody>
                   @php
-                    $evraklar = DB::table($ekranTableE . ' as e')
-                        ->join($database . 'plan_e as pe', 'e.TARIH', '=', 'pe.TARIH') 
-                        // A ve B tablolarını TARIH üzerinden birleştir
-                        ->where('e.TARIH', '=', $kart_veri->TARIH ?? "") 
-                        // Belirtilen TARIH değerine göre filtrele
-                        ->join($database . 'plan_t as t', 'pe.EVRAKNO', '=', 't.EVRAKNO') 
-                        // B tablosu ile C tablosunu EVRAKNO üzerinden birleştir.
-                        ->select('t.*','pe.EVRAKNO','pe.TARIH')
-                        ->distinct()
-                        ->get();
+                      use Carbon\Carbon;
 
-                    // dd($evraklar,$kart_veri->TARIH);
-                    foreach ($evraklar as $suzVeri) {
-                        echo "<tr class='tezgah-row'>";
-                        echo "<td>" . htmlspecialchars($suzVeri->TARIH) . "</td>";
-                        echo "<td>" . htmlspecialchars(isset($suzVeri->SIRANO) ? $suzVeri->SIRANO : '-') . "</td>";
-                        echo "<td>" . htmlspecialchars($suzVeri->JOBNO) . "</td>";
-                        echo "<td>" . htmlspecialchars($suzVeri->MPSNO) . "</td>";
-                        echo "<td>" . htmlspecialchars($suzVeri->TEZGAH_KODU) . "</td>";
-                        echo "<td>" . htmlspecialchars($suzVeri->R_OPERASYON) . "</td>";
-                        echo "</tr>";
-                    }
-                  @endphp
-                                                  
+                      $startOfWeek = Carbon::now()->startOfWeek(); // Pazartesi
+                      $endOfWeek = Carbon::now()->endOfWeek();     // Pazar
+
+                      $evraklar = DB::table($ekranTableE . ' as e')
+                          ->join($database . 'plan_e as pe', 'e.TARIH', '=', 'pe.TARIH')
+                          ->join($database . 'plan_t as t', 'pe.EVRAKNO', '=', 't.EVRAKNO')
+                          ->whereBetween('e.TARIH', [$startOfWeek, $endOfWeek]) // Bu haftanın kayıtlarını getir
+                          ->select('t.*', 'pe.EVRAKNO', 'pe.TARIH')
+                          ->distinct()
+                          ->orderBy('pe.TARIH', 'asc')
+                          ->orderBy('t.TEZGAH_KODU', 'asc')
+                          ->get();
+
+                      foreach ($evraklar as $suzVeri) {
+                          echo "<tr class='tezgah-row'>";
+                          echo "<td>" . htmlspecialchars($suzVeri->TARIH) . "</td>";
+                          echo "<td>" . htmlspecialchars($suzVeri->SIRANO ?? '-') . "</td>";
+                          echo "<td>" . htmlspecialchars($suzVeri->JOBNO) . "</td>";
+                          echo "<td>" . htmlspecialchars($suzVeri->MPSNO) . "</td>";
+                          echo "<td>" . htmlspecialchars($suzVeri->TEZGAH_KODU) . "</td>";
+                          echo "<td>" . htmlspecialchars($suzVeri->R_OPERASYON) . "</td>";
+                          echo "</tr>";
+                      }
+                    @endphp
                 </tbody>
               </table>
             </div>

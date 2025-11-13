@@ -86,7 +86,10 @@
 		{
 			min-width: 200px;
 		}
-
+		#yazdir
+		{
+			display:block !important;
+		}
 	</style>
 	<div class="content-wrapper ">
 

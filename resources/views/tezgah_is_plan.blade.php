@@ -41,14 +41,9 @@
         $jobs = DB::table('preplan_t as p')
             ->join('mmps10t as m', 'p.JOBNO', '=', 'm.JOBNO')
             ->where('p.TEZGAH_KODU', $tezgah->KOD)
+            ->where('p.EVRAKNO',$kart_veri->EVRAKNO)
             ->select(
-                'm.JOBNO',
-                'm.R_SIRANO',
-                'm.R_MIKTART',
-                'm.EVRAKNO',
-                'm.R_OPERASYON',
-                'm.R_YMAMULMIKTAR',
-                'm.R_ACIK_KAPALI'
+                'm.*'
             )
             ->orderByRaw("CASE WHEN m.R_ACIK_KAPALI = 'K' THEN 1 ELSE 0 END ASC")
             ->orderBy('p.SIRANO', 'ASC')
@@ -519,12 +514,12 @@
                                             @endphp
                                             @if($JOBS->count() > 0)
                                                 @foreach($JOBS as $JOB)
-                                                    <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" data-isno="{{ $JOB->JOBNO }}" data-rsira="{{ $JOB->R_SIRANO }}" data-sure="{{ $JOB->R_MIKTART }}" data-evrakno="{{ $JOB->EVRAKNO }}" data-operasyon="{{ $JOB->R_OPERASYON }}" data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
+                                                    <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" data-isno="{{ $JOB->JOBNO }}" data-rsira="{{ $JOB->R_SIRANO }}" data-sure="{{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }}" data-evrakno="{{ $JOB->EVRAKNO }}" data-operasyon="{{ $JOB->R_OPERASYON }}" data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
                                                         <span class="job-badge">{{ $JOB->R_SIRANO }}</span>
                                                         <div class="job-title">{{ $JOB->JOBNO }}</div>
                                                         <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
                                                         <div class="job-meta">
-                                                            <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART }}s</span>
+                                                            <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }} s</span>
                                                             <span><i class="fa fa-bullseye"></i> {{ $JOB->R_YMAMULMIKTAR }}</span>
                                                         </div>
                                                     </div>
@@ -559,7 +554,7 @@
                                                                 <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" 
                                                                     data-isno="{{ $JOB->JOBNO }}" 
                                                                     data-rsira="{{ $JOB->R_SIRANO }}" 
-                                                                    data-sure="{{ $JOB->R_MIKTART }}" 
+                                                                    data-sure="{{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }}" 
                                                                     data-evrakno="{{ $JOB->EVRAKNO }}" 
                                                                     data-operasyon="{{ $JOB->R_OPERASYON }}" 
                                                                     data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
@@ -567,7 +562,7 @@
                                                                     <div class="job-title">{{ $JOB->JOBNO }}</div>
                                                                     <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
                                                                     <div class="job-meta">
-                                                                        <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART }}s</span>
+                                                                        <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }} s</span>
                                                                         <span><i class="fa fa-bullseye"></i> {{ $JOB->R_YMAMULMIKTAR }}</span>
                                                                     </div>
                                                                 </div>

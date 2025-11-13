@@ -321,6 +321,24 @@ class calisma_bildirimi_controller extends Controller {
           return redirect()->back()->with('error_swal',$msg);
 
         $mevcutMiktar = DB::table($firma.'sfdc31e')->where("EVRAKNO",$EVRAKNO)->value('SF_MIKTAR');
+
+        $A_sure += DB::table($firma.'sfdc31t')
+            ->where('EVRAKNO',$EVRAKNO)
+            ->where('ISLEM_TURU','A')
+            ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+            ->value('toplam') ?? 0;
+
+        $U_sure += DB::table($firma.'sfdc31t')
+            ->where('EVRAKNO',$EVRAKNO)
+            ->where('ISLEM_TURU','U')
+            ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+            ->value('toplam') ?? 0;
+
+        
+        $TOPLAM_SURE = $A_sure + $U_sure;
+
+        if($TOPLAM_SURE !=  null)
+          DB::update("UPDATE ".$firma."mmps10t SET GERCEKLESEN_SURE = GERCEKLESEN_SURE - ".$TOPLAM_SURE." where JOBNO = ".$JOBNO."");
         if($mevcutMiktar !=  null)
           DB::update("UPDATE ".$firma."mmps10t SET R_TMYMAMULMIKTAR = R_TMYMAMULMIKTAR - ".$mevcutMiktar." where JOBNO = ".$JOBNO."");
 
@@ -392,9 +410,24 @@ class calisma_bildirimi_controller extends Controller {
           }
           else
           {
+            $A_sure += DB::table($firma.'sfdc31t')
+                ->where('JOBNO',$JOBNO)
+                ->where('ISLEM_TURU','A')
+                ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+                ->value('toplam') ?? 0;
+
+            $U_sure += DB::table($firma.'sfdc31t')
+                ->where('JOBNO',$JOBNO)
+                ->where('ISLEM_TURU','U')
+                ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+                ->value('toplam') ?? 0;
+
+            
+            $TOPLAM_SURE = $A_sure + $U_sure;
+
             DB::update("UPDATE {$firma} mmps10t 
-              SET R_TMYMAMULMIKTAR =  ? 
-              WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?
+              WHERE JOBNO = ?", [$MIKTAR,$TOPLAM_SURE, $JOBNO]);
           }
         }
 
@@ -544,9 +577,28 @@ class calisma_bildirimi_controller extends Controller {
           }
           else
           {
+            $A_sure = 0;
+            $U_sure = 0;
+            
+            $A_sure += DB::table($firma.'sfdc31e as e')
+                ->leftJoin($firma.'sfdc31t as t','e.EVRAKNO','=','t.EVRAKNO')
+                ->where('e.JOBNO',$JOBNO)
+                ->where('t.ISLEM_TURU','A')
+                ->selectRaw('SUM(CAST(t.SURE AS FLOAT)) as toplam')
+                ->value('toplam') ?? 0;
+
+            $U_sure += DB::table($firma.'sfdc31e as e')
+                ->leftJoin($firma.'sfdc31t as t','e.EVRAKNO','=','t.EVRAKNO')
+                ->where('e.JOBNO',$JOBNO)
+                ->where('t.ISLEM_TURU','U')
+                ->selectRaw('SUM(CAST(t.SURE AS FLOAT)) as toplam')
+                ->value('toplam') ?? 0;
+            
+            $TOPLAM_SURE = $A_sure + $U_sure;
+
             DB::update("UPDATE {$firma} mmps10t 
-              SET R_TMYMAMULMIKTAR =  ? 
-              WHERE JOBNO = ?", [$MIKTAR, $JOBNO]);
+              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?
+              WHERE JOBNO = ?", [$MIKTAR,$TOPLAM_SURE, $JOBNO]);
           }
         }
 

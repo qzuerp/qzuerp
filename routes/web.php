@@ -305,6 +305,7 @@ Auth::routes(['password.request' => false]);
   Route::get('toplu_mps_girisi',[toplumps_controller::class,'index'])->name('toplu_mps_girisi');
 
   Route::get('tezgahisplanlama',[tezgah_is_planlama_controller::class,'index'])->name('tezgahisplanlama');
+  Route::get('planlanmis_isler',[tezgah_is_planlama_controller::class,'p_isler'])->name('p_isler');
 
   Route::get('barcode',[barcode_controller::class,'index'])->name('barcode');
 

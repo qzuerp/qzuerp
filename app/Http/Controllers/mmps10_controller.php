@@ -660,6 +660,9 @@ class mmps10_controller extends Controller
         return redirect()->route('mpsgiriskarti', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
         // break;
+
+        case 'yazdir':
+          return view('Etiketler.mps_yazdir', compact('EVRAKNO'));
     
     }
 

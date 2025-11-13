@@ -113,6 +113,11 @@ class tezgah_is_planlama_controller extends Controller
         return json_encode($veri);
     }
 
+    public function p_isler()
+    {
+        return view('tezgah_is_plan_tv');
+    }
+
     public function islemler(Request $request){
         // dd(request()->all());
 
@@ -221,65 +226,8 @@ class tezgah_is_planlama_controller extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
-                if (!isset($TRNUM)) {
-                    $TRNUM = array();
-                }
-
-                $currentTRNUMS = array();
-                $liveTRNUMS = array();
-                $currentTRNUMSObj = DB::table($firma.'plan_t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
-
-                foreach ($currentTRNUMSObj as $key => $veri) {
-                    array_push($currentTRNUMS,$veri->TRNUM);
-                }
-            
-                foreach ($TRNUM as $key => $veri) {
-                    array_push($liveTRNUMS,$veri);
-                }
-            
-                $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
-                $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
-                $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-
-                // dd([
-                //     "TRNUM" => $TRNUM,
-                //     "Delete" => $deleteTRNUMS,
-                //     "Insert" => $newTRNUMS,
-                //     "update" => $updateTRNUMS,
-                // ]);
-
-                for ($i=0; $i < $satir_say; $i++) { 
-                    if(in_array($TRNUM[$i],$newTRNUMS))
-                    {
-                        DB::table($firma.'plan_t')->insert([
-                            'TRNUM' => $TRNUM[$i],
-                            'EVRAKNO' => $EVRAKNO,
-                            'TEZGAH_KODU' => $TEZGAH_KODU[$i],
-                            'R_OPERASYON' => $R_OPERASYON,
-                            'MPSNO' => $MPSNO[$i],
-                            'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
-                            'R_YMAMULMIKTAR' => $R_YMAMULMIKTAR[$i],
-                            'TEZGAH_ADI' => $TEZGAH_ADI[$i],
-                            // 'JOBNO' => $JOBNO[$i],
-                            'SIRANO' => $SIRANO[$i]
-                        ]);
-                    }
-                    if(in_array($TRNUM[$i],$updateTRNUMS))
-                    {
-                        DB::table($firma.'plan_t')->update([
-                            // 'JOBNO' => $JOBNO,
-                            'R_YMAMULMIKTAR' => $R_YMAMULMIKTAR[$i],
-                            'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
-                            // 'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-                    }
-                }
-
-                print_r("Kayıt işlemi başarılı.");
-
                 $sonID=DB::table($firma.'plan_e')->max('id');
                 return redirect()->route('tezgahisplanlama', ['ID' => $sonID, 'kayit' => 'ok']);
-
                 // break;
 
             case 'kart_duzenle':
