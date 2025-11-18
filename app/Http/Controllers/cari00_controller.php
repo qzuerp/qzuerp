@@ -50,7 +50,10 @@ class cari00_controller extends Controller
 
     
     $KOD = $request->input('KOD');
+    $EVRAKNO = $request->input('KOD');
+    $KOD_T = $request->input('KOD_T');
     $AD = $request->input('AD');
+    $AD_T = $request->input('AD_T');
     $AP10 = $request->input('AP10');
     $ADRES_1 = $request->input('ADRES_1');
     $ADRES_2 = $request->input('ADRES_2');
@@ -95,7 +98,16 @@ class cari00_controller extends Controller
     $SPODEMESEKLI = $request->input('SPODEMESEKLI');
     $DENETIM_TAR = $request->input('DENETIM_TAR');
     $DENETIM_PERIYOT = $request->input('DENETIM_PERIYOT');
+    $TRNUM = $request->TRNUM;
 
+    if ($KOD_T == null) {
+      $satir_say = 0;
+    }
+
+    else {
+      $satir_say = count($KOD_T);
+    }
+    // dd($satir_say);
     switch($islem_turu) {
 
       case 'listele':
@@ -158,7 +170,7 @@ class cari00_controller extends Controller
 
       case 'kart_sil':
         FunctionHelpers::Logla('CARI00',$KOD,'D');
-
+        DB::table($firma.'cari00')->where('KOD',$KOD)->delete();
         print_r("Silme işlemi başarılı.");
 
         $sonID=DB::table($firma.'cari00')->min('id');
@@ -255,7 +267,7 @@ class cari00_controller extends Controller
             'GK_2' => $GK_2,
             'GK_3' => $GK_3,
             'GK_4' => $GK_4,
-            'GK_5' => $GK_5,
+            'GK_5' => $GK_5, 
             'GK_6' => $GK_6,
             'GK_7' => $GK_7,
             'GK_8' => $GK_8,
@@ -282,9 +294,19 @@ class cari00_controller extends Controller
             'SPODEMESEKLI' => $SPODEMESEKLI,
             'DENETIM_TAR' => $DENETIM_TAR,
             'DENETIM_PERIYOT' => $DENETIM_PERIYOT,
+            'updated_at' => date('Y-m-d H:i:s'),
             'created_at' => date('Y-m-d H:i:s'),
         ]);
-    
+        for ($i = 0; $i < $satir_say; $i++) {
+
+          DB::table($firma.'cari00c')->insert([
+            'EVRAKNO' => $EVRAKNO,
+            'TRNUM' => $TRNUM[$i],
+            'KOD' => $KOD_T[$i],
+            'AD' => $AD_T[$i],
+          ]);
+
+        }
         print_r("Kayıt işlemi başarılı.");
         $newID = DB::table('cari00')->max('id');
         return redirect()->route('kart_cari', ['ID' => $newID, 'kayit' => 'ok']);
@@ -344,6 +366,57 @@ class cari00_controller extends Controller
           'DENETIM_PERIYOT' => $DENETIM_PERIYOT,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
+
+        if (!isset($TRNUM)) {
+          $TRNUM = array();
+        }
+
+        $currentTRNUMS = array();
+        $liveTRNUMS = array();
+        $currentTRNUMSObj = DB::table($firma.'cari00c')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+
+        foreach ($currentTRNUMSObj as $key => $veri) {
+          array_push($currentTRNUMS,$veri->TRNUM);
+        }
+
+        foreach ($TRNUM as $key => $veri) {
+          array_push($liveTRNUMS,$veri);
+        }
+
+        $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
+        $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
+        $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+
+        for ($i = 0; $i < $satir_say; $i++) {
+          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+
+          if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
+
+            DB::table($firma.'cari00c')->insert([
+              'EVRAKNO' => $EVRAKNO,
+              'TRNUM' => $TRNUM[$i],
+              'KOD' => $KOD_T[$i],
+              'AD' => $AD_T[$i],
+            ]);
+
+          }
+
+          if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
+
+            DB::table($firma.'cari00c')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
+              'KOD' => $KOD_T[$i],
+              'AD' => $AD_T[$i],
+            ]);
+
+          }
+
+        }
+
+        foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
+
+            DB::table($firma.'cari00c')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+
+        }
         // dd(DB::getQueryLog());
         print_r("Düzenleme işlemi başarılı.");
 

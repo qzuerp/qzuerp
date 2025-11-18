@@ -57,7 +57,7 @@ class gecous_controller extends Controller
     switch($islem_turu) {
 
     case 'kart_sil':
-FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'D');
+    FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'D');
 
     DB::table($firma.'gecouse')->where('EVRAKNO',$EVRAKNO)->delete();
     DB::table($firma.'gecoust')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -70,7 +70,7 @@ FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'D');
     break;
 
     case 'kart_olustur':
-FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'C');
+    FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'C');
 
     DB::table($firma.'gecouse')->insert([
     'EVRAKNO' => $EVRAKNO,
