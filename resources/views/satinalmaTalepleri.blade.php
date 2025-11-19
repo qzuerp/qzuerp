@@ -776,7 +776,7 @@
                   <tbody>
                     @php
 
-                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok47e.EVRAKNO', '=', 'stok47t.EVRAKNO')->orderBy('stok47t.id', 'ASC')->get();
+                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, $database.'stok47e.EVRAKNO', '=', $database.'stok47t.EVRAKNO')->orderBy($database.'stok47t.id', 'ASC')->get();
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
