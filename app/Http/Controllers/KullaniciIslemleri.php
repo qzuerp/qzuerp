@@ -128,7 +128,7 @@ class KullaniciIslemleri extends Controller
       case 'kullanici_sil':
         
         FunctionHelpers::Logla('USERS',$name,'D');
-        DB::table($firma.'users')->where('id',$id)->delete();
+        DB::table('users')->where('id',$id)->delete();
 
         print_r("Silme işlemi başarılı.");
 
