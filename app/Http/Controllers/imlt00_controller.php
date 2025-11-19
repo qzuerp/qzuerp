@@ -81,6 +81,7 @@ class imlt00_controller extends Controller
     $B_KAPASITE6_PERMPS = $request->input('B_KAPASITE6_PERMPS');
     $B_KAPASITE7_PERMPS = $request->input('B_KAPASITE7_PERMPS');
     $TOPLAM_KAPASITE_MPS = $request->input('TOPLAM_KAPASITE_MPS');
+    $CIHAZTIPI = $request->input('CIHAZTIPI');
 
 
     switch($islem_turu) {
@@ -199,8 +200,7 @@ FunctionHelpers::Logla('IMLT00',$KOD,'D');
           'B_KAPASITE6_PERMPS' => $B_KAPASITE6_PERMPS,
           'B_KAPASITE7_PERMPS' => $B_KAPASITE7_PERMPS,
           'TOPLAM_KAPASITE_MPS' => $TOPLAM_KAPASITE_MPS,
-          
-
+          'CIHAZTIPI' => $CIHAZTIPI,
           'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -249,6 +249,7 @@ FunctionHelpers::Logla('IMLT00',$KOD,'D');
           'B_KAPASITE6_PERMPS' => $B_KAPASITE6_PERMPS,
           'B_KAPASITE7_PERMPS' => $B_KAPASITE7_PERMPS,
           'TOPLAM_KAPASITE_MPS' => $TOPLAM_KAPASITE_MPS,
+          'CIHAZTIPI' => $CIHAZTIPI,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
 

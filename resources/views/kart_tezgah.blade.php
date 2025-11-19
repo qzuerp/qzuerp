@@ -133,12 +133,9 @@ if (isset($kart_veri)) {
 								{{-- <input type="hidden" class="form-control "maxlength="50" name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
 								<select name="CIHAZTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIHAZTIPI" id="CIHAZTIPI" class="CIHAZTIPI form-control select2">
 									<option>Seç</option>
-									<option>Tezgah</option>
-									<option>Kalıp</option>
-									<option>Aparat Stok Kodu</option>
-									<input type='hidden' value='{{ @$kart_veri->id }}' name='CIHAZTIPI' id='CIHAZTIPI'>
-
-
+									<option value="I" {{ @$kart_veri->CIHAZTIPI == "I" ? "selected" : "" }}>Tezgah</option>
+									<option value="K" {{ @$kart_veri->CIHAZTIPI == "K" ? "selected" : "" }}>Kalıp</option>
+									<option value="A" {{ @$kart_veri->CIHAZTIPI == "A" ? "selected" : "" }}>Aparat Stok Kodu</option>
 								</select>
 							</div>
 						</div>
