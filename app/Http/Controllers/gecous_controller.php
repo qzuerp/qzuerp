@@ -64,7 +64,7 @@ class gecous_controller extends Controller
 
       print_r("Silme işlemi başarılı.");
 
-      $sonID=DB::table($firma.'gecouse')->min('ID');
+      $sonID=DB::table($firma.'gecouse')->min('id');
       return redirect()->route('gk_tanimlari', ['ID' => $sonID, 'silme' => 'ok']);
 
     break;

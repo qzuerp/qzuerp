@@ -50,6 +50,8 @@
 	$GK8_veri = DB::table($database.'gecoust')->where('EVRAKNO','CARIGK8')->get();
 	$GK9_veri = DB::table($database.'gecoust')->where('EVRAKNO','CARIGK9')->get();
 	$GK10_veri = DB::table($database.'gecoust')->where('EVRAKNO','CARIGK10')->get();
+	$GK11_veri = DB::table($database.'gecoust')->where('EVRAKNO','CARIGK11')->get();
+	$GK12_veri = DB::table($database.'gecoust')->where('EVRAKNO','CARIGK12')->get();
   	$t_kart_veri = DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO', @$kart_veri->KOD)->get();
 
 	if (isset($kart_veri)) {
@@ -443,6 +445,40 @@
 												@php
 													foreach ($GK10_veri as $key => $veri) {
 														if ($veri->KOD == @$kart_veri->GK_10) {
+															echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+														}
+														else {
+															echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+														}
+													}
+												@endphp
+											</select>
+								    </div>
+
+									<div class="col-md-2 col-xs-4  col-sm-4">
+								      <label>Grup Kodu 11</label>
+											<select id="GK_11" name="GK_11" class="form-control js-example-basic-single" style="width: 100%;">
+												<option value=" ">Seç</option>
+												@php
+													foreach ($GK11_veri as $key => $veri) {
+														if ($veri->KOD == @$kart_veri->GK_11) {
+															echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+														}
+														else {
+															echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+														}
+													}
+												@endphp
+											</select>
+								    </div>
+
+									<div class="col-md-2 col-xs-4  col-sm-4">
+								      <label>Grup Kodu 12</label>
+											<select id="GK_12" name="GK_12" class="form-control js-example-basic-single" style="width: 100%;">
+												<option value=" ">Seç</option>
+												@php
+													foreach ($GK12_veri as $key => $veri) {
+														if ($veri->KOD == @$kart_veri->GK_12) {
 															echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
 														}
 														else {

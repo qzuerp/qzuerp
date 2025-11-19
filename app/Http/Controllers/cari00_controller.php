@@ -77,6 +77,8 @@ class cari00_controller extends Controller
     $GK_8 = $request->input('GK_8');
     $GK_9 = $request->input('GK_9');
     $GK_10 = $request->input('GK_10');
+    $GK_11 = $request->input('GK_11');
+    $GK_12 = $request->input('GK_12');
     $MUSTERI = $request->input('MUSTERI');
     $SATICI = $request->input('SATICI');
     $BANKA = $request->input('BANKA');
@@ -273,6 +275,8 @@ class cari00_controller extends Controller
             'GK_8' => $GK_8,
             'GK_9' => $GK_9,
             'GK_10' => $GK_10,
+            'GK_11' => $GK_11,
+            'GK_12' => $GK_12,
             'MUSTERI' => $MUSTERI,
             'SATICI' => $SATICI,
             'BANKA' => $BANKA,
@@ -343,6 +347,8 @@ class cari00_controller extends Controller
           'GK_8' => $GK_8,
           'GK_9' => $GK_9,
           'GK_10' => $GK_10,
+          'GK_11' => $GK_11,
+          'GK_12' => $GK_12,
           'MUSTERI' => $MUSTERI,
           'SATICI' => $SATICI,
           'BANKA' => $BANKA,
