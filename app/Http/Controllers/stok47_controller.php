@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,11 @@ class stok47_controller extends Controller
 
   public function index()
   {
-    $sonID=DB::table('stok47e')->min('id');
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+    $sonID=DB::table($firma.'stok47e')->min('id');
 
     return view('satinalmaTalepleri')->with('sonID', $sonID);
   }
