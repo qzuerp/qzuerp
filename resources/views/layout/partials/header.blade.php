@@ -43,28 +43,28 @@
     <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}"></script>
 
     <!-- jQuery input mask eklentisi -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" async></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" async></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" async></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" async></script>
 
     <!-- Bootstrap -->
     <script src="{{ URL::asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
 
     <!-- AdminLTE -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}" defer></script>
 
     <!-- Select2 -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}" defer></script>
 
     <!-- SweetAlert2 -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}" defer></script>
 
     <!-- DataTables ve Eklentileri -->
-    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}"></script>
-    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}" defer></script>
     <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.html5.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.print.min.js') }}"></script>
@@ -73,25 +73,25 @@
 
 
     <!-- Yardımcı Kütüphaneler -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}"></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" async></script>
 
     <!-- iziToast -->
     <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
 
-    <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}" defer></script>
 
-    <script src="{{ asset('qzuerp-sources/js/highcharts.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/highcharts.js') }}" async></script>
 
-    <script src="{{ asset('qzuerp-sources/js/highcharts-more.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/highcharts-more.js') }}" async></script>
 
-    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js')}}"></script>
+    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js')}}" async></script>
 
-    <script src="{{ asset('qzuerp-sources/js/accessibility.js')}}"></script>
+    <script src="{{ asset('qzuerp-sources/js/accessibility.js')}}" defer></script>
 
-    <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}"></script>   
-    <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}" ></script>   
+    <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" ></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
 
     <!-- Ana Javascript -->
     <script src="{{ URL::asset('qzuerp-sources/js/main.js') }}"></script>
