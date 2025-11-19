@@ -103,8 +103,8 @@ if (isset($kart_veri)) {
 										 
 								</div>
 								<div class="col-md-2 col-xs-2">
-                  <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
-                </div>
+									<input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
+								</div>
 					      <div class="col-md-6 col-xs-6">
 									@include('layout.util.evrakIslemleri')
 								</div>
@@ -121,13 +121,7 @@ if (isset($kart_veri)) {
 							   <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}" >
 							 </div>
 
-							 <div class="col-md-2 col-sm-1 col-xs-2">
-							   <label>Aktif/Pasif</label>
-							   <div class="d-flex ">
-							    <input type='hidden' value='0' name='AP10'>
-							    <input type="checkbox" class="" name="AP10" id="AP10" value="1" @if (@$kart_veri->AP10 == "1") checked @endif>
-							  </div>
-							</div>
+							 
 							<div class="col-md-3 col-sm-4 col-xs-6">
 								<label>Cihaz Tipi</label>
 								{{-- <input type="hidden" class="form-control "maxlength="50" name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
@@ -137,6 +131,23 @@ if (isset($kart_veri)) {
 									<option value="K" {{ @$kart_veri->CIHAZTIPI == "K" ? "selected" : "" }}>Kalıp</option>
 									<option value="A" {{ @$kart_veri->CIHAZTIPI == "A" ? "selected" : "" }}>Aparat Stok Kodu</option>
 								</select>
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-1">
+							   <label>Aktif/Pasif</label>
+							   <div class="d-flex ">
+							    <input type='hidden' value='0' name='AP10'>
+							    <input type="checkbox" class="" name="AP10" id="AP10" value="1" @if (@$kart_veri->AP10 == "1") checked @endif>
+							  </div>
+							</div>
+							<div class="col-md-2" style="display: flex; justify-content: center; align-items: center;">
+								@php 
+									$img = DB::table($database.'dosyalar00')
+									->where('EVRAKNO',@$kart_veri->KOD)
+									->where('EVRAKTYPE','IMLT00')
+									->where('DOSYATURU','GORSEL')
+									->first();
+								@endphp
+								<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
 							</div>
 						</div>
 					</div>
