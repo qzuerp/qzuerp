@@ -516,6 +516,7 @@ function inputTemizle2() {
 
   $('.nav-tabs-custom input[type="text"]').val('');
   $('.nav-tabs-custom input[type="number"]').val('');
+  $('input[type="date"]').val('');
   $('select:not(#evrakSec)').val('').trigger('change');
 
 
