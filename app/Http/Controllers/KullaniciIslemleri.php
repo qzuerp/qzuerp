@@ -177,8 +177,7 @@ class KullaniciIslemleri extends Controller
   }
 
   public function sifreDegistir(Request $request) {
-
-    $id = $request->input('kullanici_id_hid');
+    $id = auth::id();
     $password = $request->input('kullanici_sifre');
     $password_hash = Hash::make($password);
 
