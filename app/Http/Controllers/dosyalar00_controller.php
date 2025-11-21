@@ -153,8 +153,6 @@ class dosyalar00_controller extends Controller
     }
 
 
-
-
     private function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -189,6 +187,7 @@ class dosyalar00_controller extends Controller
             'DOSYATURU' => $request->input('dosyaTuruKodu'),
             'EVRAKTYPE' => $request->input('dosyaEvrakType'),
             'ACIKLAMA' => $request->input('dosyaAciklama'),
+            'TEMP_ID' => $request->input('dosyaTempID'),
             'DOSYA' => $kaydedilecekYol
         ]);
 

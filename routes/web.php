@@ -94,6 +94,9 @@ Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_
 Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
 Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
 
+Route::view('/erisim_engeli', 'erisim_engeli');
+
+
 Auth::routes(['password.request' => false]);
 
   // POST'LAR

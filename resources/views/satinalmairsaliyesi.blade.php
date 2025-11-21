@@ -171,7 +171,7 @@
 
 							<div class="col-md-4 col-sm-4 col-xs-6">
 							<label>Tedarikçi Kodu</label>
-							<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" class="CARIHESAPCODE form-control select2 js-example-basic-single" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+							<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" class="CARIHESAPCODE form-control select2 js-example-basic-single" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" >
 								<option value="">Seç...</option>
 								@php
 								$evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
@@ -393,7 +393,7 @@
 										<td><input type="number" class="form-control number" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
 										<td><input type="number" class="form-control number" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
 										<td>
-											<select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%; border-radius: 5px;">
+											<select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 " style="width: 100%; border-radius: 5px;">
 												<option value=" ">Seç</option>
 												@php
 												$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -410,7 +410,7 @@
 										<td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
 										<td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
 										<td>
-											<select name="MPS_KODU[]" id="MPS_KODU" class="form-control js-example-basic-single select2 required" style="width: 100%; border-radius: 5px;">
+											<select name="MPS_KODU[]" id="MPS_KODU" class="form-control js-example-basic-single select2 " style="width: 100%; border-radius: 5px;">
 												<option value=" ">Seç</option>
 												@php
 												$kur_veri = DB::table($database.'mmps10e')->get();
@@ -511,7 +511,7 @@
 
 								<label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
 								<div class="col-sm-3">
-								<select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single" required style=" height: 30PX" >
+								<select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single"  style=" height: 30PX" >
 									@php
 									echo "<option value =' ' selected> </option>";
 									foreach ($stok00 as $key => $veri) {
@@ -523,7 +523,7 @@
 								</select>
 								</div>
 								<div class="col-sm-3">
-								<select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single" required style="height: 30px;">
+								<select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single"  style="height: 30px;">
 									@php
 									echo "<option value =' ' selected> </option>";
 									foreach ($stok00 as $key => $veri) {
@@ -539,7 +539,7 @@
 
 								<label for="minDeger" class="col-sm-2 col-form-label">Müşteri Kodu</label>
 								<div class="col-sm-3">
-								<select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control select2 js-example-basic-single" required style="height: 30px;">
+								<select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control select2 js-example-basic-single"  style="height: 30px;">
 									@php
 									echo "<option value =' ' selected> </option>";
 
@@ -556,7 +556,7 @@
 								</select>
 								</div>
 								<div class="col-sm-3">
-								<select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control select2 js-example-basic-single" required style="height: 30px;">
+								<select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control select2 js-example-basic-single"  style="height: 30px;">
 									@php
 									echo "<option value =' ' selected> </option>";
 
@@ -706,6 +706,7 @@
 				</div>
 				</div>
 			</div>
+			<input type="hidden" id="temp_id" name="temp_id" value="">
 		</form>
 
 
@@ -1003,7 +1004,6 @@
 
   	</section>
   </div>
-
   @include('components/detayBtnLib')
   <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
   <script>	
@@ -1417,7 +1417,7 @@
             htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+setValueOfJsonObject(kartVerisi2.SERINO)+"' readonly></td> ";
             htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"'></td> ";
-			htmlCode += "<td><select name='FIYAT_PB[]' class='form-control js-example-basic-single select2 required' style='width: 100%; border-radius: 5px;'>";
+			htmlCode += "<td><select name='FIYAT_PB[]' class='form-control js-example-basic-single select2 ' style='width: 100%; border-radius: 5px;'>";
 			htmlCode += "<option value=' '>Seç</option>";
 
 			@php

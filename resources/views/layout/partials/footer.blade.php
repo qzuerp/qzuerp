@@ -256,7 +256,7 @@ document.getElementById('go-top').addEventListener('click', () => {
 
     @if (!in_array($ekran, $kullanici_read_yetkileri) && $ekran != "index" && $ekran != "sifreDegistir" && $ekran != "kullaniciTanimlari")
       <script>
-        window.location = "/index?hata=yetkisizgiris";
+        window.location = "/erisim_engeli";
       </script>
     @endif
 

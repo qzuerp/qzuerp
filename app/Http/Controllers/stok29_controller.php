@@ -145,23 +145,42 @@ class stok29_controller extends Controller
         // break;
 
       case 'kart_olustur':
-        
         $son_evrak = DB::table($firma.'stok29e')
         ->selectRaw('MAX(CAST(EVRAKNO AS INT)) AS EVRAKNO')
         ->value('EVRAKNO');
         $son_evrak == null ? $EVRAKNO = 1 : $EVRAKNO = $son_evrak + 1;
-
+        
         FunctionHelpers::Logla('STOK29',$son_evrak,'C',$TARIH);
 
-        DB::table($firma.'stok29e')->insert([
-          'EVRAKNO' => $EVRAKNO,
-          'TARIH' => $TARIH,
-          'AMBCODE' => $AMBCODE,
-          'CARIHESAPCODE' => $CARIHESAPCODE,
-          'AK' => $AK,
-          'LAST_TRNUM' => $LAST_TRNUM,
-          'created_at' => date('Y-m-d H:i:s'),
+        $new_id = DB::table($firma.'stok29e')->insertGetId([
+            'EVRAKNO' => $EVRAKNO,
+            'TARIH' => $TARIH,
+            'AMBCODE' => $AMBCODE,
+            'CARIHESAPCODE' => $CARIHESAPCODE,
+            'AK' => $AK,
+            'LAST_TRNUM' => $LAST_TRNUM,
+            'created_at' => date('Y-m-d H:i:s'),
         ]);
+        if(DB::table($firma.'dosyalar00')->where('TEMP_ID',$request->temp_id)->count() == 0)
+        {
+            $direktorler = DB::table($firma.'pers00')->where('NAME2','FBRKD')->get();
+            foreach($direktorler as $direktor)
+            {
+              DB::table($firma.'notifications')->insert([
+                  'title' => 'Satın Alma İrsaliyesi – Eksik Rapor Bildirimi',
+                  'message' => auth()->user()->name.', '. $EVRAKNO.' numaralı evrakı rapor eklemeden oluşturdu.',
+                  'target_user_id' => $direktor->bagli_hesap,
+                  'url' => 'satinalmairsaliyesi?ID='.$new_id
+              ]);
+            }
+        }
+        else
+        {
+            DB::table($firma.'dosyalar00')->where('TEMP_ID',$request->temp_id)->update([
+                'EVRAKNO' => $EVRAKNO,
+                'TEMP_ID' => NULL
+            ]);
+        }
 
         for ($i = 0; $i < $satir_say; $i++) {
 

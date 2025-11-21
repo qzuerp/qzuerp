@@ -972,20 +972,31 @@ function dosyalariGetir() {
   });
 
 }
+function createUUID() {
+  if (window.crypto && window.crypto.randomUUID) {
+      return window.crypto.randomUUID();
+  }
+
+  // Fallback (yeterince sağlam)
+  return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
+}
 
 $(document).ready(function() {
-
+  var tempId = createUUID();
+  document.getElementById('temp_id').value = tempId;
   $('#dosyaYukle').on('click', function () {
     var tab = document.getElementById('firma').value;
-    console.log(tab);
-    if (!tab || tab.trim() === "") {
-      Swal.fire({
-        title: "Uyarı",
-        html: "Dokuman eklemek için <br> önce evrakı kaydetmelisiniz",
-        icon: "warning",
-      });
-      return;
-    }
+    // if (!tab || tab.trim() === "") {
+    //   Swal.fire({
+    //     title: "Uyarı",
+    //     html: "Dokuman eklemek için <br> önce evrakı kaydetmelisiniz",
+    //     icon: "warning",
+    //   });
+    //   return;
+    // }
 
     var dosyaFile = $('#dosyaFile')[0].files[0];
     var dosyaEvrakNo = $('#dosyaEvrakNo').val();
@@ -993,6 +1004,7 @@ $(document).ready(function() {
     var dosyaEvrakType = $('#dosyaEvrakType').val();
     var dosyaAciklama = $('#dosyaAciklama').val();
     var dosya_firma = $('#dosya_firma').val();
+    var dosya_tempID = $('#temp_id').val();
     var token = $('meta[name="csrf-token"]').attr('content');
 
     if (!dosyaFile) {
@@ -1010,7 +1022,12 @@ $(document).ready(function() {
     var table = $('#baglantiliDokumanlarTable').DataTable();
     var formData = new FormData();
     formData.append('dosyaFile', dosyaFile);
-    formData.append('dosyaEvrakNo', dosyaEvrakNo);
+    if (!tab || tab.trim() === "") {
+      formData.append('dosyaTempID', dosya_tempID);
+    }
+    else{
+      formData.append('dosyaEvrakNo', dosyaEvrakNo);
+    }
     formData.append('dosyaTuruKodu', dosyaTuruKodu);
     formData.append('dosyaEvrakType', dosyaEvrakType);
     formData.append('dosya_firma', dosya_firma);

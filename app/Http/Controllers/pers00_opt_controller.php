@@ -79,6 +79,7 @@ class pers00_opt_controller extends Controller
     $KONTAKTBOLUMU_2 = $request->input('KONTAKTBOLUMU_2');
     $START_DATE = $request->input('START_DATE');
     $END_DATE = $request->input('END_DATE');
+    $bagli_hesap = $request->input('bagli_hesap');
 
     switch($islem_turu) {
 
@@ -194,6 +195,7 @@ class pers00_opt_controller extends Controller
       'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
       'START_DATE' => $START_DATE,
       'END_DATE' => $END_DATE,
+      'bagli_hesap' => $bagli_hesap,
       'created_at' => date('Y-m-d H:i:s'),
       ]);
 
@@ -241,6 +243,7 @@ class pers00_opt_controller extends Controller
       'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
       'START_DATE' => $START_DATE,
       'END_DATE' => $END_DATE,
+      'bagli_hesap' => $bagli_hesap,
       'updated_at' => date('Y-m-d H:i:s'),
     ]);
 

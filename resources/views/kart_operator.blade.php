@@ -111,13 +111,44 @@ if (isset($kart_veri)) {
                     <label>Kod</label>
                     <input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
                   </div>
+                  <div class="col-md-2 col-sm-3 col-xs-5">
+                    <label>Bağlı Hesap</label>
+                    <select class="form-control js-example-basic-single" name="bagli_hesap" style="width: 100%;">
+                      <option>Seç</option>
+                      @php
+                        $kullanicilar = DB::table('users')
+                        ->where("firma", $kullanici_veri->firma)
+                        ->get();
+
+                        foreach ($kullanicilar as $key => $veri) {
+                          if ($veri->id == $kart_veri->bagli_hesap) {
+                            echo "<option value ='" . $veri->id . "' selected>" . $veri->email . "</option>";
+                          } else {
+                            echo "<option value ='" . $veri->id . "'>" . $veri->email . "</option>";
+                          }
+                        }
+                      @endphp
+                    </select>
+                  </div>
                   <div class="col-md-3 col-sm-4 col-xs-6">
                     <label>Personel Adı</label>
                     <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
                   </div>
                   <div class="col-md-2 col-sm-4 col-xs-6">
                     <label>Ünvanı</label>
-                    <input type="text" class="form-control NAME2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="NAME2" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
+                    <select class="form-control js-example-basic-single NAME2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="NAME2" name="NAME2" style="width: 100%;">
+                      <option>Seç</option>
+                      @php
+                        $unvans = DB::table($database.'gecoust')->where('EVRAKNO','OPRTUNVAN')->get()
+                      @endphp
+                      @foreach ($unvans as $unvan)
+                        @if($kart_veri->NAME2 == $unvan->KOD)
+                          <option selected value="{{ $unvan->KOD }}">{{ $unvan->AD }}</option>
+                        @else
+                          <option value="{{ $unvan->KOD }}">{{ $unvan->AD }}</option>
+                        @endif
+                      @endforeach
+                    </select>
                   </div>
 
                   <div class="col-md-2 col-sm-4 col-xs-6">

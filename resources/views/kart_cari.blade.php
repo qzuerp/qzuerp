@@ -115,7 +115,6 @@
 							<div class="row ">
 
 							  <div class="col-md-2 col-sm-3 col-xs-6">
-									<label>Kod</label>
 									<input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 									<!-- Bu kısım kod alanı güncellenmek istenirese eğer veritabanında eşleştirme yapılacak kısım -->
 									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">

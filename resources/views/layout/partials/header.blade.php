@@ -62,8 +62,8 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}" defer></script>
 
     <!-- DataTables ve Eklentileri -->
-    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}" defer></script>
-    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}"></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}" defer></script>
     <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.html5.min.js') }}"></script>
@@ -75,7 +75,7 @@
     <!-- Yardımcı Kütüphaneler -->
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" async></script>
 
-    <!-- iziToast -->
+    <!-- iziTo  ast -->
     <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
 
     <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}" defer></script>
@@ -523,7 +523,7 @@
                         <i class="fa-solid fa-bell fs-5"></i>
                         <span id="notiCount" class="badge bg-danger position-absolute translate-middle rounded-pill" style="display: none;">0</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notiDropdown" id="notiList" style="width: 350px; max-height: 400px; overflow-y: auto;">
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notiDropdown" id="notiList" style="max-width:550px; max-height: 400px; overflow-y: auto;">
                         <li class="dropdown-header d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Bildirimler</span>
                             <a href="#" id="markAllRead" class="text-primary text-decoration-none small">Tümünü Okundu İşaretle</a>
