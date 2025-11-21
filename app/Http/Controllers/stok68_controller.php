@@ -147,7 +147,7 @@ class stok68_controller extends Controller
         }
         FunctionHelpers::Logla('STOK68',$EVRAKNO,'C',$TARIH);
         
-        DB::table($firma.'stok68e')->insert([
+        $new_id = DB::table($firma.'stok68e')->insertGetId([
           'EVRAKNO' => $EVRAKNO,
           'TARIH' => $TARIH,
           'AMBCODE' => $AMBCODE,
@@ -164,6 +164,26 @@ class stok68_controller extends Controller
           'created_at' => date('Y-m-d H:i:s'),
         ]);
 
+        if(DB::table($firma.'dosyalar00')->where('TEMP_ID',$request->temp_id)->count() == 0)
+        {
+            $direktorler = DB::table($firma.'pers00')->where('NAME2','FBRKD')->get();
+            foreach($direktorler as $direktor)
+            {
+              DB::table($firma.'notifications')->insert([
+                  'title' => 'Fason Geliş İrsaliyesi – Eksik Rapor Bildirimi',
+                  'message' => auth()->user()->name.', '. $EVRAKNO.' numaralı evrakı rapor eklemeden oluşturdu.',
+                  'target_user_id' => $direktor->bagli_hesap,
+                  'url' => 'satinalmairsaliyesi?ID='.$new_id
+              ]);
+            }
+        }
+        else
+        {
+            DB::table($firma.'dosyalar00')->where('TEMP_ID',$request->temp_id)->update([
+                'EVRAKNO' => $EVRAKNO,
+                'TEMP_ID' => NULL
+            ]);
+        }
 
         for ($i = 0; $i < $satir_say; $i++) {
 

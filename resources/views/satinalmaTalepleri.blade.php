@@ -199,8 +199,8 @@
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
-                          <th>Fiyat</th>
-                          <th style="min-width: 120px;">Para Birimi</th>
+                          <!-- <th>Fiyat</th>
+                          <th style="min-width: 120px;">Para Birimi</th> -->
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
@@ -271,7 +271,7 @@
                               name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
                               data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                           </td>
-                          <td style="min-width: 150px">
+                          <!-- <td style="min-width: 150px">
                             <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
                               id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
                               class="FIYAT form-control">
@@ -288,7 +288,7 @@
                                 }
                               @endphp
                             </select>
-                          </td>
+                          </td> -->
                           <td style="min-width: 150px">
                             <input maxlength="6 " style="color: red" type="text" name="SF_SF_UNIT_FILL"
                               id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -389,11 +389,11 @@
                             <td><input type="text" class="form-control" name="SERINO[]" value="{{ $veri->SERINO }}"></td>
                             <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
                             </td>
-                            <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
+                            <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
                             <td>
                               <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
                                 value="{{ $veri->FIYAT_PB }}" id="">
-                            </td>
+                            </td> -->
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T"
                                 value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control"
                                 data-name="SF_SF_UNIT[]" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>

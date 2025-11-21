@@ -986,7 +986,12 @@ function createUUID() {
 
 $(document).ready(function() {
   var tempId = createUUID();
-  document.getElementById('temp_id').value = tempId;
+  var tempInput = document.getElementById('temp_id');
+
+  if (tempInput) {
+    tempInput.value = tempId;
+  }
+
   $('#dosyaYukle').on('click', function () {
     var tab = document.getElementById('firma').value;
     // if (!tab || tab.trim() === "") {

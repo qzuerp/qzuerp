@@ -587,6 +587,7 @@
           </div>
         </div>
 
+			<input type="hidden" id="temp_id" name="temp_id" value="">
       </form>
 
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
