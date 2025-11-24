@@ -315,11 +315,6 @@ class calisma_bildirimi_controller extends Controller {
       case 'kart_sil':
         FunctionHelpers::Logla('SFDC31',$EVRAKNO,'D',$TARIH);
 
-        $msg = FunctionHelpers::KodKontrol($STOK_CODE);
-
-        if($msg)
-          return redirect()->back()->with('error_swal',$msg);
-
         $mevcutMiktar = DB::table($firma.'sfdc31e')->where("EVRAKNO",$EVRAKNO)->value('SF_MIKTAR');
 
         $A_sure += DB::table($firma.'sfdc31t')
