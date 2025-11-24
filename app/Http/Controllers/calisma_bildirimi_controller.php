@@ -334,9 +334,9 @@ class calisma_bildirimi_controller extends Controller {
         
         $TOPLAM_SURE = $A_sure + $U_sure;
 
-        if($TOPLAM_SURE !=  null)
+        if($TOPLAM_SURE !=  null && $JOBNO == NULL)
           DB::update("UPDATE ".$firma."mmps10t SET GERCEKLESEN_SURE = GERCEKLESEN_SURE - ".$TOPLAM_SURE." where JOBNO = ".$JOBNO."");
-        if($mevcutMiktar !=  null)
+        if($mevcutMiktar !=  null && $JOBNO == NULL)
           DB::update("UPDATE ".$firma."mmps10t SET R_TMYMAMULMIKTAR = R_TMYMAMULMIKTAR - ".$mevcutMiktar." where JOBNO = ".$JOBNO."");
 
         DB::table($firma.'sfdc31e')->where('EVRAKNO',$EVRAKNO)->delete();

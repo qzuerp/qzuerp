@@ -1530,9 +1530,9 @@
 					buttons: ['copy', 'excel', 'print'],
 					processing: true,
 					serverSide: true,
-					searching: true,
+					searching: false, // DataTables'ın kendi search'ünü kapat
 					autoWidth: false,
-    				scrollX: false,
+					scrollX: false,
 					ajax: '/evraklar-veri',
 					columns: [
 						{ data: 'id', name: 'id' },
@@ -1550,15 +1550,23 @@
 							orderable: false,
 							searchable: false
 						}
-					],language: {
+					],
+					language: {
 						url: '{{ asset("tr.json") }}'
-					},
-					initComplete: function() {
-						const table = this.api();
-						$('.dataTables_filter input').on('keyup', function() {
-							table.draw();
-						});
 					}
+				});
+
+				// DataTable dışında manuel search input ekle
+				let debounceTimer;
+				$('.dataTables_filter input').on('input', function(e) {
+					e.stopImmediatePropagation(); // Tüm event'leri durdur
+					clearTimeout(debounceTimer);
+					const searchValue = this.value;
+					const table = $('#evrakSuzTablee').DataTable();
+					
+					debounceTimer = setTimeout(function() {
+						table.search(searchValue).draw();
+					}, 500);
 				});
 
 				$('#evrakSec').select2({

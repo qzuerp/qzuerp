@@ -191,7 +191,8 @@
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th style="display:none;">Sıra</th>
+                          <th>Sıra</th>
+                          <th style="min-width:120px;">Açık/Kapalı</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <!-- <th>Lot No</th>
@@ -221,8 +222,19 @@
                         <tr class="satirEkle" style="background-color:#3c8dbc">
 
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
-                          <td style="display:none;">
+                          <td>
+                            #
                           </td>
+                          <th style="min-width:0px !important; width:50px;">
+                            <select class="form-select AK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AK" style="font-size: 0.7rem !important;" id="T_AK_FILL">
+                              <option value="">
+                                Açık
+                              </option>
+                              <option value="K">
+                                Kapalı
+                              </option>
+                            </select>
+                          </th>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
                             <select class="form-control select2 txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
@@ -322,6 +334,17 @@
                             <!-- <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
                             <td>
                               @include('components.detayBtn', ['KOD' => $t_veri->KOD])
+                            </td>
+                            <td><input type="text" value="{{ $key + 1 }}" class="form-control" disabled></td>
+                            <td>
+                              <select class="form-select" style="font-size: 0.7rem !important;" name="T_AK[]">
+                                <option value="" {{ $t_veri->AK == 'K' ? '' : 'selected' }}>
+                                  Açık
+                                </option>
+                                <option value="K" {{ $t_veri->AK == 'K' ? 'selected' : '' }}>
+                                  Kapalı
+                                </option>
+                              </select>
                             </td>
                             <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $t_veri->TRNUM }}"></td>
                             <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $t_veri->KOD }}"></td>
@@ -458,7 +481,7 @@
                               <td style="max-width:75px !impportant; width:75px;"><input type="text" name="Seviye[]" value="{{ $satir->Seviye }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="HammaddeKodu[]" value="{{ $satir->HammaddeKodu }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="STOK_ADI[]" value="{{ $satir->HammaddeAdi }}" class="form-control form-control-sm" readonly></td>
+                              <td><input type="text" name="STOK_ADI_2[]" value="{{ $satir->HammaddeAdi }}" class="form-control form-control-sm" readonly></td>
                               <td><input type="text" name="ToplamHammaddeMiktari[]" value="{{ number_format($satir->ToplamHammaddeMiktari, 2) }}" class="form-control form-control-sm text-end" readonly></td>
                               <td><input type="text" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}" class="form-control form-control-sm text-end" readonly></td>
                           </tr>
@@ -632,6 +655,7 @@
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>Açık/Kapalı</th>
                         </tr>
                       </thead>
 
@@ -649,6 +673,7 @@
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>Açık/Kapalı</th>
                         </tr>
                       </tfoot>
 
@@ -709,6 +734,7 @@
                             echo "<td><b>" . $table->SF_SF_UNIT . "</b></td>";
                             echo "<td><b>" . $table->SF_BAKIYE . "</b></td>";
                             echo "<td><b>" . $table->TERMIN_TAR . "</b></td>";
+                            echo "<td><b>" . (!empty($table->AK) ? ($table->AK === 'K' ? 'Kapalı' : $table->AK) : 'Açık') . "</b></td>";
                             echo "</tr>";
                           }
 
@@ -1149,6 +1175,13 @@
             htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
             // htmlCode += "<td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td>";
             htmlCode += "<td style='display: none;'><input type='hidden' name='TRNUM[]' value='" + TRNUM_FILL + "'></td>";
+            htmlCode += "<td><input type='text' disabled value='Hesaplanıyor' class='form-control'></td>";
+            htmlCode += "<td>" +
+              "<select class='form-select' style='font-size: 0.7rem !important;' name='T_AK[]'>" +
+                "<option value='' " + (satirEkleInputs.T_AK_FILL === 'K' ? '' : 'selected') + ">Açık</option>" +
+                "<option value='K' " + (satirEkleInputs.T_AK_FILL === 'K' ? 'selected' : '') + ">Kapalı</option>" +
+              "</select>" +
+            "</td>";
             htmlCode += "<td><input type='text' class='form-control' value='" + satirEkleInputs.STOK_KODU_FILL + "' disabled>";
             htmlCode += "<input type='hidden' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "'></td>";
             htmlCode += "<td><input type='text' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "' disabled>";
