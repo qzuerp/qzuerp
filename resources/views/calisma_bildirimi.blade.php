@@ -302,7 +302,7 @@
                   {{-- ÇALIŞMA BİLDİRİMİ BİTİŞ --}}
 
                   {{-- SÜREÇ BİLGİLERİ BAŞLANGIÇ --}}
-                    <div class="tab-pane" id="surec_bilgileri">
+                    <div class="tab-pane overflow-hidden" id="surec_bilgileri">
                         <div class="container-fluid">
                             <style>
                                 :root {
@@ -502,7 +502,7 @@
                                         <div id="chart3" style="height: 270px;"></div>
                                     </div>
                                     <!-- Tablo -->
-                                    <div class="table-responsive">
+                                    <div class="table-responsive tools-section">
                                         <table class="table table-hover" id="veri_table">
                                             <thead>
                                                 <tr>
@@ -1545,8 +1545,8 @@
             return;
           }
           lastRow.find("td").eq(2).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$('#RECTIME1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
+          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val()) ?? 0  ;
+          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val()) ?? 0;
           const durationInSeconds = (endDateTime - startDateTime) / 1000;
           const durationInHours = durationInSeconds / 3600;
 
@@ -2015,156 +2015,162 @@
       @php
       $GERCEKLESEN_MIK = DB::table($database.'sfdc31e')->where('JOBNO',@$kart_veri->JOBNO)->SUM('SF_MIKTAR');
       @endphp
-      // Verimlilik grafikleri
-      Highcharts.chart('chart', {
-        chart: {
-          type: 'column',
-          backgroundColor: 'transparent',
-          spacingTop: 20,
-          spacingBottom: 20,
-          style: {
-            fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-          }
-        },
-        title: {
-          text: 'Planlanan / Gerçekleşen Miktar',
-          style: {
-            fontSize: '18px',
-            fontWeight: '600',
-            color: '#2c3e50'
-          },
-          margin: 25
-        },
-        xAxis: {
-          title: { 
-            text: '',
+
+      $(document).ready(function(){
+        // Verimlilik grafikleri
+        Highcharts.chart('chart', {
+          chart: {
+            type: 'column',
+            backgroundColor: 'transparent',
+            spacingTop: 20,
+            spacingBottom: 20,
             style: {
-              fontSize: '14px',
-              fontWeight: '500',
-              color: '#34495e'
+              fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
             }
           },
-          labels: { 
-            style: { 
-              fontSize: '12px',
-              color: '#7f8c8d'
-            }
-          },
-          lineColor: '#bdc3c7',
-          tickColor: '#bdc3c7'
-        },
-        yAxis: {
-          min: 0,
-          title: { 
-            text: 'Miktar',
+          title: {
+            text: 'Planlanan / Gerçekleşen Miktar',
             style: {
-              fontSize: '14px',
-              fontWeight: '500',
-              color: '#34495e'
-            }
-          },
-          labels: { 
-            style: { 
-              fontSize: '12px',
-              color: '#7f8c8d'
-            }
-          },
-          gridLineColor: '#ecf0f1',
-          gridLineWidth: 1
-        },
-        legend: {
-          itemStyle: { 
-            fontSize: '13px',
-            fontWeight: '500',
-            color: '#2c3e50'
-          },
-          itemHoverStyle: {
-            color: '#3498db'
-          },
-          symbolRadius: 3,
-          symbolHeight: 12,
-          symbolWidth: 12,
-          itemDistance: 30
-        },
-        tooltip: {
-          shared: true,
-          borderRadius: 8,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          borderColor: '#bdc3c7',
-          borderWidth: 1,
-          shadow: {
-            color: 'rgba(0, 0, 0, 0.1)',
-            offsetX: 0,
-            offsetY: 2,
-            opacity: 0.1,
-            width: 3
-          },
-          style: { 
-            fontSize: '13px',
-            color: '#2c3e50'
-          },
-          headerFormat: '<span style="font-weight: bold; color: #34495e">{point.key}</span><br/>'
-        },
-        plotOptions: {
-          column: {
-            pointPadding: 0.05,
-            groupPadding: 0.1,
-            borderWidth: 0,
-            pointWidth: 40,
-            borderRadius: {
-              radius: 3,
-              scope: 'point'
+              fontSize: '18px',
+              fontWeight: '600',
+              color: '#2c3e50'
             },
-            dataLabels: {
-              enabled: true,
-              inside: true,
-              align: 'center',
-              verticalAlign: 'middle',
+            margin: 25
+          },
+          xAxis: {
+            title: { 
+              text: '',
               style: {
-                fontWeight: '600',
-                color: '#fff',
-                textOutline: '1px contrast',
-                fontSize: '11px'
-              },
-              formatter: function() {
-                return this.y > 0 ? this.y : '';
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#34495e'
               }
             },
-            states: {
-              hover: {
-                brightness: 0.1
+            labels: { 
+              style: { 
+                fontSize: '12px',
+                color: '#7f8c8d'
+              }
+            },
+            lineColor: '#bdc3c7',
+            tickColor: '#bdc3c7'
+          },
+          yAxis: {
+            min: 0,
+            title: { 
+              text: 'Miktar',
+              style: {
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#34495e'
+              }
+            },
+            labels: { 
+              style: { 
+                fontSize: '12px',
+                color: '#7f8c8d'
+              }
+            },
+            gridLineColor: '#ecf0f1',
+            gridLineWidth: 1
+          },
+          legend: {
+            itemStyle: { 
+              fontSize: '13px',
+              fontWeight: '500',
+              color: '#2c3e50'
+            },
+            itemHoverStyle: {
+              color: '#3498db'
+            },
+            symbolRadius: 3,
+            symbolHeight: 12,
+            symbolWidth: 12,
+            itemDistance: 30
+          },
+          tooltip: {
+            shared: true,
+            borderRadius: 8,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#bdc3c7',
+            borderWidth: 1,
+            shadow: {
+              color: 'rgba(0, 0, 0, 0.1)',
+              offsetX: 0,
+              offsetY: 2,
+              opacity: 0.1,
+              width: 3
+            },
+            style: { 
+              fontSize: '13px',
+              color: '#2c3e50'
+            },
+            headerFormat: '<span style="font-weight: bold; color: #34495e">{point.key}</span><br/>'
+          },
+          plotOptions: {
+            column: {
+              pointPadding: 0.05,
+              groupPadding: 0.1,
+              borderWidth: 0,
+              pointWidth: 40,
+              borderRadius: {
+                radius: 3,
+                scope: 'point'
+              },
+              dataLabels: {
+                enabled: true,
+                inside: true,
+                align: 'center',
+                verticalAlign: 'middle',
+                style: {
+                  fontWeight: '600',
+                  color: '#fff',
+                  textOutline: '1px contrast',
+                  fontSize: '11px'
+                },
+                formatter: function() {
+                  return this.y > 0 ? this.y : '';
+                }
+              },
+              states: {
+                hover: {
+                  brightness: 0.1
+                }
               }
             }
-          }
-        },
-        colors: [
-          {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, '#3498db'],
-              [1, '#2980b9']
-            ]
           },
-          {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, '#e74c3c'],
-              [1, '#c0392b']
-            ]
-          }
-        ],
-        series: [
-          {
-            name: 'Planlanan Miktar',
-            data: [{{ $MPS->R_YMK_YMPAKETICERIGI ?? 0}}]
+          colors: [
+            {
+              linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+              stops: [
+                [0, '#3498db'],
+                [1, '#2980b9']
+              ]
+            },
+            {
+              linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+              stops: [
+                [0, '#e74c3c'],
+                [1, '#c0392b']
+              ]
+            }
+          ],
+          series: [
+            {
+              name: 'Planlanan Miktar',
+              data: [{{ $MPS->R_YMK_YMPAKETICERIGI ?? 0}}]
+            },
+            {
+              name: 'Gerçekleşen Miktar',
+              data: [{{ $GERCEKLESEN_MIK ?? 0}}]
+            }
+          ],credits: {
+            enabled: false
           },
-          {
-            name: 'Gerçekleşen Miktar',
-            data: [{{ $GERCEKLESEN_MIK ?? 0}}]
-          }
-        ],credits: {
-          enabled: false
-        },
+        });
+        drawVerimlilikGauge({{ min(floor($AYAR_VERIMLILIK),150) }},'chart1','Ayar Verimliliği');
+        drawVerimlilikGauge({{ min(floor($URETIM_VERIMLILIK),150) }},'chart2','Üretim Verimliliği');
+        drawVerimlilikGauge({{ min(floor($TOPLAM_VERIMLILIK),150) }},'chart3','Toplam Verimliliği');
       });
 
       function drawVerimlilikGauge(efficiency = 0, container, title = "") {
@@ -2352,9 +2358,7 @@
         return chart;
       }
 
-      drawVerimlilikGauge({{ min(floor($AYAR_VERIMLILIK),150) }},'chart1','Ayar Verimliliği');
-      drawVerimlilikGauge({{ min(floor($URETIM_VERIMLILIK),150) }},'chart2','Üretim Verimliliği');
-      drawVerimlilikGauge({{ min(floor($TOPLAM_VERIMLILIK),150) }},'chart3','Toplam Verimliliği');
+      
       
       setTimeout(() => {
         $('#charts').removeClass('opacity-0');

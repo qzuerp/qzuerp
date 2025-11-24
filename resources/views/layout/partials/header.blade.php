@@ -80,11 +80,11 @@
 
     <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}" defer></script>
 
-    <script src="{{ asset('qzuerp-sources/js/highcharts.js') }}" async></script>
+    <script src="{{ asset('qzuerp-sources/js/highcharts.js') }}" defer></script>
 
-    <script src="{{ asset('qzuerp-sources/js/highcharts-more.js') }}" async></script>
+    <script src="{{ asset('qzuerp-sources/js/highcharts-more.js') }}" defer></script>
 
-    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js')}}" async></script>
+    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js')}}" defer></script>
 
     <script src="{{ asset('qzuerp-sources/js/accessibility.js')}}" defer></script>
 

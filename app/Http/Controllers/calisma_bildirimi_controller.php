@@ -317,6 +317,8 @@ class calisma_bildirimi_controller extends Controller {
 
         $mevcutMiktar = DB::table($firma.'sfdc31e')->where("EVRAKNO",$EVRAKNO)->value('SF_MIKTAR');
 
+        $A_sure = 0;
+        $U_sure = 0;
         $A_sure += DB::table($firma.'sfdc31t')
             ->where('EVRAKNO',$EVRAKNO)
             ->where('ISLEM_TURU','A')
