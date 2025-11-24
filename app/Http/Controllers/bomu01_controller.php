@@ -252,8 +252,8 @@ class bomu01_controller extends Controller
 
       case 'kart_sil':
         FunctionHelpers::Logla('BOMU01', $EVRAKNO, 'D');
-
-        $msg = FunctionHelpers::KodKontrol($MAMULCODE,['bomu01e']);
+        // dd('sil');
+        $msg = FunctionHelpers::KodKontrol($MAMULCODE,['bomu01e','bomu01t','stok40e','stok40t','stok21t','sfdc31e','stok20t','stok60t','stok48t']);
 
         if ($msg) {
           return redirect()->back()->with('error_swal', $msg);

@@ -70,6 +70,7 @@ class stok47_controller extends Controller
     $FIYAT = $request->FIYAT;
     $FIYAT_PB = $request->FIYAT_PB;
     $MPS_KODU = $request->MPS_KODU;
+    $TALEP_EDEN_KISI = $request->TALEP_EDEN_KISI;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -141,6 +142,7 @@ class stok47_controller extends Controller
           'TARIH' => $TARIH,
           'CARIHESAPCODE' => $CARIHESAPCODE,
           'AK' => $AK,
+          'TALEP_EDEN_KISI' => $TALEP_EDEN_KISI,
           'created_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
         ]);
@@ -173,8 +175,8 @@ class stok47_controller extends Controller
             'NOT1' => $NOT1[$i],
             'TERMIN_TAR' => $TERMIN_TAR[$i],
             'created_at' => date('Y-m-d H:i:s'),
-            'FIYAT' => $FIYAT[$i],
-            'FIYAT_PB' => $FIYAT_PB[$i], 
+            // 'FIYAT' => $FIYAT[$i],
+            // 'FIYAT_PB' => $FIYAT_PB[$i], 
             'NETKAPANANMIK' => 0
           ]);
 
@@ -194,6 +196,7 @@ class stok47_controller extends Controller
           'TARIH' => $TARIH,
           'CARIHESAPCODE' => $CARIHESAPCODE,
           'AK' => $AK,
+          'TALEP_EDEN_KISI' => $TALEP_EDEN_KISI,
           'updated_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
         ]);
@@ -249,8 +252,8 @@ class stok47_controller extends Controller
               'NOT1' => $NOT1[$i],
               'TERMIN_TAR' => $TERMIN_TAR[$i],
               'created_at' => date('Y-m-d H:i:s'),
-              'FIYAT' => $FIYAT[$i],
-              'FIYAT_PB' => $FIYAT_PB[$i],
+              // 'FIYAT' => $FIYAT[$i],
+              // 'FIYAT_PB' => $FIYAT_PB[$i],
               'NETKAPANANMIK' => 0
             ]);
 
@@ -279,8 +282,8 @@ class stok47_controller extends Controller
               'NOT1' => $NOT1[$i],
               'TERMIN_TAR' => $TERMIN_TAR[$i],
               'updated_at' => date('Y-m-d H:i:s'),
-              'FIYAT' => $FIYAT[$i],
-              'FIYAT_PB' => $FIYAT_PB[$i]
+              // 'FIYAT' => $FIYAT[$i],
+              // 'FIYAT_PB' => $FIYAT_PB[$i]
             ]);
 
           }

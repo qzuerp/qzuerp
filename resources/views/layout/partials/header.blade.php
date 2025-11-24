@@ -59,7 +59,7 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}" defer></script>
 
     <!-- SweetAlert2 -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}"></script>
 
     <!-- DataTables ve Eklentileri -->
     <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}"></script>
