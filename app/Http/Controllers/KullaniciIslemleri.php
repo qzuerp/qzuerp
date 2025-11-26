@@ -32,10 +32,7 @@ class KullaniciIslemleri extends Controller
       $firma = trim($u->firma).'.dbo.';
       $affected1 = DB::table('sessions')
         ->where('user_id', $request->userID)
-        ->update([
-          'payload' => '',
-          'user_id' => ''
-        ]);
+        ->delete();
 
 
       $affected2 = DB::table('users')
