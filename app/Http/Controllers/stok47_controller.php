@@ -71,15 +71,27 @@ class stok47_controller extends Controller
     $FIYAT_PB = $request->FIYAT_PB;
     $MPS_KODU = $request->MPS_KODU;
     $TALEP_EDEN_KISI = $request->TALEP_EDEN_KISI;
+    $T_STOK_KODU = $request->T_STOK_KODU;
+    $TI_TRNUM = $request->TI_TRNUM;
+    $CARI_KOD = $request->CARI_KOD;
+    $CARI_AD = $request->CARI_AD;
+    $SATIN_ALINACAK_MIK = $request->SATIN_ALINACAK_MIK;
+    $VEREBILECEGI_MIK = $request->VEREBILECEGI_MIK;
+    $TI_TERMIN_TAR = $request->TI_TERMIN_TAR;
 
     if ($KOD == null) {
       $satir_say = 0;
     }
-
     else {
       $satir_say = count($KOD);
     }
-
+    if ($TI_TRNUM == null) {
+      $satir_say2 = 0;
+    }
+    else {
+      $satir_say2 = count($TI_TRNUM);
+    }
+    // dd($satir_say2);
     switch($islem_turu) {
       case 'listele':
      
@@ -113,6 +125,7 @@ class stok47_controller extends Controller
 
         DB::table($firma.'stok47e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok47t')->where('EVRAKNO',$EVRAKNO)->delete();
+        DB::table($firma.'stok47ti')->where('EVRAKNO',$EVRAKNO)->delete();
 
         print_r("Silme işlemi başarılı.");
 
@@ -223,6 +236,28 @@ class stok47_controller extends Controller
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
 
+        // ti için gerekenler
+
+        if (!isset($TI_TRNUM)) {
+          $TI_TRNUM = array();
+        }
+
+        $currentTRNUMS2 = array();
+        $liveTRNUMS2 = array();
+        $currentTRNUMSObj2 = DB::table($firma.'stok47ti')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+
+        foreach ($currentTRNUMSObj2 as $key => $veri) {
+          array_push($currentTRNUMS2,$veri->TRNUM);
+        }
+
+        foreach ($TI_TRNUM as $key => $veri) {
+          array_push($liveTRNUMS2,$veri);
+        }
+
+        $deleteTRNUMS2 = array_diff($currentTRNUMS2, $liveTRNUMS2);
+        $newTRNUMS2 = array_diff($liveTRNUMS2, $currentTRNUMS2);
+        $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
+
         for ($i = 0; $i < $satir_say; $i++) {
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
@@ -254,7 +289,8 @@ class stok47_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
               // 'FIYAT' => $FIYAT[$i],
               // 'FIYAT_PB' => $FIYAT_PB[$i],
-              'NETKAPANANMIK' => 0
+              'NETKAPANANMIK' => 0,
+              'ARTNO' => $EVRAKNO.$TRNUM[$i]
             ]);
 
           }
@@ -289,11 +325,57 @@ class stok47_controller extends Controller
           }
 
         }
+        
+        for($i=0; $i<$satir_say2;$i++)
+        {
+          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          if (in_array($TI_TRNUM[$i],$newTRNUMS2)) { //Yeni eklenen satirlar
+
+            DB::table($firma.'stok47ti')->insert([
+              'EVRAKNO' => $EVRAKNO,
+              'SRNUM' => $SRNUM,
+              'TRNUM' => $TI_TRNUM[$i],
+              'KOD' => $T_STOK_KODU[$i],
+              'CARI_KODU' => $CARI_KOD[$i],
+              'CARI_ADI' => $CARI_AD[$i],
+              'SF_MIKTAR' => $SATIN_ALINACAK_MIK[$i],
+              'VEREBILECEGI_MIK' => $VEREBILECEGI_MIK[$i],
+              'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
+              'created_at' => date('Y-m-d H:i:s'),
+              'FIYAT' => $FIYAT[$i],
+              'FIYAT_PB' => $FIYAT_PB[$i],
+              'ARTNO' => $EVRAKNO.$TI_TRNUM[$i]
+            ]);
+
+          }
+
+          if (in_array($TI_TRNUM[$i],$updateTRNUMS2)) { //Guncellenecek satirlar
+
+            DB::table($firma.'stok47ti')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
+              'EVRAKNO' => $EVRAKNO,
+              'SRNUM' => $SRNUM,
+              'TRNUM' => $TI_TRNUM[$i],
+              'KOD' => $T_STOK_KODU[$i],
+              'CARI_KODU' => $CARI_KOD[$i],
+              'CARI_ADI' => $CARI_AD[$i],
+              'SF_MIKTAR' => $SATIN_ALINACAK_MIK[$i],
+              'VEREBILECEGI_MIK' => $VEREBILECEGI_MIK[$i],
+              'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
+              'created_at' => date('Y-m-d H:i:s'),
+              'FIYAT' => $FIYAT[$i],
+              'FIYAT_PB' => $FIYAT_PB[$i],
+              'ARTNO' => $EVRAKNO.$TI_TRNUM[$i]
+            ]);
+
+          }
+        }
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
-
           DB::table($firma.'stok47t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+        }
 
+        foreach ($deleteTRNUMS2 as $key => $deleteTRNUM) { //Silinecek satirlar
+          DB::table($firma.'stok47ti')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
         }
 
         print_r("Düzenleme işlemi başarılı.");
@@ -302,7 +384,39 @@ class stok47_controller extends Controller
         return redirect()->route('satinalmaTalepleri', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
         break;
-    
+      case 'create_order':
+        for ($i = 0; $i < $satir_say2; $i++) {
+          $SON_EVRAK=DB::table($firma.'stok46e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+          $SON_ID= $SON_EVRAK->EVRAKNO;
+
+          $SON_ID = (int) $SON_ID;
+          if ($SON_ID == NULL) {
+            $EVRAKNO = 1;
+          }
+          
+          else {
+            $EVRAKNO = $SON_ID + 1;
+          }
+          DB::table($firma.'stok46e')->insert([
+            'EVRAKNO' => $EVRAKNO,
+            'CARIHESAPCODE' => $CARI_KOD[$i],
+            'TARIH' => date('Y-m-d'),
+          ]);
+          $STOK = DB::table($firma.'stok00')->where('KOD',$T_STOK_KODU[$i])->first();
+          DB::table($firma.'stok46t')->insert([
+            'EVRAKNO' => $EVRAKNO,
+            'KOD' => $T_STOK_KODU[$i],
+            'STOK_ADI' => $STOK->AD,
+            'SF_MIKTAR' => $SATIN_ALINACAK_MIK[$i],
+            'FIYAT' => $FIYAT[$i],
+            'FIYAT_PB' => $FIYAT_PB[$i],
+            'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
+            'SF_SF_UNIT' => $STOK->IUNIT,
+            'ARTNO' => $request->TI_ARTNO[$i],
+          ]);
+        }
+
+       return redirect()->route('satinalmaTalepleri')->with('success','Siparişler oluşturuldu');
     }
 
   }

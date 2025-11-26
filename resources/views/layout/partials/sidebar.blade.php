@@ -98,9 +98,6 @@
         @if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
           <li><a href="tezgahisplanlama"><i class='bx bx-calendar-check'></i>Tezgah İş Planlama</a></li>
         @endif
-        @if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
-          <li><a href="tezgahisplanlama"><i class='bx bx-calendar-check'></i>Tezgah İş Planlama (Geliştiriliyor...)</a></li>
-        @endif
         @if (in_array('CLSMBLDRM', $kullanici_read_yetkileri))
           <li><a href="calisma_bildirimi"><i class='bx bx-notification'></i>Çalışma Bildirimi</a></li>
         @endif
@@ -177,10 +174,13 @@
       <span class="tooltip">Satın Alma</span>
       <ul class="treeview-menu">
         @if (in_array('SATINALMSIP', $kullanici_read_yetkileri))
-          <li><a href="satinalmasiparisi"><i class='bx bx-shopping-bag'></i>Satın Alma Siparişi</a></li>
+          <li><a href="satinalmasiparisi"><i class='bx bx-credit-card'></i>Satın Alma Siparişi</a></li>
         @endif
         @if (in_array('SATALMIRS', $kullanici_read_yetkileri))
           <li><a href="satinalmairsaliyesi"><i class='bx bx-receipt'></i>Satın Alma İrsaliyesi</a></li>
+        @endif
+        @if (in_array('SATINALMTALEP', $kullanici_read_yetkileri))
+          <li><a href="satinalmaTalepleri"><i class='bx bx-shopping-bag'></i>Satın Alma Talepleri</a></li>
         @endif
         @if (in_array('FSNGLSIRS', $kullanici_read_yetkileri))
           <li><a href="fasongelisirsaliyesi"><i class='bx bx-arrow-to-right'></i>Fason Geliş İrsaliyesi</a></li>

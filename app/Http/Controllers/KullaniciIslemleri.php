@@ -30,9 +30,12 @@ class KullaniciIslemleri extends Controller
       if(!$u) return response()->json(['error' => 'not_authenticated']);
 
       $firma = trim($u->firma).'.dbo.';
-      $affected1 = DB::table($firma.'sessions')
+      $affected1 = DB::table('sessions')
         ->where('user_id', $request->userID)
-        ->delete();
+        ->update([
+          'payload' => null,
+          'user_id' => null
+        ]);
 
 
       $affected2 = DB::table('users')

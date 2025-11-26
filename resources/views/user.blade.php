@@ -246,33 +246,35 @@
                         <!-- Aktif Kullanıcılar -->
                         <div class="tab-pane" id="aktifKullanici"> <!-- aktif kullanıcılar-->
                           <div class="row">
-                            <table class="table table-hover">
-                              <thead class="thead-dark">
-                                <tr>
-                                  <th scope="col text-center">Kullanıcı Adı</th>
-                                  <th scope="col text-center">E-posta</th>
-                                  <th scope="col text-center">Aktiflik Durumu</th>
-                                  <th scope="col text-center">Son Görüntüleme</th>
-                                  <th scope="col text-center">İşlemler</th>
-                                </tr>
-                              </thead>
-                              @php
-                                $users = DB::table('users')->where('is_logged_in', '=', 1)->where('firma', trim($kullanici_veri->firma))->get();
-                              @endphp
-                              <tbody>
-                                @foreach($users as $user)
-                                    <tr class="text-center">
-                                      <td>{{$user->name}}</td>
-                                      <td>{{$user->email}}</td>
-                                      <td>{{$user->is_logged_in == 1 ? 'Aktif' : ''}} </td>
-                                      <td>{{$user->last_activity}} </td>
-                                      <td><button type="button" data-user-id="{{$user->id}}"
-                                          class="btn btn-default userLogout">Çıkış Yaptır <i
-                                            class="fa-solid fa-right-from-bracket"></i></button></td>
-                                    </tr>
-                                  </tbody>
-                                @endforeach
-                            </table>
+                            <div class="col">
+                              <table class="table table-hover">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col text-center">Kullanıcı Adı</th>
+                                    <th scope="col text-center">E-posta</th>
+                                    <th scope="col text-center">Aktiflik Durumu</th>
+                                    <th scope="col text-center">Son Görüntüleme</th>
+                                    <th scope="col text-center">İşlemler</th>
+                                  </tr>
+                                </thead>
+                                @php
+                                  $users = DB::table('users')->where('is_logged_in', '=', 1)->where('firma', trim($kullanici_veri->firma))->get();
+                                @endphp
+                                <tbody>
+                                  @foreach($users as $user)
+                                      <tr class="text-center">
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->is_logged_in == 1 ? 'Aktif' : ''}} </td>
+                                        <td>{{$user->last_activity}} </td>
+                                        <td><button type="button" data-user-id="{{$user->id}}"
+                                            class="btn btn-default userLogout">Çıkış Yaptır <i
+                                              class="fa-solid fa-right-from-bracket"></i></button></td>
+                                      </tr>
+                                    </tbody>
+                                  @endforeach
+                              </table>
+                            </div>
                           </div>
                         </div> <!-- aktif kullanıcılar-->
 
@@ -311,630 +313,631 @@
 
                                 </div>
                               </div>
-                            </div><br>
-                            <div class="row"><br>
-                              <table class="table table-hover" id="veriTable">
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th scope="col">Ekran</th>
-                                    <th scope="col">Görüntüleme</th>
-                                    <th scope="col">Düzenleme</th>
-                                    <th scope="col">Silme</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Tümünü Seç</td>
-                                    <td><input type="checkbox" id="yetki_read"></td>
-                                    <td><input type="checkbox" id="yetki_write"></td>
-                                    <td><input type="checkbox" id="yetki_delete"></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Cari Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="carikarti_read" name="yetki_read[]"
-                                        value="CARIKART" @php if (in_array('CARIKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="carikarti_write"
-                                        name="yetki_write[]" value="CARIKART" @php if (in_array('CARIKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="carikarti_delete"
-                                        name="yetki_delete[]" value="CARIKART" @php if (in_array('CARIKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Çalışma Bildirimi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="calismabildirimi_read"
-                                        name="yetki_read[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="calismabildirimi_write"
-                                        name="yetki_write[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="calismabildirimi_delete"
-                                        name="yetki_delete[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Çalışma Bildirimi Operatör</td>
-                                    <td><input type="checkbox" class="yetki_read" id="calismabildirimi_read"
-                                        name="yetki_read[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="calismabildirimi_write"
-                                        name="yetki_write[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="calismabildirimi_delete"
-                                        name="yetki_delete[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Kontakt Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="kontaktkarti_read"
-                                        name="yetki_read[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="kontaktkarti_write"
-                                        name="yetki_write[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="kontaktkarti_delete"
-                                        name="yetki_delete[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Depo Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="depokarti_read" name="yetki_read[]"
-                                        value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="depokarti_write"
-                                        name="yetki_write[]" value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="depokarti_delete"
-                                        name="yetki_delete[]" value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Operasyon Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="operasyonkarti_read"
-                                        name="yetki_read[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="operasyonkarti_write"
-                                        name="yetki_write[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="operasyonkarti_delete"
-                                        name="yetki_delete[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Personel Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="personelkarti_read"
-                                        name="yetki_read[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="personelkarti_write"
-                                        name="yetki_write[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="personelkarti_delete"
-                                        name="yetki_delete[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Operatör Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="personelkarti_read"
-                                        name="yetki_read[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="personelkarti_write"
-                                        name="yetki_write[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="personelkarti_delete"
-                                        name="yetki_delete[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Stok Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="stokkarti_read" name="yetki_read[]"
-                                        value="STOKKART" @php if (in_array('STOKKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="stokkarti_write"
-                                        name="yetki_write[]" value="STOKKART" @php if (in_array('STOKKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="stokkarti_delete"
-                                        name="yetki_delete[]" value="STOKKART" @php if (in_array('STOKKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tezgah Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="tezgahkarti_read"
-                                        name="yetki_read[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="tezgahkarti_write"
-                                        name="yetki_write[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="tezgahkarti_delete"
-                                        name="yetki_delete[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tezgah Bakım Ve Kalibrasyon Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="tezgahkarti_read"
-                                        name="yetki_read[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="tezgahkarti_write"
-                                        name="yetki_write[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="tezgahkarti_delete"
-                                        name="yetki_delete[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Kalıp Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="kalipkarti_read" name="yetki_read[]"
-                                        value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="kalipkarti_write"
-                                        name="yetki_write[]" value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="kalipkarti_delete"
-                                        name="yetki_delete[]" value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Satın Alma İrsaliyesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="satinalmairsaliyesi_read"
-                                        name="yetki_read[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="satinalmairsaliyesi_write"
-                                        name="yetki_write[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="satinalmairsaliyesi_delete"
-                                        name="yetki_delete[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Satın Alma Siparişi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="satinalmasiparisi_read"
-                                        name="yetki_read[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="satinalmasiparisi_write"
-                                        name="yetki_write[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="satinalmasiparisi_delete"
-                                        name="yetki_delete[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Satış Siparişi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="satissiparisi_read"
-                                        name="yetki_read[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="satissiparisi_write"
-                                        name="yetki_write[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="satissiparisi_delete"
-                                        name="yetki_delete[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Sevk İrsaliyesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="sevkirsaliyesi_read"
-                                        name="yetki_read[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="sevkirsaliyesi_write"
-                                        name="yetki_write[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="sevkirsaliyesi_delete"
-                                        name="yetki_delete[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Geçerli Lokasyonlar</td>
-                                    <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
-                                        value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
-                                        name="yetki_write[]" value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
-                                        name="yetki_delete[]" value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Depodan Depoya Transfer</td>
-                                    <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
-                                        value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
-                                        name="yetki_write[]" value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
-                                        name="yetki_delete[]" value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Stok Giriş-Çıkış</td>
-                                    <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
-                                        value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
-                                        name="yetki_write[]" value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
-                                        name="yetki_delete[]" value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Ürün Ağacı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
-                                        value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
-                                        name="yetki_write[]" value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
-                                        name="yetki_delete[]" value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>MPS Giriş Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
-                                        value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
-                                        name="yetki_write[]" value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
-                                        name="yetki_delete[]" value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Grup Kodu Tanımları</td>
-                                    <td><input type="checkbox" class="yetki_read" id="grupkodutanimlari_read"
-                                        name="yetki_read[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="grupkodutanimlari_write"
-                                        name="yetki_write[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="grupkodutanimlari_delete"
-                                        name="yetki_delete[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Parametreler</td>
-                                    <td><input type="checkbox" class="yetki_read" id="parametreler_read"
-                                        name="yetki_read[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="parametreler_write"
-                                        name="yetki_write[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="parametreler_delete"
-                                        name="yetki_delete[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Depo Mevcutları</td>
-                                    <td><input type="checkbox" class="yetki_read" id="stoktv_read" name="yetki_read[]"
-                                        value="STOKTV" @php if (in_array('STOKTV', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="stoktv_write" name="yetki_write[]"
-                                        value="STOKTV" @php if (in_array('STOKTV', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="stoktv_delete"
-                                        name="yetki_delete[]" value="STOKTV" @php if (in_array('STOKTV', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Stok Hareketleri</td>
-                                    <td><input type="checkbox" class="yetki_read" id="stokhareketleri_read"
-                                        name="yetki_read[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="stokhareketleri_write"
-                                        name="yetki_write[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="stokhareketleri_delete"
-                                        name="yetki_delete[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Fiyat Listesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="fiyatlistesi_read"
-                                        name="yetki_read[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="fiyatlistesi_write"
-                                        name="yetki_write[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="fiyatlistesi_delete"
-                                        name="yetki_delete[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Operasyon Bildirimi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="operasyonbildirimi_read"
-                                        name="yetki_read[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="operasyonbildirimi_write"
-                                        name="yetki_write[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="operasyonbildirimi_delete"
-                                        name="yetki_delete[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Üretim Fişi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="uretimfisi_read" name="yetki_read[]"
-                                        value="URTFISI" @php if (in_array('URTFISI', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="uretimfisi_write"
-                                        name="yetki_write[]" value="URTFISI" @php if (in_array('URTFISI', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="uretimfisi_delete"
-                                        name="yetki_delete[]" value="URTFISI" @php if (in_array('URTFISI', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Fason Sevk İrsaliyesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="fasonsevkirsaliyesi_read"
-                                        name="yetki_read[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="fasonsevkirsaliyesi_write"
-                                        name="yetki_write[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="fasonsevkirsaliyesi_delete"
-                                        name="yetki_delete[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Fason Geliş İrsaliyesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="fasongelisirsaliyesi_read"
-                                        name="yetki_read[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="fasongelisirsaliyesi_write"
-                                        name="yetki_write[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="fasongelisirsaliyesi_delete"
-                                        name="yetki_delete[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Doküman Yönetimi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="DYS" @php if (in_array('DYS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="DYS" @php if (in_array('DYS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="DYS" @php if (in_array('DYS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Toplu Mps Açma</td>
-                                    <td><input type="checkbox" class="yetki_read" id="TPLMPSGRS_read" name="yetki_read[]"
-                                        value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="TPLMPSGRS_write"
-                                        name="yetki_write[]" value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="TPLMPSGRS_delete"
-                                        name="yetki_delete[]" value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tezgah İş Planlama</td>
-                                    <td><input type="checkbox" class="yetki_read" id="TZGHISPLNLM_read"
-                                        name="yetki_read[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="TZGHISPLNLM_write"
-                                        name="yetki_write[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="TZGHISPLNLM_delete"
-                                        name="yetki_delete[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <table class="table table-hover" id="veriTable">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col">Ekran</th>
+                                      <th scope="col">Görüntüleme</th>
+                                      <th scope="col">Düzenleme</th>
+                                      <th scope="col">Silme</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>Tümünü Seç</td>
+                                      <td><input type="checkbox" id="yetki_read"></td>
+                                      <td><input type="checkbox" id="yetki_write"></td>
+                                      <td><input type="checkbox" id="yetki_delete"></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Cari Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="carikarti_read" name="yetki_read[]"
+                                          value="CARIKART" @php if (in_array('CARIKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="carikarti_write"
+                                          name="yetki_write[]" value="CARIKART" @php if (in_array('CARIKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="carikarti_delete"
+                                          name="yetki_delete[]" value="CARIKART" @php if (in_array('CARIKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Çalışma Bildirimi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="calismabildirimi_read"
+                                          name="yetki_read[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="calismabildirimi_write"
+                                          name="yetki_write[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="calismabildirimi_delete"
+                                          name="yetki_delete[]" value="CLSMBLDRM" @php if (in_array('CLSMBLDRM', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Çalışma Bildirimi Operatör</td>
+                                      <td><input type="checkbox" class="yetki_read" id="calismabildirimi_read"
+                                          name="yetki_read[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="calismabildirimi_write"
+                                          name="yetki_write[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="calismabildirimi_delete"
+                                          name="yetki_delete[]" value="CLSMBLDRMOPRT" @php if (in_array('CLSMBLDRMOPRT', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Kontakt Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="kontaktkarti_read"
+                                          name="yetki_read[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="kontaktkarti_write"
+                                          name="yetki_write[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="kontaktkarti_delete"
+                                          name="yetki_delete[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Depo Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="depokarti_read" name="yetki_read[]"
+                                          value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="depokarti_write"
+                                          name="yetki_write[]" value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="depokarti_delete"
+                                          name="yetki_delete[]" value="DEPOKART" @php if (in_array('DEPOKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Operasyon Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="operasyonkarti_read"
+                                          name="yetki_read[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="operasyonkarti_write"
+                                          name="yetki_write[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="operasyonkarti_delete"
+                                          name="yetki_delete[]" value="OPERSYNKART" @php if (in_array('OPERSYNKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Personel Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="personelkarti_read"
+                                          name="yetki_read[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="personelkarti_write"
+                                          name="yetki_write[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="personelkarti_delete"
+                                          name="yetki_delete[]" value="PERSKART" @php if (in_array('PERSKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Operatör Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="personelkarti_read"
+                                          name="yetki_read[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="personelkarti_write"
+                                          name="yetki_write[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="personelkarti_delete"
+                                          name="yetki_delete[]" value="OPTKART" @php if (in_array('OPTKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Stok Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="stokkarti_read" name="yetki_read[]"
+                                          value="STOKKART" @php if (in_array('STOKKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="stokkarti_write"
+                                          name="yetki_write[]" value="STOKKART" @php if (in_array('STOKKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="stokkarti_delete"
+                                          name="yetki_delete[]" value="STOKKART" @php if (in_array('STOKKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Tezgah Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="tezgahkarti_read"
+                                          name="yetki_read[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="tezgahkarti_write"
+                                          name="yetki_write[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="tezgahkarti_delete"
+                                          name="yetki_delete[]" value="TEZGAHKART" @php if (in_array('TEZGAHKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Tezgah Bakım Ve Kalibrasyon Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="tezgahkarti_read"
+                                          name="yetki_read[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="tezgahkarti_write"
+                                          name="yetki_write[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="tezgahkarti_delete"
+                                          name="yetki_delete[]" value="KLBRSYNKARTI" @php if (in_array('KLBRSYNKARTI', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Kalıp Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="kalipkarti_read" name="yetki_read[]"
+                                          value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="kalipkarti_write"
+                                          name="yetki_write[]" value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="kalipkarti_delete"
+                                          name="yetki_delete[]" value="KALIPKART" @php if (in_array('KALIPKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Satın Alma İrsaliyesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="satinalmairsaliyesi_read"
+                                          name="yetki_read[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="satinalmairsaliyesi_write"
+                                          name="yetki_write[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="satinalmairsaliyesi_delete"
+                                          name="yetki_delete[]" value="SATALMIRS" @php if (in_array('SATALMIRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Satın Alma Siparişi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="satinalmasiparisi_read"
+                                          name="yetki_read[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="satinalmasiparisi_write"
+                                          name="yetki_write[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="satinalmasiparisi_delete"
+                                          name="yetki_delete[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Satış Siparişi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="satissiparisi_read"
+                                          name="yetki_read[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="satissiparisi_write"
+                                          name="yetki_write[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="satissiparisi_delete"
+                                          name="yetki_delete[]" value="SATISSIP" @php if (in_array('SATISSIP', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Sevk İrsaliyesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="sevkirsaliyesi_read"
+                                          name="yetki_read[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="sevkirsaliyesi_write"
+                                          name="yetki_write[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="sevkirsaliyesi_delete"
+                                          name="yetki_delete[]" value="SEVKIRS" @php if (in_array('SEVKIRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Geçerli Lokasyonlar</td>
+                                      <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
+                                          value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
+                                          name="yetki_write[]" value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
+                                          name="yetki_delete[]" value="LOKASYONLAR" @php if (in_array('LOKASYONLAR', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Depodan Depoya Transfer</td>
+                                      <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
+                                          value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
+                                          name="yetki_write[]" value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
+                                          name="yetki_delete[]" value="DDTRANSFER" @php if (in_array('DDTRANSFER', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Stok Giriş-Çıkış</td>
+                                      <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
+                                          value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
+                                          name="yetki_write[]" value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
+                                          name="yetki_delete[]" value="STKGRSCKS" @php if (in_array('STKGRSCKS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Ürün Ağacı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
+                                          value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
+                                          name="yetki_write[]" value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
+                                          name="yetki_delete[]" value="URUNAGACI" @php if (in_array('URUNAGACI', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>MPS Giriş Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="urunagaci_read" name="yetki_read[]"
+                                          value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="urunagaci_write"
+                                          name="yetki_write[]" value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="urunagaci_delete"
+                                          name="yetki_delete[]" value="MPSGRS" @php if (in_array('MPSGRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Grup Kodu Tanımları</td>
+                                      <td><input type="checkbox" class="yetki_read" id="grupkodutanimlari_read"
+                                          name="yetki_read[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="grupkodutanimlari_write"
+                                          name="yetki_write[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="grupkodutanimlari_delete"
+                                          name="yetki_delete[]" value="GKTNM" @php if (in_array('GKTNM', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Parametreler</td>
+                                      <td><input type="checkbox" class="yetki_read" id="parametreler_read"
+                                          name="yetki_read[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="parametreler_write"
+                                          name="yetki_write[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="parametreler_delete"
+                                          name="yetki_delete[]" value="PRMTR" @php if (in_array('PRMTR', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Depo Mevcutları</td>
+                                      <td><input type="checkbox" class="yetki_read" id="stoktv_read" name="yetki_read[]"
+                                          value="STOKTV" @php if (in_array('STOKTV', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="stoktv_write" name="yetki_write[]"
+                                          value="STOKTV" @php if (in_array('STOKTV', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="stoktv_delete"
+                                          name="yetki_delete[]" value="STOKTV" @php if (in_array('STOKTV', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Stok Hareketleri</td>
+                                      <td><input type="checkbox" class="yetki_read" id="stokhareketleri_read"
+                                          name="yetki_read[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="stokhareketleri_write"
+                                          name="yetki_write[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="stokhareketleri_delete"
+                                          name="yetki_delete[]" value="STKHRKT" @php if (in_array('STKHRKT', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Fiyat Listesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="fiyatlistesi_read"
+                                          name="yetki_read[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="fiyatlistesi_write"
+                                          name="yetki_write[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="fiyatlistesi_delete"
+                                          name="yetki_delete[]" value="FYTLST" @php if (in_array('FYTLST', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Operasyon Bildirimi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="operasyonbildirimi_read"
+                                          name="yetki_read[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="operasyonbildirimi_write"
+                                          name="yetki_write[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="operasyonbildirimi_delete"
+                                          name="yetki_delete[]" value="OPBILD" @php if (in_array('OPBILD', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Üretim Fişi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="uretimfisi_read" name="yetki_read[]"
+                                          value="URTFISI" @php if (in_array('URTFISI', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="uretimfisi_write"
+                                          name="yetki_write[]" value="URTFISI" @php if (in_array('URTFISI', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="uretimfisi_delete"
+                                          name="yetki_delete[]" value="URTFISI" @php if (in_array('URTFISI', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Fason Sevk İrsaliyesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="fasonsevkirsaliyesi_read"
+                                          name="yetki_read[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="fasonsevkirsaliyesi_write"
+                                          name="yetki_write[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="fasonsevkirsaliyesi_delete"
+                                          name="yetki_delete[]" value="FSNSEVKIRS" @php if (in_array('FSNSEVKIRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Fason Geliş İrsaliyesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="fasongelisirsaliyesi_read"
+                                          name="yetki_read[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="fasongelisirsaliyesi_write"
+                                          name="yetki_write[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="fasongelisirsaliyesi_delete"
+                                          name="yetki_delete[]" value="FSNGLSIRS" @php if (in_array('FSNGLSIRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Doküman Yönetimi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="DYS" @php if (in_array('DYS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="DYS" @php if (in_array('DYS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="DYS" @php if (in_array('DYS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Toplu Mps Açma</td>
+                                      <td><input type="checkbox" class="yetki_read" id="TPLMPSGRS_read" name="yetki_read[]"
+                                          value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="TPLMPSGRS_write"
+                                          name="yetki_write[]" value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="TPLMPSGRS_delete"
+                                          name="yetki_delete[]" value="TPLMPSGRS" @php if (in_array('TPLMPSGRS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Tezgah İş Planlama</td>
+                                      <td><input type="checkbox" class="yetki_read" id="TZGHISPLNLM_read"
+                                          name="yetki_read[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="TZGHISPLNLM_write"
+                                          name="yetki_write[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="TZGHISPLNLM_delete"
+                                          name="yetki_delete[]" value="TZGHISPLNLM" @php if (in_array('TZGHISPLNLM', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
 
-                                  <tr>
-                                    <td>Barkod</td>
-                                    <td><input type="checkbox" class="yetki_read" id="BRKD_read" name="yetki_read[]"
-                                        value="BRKD" @php if (in_array('BRKD', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="BRKD_write" name="yetki_write[]"
-                                        value="BRKD" @php if (in_array('BRKD', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="BRKD_delete" name="yetki_delete[]"
-                                        value="BRKD" @php if (in_array('BRKD', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Müşteri Formu</td>
-                                    <td><input type="checkbox" class="yetki_read" id="musteri_form_read"
-                                        name="yetki_read[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="musteri_form_write"
-                                        name="yetki_write[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="musteri_form_delete"
-                                        name="yetki_delete[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Sipariş Raporları</td>
-                                    <td><input type="checkbox" class="yetki_read" id="SPRSRPRLR_read" name="yetki_read[]"
-                                        value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="SPRSRPRLR_write"
-                                        name="yetki_write[]" value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="SPRSRPRLR_delete"
-                                        name="yetki_delete[]" value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Döviz Kuru</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DVZKUR_read" name="yetki_read[]"
-                                        value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DVZKUR_write" name="yetki_write[]"
-                                        value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DVZKUR_delete"
-                                        name="yetki_delete[]" value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
+                                    <tr>
+                                      <td>Barkod</td>
+                                      <td><input type="checkbox" class="yetki_read" id="BRKD_read" name="yetki_read[]"
+                                          value="BRKD" @php if (in_array('BRKD', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="BRKD_write" name="yetki_write[]"
+                                          value="BRKD" @php if (in_array('BRKD', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="BRKD_delete" name="yetki_delete[]"
+                                          value="BRKD" @php if (in_array('BRKD', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Müşteri Formu</td>
+                                      <td><input type="checkbox" class="yetki_read" id="musteri_form_read"
+                                          name="yetki_read[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="musteri_form_write"
+                                          name="yetki_write[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="musteri_form_delete"
+                                          name="yetki_delete[]" value="musteri_form" @php if (in_array('musteri_form', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Sipariş Raporları</td>
+                                      <td><input type="checkbox" class="yetki_read" id="SPRSRPRLR_read" name="yetki_read[]"
+                                          value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="SPRSRPRLR_write"
+                                          name="yetki_write[]" value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="SPRSRPRLR_delete"
+                                          name="yetki_delete[]" value="SPRSRPRLR" @php if (in_array('SPRSRPRLR', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Döviz Kuru</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DVZKUR_read" name="yetki_read[]"
+                                          value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DVZKUR_write" name="yetki_write[]"
+                                          value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DVZKUR_delete"
+                                          name="yetki_delete[]" value="DVZKUR" @php if (in_array('DVZKUR', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
 
-                                  </tr>
-                                  <tr>
-                                    <td>Etiket Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="ETKTKART_read" name="yetki_read[]"
-                                        value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="ETKTKART_write"
-                                        name="yetki_write[]" value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="ETKTKART_delete"
-                                        name="yetki_delete[]" value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Maliyet</td>
-                                    <td><input type="checkbox" class="yetki_read" id="MALIYET_read" name="yetki_read[]"
-                                        value="maliyet" @php if (in_array('maliyet', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="MALIYET_write" name="yetki_write[]"
-                                        value="maliyet" @php if (in_array('maliyet', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="MALIYET_delete"
-                                        name="yetki_delete[]" value="maliyet" @php if (in_array('maliyet', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Teklif Fiyat Analizi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>İş Sıralama</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="is_siralama" @php if (in_array('is_siralama', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="is_siralama" @php if (in_array('is_siralama', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="is_siralama" @php if (in_array('is_siralama', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Kalite Şablonu</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="QLT" @php if (in_array('QLT', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="QLT" @php if (in_array('QLT', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="QLT" @php if (in_array('QLT', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Giriş Kalite Kontrol</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="QLT02" @php if (in_array('QLT02', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="QLT02" @php if (in_array('QLT02', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="QLT02" @php if (in_array('QLT02', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
+                                    </tr>
+                                    <tr>
+                                      <td>Etiket Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="ETKTKART_read" name="yetki_read[]"
+                                          value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="ETKTKART_write"
+                                          name="yetki_write[]" value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="ETKTKART_delete"
+                                          name="yetki_delete[]" value="ETKTKART" @php if (in_array('ETKTKART', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Maliyet</td>
+                                      <td><input type="checkbox" class="yetki_read" id="MALIYET_read" name="yetki_read[]"
+                                          value="maliyet" @php if (in_array('maliyet', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="MALIYET_write" name="yetki_write[]"
+                                          value="maliyet" @php if (in_array('maliyet', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="MALIYET_delete"
+                                          name="yetki_delete[]" value="maliyet" @php if (in_array('maliyet', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Teklif Fiyat Analizi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="teklif_fiyat_analiz" @php if (in_array('teklif_fiyat_analiz', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>İş Sıralama</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="is_siralama" @php if (in_array('is_siralama', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="is_siralama" @php if (in_array('is_siralama', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="is_siralama" @php if (in_array('is_siralama', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Kalite Şablonu</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="QLT" @php if (in_array('QLT', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="QLT" @php if (in_array('QLT', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="QLT" @php if (in_array('QLT', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Giriş Kalite Kontrol</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="QLT02" @php if (in_array('QLT02', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="QLT02" @php if (in_array('QLT02', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="QLT02" @php if (in_array('QLT02', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
 
-                                  <tr>
-                                    <td>Etiket Bölme</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Üretim Gazetesi</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Satış Sipariş fiyatlar</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="SSF" @php if (in_array('SSF', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="SSF" @php if (in_array('SSF', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="SSF" @php if (in_array('SSF', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Zorunlu Alan Paneli</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Ekran Tanıtım Kartı</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="INFO" @php if (in_array('INFO', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="INFO" @php if (in_array('INFO', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="INFO" @php if (in_array('INFO', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Final Kalite Kontrol</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="FKK" @php if (in_array('FKK', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="FKK" @php if (in_array('FKK', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="FKK" @php if (in_array('FKK', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Satın Alma Talepleri</td>
-                                    <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
-                                        value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_read_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
-                                        value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_write_yetkileri))
-                                        echo " checked" @endphp></td>
-                                    <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
-                                        value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_delete_yetkileri))
-                                        echo " checked" @endphp></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-
+                                    <tr>
+                                      <td>Etiket Bölme</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="ETIKETBOL" @php if (in_array('ETIKETBOL', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Üretim Gazetesi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="URETIM_GAZETESI" @php if (in_array('URETIM_GAZETESI', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Satış Sipariş fiyatlar</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="SSF" @php if (in_array('SSF', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="SSF" @php if (in_array('SSF', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="SSF" @php if (in_array('SSF', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Zorunlu Alan Paneli</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="TMUSTR" @php if (in_array('TMUSTR', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Ekran Tanıtım Kartı</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="INFO" @php if (in_array('INFO', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="INFO" @php if (in_array('INFO', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="INFO" @php if (in_array('INFO', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Final Kalite Kontrol</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="FKK" @php if (in_array('FKK', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="FKK" @php if (in_array('FKK', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="FKK" @php if (in_array('FKK', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Satın Alma Talepleri</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                           </div>
                         </div>

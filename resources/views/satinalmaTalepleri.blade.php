@@ -136,7 +136,7 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Talep Eden Bölüm</label>
-                      <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
+                      <select class="form-control select2 CARIHESAPCODE" data-bs-toggle="tooltip"
                         data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
                         name="CARIHESAPCODE_E" id="CARIHESAPCODE_E">
                         @php
@@ -155,7 +155,7 @@
                           
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Talep Eden Personel</label>
-                      <select class="form-control select2 js-example-basic-single TALEP_EDEN_KISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TALEP_EDEN_KISI" style="width: 100%; height: 30PX" name="TALEP_EDEN_KISI" id="TALEP_EDEN_KISI">
+                      <select class="form-control select2 TALEP_EDEN_KISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TALEP_EDEN_KISI" name="TALEP_EDEN_KISI" id="TALEP_EDEN_KISI">
                         <option>Seç</option>
                         @php
                           $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
@@ -469,70 +469,65 @@
                 <div class="tab-pane" id="teklifler">
                   <div class="row">
                     <div class="col-12 mb-2">
-                      <select class="form-control select2 js-example-basic-single T_STOK_KODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="T_STOK_KODU" style="width: 100%; height: 30PX" name="T_STOK_KODU" id="T_STOK_KODU">
-                        <option>Seç</option>
-                        @php
-                          $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
-                          foreach ($evraklar as $key => $veri) {
-                            echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->STOK_ADI . "</option>";
-                          }
-                        @endphp
-                      </select>
+                      <div class="row">
+                        <div class="col-8">
+                          <select class="form-control select2 js-example-basic-single T_STOK_KODU" onchange="veriGetir(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="T_STOK_KODU" style="width: 100%; height: 30PX" >
+                            <option value="">Seç</option>
+                            @php
+                              $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+                              foreach ($evraklar as $key => $veri) {
+                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "'>" . $veri->KOD . " | " . $veri->STOK_ADI . "</option>";
+                              }
+                            @endphp
+                          </select>
+                          <input type="hidden" id="T_STOK_KODU">
+                          <input type="hidden" id="TI_ARTNO">
+                        </div>
+                        <div class="col-4 d-flex gap-3">
+                          <button class="btn btn-danger" type="button">Siparişlerini İptal Et</button>
+                          <button class="btn btn-primary" id="create_order" type="submit" name="kart_islemleri" value="create_order">Siparişlerini Oluştur</button>
+                        </div>
+                      </div>
                     </div>
                     <div class="col-12">
-                      <table class="table table-bordered text-center" id="veriTable" style="overflow:visible;">
-
+                      <table class="table table-bordered text-center" id="veriTable2" style="overflow:visible;">
                         <thead>
                           <tr>
                             <th>#</th>
+                            <th style="min-width:130px;">Stok Kodu</th>
                             <th>Cari Kodu</th>
                             <th>Cari Adı</th>
                             <th style="min-width:130px;">Satın Alınacak Miktar</th>
                             <th style="min-width:130px;">Verebileceği Miktar</th>
                             <th>Fiyat</th>
                             <th style="min-width:130px;">Para Birimi</th>
-                            <th>#</th>
+                            <th>Termin Tar.</th>
                           </tr>
 
-                          <tr class="satirEkle" style="background-color:#3c8dbc">
+                          <tr class="satirEkle2" style="background-color:#3c8dbc">
 
-                            <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
-                            <td style="display:none;">
-                            </td>
+                            <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                            <td>#</td>
                             <td style="min-width: 240px;">
                               <div class="d-flex ">
                                 <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
                                   data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
-                                  name="CARIHESAPCODE_E" id="CARIHESAPCODE_E">
+                                  name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" onchange="cariAdiGetir(this.value)">
                                   @php
                                     $evraklar = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
-
+                                    echo "<option value =''>Seç</option>";
                                     foreach ($evraklar as $key => $veri) {
-                                      if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                                        echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                      } else {
-                                        echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                      }
+                                      echo "<option value ='" . $veri->KOD . "|||" . $veri->AD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
                                     }
                                   @endphp
                                 </select>
-                                <span class="d-flex -btn">
-                                  <button class="btn btn-radius btn-primary" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-title="KOD" data-bs-toggle="modal"
-                                    data-bs-target="#modal_popupSelectModal" type="button"><span
-                                      class="fa-solid fa-magnifying-glass">
-                                    </span></button>
-                                </span>
                               </div>
-                              <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL"
-                                class="form-control">
+                              <input style="color: red" type="hidden" id="CARIHESAPCODE_E_FILL" class="form-control">
                             </td>
                             <td style="min-width: 150px">
-                              <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW"
-                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI"
-                                class="STOK_ADI form-control" disabled>
-                              <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL"
-                                class="form-control">
+                              <input style="color: red" type="text" id="CARI_ADI_FILL"
+                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARI_AD"
+                                class="CARI_AD form-control" readonly>
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="28" style="color: red" type="number" data-name="SATIN_ALINACAK_MIK"
@@ -546,11 +541,11 @@
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
-                                id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
+                                id="FIYAT_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
                                 class="FIYAT form-control">
                             </td>
                             <td>
-                              <select data-name="FIYAT_PB" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top"
+                              <select data-name="FIYAT_PB" id="FIYAT_PB_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
                                 style="width: 100%;">
                                 <option value="">Seç</option>
@@ -564,7 +559,7 @@
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR"
-                                name="TERMIN_TAR_FILL" id="TERMIN_TAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
+                                name="TERMIN_TAR_FILL" id="TI_TERMIN_TAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="TERMIN_TAR" class="TERMIN_TAR form-control">
                             </td>
                             <td>#</td>
@@ -573,7 +568,56 @@
 
                         </thead>
                         <tbody>
-                          
+                          @php
+                            $ti_kart_veri = DB::table($database.'stok47ti')->where('EVRAKNO',$kart_veri->EVRAKNO)->get();
+                          @endphp
+                          @foreach ($ti_kart_veri as $veri)
+                              <tr>
+                                <td><input type="checkbox" style="width:20px;height:20px;" class="row_check"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="T_STOK_KODU[]" value="{{ $veri->KOD }}" readonly>
+                                </td>
+
+                                <td style="display: none;">
+                                    <input type="hidden" class="form-control" maxlength="6" name="TI_TRNUM[]" value="{{ $veri->TRNUM }}">
+                                </td>
+                                <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]' value='{{ $veri->ARTNO }}'></td>
+                                <td>
+                                    <input type="text" class="form-control" name="CARI_KOD[]" value="{{ $veri->CARI_KODU }}" readonly>
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="CARI_AD[]" value="{{ $veri->CARI_ADI }}" readonly>
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="SATIN_ALINACAK_MIK[]" value="{{ $veri->SF_MIKTAR }}">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="VEREBILECEGI_MIK[]" value="{{ $veri->VEREBILECEGI_MIK }}">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="FIYAT_PB[]" value="{{ $veri->FIYAT_PB }}" readonly>
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="TI_TERMIN_TAR[]" value="{{ $veri->TERMIN_TAR }}" readonly>
+                                </td>
+
+                                <td>
+                                    <button type="button" id="deleteSingleRow2" class="btn btn-default delete-row2">
+                                        <i class="fa fa-minus" style="color: red"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                          @endforeach
                         </tbody>
                       </table>
                     </div>
@@ -675,125 +719,54 @@
 
                     @php
                       if (isset($_GET['SUZ'])) {
+                      $veriler = DB::table($database.'stok47ti as ti')
+                        ->join($database.'stok00 as s', 'ti.KOD', '=', 's.KOD')
+                        ->select(
+                            'ti.*',
+                            's.AD as STOK_AD',
+                            's.IUNIT'
+                        )
+                        ->get();
                     @endphp
-
-                    <table id="example2" class="table table-hover text-center" data-page-length="50"
-                      style="font-size: 0.75em">
-                      <thead>
-                        <tr class="bg-primary">
-                          <th>Sipariş No</th>
-                          <th>Tedarikçi</th>
-                          <th>Stok Kodu</th>
-                          <th>Stok Adı</th>
-                          <th>Lot No</th>
-                          <th>Seri No</th>
-                          <th>İşlem Mik.</th>
-                          <th>İşlem Br.</th>
-                          <th>Bakiye</th>
-                          <!-- <th>Süre (dk)</th> -->
-                          <th>Termin Tar.</th>
-                        </tr>
-                      </thead>
-
-                      <tfoot>
-                        <tr class="bg-info">
-                          <th>Sipariş No</th>
-                          <th>Tedarikçi</th>
-                          <th>Stok Kodu</th>
-                          <th>Stok Adı</th>
-                          <th>Lot No</th>
-                          <th>Seri No</th>
-                          <th>İşlem Mik.</th>
-                          <th>İşlem Br.</th>
-                          <th>Bakiye</th>
-                          <!-- <th>Süre (dk)</th> -->
-                          <th>Termin Tar.</th>
-                        </tr>
-                      </tfoot>
-
-                      <tbody>
-                        @php
-
-                          $KOD_B = '';
-                          $KOD_E = '';
-                          $TEDARIKCI_B = '';
-                          $TEDARIKCI_E = '';
-                          $TARIH_B = '';
-                          $TARIH_E = '';
-                          $DURUM = '';
-
-                          if (isset($_GET['KOD_B'])) {
-                            $KOD_B = TRIM($_GET['KOD_B']);
-                          }
-                          if (isset($_GET['KOD_E'])) {
-                            $KOD_E = TRIM($_GET['KOD_E']);
-                          }
-                          if (isset($_GET['TEDARIKCI_B'])) {
-                            $TEDARIKCI_B = TRIM($_GET['TEDARIKCI_B']);
-                          }
-                          if (isset($_GET['TEDARIKCI_E'])) {
-                            $TEDARIKCI_E = TRIM($_GET['TEDARIKCI_E']);
-                          }
-                          if (isset($_GET['TARIH_B'])) {
-                            $TARIH_B = TRIM($_GET['TARIH_B']);
-                          }
-                          if (isset($_GET['TARIH_E'])) {
-                            $TARIH_E = TRIM($_GET['TARIH_E']);
-                          }
-                          if (isset($_GET['DURUM'])) {
-                            $DURUM = 'A';
-                          } else {
-                            $DURUM = 'K';
-                          }
-
-                          $sql_sorgu = 'SELECT S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.* FROM ' . $database . 'STOK47E S46E
-                                                  LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S46E.CARIHESAPCODE
-                                                  LEFT JOIN ' . $database . 'stok47t S46T ON S46T.EVRAKNO = S46E.EVRAKNO
-                                                  WHERE 1 = 1 AND S46E.AK = \'' . $DURUM . '\';';
-
-
-                          if (Trim($KOD_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46T.KOD >= '" . $KOD_B . "' ";
-                          }
-                          if (Trim($KOD_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46T.KOD <= '" . $KOD_E . "' ";
-                          }
-                          if (Trim($TEDARIKCI_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.CARIHESAPCODE >= '" . $TEDARIKCI_B . "' ";
-                          }
-                          if (Trim($TEDARIKCI_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.CARIHESAPCODE <= '" . $TEDARIKCI_E . "' ";
-                          }
-                          if (Trim($TARIH_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.TARIH >= '" . $TARIH_B . "' ";
-                          }
-                          if (Trim($TARIH_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.TARIH <= '" . $TARIH_E . "' ";
-                          }
-
-                          $table = DB::select($sql_sorgu);
-
-                          foreach ($table as $table) {
-                            echo "<tr>";
-                            echo "<td><b>" . $table->SIPNUM . "</b></td>";
-                            echo "<td><b>" . $table->TEDARIKCI . "</b></td>";
-                            echo "<td><b>" . $table->KOD . "</b></td>";
-                            echo "<td><b>" . $table->STOK_ADI . "</b></td>";
-                            echo "<td><b>" . $table->LOTNUMBER . "</b></td>";
-                            echo "<td><b>" . $table->SERINO . "</b></td>";
-                            echo "<td><b>" . $table->SF_MIKTAR . "</b></td>";
-                            echo "<td><b>" . $table->SF_SF_UNIT . "</b></td>";
-                            echo "<td><b>" . $table->SF_BAKIYE . "</b></td>";
-                            echo "<td><b>" . $table->TERMIN_TAR . "</b></td>";
-
-                            // echo "<td><a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
-                            echo "</tr>";
-                          }
-
-                        @endphp
-
-                      </tbody>
-
+                    <table class="table table-bordered" id="example2">
+                        <thead>
+                            <tr>
+                                <th>Cari Kod</th>
+                                <th>Stok Kod</th>
+                                <th>Stok Adı</th>
+                                <th>Birim</th>
+                                <th>Miktar</th>
+                                <th>Fiyat</th>
+                                <th>Para Birimi</th>
+                                <th>Termin Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Cari Kod</th>
+                                <th>Stok Kod</th>
+                                <th>Stok Adı</th>
+                                <th>Birim</th>
+                                <th>Miktar</th>
+                                <th>Fiyat</th>
+                                <th>Para Birimi</th>
+                                <th>Termin Tarihi</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach($veriler as $row)
+                                <tr>
+                                    <td>{{ $row->CARI_KODU }}</td>
+                                    <td>{{ $row->KOD }}</td>
+                                    <td>{{ $row->STOK_AD }}</td>
+                                    <td>{{ $row->IUNIT }}</td>
+                                    <td>{{ $row->SF_MIKTAR }}</td>
+                                    <td>{{ $row->FIYAT }}</td>
+                                    <td>{{ $row->FIYAT_PB }}</td>
+                                    <td>{{ $row->TERMIN_TAR }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                     @php
                       }
@@ -989,7 +962,40 @@
       function ozelInput() {
         $('#CARIHESAPCODE_E').val('').trigger('change');
       }
+      function cariAdiGetir(veri) {
+        const veriler = veri.split("|||");
+        $('#CARIHESAPCODE_E_FILL').val(veriler[0]);
+        $('#CARI_ADI_FILL').val(veriler[1]);
+      }
+      function veriGetir(veri)
+      {
+        const veriler = veri.split("|||");
+        $('#T_STOK_KODU').val(veriler[0]);
+        $('#TI_ARTNO').val(veriler[1]);
+      }
       $(document).ready(function () {
+        $('#create_order').on('click',function(e){
+          if (evrakDegisti) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            Swal.fire({
+              icon: 'warning',
+              title: 'Evrak Kaydedilmeli!',
+              text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
+              confirmButtonText: 'Tamam'
+            });
+            
+            return false;
+          }
+          $('#veriTable2 tbody tr').each(function () {
+              const checked = $(this).find('input[type="checkbox"]').is(':checked');
+
+              if (!checked) {
+                  $(this).remove();
+              }
+          });
+        });
         $('#STOK_KODU_SHOW').select2({
           placeholder: 'Stok kodu seç...',
           ajax: {
@@ -1071,8 +1077,8 @@
               htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + satirEkleInputs.LOTNUMBER_FILL + "'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='" + satirEkleInputs.SERINO_FILL + "'></td> ";
               htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='" + satirEkleInputs.SF_MIKTAR_FILL + "'></td> ";
-              htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_SHOW + "'></td> ";
-              htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB + "' readonly></td> ";
+              // htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_SHOW + "'></td> ";
+              // htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB + "' readonly></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "'></td> ";
               htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE_SHOW[]' value='" + satirEkleInputs.SF_MIKTAR_FILL + "' disabled></td> ";
               htmlCode += " <td><input type='date' class='form-control' name='TERMIN_TAR[]' value='" + satirEkleInputs.TERMIN_TAR_FILL + "'></td> ";
@@ -1103,6 +1109,40 @@
           });
         });
 
+
+
+        $('#addRow2').on('click',function(){
+          var TRNUM_FILL = getTRNUM();
+          var satirEkleInputs = getInputs('satirEkle2');
+          var TALEP_KODU = $('#T_STOK_KODU').val();
+          var ARTNO = $('#TI_ARTNO').val();
+          var htmlCode = '';
+          htmlCode += '<tr>'
+          htmlCode += '<td><input type="checkbox" style="width:20px;height:20px;" class="row_check"></td>';
+          htmlCode += " <td><input type='text' class='form-control' name='T_STOK_KODU[]' value='" + TALEP_KODU + "' readonly></td> ";
+          htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TI_TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
+          htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]' value='" + ARTNO + "'></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='CARI_KOD[]' value='" + satirEkleInputs.CARIHESAPCODE_E_FILL + "' readonly></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='CARI_AD[]' value='" + satirEkleInputs.CARI_ADI_FILL + "' readonly></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='SATIN_ALINACAK_MIK[]' value='" + satirEkleInputs.SATIN_ALINACAK_MIK_FILL + "'></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='VEREBILECEGI_MIK[]' value='" + satirEkleInputs.VEREBILECEGI_MIK_FILL + "'></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "'></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB_FILL + "' readonly></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='TI_TERMIN_TAR[]' value='" + satirEkleInputs.TI_TERMIN_TAR_FILL + "' readonly></td> ";
+          htmlCode += "<td><button type='button' id='deleteSingleRow2' class='btn btn-default delete-row2'><i class='fa fa-minus' style='color: red'></i></button></td>";
+          htmlCode += '</tr>'
+
+          if (satirEkleInputs.CARIHESAPCODE_E_FILL == null || satirEkleInputs.CARIHESAPCODE_E_FILL == " " || satirEkleInputs.CARIHESAPCODE_E_FILL == "" || satirEkleInputs.TERMIN_TAR_FILL == "" || TALEP_KODU == null || TALEP_KODU == " " || TALEP_KODU == "") {
+            eksikAlanHataAlert2();
+          }
+          else {
+
+            $("#veriTable2 > tbody").append(htmlCode);
+            updateLastTRNUM(TRNUM_FILL);
+
+            emptyInputs('satirEkle2');
+          }
+        });
       });
     </script>
 
