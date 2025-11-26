@@ -8,7 +8,7 @@
     $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
     $database = trim($kullanici_veri->firma).".dbo.";
 
-    $ekran = "musteri_form";
+    $ekran = "CGC70";
     $ekranAdi = "Müşteri Şikayetleri"; 
     $ekranLink = "musteri_sikayet";
     $ekranTableE = $database."cgc70";

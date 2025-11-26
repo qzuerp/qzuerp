@@ -261,6 +261,9 @@
         @if (in_array('GKTNM', $kullanici_read_yetkileri))
           <li><a href="gk_tanimlari"><i class='bx bx-list-ul'></i>Grup Kodu Tanımları</a></li>
         @endif
+        @if (in_array('CGC70', $kullanici_read_yetkileri))
+          <li><a href="musteri_sikayet"><i class='bx bx-message-error'></i> Müşteri Şikayetleri</a></li>
+        @endif
         @if (in_array('DVZKUR', $kullanici_read_yetkileri))
           <li><a href="doviz_kuru"><i class='bx bx-money'></i>Günlük Döviz Kuru</a></li>
         @endif

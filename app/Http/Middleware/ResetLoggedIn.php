@@ -21,7 +21,7 @@ class ResetLoggedIn
             return $next($request);
         }
 
-        if (mt_rand(1, 1) === 1) {
+        if (mt_rand(1, 10) === 1) {
             $threshold = Carbon::now()->subMinutes($lifetime);
             DB::table('users')
                 ->where('is_logged_in', 1)
