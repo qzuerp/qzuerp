@@ -33,8 +33,8 @@ class KullaniciIslemleri extends Controller
       $affected1 = DB::table('sessions')
         ->where('user_id', $request->userID)
         ->update([
-          'payload' => null,
-          'user_id' => null
+          'payload' => '',
+          'user_id' => ''
         ]);
 
 
