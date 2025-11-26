@@ -603,13 +603,14 @@
             if (result.isConfirmed) {
                 localStorage.removeItem('recentPages');
                 loadRecentPages();
-                Swal.fire({
-                    title: 'Temizlendi!',
-                    text: 'Son kullanılanlar listesi başarıyla temizlendi.',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                mesaj('Son kullanılanlar listesi başarıyla temizlendi.', 'success');
+                // Swal.fire({
+                //     title: 'Temizlendi!',
+                //     text: 'Son kullanılanlar listesi başarıyla temizlendi.',
+                //     icon: 'success',
+                //     timer: 2000,
+                //     showConfirmButton: false
+                // });
             }
         });
     }

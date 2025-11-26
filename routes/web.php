@@ -56,6 +56,7 @@ use App\Http\Controllers\info_controller;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\efn_controler;
 use App\Http\Controllers\cgc70_controller;
+use App\Http\Controllers\takip_controller;
 
 
 use Illuminate\Http\Request;
@@ -93,6 +94,8 @@ Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_
 
 Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
 Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
+
+Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
 
 Route::view('/erisim_engeli', 'erisim_engeli');
 

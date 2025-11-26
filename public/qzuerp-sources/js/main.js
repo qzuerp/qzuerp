@@ -7,7 +7,12 @@ $(function () {
     $('select[data-modal]').each(function () {
       const modalId = $(this).data('modal');
       $(this).select2({
-        dropdownParent: $('#' + modalId)
+        dropdownParent: $('#' + 
+          
+          
+          
+          
+          modalId)
       });
     });
     //$.fn.selectpicker.Constructor.BootstrapVersion = '3';
@@ -288,27 +293,28 @@ function evrakIslemleriSwal(islemTipi) {
 
   if (islemTipi == "evrakKaydet") {
     config = {
-      title: 'Kaydet',
-      text: "Evrak kaydedilsin mi?",
+      title: 'Yeni Evrak Oluşturulsun mu?',
+      text: "Yeni bir evrak oluşturulacak.",
       icon: 'question'
     };
   }
-
+  
   if (islemTipi == "evrakDuzenle") {
     config = {
-      title: 'Düzenle',
-      text: "Evrak güncellensin mi?", // Düzeltildi
+      title: 'Evrak Güncellensin mi?',
+      text: "Değişiklikler kaydedilecektir.",
       icon: 'question'
     };
   }
-
+  
   if (islemTipi == "evrakSil") {
     config = {
-      title: 'Sil',
-      text: "Evrak silinsin mi?",
-      icon: 'warning' // Silme işlemi için warning daha uygun
+      title: 'Evrak Silinsin mi?',
+      text: "Bu işlem geri alınamaz.",
+      icon: 'warning'
     };
   }
+  
 
   return new Promise((resolve) => {
     Swal.fire({

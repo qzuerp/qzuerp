@@ -10,6 +10,7 @@
 
     $ekran = "CGC70";
     $ekranAdi = "Müşteri Şikayetleri"; 
+    $ekranRumuz = "CGC70";
     $ekranLink = "musteri_sikayet";
     $ekranTableE = $database."cgc70";
     $ekranKayitSatirKontrol = "false";

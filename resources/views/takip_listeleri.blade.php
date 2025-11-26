@@ -9,13 +9,12 @@
     $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
     $database = trim($kullanici_veri->firma) . ".dbo.";
 
-    $ekran = "SATINALMTALEP";
-    $ekranRumuz = "STOK47";
-    $ekranAdi = "Satın Alma Talepleri";
-    $ekranLink = "satinalmaTalepleri";
-    $ekranTableE = $database . "stok47e";
-    $ekranTableT = $database . "stok47t";
-    $ekranKayitSatirKontrol = "true";
+    $ekran = "TAKIPLISTE";
+    $ekranRumuz = "CGC702";
+    $ekranAdi = "Takip Listeleri";
+    $ekranLink = "takip_listeleri";
+    $ekranTableE = $database . "cgc70e";
+    $ekranKayitSatirKontrol = "false";
 
 
     $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
@@ -35,32 +34,24 @@
     }
 
     $kart_veri = DB::table($ekranTableE)->where('id', $sonID)->first();
-    $t_kart_veri = DB::table($ekranTableT . ' as t')
-        ->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
-        ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-        ->orderBy('t.id', 'ASC')
-        ->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')
-        ->get();
+
     $evraklar = DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 
     if (isset($kart_veri)) {
-
         $ilkEvrak = DB::table($ekranTableE)->min('id');
         $sonEvrak = DB::table($ekranTableE)->max('id');
         $sonrakiEvrak = DB::table($ekranTableE)->where('id', '>', $sonID)->min('id');
         $oncekiEvrak = DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
-
     }
 
 @endphp
 
 @section('content')
-
     <div class="content-wrapper">
         @include('layout.util.evrakContentHeader')
-        @include('layout.util.logModal', ['EVRAKTYPE' => 'STOK47', 'EVRAKNO' => @$kart_veri->EVRAKNO])
+        @include('layout.util.logModal', ['EVRAKTYPE' => 'CGC702', 'EVRAKNO' => @$kart_veri->EVRAKNO])
         <section class="content">
-            <form method="POST" action="stok47_islemler" method="POST" name="verilerForm" id="verilerForm">
+            <form method="POST" action="cgc70_islemler" method="POST" name="verilerForm" id="verilerForm">
                 @csrf
                 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                 <div class="row">
@@ -94,5 +85,4 @@
             </form>
         </section>
     </div>
-
 @endsection
