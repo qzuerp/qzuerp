@@ -1,7 +1,7 @@
 <div class="form" style="display:none;" id="ICHATA">
 
     @php
-        $ich_fault_types = json_decode($kart_veri->ich_fault_types ?? '[]', true);
+        $ich_fault_types = json_decode(@$kart_veri->ich_fault_types ?? '[]', true);
     @endphp
 
     <div class="row g-3">
@@ -15,7 +15,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_doc_no"
                    name="ich_doc_no"
-                   value="{{ $kart_veri->ich_doc_no ?? '' }}">
+                   value="{{ @$kart_veri->ich_doc_no ?? '' }}">
         </div>
 
         {{-- TARİH --}}
@@ -27,7 +27,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_date"
                    name="ich_date"
-                   value="{{ $kart_veri->ich_date ?? '' }}">
+                   value="{{ @$kart_veri->ich_date ?? '' }}">
         </div>
 
         {{-- İŞ EMRİ --}}
@@ -39,7 +39,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_jobno"
                    name="ich_jobno"
-                   value="{{ $kart_veri->ich_jobno ?? '' }}">
+                   value="{{ @$kart_veri->ich_jobno ?? '' }}">
         </div>
 
         {{-- SİPARİŞ NO --}}
@@ -51,7 +51,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_order_no"
                    name="ich_order_no"
-                   value="{{ $kart_veri->ich_order_no ?? '' }}">
+                   value="{{ @$kart_veri->ich_order_no ?? '' }}">
         </div>
 
         <hr class="my-4">
@@ -98,9 +98,9 @@
                 <option value="">Seç</option>
 
                 @php
-                    if (!empty($kart_veri->ich_part_code)) {
-                        echo "<option value='".$kart_veri->ich_part_code."' selected>" .
-                             $kart_veri->ich_part_code . " - " . $kart_veri->ich_part_name . "</option>";
+                    if (!empty(@$kart_veri->ich_part_code)) {
+                        echo "<option value='".@$kart_veri->ich_part_code."' selected>" .
+                             @$kart_veri->ich_part_code . " - " . @$kart_veri->ich_part_name . "</option>";
                     }
                 @endphp
 
@@ -117,7 +117,7 @@
                    data-bs-title="ich_part_name"
                    name="ich_part_name"
                    id="STOK_ADI_SHOW"
-                   value="{{ $kart_veri->ich_part_name ?? '' }}"
+                   value="{{ @$kart_veri->ich_part_name ?? '' }}"
                    readonly>
         </div>
 
@@ -130,7 +130,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_workorder"
                    name="ich_workorder"
-                   value="{{ $kart_veri->ich_workorder ?? '' }}">
+                   value="{{ @$kart_veri->ich_workorder ?? '' }}">
         </div>
 
         {{-- KONUM --}}
@@ -142,7 +142,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_location"
                    name="ich_location"
-                   value="{{ $kart_veri->ich_location ?? '' }}">
+                   value="{{ @$kart_veri->ich_location ?? '' }}">
         </div>
 
         {{-- TEZGAH --}}
@@ -154,7 +154,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_machine"
                    name="ich_machine"
-                   value="{{ $kart_veri->ich_machine ?? '' }}">
+                   value="{{ @$kart_veri->ich_machine ?? '' }}">
         </div>
 
         {{-- HATA KODU --}}
@@ -166,7 +166,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_fault_code"
                    name="ich_fault_code"
-                   value="{{ $kart_veri->ich_fault_code ?? '' }}">
+                   value="{{ @$kart_veri->ich_fault_code ?? '' }}">
         </div>
 
         {{-- MİKTAR --}}
@@ -178,7 +178,7 @@
                    data-bs-placement="bottom"
                    data-bs-title="ich_quantity"
                    name="ich_quantity"
-                   value="{{ $kart_veri->ich_quantity ?? '' }}">
+                   value="{{ @$kart_veri->ich_quantity ?? '' }}">
         </div>
 
         {{-- OPERATÖR --}}
@@ -199,7 +199,7 @@
 
                 @foreach($pers00 as $p)
                     <option value="{{ $p->KOD }}"
-                        {{ ($kart_veri->ich_operator ?? '') == $p->KOD ? 'selected' : '' }}>
+                        {{ (@$kart_veri->ich_operator ?? '') == $p->KOD ? 'selected' : '' }}>
                         {{ $p->KOD }} | {{ $p->AD }}
                     </option>
                 @endforeach
@@ -214,7 +214,7 @@
                       data-bs-placement="bottom"
                       data-bs-title="ich_problem"
                       rows="3"
-                      name="ich_problem">{{ $kart_veri->ich_problem ?? '' }}</textarea>
+                      name="ich_problem">{{ @$kart_veri->ich_problem ?? '' }}</textarea>
         </div>
 
         {{-- KÖK NEDEN --}}
@@ -225,7 +225,7 @@
                       data-bs-placement="bottom"
                       data-bs-title="ich_rootcause"
                       rows="3"
-                      name="ich_rootcause">{{ $kart_veri->ich_rootcause ?? '' }}</textarea>
+                      name="ich_rootcause">{{ @$kart_veri->ich_rootcause ?? '' }}</textarea>
         </div>
 
         {{-- DÜZELTİCİ FAALİYET --}}
@@ -236,7 +236,7 @@
                       data-bs-placement="bottom"
                       data-bs-title="ich_corrective"
                       rows="3"
-                      name="ich_corrective">{{ $kart_veri->ich_corrective ?? '' }}</textarea>
+                      name="ich_corrective">{{ @$kart_veri->ich_corrective ?? '' }}</textarea>
         </div>
 
         {{-- AÇIKLAMA --}}
@@ -247,7 +247,7 @@
                       data-bs-placement="bottom"
                       data-bs-title="ich_description"
                       rows="3"
-                      name="ich_description">{{ $kart_veri->ich_description ?? '' }}</textarea>
+                      name="ich_description">{{ @$kart_veri->ich_description ?? '' }}</textarea>
         </div>
 
     </div>
