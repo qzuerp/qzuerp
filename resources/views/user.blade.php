@@ -936,6 +936,18 @@
                                           echo " checked" @endphp></td>
                                     </tr>
                                     <tr>
+                                      <td>Takip Listeleri</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="TAKIPLISTE" @php if (in_array('TAKIPLISTE', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="TAKIPLISTE" @php if (in_array('TAKIPLISTE', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="TAKIPLISTE" @php if (in_array('TAKIPLISTE', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
                                       <td>Satın Alma Talepleri</td>
                                       <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
                                           value="SATINALMTALEP" @php if (in_array('SATINALMTALEP', $kullanici_read_yetkileri))

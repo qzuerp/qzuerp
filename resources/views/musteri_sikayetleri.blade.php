@@ -38,7 +38,7 @@
   $oncekiEvrak=DB::table($ekranTableE)->where('ID', '<', $sonID)->max('ID');
 
   $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();
-  $lokasyonlar = json_decode($kart_veri->LOKASYONLAR ?? '[]');
+  $lokasyonlar = json_decode(@$kart_veri->LOKASYONLAR ?? '[]');
 @endphp
 
 @section('content')
@@ -210,11 +210,11 @@
                                     <h6 class="fw-bold mt-4">Hata Modu Analizi</h6>
                                     <div class="">
                                         <label class="form-label">Ürün uygunsuzluğuyla sonuçlanan hata modu</label>
-                                        <textarea class="form-control" name="hata_modu" rows="2">{{ $kart_veri->HATA_MODU }}</textarea>
+                                        <textarea class="form-control" name="hata_modu" rows="2">{{ @$kart_veri->HATA_MODU }}</textarea>
                                     </div>
                                     <div class="">
                                         <label class="form-label">Hata Modu Nedeni</label>
-                                        <textarea class="form-control" name="hata_nedeni" rows="2">{{ $kart_veri->HATA_NEDENI }}</textarea>
+                                        <textarea class="form-control" name="hata_nedeni" rows="2">{{ @$kart_veri->HATA_NEDENI }}</textarea>
                                     </div>
 
                                     <!-- 3x5 Neden Analizi -->
@@ -222,15 +222,15 @@
                                     <div class="row ">
                                         <div class="col-md-4">
                                             <label class="form-label">Kaçma Kök Nedeni</label>
-                                            <input type="text" class="form-control" name="kkn" value="{{ $kart_veri->KKN }}">
+                                            <input type="text" class="form-control" name="kkn" value="{{ @$kart_veri->KKN }}">
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Oluşma Kök Nedeni</label>
-                                            <input type="text" class="form-control" name="okn" value="{{ $kart_veri->OKN }}">
+                                            <input type="text" class="form-control" name="okn" value="{{ @$kart_veri->OKN }}">
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Sistematik Kök Nedeni</label>
-                                            <input type="text" class="form-control" name="skn" value="{{ $kart_veri->SKN }}">
+                                            <input type="text" class="form-control" name="skn" value="{{ @$kart_veri->SKN }}">
                                         </div>
                                     </div>
 

@@ -1378,6 +1378,7 @@
 								<table id="popupSelect" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
 									<thead>
 										<tr class="bg-primary">
+											<th>Evrak No</th>
 											<th>Sipariş No</th>
 											<th>Artikel No</th>
 											{{-- <th>Müşteri Kodu</th> --}}
@@ -1391,6 +1392,7 @@
 									</thead>
 									<tfoot>
 										<tr class="bg-info">
+											<th>Evrak No</th>
 											<th>Sipariş No</th>
 											<th>Artikel No</th>
 											{{-- <th>Müşteri Kodu</th> --}}
@@ -1416,6 +1418,7 @@
 											@endphp
 										    <tr data-veri="{{ $veri->CARIHESAPCODE }}|{{ $veri->EVRAKNO }}|{{ $veri->ARTNO }}">
 										        <td>{{ trim($veri->EVRAKNO) }}</td>
+										        <td>{{ trim($veri->CHSIPNO) }}</td>
 										        <td>{{ $veri->ARTNO }}</td>
 										        <td>{{ $veri->KOD }}</td>
 										        <td>{{ $veri->STOK_ADI }}</td>

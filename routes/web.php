@@ -60,6 +60,7 @@ use App\Http\Controllers\takip_controller;
 
 
 use Illuminate\Http\Request;
+use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
 // eposta
 Route::post('/kontrol-email', function (\Illuminate\Http\Request $request) {
@@ -94,6 +95,7 @@ Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_
 
 Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
 Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
+Route::post('/cgc702_islemler', [takip_controller::class, 'islemler']);
 
 Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
 

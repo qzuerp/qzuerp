@@ -302,7 +302,7 @@ function evrakIslemleriSwal(islemTipi) {
   if (islemTipi == "evrakDuzenle") {
     config = {
       title: 'Evrak Güncellensin mi?',
-      text: "Değişiklikler kaydedilecektir.",
+      text: "Yaptığınız Değişiklikler kaydedilecektir.",
       icon: 'question'
     };
   }
