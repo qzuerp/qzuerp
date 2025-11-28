@@ -142,10 +142,11 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <select class="form-control select2" name="FORM" id="FORM">
-                                            <option value="" disabled selected>Form Seç</option>
-                                            <option value="8D">Kalite Hata / İyileştirme Raporu 8D</option>
-                                            <option value="IC">İyileştirme Çalışmaları </option>
-                                            <option value="ICHATA">İç Hata Takip Formu</option>
+                                            <option value="" disabled>Form Seç</option>
+
+                                            <option value="8D"     {{ @$kart_veri->FORM == '8D' ? 'selected' : '' }}>Kalite Hata / İyileştirme Raporu 8D</option>
+                                            <option value="IC"     {{ @$kart_veri->FORM == 'IC' ? 'selected' : '' }}>İyileştirme Çalışmaları</option>
+                                            <option value="ICHATA" {{ @$kart_veri->FORM == 'ICHATA' ? 'selected' : '' }}>İç Hata Takip Formu</option>
                                         </select>
                                     </div>
                                 </div>
@@ -154,15 +155,29 @@
                     </div>
                     <div class="col-12">
                         <div class="box box-info">
-                            <div class="box-body">
-                                <div class="form">
-                                    Lütfen Önce Bir Form Seçin
+                            <div class="nav-tabs-custom box-body">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item" ><a href="#Formlar" class="nav-link" data-bs-toggle="tab">Formlar</a></li>
+                                    <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="Formlar">
+                                        <div class="form">
+                                            Lütfen Önce Bir Form Seçin
+                                        </div>
+                                        @include('takip_formlari.8D', ['kart_veri' => @$kart_veri])
+
+                                        @include('takip_formlari.IC', ['kart_veri' => @$kart_veri])
+
+                                        @include('takip_formlari.ICHATA', ['kart_veri' => @$kart_veri])
+                                    </div>
+                                    
+                                    <div class="tab-pane" id="baglantiliDokumanlar">
+
+                                        @include('layout.util.baglantiliDokumanlar')
+
+                                    </div>
                                 </div>
-                                    @include('takip_formlari.8D')
-
-                                    @include('takip_formlari.IC')
-
-                                    @include('takip_formlari.ICHATA')
                             </div>
                         </div>
                     </div>
@@ -177,6 +192,7 @@
                 $('.form').fadeOut(300);
                 $('#' + $(this).val()).fadeIn(300);
             });
+            $('#FORM').trigger('change');
             // === Containment Ekle ===
             $("#addContainment").on("click", function () {
                 let v = $("#containmentInput").val().trim();
@@ -184,11 +200,11 @@
 
                 let id = "c_" + Date.now();
                 let row = `
-                                        <div class="input-group mb-2" id="${id}">
-                                            <input type="text" class="form-control" name="d3_containment[]" value="${v}">
-                                            <button type="button" class="btn btn-danger remove-item">Sil</button>
-                                        </div>
-                                    `;
+                                            <div class="input-group mb-2" id="${id}">
+                                                <input type="text" class="form-control" name="d3_containment[]" value="${v}">
+                                                <button type="button" class="btn btn-danger remove-item">Sil</button>
+                                            </div>
+                                        `;
                 $("#containmentList").append(row);
                 $("#containmentInput").val("");
             });
@@ -202,19 +218,14 @@
 
                 let id = "ca_" + Date.now();
                 let row = `
-                                        <div class="d-flex gap-2 align-items-center mb-2" id="${id}">
-                                            <input type="hidden" name="d5_action_desc[]" value="${action}">
-                                            <div class="flex-grow-1">
-                                                <strong>${action}</strong>
-                                                <div class="small-note">Bitiş: ${due || "—"}</div>
+                                            <div class="input-group mb-2" id="${id}">
+                                                <input type="text" class="form-control" name="d5_action_desc[]" value="${action} - ${due}">
+                                                <button type="button" class="btn btn-danger remove-item">Kaldır</button>
                                             </div>
-                                            <button type="button" class="btn btn-sm btn-outline-danger remove-item">Kaldır</button>
-                                        </div>
-                                    `;
+                                        `;
                 $("#caList").append(row);
 
                 $("#caAction").val("");
-                $("#caDue").val("");
             });
 
             // === Dinamik Eleman Silme ===

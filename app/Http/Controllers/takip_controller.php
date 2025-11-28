@@ -15,9 +15,11 @@ class takip_controller extends Controller
 
     public function islemler(Request $request)
     {
+        // dd($request->all());
         $firma = $request->input('firma').'.dbo.';
         $islem_turu = $request->kart_islemleri;
         $FORM = $request->FORM;
+        $EVRAKNO = $request->evrakSec;
 
         // 8D
         $report_no          = $request->report_no;
@@ -45,7 +47,7 @@ class takip_controller extends Controller
         $d4_method          = $request->d4_method;
 
         // D5 (JSON array)
-        $d5_actions         = $request->d5_actions;
+        $d5_actions         = $request->d5_action_desc;
 
         // D6
         $d6_results         = $request->d6_results;
@@ -76,69 +78,127 @@ class takip_controller extends Controller
                 else {
                   $EVRAKNO = $SON_ID + 1;
                 }
+
                 $data = [
                     // GENEL
-                    '8d_report_no'         => $report_no,
-                    '8d_report_date'       => $report_date,
-                    '8d_team'              => $team,
-                    'FORM' => $FORM,
+                    'd8_report_no'         => $report_no,
+                    'd8_report_date'       => $report_date,
+                    'd8_team'              => $team,
+                    'FORM'                 => $FORM,
                     'EVRAKNO' => $EVRAKNO,
                 
                     // D0
-                    '8d_d0_short'          => $d0_short,
-                    '8d_d0_containment'    => $d0_containment,
+                    'd8_d0_short'          => $d0_short,
+                    'd8_d0_containment'    => $d0_containment,
                 
                     // D1
-                    '8d_d1_team'           => $d1_team,
+                    'd8_d1_team'           => $d1_team,
                 
                     // D2
-                    '8d_d2_description'    => $d2_description,
-                    '8d_d2_area'           => $d2_area,
-                    '8d_d2_frequency'      => $d2_frequency,
-                    '8d_d2_priority'       => $d2_priority,
+                    'd8_d2_description'    => $d2_description,
+                    'd8_d2_area'           => $d2_area,
+                    'd8_d2_frequency'      => $d2_frequency,
+                    'd8_d2_priority'       => $d2_priority,
                 
                     // D3 (JSON)
-                    '8d_d3_containment'    => is_array($d3_containment) 
+                    'd8_d3_containment'    => is_array($d3_containment) 
                                                 ? json_encode($d3_containment, JSON_UNESCAPED_UNICODE) 
                                                 : $d3_containment,
                 
                     // D4
-                    '8d_d4_rootcause'      => $d4_rootcause,
-                    '8d_d4_method'         => $d4_method,
+                    'd8_d4_rootcause'      => $d4_rootcause,
+                    'd8_d4_method'         => $d4_method,
                 
                     // D5 (JSON)
-                    '8d_d5_actions'        => is_array($d5_actions)
+                    'd8_d5_actions'        => is_array($d5_actions)
                                                 ? json_encode($d5_actions, JSON_UNESCAPED_UNICODE)
                                                 : $d5_actions,
                 
                     // D6
-                    '8d_d6_results'        => $d6_results,
-                    '8d_d6_verified_at'    => $d6_verified_at,
+                    'd8_d6_results'        => $d6_results,
+                    'd8_d6_verified_at'    => $d6_verified_at,
                 
                     // D7
-                    '8d_d7_preventive'     => $d7_preventive,
+                    'd8_d7_preventive'     => $d7_preventive,
                 
                     // D8
-                    '8d_d8_closure'        => $d8_closure,
-                    '8d_d8_approved_by'    => $d8_approved_by,
-                    '8d_d8_approved_at'    => $d8_approved_at,
+                    'd8_d8_closure'        => $d8_closure,
+                    'd8_d8_approved_by'    => $d8_approved_by,
+                    'd8_d8_approved_at'    => $d8_approved_at,
                 
                     // EKLER
-                    '8d_attachments'       => is_array($attachments)
+                    'd8_attachments'       => is_array($attachments)
                                                 ? json_encode($attachments, JSON_UNESCAPED_UNICODE)
                                                 : $attachments,
                 
-                    '8d_notes'             => $notes,
+                    'd8_notes'             => $notes,
                 ];
+                
                 
                 DB::table($firma.'cgc70')->insert($data);
                 $sonID=DB::table($firma.'cgc70')->max('ID');
                 return redirect()->route('takip_listeleri', ['ID' => $sonID, 'kayit' => 'ok']);
+                
                 break;
             
-            default:
-                # code...
-                break;
+            case 'kart_duzenle':
+                $data = [
+                    // GENEL
+                    'd8_report_no'         => $report_no,
+                    'd8_report_date'       => $report_date,
+                    'd8_team'              => $team,
+                    'FORM'                 => $FORM,
+                
+                    // D0
+                    'd8_d0_short'          => $d0_short,
+                    'd8_d0_containment'    => $d0_containment,
+                
+                    // D1
+                    'd8_d1_team'           => $d1_team,
+                
+                    // D2
+                    'd8_d2_description'    => $d2_description,
+                    'd8_d2_area'           => $d2_area,
+                    'd8_d2_frequency'      => $d2_frequency,
+                    'd8_d2_priority'       => $d2_priority,
+                
+                    // D3 (JSON)
+                    'd8_d3_containment'    => is_array($d3_containment) 
+                                                ? json_encode($d3_containment, JSON_UNESCAPED_UNICODE) 
+                                                : $d3_containment,
+                
+                    // D4
+                    'd8_d4_rootcause'      => $d4_rootcause,
+                    'd8_d4_method'         => $d4_method,
+                
+                    // D5 (JSON)
+                    'd8_d5_actions'        => is_array($d5_actions)
+                                                ? json_encode($d5_actions, JSON_UNESCAPED_UNICODE)
+                                                : $d5_actions,
+                
+                    // D6
+                    'd8_d6_results'        => $d6_results,
+                    'd8_d6_verified_at'    => $d6_verified_at,
+                
+                    // D7
+                    'd8_d7_preventive'     => $d7_preventive,
+                
+                    // D8
+                    'd8_d8_closure'        => $d8_closure,
+                    'd8_d8_approved_by'    => $d8_approved_by,
+                    'd8_d8_approved_at'    => $d8_approved_at,
+                
+                    // EKLER
+                    'd8_attachments'       => is_array($attachments)
+                                                ? json_encode($attachments, JSON_UNESCAPED_UNICODE)
+                                                : $attachments,
+                
+                    'd8_notes'             => $notes,
+                ];
+                
+                DB::table($firma.'cgc70')->where('ID',$EVRAKNO)->update($data);
+                return redirect()->route('takip_listeleri', ['ID' => $request->ID_TO_REDIRECT, 'duzenleme' => 'ok']);
+            break;
         }
 
     }
