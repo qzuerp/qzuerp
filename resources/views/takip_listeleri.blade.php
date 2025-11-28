@@ -9,7 +9,7 @@
     $database = trim($kullanici_veri->firma) . ".dbo.";
 
     $ekran = "TAKIPLISTE";
-    $ekranRumuz = "CGC702";
+    $ekranRumuz = "TAKIPLISTE";
     $ekranAdi = "Takip Listeleri";
     $ekranLink = "takip_listeleri";
     $ekranTableE = $database . "cgc70";
