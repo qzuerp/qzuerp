@@ -258,6 +258,9 @@
       </a>
       <span class="tooltip">Tanımlar</span>
       <ul class="treeview-menu">
+        @if (in_array('TAKIPLISTE', $kullanici_read_yetkileri))
+          <li><a href="takip_listeleri"><i class='bx bx-list-check'></i>Takip Listeleri</a></li>
+        @endif
         @if (in_array('GKTNM', $kullanici_read_yetkileri))
           <li><a href="gk_tanimlari"><i class='bx bx-list-ul'></i>Grup Kodu Tanımları</a></li>
         @endif
