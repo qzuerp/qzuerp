@@ -142,6 +142,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        transition: all 0.3s ease;
     }
 
     .accordion-button:hover {
@@ -157,7 +158,7 @@
     }
 
     .accordion-button.active {
-        background: linear-gradient(to right, #667eea, #764ba2);
+        background:rgb(158, 158, 158);
         color: white;
     }
 
