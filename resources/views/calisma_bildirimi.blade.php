@@ -172,7 +172,7 @@
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>JOB No</label>
                       <div class="d-flex ">
-                        <input type="text" class="form-control input-sm JOBNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="JOBNO" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW"   value="{{ @$kart_veri->JOBNO }}" disabled>
+                        <input type="text" class="form-control JOBNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="JOBNO" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW"   value="{{ @$kart_veri->JOBNO }}" disabled>
                         <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO"  value="{{ @$kart_veri->JOBNO }}" >
                         <span class="d-flex -btn">
                           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" id="modal_popupSelectModalBtn" type="button">

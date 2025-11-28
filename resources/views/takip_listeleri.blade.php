@@ -1,7 +1,6 @@
 @extends('layout.mainlayout')
 
 @php
-
     if (Auth::check()) {
         $user = Auth::user();
     }
@@ -16,25 +15,14 @@
     $ekranTableE = $database . "cgc70";
     $ekranKayitSatirKontrol = "false";
 
-
     $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
     $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
     $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-    $evrakno = null;
-
-    if (isset($_GET['EVRAKNO'])) {
-        $evrakno = $_GET['EVRAKNO'];
-    }
-
-    if (isset($_GET['ID'])) {
-        $sonID = $_GET['ID'];
-    } else {
-        $sonID = DB::table($ekranTableE)->min("ID");
-    }
+    $evrakno = request()->get('EVRAKNO');
+    $sonID = request()->get('ID') ?? DB::table($ekranTableE)->min("ID");
 
     $kart_veri = DB::table($ekranTableE)->where('ID', $sonID)->first();
-
     $evraklar = DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 
     if (isset($kart_veri)) {
@@ -43,139 +31,414 @@
         $sonrakiEvrak = DB::table($ekranTableE)->where('ID', '>', $sonID)->min('ID');
         $oncekiEvrak = DB::table($ekranTableE)->where('ID', '<', $sonID)->max('ID');
     }
-
 @endphp
+
 <style>
+    /* Genel Layout İyileştirmeleri */
+    .content-wrapper {
+        background: #f4f6f9;
+    }
+
+    /* Input Group Fix */
     .input-group {
         flex-wrap: nowrap !important;
     }
 
+    /* Card Stilleri */
+    .box {
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .box:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    /* Başlık Stilleri */
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 20px;
+    }
+
+    .page-header h3 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    #FORM {
+        font-size: 15px;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        transition: all 0.3s ease;
+    }
+
+    #FORM:hover {
+        border-color: #667eea;
+    }
+
+    /* Tab Stilleri */
+    .nav-tabs-custom {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .nav-tabs {
+        background: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        border-radius: 8px 8px 0 0;
+        padding: 12px 24px;
+        color: #6c757d;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-right: 4px;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #667eea;
+        background: #fff;
+        border-bottom: 3px solid #667eea;
+    }
+
+    /* Accordion İyileştirmeleri */
     .accordion-item {
-        border-bottom: 1px solid #ccc;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .accordion-item:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .accordion-button {
-        background: #f8f9fa;
+        background: linear-gradient(to right, #f8f9fa, #ffffff);
         cursor: pointer;
-        padding: 10px;
+        padding: 16px 20px;
         width: 100%;
         text-align: left;
         border: none;
         outline: none;
-        transition: background 0.3s;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        color: #495057;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .accordion-button:hover {
-        background: #e2e6ea;
+        background: linear-gradient(to right, #e9ecef, #f8f9fa);
+        color: #667eea;
     }
 
     .accordion-button::after {
         content: '\25BC';
-        /* Aşağı ok */
-        float: right;
-        transition: transform 0.3s;
+        font-size: 12px;
+        color: #667eea;
+        transition: transform 0.3s ease;
+    }
+
+    .accordion-button.active {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: white;
     }
 
     .accordion-button.active::after {
         transform: rotate(180deg);
-        /* Açıldığında yukarı çevir */
+        color: white;
     }
 
     .accordion-collapse {
         max-height: 0;
         overflow: hidden;
-        transition: all 0.4s ease;
-        padding: 0 10px;
+        transition: max-height 0.4s ease, padding 0.4s ease;
+        padding: 0 20px;
+        background: #fff;
     }
 
     .accordion-collapse.show {
-        max-height: 500px;
-        padding: 10px;
+        max-height: 800px;
+        padding: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    /* Buton Stilleri */
+    .btn {
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+    }
+
+    .btn-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border: none;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+    }
+
+    /* Toolbar Stilleri */
+    .toolbar-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    /* Form Placeholder */
+    .form-placeholder {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+        color: #6c757d;
+    }
+
+    .form-placeholder i {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #667eea;
+    }
+
+    .form-placeholder h4 {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    /* Input ve Select İyileştirmeleri */
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        transition: all 0.3s ease;
+        padding: 10px 14px;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Dynamic List Items */
+    .dynamic-item {
+        transition: all 0.3s ease;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .dynamic-item:hover {
+        background: #f8f9fa;
+    }
+
+    /* Loading State */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive İyileştirmeler */
+    @media (max-width: 768px) {
+        .toolbar-container .row > div {
+            margin-bottom: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+    }
+
+    /* Badge Stilleri */
+    .form-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+
+    .form-badge.badge-8d {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .form-badge.badge-ic {
+        background: #f3e5f5;
+        color: #7b1fa2;
+    }
+
+    .form-badge.badge-ichata {
+        background: #fff3e0;
+        color: #f57c00;
     }
 </style>
+
 @section('content')
     <div class="content-wrapper">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+
         @include('layout.util.evrakContentHeader')
         @include('layout.util.logModal', ['EVRAKTYPE' => 'CGC702', 'EVRAKNO' => @$kart_veri->EVRAKNO])
+        
         <section class="content">
-            <form method="POST" action="cgc702_islemler" method="POST" name="verilerForm" id="verilerForm">
+            <form method="POST" action="cgc702_islemler" name="verilerForm" id="verilerForm">
                 @csrf
                 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                <!-- Form Selection Card -->
                 <div class="row">
                     <div class="col-12">
                         <div class="box box-danger">
                             <div class="box-body">
-                                <div class="row mb-2">
-                                    <div class="col-md-2 col-xs-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 col-12 mb-2 mb-md-0">
                                         <select id="evrakSec" class="form-control js-example-basic-single"
                                             style="width: 100%;" name="evrakSec"
                                             onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')">
-                                            @php
-
-                                                foreach ($evraklar as $key => $veri) {
-
-                                                    if ($veri->ID == @$kart_veri->ID) {
-                                                        echo "<option value ='" . $veri->ID . "' selected>" . $veri->EVRAKNO . "</option>";
-                                                    } else {
-                                                        echo "<option value ='" . $veri->ID . "'>" . $veri->EVRAKNO . "</option>";
-                                                    }
-                                                }
-                                            @endphp
+                                            @foreach ($evraklar as $veri)
+                                                <option value="{{ $veri->ID }}" 
+                                                    {{ $veri->ID == @$kart_veri->ID ? 'selected' : '' }}>
+                                                    {{ $veri->EVRAKNO }}
+                                                </option>
+                                            @endforeach
                                         </select>
-                                        <input type='hidden' value='{{ @$kart_veri->ID }}' name='ID_TO_REDIRECT'
-                                            id='ID_TO_REDIRECT'>
+                                        <input type='hidden' value='{{ @$kart_veri->ID }}' name='ID_TO_REDIRECT' id='ID_TO_REDIRECT'>
                                     </div>
-                                    <div class="col-md-2 col-xs-2">
-                                        <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i
-                                                class="fa fa-filter" style="color: white;"></i></a>
+
+                                    <div class="col-md-2 col-6 mb-2 mb-md-0">
+                                        <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz">
+                                            <i class="fa fa-filter"></i> Filtrele
+                                        </button>
                                     </div>
-                                    <div class="col-md-2">
-                                        <input type="text" maxlength="16" class="form-control input-sm" name="firma"
-                                            id="firma" value="{{ @$kullanici_veri->firma }}" readonly>
-                                        <input type="hidden" maxlength="16" class="form-control input-sm" name="firma"
-                                            id="firma" value="{{ @$kullanici_veri->firma }}" readonly>
+
+                                    <div class="col-md-2 col-6 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" readonly>
+                                        <input type="hidden" name="firma" id="firma" value="{{ @$kullanici_veri->firma }}">
                                     </div>
-                                    <div class="col-md-6 col-xs-6">
+
+                                    <div class="col-md-5 col-12">
                                         @include('layout.util.evrakIslemleri')
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
+                                <div class="row mt-2">
+                                    <div class="col">
                                         <select class="form-control select2" name="FORM" id="FORM">
-                                            <option value="" disabled>Form Seç</option>
-
-                                            <option value="8D"     {{ @$kart_veri->FORM == '8D' ? 'selected' : '' }}>Kalite Hata / İyileştirme Raporu 8D</option>
-                                            <option value="IC"     {{ @$kart_veri->FORM == 'IC' ? 'selected' : '' }}>İyileştirme Çalışmaları</option>
-                                            <option value="ICHATA" {{ @$kart_veri->FORM == 'ICHATA' ? 'selected' : '' }}>İç Hata Takip Formu</option>
+                                            <option value="" disabled selected>Lütfen bir form tipi seçin...</option>
+                                            <option value="8D" {{ @$kart_veri->FORM == '8D' ? 'selected' : '' }}>
+                                                Kalite Hata / İyileştirme Raporu 8D
+                                            </option>
+                                            <option value="IC" {{ @$kart_veri->FORM == 'IC' ? 'selected' : '' }}>
+                                                İyileştirme Çalışmaları
+                                            </option>
+                                            <option value="ICHATA" {{ @$kart_veri->FORM == 'ICHATA' ? 'selected' : '' }}>
+                                                İç Hata Takip Formu
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Main Content Tabs -->
                     <div class="col-12">
                         <div class="box box-info">
-                            <div class="nav-tabs-custom box-body">
+                            <div class="nav-tabs-custom box-body p-0">
                                 <ul class="nav nav-tabs">
-                                    <li class="nav-item" ><a href="#Formlar" class="nav-link" data-bs-toggle="tab">Formlar</a></li>
-                                    <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+                                    <li class="nav-item">
+                                        <a href="#Formlar" class="nav-link active" data-bs-toggle="tab">
+                                            <i class="fa fa-wpforms"></i> Formlar
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#baglantiliDokumanlar" class="nav-link" data-bs-toggle="tab">
+                                            <i class="fa fa-file-text" style="color: orange"></i> Bağlantılı Dokümanlar
+                                        </a>
+                                    </li>
                                 </ul>
-                                <div class="tab-content">
+                                
+                                <div class="tab-content p-4">
                                     <div class="active tab-pane" id="Formlar">
-                                        <div class="form">
-                                            Lütfen Önce Bir Form Seçin
+                                        <!-- Form Placeholder -->
+                                        <div class="form form-placeholder" id="formPlaceholder">
+                                            <i class="fa fa-hand-pointer-o"></i>
+                                            <h4>Form Seçimi Bekleniyor</h4>
+                                            <p>Lütfen yukarıdan bir form tipi seçerek devam edin</p>
                                         </div>
+
                                         @include('takip_formlari.8D', ['kart_veri' => @$kart_veri])
-
                                         @include('takip_formlari.IC', ['kart_veri' => @$kart_veri])
-
                                         @include('takip_formlari.ICHATA', ['kart_veri' => @$kart_veri])
                                     </div>
                                     
                                     <div class="tab-pane" id="baglantiliDokumanlar">
-
                                         @include('layout.util.baglantiliDokumanlar')
-
                                     </div>
                                 </div>
                             </div>
@@ -188,52 +451,124 @@
 
     <script>
         $(document).ready(function () {
+            // Form değişikliği yönetimi
             $('#FORM').on('change', function () {
-                $('.form').fadeOut(300);
-                $('#' + $(this).val()).fadeIn(300);
+                const selectedForm = $(this).val();
+                
+                // Loading göster
+                $('#loadingOverlay').css('display', 'flex');
+                
+                setTimeout(() => {
+                    // Tüm formları gizle
+                    $('.form').fadeOut(200);
+                    
+                    // Seçili formu göster
+                    if (selectedForm) {
+                        $('#' + selectedForm).fadeIn(400);
+                    }
+                    
+                    // Loading gizle
+                    $('#loadingOverlay').fadeOut(300);
+                }, 300);
             });
+
+            // Sayfa yüklendiğinde form durumunu kontrol et
             $('#FORM').trigger('change');
+
+            // Accordion işlevselliği
+            $(document).on('click', '.accordion-button', function() {
+                const $this = $(this);
+                const $collapse = $this.next('.accordion-collapse');
+                
+                // Toggle active class
+                $this.toggleClass('active');
+                
+                // Toggle collapse
+                $collapse.toggleClass('show');
+            });
+
             // === Containment Ekle ===
             $("#addContainment").on("click", function () {
-                let v = $("#containmentInput").val().trim();
-                if (!v) return;
+                const value = $("#containmentInput").val().trim();
+                if (!value) {
+                    alert('Lütfen bir değer girin');
+                    return;
+                }
 
-                let id = "c_" + Date.now();
-                let row = `
-                                            <div class="input-group mb-2" id="${id}">
-                                                <input type="text" class="form-control" name="d3_containment[]" value="${v}">
-                                                <button type="button" class="btn btn-danger remove-item">Sil</button>
-                                            </div>
-                                        `;
+                const id = "c_" + Date.now();
+                const row = `
+                    <div class="input-group mb-2 dynamic-item" id="${id}">
+                        <input type="text" class="form-control" name="d3_containment[]" value="${value}" readonly>
+                        <button type="button" class="btn btn-danger remove-item">
+                            <i class="fa fa-trash"></i> Sil
+                        </button>
+                    </div>
+                `;
                 $("#containmentList").append(row);
-                $("#containmentInput").val("");
+                $("#containmentInput").val("").focus();
             });
 
             // === Corrective Action Ekle ===
             $("#addCA").on("click", function () {
-                let action = $("#caAction").val().trim();
-                let due = $("#caDue").val();
+                const action = $("#caAction").val().trim();
+                const due = $("#caDue").val();
 
-                if (!action) return;
+                if (!action) {
+                    alert('Lütfen bir aksiyon tanımı girin');
+                    return;
+                }
 
-                let id = "ca_" + Date.now();
-                let row = `
-                                            <div class="input-group mb-2" id="${id}">
-                                                <input type="text" class="form-control" name="d5_action_desc[]" value="${action} - ${due}">
-                                                <button type="button" class="btn btn-danger remove-item">Kaldır</button>
-                                            </div>
-                                        `;
+                const id = "ca_" + Date.now();
+                const displayText = due ? `${action} - ${due}` : action;
+                const row = `
+                    <div class="input-group mb-2 dynamic-item" id="${id}">
+                        <input type="text" class="form-control" name="d5_action_desc[]" value="${displayText}" readonly>
+                        <button type="button" class="btn btn-danger remove-item">
+                            <i class="fa fa-trash"></i> Kaldır
+                        </button>
+                    </div>
+                `;
                 $("#caList").append(row);
 
-                $("#caAction").val("");
+                $("#caAction").val("").focus();
+                $("#caDue").val("");
             });
 
             // === Dinamik Eleman Silme ===
             $(document).on("click", ".remove-item", function () {
-                $(this).closest("div").remove();
+                const $item = $(this).closest('.dynamic-item');
+                $item.fadeOut(300, function() {
+                    $(this).remove();
+                });
             });
 
+            // Enter tuşu ile ekleme
+            $("#containmentInput").on("keypress", function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $("#addContainment").click();
+                }
+            });
+
+            $("#caAction").on("keypress", function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $("#addCA").click();
+                }
+            });
+
+            // Form submit öncesi validasyon
+            $("#verilerForm").on("submit", function(e) {
+                const selectedForm = $("#FORM").val();
+                if (!selectedForm) {
+                    e.preventDefault();
+                    alert('Lütfen bir form tipi seçin!');
+                    return false;
+                }
+                
+                // Loading göster
+                $('#loadingOverlay').css('display', 'flex');
+            });
         });
     </script>
-
 @endsection

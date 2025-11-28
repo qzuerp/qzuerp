@@ -280,7 +280,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="reset" class="btn btn-primary">Temizle</button>
+                <button type="reset" class="btn btn-primary">Geri Al</button>
             </div>
         </div>
     </div>

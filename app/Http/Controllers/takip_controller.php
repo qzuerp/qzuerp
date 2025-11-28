@@ -65,6 +65,34 @@ class takip_controller extends Controller
         $attachments        = $request->attachments;
         $notes              = $request->notes;
 
+
+        // İç Hata Formu
+        $ich_doc_no       = $request->ich_doc_no;
+
+        $ich_date         = $request->ich_date;
+        $ich_jobno        = $request->ich_jobno;
+        $ich_order_no     = $request->ich_order_no;
+
+        $ich_fault_types  = $request->ich_fault_types;
+
+        $ich_part_name    = $request->ich_part_name;
+        $ich_part_code    = $request->ich_part_code;
+
+        $ich_workorder    = $request->ich_workorder;
+        $ich_location     = $request->ich_location;
+        $ich_machine      = $request->ich_machine;
+
+        $ich_fault_code   = $request->ich_fault_code;
+        $ich_quantity     = $request->ich_quantity;
+        $ich_operator     = $request->ich_operator;
+
+        $ich_problem      = $request->ich_problem;
+        $ich_rootcause    = $request->ich_rootcause;
+        $ich_corrective   = $request->ich_corrective;
+        $ich_description  = $request->ich_description;
+
+        $ich_remarks      = $request->ich_remarks;  
+
         switch ($islem_turu) {
             case 'kart_olustur':
                 $SON_EVRAK=DB::table($firma.'cgc70')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
@@ -132,6 +160,36 @@ class takip_controller extends Controller
                                                 : $attachments,
                 
                     'd8_notes'             => $notes,
+
+
+
+
+                    'ich_doc_no'         => $ich_doc_no,
+                
+                    'ich_date'           => $ich_date,
+                    'ich_jobno'          => $ich_jobno,
+                    'ich_order_no'       => $ich_order_no,
+                
+                    // MULTI SELECTION
+                    'ich_fault_types'    => is_array($ich_fault_types)
+                                             ? json_encode($ich_fault_types, JSON_UNESCAPED_UNICODE)
+                                             : $ich_fault_types,
+                
+                    'ich_part_name'      => $ich_part_name,
+                    'ich_part_code'      => $ich_part_code,
+                
+                    'ich_workorder'      => $ich_workorder,
+                    'ich_location'       => $ich_location,
+                    'ich_machine'        => $ich_machine,
+                
+                    'ich_fault_code'     => $ich_fault_code,
+                    'ich_quantity'       => $ich_quantity,
+                    'ich_operator'       => $ich_operator,
+                
+                    'ich_problem'        => $ich_problem,
+                    'ich_rootcause'      => $ich_rootcause,
+                    'ich_corrective'     => $ich_corrective,
+                    'ich_description'    => $ich_description,
                 ];
                 
                 
@@ -194,11 +252,46 @@ class takip_controller extends Controller
                                                 : $attachments,
                 
                     'd8_notes'             => $notes,
+
+
+
+
+
+                    'ich_doc_no'         => $ich_doc_no,
+                
+                    'ich_date'           => $ich_date,
+                    'ich_jobno'          => $ich_jobno,
+                    'ich_order_no'       => $ich_order_no,
+                
+                    // MULTI SELECTION
+                    'ich_fault_types'    => is_array($ich_fault_types)
+                                             ? json_encode($ich_fault_types, JSON_UNESCAPED_UNICODE)
+                                             : $ich_fault_types,
+                
+                    'ich_part_name'      => $ich_part_name,
+                    'ich_part_code'      => $ich_part_code,
+                
+                    'ich_workorder'      => $ich_workorder,
+                    'ich_location'       => $ich_location,
+                    'ich_machine'        => $ich_machine,
+                
+                    'ich_fault_code'     => $ich_fault_code,
+                    'ich_quantity'       => $ich_quantity,
+                    'ich_operator'       => $ich_operator,
+                
+                    'ich_problem'        => $ich_problem,
+                    'ich_rootcause'      => $ich_rootcause,
+                    'ich_corrective'     => $ich_corrective,
+                    'ich_description'    => $ich_description,
                 ];
                 
                 DB::table($firma.'cgc70')->where('ID',$EVRAKNO)->update($data);
                 return redirect()->route('takip_listeleri', ['ID' => $request->ID_TO_REDIRECT, 'duzenleme' => 'ok']);
             break;
+
+            case 'kart_sil':
+                DB::table($firma.'cgc70')->where('ID',$EVRAKNO)->delete();
+                return redirect()->route('takip_listeleri', ['ID' => $request->ID_TO_REDIRECT, 'silme' => 'ok']);
         }
 
     }
