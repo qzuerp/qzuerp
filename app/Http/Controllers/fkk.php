@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
-class fkk_controller.php extends Controller
+class fkk extends Controller
 {
     public function index() {
         return view('final_kalite_kontrol');
@@ -126,7 +126,7 @@ class fkk_controller.php extends Controller
                 }
 
                 return redirect()->route('giris_kalite_kontrol', ['ID' => $max_id, 'kayit' => 'ok']);
-                break;
+
 
             case 'kart_duzenle':
                 FunctionHelpers::Logla('FKK',$EVRAKNO,'W');

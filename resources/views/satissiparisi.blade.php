@@ -216,7 +216,7 @@
                           <th>Ölçü 3</th>
                           <th>Ölçü 4</th>
                           <th style="min-width:100px;">MPS NO</th>
-                          <!-- <th>#</th> -->
+                          <th>#</th>
                         </tr>
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
@@ -320,6 +320,7 @@
                             <input maxlength="255" style="color: red" type="number" data-name="NUM4" id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" class="NUM4 form-control">
                           </td>
                           <td>#</td>
+                          <td>#</td>
 
                         </tr>
                       </thead>
@@ -345,8 +346,8 @@
                                   Kapalı
                                 </option>
                               </select>
+                              <input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $t_veri->TRNUM }}">
                             </td>
-                            <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $t_veri->TRNUM }}"></td>
                             <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $t_veri->KOD }}"></td>
                             <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $t_veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $t_veri->STOK_ADI }}"></td>
 

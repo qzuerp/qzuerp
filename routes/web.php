@@ -90,19 +90,18 @@ Route::get('/raporlama/template/delete/{id}', [RaporlamaController::class, 'dele
 Route::get('/raporlama/template/edit/{id}', [RaporlamaController::class, 'editTemplate'])->name('raporlama.template.edit');
 Route::post('/raporlama/template/update/{id}', [RaporlamaController::class, 'updateTemplate'])->name('raporlama.template.update');
 
-
-Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_gazetesi.index');
-
-Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
-Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
-Route::post('/cgc702_islemler', [takip_controller::class, 'islemler']);
-
-Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
-
 Route::view('/erisim_engeli', 'erisim_engeli');
 
 
 Auth::routes(['password.request' => false]);
+
+  Route::get('/uretim_gazetesi', [uretim_gazetesi::class, 'index'])->name('uretim_gazetesi.index');
+
+  Route::get('/musteri_sikayet', [cgc70_controller::class, 'index'])->name('musteri_sikayet');
+  Route::post('/cgc70_islemler', [cgc70_controller::class, 'islemler']);
+  Route::post('/cgc702_islemler', [takip_controller::class, 'islemler']);
+
+  Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
 
   // POST'LAR
   Route::get('/loglar/datatables', [main_controller::class, 'getLoglar'])->name('loglar.ajax');
@@ -320,14 +319,6 @@ Auth::routes(['password.request' => false]);
   Route::get('etiketKarti',[Etiket_Karti_controller::class,'index'])->name('etiket_Karti');
 
   Route::get('/maliyet',[Maliyet::class,'index']);
-
-
-  Route::get('/check-session', function () {
-    if (auth()->check()) {
-        return response()->json(['status' => 'active']);
-    }
-    return response()->json(['status' => 'expired']);
-  });
 
   // Route::get('/sayfa', [YourController::class, 'metodAdi']);
 

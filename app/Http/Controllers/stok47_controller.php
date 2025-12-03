@@ -32,9 +32,9 @@ class stok47_controller extends Controller
 
   public function yeniEvrakNo(Request $request)
   {
-    $YENIEVRAKNO=DB::table($firma.'stok47e')->max('EVRAKNO');
     $firma = $request->input('firma').'.dbo.';
     $veri=DB::table($firma.'stok47e')->find(DB::table($firma.'stok47e')->max('EVRAKNO'));
+    $YENIEVRAKNO=DB::table($firma.'stok47e')->max('EVRAKNO');
 
     return json_encode($veri);
   }

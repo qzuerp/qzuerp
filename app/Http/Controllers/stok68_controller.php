@@ -27,9 +27,9 @@ class stok68_controller extends Controller
 
   public function yeniEvrakNo(Request $request)
   {
-      $YENIEVRAKNO=DB::table($firma.'stok68e')->max('EVRAKNO');
-      $firma = $request->input('firma').'.dbo.';
-      $veri=DB::table($firma.'stok68e')->find(DB::table($firma.'stok68e')->max('EVRAKNO'));
+    $firma = $request->input('firma').'.dbo.';
+    $veri=DB::table($firma.'stok68e')->find(DB::table($firma.'stok68e')->max('EVRAKNO'));
+    $YENIEVRAKNO=DB::table($firma.'stok68e')->max('EVRAKNO');
 
       return json_encode($veri);
   }

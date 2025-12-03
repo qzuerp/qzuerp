@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ResetLoggedIn
 {
     public function handle(Request $request, Closure $next)
     {
+        Log::info('ResetLoggedIn middleware tetiklendi: '.$request->path());
         $lifetime = config('session.lifetime');
 
         if (Auth::check()) {

@@ -136,11 +136,11 @@
 
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Talep Eden Bölüm</label>
-                      <select class="form-control select2 CARIHESAPCODE" data-bs-toggle="tooltip"
+                      <select class="form-control select2 CARIHESAPCODE js-example-basic-single" data-bs-toggle="tooltip"
                         data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
                         name="CARIHESAPCODE_E" id="CARIHESAPCODE_E">
                         @php
-                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO','TLPEDN')->get();
+                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO','PERSDEPARTMAN')->get();
 
                           foreach ($evraklar as $key => $veri) {
                             if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
@@ -208,12 +208,12 @@
                           style="color: red"></i>Seçili Satırları Sil</button>
                     </div>
 
-                    <table class="table table-bordered text-center" id="veriTable"
-                      style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
+                    <table class="table table-bordered text-center" id="veriTable"style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
 
                       <thead>
                         <tr>
                           <th>#</th>
+                          <th><span class="drag-handle">⬍</span> NO</th>
                           <th style="display:none;">Sıra</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
@@ -982,7 +982,7 @@
             Swal.fire({
               icon: 'warning',
               title: 'Evrak Kaydedilmeli!',
-              text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
+              text: 'Siparişleri oluşturmak için önce evrakı kaydetmelisiniz.',
               confirmButtonText: 'Tamam'
             });
             
