@@ -3,13 +3,13 @@
     <div class=" mb-3">
         <div class="row g-2">
             <div class="col-md-4">
-                <label class="form-label required">Rapor No</label>
-                <input type="text" class="form-control" name="report_no" value="{{ @$kart_veri->d8_report_no }}" required>
+                <label class="form-label ">Rapor No</label>
+                <input type="text" class="form-control" name="report_no" value="{{ @$kart_veri->d8_report_no }}" >
             </div>
             <div class="col-md-4">
-                <label class="form-label required">Tarih</label>
+                <label class="form-label ">Tarih</label>
                 <input type="date" class="form-control" name="report_date" value="{{ @$kart_veri->d8_report_date }}"
-                    required>
+                    >
             </div>
             <div class="col-md-4">
                 <label class="form-label">Sorumlu Ekip</label>
@@ -32,8 +32,8 @@
             <div id="collapse0" class="accordion-collapse collapse" data-bs-parent="#accordion8d">
                 <div class="accordion-body">
                     <div class="mb-3">
-                        <label class="form-label required">Kısa Tanım</label>
-                        <input type="text" class="form-control" name="d0_short" value="{{ @$kart_veri->d8_d0_short }}" required>
+                        <label class="form-label ">Kısa Tanım</label>
+                        <input type="text" class="form-control" name="d0_short" value="{{ @$kart_veri->d8_d0_short }}" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Alınan Hızlı Önlemler</label>
@@ -74,8 +74,8 @@
             <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#accordion8d">
                 <div class="accordion-body">
                     <div class="mb-3">
-                        <label class="form-label required">Detaylı Açıklama</label>
-                        <textarea class="form-control textarea-resize" name="d2_description" required>{{ @$kart_veri->d8_d2_description }}</textarea>
+                        <label class="form-label ">Detaylı Açıklama</label>
+                        <textarea class="form-control textarea-resize" name="d2_description" >{{ @$kart_veri->d8_d2_description }}</textarea>
                     </div>
                     <div class="row g-2">
                         <div class="col-md-4">

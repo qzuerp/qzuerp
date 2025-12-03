@@ -118,59 +118,6 @@
   }
 </style>
 
-<script>
-  $(document).ready(function () {
-
-    const $table = $("#veriTable");
-    const $tbody = $table.find("tbody");
-
-    // 1) wrapper oluştur ve tabloyu içine koy
-    if ($("#veriTableWrapper").length === 0) {
-      $table.wrap("<div id='veriTableWrapper'></div>");
-    }
-
-    const $wrapper = $("#veriTableWrapper");
-
-    // 2) Tüm satırları memory'e al
-    const allRows = $tbody.find("tr").toArray();
-
-    // 3) Tek seferde görünen satır sayısı
-    const pageSize = 40;
-
-    // 4) Başlangıç index
-    let start = 0;
-
-    // 5) Render fonksiyonu
-    function renderRows() {
-      $tbody.empty();
-
-      const end = Math.min(start + pageSize, allRows.length);
-
-      for (let i = start; i < end; i++) {
-        $tbody.append(allRows[i]);
-      }
-    }
-
-    // İlk render
-    renderRows();
-
-    // 6) Scroll event → hangi satırlar görünür olacak?
-    $wrapper.on("scroll", function () {
-      const rowHeight = 22; // bir satırın px yüksekliği (ortalama)
-
-      const newStart = Math.floor($wrapper.scrollTop() / rowHeight);
-
-      if (newStart !== start) {
-        start = newStart;
-        renderRows();
-      }
-    });
-
-  });
-
-</script>
-
-
 
 
 

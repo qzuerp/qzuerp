@@ -93,6 +93,30 @@ class takip_controller extends Controller
 
         $ich_remarks      = $request->ich_remarks;  
 
+
+        // iyileştirme çalışmaları
+        $ic_doc_no          = $request->ic_doc_no;
+        $ic_publish_date    = $request->ic_publish_date;
+        $ic_rev_info        = $request->ic_rev_info;
+
+        $ic_no              = $request->ic_no;
+        $ic_date            = $request->ic_date;
+        $ic_type            = $request->ic_type;
+        $ic_department      = $request->ic_department;
+        $ic_person          = $request->ic_person;
+        $ic_part            = $request->ic_part;
+        $ic_process         = $request->ic_process;
+
+        $ic_current_status  = $request->ic_current_status;
+        $ic_new_status      = $request->ic_new_status;
+
+        $ic_gain_categories = $request->ic_gain_categories ?? [];
+        $ic_functions       = $request->ic_functions ?? [];
+
+        $ic_result          = $request->ic_result;
+        $ic_finish_date     = $request->ic_finish_date;
+
+
         switch ($islem_turu) {
             case 'kart_olustur':
                 $SON_EVRAK=DB::table($firma.'cgc70')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
@@ -190,6 +214,29 @@ class takip_controller extends Controller
                     'ich_rootcause'      => $ich_rootcause,
                     'ich_corrective'     => $ich_corrective,
                     'ich_description'    => $ich_description,
+
+
+                    // iyileştirme çalışmaları
+                    'ic_doc_no'         => $ic_doc_no,
+                    'ic_publish_date'   => $ic_publish_date,
+                    'ic_rev_info'       => $ic_rev_info,
+
+                    'ic_no'             => $ic_no,
+                    'ic_date'           => $ic_date,
+                    'ic_type'           => $ic_type,
+                    'ic_department'     => $ic_department,
+                    'ic_person'         => $ic_person,
+                    'ic_part'           => $ic_part,
+                    'ic_process'        => $ic_process,
+
+                    'ic_current_status' => $ic_current_status,
+                    'ic_new_status'     => $ic_new_status,
+
+                    'ic_gain_categories'=> json_encode($ic_gain_categories, JSON_UNESCAPED_UNICODE),
+                    'ic_functions'      => json_encode($ic_functions, JSON_UNESCAPED_UNICODE),
+
+                    'ic_result'         => $ic_result,
+                    'ic_finish_date'    => $ic_finish_date,
                 ];
                 
                 
@@ -283,6 +330,29 @@ class takip_controller extends Controller
                     'ich_rootcause'      => $ich_rootcause,
                     'ich_corrective'     => $ich_corrective,
                     'ich_description'    => $ich_description,
+
+
+                    // iyileştirme çalışmaları
+                    'ic_doc_no'         => $ic_doc_no,
+                    'ic_publish_date'   => $ic_publish_date,
+                    'ic_rev_info'       => $ic_rev_info,
+
+                    'ic_no'             => $ic_no,
+                    'ic_date'           => $ic_date,
+                    'ic_type'           => $ic_type,
+                    'ic_department'     => $ic_department,
+                    'ic_person'         => $ic_person,
+                    'ic_part'           => $ic_part,
+                    'ic_process'        => $ic_process,
+
+                    'ic_current_status' => $ic_current_status,
+                    'ic_new_status'     => $ic_new_status,
+
+                    'ic_gain_categories'=> json_encode($ic_gain_categories, JSON_UNESCAPED_UNICODE),
+                    'ic_functions'      => json_encode($ic_functions, JSON_UNESCAPED_UNICODE),
+
+                    'ic_result'         => $ic_result,
+                    'ic_finish_date'    => $ic_finish_date,
                 ];
                 
                 DB::table($firma.'cgc70')->where('ID',$EVRAKNO)->update($data);

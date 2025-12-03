@@ -1887,7 +1887,3 @@ body:not(.sidebar-collapse) .home-section {
 .modal.show .modal-dialog {
   transform: none !important;
 }
-#veriTableWrapper {
-  height: 100%;
-  overflow-y: auto;
-}
