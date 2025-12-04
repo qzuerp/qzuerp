@@ -294,7 +294,7 @@ if (isset($kart_veri)) {
                           <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" name="NUM3_FILL" id="NUM3_FILL" class="NUM3 form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="NUM4 sform-control">
+                          <input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="NUM4 form-control">
                         </td>
                         <td>#</td>
 
