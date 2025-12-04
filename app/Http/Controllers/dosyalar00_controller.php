@@ -119,8 +119,8 @@ class dosyalar00_controller extends Controller
                     ->pluck('KOD')
                     ->map(fn($x) => strtolower(trim($x)))
                     ->filter(fn($x) => $x !== '')
-                    ->flip() // Daha hızlı arama için array key'e çevir
                     ->toArray();
+
             } catch (\Exception $e) {
                 \Log::error('stok00 kontrolü başarısız: ' . $e->getMessage());
                 return response()->json(['error' => 'Stok kontrolü sırasında hata oluştu.'], 500);
@@ -195,14 +195,28 @@ class dosyalar00_controller extends Controller
             // ------------------------------------------------------------------------------------
             // *** STOK00 KONTROLÜ: kod yoksa satırı SKIP ***
             if ($codeColumn) {
-                $excelKod = isset($rowData[$codeColumn]) ? strtolower(trim($rowData[$codeColumn])) : '';
+                $excelKod = strtolower(trim($rowData[$codeColumn] ?? ''));
 
-                if ($excelKod === '' || !isset($existingCodes[$excelKod])) {
-                    // stok00'da karşılığı yok → satırı atla
-                    $skippedCount++;
-                    continue;
+                if ($excelKod === '') {
+                    continue; // boş kodu direkt at
+                }
+
+                // EXCEL KOD stok00 KOD listesinin içinde var mı? (LIKE simülasyonu)
+                $matchFound = false;
+
+                foreach ($existingCodes as $stokKod) {
+                    // excelKod, stok kodunu içinde barındırıyor mu?
+                    if (str_contains($excelKod, $stokKod)) {
+                        $matchFound = true;
+                        break;
+                    }
+                }
+
+                if (!$matchFound) {
+                    continue; // eşleşme yoksa SKIP
                 }
             }
+
             // ------------------------------------------------------------------------------------
 
             // TRNUM gerekiyorsa ekle

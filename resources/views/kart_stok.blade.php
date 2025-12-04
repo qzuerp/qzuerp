@@ -135,7 +135,7 @@
 
 										<div class="col-md-1 col-sm-1 col-xs-2">
 											<label>Birimi</label>
-											<select class="form-control  input-sm" style="width:100%;"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IUNIT"  name="IUNIT" id="IUNIT" >
+											<select class="form-control select2 input-sm" style="width:100%;"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IUNIT"  name="IUNIT" id="IUNIT" >
 												<option value="">Seç...</option>
 												<option value="AD" @if (@$kart_veri->IUNIT == "AD") selected @endif>AD - ADET</option>
 												<option value="F" @if (@$kart_veri->IUNIT == "F") selected @endif>F - FANTOM</option>
