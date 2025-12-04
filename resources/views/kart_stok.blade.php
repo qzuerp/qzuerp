@@ -1530,7 +1530,7 @@
 					buttons: ['copy', 'excel', 'print'],
 					processing: true,
 					serverSide: true,
-					searching: false, // DataTables'ın kendi search'ünü kapat
+					searching: true, // DataTables'ın kendi search'ünü kapat
 					autoWidth: false,
 					scrollX: false,
 					ajax: '/evraklar-veri',
