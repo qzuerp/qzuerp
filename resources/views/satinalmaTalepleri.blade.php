@@ -140,7 +140,7 @@
                         data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
                         name="CARIHESAPCODE_E" id="CARIHESAPCODE_E">
                         @php
-                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO','PERSDEPARTMAN')->get();
+                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO', 'PERSDEPARTMAN')->get();
 
                           foreach ($evraklar as $key => $veri) {
                             if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
@@ -152,21 +152,22 @@
                         @endphp
                       </select>
                     </div>
-                          
+
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Talep Eden Personel</label>
-                      <select class="form-control select2 TALEP_EDEN_KISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TALEP_EDEN_KISI" name="TALEP_EDEN_KISI" id="TALEP_EDEN_KISI">
+                      <select class="form-control select2 TALEP_EDEN_KISI" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="TALEP_EDEN_KISI" name="TALEP_EDEN_KISI"
+                        id="TALEP_EDEN_KISI">
                         <option>Seç</option>
                         @php
-                          $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+                          $pers00_evraklar = DB::table($database . 'pers00')->orderBy('id', 'ASC')->get();
 
                           foreach ($pers00_evraklar as $key => $veri) {
 
                             if ($veri->KOD == @$kart_veri->TALEP_EDEN_KISI) {
-                              echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
-                            }
-                            else {
-                              echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                              echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
+                            } else {
+                              echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
                             }
                           }
                         @endphp
@@ -193,7 +194,8 @@
             <div class="nav-tabs-custom box box-info">
               <ul class="nav nav-tabs">
                 <li class="nav-item"><a href="#siparisler" class="nav-link" data-bs-toggle="tab">Talepler</a></li>
-                <li class="nav-item"><a href="#teklifler" class="nav-link" data-bs-toggle="tab">Tedarikçilerden Alınan Teklifler</a></li>
+                <li class="nav-item"><a href="#teklifler" class="nav-link" data-bs-toggle="tab">Tedarikçilerden Alınan
+                    Teklifler</a></li>
                 <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar"
                     id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange"
@@ -208,12 +210,12 @@
                           style="color: red"></i>Seçili Satırları Sil</button>
                     </div>
 
-                    <table class="table table-bordered text-center" id="veriTable"style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
+                    <table class="table table-bordered text-center" id="veriTable"
+                      style="width:100%;font-size:7pt; overflow:visible; border-radius:10px !important; margin-left: 12px;">
 
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th><span class="drag-handle">⬍</span> NO</th>
                           <th style="display:none;">Sıra</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
@@ -221,7 +223,7 @@
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
                           <!-- <th>Fiyat</th>
-                          <th style="min-width: 120px;">Para Birimi</th> -->
+                              <th style="min-width: 120px;">Para Birimi</th> -->
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
@@ -293,23 +295,23 @@
                               data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                           </td>
                           <!-- <td style="min-width: 150px">
-                            <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
-                              id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
-                              class="FIYAT form-control">
-                          </td>
-                          <td>
-                            <select data-name="FIYAT_PB" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top"
-                              data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
-                              style="width: 100%;">
-                              <option value="">Seç</option>
-                              @php
-                                $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-                                foreach ($kur_veri as $key => $veri) {
-                                  echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              @endphp
-                            </select>
-                          </td> -->
+                                <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
+                                  id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
+                                  class="FIYAT form-control">
+                              </td>
+                              <td>
+                                <select data-name="FIYAT_PB" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top"
+                                  data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
+                                  style="width: 100%;">
+                                  <option value="">Seç</option>
+                                  @php
+                                    $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+                                    foreach ($kur_veri as $key => $veri) {
+                                      echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
+                                    }
+                                  @endphp
+                                </select>
+                              </td> -->
                           <td style="min-width: 150px">
                             <input maxlength="6 " style="color: red" type="text" name="SF_SF_UNIT_FILL"
                               id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -411,10 +413,10 @@
                             <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
                             </td>
                             <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-                            <td>
-                              <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
-                                value="{{ $veri->FIYAT_PB }}" id="">
-                            </td> -->
+                                    <td>
+                                      <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
+                                        value="{{ $veri->FIYAT_PB }}" id="">
+                                    </td> -->
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T"
                                 value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control"
                                 data-name="SF_SF_UNIT[]" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
@@ -425,19 +427,19 @@
                             <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
                             <td>
                               <!-- <select name="MPS_KODU[]" id="MPS_KODU" class="form-control select2 required" style="width: 100%; border-radius: 5px;">
-                                  <option value=" ">Seç</option>
-                                    @php
-                                    $kur_veri = DB::table($database.'mmps10e')->get();
-                                    foreach ($kur_veri as $key => $value) {
-                                      if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
-                                        echo "<option value='".$value->MAMULSTOKKODU."' selected>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                      } else {
-                                        echo "<option value='".$value->MAMULSTOKKODU."'>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                      }
-                                    }
+                                          <option value=" ">Seç</option>
+                                            @php
+                                            $kur_veri = DB::table($database.'mmps10e')->get();
+                                            foreach ($kur_veri as $key => $value) {
+                                              if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
+                                                echo "<option value='".$value->MAMULSTOKKODU."' selected>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
+                                              } else {
+                                                echo "<option value='".$value->MAMULSTOKKODU."'>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
+                                              }
+                                            }
 
-                                    @endphp
-                                </select> -->
+                                            @endphp
+                                        </select> -->
                               <input type="text" name="MPS_KODU[]" class="form-control" value="{{ $veri->MPS_KODU }}"
                                 readonly>
                             </td>
@@ -470,11 +472,13 @@
                   <div class="row">
                     <div class="col-12 mb-2">
                       <div class="row">
-                        <div class="col-8">
-                          <select class="form-control select2 js-example-basic-single T_STOK_KODU" onchange="veriGetir(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="T_STOK_KODU" style="width: 100%; height: 30PX" >
+                        <div class="col-6">
+                          <select class="form-control select2 js-example-basic-single T_STOK_KODU"
+                            onchange="veriGetir(this.value)" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="T_STOK_KODU" style="width: 100%; height: 30PX">
                             <option value="">Seç</option>
                             @php
-                              $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+                              $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
                               foreach ($evraklar as $key => $veri) {
                                 echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "'>" . $veri->KOD . " | " . $veri->STOK_ADI . "</option>";
                               }
@@ -483,9 +487,13 @@
                           <input type="hidden" id="T_STOK_KODU">
                           <input type="hidden" id="TI_ARTNO">
                         </div>
-                        <div class="col-4 d-flex gap-3">
-                          <button class="btn btn-danger" type="button">Siparişlerini İptal Et</button>
-                          <button class="btn btn-primary" id="create_order" type="submit" name="kart_islemleri" value="create_order">Siparişlerini Oluştur</button>
+                        <div class="col-6 d-flex gap-3">
+                          <button class="btn btn-primary" id="create_order" type="submit" name="kart_islemleri"
+                            value="create_order"> <i class="fa-solid fa-plus"></i> Siparişleri Oluştur </button>
+                          <button class="btn btn-primary" type="button" id="price_list"><i class="fa-solid fa-tags"></i>
+                            Fiyatlar</button>
+                          <button class="btn btn-danger" type="button" id="delete_order_btn"><i
+                              class="fa-solid fa-trash"></i> Siparişleri İptal et </button>
                         </div>
                       </div>
                     </div>
@@ -506,13 +514,15 @@
 
                           <tr class="satirEkle2" style="background-color:#3c8dbc">
 
-                            <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                            <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus"
+                                  style="color: blue"></i></button></td>
                             <td>#</td>
                             <td style="min-width: 240px;">
                               <div class="d-flex ">
-                                <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
-                                  name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" onchange="cariAdiGetir(this.value)">
+                                <select class="form-control select2 js-example-basic-single CARIHESAPCODE"
+                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE"
+                                  style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E"
+                                  onchange="cariAdiGetir(this.value)">
                                   @php
                                     $evraklar = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
                                     echo "<option value =''>Seç</option>";
@@ -525,19 +535,20 @@
                               <input style="color: red" type="hidden" id="CARIHESAPCODE_E_FILL" class="form-control">
                             </td>
                             <td style="min-width: 150px">
-                              <input style="color: red" type="text" id="CARI_ADI_FILL"
-                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARI_AD"
-                                class="CARI_AD form-control" readonly>
+                              <input style="color: red" type="text" id="CARI_ADI_FILL" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="CARI_AD" class="CARI_AD form-control" readonly>
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="28" style="color: red" type="number" data-name="SATIN_ALINACAK_MIK"
-                                name="SATIN_ALINACAK_MIK_FILL" id="SATIN_ALINACAK_MIK_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="SATIN_ALINACAK_MIK" class="SATIN_ALINACAK_MIK form-control">
+                                name="SATIN_ALINACAK_MIK_FILL" id="SATIN_ALINACAK_MIK_FILL" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="SATIN_ALINACAK_MIK"
+                                class="SATIN_ALINACAK_MIK form-control">
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="28" style="color: red" type="number" data-name="VEREBILECEGI_MIK"
-                                name="VEREBILECEGI_MIK_FILL" id="VEREBILECEGI_MIK_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="VEREBILECEGI_MIK" class="VEREBILECEGI_MIK form-control">
+                                name="VEREBILECEGI_MIK_FILL" id="VEREBILECEGI_MIK_FILL" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="VEREBILECEGI_MIK"
+                                class="VEREBILECEGI_MIK form-control">
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
@@ -545,9 +556,9 @@
                                 class="FIYAT form-control">
                             </td>
                             <td>
-                              <select data-name="FIYAT_PB" id="FIYAT_PB_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
-                                style="width: 100%;">
+                              <select data-name="FIYAT_PB" id="FIYAT_PB_FILL" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="FIYAT_PB"
+                                class="FIYAT_PB form-control js-example-basic-single select2" style="width: 100%;">
                                 <option value="">Seç</option>
                                 @php
                                   $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
@@ -559,8 +570,8 @@
                             </td>
                             <td style="min-width: 150px">
                               <input maxlength="255" style="color: red" type="date" data-name="TERMIN_TAR"
-                                name="TERMIN_TAR_FILL" id="TI_TERMIN_TAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="TERMIN_TAR" class="TERMIN_TAR form-control">
+                                name="TERMIN_TAR_FILL" id="TI_TERMIN_TAR_FILL" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="TERMIN_TAR" class="TERMIN_TAR form-control">
                             </td>
                             <td>#</td>
 
@@ -569,52 +580,61 @@
                         </thead>
                         <tbody>
                           @php
-                            $ti_kart_veri = DB::table($database.'stok47ti')->where('EVRAKNO',$kart_veri->EVRAKNO)->get();
+                            $ti_kart_veri = DB::table($database . 'stok47ti')->where('EVRAKNO', $kart_veri->EVRAKNO)->get();
                           @endphp
                           @foreach ($ti_kart_veri as $veri)
-                              <tr>
-                                <td><input type="checkbox" style="width:20px;height:20px;" class="row_check"></td>
-                                <td>
-                                    <input type="text" class="form-control" name="T_STOK_KODU[]" value="{{ $veri->KOD }}" readonly>
-                                </td>
+                            <tr>
+                              <td><input type="checkbox" style="width:20px;height:20px;" class="row_check no-track"></td>
+                              <td>
+                                <input type="text" class="form-control" name="T_STOK_KODU[]" value="{{ $veri->KOD }}"
+                                  readonly>
+                              </td>
 
-                                <td style="display: none;">
-                                    <input type="hidden" class="form-control" maxlength="6" name="TI_TRNUM[]" value="{{ $veri->TRNUM }}">
-                                </td>
-                                <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]' value='{{ $veri->ARTNO }}'></td>
-                                <td>
-                                    <input type="text" class="form-control" name="CARI_KOD[]" value="{{ $veri->CARI_KODU }}" readonly>
-                                </td>
+                              <td style="display: none;">
+                                <input type="hidden" class="form-control" maxlength="6" name="TI_TRNUM[]"
+                                  value="{{ $veri->TRNUM }}">
+                              </td>
+                              <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]'
+                                  value='{{ $veri->ARTNO }}'></td>
+                              <td>
+                                <input type="text" class="form-control" name="CARI_KOD[]" value="{{ $veri->CARI_KODU }}"
+                                  readonly>
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="CARI_AD[]" value="{{ $veri->CARI_ADI }}" readonly>
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="CARI_AD[]" value="{{ $veri->CARI_ADI }}"
+                                  readonly>
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="SATIN_ALINACAK_MIK[]" value="{{ $veri->SF_MIKTAR }}">
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="SATIN_ALINACAK_MIK[]"
+                                  value="{{ $veri->SF_MIKTAR }}">
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="VEREBILECEGI_MIK[]" value="{{ $veri->VEREBILECEGI_MIK }}">
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="VEREBILECEGI_MIK[]"
+                                  value="{{ $veri->VEREBILECEGI_MIK }}">
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}">
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}">
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="FIYAT_PB[]" value="{{ $veri->FIYAT_PB }}" readonly>
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="FIYAT_PB[]" value="{{ $veri->FIYAT_PB }}"
+                                  readonly>
+                              </td>
 
-                                <td>
-                                    <input type="text" class="form-control" name="TI_TERMIN_TAR[]" value="{{ $veri->TERMIN_TAR }}" readonly>
-                                </td>
+                              <td>
+                                <input type="text" class="form-control" name="TI_TERMIN_TAR[]"
+                                  value="{{ $veri->TERMIN_TAR }}" readonly>
+                              </td>
 
-                                <td>
-                                    <button type="button" id="deleteSingleRow2" class="btn btn-default delete-row2">
-                                        <i class="fa fa-minus" style="color: red"></i>
-                                    </button>
-                                </td>
+                              <td>
+                                <button type="button" id="deleteSingleRow2" class="btn btn-default delete-row2">
+                                  <i class="fa fa-minus" style="color: red"></i>
+                                </button>
+                              </td>
                             </tr>
 
                           @endforeach
@@ -719,54 +739,54 @@
 
                     @php
                       if (isset($_GET['SUZ'])) {
-                      $veriler = DB::table($database.'stok47ti as ti')
-                        ->join($database.'stok00 as s', 'ti.KOD', '=', 's.KOD')
-                        ->select(
+                        $veriler = DB::table($database . 'stok47ti as ti')
+                          ->join($database . 'stok00 as s', 'ti.KOD', '=', 's.KOD')
+                          ->select(
                             'ti.*',
                             's.AD as STOK_AD',
                             's.IUNIT'
-                        )
-                        ->get();
+                          )
+                          ->get();
                     @endphp
                     <table class="table table-bordered" id="example2">
-                        <thead>
-                            <tr>
-                                <th>Cari Kod</th>
-                                <th>Stok Kod</th>
-                                <th>Stok Adı</th>
-                                <th>Birim</th>
-                                <th>Miktar</th>
-                                <th>Fiyat</th>
-                                <th>Para Birimi</th>
-                                <th>Termin Tarihi</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Cari Kod</th>
-                                <th>Stok Kod</th>
-                                <th>Stok Adı</th>
-                                <th>Birim</th>
-                                <th>Miktar</th>
-                                <th>Fiyat</th>
-                                <th>Para Birimi</th>
-                                <th>Termin Tarihi</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach($veriler as $row)
-                                <tr>
-                                    <td>{{ $row->CARI_KODU }}</td>
-                                    <td>{{ $row->KOD }}</td>
-                                    <td>{{ $row->STOK_AD }}</td>
-                                    <td>{{ $row->IUNIT }}</td>
-                                    <td>{{ $row->SF_MIKTAR }}</td>
-                                    <td>{{ $row->FIYAT }}</td>
-                                    <td>{{ $row->FIYAT_PB }}</td>
-                                    <td>{{ $row->TERMIN_TAR }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                      <thead>
+                        <tr>
+                          <th>Cari Kod</th>
+                          <th>Stok Kod</th>
+                          <th>Stok Adı</th>
+                          <th>Birim</th>
+                          <th>Miktar</th>
+                          <th>Fiyat</th>
+                          <th>Para Birimi</th>
+                          <th>Termin Tarihi</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>Cari Kod</th>
+                          <th>Stok Kod</th>
+                          <th>Stok Adı</th>
+                          <th>Birim</th>
+                          <th>Miktar</th>
+                          <th>Fiyat</th>
+                          <th>Para Birimi</th>
+                          <th>Termin Tarihi</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        @foreach($veriler as $row)
+                          <tr>
+                            <td>{{ $row->CARI_KODU }}</td>
+                            <td>{{ $row->KOD }}</td>
+                            <td>{{ $row->STOK_AD }}</td>
+                            <td>{{ $row->IUNIT }}</td>
+                            <td>{{ $row->SF_MIKTAR }}</td>
+                            <td>{{ $row->FIYAT }}</td>
+                            <td>{{ $row->FIYAT_PB }}</td>
+                            <td>{{ $row->TERMIN_TAR }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
                     </table>
                     @php
                       }
@@ -884,7 +904,7 @@
                   <tbody>
                     @php
 
-                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, $database.'stok47e.EVRAKNO', '=', $database.'stok47t.EVRAKNO')->orderBy($database.'stok47t.id', 'ASC')->get();
+                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, $database . 'stok47e.EVRAKNO', '=', $database . 'stok47t.EVRAKNO')->orderBy($database . 'stok47t.id', 'ASC')->get();
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
@@ -934,15 +954,64 @@
                     </tr>
                   </thead>
                   <!-- <tfoot>
-                      <tr class="bg-info">
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Birim</th>
-                        <th>#</th>
-                      </tr>
-                    </tfoot> -->
+                          <tr class="bg-info">
+                            <th>Kod</th>
+                            <th>Ad</th>
+                            <th>Birim</th>
+                            <th>#</th>
+                          </tr>
+                        </tfoot> -->
                   <tbody>
 
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                style="margin-top: 15px;">Vazgeç</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade bd-example-modal-lg" id="modal_fiyat" tabindex="-1" role="dialog"
+        aria-labelledby="modal_fiyat">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
+                  style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row" style="overflow: auto">
+                <table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th style="min-width:130px;">Stok Kodu</th>
+                      <th>Cari Kodu</th>
+                      <th>Cari Adı</th>
+                      <th style="min-width:130px;">Satın Alınacak Miktar</th>
+                      <th style="min-width:130px;">Verebileceği Miktar</th>
+                      <th>Fiyat</th>
+                      <th style="min-width:130px;">Para Birimi</th>
+                      <th>Termin Tar.</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="bg-primary">
+                      <th style="min-width:130px;">Stok Kodu</th>
+                      <th>Cari Kodu</th>
+                      <th>Cari Adı</th>
+                      <th style="min-width:130px;">Satın Alınacak Miktar</th>
+                      <th style="min-width:130px;">Verebileceği Miktar</th>
+                      <th>Fiyat</th>
+                      <th style="min-width:130px;">Para Birimi</th>
+                      <th>Termin Tar.</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
 
                   </tbody>
                 </table>
@@ -967,33 +1036,66 @@
         $('#CARIHESAPCODE_E_FILL').val(veriler[0]);
         $('#CARI_ADI_FILL').val(veriler[1]);
       }
-      function veriGetir(veri)
-      {
+      function veriGetir(veri) {
         const veriler = veri.split("|||");
         $('#T_STOK_KODU').val(veriler[0]);
         $('#TI_ARTNO').val(veriler[1]);
       }
       $(document).ready(function () {
-        $('#create_order').on('click',function(e){
+        $('#price_list').on('click',function(){
+          var KOD = $('#T_STOK_KODU').val();
+
+          $.ajax({
+            'url':'price_list',
+            'type':'post',
+            'data':{KOD:KOD},
+            success:function(res){
+
+            }
+          });
+        });
+        document.getElementById('delete_order_btn').addEventListener('click', function () {
+          Swal.fire({
+            title: "Emin misin Eren?",
+            text: "Siparişler silinecektir, bu işlem geri alınamaz",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet, sil!",
+            cancelButtonText: "Vazgeç"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // önce hangi butona basıldığını forma ekleyelim
+              let input = document.createElement("input");
+              input.type = "hidden";
+              input.name = "kart_islemleri";
+              input.value = "delete_order";
+              document.querySelector("form").appendChild(input);
+
+              document.querySelector("form").submit();
+            }
+          });
+        });
+
+        $('#create_order').on('click', function (e) {
           if (evrakDegisti) {
             e.preventDefault();
             e.stopPropagation();
-            
+
             Swal.fire({
               icon: 'warning',
               title: 'Evrak Kaydedilmeli!',
               text: 'Siparişleri oluşturmak için önce evrakı kaydetmelisiniz.',
               confirmButtonText: 'Tamam'
             });
-            
+
             return false;
           }
           $('#veriTable2 tbody tr').each(function () {
-              const checked = $(this).find('input[type="checkbox"]').is(':checked');
+            const checked = $(this).find('input[type="checkbox"]').is(':checked');
 
-              if (!checked) {
-                  $(this).remove();
-              }
+            if (!checked) {
+              $(this).remove();
+            }
           });
         });
         $('#STOK_KODU_SHOW').select2({
@@ -1111,14 +1213,14 @@
 
 
 
-        $('#addRow2').on('click',function(){
+        $('#addRow2').on('click', function () {
           var TRNUM_FILL = getTRNUM();
           var satirEkleInputs = getInputs('satirEkle2');
           var TALEP_KODU = $('#T_STOK_KODU').val();
           var ARTNO = $('#TI_ARTNO').val();
           var htmlCode = '';
           htmlCode += '<tr>'
-          htmlCode += '<td><input type="checkbox" style="width:20px;height:20px;" class="row_check"></td>';
+          htmlCode += '<td><input type="checkbox" style="width:20px;height:20px;" class="row_check no-track"></td>';
           htmlCode += " <td><input type='text' class='form-control' name='T_STOK_KODU[]' value='" + TALEP_KODU + "' readonly></td> ";
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TI_TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]' value='" + ARTNO + "'></td> ";

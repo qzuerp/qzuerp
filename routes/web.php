@@ -136,6 +136,7 @@ Auth::routes(['password.request' => false]);
   Route::post('siparisten_talep_olustur',[stok40_controller::class,'siparisten_talep_olustur']);
   Route::post('stok46_islemler',[stok46_controller::class,'islemler']);
   Route::post('stok47_islemler',[stok47_controller::class,'islemler']);
+  Route::post('price_list',[stok47_controller::class,'price_list']);
   Route::post('stok60_islemler',[stok60_controller::class,'islemler']);
   Route::post('gecous_islemler',[gecous_controller::class,'islemler']);
   Route::post('stok69_islemler',[stok69_controller::class,'islemler']);

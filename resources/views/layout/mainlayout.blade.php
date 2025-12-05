@@ -268,7 +268,7 @@
       });
 
       function trackAllFormElements() {
-        $('input, textarea, select').each(function (index, element) {
+        $('input, textarea, select, ').each(function (index, element) {
           trackElement($(element));
         });
       }

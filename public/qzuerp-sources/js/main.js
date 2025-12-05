@@ -531,6 +531,8 @@ function inputTemizle2() {
   .val('')
   .prop('checked', false)
   .prop('selected', false);
+  
+  $(':input','#verilerForm').prop('checked',false)
 
 
   $('#AP10').prop('checked', false);
