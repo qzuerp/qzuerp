@@ -860,16 +860,25 @@ class mmps10_controller extends Controller
 
       if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD[$i])->exists())
       {
-        $SON_EVRAK=DB::table($firma.'mmps10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
-        $SON_ID= $SON_EVRAK->EVRAKNO;
-        
-        $SON_ID = (int)$SON_ID;
-        if ($SON_ID == NULL) {
-          $NEXT_EVRAKNO = 1;
+        $tarihKodu = date('ymd'); // Günün tarihi: 251105
+        $tipKodu = $request->MPSEVRAKTYPE; // U veya F
+
+        // Bugünün tarih koduyla başlayan evrakları bul
+        $sonEvrak = DB::table($firma.'mmps10e')
+            ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
+            ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
+            ->first();
+
+        // Bugün için varsa son numarayı al, yoksa 1'den başlat
+        if ($sonEvrak && $sonEvrak->EVRAKNO) {
+            $parca = explode('-', $sonEvrak->EVRAKNO);
+            $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
+        } else {
+            $sayac = 1;
         }
-        else {
-          $NEXT_EVRAKNO = $SON_ID + 1;
-        }
+
+        // Yeni evrak numarasını oluştur
+        $NEXT_EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
 
         DB::table($firma.'mmps10e')->insert([
             'EVRAKNO' => $NEXT_EVRAKNO,
@@ -941,7 +950,7 @@ class mmps10_controller extends Controller
         LEFT JOIN ${firma}STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
         LEFT JOIN ${firma}imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
         LEFT JOIN ${firma}imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
-        WHERE m10e.EVRAKNO = ${NEXT_EVRAKNO}
+        WHERE m10e.EVRAKNO = '${NEXT_EVRAKNO}'
           AND B01T.EVRAKNO IS NOT NULL
         ORDER BY B01T.SIRANO, B01T.BOMREC_INPUTTYPE ASC;";
 
@@ -1009,7 +1018,7 @@ class mmps10_controller extends Controller
             'KOD' => [$hm->BOMREC_KAYNAKCODE],
             'AD' => [$hm->BOMREC_KAYNAKCODE],
             'EVRAKNO' => $EVRAKNO
-        ]),$mpsCount,$SON_ID,$visited);
+        ]),$mpsCount,$sonEvrak,$visited);
       }
     }
     return $sonuclar[] = [
