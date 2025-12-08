@@ -254,7 +254,7 @@ class dosyalar00_controller extends Controller
 
         $msg = "{$insertCount} kayıt eklendi.";
         if ($skippedCount > 0) {
-            $msg .= " {$skippedCount} kayıt stok00'da bulunamadığı için atlandı.";
+            $msg .= " {$skippedCount} kayıt stok kartı bulunamadığı için atlandı.";
         }
         if (count($failed) > 0) {
             $msg .= " " . count($failed) . " batch'de hata oluştu.";

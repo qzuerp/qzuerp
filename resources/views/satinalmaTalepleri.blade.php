@@ -223,7 +223,7 @@
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
                           <!-- <th>Fiyat</th>
-                              <th style="min-width: 120px;">Para Birimi</th> -->
+                                        <th style="min-width: 120px;">Para Birimi</th> -->
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
@@ -295,23 +295,23 @@
                               data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                           </td>
                           <!-- <td style="min-width: 150px">
-                                <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
-                                  id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
-                                  class="FIYAT form-control">
-                              </td>
-                              <td>
-                                <select data-name="FIYAT_PB" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top"
-                                  data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
-                                  style="width: 100%;">
-                                  <option value="">Seç</option>
-                                  @php
-                                    $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-                                    foreach ($kur_veri as $key => $veri) {
-                                      echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                    }
-                                  @endphp
-                                </select>
-                              </td> -->
+                                          <input maxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT"
+                                            id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT"
+                                            class="FIYAT form-control">
+                                        </td>
+                                        <td>
+                                          <select data-name="FIYAT_PB" id="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2"
+                                            style="width: 100%;">
+                                            <option value="">Seç</option>
+                                            @php
+                                              $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+                                              foreach ($kur_veri as $key => $veri) {
+                                                echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
+                                              }
+                                            @endphp
+                                          </select>
+                                        </td> -->
                           <td style="min-width: 150px">
                             <input maxlength="6 " style="color: red" type="text" name="SF_SF_UNIT_FILL"
                               id="SF_SF_UNIT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -413,10 +413,10 @@
                             <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
                             </td>
                             <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-                                    <td>
-                                      <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
-                                        value="{{ $veri->FIYAT_PB }}" id="">
-                                    </td> -->
+                                                        <td>
+                                                          <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
+                                                            value="{{ $veri->FIYAT_PB }}" id="">
+                                                        </td> -->
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T"
                                 value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control"
                                 data-name="SF_SF_UNIT[]" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
@@ -427,19 +427,19 @@
                             <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
                             <td>
                               <!-- <select name="MPS_KODU[]" id="MPS_KODU" class="form-control select2 required" style="width: 100%; border-radius: 5px;">
-                                          <option value=" ">Seç</option>
-                                            @php
-                                            $kur_veri = DB::table($database.'mmps10e')->get();
-                                            foreach ($kur_veri as $key => $value) {
-                                              if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
-                                                echo "<option value='".$value->MAMULSTOKKODU."' selected>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                              } else {
-                                                echo "<option value='".$value->MAMULSTOKKODU."'>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                              }
-                                            }
+                                                              <option value=" ">Seç</option>
+                                                                @php
+                                                                $kur_veri = DB::table($database.'mmps10e')->get();
+                                                                foreach ($kur_veri as $key => $value) {
+                                                                  if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
+                                                                    echo "<option value='".$value->MAMULSTOKKODU."' selected>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
+                                                                  } else {
+                                                                    echo "<option value='".$value->MAMULSTOKKODU."'>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
+                                                                  }
+                                                                }
 
-                                            @endphp
-                                        </select> -->
+                                                                @endphp
+                                                            </select> -->
                               <input type="text" name="MPS_KODU[]" class="form-control" value="{{ $veri->MPS_KODU }}"
                                 readonly>
                             </td>
@@ -521,7 +521,7 @@
                               <div class="d-flex ">
                                 <select class="form-control select2 js-example-basic-single CARIHESAPCODE"
                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE"
-                                  style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E"
+                                  style="width: 100%; height: 30PX" id="CARIHESAPCODE_T"
                                   onchange="cariAdiGetir(this.value)">
                                   @php
                                     $evraklar = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
@@ -954,13 +954,13 @@
                     </tr>
                   </thead>
                   <!-- <tfoot>
-                          <tr class="bg-info">
-                            <th>Kod</th>
-                            <th>Ad</th>
-                            <th>Birim</th>
-                            <th>#</th>
-                          </tr>
-                        </tfoot> -->
+                                    <tr class="bg-info">
+                                      <th>Kod</th>
+                                      <th>Ad</th>
+                                      <th>Birim</th>
+                                      <th>#</th>
+                                    </tr>
+                                  </tfoot> -->
                   <tbody>
 
 
@@ -981,34 +981,29 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-                  style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-coins"></i>&nbsp;&nbsp;Fiyat Listesi</h4>
             </div>
             <div class="modal-body">
               <div class="row" style="overflow: auto">
-                <table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
+                <table id="fiyat_table" class="table table-hover text-center" data-page-length="10">
                   <thead>
                     <tr class="bg-primary">
                       <th style="min-width:130px;">Stok Kodu</th>
                       <th>Cari Kodu</th>
-                      <th>Cari Adı</th>
-                      <th style="min-width:130px;">Satın Alınacak Miktar</th>
-                      <th style="min-width:130px;">Verebileceği Miktar</th>
+                      <th style="min-width:130px;">Cari Adı</th>
                       <th>Fiyat</th>
-                      <th style="min-width:130px;">Para Birimi</th>
-                      <th>Termin Tar.</th>
+                      <th>Para Birimi</th>
+                      <th>#</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr class="bg-primary">
                       <th style="min-width:130px;">Stok Kodu</th>
                       <th>Cari Kodu</th>
-                      <th>Cari Adı</th>
-                      <th style="min-width:130px;">Satın Alınacak Miktar</th>
-                      <th style="min-width:130px;">Verebileceği Miktar</th>
+                      <th style="min-width:130px;">Cari Adı</th>
                       <th>Fiyat</th>
-                      <th style="min-width:130px;">Para Birimi</th>
-                      <th>Termin Tar.</th>
+                      <th>Para Birimi</th>
+                      <th>#</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -1042,18 +1037,100 @@
         $('#TI_ARTNO').val(veriler[1]);
       }
       $(document).ready(function () {
-        $('#price_list').on('click',function(){
+        $('#fiyat_table tfoot th').each(function () {
+          var title = $(this).text();
+          if (title == "#") {
+            $(this).html('<b>Git</b>');
+          }
+          else {
+            $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+          }
+
+        });
+        var table = $('#fiyat_table').DataTable({
+          "order": [[0, "desc"]],
+          dom: 'rtip',
+          buttons: ['copy', 'excel', 'print'],
+          language: {
+            url: '{{ asset("tr.json") }}'
+          },
+          initComplete: function () {
+            // Apply the search
+            this.api().columns().every(function () {
+              var that = this;
+
+              $('input', this.footer()).on('keyup change clear', function () {
+                if (that.search() !== this.value) {
+                  that
+                    .search(this.value)
+                    .draw();
+                }
+              });
+            });
+          }
+        });
+
+        $('#price_list').on('click', function () {
           var KOD = $('#T_STOK_KODU').val();
 
-          $.ajax({
-            'url':'price_list',
-            'type':'post',
-            'data':{KOD:KOD},
-            success:function(res){
+          // Loader göster
+          Swal.fire({
+            title: 'Yükleniyor...',
+            html: 'Fiyat listesi getiriliyor',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
 
+
+          $.ajax({
+            url: 'price_list',
+            type: 'post',
+            data: { KOD: KOD },
+            success: function (res) {
+              Swal.close();
+              $('#modal_fiyat').modal('show');
+
+              table.clear();
+
+              res.forEach(function (row) {
+                table.row.add([
+                  row.KOD ?? '',
+                  row.CARIHESAPCODE ?? '',
+                  row.AD ?? '',
+                  row.PRICE ?? '',
+                  row.PRICE_UNIT ?? '',
+                  `<button class="btn btn-success action-btn">Seç</button>`
+                ]);
+              });
+
+              table.draw();
+            },
+            error: function () {
+              // Hata durumunda
+              Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: 'Fiyat listesi yüklenirken bir hata oluştu.'
+              });
             }
           });
         });
+
+        $(document).on('click', '.action-btn', function () {
+          var row = table.row($(this).closest('tr')).data();
+
+          var val = row[1].trim() + '|||' + row[2].trim();
+          $('#CARIHESAPCODE_T').val(val).trigger('change.select2');
+
+          console.log(row[1] + '|||' + row[2])
+
+          $('#FIYAT_FILL').val(row[3]);
+          $('#FIYAT_PB_FILL').val(row[4]).trigger('change');
+          $('#modal_fiyat').modal('hide');
+        });
+
         document.getElementById('delete_order_btn').addEventListener('click', function () {
           Swal.fire({
             title: "Emin misin Eren?",

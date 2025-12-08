@@ -454,13 +454,19 @@ class stok47_controller extends Controller
 
     $query = DB::table($firma . 'stok48t as tTable')
       ->leftJoin($firma . 'stok48e as eTable', 'eTable.EVRAKNO', '=', 'tTable.EVRAKNO')
+      ->leftJoin($firma . 'cari00 as cTable', 'cTable.KOD', '=', 'eTable.CARIHESAPCODE')
       ->where('tTable.KOD', $KOD);
 
     if ($maxDate) {
       $query->where('tTable.GECERLILIK_TAR', $maxDate);
     }
 
-    return $query->get();
+    return $query->get([
+      'cTable.AD',
+      'tTable.*',
+      'eTable.*'
+    ]);
+
 
   }
 
