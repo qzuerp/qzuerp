@@ -748,6 +748,7 @@
                             }
 
                             $sql_sorgu .= "AND DURUM != 'ISKARTA'";
+                            $sql_sorgu .= "AND DURUM != 'YEDEK'";
                             $table = DB::select($sql_sorgu);
                             
                             \Carbon\Carbon::setLocale('tr');
