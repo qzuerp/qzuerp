@@ -400,6 +400,9 @@
                                             <option value="ICHATA" {{ @$kart_veri->FORM == 'ICHATA' ? 'selected' : '' }}>
                                                 İç Hata Takip Formu
                                             </option>
+                                            <option value="SAPMA" {{ @$kart_veri->FORM == 'SAPMA' ? 'selected' : '' }}>
+                                                Sapma Teklifi Değerlendirme Formu
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -436,6 +439,7 @@
                                         @include('takip_formlari.8D', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.IC', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.ICHATA', ['kart_veri' => @$kart_veri])
+                                        @include('takip_formlari.SAPMA', ['kart_veri' => @$kart_veri])
                                     </div>
                                     
                                     <div class="tab-pane" id="baglantiliDokumanlar">

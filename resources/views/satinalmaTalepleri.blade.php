@@ -1133,7 +1133,7 @@
 
         document.getElementById('delete_order_btn').addEventListener('click', function () {
           Swal.fire({
-            title: "Emin misin Eren?",
+            title: "Emin misin?",
             text: "Siparişler silinecektir, bu işlem geri alınamaz",
             icon: "warning",
             showCancelButton: true,
@@ -1146,9 +1146,9 @@
               input.type = "hidden";
               input.name = "kart_islemleri";
               input.value = "delete_order";
-              document.querySelector("form").appendChild(input);
+              document.querySelector("#verilerForm").appendChild(input);
 
-              document.querySelector("form").submit();
+              document.querySelector("#verilerForm").submit();
             }
           });
         });
