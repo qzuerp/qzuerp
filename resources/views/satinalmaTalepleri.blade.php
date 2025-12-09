@@ -426,7 +426,7 @@
                             </td>
                             <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
                             <td>
-                              <!-- <select name="MPS_KODU[]" id="MPS_KODU" class="form-control select2 required" style="width: 100%; border-radius: 5px;">
+                              <!-- <select name="MPS_KODU[]" id="MPS_KODU" class="form-control select2 " style="width: 100%; border-radius: 5px;">
                                                               <option value=" ">Seç</option>
                                                                 @php
                                                                 $kur_veri = DB::table($database.'mmps10e')->get();
@@ -652,7 +652,7 @@
 
                   <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
                   <div class="col-sm-3">
-                    <select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single" required
+                    <select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single" 
                       style=" height: 30PX">
                       @php
                         echo "<option value =' ' selected> </option>";
@@ -665,7 +665,7 @@
                     </select>
                   </div>
                   <div class="col-sm-3">
-                    <select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single" required
+                    <select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single" 
                       style="height: 30px;">
                       @php
                         echo "<option value =' ' selected> </option>";
@@ -683,7 +683,7 @@
                   <label for="minDeger" class="col-sm-2 col-form-label">Müşteri Kodu</label>
                   <div class="col-sm-3">
                     <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control select2 js-example-basic-single"
-                      required style="height: 30px;">
+                       style="height: 30px;">
                       @php
                         echo "<option value =' ' selected> </option>";
 
@@ -700,7 +700,7 @@
                   </div>
                   <div class="col-sm-3">
                     <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control select2 js-example-basic-single"
-                      required style="height: 30px;">
+                       style="height: 30px;">
                       @php
                         echo "<option value =' ' selected> </option>";
 
