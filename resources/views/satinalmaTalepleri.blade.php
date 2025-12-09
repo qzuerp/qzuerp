@@ -580,7 +580,7 @@
                         </thead>
                         <tbody>
                           @php
-                            $ti_kart_veri = DB::table($database . 'stok47ti')->where('EVRAKNO', $kart_veri->EVRAKNO)->get();
+                            $ti_kart_veri = DB::table($database . 'stok47ti')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
                           @endphp
                           @foreach ($ti_kart_veri as $veri)
                             <tr>
