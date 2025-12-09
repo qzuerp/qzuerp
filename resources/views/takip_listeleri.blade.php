@@ -417,7 +417,7 @@
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
                                         <a href="#Formlar" class="nav-link active" data-bs-toggle="tab">
-                                            <i class="fa fa-wpforms"></i> Formlar
+                                            <i class="fa-brands fa-wpforms"></i> Formlar
                                         </a>
                                     </li>
                                     <li class="nav-item">

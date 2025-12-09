@@ -19,7 +19,11 @@
     $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
     // Kalibrasyon verileri
-    $KALIBRASYONLAR = DB::table($database.'SRVKC0')->get();
+    $KALIBRASYONLAR = DB::table($database.'SRVKC0')
+    ->where('DURUM','!=','ISKARTA')
+    ->where('DURUM','!=','YEDEK')
+    ->where('DURUM','!=','GOVDE')
+    ->get();
     $kalibrasyon_data = [
         'kritik' => 0,
         'yakin' => 0, 
