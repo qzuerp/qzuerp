@@ -91,9 +91,7 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     data-bs-title="ich_part_code"
-                    onchange="stokAdiGetir3(this.value)"
-                    name="ich_part_code"
-                    id="STOK_KODU_SHOW">
+                    onchange="stokAdiGetir3(this.value)">
 
                 <option value="">Seç</option>
 
@@ -102,8 +100,14 @@
                         echo "<option value='".@$kart_veri->ich_part_code."' selected>" .
                              @$kart_veri->ich_part_code . " - " . @$kart_veri->ich_part_name . "</option>";
                     }
+                    else
+                    {
+                        DB::table($database.'stok00')->select('KOD', 'AD')->get()->each(function ($item) {
+                            echo "<option value='" . $item->KOD . "|||" . $item->AD . "'>" . $item->KOD . " - " . $item->AD . "</option>";
+                        });
+                    }
                 @endphp
-
+                <input type="hidden" name="ich_part_code" id="ich_part_code">
             </select>
         </div>
 
@@ -252,3 +256,10 @@
 
     </div>
 </div>
+<script>
+    function stokAdiGetir3(kod) {
+        var stokAdi = kod.split("|||");
+        $("#ich_part_code").val(stokAdi[0]);
+        $("#STOK_ADI_SHOW").val(stokAdi[1]);
+    }
+</script>
