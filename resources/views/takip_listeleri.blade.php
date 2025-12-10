@@ -390,7 +390,7 @@
                                 <div class="row mt-2">
                                     <div class="col">
                                         <select class="form-control select2" name="FORM" id="FORM">
-                                            <option value="" disabled selected>Lütfen bir form tipi seçin...</option>
+                                            <option value=" " disabled selected>Lütfen bir form tipi seçin...</option>
                                             <option value="8D" {{ @$kart_veri->FORM == '8D' ? 'selected' : '' }}>
                                                 Kalite Hata / İyileştirme Raporu 8D
                                             </option>
@@ -430,7 +430,7 @@
                                 <div class="tab-content p-4">
                                     <div class="active tab-pane" id="Formlar">
                                         <!-- Form Placeholder -->
-                                        <div class="form form-placeholder" id="formPlaceholder">
+                                        <div class="form form-placeholder" id=" ">
                                             <i class="fa fa-hand-pointer-o"></i>
                                             <h4>Form Seçimi Bekleniyor</h4>
                                             <p>Lütfen yukarıdan bir form tipi seçerek devam edin</p>

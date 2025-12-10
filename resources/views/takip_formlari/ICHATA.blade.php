@@ -152,13 +152,21 @@
         {{-- TEZGAH --}}
         <div class="col-md-4">
             <label class="form-label">Tezgah</label>
-            <input type="text"
-                   class="form-control ich_machine"
-                   data-bs-toggle="tooltip"
-                   data-bs-placement="bottom"
-                   data-bs-title="ich_machine"
-                   name="ich_machine"
-                   value="{{ @$kart_veri->ich_machine ?? '' }}">
+            <select class="form-control js-example-basic-single" style="width: 100%;" name="ich_machine" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="ich_machine">
+                <option value="">Tezgah Seç</option>
+                @php
+                    $evraklar=DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
+
+                    foreach ($evraklar as $key => $veri) {
+                        if ($veri->KOD == @$kart_veri->ich_machine) {
+                            echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+                        }
+                        else {
+                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                        }
+                    }
+                @endphp
+            </select>
         </div>
 
         {{-- HATA KODU --}}

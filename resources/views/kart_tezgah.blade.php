@@ -94,7 +94,7 @@ if (isset($kart_veri)) {
 			              	}
 	            			}
 	            			@endphp
-	        				</select>
+					</select>
 	            		<input type='hidden' value='{{ @$kart_veri->id }}' name='ID_TO_REDIRECT' id='ID_TO_REDIRECT'>
 			        	</div>
 
