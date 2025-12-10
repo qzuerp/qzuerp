@@ -1587,8 +1587,6 @@
             
         }
 
-
-
         $('#satirEkleModal').on('click',function(){
 
           let $btn = $(this);
@@ -1709,7 +1707,6 @@
             }
           });
         });
-
 
         let table = null;
 

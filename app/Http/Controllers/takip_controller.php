@@ -198,6 +198,7 @@ class takip_controller extends Controller
 
         $sapma_gm_onay = $request->sapma_gm_onay;
         $sapma_musteri_tem_onay = $request->sapma_musteri_tem_onay;
+        $sapma_parca_no = $request->sapma_parca_no;
 
         switch ($islem_turu) {
             case 'kart_olustur':
@@ -400,6 +401,7 @@ class takip_controller extends Controller
                     'sapma_karar_tarih' => $sapma_karar_tarih,
                     'sapma_gm_onay' => $sapma_gm_onay,
                     'sapma_musteri_tem_onay' => $sapma_musteri_tem_onay,
+                    'sapma_parca_no' => $sapma_parca_no,
                 ];
 
 
@@ -599,6 +601,7 @@ class takip_controller extends Controller
                     'sapma_karar_tarih'         => $sapma_karar_tarih,
                     'sapma_gm_onay'             => $sapma_gm_onay,
                     'sapma_musteri_tem_onay'    => $sapma_musteri_tem_onay,
+                    'sapma_parca_no' => $sapma_parca_no,
                 ];
 
                 DB::table($firma . 'cgc70')->where('ID', $EVRAKNO)->update($data);

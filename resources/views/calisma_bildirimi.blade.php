@@ -626,7 +626,14 @@
 
                   {{-- HAMMADE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="hammade">
-                      
+                      <div class="row">
+                        <div class="col-123">
+                          <button type="button" class="btn btn-default delete-row" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
+                        </div>
+                        <div class="col-12">
+
+                        </div>
+                      </div>
                     </div>
                   {{-- HAMMADE BİTİŞ --}}
                   
@@ -1314,6 +1321,106 @@
               <button type="button" type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
 
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade bd-example-modal-lg" id="hizli_islem" tabindex="-1" role="dialog" aria-labelledby="hizli_islem"  >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>Hızlı İşlem</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-6 mb-1">
+                  <label for="islemKodu">Barkod</label>
+                  <!-- <button id="start-scan">📷 Tara</button> -->
+                  <div class="input-group" style="flex-wrap: nowrap;">
+                    <input type="text" aria-describedby="basic-addon2" class="form-control" id="barcode-result" style="background-color:rgb(218, 236, 255);">
+                    <button class="input-group-text" id="basic-addon2" style="height: 32px !important;">Ara</button>
+                  </div>
+                  <!-- <div id="reader" style="width:300px;"></div> -->
+                </div>
+                <div class="col-6">
+                  <label for="islem_miktari">İşlem Miktarı</label>
+                  <input type="number" class="form-control" id="islem_miktari">
+                </div>
+                <div class="col-6 mb-1">
+                  <label for="stok_kodu">Stok Kod</label>
+                  <input type="text" class="form-control" id="stok_kodu" readonly>
+                </div>
+                <div class="col-6 mb-1">
+                  <label for="stok_adi">Stok Adı</label>
+                  <input type="text" class="form-control" id="stok_adi" readonly>
+                </div>
+
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 1</label>
+                  <input type="text" class="form-control" id="lok-1" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 2</label>
+                  <input type="text" class="form-control" id="lok-2" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 3</label>
+                  <input type="text" class="form-control" id="lok-3" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 4</label>
+                  <input type="text" class="form-control" id="lok-4" readonly>
+                </div>
+                
+                <input type="hidden" id="lotH">
+                <input type="hidden" id="serinoH">
+                <input type="hidden" id="depoH">
+                <input type="hidden" id="text1H">
+                <input type="hidden" id="text1H">
+                <input type="hidden" id="text2H">
+                <input type="hidden" id="text3H">
+                <input type="hidden" id="text4H">
+                <input type="hidden" id="num-1H">
+                <input type="hidden" id="num-2H">
+                <input type="hidden" id="num-3H">
+                <input type="hidden" id="num-4H">
+              </div>
+              <div style="overflow:auto;">
+                <table class="table table-hover text-center" id="hizli_islem_tablo">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th style="min-width: 75px">Kod</th>
+                      <th style="min-width: 75px">Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="satirEkleModal" style="margin-top: 10px;"><span id="satirEkleText"><i class="fa fa-plus"></i> Satır Ekle</span></button>
+              <button type="button" class="btn btn-outline-warning border" data-bs-dismiss="modal" style="margin-top: 10px;">Kapat</button>
+            </div>
           </div>
         </div>
       </div>
@@ -2495,5 +2602,300 @@
         newWindow.document.close();
       }
     </script>
+
+    <!-- Hızlı işlem  -->
+    <script>
+      $('#hizli_islem_tablo tbody').on('click', 'tr', function () {
+        $("#hizli_islem_tablo tbody tr").removeClass("selected-row");
+
+        $(this).addClass("selected-row");
+        var $row = $(this);
+        var $cells = $row.find('td');
+
+        var KOD = $cells.eq(0).text().trim();
+        var AD = $cells.eq(1).text().trim();
+        var MIKTAR = $cells.eq(2).text().trim();
+
+        var LOTNO = $cells.eq(4).text().trim();
+        var SERINO = $cells.eq(5).text().trim();
+        var DEPO = $cells.eq(6).text().trim();
+        var V1 = $cells.eq(7).text().trim();
+        var V2 = $cells.eq(8).text().trim();
+        var V3 = $cells.eq(9).text().trim();
+        var V4 = $cells.eq(10).text().trim();
+
+        var O1 = $cells.eq(11).text().trim();
+        var O2 = $cells.eq(12).text().trim();
+        var O3 = $cells.eq(13).text().trim();
+        var O4 = $cells.eq(14).text().trim();
+
+        var L1 = $cells.eq(15).text().trim();
+        var L2 = $cells.eq(16).text().trim();
+        var L3 = $cells.eq(17).text().trim();
+        var L4 = $cells.eq(18).text().trim();
+
+
+        $('#stok_kodu').val(KOD);
+        $('#stok_adi').val(AD);
+        // $('#islem_miktari').val(MIKTAR);
+
+        $('#serinoH').val(SERINO);
+        $('#lotH').val(LOTNO);
+        $('#depoH').val(DEPO);
+
+        $('#num1H').val(V1);
+        $('#num2H').val(V2);
+        $('#num3H').val(V3);
+        $('#num4H').val(V4);
+        
+        $('#text1H').val(O1);
+        $('#text2H').val(O2);
+        $('#text3H').val(O3);
+        $('#text4H').val(O4);
+
+        $('#lok-1').val(L1);
+        $('#lok-2').val(L2);
+        $('#lok-3').val(L3);
+        $('#lok-4').val(L4);
+      });
+      
+
+      function temizleVeKapat(modalId) {
+            const modal = $('#' + modalId);
+
+            modal.find('input[type="text"], input[type="number"], input[type="email"], input[type="date"], textarea').val('');
+            modal.find('select').val('').trigger('change');
+            modal.find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
+
+            modal.modal('hide');
+
+            $('hizli_islem_tablo tbody').empty();
+            
+        }
+
+        $('#satirEkleModal').on('click',function(){
+
+          let $btn = $(this);
+          let $btnText = $('#satirEkleText');
+          
+          let requiredFields = [
+            '#stok_kodu',
+            '#stok_adi',
+            '#islem_miktari',
+            '#barcode-result'
+          ];
+
+          let bosVarMi = false;
+
+          requiredFields.forEach(function (selector) {
+            let input = $(selector);
+            if (!input.val() || input.val().trim() === '') {
+              input.addClass('is-invalid');
+              input.css('box-shadow', '0 0 0px 1px #ff5770');
+              bosVarMi = true;
+            } else {
+              input.removeClass('is-invalid');
+              input.css('box-shadow', '');
+            }
+          });
+
+          if(bosVarMi)
+          {
+            mesaj('Lütfen zorunlu alanları doldurun','error');
+            return;
+          }
+          $btn.prop('disabled', true);
+          $btnText.html("<span class='spinner-border spinner-border-sm'></span>");
+          var TRNUM_FILL = getTRNUM();
+
+          var vrb1 = $('#stok_kodu').val();
+          var vrb2 = $('#stok_adi').val();
+
+          var vrb3 = $('#serinoH').val();
+          var vrb4 = $('#lotH').val();
+          var vrb5 = $('#depoH').val();
+
+          var vrb6 = $('#num1H').val();
+          var vrb7 = $('#num2H').val();
+          var vrb8 = $('#num3H').val();
+          var vrb9 = $('#num4H').val();
+
+          var vrb11 = $('#text1H').val();
+          var vrb12 = $('#text2H').val();
+          var vrb13 = $('#text3H').val();
+          var vrb14 = $('#text4H').val();
+
+          var vrb15 = $('#lok-1').val();
+          var vrb16 = $('#lok-2').val();
+          var vrb17 = $('#lok-3').val();
+          var vrb18 = $('#lok-4').val();
+
+          var vrb19 = $('#LOCATION_NEW1_FILL2').val();
+          var vrb20 = $('#LOCATION_NEW2_FILL2').val();
+          var vrb21 = $('#LOCATION_NEW3_FILL2').val();
+          var vrb22 = $('#LOCATION_NEW4_FILL2').val();
+
+          var MIKTAR = $('#islem_miktari').val(); 
+
+          $.ajax({
+            url:'/sevkirsaliyesi_stokAdiGetir',
+            type:'post',
+            data: {
+              kod: vrb1,
+              _token: '{{ csrf_token() }}'
+            },
+            success:function(res){
+              htmlCode = '';
+              htmlCode += " <tr> ";
+              htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+vrb1+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+vrb1+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+vrb2+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+vrb2+"'></td> ";
+              htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+vrb4+"'></td> ";
+              htmlCode += "<td class='d-flex'>";
+              htmlCode += "<input type='text' id='serino-" + TRNUM_FILL + "' class='form-control' name='SERINO[]' value='" + vrb3 + "' readonly>";
+              htmlCode += "<span class='ms-1'>";
+              htmlCode += "<button class='btn btn-primary' onclick='veriCek(\"" + vrb1 + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>";
+              htmlCode += "<i class='fa-solid fa-magnifying-glass'></i>";
+              htmlCode += "</button>";
+              htmlCode += "</span>";
+              htmlCode += "</td>";
+              htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR_SHOW_T' value='"+MIKTAR+"' disabled><input type='hidden' class='form-control' name='SF_MIKTAR[]' value='"+MIKTAR+"'></td> ";
+              htmlCode += "<td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "'></td>";
+              htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+vrb5+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+vrb5+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+vrb15+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+vrb15+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2_SHOW_T' value='"+vrb16+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION2[]' value='"+vrb16+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3_SHOW_T' value='"+vrb17+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION3[]' value='"+vrb17+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4_SHOW_T' value='"+vrb18+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION4[]' value='"+vrb18+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW1_SHOW_T' value='"+vrb19+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW1[]' value='"+vrb19+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW2_SHOW_T' value='"+vrb20+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW2[]' value='"+vrb20+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW3_SHOW_T' value='"+vrb21+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW3[]' value='"+vrb21+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW4_SHOW_T' value='"+vrb22+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW4[]' value='"+vrb22+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value=''></td> ";
+              htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+vrb11+"'></td> ";
+              htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+vrb12+"'></td> ";
+              htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+vrb13+"'></td> ";
+              htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+vrb14+"'></td> ";
+              htmlCode += " <td><input type='number' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+vrb6+"'></td> ";
+              htmlCode += " <td><input type='number' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+vrb7+"'></td> ";
+              htmlCode += " <td><input type='number' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+vrb8+"'></td> ";
+              htmlCode += " <td><input type='number' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+vrb9+"'></td> ";
+              // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+              htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+              htmlCode += " </tr> ";
+
+              
+              $("#veriTable > tbody").append(htmlCode);
+              updateLastTRNUM(TRNUM_FILL);
+              temizleVeKapat('hizli_islem');
+              $btn.prop('disabled', false);
+              $btnText.html("<i class='fa fa-plus'></i> Satır Ekle");
+            }
+          });
+        });
+
+        let table = null;
+
+        $(document).ready(function () {
+          table = $('#hizli_islem_tablo').DataTable({
+            lengthChange: false,
+            searching: true,
+            paging: true,
+            info: true,
+            ordering: true,
+            processing: true,
+            language: {
+              url: '{{ asset("tr.json") }}'
+            }
+          });
+        });
+
+        function barcodeDegisti() {
+          var kod = $('#barcode-result').val();
+          var kod_parca = kod.split('-');
+          
+          $.ajax({
+            url: '/hizli_islem_verileri',
+            type: 'post',
+            data: { veriler: kod_parca },
+            success: function (res) {
+              table.clear().draw();
+
+              res.forEach((row) => {
+                table.row.add([
+                  row.KOD || '',
+                  row.STOK_ADI || '',
+                  row.MIKTAR || '',
+                  row.SF_SF_UNIT || '',
+                  row.LOTNUMBER || '',
+                  row.SERINO || '',
+                  row.AMBCODE || '',
+                  row.TEXT1 || '',
+                  row.TEXT2 || '',
+                  row.TEXT3 || '',
+                  row.TEXT4 || '',
+                  row.NUM1 || '',
+                  row.NUM2 || '',
+                  row.NUM3 || '',
+                  row.NUM4 || '',
+                  row.LOCATION1 || '',
+                  row.LOCATION2 || '',
+                  row.LOCATION3 || '',
+                  row.LOCATION4 || ''
+                ]).draw(false);
+              });
+            }
+          });
+
+          if ($('#stok_kodu').val()?.trim() !== '') {
+            zincirlemeDoldur(kod_parca);
+          }
+        }
+
+        function zincirlemeDoldur(parcalar) {
+          if (parcalar[3]?.trim()) {
+            $('#LOCATION_NEW1_FILL2').val(parcalar[3]).trigger('change');
+            
+            setTimeout(() => {
+              if (parcalar[4]?.trim()) {
+                $('#LOCATION_NEW2_FILL2').val(parcalar[4]).trigger('change');
+
+                setTimeout(() => {
+                  if (parcalar[5]?.trim()) {
+                    $('#LOCATION_NEW3_FILL2').val(parcalar[5]).trigger('change');
+
+                    setTimeout(() => {
+                      if (parcalar[6]?.trim()) {
+                        $('#LOCATION_NEW4_FILL2').val(parcalar[6]).trigger('change');
+                      }
+                    }, 1000);
+                  }
+                }, 1000);
+              }
+            }, 1000);
+          }
+        }
+
+        $('#basic-addon2').on('click',function(){
+          barcodeDegisti();
+        });
+
+        $('#barcode-result').on('keydown', function (e) {
+          if (e.key === 'Enter') {
+            barcodeDegisti();
+          }
+        });
+
+        $('#barcode-result').on('focus', function () {
+          $(this).select();
+        });
+
+    </script>
   </div>
 @endsection
+<style>
+  .selected-row td:first-child {
+    border-left: 4px solid #3498db !important;
+    background-color:transparent !important;
+  }
+</style>
