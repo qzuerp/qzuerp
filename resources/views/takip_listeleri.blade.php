@@ -454,6 +454,65 @@
         </section>
     </div>
 
+    <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+                            <thead>
+                                <tr class="bg-primary">
+                                    <th>Evrak No</th>
+                                    <th>Form Türü</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr class="bg-primary">
+                                    <th>Evrak No</th>
+                                    <th>Form Türü</th>
+                                    <th>#</th>
+                                </tr>
+                            </tfoot>
+
+                            <tbody>
+
+                                @php
+                                $FORM_TURLERI = [
+                                    '8D' => 'Kalite Hata / İyileştirme Raporu 8D',
+                                    'IC' => 'İyileştirme Çalışmaları',
+                                    'ICHATA' => 'İç Hata Takip Formu',
+                                    'SAPMA' => 'Sapma Teklifi Değerlendirme Formu',
+                                ];
+                                $evraklar = DB::table($ekranTableE)->orderBy('ID', 'ASC')->get();
+
+                                foreach ($evraklar as $key => $suzVeri) {
+                                    echo "<tr>";
+                                        echo "<td>" . $suzVeri->EVRAKNO . "</td>";
+                                        echo "<td>" . ($FORM_TURLERI[$suzVeri->FORM] ?? 'Seçilmedi') . "</td>";
+                                        echo "<td>" . "<a class='btn btn-info' href='takip_listeleri?ID=" . $suzVeri->ID . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+                                    echo "</tr>";
+
+                                }
+
+                                @endphp
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function () {
             // Form değişikliği yönetimi
