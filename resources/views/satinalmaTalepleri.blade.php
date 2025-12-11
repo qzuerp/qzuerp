@@ -368,22 +368,22 @@
                               class="TEXT4 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM1" name="NUM1_FILL"
+                            <input maxlength="255" style="color: red" type="text" data-name="NUM1" name="NUM1_FILL"
                               id="NUM1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1"
                               class="NUM1 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM2" name="NUM2_FILL"
+                            <input maxlength="255" style="color: red" type="text" data-name="NUM2" name="NUM2_FILL"
                               id="NUM2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2"
                               class="NUM2 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM3" name="NUM3_FILL"
+                            <input maxlength="255" style="color: red" type="text" data-name="NUM3" name="NUM3_FILL"
                               id="NUM3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3"
                               class="NUM3 form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="number" data-name="NUM4" name="NUM4_FILL"
+                            <input maxlength="255" style="color: red" type="text" data-name="NUM4" name="NUM4_FILL"
                               id="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4"
                               class="NUM4 form-control">
                           </td>

@@ -2941,7 +2941,7 @@
 
         htmlCode += " <tr> ";
         htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
-        htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+        htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
         htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
@@ -2953,7 +2953,7 @@
         htmlCode += "</button>";
         htmlCode += "</span>";
         htmlCode += "</td>";
-        htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' id='miktar-"+TRNUM_FILL+"' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+        htmlCode += " <td><input type='number' class='form-control' name='KUL_MIK[]' id='miktar-"+TRNUM_FILL+"' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
         htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
         htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
@@ -3176,7 +3176,7 @@
               htmlCode = '';
               htmlCode += " <tr> ";
               htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
-              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+vrb1+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+vrb1+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+vrb2+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+vrb2+"'></td> ";
               htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+vrb4+"'></td> ";
@@ -3188,7 +3188,7 @@
               htmlCode += "</button>";
               htmlCode += "</span>";
               htmlCode += "</td>";
-              htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+MIKTAR+"'></td> ";
+              htmlCode += " <td><input type='number' class='form-control' name='KUL_MIK[]' value='"+MIKTAR+"'></td> ";
               htmlCode += "<td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "'></td>";
               htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+vrb5+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+vrb5+"'></td> ";
               htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+vrb15+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+vrb15+"'></td> ";

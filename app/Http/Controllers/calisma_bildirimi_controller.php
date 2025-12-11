@@ -161,7 +161,7 @@ class calisma_bildirimi_controller extends Controller {
 
   public function islemler(Request $request) {
 
-    // dd(request()->all());
+    dd(request()->all());
     
     $islem_turu = $request->kart_islemleri;
     $firma = $request->firma.'.dbo.';
@@ -176,9 +176,9 @@ class calisma_bildirimi_controller extends Controller {
     $ISLEM_TURU = $request->ISLEM_TURU;
 
     $EVRAKNO = $request->input('dosyaEvrakNo');
-    $AP10 = $request->input('AP10');    
+    $AP10 = $request->input('AP10');
     $SAAT = $request->input('SAAT');
-    $SERINO = $request->input('SERINO');
+    // $SERINO = $request->input('SERINO');
     $SF_STOK_MIKTAR = $request->input('SF_STOK_MIKTAR');
     $SF_VRI_RECETE = $request->input('SF_VRI_RECERE');
     $RECNOTE = $request->input('RECNOTE');
@@ -219,6 +219,36 @@ class calisma_bildirimi_controller extends Controller {
     $KALIPKODU3 = $request->KALIPKODU3;
     $TRNUM = $request->TRNUM;
 
+
+    $KOD = $request->KOD;
+    $STOK_ADI = $request->STOK_ADI;
+    $LOTNUMBER = $request->LOTNUMBER;
+    $SERINO = $request->SERINO;
+    $KUL_MIK = $request->KUL_MIK;
+    $SF_SF_UNIT = $request->SF_SF_UNIT;
+    $TEXT1 = $request->TEXT1;
+    $TEXT2 = $request->TEXT2;
+    $TEXT3 = $request->TEXT3;
+    $TEXT4 = $request->TEXT4;
+    $NUM1 = $request->NUM1;
+    $NUM2 = $request->NUM2;
+    $NUM3 = $request->NUM3;
+    $NUM4 = $request->NUM4;
+    $NOT1 = $request->NOT1;
+    $LOCATION1 = $request->LOCATION1;
+    $LOCATION2 = $request->LOCATION2;
+    $LOCATION3 = $request->LOCATION3;
+    $LOCATION4 = $request->LOCATION4;
+    $AMBCODE = $request->AMBCODE;
+    $TRNUM2 = $request->TRNUM2;
+
+    if ($TRNUM2 == null) {
+      $satir_say3 = 0;
+    }
+
+    else {
+      $satir_say3 = count($TRNUM2);
+    }
 
     if ($RECTARIH1 == null) {
       $satir_say = 0;
@@ -396,6 +426,36 @@ class calisma_bildirimi_controller extends Controller {
           ]);
         }
 
+        for($i = 0;$i < $satir_say3;$i++)
+        {
+          
+          DB::table($firma . 'sfdc20t1')->insert([
+            'EVRAKNO' => $EVRAKNO,
+            'TRNUM' => $TRNUM2[$i],
+            'KOD' => $KOD[$i],
+            'STOK_ADI' => $STOK_ADI[$i],
+            'LOTNUMBER' => $LOTNUMBER[$i],
+            'SERINO' => $SERINO[$i],
+            'SF_MIKTAR' => $SF_MIKTAR[$i],
+            'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+            'TEXT1' => $TEXT1[$i],
+            'TEXT2' => $TEXT2[$i],
+            'TEXT3' => $TEXT3[$i],
+            'TEXT4' => $TEXT4[$i],
+            'NUM1' => $NUM1[$i],
+            'NUM2' => $NUM2[$i],
+            'NUM3' => $NUM3[$i],
+            'NUM4' => $NUM4[$i],
+            'NOT1' => $NOT1[$i],
+            'AMBCODE' => $AMBCODE_SEC,
+            'LOCATION1' => $LOCATION1[$i],
+            'LOCATION2' => $LOCATION2[$i],
+            'LOCATION3' => $LOCATION3[$i],
+            'LOCATION4' => $LOCATION4[$i],
+            'created_at' => date('Y-m-d H:i:s'),
+          ]);
+        }
+
         if($JOBNO != NULL)
         {
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');
@@ -506,61 +566,81 @@ class calisma_bildirimi_controller extends Controller {
           }
         }
 
+        $currentTRNUMS2 = array();
+        $liveTRNUMS2 = array();
+        $currentTRNUMSObj2 = DB::table($firma.'sfdc20t1')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
 
-        // if (!isset($TRNUM)) {
-        //   $TRNUM = array();
-        // }
-    
-        // $currentTRNUMS = array();
-        // $liveTRNUMS = array();
-        // $currentTRNUMSObj = DB::table($firma.'sfdc31e')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
-    
-        // foreach ($currentTRNUMSObj as $key => $veri) {
-        //   array_push($currentTRNUMS,$veri->TRNUM);
-        // }
-    
-        // foreach ($TRNUM as $key => $veri) {
-        //   array_push($liveTRNUMS,$veri);
-        // }
-    
-        // $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
-        // $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
-        // $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+        foreach ($currentTRNUMSObj2 as $key => $veri) {
+          array_push($currentTRNUMS2,$veri->id);
+        }
 
-        // for ($i = 0; $i < $satir_say2; $i++) {
+        foreach ($TRNUM as $key => $veri) {
+          array_push($liveTRNUMS2,$veri);
+        }
 
-        //   $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-    
-        //   if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
-            
-        //     DB::table($firma.'sfdc31e')->insert([
-        //       'EVRAKNO' => $EVRAKNO,
-        //       'TRNUM' => $TRNUM[$i],
-        //       'GK_1' => $GK_1[$i],
-        //       'KALIPKODU2' => $KALIPKODU2[$i],
-        //       'KALIPKODU3' => $KALIPKODU3[$i],
-        //     ]);
-    
-        //   }
-    
-        //   if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
-    
-        //     DB::table($firma.'sfdc31e')->where("TRNUM",$TRNUM[$i])->where("EVRAKNO",$request->input('EVRAKNO'))->update([
-        //       'TRNUM' => $TRNUM[$i],
-        //       'GK_1' => $GK_1[$i],
-        //       'KALIPKODU2' => $KALIPKODU2[$i],
-        //       'KALIPKODU3' => $KALIPKODU3[$i],
-        //     ]);
-        //   }
-    
-        // }
-    
-    
-        // foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
-    
-        //     DB::table($firma.'sfdc31e')->where('EVRAKNO',$request->input('EVRAKNO')   )->where('TRNUM',$deleteTRNUM)->delete();
-    
-        // }
+        $newTRNUMS = array_diff($liveTRNUMS2, $currentTRNUMS2);
+        $updateTRNUMS = array_intersect($currentTRNUMS2, $liveTRNUMS2);
+
+        for ($i=0; $i < $satir_say3; $i++) { 
+          if(in_array($TRNUM2[$i], $updateTRNUMS2))
+          {
+            DB::table($firma.'sfdc20t1')
+            ->where('TRNUM',$TRNUM[$i])
+            ->update([
+              'EVRAKNO' => $EVRAKNO,
+              'TRNUM' => $TRNUM2[$i],
+              'KOD' => $KOD[$i],
+              'STOK_ADI' => $STOK_ADI[$i],
+              'LOTNUMBER' => $LOTNUMBER[$i],
+              'SERINO' => $SERINO[$i],
+              'SF_MIKTAR' => $SF_MIKTAR[$i],
+              'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+              'TEXT1' => $TEXT1[$i],
+              'TEXT2' => $TEXT2[$i],
+              'TEXT3' => $TEXT3[$i],
+              'TEXT4' => $TEXT4[$i],
+              'NUM1' => $NUM1[$i],
+              'NUM2' => $NUM2[$i],
+              'NUM3' => $NUM3[$i],
+              'NUM4' => $NUM4[$i],
+              'NOT1' => $NOT1[$i],
+              'AMBCODE' => $AMBCODE_SEC,
+              'LOCATION1' => $LOCATION1[$i],
+              'LOCATION2' => $LOCATION2[$i],
+              'LOCATION3' => $LOCATION3[$i],
+              'LOCATION4' => $LOCATION4[$i],
+              'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+          }
+          if (in_array($TRNUM2[$i], $newTRNUMS2))
+          {
+            DB::table($firma.'sfdc20t1')->insert([
+              'EVRAKNO' => $EVRAKNO,
+              'TRNUM' => $TRNUM2[$i],
+              'KOD' => $KOD[$i],
+              'STOK_ADI' => $STOK_ADI[$i],
+              'LOTNUMBER' => $LOTNUMBER[$i],
+              'SERINO' => $SERINO[$i],
+              'SF_MIKTAR' => $SF_MIKTAR[$i],
+              'SF_SF_UNIT' => $SF_SF_UNIT[$i],
+              'TEXT1' => $TEXT1[$i],
+              'TEXT2' => $TEXT2[$i],
+              'TEXT3' => $TEXT3[$i],
+              'TEXT4' => $TEXT4[$i],
+              'NUM1' => $NUM1[$i],
+              'NUM2' => $NUM2[$i],
+              'NUM3' => $NUM3[$i],
+              'NUM4' => $NUM4[$i],
+              'NOT1' => $NOT1[$i],
+              'AMBCODE' => $AMBCODE_SEC,
+              'LOCATION1' => $LOCATION1[$i],
+              'LOCATION2' => $LOCATION2[$i],
+              'LOCATION3' => $LOCATION3[$i],
+              'LOCATION4' => $LOCATION4[$i],
+              'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+          }
+        }
         
         if($JOBNO != NULL)
         {
