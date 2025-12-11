@@ -1215,31 +1215,6 @@
           $('#AMBCODE_FILL').val(v).change();
         }
 
-        function getLocation1() {
-
-          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
-
-                 $.ajax({
-                     url: '/stok26_createLocationSelect',
-                     data: {'islem': 'LOCATION1', 'AMBCODE': AMBCODE_FILL, '_token': $('#token').val()},
-                     type: 'POST',
-
-                     success: function (response) {
-
-                       $('#LOCATION1_FILL').find('option').remove().end();
-                       $('#LOCATION1_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
-
-                       //$('#LOCATION1_FILL').find('option').empty();
-                       $('#LOCATION1_FILL').append(response);
-
-                     },
-                     error: function (response) {
-                       console.log(response);
-
-                     }
-                 });
-
-        }
         function veriCek(kod,id) {
           Swal.fire({
               text: 'Lütfen bekleyin',
@@ -1289,6 +1264,33 @@
                 Swal.close();
             }
           });
+        }
+
+
+        function getLocation1() {
+
+          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
+
+                 $.ajax({
+                     url: '/stok26_createLocationSelect',
+                     data: {'islem': 'LOCATION1', 'AMBCODE': AMBCODE_FILL, '_token': $('#token').val()},
+                     type: 'POST',
+
+                     success: function (response) {
+
+                       $('#LOCATION1_FILL').find('option').remove().end();
+                       $('#LOCATION1_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
+
+                       //$('#LOCATION1_FILL').find('option').empty();
+                       $('#LOCATION1_FILL').append(response);
+
+                     },
+                     error: function (response) {
+                       console.log(response);
+
+                     }
+                 });
+
         }
 
         function getLocation2() {

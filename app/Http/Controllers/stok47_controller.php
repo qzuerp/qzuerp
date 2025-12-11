@@ -526,7 +526,7 @@ class stok47_controller extends Controller
       ->where('tTable.KOD', $KOD);
 
     if ($maxDate) {
-      $query->where('tTable.GECERLILIK_TAR', $maxDate);
+      $query->where('tTable.GECERLILIK_TAR','<=',$maxDate);
     }
 
     return $query->get([
