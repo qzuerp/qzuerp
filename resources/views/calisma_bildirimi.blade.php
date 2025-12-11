@@ -14,7 +14,7 @@
   $ekranLink = "calisma_bildirimi";
   $ekranTableE = $database."sfdc31e";
   $ekranTableT = $database."sfdc31t";
-  $ekranKayitSatirKontrol = "false";
+  $ekranKayitSatirKontrol = "true";
 
   $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
@@ -793,7 +793,10 @@
                             </thead>
 
                             <tbody>
-                              {{-- @foreach ($t_kart_veri as $key => $veri)
+                              @php
+                                  $t_kart_veri = DB::table($database.'sfdc20t1')->orderBy('id', 'ASC')->get();
+                              @endphp
+                              @foreach ($t_kart_veri as $key => $veri)
                                 <tr>
                                   <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                                   <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
@@ -809,8 +812,8 @@
                                       </button>
                                     </span>
                                   </td>
-                                  <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' readonly name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
-                                  <td><input type="text" class="form-control STOK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_BRİM" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->STOK_BIRIM }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->STOK_BIRIM }}"></td>
+                                  <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' readonly name="KUL_MIK[]" value="{{ $veri->SF_MIKTAR }}"></td>
+                                  <td><input type="text" class="form-control STOK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
                                   <td><input type="text" class="form-control AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
                                   <td><input type="text LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="form-control" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
@@ -825,9 +828,9 @@
                                   <td><input type="number" class="form-control NUM2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
                                   <td><input type="number" class="form-control NUM3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
                                   <td><input type="number" class="form-control NUM4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
-                                  <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
+                                  <td><button type="button" class="btn btn-default delete-row"><i class="fa fa-minus" style="color: red"></i></button></td>
                                 </tr>
-                               @endforeach --}}
+                               @endforeach
                             </tbody>
                           </table>
                         </div>
@@ -3426,6 +3429,10 @@
                 });
 
           }
+
+          $('.delete-row').on('click', function () {
+            $(this).closest('tr').remove();
+          });
     </script>
   </div>
 @endsection

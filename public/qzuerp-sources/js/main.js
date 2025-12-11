@@ -250,7 +250,7 @@ function alanKontrolu(className) {
     $('.'+className).each(function () {
       var hasNonEmptyValue = false;
 
-      $(this).find('select, input').each(function () {
+      $(this).find('input').each(function () {
         if (degeriVarMi(this)) {
           hasNonEmptyValue = true;
           return false;
@@ -334,7 +334,6 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
   try {
     if ((islemTipi == "evrakKaydet" || islemTipi == "evrakDuzenle") && kontrolVar) {
       
-      // Fonksiyon adı düzeltildi (muhtemelen alanKontrolu olmalı)
       const eklenmemisSatirVarMi = await alanKontrolu('satirEkle');
 
       if (eklenmemisSatirVarMi) {

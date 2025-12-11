@@ -43,10 +43,10 @@
     <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}"></script>
 
     <!-- jQuery input mask eklentisi -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" async></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" async></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" async></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" async></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" defer></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" defer></script>
 
     <!-- Bootstrap -->
     <script src="{{ URL::asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
@@ -70,10 +70,9 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.print.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/pdfmake.min.js') }}"></script> -->
-
-
+    
     <!-- Yardımcı Kütüphaneler -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" async></script>
+    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" defer></script>
 
     <!-- iziTo  ast -->
     <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>

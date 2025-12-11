@@ -123,7 +123,6 @@
 
 
 <script>
-
   function updateClock() {
     const now = new Date();
     const time = now.toLocaleTimeString('tr-TR', {

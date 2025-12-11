@@ -161,7 +161,7 @@ class calisma_bildirimi_controller extends Controller {
 
   public function islemler(Request $request) {
 
-    dd(request()->all());
+    // dd(request()->all());
     
     $islem_turu = $request->kart_islemleri;
     $firma = $request->firma.'.dbo.';
@@ -253,10 +253,10 @@ class calisma_bildirimi_controller extends Controller {
     if ($RECTARIH1 == null) {
       $satir_say = 0;
     }
-
     else {
       $satir_say = count($RECTARIH1);
     }
+    
     if ($GK_1 == null) {
       $satir_say2 = 0;
     }
@@ -566,20 +566,25 @@ class calisma_bildirimi_controller extends Controller {
           }
         }
 
+
+        if (!isset($TRNUM2)) {
+          $TRNUM2 = array();
+        }
         $currentTRNUMS2 = array();
         $liveTRNUMS2 = array();
         $currentTRNUMSObj2 = DB::table($firma.'sfdc20t1')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
 
         foreach ($currentTRNUMSObj2 as $key => $veri) {
-          array_push($currentTRNUMS2,$veri->id);
+          array_push($currentTRNUMS2,$veri->TRNUM);
         }
 
-        foreach ($TRNUM as $key => $veri) {
+        foreach ($TRNUM2 as $key => $veri) {
           array_push($liveTRNUMS2,$veri);
         }
 
-        $newTRNUMS = array_diff($liveTRNUMS2, $currentTRNUMS2);
-        $updateTRNUMS = array_intersect($currentTRNUMS2, $liveTRNUMS2);
+        $deleteTRNUMS2 = array_diff($currentTRNUMS2, $liveTRNUMS2);
+        $newTRNUMS2 = array_diff($liveTRNUMS2, $currentTRNUMS2);
+        $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
 
         for ($i=0; $i < $satir_say3; $i++) { 
           if(in_array($TRNUM2[$i], $updateTRNUMS2))
@@ -604,7 +609,7 @@ class calisma_bildirimi_controller extends Controller {
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
               'NOT1' => $NOT1[$i],
-              'AMBCODE' => $AMBCODE_SEC,
+              'AMBCODE' => $AMBCODE[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
               'LOCATION3' => $LOCATION3[$i],
@@ -632,7 +637,7 @@ class calisma_bildirimi_controller extends Controller {
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
               'NOT1' => $NOT1[$i],
-              'AMBCODE' => $AMBCODE_SEC,
+              'AMBCODE' => $AMBCODE[$i],
               'LOCATION1' => $LOCATION1[$i],
               'LOCATION2' => $LOCATION2[$i],
               'LOCATION3' => $LOCATION3[$i],
@@ -642,6 +647,12 @@ class calisma_bildirimi_controller extends Controller {
           }
         }
         
+        foreach ($deleteTRNUMS2 as $key => $deleteTRNUM) { //Silinecek satirlar
+
+          DB::table($firma . 'sfdc20t1')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
+
+        }
+
         if($JOBNO != NULL)
         {
           $MIKTAR = DB::table($firma.'sfdc31e')->where('JOBNO',$JOBNO)->SUM('SF_MIKTAR');

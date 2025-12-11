@@ -68,13 +68,13 @@ class stok00_controller extends Controller
               $query->where('KOD', 'like', "%$q%")
                     ->orWhere('AD', 'like', "%$q%");
           })
-          ->select('KOD', 'AD', 'IUNIT')
+          ->select('KOD', 'AD', 'IUNIT','NAME2','B_AGIRLIK')
           ->limit(30)
           ->get();
 
       $formatted = $results->map(function ($veri) {
           return [
-              'id' => $veri->KOD . '|||' . $veri->AD . '|||' . $veri->IUNIT,
+              'id' => $veri->KOD . '|||' . $veri->AD . '|||' . $veri->IUNIT . '|||' . $veri->NAME2 . '|||' . $veri->B_AGIRLIK,
               'text' => $veri->KOD . ' - ' . $veri->AD
           ];
       });

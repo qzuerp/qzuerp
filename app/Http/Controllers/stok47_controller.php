@@ -78,6 +78,8 @@ class stok47_controller extends Controller
     $SATIN_ALINACAK_MIK = $request->SATIN_ALINACAK_MIK;
     $VEREBILECEGI_MIK = $request->VEREBILECEGI_MIK;
     $TI_TERMIN_TAR = $request->TI_TERMIN_TAR;
+    $NAME2 = $request->NAME2;
+    $AGIRLIK = $request->AGIRLIK;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -185,7 +187,9 @@ class stok47_controller extends Controller
             'created_at' => date('Y-m-d H:i:s'),
             // 'FIYAT' => $FIYAT[$i],
             // 'FIYAT_PB' => $FIYAT_PB[$i], 
-            'NETKAPANANMIK' => 0
+            'NETKAPANANMIK' => 0,
+            'NAME2' => $NAME2[$i],
+            'AGIRLIK' => $AGIRLIK[$i]
           ]);
 
         }
@@ -285,7 +289,9 @@ class stok47_controller extends Controller
               // 'FIYAT' => $FIYAT[$i],
               // 'FIYAT_PB' => $FIYAT_PB[$i],
               'NETKAPANANMIK' => 0,
-              'ARTNO' => $EVRAKNO . $TRNUM[$i]
+              'ARTNO' => $EVRAKNO . $TRNUM[$i],
+              'NAME2' => $NAME2[$i],
+              'AGIRLIK' => $AGIRLIK[$i]
             ]);
 
           }
@@ -315,6 +321,8 @@ class stok47_controller extends Controller
               'updated_at' => date('Y-m-d H:i:s'),
               // 'FIYAT' => $FIYAT[$i],
               // 'FIYAT_PB' => $FIYAT_PB[$i]
+              'NAME2' => $NAME2[$i],
+              'AGIRLIK' => $AGIRLIK[$i] 
             ]);
 
           }
