@@ -614,4 +614,20 @@ class takip_controller extends Controller
         }
 
     }
+
+    function gorsel(Request $request)
+    {
+        if(Auth::check()) {
+          $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        $KOD = $request->input('KOD');
+        $img = DB::table($firma.'dosyalar00')
+            ->where('EVRAKNO',$KOD)
+            ->where('EVRAKTYPE','STOK00')
+            ->where('DOSYATURU','GORSEL')
+            ->first();
+
+        return asset('dosyalar/'.$img->DOSYA);
+    }
 }
