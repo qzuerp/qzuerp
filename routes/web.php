@@ -104,7 +104,7 @@ Auth::routes(['password.request' => false]);
 
   Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
   
-  Route::get('/stok_gecmisi', function () { return view('stok_gecmisi')); 
+  Route::get('/stok_gecmisi', function () { return view('stok_gecmisi'); });
 
 
   // POST'LAR
