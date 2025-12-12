@@ -374,7 +374,7 @@
 											<ul class="nav nav-tabs">
 												{{-- <li class="nav-item" ><a href="#tab_1" id="tab_1" class="nav-link" data-bs-toggle="tab">Ürünler</a></li> --}}
 												<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Ürünler</a></li>
-												<li class="">footer<a href="#tab_2" class="nav-link" data-bs-toggle="tab">Diğer Bilgiler</a></li>
+												<li class=""><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Diğer Bilgiler</a></li>
 												<li class=""><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Mps tezgah ve operasyonlar</a></li>
 												<li class=""><a href="#maliyet" class="nav-link" data-bs-toggle="tab">Maliyet</a></li>
 												<li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
@@ -1056,7 +1056,6 @@
 																<thead>
 																	<tr>
 																		<th>#</th>
-																		<th style="min-width:100px !important;">A/K</th>
 																		<th>Sıra No</th>
 																		<th>KT</th>
 																		<th>Hammadde/Tezgah Kodu</th>
@@ -1068,147 +1067,7 @@
 																		<th>Yüklemede Kullanılan Miktar</th>
 																		<th>Toplam Miktar</th>
 																		<th>Birim</th>
-																		<th>Paket Sayısı</th>
-																		<th>Paket İçeriği</th>
-																		<th>Toplam Yarı Mamul Miktarı</th>
-																		<th>Manuel Tamamlanan Miktar</th>
 																		<th>Tamamlanan Yarımamul Miktarı</th>
-																		<th>Bakiye Yarımamul Miktarı</th>
-																		<th>Kullanılacak Kalıp Kodu</th>
-																		<th>Varyant 1</th>
-																		<th>Varyant 2</th>
-																		<th>Varyant 3</th>
-																		<th>Varyant 4</th>
-																		<th>Ölçü 1</th>
-																		<th>Ölçü 2</th>
-																		<th>Ölçü 3</th>
-																		<th>Ölçü 4</th>
-																		<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
-																		<th>#</th>
-																	</tr>
-																	<tr class="satirEkle" style="background-color:#3c8dbc">
-																		<th>
-																			<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: white"></i></button>
-																		</th>
-																		<th style="min-width:0px !important; width:50px;">
-																			<select class="form-select R_ACIK_KAPALI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_ACIK_KAPALI" style="font-size: 0.7rem !important;" id="R_ACIK_KAPALI_FILL">
-																				<option value="">
-																					Açık
-																				</option>
-																				<option value="K">
-																					Kapalı
-																				</option>
-																			</select>
-																		</th>
-																		<th>
-																			<input type="text" class="form-control R_SIRANO" style="color: red" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_SIRANO" name="R_SIRANO_FILL" id="R_SIRANO_FILL" >
-																		</th>
-																		<th>
-																			<select class="form-control select2 R_KAYNAKTYPE js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_KAYNAKTYPE" onchange="getKaynakCodeSelect()" name="R_KAYNAKTYPE_SHOW" id="R_KAYNAKTYPE_SHOW">
-																				<option value=" ">Seç</option>
-																				<option value="H">H - Hammadde</option>
-																				<option value="I">I - Tezgah / İş Merk</option>
-																				<option value="Y">Y - Yan Ürün</option>
-																			</select>
-																			<input type="hidden" name="R_KAYNAKTYPE_FILL" id="R_KAYNAKTYPE_FILL" class="form-control">
-																		</th>
-																		<th>
-																			<div class="d-flex ">
-																				<select class="form-control select2 R_KAYNAKKODU js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_KAYNAKKODU" onchange="stokAdiGetir2(this.value)" name="R_KAYNAKKODU_SHOW" id="R_KAYNAKKODU_SHOW">
-																				</select>
-																				<span class="d-flex -btn">
-																					<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#modal_popupInfoModal" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
-																				</span>
-																			</div>
-																			<input type="hidden" name="R_KAYNAKKODU_FILL" id="R_KAYNAKKODU_FILL" class="form-control">
-																		</th>
-																		<th>
-																			<input type="text" class="form-control " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAK_AD" style="color: red" name="R_ADI_SHOW" id="R_ADI_SHOW" disabled>
-																			<input type="hidden" class="form-control" style="color: red" name="R_ADI_FILL" id="KAYNAK_AD_FILL">
-																		</th>
-																		<th>
-																			<select class="form-control select2 js-example-basic-single R_OPERASYON" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_OPERASYON" style="color: blue" onchange="operasyonAdiGetir(this.value)" name="R_OPERASYON_SHOW" id="R_OPERASYON_SHOW">
-																				<option value=" ">Seç</option>
-																				@php
-																				$imlt01_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
-																				foreach ($imlt01_evraklar as $key => $veri) {
-																					echo "<option value ='".$veri->KOD."|||".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
-																				}
-																				@endphp
-																			</select>
-																			<input type="hidden" class="form-control" style="color: red" name="R_OPERASYON_FILL" id="R_OPERASYON_FILL">
-																		</th>
-																		<th>
-																			<input type="text" class="form-control R_OPERASYON_IMLT01_AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_OPERASYON_IMLT01_AD" style="color: red" name="R_OPERASYON_IMLT01_AD_SHOW" id="R_OPERASYON_IMLT01_AD_SHOW" disabled>
-																			<input type="hidden" class="form-control" style="color: red" name="R_OPERASYON_IMLT01_AD_FILL" id="R_OPERASYON_IMLT01_AD_FILL" >
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_MIKTAR0" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_MIKTAR0" style="color: red" name="R_MIKTAR0_FILL" id="R_MIKTAR0_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_MIKTAR1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_MIKTAR1" style="color: red" name="R_MIKTAR1_FILL" id="R_MIKTAR1_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_MIKTAR2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_MIKTAR2" style="color: red" name="R_MIKTAR2_FILL" id="R_MIKTAR2_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_MIKTART"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_MIKTART" style="color: red" name="R_MIKTART_FILL" id="R_MIKTART_FILL">
-																		</th>
-																		<th>
-																			<input type="text" class="form-control KAYNAK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAK_BIRIM" style="color: red" name="KAYNAK_BIRIM_SHOW" id="KAYNAK_BIRIM_SHOW" disabled>
-																			<input type="hidden" class="form-control" style="color: red" name="KAYNAK_BIRIM_FILL" id="KAYNAK_BIRIM_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_YMK_YMPAKET" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMK_YMPAKET" style="color: red" name="R_YMK_YMPAKET" id="R_YMK_YMPAKET">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_YMK_YMPAKETICERIGI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMK_YMPAKETICERIGI" style="color: red" name="R_YMK_YMPAKETICERIGI" id="R_YMK_YMPAKETICERIGI">
-																		</th>
-																		<!-- OPERASYONDA KULLANILAN MİKTAR -->
-																		<th>
-																			<input type="number" class="form-control R_YMAMULMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMAMULMIKTAR" style="color: red" name="R_YMAMULMIKTAR_FILL" id="R_YMAMULMIKTAR_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_MANUEL_TMMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_MANUEL_TMMIKTAR" style="color: red" name="R_MANUEL_TMMIKTAR_FILL" id="R_MANUEL_TMMIKTAR_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_TMYMAMULMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_TMYMAMULMIKTAR" style="color: red" name="R_TMYMAMULMIKTAR_FILL" id="R_TMYMAMULMIKTAR_FILL">
-																		</th>
-																		<th>
-																			<input type="number" class="form-control R_BAKIYEYMAMULMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_BAKIYEYMAMULMIKTAR" style="color: red" name="R_BAKIYEYMAMULMIKTAR_FILL" id="R_BAKIYEYMAMULMIKTAR_FILL">
-																		</th>
-																		<th>
-																			<select class="form-control select2 js-example-basic-single KALIPKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIPKODU" style="color: red" name="KALIPKODU_FILL" id="KALIPKODU_FILL">
-																				<option value=" ">Seç</option>
-																				@php
-																				$kalip00_evraklar=DB::table($database.'kalip00')->orderBy('id', 'ASC')->get();
-																				foreach ($kalip00_evraklar as $key => $veri) {
-																					echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-																				}
-																				@endphp
-																			</select>
-																		</th>
-																		<th><input type="text" class="form-control TEXT1" name="TEXT1_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL"></th>
-																		<th><input type="text" class="form-control TEXT2" name="TEXT2_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id="TEXT2_FILL"></th>
-																		<th><input type="text" class="form-control TEXT3" name="TEXT3_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id="TEXT3_FILL"></th>
-																		<th><input type="text" class="form-control TEXT4" name="TEXT4_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" id="TEXT4_FILL"></th>
-																		<th><input type="number" class="form-control NUM1" name="NUM1_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" id="NUM1_FILL"></th>
-																		<th><input type="number" class="form-control NUM2" name="NUM2_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id="NUM2_FILL"></th>
-																		<th><input type="number" class="form-control NUM3" name="NUM3_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id="NUM3_FILL"></th>
-																		<th><input type="number" class="form-control NUM4" name="NUM4_FILL"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id="NUM4_FILL"></th>
-																		<th style="min-width: 150px;">
-																			@php
-  																				$stok_evraklar=DB::table($database.'stok00')->get();
-																			@endphp
-																			<select class="form-control select2 R_YMAMULKODU" data-name="KOD" name="YMAMULCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_YMAMULKODU" id="YMAMULCODE" style=" height: 30px; width:100%;">
-																				<option value=" ">Seç</option>
-																				@php
-																				foreach ($stok_evraklar as $key => $veri) {
-																					echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
-																				}
-																				@endphp
-																			</select>
-																		</th>
 																		<th>#</th>
 																	</tr>
 																</thead>
@@ -1220,66 +1079,28 @@
 																			? 'background-color:rgba(0, 60, 255, 0.07);' 
 																			: '';
 																		@endphp
-
-																		<td style="{{ $bgColor }}"><input type='checkbox' name='record'></td>
-																		<td style="{{ $bgColor }} display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-																		
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_SIRANO }}"></td>
 																		<td style="{{ $bgColor }}">
-																			<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
-																				<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
-																					Açık
-																				</option>
-																				<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
-																					Kapalı
-																				</option>
-																			</select>
-																		</td>
-
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="R_SIRANO[]" value="{{ $veri->R_SIRANO }}"></td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" name="R_KAYNAKTYPE_SHOW_T" value="{{ $veri->R_KAYNAKTYPE }}" disabled>
-																			<input type="hidden" class="form-control" name="R_KAYNAKTYPE[]" value="{{ $veri->R_KAYNAKTYPE }}">
+																			<input type="text" class="form-control" value="{{ $veri->R_KAYNAKTYPE }}" disabled>
 																		</td>
 																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" name="R_KAYNAKKODU_SHOW_T" value="{{ $veri->R_KAYNAKKODU }}" disabled>
-																			<input type="hidden" class="form-control" name="R_KAYNAKKODU[]" value="{{ $veri->R_KAYNAKKODU }}">
+																			<input type="text" class="form-control" value="{{ $veri->R_KAYNAKKODU }}" disabled>
 																		</td>
 																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" name="KAYNAK_AD_SHOW_T" value="{{ $veri->KAYNAK_AD }}" disabled>
-																			<input type="hidden" class="form-control" name="KAYNAK_AD[]" value="{{ $veri->KAYNAK_AD }}">
+																			<input type="text" class="form-control" value="{{ $veri->KAYNAK_AD }}" disabled>
 																		</td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="R_OPERASYON[]" value="{{ $veri->R_OPERASYON }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_OPERASYON }}"></td>
 																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" name="R_OPERASYON_IMLT01_AD_SHOW_T" value="{{ $veri->R_OPERASYON_IMLT01_AD }}" disabled>
-																			<input type="hidden" class="form-control" name="R_OPERASYON_IMLT01_AD[]" value="{{ $veri->R_OPERASYON_IMLT01_AD }}">
+																			<input type="text" class="form-control" value="{{ $veri->R_OPERASYON_IMLT01_AD }}" disabled>
 																		</td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_MIKTAR0[]" value="{{ $veri->R_MIKTAR0 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_MIKTAR1[]" value="{{ $veri->R_MIKTAR1 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_MIKTAR2[]" value="{{ $veri->R_MIKTAR2 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_MIKTART[]" value="{{ $veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2 }}"></td>
+																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 }}"></td>
+																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR1 }}"></td>
+																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR2 }}"></td>
+																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2 }}"></td>
 																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" name="KAYNAK_BIRIM_SHOW_T" value="{{ $veri->KAYNAK_BIRIM }}" disabled>
-																			<input type="hidden" class="form-control" name="KAYNAK_BIRIM[]" value="{{ $veri->KAYNAK_BIRIM }}">
+																			<input type="text" class="form-control" value="{{ $veri->KAYNAK_BIRIM }}" disabled>
 																		</td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_YMK_YMPAKET[]" value="{{ $veri->R_YMK_YMPAKET }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_YMK_YMPAKETICERIGI[]" value="{{ $veri->R_YMK_YMPAKETICERIGI }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_YMAMULMIKTAR[]" value="{{ $veri->R_YMK_YMPAKET * $veri->R_YMK_YMPAKETICERIGI }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_MANUEL_TMMIKTAR[]" value="{{ $veri->R_MANUEL_TMMIKTAR }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_TMYMAMULMIKTAR[]" value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_BAKIYEYMAMULMIKTAR[]" value="{{ $veri->R_YMAMULMIKTAR - ($veri->R_TMYMAMULMIKTAR + $veri->R_MANUEL_TMMIKTAR) }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="KALIPKODU[]" value="{{ $veri->KALIPKODU }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" readonly class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->R_YMAMULKODU }}"></td>
-																		<td style="{{ $bgColor }}">
-																			<button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button>
-																		</td>
+																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
 																	</tr>
 																	@endforeach
 																</tbody>

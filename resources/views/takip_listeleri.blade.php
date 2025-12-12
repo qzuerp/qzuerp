@@ -31,6 +31,12 @@
         $sonrakiEvrak = DB::table($ekranTableE)->where('ID', '>', $sonID)->min('ID');
         $oncekiEvrak = DB::table($ekranTableE)->where('ID', '<', $sonID)->max('ID');
     }
+    $FORM_TURLERI = [
+        '8D' => 'Kalite Hata / İyileştirme Raporu 8D',
+        'IC' => 'İyileştirme Çalışmaları',
+        'ICHATA' => 'İç Hata Takip Formu',
+        'SAPMA' => 'Sapma Teklifi Değerlendirme Formu',
+    ];
 @endphp
 
 <style>
@@ -365,7 +371,7 @@
                                             @foreach ($evraklar as $veri)
                                                 <option value="{{ $veri->ID }}" 
                                                     {{ $veri->ID == @$kart_veri->ID ? 'selected' : '' }}>
-                                                    {{ $veri->EVRAKNO }}
+                                                    {{ $veri->EVRAKNO }} - {{ $FORM_TURLERI[$veri->FORM] ?? 'Seçilmedi' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -482,12 +488,7 @@
                             <tbody>
 
                                 @php
-                                $FORM_TURLERI = [
-                                    '8D' => 'Kalite Hata / İyileştirme Raporu 8D',
-                                    'IC' => 'İyileştirme Çalışmaları',
-                                    'ICHATA' => 'İç Hata Takip Formu',
-                                    'SAPMA' => 'Sapma Teklifi Değerlendirme Formu',
-                                ];
+                                
                                 $evraklar = DB::table($ekranTableE)->orderBy('ID', 'ASC')->get();
 
                                 foreach ($evraklar as $key => $suzVeri) {
