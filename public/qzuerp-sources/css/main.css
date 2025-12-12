@@ -559,7 +559,7 @@ body {
 }
 
 .table tbody tr {
-  transition: background-color 0.15s ease;
+  transition: all 0.2s;
 }
 
 .table tbody tr:hover {
