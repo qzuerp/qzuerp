@@ -718,7 +718,7 @@
                           if (Trim($TARIH_E) <> '') {
                               $sql_sorgu = $sql_sorgu . " AND S40T.TERMIN_TAR <= '" . $TARIH_E . "' ";
                           }
-
+                          $sql_sorgu = $sql_sorgu . " AND S40E.AK != 'K' ";
                           $table = DB::select($sql_sorgu);
 
                           $KOD = DB::table($database.'stok40t')->get();

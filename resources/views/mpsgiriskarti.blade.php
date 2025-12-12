@@ -1052,60 +1052,72 @@
 
 												<div class="tab-pane" id="maliyet">
 												<div class="row">
-															<table class="table table-bordered text-center" id="veriTable">
-																<thead>
-																	<tr>
-																		<th>#</th>
-																		<th>Sıra No</th>
-																		<th>KT</th>
-																		<th>Hammadde/Tezgah Kodu</th>
-																		<th>Hammadde/Tezgah Adı</th>
-																		<th>Operasyon Kodu</th>
-																		<th>Operasyon Adı</th>
-																		<th>Operasyonda Kullanılan Miktar</th>
-																		<th>Ayar/Setup da Kullanılan Miktar</th>
-																		<th>Yüklemede Kullanılan Miktar</th>
-																		<th>Toplam Miktar</th>
-																		<th>Birim</th>
-																		<th>Tamamlanan Yarımamul Miktarı</th>
-																		<th>#</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	@foreach ($t_kart_veri as $key => $veri)
-																	<tr>
-																		@php
-																			$bgColor = $veri->R_KAYNAKTYPE == 'I' 
-																			? 'background-color:rgba(0, 60, 255, 0.07);' 
-																			: '';
-																		@endphp
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_SIRANO }}"></td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" value="{{ $veri->R_KAYNAKTYPE }}" disabled>
-																		</td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" value="{{ $veri->R_KAYNAKKODU }}" disabled>
-																		</td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" value="{{ $veri->KAYNAK_AD }}" disabled>
-																		</td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_OPERASYON }}"></td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" value="{{ $veri->R_OPERASYON_IMLT01_AD }}" disabled>
-																		</td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR1 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR2 }}"></td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2 }}"></td>
-																		<td style="{{ $bgColor }}">
-																			<input type="text" class="form-control" value="{{ $veri->KAYNAK_BIRIM }}" disabled>
-																		</td>
-																		<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
-																	</tr>
-																	@endforeach
-																</tbody>
-															</table>
-														</div>
+													<div class="col-12 mb-2">
+														<select class="form-control js-example-basic-single">
+															<option value="">Seç</option>
+															@php
+																$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
+																foreach ($kur_veri as $veri) {
+																	$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
+																	echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
+																}
+															@endphp
+														</select>
+													</div>
+													<div class="col">
+														<table class="table table-bordered text-center">
+															<thead>
+																<tr>
+																	<th>Sıra No</th>
+																	<th>KT</th>
+																	<th style="min-width:120px;">Hammadde/Tezgah Kodu</th>
+																	<th style="min-width:120px;">Hammadde/Tezgah Adı</th>
+																	<th style="min-width:120px;">Operasyon Kodu</th>
+																	<th style="min-width:120px;">Operasyon Adı</th>
+																	<th style="min-width:120px;">Operasyonda Kullanılan Miktar</th>
+																	<th style="min-width:120px;">Ayar/Setup da Kullanılan Miktar</th>
+																	<th style="min-width:120px;">Yüklemede Kullanılan Miktar</th>
+																	<th style="min-width:120px;">Toplam Miktar</th>
+																	<th style="min-width:120px;">Birim</th>
+																	<th style="min-width:120px;">Tamamlanan Yarımamul Miktarı</th>
+																</tr>
+															</thead>
+															<tbody>
+																@foreach ($t_kart_veri as $key => $veri)
+																<tr>
+																	@php
+																		$bgColor = $veri->R_KAYNAKTYPE == 'I' 
+																		? 'background-color:rgba(0, 60, 255, 0.07);' 
+																		: '';
+																	@endphp
+																	<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_SIRANO }}"></td>
+																	<td style="{{ $bgColor }}">
+																		<input type="text" class="form-control" value="{{ $veri->R_KAYNAKTYPE }}" disabled>
+																	</td>
+																	<td style="{{ $bgColor }}">
+																		<input type="text" class="form-control" value="{{ $veri->R_KAYNAKKODU }}" disabled>
+																	</td>
+																	<td style="{{ $bgColor }}">
+																		<input type="text" class="form-control" value="{{ $veri->KAYNAK_AD }}" disabled>
+																	</td>
+																	<td style="{{ $bgColor }}"><input type="text" class="form-control" disabled value="{{ $veri->R_OPERASYON }}"></td>
+																	<td style="{{ $bgColor }}">
+																		<input type="text" class="form-control" value="{{ $veri->R_OPERASYON_IMLT01_AD }}" disabled>
+																	</td>
+																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 }}"></td>
+																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR1 }}"></td>
+																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR2 }}"></td>
+																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2 }}"></td>
+																	<td style="{{ $bgColor }}">
+																		<input type="text" class="form-control" value="{{ $veri->KAYNAK_BIRIM }}" disabled>
+																	</td>
+																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
+																</tr>
+																@endforeach
+															</tbody>
+														</table>
+													</div>
+												</div>
 												</div>
 
 												<div class="tab-pane" id="liste">
