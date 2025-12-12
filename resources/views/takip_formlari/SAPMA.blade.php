@@ -206,7 +206,7 @@
                 <div class="col-md-6">
                     <div class="form-check mb-2">
                         <input type="checkbox" name="sebep6" id="sebep6" class="form-check-input"
-                               {{ !empty(@$kart_veri->sapma_sebep_musteri) ? 'checked' : '' }}>
+                               {{ @$kart_veri->sapma_sebep_musteri == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="sebep6">Müşteri Talebi</label>
                     </div>
                     <input type="text" name="sapma_musteri_adi" class="form-control form-control-sm mb-3"
@@ -214,7 +214,7 @@
 
                     <div class="form-check mb-2">
                         <input type="checkbox" name="sebep7" id="sebep7" class="form-check-input"
-                               {{ !empty(@$kart_veri->sapma_sebep_lisansor) ? 'checked' : '' }}>
+                               {{ @$kart_veri->sapma_sebep_lisansor == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="sebep7">Lisansör Talebi</label>
                     </div>
                     <input type="text" name="sapma_lisansor_adi" class="form-control form-control-sm"
@@ -439,13 +439,11 @@
         <div class="card-header">9. Ana Sanayi Onayı</div>
         <div class="card-body">
             <div class="form-check mb-2">
-                <input type="checkbox" name="sapma_resim_deg_gerekli" id="resim1" class="form-check-input"
-                       {{ !empty(@$kart_veri->sapma_resim_deg_gerekli) ? 'checked' : '' }}>
+                <input type="radio" name="sapma_resim_deg_gerekli" id="resim1" class="form-check-input" {{ @$kart_veri->sapma_resim_deg_gerekli == 1 ? 'checked' : '' }} value="1">
                 <label class="form-check-label" for="resim1">Resim değişikliği gerekli</label>
             </div>
             <div class="form-check">
-                <input type="checkbox" name="sapma_resim_deg_gerekli_degil" id="resim2" class="form-check-input"
-                       {{ !empty(@$kart_veri->sapma_resim_deg_gerekli_degil) ? 'checked' : '' }}>
+                <input type="radio" name="sapma_resim_deg_gerekli" id="resim2" class="form-check-input" {{ @$kart_veri->sapma_resim_deg_gerekli == 0 ? 'checked' : '' }} value="0">
                 <label class="form-check-label" for="resim2">Resim değişikliği gerekli değil</label>
             </div>
         </div>

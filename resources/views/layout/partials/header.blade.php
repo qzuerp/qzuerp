@@ -70,7 +70,13 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.print.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/pdfmake.min.js') }}"></script> -->
-    
+    <!-- <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+    <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css"> -->
     <!-- Yardımcı Kütüphaneler -->
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" defer></script>
 

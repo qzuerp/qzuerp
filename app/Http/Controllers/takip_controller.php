@@ -139,9 +139,9 @@ class takip_controller extends Controller
         $sapma_sebep_yansanayi = $request->has('sebep2') ? 1 : 0;
         $sapma_sebep_imalat = $request->has('sebep3') ? 1 : 0;
         $sapma_sebep_iyilestirme = $request->has('sebep4') ? 1 : 0;
-        $sapma_sebep_musteri = $request->has('sebep5') ? 1 : 0;
-        $sapma_sebep_lisansor = $request->has('sebep6') ? 1 : 0;
-        $sapma_sebep_kalite = $request->has('sebep7') ? 1 : 0;
+        $sapma_sebep_kalite = $request->has('sebep5') ? 1 : 0;
+        $sapma_sebep_musteri = $request->has('sebep6') ? 1 : 0;
+        $sapma_sebep_lisansor = $request->has('sebep7') ? 1 : 0;
 
         $sapma_musteri_adi = $request->sapma_musteri_adi;
         $sapma_lisansor_adi = $request->sapma_lisansor_adi;
@@ -180,7 +180,7 @@ class takip_controller extends Controller
         $sapma_stok_yonetim = $request->sapma_stok_yonetim;
 
         // ANA SANAYİ
-        $sapma_resim_deg_gerekli = $request->has('sapma_resim_deg_gerekli') ? 1 : 0;
+        $sapma_resim_deg_gerekli = $request->sapma_resim_deg_gerekli;
         $sapma_resim_deg_gerekli_deg = $request->has('sapma_resim_deg_gerekli_degil') ? 1 : 0;
 
         // AÇIKLAMA

@@ -123,6 +123,19 @@
 
 
 <script>
+  // $(window).on('load', function () {
+  //   $('[id^="veriTable"], .veriTable').each(function () {
+  //     $(this).attr('data-toggle', 'table')
+  //             .attr('data-search', 'true')
+  //             .attr('data-pagination', 'true')
+  //             .attr('data-show-columns', 'true')
+  //             .attr('data-reorderable-columns', 'true')
+  //             .attr('data-resizable', 'true');
+  //   });
+
+  //   $('[id^="veriTable"], .veriTable').bootstrapTable();
+  // });
+
   function updateClock() {
     const now = new Date();
     const time = now.toLocaleTimeString('tr-TR', {

@@ -206,43 +206,12 @@
   @yield('content')
 
   <script>
-    function enhanceTable(selector) {
-      const table = $(selector);
-
-      // 1) Sütun genişletme
-      table.colResizable({
-        liveDrag: true,
-        resizeMode: 'flex'
-      });
-
-      // 2) Sütun gizleme
-      table.columnManager({
-        listTargetID: selector.replace("#", "") + "-cols"
-      });
-
-      // 3) Sorting
-      table.tablesorter({
-        sortList: [],
-        headers: {} // inputları bozmuyor
-      });
-
-      // 4) (Opsiyon) Pagination
-      // Sadece HTML’i bozmadan çalışan mini pagination
-      if (!table.hasClass("no-pagination")) {
-        table.tablesorterPager({
-          container: $(selector + "-pager"),
-          size: 20
-        });
-      }
-    }
-
     var evrakDegisti = false;
     var originalValues = {};
     var elementCounter = 0;
     var originalTableRowCounts = {};
 
     $(document).ready(function () {
-      enhanceTable('#veriTable');
       trackAllFormElements();
       trackAllTables();
 
