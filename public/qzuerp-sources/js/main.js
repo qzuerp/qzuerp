@@ -526,7 +526,7 @@ function inputTemizle2() {
 
 
   $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden, :checkbox')
+  .not(':button, :submit, :reset, :hidden, :checkbox :radio')
   .val('')
   .prop('checked', false)
   .prop('selected', false);

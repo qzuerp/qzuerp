@@ -94,19 +94,16 @@
                     onchange="stokAdiGetir3(this.value)">
 
                 <option value="">Seç</option>
-
                 @php
-                    if (!empty(@$kart_veri->ich_part_code)) {
-                        echo "<option value='".@$kart_veri->ich_part_code."' selected>" .
-                             @$kart_veri->ich_part_code . " - " . @$kart_veri->ich_part_name . "</option>";
-                    }
-                    else
-                    {
-                        DB::table($database.'stok00')->select('KOD', 'AD')->get()->each(function ($item) {
-                            echo "<option value='" . $item->KOD . "|||" . $item->AD . "'>" . $item->KOD . " - " . $item->AD . "</option>";
-                        });
-                    }
+                    $stoklar = DB::table($database.'stok00')->select('KOD', 'AD')->get();
+                    $secili = $kart_veri->ich_part_code ?? null;
                 @endphp
+
+                @foreach($stoklar as $item)
+                    <option value="{{ $item->KOD }}|||{{ $item->AD }}" {{ $secili == $item->KOD ? 'selected' : '' }}>
+                        {{ $item->KOD }} - {{ $item->AD }}
+                    </option>
+                @endforeach
                 <input type="hidden" name="ich_part_code" id="ich_part_code">
             </select>
         </div>

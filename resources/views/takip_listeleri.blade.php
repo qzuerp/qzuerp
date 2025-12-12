@@ -473,6 +473,8 @@
                                 <tr class="bg-primary">
                                     <th>Evrak No</th>
                                     <th>Form Türü</th>
+                                    <th>Sapm Parça No</th>
+                                    <th>İç Hata Parça No</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -481,6 +483,8 @@
                                 <tr class="bg-primary">
                                     <th>Evrak No</th>
                                     <th>Form Türü</th>
+                                    <th>Sapm Parça No</th>
+                                    <th>İç Hata Parça No</th>
                                     <th>#</th>
                                 </tr>
                             </tfoot>
@@ -495,6 +499,8 @@
                                     echo "<tr>";
                                         echo "<td>" . $suzVeri->EVRAKNO . "</td>";
                                         echo "<td>" . ($FORM_TURLERI[$suzVeri->FORM] ?? 'Seçilmedi') . "</td>";
+                                        echo "<td>" . $suzVeri->sapma_parca_no . "</td>";
+                                        echo "<td>" . $suzVeri->ich_part_code . "</td>";
                                         echo "<td>" . "<a class='btn btn-info' href='takip_listeleri?ID=" . $suzVeri->ID . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
                                     echo "</tr>";
 
