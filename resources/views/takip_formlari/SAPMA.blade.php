@@ -466,8 +466,7 @@
                 <div class="col-md-6">
                     <div class="section-title">Müşteri</div>
                     <label class="form-label">Bilgilendirme</label>
-                    <input type="text" name="sapma_musteri_bilgi" class="form-control mb-2"
-                           value="{{ @$kart_veri->sapma_musteri_bilgi ?? '' }}">
+                    <textarea name="sapma_musteri_bilgi" class="form-control mb-2" rows="4">{{ @$kart_veri->sapma_musteri_bilgi ?? '' }}</textarea>
                     <label class="form-label">Onay / İmza</label>
                     <input type="text" name="sapma_musteri_onay" class="form-control"
                            value="{{ @$kart_veri->sapma_musteri_onay ?? '' }}">
@@ -475,8 +474,7 @@
                 <div class="col-md-6">
                     <div class="section-title">Lisansör</div>
                     <label class="form-label">Bilgilendirme</label>
-                    <input type="text" name="sapma_lisansor_bilgi" class="form-control mb-2"
-                           value="{{ @$kart_veri->sapma_lisansor_bilgi ?? '' }}">
+                    <textarea name="sapma_lisansor_bilgi" class="form-control mb-2" rows="4">{{ @$kart_veri->sapma_lisansor_bilgi ?? '' }}</textarea>
                     <label class="form-label">Onay / İmza</label>
                     <input type="text" name="sapma_lisansor_onay" class="form-control"
                            value="{{ @$kart_veri->sapma_lisansor_onay ?? '' }}">

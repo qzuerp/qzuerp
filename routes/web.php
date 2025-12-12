@@ -103,6 +103,9 @@ Auth::routes(['password.request' => false]);
   Route::post('/sapma/kod_gorsel', [takip_controller::class, 'gorsel']);
 
   Route::get('/takip_listeleri', [takip_controller::class, 'index'])->name('takip_listeleri');
+  
+  Route::get('/stok_gecmisi', function () { return view('stok_gecmisi'); })->name('takip_listeleri');
+
 
   // POST'LAR
   Route::get('/loglar/datatables', [main_controller::class, 'getLoglar'])->name('loglar.ajax');
