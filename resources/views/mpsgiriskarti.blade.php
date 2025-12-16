@@ -43,18 +43,32 @@
 		->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
 		->leftJoin($database.'stdm10e as mlie', 't.R_KAYNAKKODU', '=', 'mlie.TEZGAH_KODU')
 		->leftJoin($database.'stdm10t as mlit', 'mlie.EVRAKNO', '=', 'mlit.EVRAKNO')
-		->leftJoin($database.'excratt as kur','mlit.PARABIRIMI', '=', 'kur.CODEFROM')
+
+		->leftJoin($database.'excratt as kur', function ($join) use ($kart_veri) {
+			$join->on('mlit.PARABIRIMI', '=', 'kur.CODEFROM')
+				->on('kur.CODETO', '=', DB::raw("'TRY'"))
+				->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime($kart_veri->KAPANIS_TARIHI))."'"));
+		})
+
 		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-		->where('kur.EVRAKNOTARIH', date('Y/m/d', strtotime(@$kart_veri->KAPANIS_TARIHI)))
-		->orderByRaw('t.R_SIRANO ASC')
+		->orderBy('t.R_SIRANO')
+
 		->selectRaw("
-			(mlit.TUTAR * kur.KURS_1) as TUTAR,
+			case
+				when mlit.PARABIRIMI = 'TRY' then mlit.TUTAR
+				else mlit.TUTAR *
+					CAST(REPLACE(kur.KURS_1, ',', '.') AS decimal(18,6))
+			end as TUTAR,
 			mlit.PARABIRIMI,
 			kur.KURS_1,
 			mlie.EVRAKNO,
-			t.*, 
-			case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM")
-		->get();
+			t.*,
+
+			case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD,
+			case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM
+		")
+	->get();
+
 
 
 	$evraklar = DB::table($ekranTableE)

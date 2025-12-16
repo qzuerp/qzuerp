@@ -123,7 +123,7 @@
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Tarih</label>
-   <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="EVRAKNO" maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
+   <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
 	 <label>Ad Soyad</label>

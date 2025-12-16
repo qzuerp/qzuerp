@@ -44,7 +44,7 @@ class kontakt00_controller extends Controller
 
   public function islemler(Request $request) {
 
-    //dd(request()->all());
+    // dd(request()->all());
 
     $islem_turu = $request->kart_islemleri;
     $firma = $request->input('firma').'.dbo.';
