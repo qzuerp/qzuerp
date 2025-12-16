@@ -64,6 +64,9 @@
         @if (in_array('STKHRKT', $kullanici_read_yetkileri))
           <li><a href="stok_hareketleri"><i class='bx bx-history'></i>Stok Hareketleri</a></li>
         @endif
+        @if (in_array('GECMIS', $kullanici_read_yetkileri))
+          <li><a href="stok_gecmisi"><i class='bx bx-git-branch'></i>Stok Geçmişi / İzlenebilirlik</a></li>
+        @endif
       </ul>
     </li>
     

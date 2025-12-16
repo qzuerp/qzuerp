@@ -106,7 +106,7 @@
     @include('layout.util.evrakContentHeader')
     @include('layout.util.logModal',['EVRAKTYPE' => 'STDM10','EVRAKNO'=>@$kart_veri->EVRAKNO])
     <div class="content">
-        <form action="{{route('islemler')}}" method="post" id="myForm">
+        <form action="{{route('maliyet_islemler')}}" method="post" id="myForm">
             @csrf
             <div class="row">
                 <div class="col">

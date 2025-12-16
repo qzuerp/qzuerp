@@ -37,18 +37,25 @@
  
 	$kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
 
-	$t_kart_veri = DB::table($ekranTableT)
-    ->where('EVRAKNO', '=', (string) $kart_veri->EVRAKNO)
-    ->orderBy('id', 'ASC')
-    ->get();
 
 	$t_kart_veri = DB::table($ekranTableT . ' as t')
 		->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
 		->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
+		->leftJoin($database.'stdm10e as mlie', 't.R_KAYNAKKODU', '=', 'mlie.TEZGAH_KODU')
+		->leftJoin($database.'stdm10t as mlit', 'mlie.EVRAKNO', '=', 'mlit.EVRAKNO')
+		->leftJoin($database.'excratt as kur','mlit.PARABIRIMI', '=', 'kur.CODEFROM')
 		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+		->where('kur.EVRAKNOTARIH', date('Y/m/d', strtotime(@$kart_veri->KAPANIS_TARIHI)))
 		->orderByRaw('t.R_SIRANO ASC')
-		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM")
+		->selectRaw("
+			(mlit.TUTAR * kur.KURS_1) as TUTAR,
+			mlit.PARABIRIMI,
+			kur.KURS_1,
+			mlie.EVRAKNO,
+			t.*, 
+			case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM")
 		->get();
+
 
 	$evraklar = DB::table($ekranTableE)
     ->orderBy('EVRAKNO', 'ASC')
@@ -1053,7 +1060,7 @@
 												<div class="tab-pane" id="maliyet">
 												<div class="row">
 													<div class="col-12 mb-2">
-														<select class="form-control js-example-basic-single">
+														<select class="form-control js-example-basic-single" id="M_FIYAT_PB">
 															<option value="">Seç</option>
 															@php
 																$kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -1069,17 +1076,17 @@
 															<thead>
 																<tr>
 																	<th>Sıra No</th>
-																	<th>KT</th>
+																	<th style="min-width:75px;">KT</th>
 																	<th style="min-width:120px;">Hammadde/Tezgah Kodu</th>
 																	<th style="min-width:120px;">Hammadde/Tezgah Adı</th>
 																	<th style="min-width:120px;">Operasyon Kodu</th>
 																	<th style="min-width:120px;">Operasyon Adı</th>
-																	<th style="min-width:120px;">Operasyonda Kullanılan Miktar</th>
-																	<th style="min-width:120px;">Ayar/Setup da Kullanılan Miktar</th>
-																	<th style="min-width:120px;">Yüklemede Kullanılan Miktar</th>
 																	<th style="min-width:120px;">Toplam Miktar</th>
 																	<th style="min-width:120px;">Birim</th>
 																	<th style="min-width:120px;">Tamamlanan Yarımamul Miktarı</th>
+																	<th style="min-width:120px;">Birim Maliyet</th>
+																	<th style="min-width:120px;">Planlanan Maliyet</th>
+																	<th style="min-width:120px;">Gerçekleşen Maliyet</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -1104,14 +1111,23 @@
 																	<td style="{{ $bgColor }}">
 																		<input type="text" class="form-control" value="{{ $veri->R_OPERASYON_IMLT01_AD }}" disabled>
 																	</td>
-																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 }}"></td>
-																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR1 }}"></td>
-																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR2 }}"></td>
 																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2 }}"></td>
 																	<td style="{{ $bgColor }}">
 																		<input type="text" class="form-control" value="{{ $veri->KAYNAK_BIRIM }}" disabled>
 																	</td>
 																	<td style="{{ $bgColor }}"><input type="number" class="form-control" disabled value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
+																	<td style="{{ $bgColor }}">
+																		<input type="number" class="form-control BIRIM_FIYAT" disabled value="{{ $veri->TUTAR }}">
+																		<input type="hidden" class="form-control BIRIM_FIYAT_TL" disabled value="{{ $veri->TUTAR }}">
+																	</td>
+																	<td style="{{ $bgColor }}">
+																		<input type="number" class="form-control PLANLANAN_MALIYET" disabled value="{{ $veri->TUTAR * ($veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2) }}">
+																		<input type="hidden" class="form-control PLANLANAN_MALIYET_TL" disabled value="{{ $veri->TUTAR * ($veri->R_MIKTAR0 + $veri->R_MIKTAR1 + $veri->R_MIKTAR2) }}">
+																	</td>
+																	<td style="{{ $bgColor }}">
+																		<input type="number" class="form-control GERCEKLESEN_MALIYET" disabled value="{{ $veri->TUTAR * $veri->R_TMYMAMULMIKTAR }}">
+																		<input type="hidden" class="form-control GERCEKLESEN_MALIYET_TL" disabled value="{{ $veri->TUTAR * $veri->R_TMYMAMULMIKTAR }}">
+																	</td>
 																</tr>
 																@endforeach
 															</tbody>
@@ -2071,6 +2087,50 @@
 						}
 					});
 				});
+				$('#M_FIYAT_PB').on('change', function () {
+					let PB = $(this).val();
+
+					$.ajax({
+						type: 'POST',
+						url: 'mps_maliyeti_hesapla',
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+						data: {
+							PB: PB,
+							EVRAKNO: {{ @$kart_veri->EVRAKNO }}
+						},
+						success: function (response) {
+							let kur = parseFloat(response.toString().replace(',', '.'));
+							if (!kur || kur <= 0) return;
+
+							// BİRİM FİYAT
+							$('.BIRIM_FIYAT').each(function () {
+								let td = $(this).closest('td');
+								let tl = parseFloat(td.find('.BIRIM_FIYAT_TL').val());
+								if (!tl) return;
+								$(this).val((tl / kur).toFixed(4));
+							});
+
+							// PLANLANAN
+							$('.PLANLANAN_MALIYET').each(function () {
+								let td = $(this).closest('td');
+								let tl = parseFloat(td.find('.PLANLANAN_MALIYET_TL').val());
+								if (!tl) return;
+								$(this).val((tl / kur).toFixed(4));
+							});
+
+							// GERÇEKLEŞEN
+							$('.GERCEKLESEN_MALIYET').each(function () {
+								let td = $(this).closest('td');
+								let tl = parseFloat(td.find('.GERCEKLESEN_MALIYET_TL').val());
+								if (!tl) return;
+								$(this).val((tl / kur).toFixed(4));
+							});
+						}
+					});
+				});
+
 			});
 
 			function addRowHandlers() {

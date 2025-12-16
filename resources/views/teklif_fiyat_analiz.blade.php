@@ -439,7 +439,6 @@
 					parabirimi,
 				}
 			});
-			console.log(response);
 			kurCache.set(key, response);
 		}
 		return kurCache.get(key);

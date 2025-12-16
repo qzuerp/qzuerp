@@ -180,7 +180,7 @@
 	
 						<div class="col-xs-6 col-md-3 col-sm-6">
 							<label>İş Telefonu</label>
-							<input type="text" class="form-control TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_1" maxlength="50" style="color:red" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}" disabled>
+							<input type="text" class="form-control TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_1" maxlength="50" style="color:red" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
 						 </div>
 	
 					 <div class="col-xs-6 col-md-3 col-sm-6">

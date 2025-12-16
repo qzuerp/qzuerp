@@ -1026,4 +1026,35 @@ class mmps10_controller extends Controller
           'count' => $mpsCount,
       ];;
   }
+
+  public function mps_maliyeti_hesapla(Request $request)
+  {
+      $u = Auth::user(); // auth middleware varsayımı
+      $firma = trim($u->firma) . '.dbo.';
+  
+      $mmps = DB::table($firma.'mmps10e')
+          ->where('EVRAKNO', $request->EVRAKNO)
+          ->first();
+  
+      if (!$mmps) {
+          return response()->json([
+              'error' => 'MPS kaydı bulunamadı'
+          ], 404);
+      }
+      $tarih = date('Y/m/d', strtotime($mmps->KAPANIS_TARIHI));
+  
+      $kur = DB::table($firma.'excratt')
+          ->where('CODEFROM', $request->PB)
+          ->where('EVRAKNOTARIH', $tarih)
+          ->first();
+  
+      if (!$kur) {
+          return response()->json([
+              'error' => 'Kur bilgisi bulunamadı'
+          ], 404);
+      }
+  
+      return $kur->KURS_1;
+  }
+  
 }

@@ -253,7 +253,7 @@
                                     <th scope="col text-center">Kullanıcı Adı</th>
                                     <th scope="col text-center">E-posta</th>
                                     <th scope="col text-center">Aktiflik Durumu</th>
-                                    <th scope="col text-center">Son Görüntüleme</th>
+                                    <th scope="col text-center">Giriş zamanı</th>
                                     <th scope="col text-center">İşlemler</th>
                                   </tr>
                                 </thead>

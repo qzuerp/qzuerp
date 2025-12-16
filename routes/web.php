@@ -171,7 +171,7 @@ Auth::routes(['password.request' => false]);
 
   Route::post('etiketKarti_islemler',[Etiket_Karti_controller::class,'islemler'])->name('etiket_Karti_islemler');
 
-  Route::post('/islemler',[Maliyet::class,'islemler'])->name("islemler");
+  Route::post('/maliyet_islemler',[Maliyet::class,'islemler'])->name("maliyet_islemler");
 
   Route::post('cari00_kartGetir',[cari00_controller::class,'kartGetir']);
   Route::post('calisma_bildirimi_kartGetir',[calisma_bildirimi_controller::class,'kartGetir']);
@@ -212,6 +212,7 @@ Auth::routes(['password.request' => false]);
 
   Route::post('mmps10_getStok10aToTable',[mmps10_controller::class,'getStok10aToTable']);
   Route::post('mmps10_getSipToEvrak',[mmps10_controller::class,'getSipToEvrak']);
+  Route::post('mps_maliyeti_hesapla',[mmps10_controller::class,'mps_maliyeti_hesapla']);
   Route::post('sfdc31_getMPSToEvrak',[calisma_bildirimi_controller::class,'getMPSToEvrak']);
   // Route::get('/get-tezgah-plan', [calisma_bildirimi_controller::class, 'getTezgahPlan']);
   Route::post('stok01_getStok01',[stok01_controller::class,'getStok01']);
