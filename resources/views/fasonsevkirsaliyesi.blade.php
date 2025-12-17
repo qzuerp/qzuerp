@@ -937,7 +937,7 @@ if (isset($kart_veri)) {
                                   T1.MAMULSTOKKODU,
                                   T1.MAMULSTOKADI,
                                   CASE 
-                                      WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
+                                      WHEN M10.R_KAYNAKKODU LIKE 'FSN%' THEN M10.R_YMAMULKODU
                                       ELSE (
                                           SELECT TOP 1 R_KAYNAKKODU 
                                           FROM {$database}MMPS10T 

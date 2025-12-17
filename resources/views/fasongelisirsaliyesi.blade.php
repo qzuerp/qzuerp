@@ -244,6 +244,7 @@
                                 <th>#</th>
                                 <th>#</th>
                                 <th style="display:none;">Sıra</th>
+                                <th>GKK</th>
                                 <th style="min-width:150px;">Stok Kodu</th>
                                 <th>Stok Adı</th>
                                 <th>İşlem Mik.</th>
@@ -273,6 +274,7 @@
 
                                 <td><input type="checkbox" name="" id=""></td>
                                 <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                                <td><i class="fa-solid fa-check"></i></td>
                                 <td style="display:none;">
                                 </td>
                                 <td style="min-width: 150px;">
@@ -385,6 +387,7 @@
                                   <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                                   <td>@include('components.detayBtn', ['KOD' => $veri->KOD])</td>
                                   <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+                                  <td><button type="button" class="btn btn-default border-0 sablonGetirBtn" data-kod="{{ $veri->KOD }}"><i class="fa-solid fa-clipboard-check" style="color: green;"></i></button></td>
                                   <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                                   <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
                                   <td><input type="number" class="form-control SF_MIKTAR" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
@@ -852,6 +855,89 @@
           </div>
         </div>
       </div>
+      <div class="modal fade bd-example-modal-xl" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="modal_gkk"  >
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form action="stok29_kalite_kontrolu" method="post">
+        @csrf
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check' style='color: blue'></i>&nbsp;&nbsp;Giriş Kalite Kontrol</h4>
+        </div>
+          <div class="modal-body">
+          <!-- İşlem Bilgileri -->
+          <div class="card mb-2 shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-1 px-2 d-flex align-items-center" style="font-size: 0.9em;">
+              <strong>İşlem Bilgileri</strong>
+            </div>
+            <div class="card-body py-2 px-3" style="font-size: 0.8em;">
+              <div class="d-flex flex-wrap gap-3 align-items-center">
+              <div><strong>Kod:</strong> <span id="ISLEM_KODU" class="text-secondary"></span></div>
+              <div><strong>Adı:</strong> <span id="ISLEM_ADI" class="text-secondary"></span></div>
+              <div><strong>Lot:</strong> <span id="ISLEM_LOTU" class="text-secondary"></span></div>
+              <div><strong>Seri:</strong> <span id="ISLEM_SERI" class="text-secondary"></span></div>
+              <div><strong>Miktar:</strong> <span id="ISLEM_MIKTARI" class="text-secondary"></span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Tablo Alanı -->
+          <div class="d-flex gap-2">
+            <div class="flex-grow-1" style="overflow-x: auto;">
+            <table id="gkk_table" class="table table-sm table-hover align-middle text-center" style="font-size: 0.85em;">
+              <thead class="table-light sticky-top">
+              <tr>
+                <th><i class="fa-solid fa-plus"></i></th>
+                <th style="min-width: 150px;">Kod</th>
+                <th style="min-width: 150px;">Ölçüm No</th>
+                <th style="min-width: 120px;">Alan Türü</th>
+                <th style="min-width: 120px;">Uzunluk</th>
+                <th style="min-width: 220px;">Alan Ondalık Sayısı</th>
+                <th style="min-width: 120px;">Ölçüm Sonucu</th>
+                <th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
+                <th style="min-width: 120px;">Minimum Değer</th>
+                <th style="min-width: 220px;">Maksimum Değer</th>
+                <th style="min-width: 120px;">Zorunlu Mu</th>
+                <th style="min-width: 220px;">Test Ölçüm Birim</th>
+                <th style="min-width: 250px;">Kalite Parametresi Grup Kodu</th>
+                <th style="min-width: 220px;">Referans Değer Başlangıç</th>
+                <th style="min-width: 220px;">Referans Değer Bitiş</th>
+                <th style="min-width: 120px;">Tablo Türü</th>
+                <th style="min-width: 250px;">Kalite Parametresi Giriş Türü</th>
+                <th style="min-width: 200px;">Miktar Kriter Türü</th>
+                <th style="min-width: 200px;">Miktar Kriter - 1</th>
+                <th style="min-width: 200px;">Miktar Kriter - 2</th>
+                <th style="min-width: 200px;">Ölçüm Cihaz Tipi</th>
+                <th style="min-width: 100px;">Not</th>
+                <th style="min-width: 100px;">Durum</th>
+                <th style="min-width: 100px;">Onay Tarihi</th>
+                <th>#</th>
+              </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+            </div>
+
+            <!-- Yukarı / Aşağı Tuşları -->
+            <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm upButton" title="Önceki Kod">
+                <i class="fa-solid fa-chevron-up"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm downButton" title="Sonraki Kod">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+          </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
     </section>
 
     <script>
@@ -908,6 +994,7 @@
           }
         });
       }
+
       function addRowHandlers2() {
         var table = document.getElementById("popupSelect2");
         var rows = table.getElementsByTagName("tr");
@@ -1059,6 +1146,167 @@
     	    }
         });
       }
+
+      $(document).ready(function() {
+        let kodValues = Array.from(document.querySelectorAll('#veriTable input[name^="KOD[]"]')).map(i => i.value);
+        let adValues = Array.from(document.querySelectorAll('#veriTable input[name^="STOK_ADI[]"]')).map(i => i.value);
+        let lotValues = Array.from(document.querySelectorAll('#veriTable input[name^="LOTNUMBER[]"]')).map(i => i.value);
+        let seriValues = Array.from(document.querySelectorAll('#veriTable input[name^="SERINO[]"]')).map(i => i.value);
+        let miktarValues = Array.from(document.querySelectorAll('#veriTable input[name^="SF_MIKTAR[]"]')).map(i => i.value);
+        let trnumValues = Array.from(document.querySelectorAll('#veriTable input[name^="TRNUM[]')).map(i => i.value);
+        let currentIndex = 0;
+
+        function confirmUnsavedChanges(callback) {
+          let currentState = JSON.stringify(getTableState());
+          if (lastSavedState && currentState !== lastSavedState) {
+            Swal.fire({
+              title: "Değişiklikler kaydedilmedi!",
+              text: "Devam edersen yaptığın değişiklikler kaybolacak.",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Devam Et",
+              cancelButtonText: "İptal"
+            }).then(result => {
+              if (result.isConfirmed) callback();
+            });
+          } else {
+            callback();
+          }
+        }
+
+        $('.upButton').on('click', function () {
+          confirmUnsavedChanges(() => {
+            currentIndex = Math.max(currentIndex - 1, 0);
+            loadSablon(kodValues[currentIndex]);
+          });
+        });
+
+        $('.downButton').on('click', function () {
+          confirmUnsavedChanges(() => {
+            currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
+            loadSablon(kodValues[currentIndex]);
+          });
+        });
+
+        $('.sablonGetirBtn').on('click', function () {
+          let KOD = $(this).data('kod');
+          $('#modal_gkk').modal('show');
+          let foundIndex = kodValues.indexOf(KOD);
+          if (foundIndex !== -1) {
+            currentIndex = foundIndex;
+          } else {
+            currentIndex = 0;
+          }
+
+          loadSablon(KOD);
+        });
+        
+        let lastSavedState = null;
+
+        function getTableState() {
+          return Array.from(document.querySelectorAll('#gkk_table input, #gkk_table select'))
+            .map(el => ({
+              name: el.name,
+              value: el.type === 'checkbox'
+                ? (el.checked ? '1' : '0')
+                : (el.value === undefined || el.value === null ? '' : el.value.trim())
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function loadSablon(KOD) {
+          Swal.fire({
+            title: 'Yükleniyor...',
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+          $("#gkk_table > tbody").empty();
+          $('#ISLEM_KODU').text(KOD);
+          $('#ISLEM_ADI').text(adValues[currentIndex]);
+          $('#ISLEM_LOTU').text(lotValues[currentIndex]);
+          $('#ISLEM_SERI').text(seriValues[currentIndex]);
+          $('#ISLEM_MIKTARI').text(miktarValues[currentIndex]);
+          $.ajax({
+            url: '/sablonGetir',
+            type: 'post',
+            data: {
+              KOD: KOD,
+              _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (res) {
+              if (res.length === 0) {
+                mesaj('Şablon bilgileri bulunamadı');
+                return;
+              }
+              let htmlCode = '';
+              res.forEach(function (veri, index) {
+                var TRNUM_FILL = getTRNUM();
+                let rowIndex = index;
+
+                htmlCode += "<tr>";
+                htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
+                htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
+                htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
+                htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
+                htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
+                htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
+                htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+                htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+
+                let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
+                htmlCode += `<td class="text-center">
+                  <input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
+                  <input type="checkbox" name="GECERLI_KOD[${rowIndex}]" value="1" ${isChecked}>
+                </td>`;
+
+                htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+                htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
+                htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM[${rowIndex}]" value="${trnumValues[rowIndex] ?? ''}">`;
+
+                let durum = veri.DURUM ?? '';
+                htmlCode += `<td>
+                  <select name="DURUM[${rowIndex}]" class="form-select">
+                    <option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
+                    <option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
+                    <option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
+                  </select>
+                </td>`;
+
+                htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIH ?? ''}"></td>`;
+                htmlCode += "</tr>";
+
+              });
+              $("#gkk_table > tbody").append(htmlCode);
+              lastSavedState = JSON.stringify(getTableState());
+            },
+            error: function (xhr) {
+              console.error("Hata:", xhr.responseText);
+            },
+            complete: function () {
+              Swal.close();
+              setTimeout(() => {
+                lastSavedState = JSON.stringify(getTableState());
+              }, 100);
+            }
+          });
+        }
+
+      });
     </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>

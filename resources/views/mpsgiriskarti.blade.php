@@ -63,11 +63,12 @@
 			kur.KURS_1,
 			mlie.EVRAKNO,
 			t.*,
-
 			case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD,
 			case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM
 		")
 	->get();
+
+	// dd($t_kart_veri);
 
 
 
