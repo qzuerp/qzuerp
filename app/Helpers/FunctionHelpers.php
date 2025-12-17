@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -103,5 +104,22 @@ class FunctionHelpers
         return count($messages) ? $messages : null;
     }
 
+    public static function apply_mail_settings()
+    {
+        $s = DB::table('FIRMA_TANIMLARI')->where('firma',trim(auth()->user()->firma))->first();
 
+        Config::set('mail.default', 'smtp');
+
+        Config::set('mail.mailers.smtp.transport', 'smtp');
+        Config::set('mail.mailers.smtp.host', $s->host);
+        Config::set('mail.mailers.smtp.port', $s->port);
+        Config::set('mail.mailers.smtp.encryption', $s->encryption);
+        Config::set('mail.mailers.smtp.username', $s->username);
+        Config::set('mail.mailers.smtp.password', $s->password);
+
+        Config::set('mail.from.address', $s->from_address);
+        Config::set('mail.from.name', $s->from_name);
+
+        return $s;
+    }
 }

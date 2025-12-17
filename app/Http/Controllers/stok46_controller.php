@@ -5,6 +5,8 @@ use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PurchaseOrderEmail;
 
 class stok46_controller extends Controller
 {
@@ -103,7 +105,7 @@ class stok46_controller extends Controller
       
 
       case 'kart_sil':
-FunctionHelpers::Logla('STOK46',$EVRAKNO,'D',$TARIH);
+        FunctionHelpers::Logla('STOK46',$EVRAKNO,'D',$TARIH);
 
         DB::table($firma.'stok46e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok46t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -176,6 +178,25 @@ FunctionHelpers::Logla('STOK46',$EVRAKNO,'D',$TARIH);
         }
 
         print_r("Kayıt işlemi başarılı.");
+
+
+
+        FunctionHelpers::apply_mail_settings();
+
+        $data = [
+          'EVRAKNO' => $EVRAKNO,
+          'TARIH' => $TARIH,
+          'CARIHESAPCODE' => $CARIHESAPCODE,
+          'KOD' => $KOD,
+          'STOK_ADI' => $STOK_ADI,
+          'LOTNUMBER' => $LOTNUMBER,
+          'SERINO' => $SERINO,
+          'SF_MIKTAR' => $SF_MIKTAR,
+          'SF_BAKIYE' => $SF_MIKTAR,
+          'SF_SF_UNIT' => $SF_SF_UNIT,
+        ];
+        Mail::to('erenbl333@gmail.com')
+          ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
 
         $sonID=DB::table($firma.'stok46e')->max('id');
         return redirect()->route('satinalmasiparisi', ['ID' => $sonID,'kayit' => 'ok']);

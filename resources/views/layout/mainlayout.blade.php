@@ -112,7 +112,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             if (href) {
-              $('#loader').fadeIn(150);
+              $('#loader').fadeIn(300);
               window.location.href = href;
             } else {
               $button.trigger('devamEt');
@@ -472,7 +472,7 @@
   <!-- Loader Script -->
   <script>
     $(document).ready(function () {
-      $('#loader').fadeOut(200);
+      $('#loader').fadeOut(300);
     });
 
     let isNavigating = false;
@@ -483,13 +483,13 @@
       show() {
         if (!isNavigating) {
           isNavigating = true;
-          $loader.fadeIn(200);
+          $loader.fadeIn(300);
         }
       },
 
       hide() {
         isNavigating = false;
-        $loader.fadeOut(200);
+        $loader.fadeOut(300);
       },
 
       reset() {

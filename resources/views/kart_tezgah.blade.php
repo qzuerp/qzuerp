@@ -116,13 +116,13 @@ if (isset($kart_veri)) {
 							   <input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="24"  value="{{ @$kart_veri->KOD }}">
 							 </div>
 
-							 <div class="col-md-3 col-sm-4 col-xs-6">
+							 <div class="col-md-6 col-sm-4 col-xs-6">
 							   <label>Tezgah Adı</label>
 							   <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}" >
 							 </div>
 
 							 
-							<div class="col-md-3 col-sm-4 col-xs-6">
+							<div class="col-md-2 col-sm-4 col-xs-6">
 								<label>Cihaz Tipi</label>
 								{{-- <input type="hidden" class="form-control "maxlength="50" name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
 								<select name="CIHAZTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIHAZTIPI" id="CIHAZTIPI" class="CIHAZTIPI form-control select2">
