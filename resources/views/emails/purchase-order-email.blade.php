@@ -184,15 +184,15 @@
             <div class="info-grid">
                 <div class="info-item">
                     <span class="info-label">Evrak No</span>
-                    <span class="info-value">{{ $evrakNo }}</span>
+                    <span class="info-value">{{ $data['EVRAKNO'] }}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Evrak Tarihi</span>
-                    <span class="info-value">{{ $evrakTarihi }}</span>
+                    <span class="info-value">{{ $data['TARIH'] }}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Tedarikçi</span>
-                    <span class="info-value">{{ $tedarikci }}</span>
+                    <span class="info-value">{{ $data['CARIHESAPCODE'] }}</span>
                 </div>
             </div>
         </div>
@@ -207,22 +207,28 @@
                             <th>#</th>
                             <th>Stok Kodu</th>
                             <th>Stok Adı</th>
+                            <th class="text-right">Lot N0</th>
+                            <th class="text-right">Seri No</th>
                             <th class="text-right">Miktar</th>
                             <th>Para Birimi</th>
                             <th class="text-right">Tutar</th>
+                            <th class="text-right">Birim</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($malzemeler as $index => $malzeme)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $malzeme['stok_kodu'] }}</td>
-                            <td>{{ $malzeme['stok_adi'] }}</td>
-                            <td class="text-right">{{ $malzeme['miktar'] }}</td>
-                            <td>{{ $malzeme['para_birimi'] }}</td>
-                            <td class="text-right">{{ $malzeme['tutar'] }}</td>
-                        </tr>
-                        @endforeach
+                        @for($i=0;$i<count($data['KOD']);$i++)
+                            <tr>
+                                <td>{{ $i + 1 }}</td>
+                                <td>{{ $data['KOD'][$i] }}</td>
+                                <td>{{ $data['STOK_ADI'][$i] }}</td>
+                                <td class="text-right">{{ $data['LOTNUMBER'][$i] }}</td>
+                                <td>{{ $data['SERINO'][$i] }}</td>
+                                <td class="text-right">{{ $data['SF_MIKTAR'][$i] }}</td>
+                                <td class="text-right">{{ $data['FIYAT_PB'][$i] }}</td>
+                                <td class="text-right">{{ $data['FIYAT'][$i] }}</td>
+                                <td class="text-right">{{ $data['SF_SF_UNIT'][$i] }}</td>
+                            </tr>
+                        @endfor
                     </tbody>
                 </table>
             </div>

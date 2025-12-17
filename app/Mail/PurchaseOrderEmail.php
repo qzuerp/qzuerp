@@ -13,11 +13,12 @@ class PurchaseOrderEmail extends Mailable
 
     public $title;
     public $body;
+    public $data;
 
-    public function __construct($title, $body)
+    public function __construct($title, $data)
     {
         $this->title = $title;
-        $this->body  = $body;
+        $this->data  = $data;
     }
 
     public function build()
@@ -25,7 +26,7 @@ class PurchaseOrderEmail extends Mailable
         return $this->subject($this->title)
             ->view('emails.purchase-order-email')
             ->with([
-                'body' => $this->body
+                'data' => $this->data
             ]);
     }
 }

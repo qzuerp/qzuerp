@@ -191,10 +191,12 @@ class stok46_controller extends Controller
           'STOK_ADI' => $STOK_ADI,
           'LOTNUMBER' => $LOTNUMBER,
           'SERINO' => $SERINO,
+          'FIYAT' => $FIYAT[$i],
+          'FIYAT_PB' => $FIYAT_PB[$i], 
           'SF_MIKTAR' => $SF_MIKTAR,
-          'SF_BAKIYE' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT,
         ];
+
         Mail::to('erenbl333@gmail.com')
           ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
 

@@ -106,7 +106,7 @@ class FunctionHelpers
 
     public static function apply_mail_settings()
     {
-        $s = DB::table('FIRMA_TANIMLARI')->where('firma',trim(auth()->user()->firma))->first();
+        $s = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim(auth()->user()->firma))->first();
 
         Config::set('mail.default', 'smtp');
 
@@ -117,8 +117,8 @@ class FunctionHelpers
         Config::set('mail.mailers.smtp.username', $s->username);
         Config::set('mail.mailers.smtp.password', $s->password);
 
-        Config::set('mail.from.address', $s->from_address);
-        Config::set('mail.from.name', $s->from_name);
+        Config::set('mail.from.address', $s->username);
+        Config::set('mail.from.name', $s->FIRMA_ADI);
 
         return $s;
     }
