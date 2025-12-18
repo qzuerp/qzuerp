@@ -242,6 +242,7 @@ Auth::routes(['password.request' => false]);
     // GET'LER
 
   Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+  Route::get('/dashboard/siparis-chart', [App\Http\Controllers\HomeController::class, 'siparisChart']);
 
   // dikkat her sayfa için bir route yönlendirmesi olur controllers içerisinden view e yönlendirme yapılıyor
   Route::get('/kart_stokk',[stok00_controller::class,'getstok00']);
