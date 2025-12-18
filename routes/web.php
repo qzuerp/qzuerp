@@ -58,6 +58,7 @@ use App\Http\Controllers\efn_controler;
 use App\Http\Controllers\cgc70_controller;
 use App\Http\Controllers\takip_controller;
 use App\Http\Controllers\stok_gecmisi_controller;
+use App\Http\Controllers\parametreler;
 
 
 use Illuminate\Http\Request;
@@ -107,7 +108,9 @@ Auth::routes(['password.request' => false]);
   
   Route::get('/stok_gecmisi', function () { return view('stok_gecmisi'); });
   Route::post('/get_history', [stok_gecmisi_controller::class, 'get_history'])->name('stok.gecmisi.getir');
-
+  
+  Route::get('/parametreler', [parametreler::class, 'index'])->name('parametreler');
+  Route::post('/parametreler_islemler', [parametreler::class, 'islemler'])->name('firma.parametreler.kaydet');
 
   // POST'LAR
   Route::get('/loglar/datatables', [main_controller::class, 'getLoglar'])->name('loglar.ajax');

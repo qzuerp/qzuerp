@@ -63,7 +63,7 @@
                                     <i class="fas fa-table mr-1"></i>Tablo Kodu
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select class="form-control select2" name="TABLO_KODU" id="tablo_kodu" required>
+                                <select class="form-control select2" name="TABLO_KODU" id="tablo_kodu" req>
                                     <option value="">Tablo Seçiniz...</option>
                                     @php
                                         $TABLOLAR = DB::table($database.'table00')->orderBy('baslik')->get();

@@ -149,7 +149,7 @@
 									
 									<div class="col-md-2">
 										<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="firma" class="firma form-control" maxlength="16" 
-											 id="firma" required value="{{ $kullanici_veri->firma }}" readonly>
+											 id="firma" req value="{{ $kullanici_veri->firma }}" readonly>
 										<input type="hidden" maxlength="16" name="firma" value="{{ $kullanici_veri->firma }}">
 									</div>
 									
@@ -169,7 +169,7 @@
 										<div class="form-group">
 											<label>Mamul Kodu</label>
 											<select class="form-control MAMULSTOKKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULSTOKKODU" onchange="stokAdiGetir3(this.value)" 
-													name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" required>
+													name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" req>
 												<option value="">Seç</option>
 												 @php
 													$stok00_evraklar = DB::table($database.'stok00')

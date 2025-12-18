@@ -138,7 +138,7 @@
 
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <label>Cari Hesap Kodu</label>
-                    <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HESAPKODU" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+                    <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HESAPKODU" onchange="cariKoduGirildi(this.value)" style="width: 100%; height: 30PX" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" req>
                       @php
                         echo "<option value =' '> </option>";
                         foreach ($cari00 as $key => $veri) {

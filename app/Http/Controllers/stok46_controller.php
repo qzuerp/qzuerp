@@ -118,7 +118,6 @@ class stok46_controller extends Controller
         break;
 
       case 'kart_olustur':
-        
         //ID OLARAK DEGISECEK
         $SON_EVRAK=DB::table($firma.'stok46e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
         $SON_ID= $SON_EVRAK->EVRAKNO;
@@ -191,13 +190,16 @@ class stok46_controller extends Controller
           'STOK_ADI' => $STOK_ADI,
           'LOTNUMBER' => $LOTNUMBER,
           'SERINO' => $SERINO,
-          'FIYAT' => $FIYAT[$i],
-          'FIYAT_PB' => $FIYAT_PB[$i], 
+          'FIYAT' => $FIYAT,
+          'FIYAT_PB' => $FIYAT_PB, 
           'SF_MIKTAR' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT,
+          'TERMIN_TAR' => $TERMIN_TAR,
         ];
-
-        Mail::to('erenbl333@gmail.com')
+        $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
+        ->where('GK_3','SAT')
+        ->first();
+        Mail::to($kontakt->SIRKET_EMAIL_1)
           ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
 
         $sonID=DB::table($firma.'stok46e')->max('id');

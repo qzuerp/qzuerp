@@ -116,7 +116,7 @@
                     <div class="col-md-6 col-sm-4 col-xs-6" style="display:flex; gap:10px;">
                       <div>
                         <label for="">Operasyon Kodu</label>
-                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" required=" " name="R_OPERASYON" id="R_OPERASYON" >
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" req=" " name="R_OPERASYON" id="R_OPERASYON" >
                           <option value="">Operasyon Kodu Seç...</option>
                           @php
 
@@ -137,7 +137,7 @@
                       </div>
                       <div>
                         <label for="">Tezgah Kodu</label>
-                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" required=" " name="R_TEZGAH" id="R_TEZGAH" >
+                        <select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" req=" " name="R_TEZGAH" id="R_TEZGAH" >
                           <option value="">Tezgah Kodu Seç...</option>
                           @php
 

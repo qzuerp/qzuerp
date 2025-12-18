@@ -376,7 +376,7 @@
                                   <td><input type="number" class="form-control SF_MIKTAR" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
                                   <td><input type="number" class="form-control FIYAT" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
                                   <td>
-                                    <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control FIYAT_PB js-example-basic-single select2 required" style="width: 100%;">
+                                    <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control FIYAT_PB js-example-basic-single select2 req" style="width: 100%;">
                                         <option value=" ">Seç</option>
                                         @php
                                           $kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();

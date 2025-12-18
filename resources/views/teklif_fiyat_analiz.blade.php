@@ -314,7 +314,7 @@
 																	<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
 																</td>
 																<td>
-																	<select class="form-control select2 js-example-basic-single required" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
+																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
 																		<option value=" ">Seç</option>
 																		<option value="M">M - Mamul</option>
 																		<option value="H">H - Hammadde</option>
@@ -324,7 +324,7 @@
 																</td>
 																<td>
 																	<div class="d-flex  " style="display: flex;">
-																		<select class="form-control select2 js-example-basic-single required" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
+																		<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
 																			<option value=" ">Seç</option>
 																		</select>
 																		<input type="hidden" id="STOK_KOD">
@@ -335,7 +335,7 @@
 																	<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_AD1" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI" readonly>
 																</td>
 																<td>
-																	<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control required number" value="">
+																	<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control req number" value="">
 																</td>
 																<td>
 																	<input type="text" name="" id="ISLEM_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi" class="form-control" value="" readonly>
@@ -1025,7 +1025,7 @@
 	function eksikAlanAlert() {
 		let missingFields = [];
 
-		document.body.querySelectorAll("input.required, textarea.required, select.required").forEach(field => {
+		document.body.querySelectorAll("input.req, textarea.req, select.req").forEach(field => {
 			if (!field.value.trim()) {
 				missingFields.push(field.getAttribute("data-isim") || "Bilinmeyen Alan");
 			}

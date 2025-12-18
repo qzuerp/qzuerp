@@ -176,7 +176,7 @@ if (isset($kart_veri)) {
 
           <div class="col-md-4 col-sm-4 col-xs-6">
             <label>Fason Üretici</label>
-            <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" required>
+            <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30px" onchange="cariKoduGirildi(this.value)" name="CARIHESAPCODE_E" id="CARIHESAPCODE_E" req>
               <option value="" selected>Seç...</option>
               @php
                 foreach ($cari_evraklar as $key => $veri) {

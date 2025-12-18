@@ -277,7 +277,7 @@
           <li><a href="musteri_form"><i class="fa-solid fa-file"></i>Müşteri Formu</a></li>
         @endif
         @if (in_array('PRMTR', $kullanici_read_yetkileri))
-          <li><a href="#"><i class='bx bx-slider'></i>Parametreler</a></li>
+          <li><a href="parametreler"><i class='bx bx-slider'></i>Parametreler</a></li>
         @endif
         <!-- @if (in_array('PERSKART', $kullanici_read_yetkileri))
           <li><a href="kart_personel"><i class='bx bx-user'></i>Personel Kartı</a></li>

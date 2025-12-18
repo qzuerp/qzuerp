@@ -104,7 +104,7 @@
 								
 								<div class="col-md-2">
 									<input type="text" class="form-control" maxlength="16" 
-										name="firma" id="firma" required value="{{ @$kullanici_veri->firma }}" disabled>
+										name="firma" id="firma" req value="{{ @$kullanici_veri->firma }}" disabled>
 									<input type="hidden" maxlength="16" name="firma" value="{{ @$kullanici_veri->firma }}">
 								</div>
 								
@@ -537,7 +537,7 @@
 
 												<label class="col-sm-2 col-form-label">Reçete Ürün Kodu</label>
 												<div class="col-sm-3">
-													<select name="KOD_B" id="KOD_B" class="form-control" required=" ">
+													<select name="KOD_B" id="KOD_B" class="form-control" req=" ">
 														@php
 														echo "<option value =' ' selected> </option>";
 														$kayitliStok = DB::table($database.'bomu01t')->get();

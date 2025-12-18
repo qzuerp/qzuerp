@@ -114,11 +114,11 @@ if (isset($kart_veri)) {
                     <div class="row ">
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Kod</label>
-                        <input type="text" class="form-control" name="KOD" id="KOD" required maxlength="16" value="{{ @$kart_veri->KOD }}">
+                        <input type="text" class="form-control" name="KOD" id="KOD" req maxlength="16" value="{{ @$kart_veri->KOD }}">
                       </div>
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Personel Adı</label>
-                        <input type="text" class="form-control" maxlength="50" name="AD" required id="AD" value="{{ @$kart_veri->AD }}">
+                        <input type="text" class="form-control" maxlength="50" name="AD" req id="AD" value="{{ @$kart_veri->AD }}">
                       </div>
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Ünvanı</label>

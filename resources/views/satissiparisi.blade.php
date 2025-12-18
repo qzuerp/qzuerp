@@ -358,7 +358,7 @@
                             <td><input type="number" class="form-control" name="SF_BAKIYE_SHOW_T" value="{{ floor($t_veri->SF_MIKTAR - $t_veri->SF_NETKAPANANMIK) }}" disabled></td>
                             <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $t_veri->FIYAT }}"></td>
                             <td>
-                              <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%;">
+                              <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 req" style="width: 100%;">
                                 <option value="">Seç</option>
                                 @php
                                   $kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
@@ -529,7 +529,7 @@
                           <td><input type="number" class="form-control" name="SF_MIKTAR_F[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
                           <td><input type="number" class="form-control" name="FIYAT_F[]" value="{{ $record->PRICE ??  $t_veri->FIYAT}}"></td>
                           <td>
-                            <select name="FIYAT_PB_F[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 required" style="width: 100%;">
+                            <select name="FIYAT_PB_F[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 req" style="width: 100%;">
                               <option value="">Seç</option>
                               @php
                                 $kur_veri = DB::table($database.'gecoust')->where('EVRAKNO','PUNIT')->get();
