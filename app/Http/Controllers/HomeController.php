@@ -50,6 +50,7 @@ class HomeController extends Controller
                 ON e.CODEFROM = s.FIYAT_PB
             AND e.CODETO   = 'TRY'
             AND CONVERT(date, e.EVRAKNOTARIH, 111) = CAST(s.created_at AS date)
+            WHERE s.created_at >= DATEADD(day, -6, CAST(GETDATE() AS date))
             GROUP BY CAST(s.created_at AS date), s.EVRAKNO
         ");
 
@@ -68,6 +69,7 @@ class HomeController extends Controller
                 ON e.CODEFROM = s.FIYAT_PB
             AND e.CODETO   = 'TRY'
             AND CONVERT(date, e.EVRAKNOTARIH, 111) = CAST(s.created_at AS date)
+            WHERE s.created_at >= DATEADD(day, -6, CAST(GETDATE() AS date))
             GROUP BY CAST(s.created_at AS date), s.EVRAKNO
         ");
 

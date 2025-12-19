@@ -765,131 +765,131 @@
 
     $(function(){
 
-    $.getJSON('/dashboard/siparis-chart', function(res){
+        $.getJSON('/dashboard/siparis-chart', function(res){
 
-        const dates = [...new Set([
-        ...Object.keys(res.satis || {}),
-        ...Object.keys(res.satin_alma || {})
-        ])].sort();
+            const dates = [...new Set([
+            ...Object.keys(res.satis || {}),
+            ...Object.keys(res.satin_alma || {})
+            ])].sort();
 
-        if(!dates.length){
-        $('#hc-siparis').html('<div style="padding:20px">Veri yok</div>');
-        return;
-        }
-
-        function buildSeries(source){
-        return dates.map(d=>{
-            let total = 0;
-            (source[d] || []).forEach(x=>{
-            total += Number(x.tutar) || 0;
-            });
-            return {
-            y: total,
-            detay: source[d] || []
-            };
-        });
-        }
-
-        const satisSeries      = buildSeries(res.satis);
-        const satinSeries      = buildSeries(res.satin_alma);
-        const netFarkSeries    = dates.map((d,i)=> (satisSeries[i].y || 0) - (satinSeries[i].y || 0));
-
-        Highcharts.chart('hc-siparis', {
-
-        chart: {
-            type: 'areaspline',
-            backgroundColor: 'transparent'
-        },
-
-        title: {
-            text: ''
-        },
-        credits: {
-            enabled: false
-        },
-
-        colors: [
-            '#22c55e', // satış
-            '#ef4444', // satın alma
-            '#3b82f6'  // net fark
-        ],
-
-        xAxis: {
-            categories: dates,
-            gridLineWidth: 1,
-            gridLineColor: '#e5e7eb'
-        },
-
-        yAxis: {
-            title: { text: 'Tutar (₺)' },
-            gridLineDashStyle: 'Dash'
-        },
-
-        plotOptions: {
-            areaspline: {
-            fillOpacity: 0.25,
-            marker: {
-                radius: 4,
-                symbol: 'circle'
+            if(!dates.length){
+            $('#hc-siparis').html('<div style="padding:20px">Veri yok</div>');
+            return;
             }
-            },
-            spline: {
-            marker: {
-                radius: 3
-            }
-            }
-        },
 
-        tooltip: {
-            shared: true,
-            useHTML: true,
-            formatter: function () {
-
-            let html = `<b>${this.x}</b><br>`;
-
-            this.points.forEach(p=>{
-                html += `
-                <span style="color:${p.color}">●</span>
-                <b>${p.series.name}</b>:
-                ${Highcharts.numberFormat(p.y,2,',','.')} ₺<br>
-                `;
-            });
-
-            html += `<hr style="margin:6px 0">`;
-
-            this.points.forEach(p=>{
-                (p.point.detay || []).forEach(d=>{
-                html += `
-                    Evrak: <b>${d.evrakno}</b><br>
-                    Adet: ${d.adet}<br>
-                    Tutar: ${Highcharts.numberFormat(d.tutar,2,',','.')} ₺
-                    <hr style="margin:4px 0">
-                `;
+            function buildSeries(source){
+            return dates.map(d=>{
+                let total = 0;
+                (source[d] || []).forEach(x=>{
+                total += Number(x.tutar) || 0;
                 });
+                return {
+                y: total,
+                detay: source[d] || []
+                };
+            });
+            }
+
+            const satisSeries      = buildSeries(res.satis);
+            const satinSeries      = buildSeries(res.satin_alma);
+            const netFarkSeries    = dates.map((d,i)=> (satisSeries[i].y || 0) - (satinSeries[i].y || 0));
+
+            Highcharts.chart('hc-siparis', {
+
+            chart: {
+                type: 'areaspline',
+                backgroundColor: 'transparent'
+            },
+
+            title: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+
+            colors: [
+                '#22c55e', // satış
+                '#ef4444', // satın alma
+                '#3b82f6'  // net fark
+            ],
+
+            xAxis: {
+                categories: dates,
+                gridLineWidth: 1,
+                gridLineColor: '#e5e7eb'
+            },
+
+            yAxis: {
+                title: { text: 'Tutar (₺)' },
+                gridLineDashStyle: 'Dash'
+            },
+
+            plotOptions: {
+                areaspline: {
+                fillOpacity: 0.25,
+                marker: {
+                    radius: 4,
+                    symbol: 'circle'
+                }
+                },
+                spline: {
+                marker: {
+                    radius: 3
+                }
+                }
+            },
+
+            tooltip: {
+                shared: true,
+                useHTML: true,
+                formatter: function () {
+
+                let html = `<b>${this.x}</b><br>`;
+
+                this.points.forEach(p=>{
+                    html += `
+                    <span style="color:${p.color}">●</span>
+                    <b>${p.series.name}</b>:
+                    ${Highcharts.numberFormat(p.y,2,',','.')} ₺<br>
+                    `;
+                });
+
+                html += `<hr style="margin:6px 0">`;
+
+                this.points.forEach(p=>{
+                    (p.point.detay || []).forEach(d=>{
+                    html += `
+                        Evrak: <b>${d.evrakno}</b><br>
+                        Adet: ${d.adet}<br>
+                        Tutar: ${Highcharts.numberFormat(d.tutar,2,',','.')} ₺
+                        <hr style="margin:4px 0">
+                    `;
+                    });
+                });
+
+                return html;
+                }
+            },
+
+            series: [
+                {
+                name: 'Satış',
+                data: satisSeries
+                },
+                {
+                name: 'Satın Alma',
+                data: satinSeries
+                },
+                {
+                name: 'Net Fark',
+                type: 'spline',
+                data: netFarkSeries
+                }
+            ]
             });
 
-            return html;
-            }
-        },
-
-        series: [
-            {
-            name: 'Satış',
-            data: satisSeries
-            },
-            {
-            name: 'Satın Alma',
-            data: satinSeries
-            },
-            {
-            name: 'Net Fark',
-            type: 'spline',
-            data: netFarkSeries
-            }
-        ]
         });
-
-    });
 
     });
 </script>
