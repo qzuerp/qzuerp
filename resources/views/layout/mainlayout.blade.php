@@ -516,7 +516,7 @@
       loaderManager.hide();
     });
 
-    $body.on('click', 'a', function (e) {
+    $body.on('click', 'a:not([target="_blank"])', function (e) {
       if (isNavigating) {
         return false;
       }
@@ -524,11 +524,15 @@
       const $a = $(this);
       const href = $a.attr('href');
 
-      if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
+      if ($a.attr('target') === '_blank') {
         return;
       }
 
-      if ($a.attr('target') === '_blank' || $a.attr('download')) {
+      if ($a.data('skip') == 1) {
+        return;
+      }
+
+      if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
         return;
       }
 
@@ -545,7 +549,8 @@
       }
 
       const currentPath = window.location.pathname + window.location.search + window.location.hash;
-      const isCurrentPage = href === currentPath ||
+      const isCurrentPage =
+        href === currentPath ||
         href === window.location.pathname ||
         (href.includes('#') && href === currentPath);
 
@@ -561,6 +566,8 @@
         window.location.href = href;
       }, 2);
     });
+
+
     $body.on('submit', 'form', function (e) {
       if (e.defaultPrevented || isNavigating) return;
 
