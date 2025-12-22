@@ -252,7 +252,7 @@
 															</select>
 														</td>
 														<td>
-															<select class="select2" style="width:200px" id="OLCUM_TIPI_FILL">
+															<select class="select2" style="width:200px" id="OLCUM_CIH_FILL">
 																<option value=" ">Seç</option>
 																@php
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','TEZGAHGK4')->get();

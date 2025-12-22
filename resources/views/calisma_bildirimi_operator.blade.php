@@ -1387,6 +1387,182 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade bd-example-modal-lg" id="hizli_islem" tabindex="-1" role="dialog" aria-labelledby="hizli_islem"  >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>Hızlı İşlem</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-6 mb-1">
+                  <label for="islemKodu">Barkod</label>
+                  <!-- <button id="start-scan">📷 Tara</button> -->
+                  <div class="input-group" style="flex-wrap: nowrap;">
+                    <input type="text" aria-describedby="basic-addon2" class="form-control" id="barcode-result" style="background-color:rgb(218, 236, 255);">
+                    <button class="input-group-text" id="basic-addon2" style="height: 32px !important;">Ara</button>
+                  </div>
+                  <!-- <div id="reader" style="width:300px;"></div> -->
+                </div>
+                <div class="col-6">
+                  <label for="islem_miktari">İşlem Miktarı</label>
+                  <input type="number" class="form-control" id="islem_miktari">
+                </div>
+                <div class="col-6 mb-1">
+                  <label for="stok_kodu">Stok Kod</label>
+                  <input type="text" class="form-control" id="stok_kodu" readonly>
+                </div>
+                <div class="col-6 mb-1">
+                  <label for="stok_adi">Stok Adı</label>
+                  <input type="text" class="form-control" id="stok_adi" readonly>
+                </div>
+
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 1</label>
+                  <input type="text" class="form-control" id="lok-1" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 2</label>
+                  <input type="text" class="form-control" id="lok-2" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 3</label>
+                  <input type="text" class="form-control" id="lok-3" readonly>
+                </div>
+                <div class="col-3 mb-1">
+                  <label for="stok_adi">Lokasyon 4</label>
+                  <input type="text" class="form-control" id="lok-4" readonly>
+                </div>
+                
+                <input type="hidden" id="lotH">
+                <input type="hidden" id="serinoH">
+                <input type="hidden" id="depoH">
+                <input type="hidden" id="text1H">
+                <input type="hidden" id="text1H">
+                <input type="hidden" id="text2H">
+                <input type="hidden" id="text3H">
+                <input type="hidden" id="text4H">
+                <input type="hidden" id="num-1H">
+                <input type="hidden" id="num-2H">
+                <input type="hidden" id="num-3H">
+                <input type="hidden" id="num-4H">
+              </div>
+              <div style="overflow:auto;">
+                <table class="table table-hover text-center" id="hizli_islem_tablo">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th style="min-width: 75px">Kod</th>
+                      <th style="min-width: 75px">Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="satirEkleModal" style="margin-top: 10px;"><span id="satirEkleText"><i class="fa fa-plus"></i> Satır Ekle</span></button>
+              <button type="button" class="btn btn-outline-warning border" data-bs-dismiss="modal" style="margin-top: 10px;">Kapat</button>
+            </div>
+          </div>
+        </div>
+	    </div>
+
+      {{-- Seri no start --}}
+        <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
+          <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+            </div>
+            <div class="modal-body">
+            <div class="row" style="overflow:auto;">
+              <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
+              <thead>
+                <tr class="bg-primary">
+                <th>ID</th>
+                <th>Kod</th>
+                <th>Ad</th>
+                <th>Miktar</th>
+                <th>Birim</th>
+                <th>Lot</th>
+                <th>Seri No</th>
+                <th>Depo</th>
+                <th>Varyant Text 1</th>
+                <th>Varyant Text 2</th>
+                <th>Varyant Text 3</th>
+                <th>Varyant Text 4</th>
+                <th>Ölçü 1</th>
+                <th>Ölçü 2</th>
+                <th>Ölçü 3</th>
+                <th>Ölçü 4</th>
+                <th>Lok 1</th>
+                <th>Lok 2</th>
+                <th>Lok 3</th>
+                <th>Lok 4</th>
+                <th>#</th>
+                </tr>
+              </thead>
+
+              <!-- <tfoot>
+                <tr class="bg-info">
+                <th>Kod</th>
+                <th>Ad</th>
+                <th>Miktar</th>
+                <th>Birim</th>
+                <th>Lot</th>
+                <th>Seri No</th>
+                <th>Depo</th>
+                <th>Varyant Text 1</th>
+                <th>Varyant Text 2</th>
+                <th>Varyant Text 3</th>
+                <th>Varyant Text 4</th>
+                <th>Ölçü 1</th>
+                <th>Ölçü 2</th>
+                <th>Ölçü 3</th>
+                <th>Ölçü 4</th>
+                <th>Lok 1</th>
+                <th>Lok 2</th>
+                <th>Lok 3</th>
+                <th>Lok 4</th>
+                <th>#</th>
+                </tr>
+              </tfoot> -->
+
+              <tbody>
+                
+              </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+            </div>
+          </div>
+          </div>
+        </div>
+      {{-- Seri no finish --}}
     </section>
 
     <!-- Tezgah Planı Seçmek İçin Modal -->

@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-2">
+                                <!-- <div class="row mb-2">
                                     <div class="col-3">
                                         <input type="date" name="TARIH" class="form-control" id="">
                                     </div>
@@ -128,125 +128,203 @@
                                     <div class="col-3">
                                         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#grupModal"><i class="fa-solid fa-layer-group"></i> Grup Kodlarını Gör</a>
                                     </div>
+                                </div> -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <label>Tarih</label>
+                                        <input type="date" name="TARIH" class="form-control" value="{{ @$kart_veri->TARIH }}">
+                                    </div>
+                                    <div class="col-3">
+                                        <label>İş Merkezi</label>
+                                        <select class="form-control select2 js-example-basic-single KOD" style="width: 100%;" name="TO_ISMERKEZI" id="X_T_ISMERKEZI">
+                                            @php
+                                                $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+                                                foreach ($imlt00_evraklar as $key => $veri) {
+                                                    if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) {
+                                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
+                                                    } else {
+                                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";
+                                                    }
+                                                }
+                                            @endphp
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-3">
+                                        <label>Periyod Tipi</label>
+                                        <select class="form-control" name="TIP" id="periyodTipi" onchange="periyodTipiDegisti(this.value)">
+                                            <option value="">Seçiniz...</option>
+                                            <option value="daily" {{ @$kart_veri->TIP == 'daily' ? 'selected' : '' }}>Günlük</option>
+                                            <option value="weekly" {{ @$kart_veri->TIP == 'weekly' ? 'selected' : '' }}>Haftalık</option>
+                                            <option value="monthly" {{ @$kart_veri->TIP == 'monthly' ? 'selected' : '' }}>Aylık</option>
+                                            <option value="once" {{ @$kart_veri->TIP == 'once' ? 'selected' : '' }}>Bir Kez</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <label>&nbsp;</label>
+                                        <a class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#grupModal">
+                                            <i class="fa-solid fa-layer-group"></i> Grup Kodları
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="row g-3">
-                                  <!-- SEKME BAŞLIKLARI -->
-                                        <ul class="nav nav-tabs mb-1" role="tablist">
-                                            <li class="nav-item">
-                                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dailyTab" type="button">
-                                                Günlük
-                                            </button>
-                                            </li>
-                                            <li class="nav-item">
-                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#weeklyTab" type="button">
-                                                Haftalık
-                                            </button>
-                                            </li>
-                                            <li class="nav-item">
-                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#monthlyTab" type="button">
-                                                Aylık
-                                            </button>
-                                            </li>
-                                            <li class="nav-item">
-                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#onceTab" type="button">
-                                                Bir Kez
-                                            </button>
-                                            </li>
-                                        </ul>
 
-                                        <!-- SEKME İÇERİKLERİ -->
-                                        <div class="tab-content">
+                                <!-- Periyod detayları (başlangıçta gizli) -->
+                                <div class="row mb-3" id="periyodDetayAlani" style="display: none;">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                
+                                                <!-- GÜNLÜK -->
+                                                <div id="dailyBox" class="periyod-detay" style="display: none;">
+                                                    <h5 class="mb-3">Günlük Periyod Ayarları</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label>Tekrar Tipi</label>
+                                                            <select class="form-control" name="DAILY_TYPE">
+                                                                <option value="every" {{ @$kart_veri->DAILY_TYPE == 'every' ? 'selected' : '' }}>Her Gün</option>
+                                                                <option value="weekday" {{ @$kart_veri->DAILY_TYPE == 'weekday' ? 'selected' : '' }}>Hafta İçi</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Aralık (Gün)</label>
+                                                            <input type="number" class="form-control" name="INTERVAL_DAILY" value="{{ @$kart_veri->INTERVAL_DAILY ?? 1 }}" min="1">
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                            <!-- GÜNLÜK -->
-                                            <div class="tab-pane fade show active" id="dailyTab">
-                                            <input type="hidden" name="TIP" value="daily">
+                                                <!-- HAFTALIK -->
+                                                <div id="weeklyBox" class="periyod-detay" style="display: none;">
+                                                    <h5 class="mb-3">Haftalık Periyod Ayarları</h5>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4">
+                                                            <label>Aralık (Hafta)</label>
+                                                            <input type="number" class="form-control" name="INTERVAL_WEEKLY" value="{{ @$kart_veri->INTERVAL_WEEKLY ?? 1 }}" min="1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <label class="d-block mb-2">Günler</label>
+                                                            <div class="d-flex flex-wrap gap-3">
+                                                                @php
+                                                                    $seciliGunler = @$kart_veri->DAYS ? explode(',', $kart_veri->DAYS) : [];
+                                                                @endphp
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="1" {{ in_array('1', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Pazartesi</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="2" {{ in_array('2', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Salı</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="3" {{ in_array('3', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Çarşamba</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="4" {{ in_array('4', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Perşembe</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="5" {{ in_array('5', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Cuma</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="6" {{ in_array('6', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Cumartesi</span>
+                                                                </label>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="checkbox" name="DAYS[]" value="7" {{ in_array('7', $seciliGunler) ? 'checked' : '' }}> 
+                                                                    <span class="ms-1">Pazar</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                            <div class="mb-2">
-                                                <label class="fw-semibold">Tekrar</label>
-                                                <select class="form-select form-select-sm" name="DAILY_TYPE">
-                                                <option value="every">Her Gün</option>
-                                                <option value="weekday">Hafta İçi</option>
-                                                </select>
+                                                <!-- AYLIK -->
+                                                <div id="monthlyBox" class="periyod-detay" style="display: none;">
+                                                    <h5 class="mb-3">Aylık Periyod Ayarları</h5>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4">
+                                                            <label>Aralık (Ay)</label>
+                                                            <input type="number" class="form-control" name="INTERVAL_MONTHLY" value="{{ @$kart_veri->INTERVAL_MONTHLY ?? 1 }}" min="1">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <label class="d-block mb-2">Aylar</label>
+                                                            <div class="row">
+                                                                @php
+                                                                    $seciliAylar = @$kart_veri->MONTHS ? explode(',', $kart_veri->MONTHS) : [];
+                                                                    $aylar = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 
+                                                                            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+                                                                @endphp
+                                                                @foreach($aylar as $index => $ay)
+                                                                    <div class="col-md-3 col-sm-4 col-6">
+                                                                        <label class="d-flex align-items-center">
+                                                                            <input type="checkbox" name="MONTHS[]" value="{{ $index + 1 }}" 
+                                                                                {{ in_array((string)($index + 1), $seciliAylar) ? 'checked' : '' }}>
+                                                                            <span class="ms-1">{{ $ay }}</span>
+                                                                        </label>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <label class="d-block mb-2">Gün Seçimi</label>
+                                                            <div class="mb-2">
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="radio" name="MONTH_TYPE" value="day" 
+                                                                        {{ @$kart_veri->MONTH_TYPE == 'day' ? 'checked' : '' }}>
+                                                                    <span class="ms-2">Ayın</span>
+                                                                    <input type="number" class="form-control form-control-sm d-inline mx-2" 
+                                                                        style="width: 80px;" name="DAY_NO" value="{{ @$kart_veri->DAY_NO }}" min="1" max="31">
+                                                                    <span>günü</span>
+                                                                </label>
+                                                            </div>
+                                                            <div>
+                                                                <label class="d-flex align-items-center">
+                                                                    <input type="radio" name="MONTH_TYPE" value="week" 
+                                                                        {{ @$kart_veri->MONTH_TYPE == 'week' ? 'checked' : '' }}>
+                                                                    <span class="ms-2">Ayın</span>
+                                                                    <select class="form-control form-control-sm d-inline mx-2" style="width: 80px;" name="WEEK_NO">
+                                                                        <option value="1" {{ @$kart_veri->WEEK_NO == '1' ? 'selected' : '' }}>1.</option>
+                                                                        <option value="2" {{ @$kart_veri->WEEK_NO == '2' ? 'selected' : '' }}>2.</option>
+                                                                        <option value="3" {{ @$kart_veri->WEEK_NO == '3' ? 'selected' : '' }}>3.</option>
+                                                                        <option value="4" {{ @$kart_veri->WEEK_NO == '4' ? 'selected' : '' }}>4.</option>
+                                                                    </select>
+                                                                    <select class="form-control form-control-sm d-inline mx-2" style="width: 100px;" name="WEEK_DAY">
+                                                                        <option value="1" {{ @$kart_veri->WEEK_DAY == '1' ? 'selected' : '' }}>Pazartesi</option>
+                                                                        <option value="2" {{ @$kart_veri->WEEK_DAY == '2' ? 'selected' : '' }}>Salı</option>
+                                                                        <option value="3" {{ @$kart_veri->WEEK_DAY == '3' ? 'selected' : '' }}>Çarşamba</option>
+                                                                        <option value="4" {{ @$kart_veri->WEEK_DAY == '4' ? 'selected' : '' }}>Perşembe</option>
+                                                                        <option value="5" {{ @$kart_veri->WEEK_DAY == '5' ? 'selected' : '' }}>Cuma</option>
+                                                                    </select>
+                                                                    <span>günü</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- BİR KEZ -->
+                                                <div id="onceBox" class="periyod-detay" style="display: none;">
+                                                    <h5 class="mb-3">Tek Seferlik Bakım</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label>Başlangıç Tarihi</label>
+                                                            <input type="date" class="form-control" name="START_DATE" value="{{ @$kart_veri->START_DATE }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
-
-                                            <div class="d-flex align-items-center gap-2">
-                                                <input type="number" class="form-control form-control-sm w-25" name="INTERVAL_DAILY" value="1">
-                                                <span>günde bir</span>
-                                            </div>
-                                            </div>
-
-                                            <!-- HAFTALIK -->
-                                            <div class="tab-pane fade" id="weeklyTab">
-                                            <input type="hidden" name="TIP" value="weekly">
-
-                                            <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="number" class="form-control form-control-sm w-25" name="INTERVAL_WEEKLY" value="1">
-                                                <span>haftada bir</span>
-                                            </div>
-
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <label><input type="checkbox" name="DAYS[]" value="1"> Pzt</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="2"> Sal</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="3"> Çar</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="4"> Per</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="5"> Cum</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="6"> Cts</label>
-                                                <label><input type="checkbox" name="DAYS[]" value="7"> Paz</label>
-                                            </div>
-                                            </div>
-
-                                            <!-- AYLIK -->
-                                            <div class="tab-pane fade" id="monthlyTab">
-                                            <input type="hidden" name="TIP" value="monthly">
-
-                                            <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="number" class="form-control form-control-sm w-25" name="INTERVAL_MONTHLY" value="1">
-                                                <span>ayda bir</span>
-                                            </div>
-
-                                            <div class="mb-2 fw-semibold">Aylar</div>
-                                            <div class="row row-cols-4 g-1 small mb-3">
-                                                <label><input type="checkbox" name="MONTHS[]" value="1"> Ocak</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="2"> Şubat</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="3"> Mart</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="4"> Nisan</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="5"> Mayıs</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="6"> Haziran</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="7"> Temmuz</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="8"> Ağustos</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="9"> Eylül</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="10"> Ekim</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="11"> Kasım</label>
-                                                <label><input type="checkbox" name="MONTHS[]" value="12"> Aralık</label>
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <label><input type="radio" name="MONTH_TYPE" value="day"> Ayın</label>
-                                                <input type="number" class="form-control form-control-sm d-inline w-25" name="DAY_NO">
-                                                <span>günü</span>
-                                            </div>
-
-                                            <div>
-                                                <label><input type="radio" name="MONTH_TYPE" value="week"> Ayın</label>
-                                                <select class="form-select form-select-sm d-inline w-25" name="WEEK_NO">
-                                                <option>1</option><option>2</option><option>3</option><option>4</option>
-                                                </select>
-                                                <select class="form-select form-select-sm d-inline w-25" name="WEEK_DAY">
-                                                <option>Pzt</option><option>Sal</option><option>Çar</option><option>Per</option><option>Cum</option>
-                                                </select>
-                                                <span>günü</span>
-                                            </div>
-                                            </div>
-
-                                            <!-- BİR KEZ -->
-                                            <div class="tab-pane fade" id="onceTab">
-                                            <input type="hidden" name="TIP" value="once">
-
-                                            <input type="date" class="form-control form-control-sm w-50" name="START_DATE">
-                                            </div>
-
                                         </div>
-                            </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                     <div class="col-12">
@@ -571,30 +649,47 @@
           }
 
         });
-
-
-        const boxes = document.querySelectorAll('.mode-box');
-
-        function switchMode(activeId) {
-            boxes.forEach(box => {
-                const isActive = box.id === activeId;
-
-                box.classList.toggle('d-none', !isActive);
-
-                box.querySelectorAll('input, select').forEach(el => {
-                    el.disabled = !isActive;
-                });
-            });
-        }
-
-        document.querySelectorAll('input[name="TIP"]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                switchMode(radio.id + 'Box');
-            });
-        });
-
-        // ilk yükleme
-        switchMode('dailyBox');
       });
     </script>
+    <script>
+        function periyodTipiDegisti(tip) {
+            const detayAlani = document.getElementById('periyodDetayAlani');
+            const tumDetaylar = document.querySelectorAll('.periyod-detay');
+            
+            // Tüm detayları gizle
+            tumDetaylar.forEach(detay => {
+                detay.style.display = 'none';
+                // İlgili inputları disable et
+                detay.querySelectorAll('input, select').forEach(el => {
+                    el.disabled = true;
+                });
+            });
+            
+            if (tip) {
+                // Detay alanını göster
+                detayAlani.style.display = 'block';
+                
+                // Seçili tipin detayını göster
+                const secilenDetay = document.getElementById(tip + 'Box');
+                if (secilenDetay) {
+                    secilenDetay.style.display = 'block';
+                    // İlgili inputları enable et
+                    secilenDetay.querySelectorAll('input, select').forEach(el => {
+                        el.disabled = false;
+                    });
+                }
+            } else {
+                // Hiçbir tip seçili değilse detay alanını gizle
+                detayAlani.style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde mevcut değeri kontrol et
+        document.addEventListener('DOMContentLoaded', function() {
+            const periyodSelect = document.getElementById('periyodTipi');
+            if (periyodSelect && periyodSelect.value) {
+                periyodTipiDegisti(periyodSelect.value);
+            }
+        });
+        </script>
 @endsection

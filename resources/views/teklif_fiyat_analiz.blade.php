@@ -22,6 +22,7 @@
         
 		$ekranTableE = $database."tekl20e";
 		$ekranTableT = $database."tekl20tı";
+		$ekranTableTR = $database."tekl20tr";
         
         $ekranKayitSatirKontrol = "false";
 
@@ -277,18 +278,19 @@
 									<div class="table-responsive">
 										<div class="nav-tabs-custom">
 											<ul class="nav nav-tabs">
-												<li class="nav-item"><a href="#tab_1" id="tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
+												<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
+												<li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a></li>
 											</ul>
-											<div style="display: flex; justify-content: end; align-items: center; gap: 10px; margin-top: 15px; padding: 0px 10px;">
-												<!-- <h3 id="sonuc"></h3> -->
-												<div>
-													<button type="button" class="btn btn-primary btn-custom" onclick="receteden_hesapla()" name="stokDusum" id="stokDusum" style="font-size: 12px; width:165px;">Ürün Ağacını Hesapla</button>
-													<button type="button" class="btn btn-primary btn-custom" id="hesapla" onclick="fiyat_hesapla()" style="font-size: 12px; width:120px;">Maliyet Hesapla</button>								
-												</div>
-											</div>
+											
 											<div class="tab-content">
-												
 												<div class="active tab-pane" id="tab_1">
+													<div style="display: flex; justify-content: end; align-items: center; gap: 10px; margin-top: 15px; padding: 0px 10px;">
+														<!-- <h3 id="sonuc"></h3> -->
+														<div>
+															<button type="button" class="btn btn-primary btn-custom" onclick="receteden_hesapla()" name="stokDusum" id="stokDusum" style="font-size: 12px; width:165px;">Ürün Ağacını Hesapla</button>
+															<button type="button" class="btn btn-primary btn-custom" id="hesapla" onclick="fiyat_hesapla()" style="font-size: 12px; width:120px;">Maliyet Hesapla</button>								
+														</div>
+													</div>
 													<table class="table table-bordered text-center" id="veriTable">
 														<thead>
 															<tr >
@@ -405,6 +407,83 @@
 														</tbody>
 													</table>
 												</div>
+
+												<div class="tab-pane" id="tab_2">
+													<table class="table table-bordered text-center" id="masrafTable">
+														<thead>
+															<tr >
+																<th>#</th>
+																<th style="min-width:150px; font-size: 13px !important;">Masraf Türü</th>
+																<th style="min-width:280px; font-size: 13px !important;">Masraf Açıklaması</th>
+																<th style="min-width:200px; font-size: 13px !important;">Masraf Katsayı Türü</th>
+																<th style="min-width:120px; font-size: 13px !important;">Masraf Katsayı Türü Açıklaması</th>
+																<th style="min-width:100px; font-size: 13px !important;">Masraf Katsayısı (%)</th>
+																<th style="min-width:120px; font-size: 13px !important;">Tutar</th>
+															</tr>
+															<tr class="satirEkle2" style="background-color:#3c8dbc">
+																<td>
+																	<button type="button" class="btn btn-default" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button>
+																</td>
+																<td>
+																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_TURU" style="width:100% !important;" data-isim="Kaynak Tipi" name="" id="MASRAF_TURU">
+																		<option value=" ">Seç</option>
+																		@php
+																			$masraf_turlari = DB::table($database.'gecoust')->where('EVRAKNO','MASRAF_TURU')->get();
+																			foreach ($masraf_turlari as $key => $masraf_turu) {
+																				echo "<option value='".$masraf_turu->KOD."'>".$masraf_turu->KOD." - ".$masraf_turu->AD."</option>";
+																			}
+																		@endphp
+																	</select>
+																</td>
+																<td>
+																	<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_ACIKLAMASI" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="MASRAF_ACIKLAMASI" readonly>
+																</td>
+																<td>
+																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_TURU" style="width:100% !important;" data-isim="Kaynak Tipi" name="" id="MASRAF_TURU">
+																		<option value=" ">Seç</option>
+																		@php
+																			$katsayi_turlari = DB::table($database.'gecoust')->where('EVRAKNO','KATSAYI_TURU')->get();
+																			foreach ($katsayi_turlari as $key => $katsayi_turu) {
+																				echo "<option value='".$katsayi_turu->KOD."'>".$katsayi_turu->KOD." - ".$katsayi_turu->AD."</option>";
+																			}
+																		@endphp
+																	</select>
+																</td>
+																<td>
+																	<input type="text" name="" id="KATSAYI_ACIKLAMASI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYI_ACIKLAMASI" data-isim="İşlem Birimi" class="form-control" value="" readonly>
+																</td>
+																<td>
+																	<input type="number" name="" id="KATSAYISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYISI" class="form-control" value="">
+																</td>
+																<td> 
+																	<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="">
+																</td>
+															</tr>
+														</thead>
+														<tbody>
+															@php
+																$veri = DB::table($ekranTableTR)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
+																if(!$veri->isEmpty()) {
+																	foreach ($veri as $key => $veri) {
+																		@endphp
+																			<tr>
+																				<input type="hidden" name="TRNUM2[]" value="{{$veri->TRNUM}}">
+																				// <input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																				<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
+																				<td><input type="text" name="MASRAF_TURU[]" value="{{$veri->MASRAF_TURU}}" class="form-control" readonly></td>
+																				<td><input type="text" name="MASRAF_ACIKLAMASI[]" value="{{$veri->MASRAF_ACIKLAMASI}}" class="form-control" readonly></td>
+																				<td><input type="text" name="KATSAYI_TURU[]" value="{{$veri->KATSAYI_TURU}}" class="form-control" readonly></td>
+																				<td><input type="text" name="KATSAYI_ACIKLAMASI[]" value="{{$veri->KATSAYI_ACIKLAMASI}}" class="form-control number" ></td>
+																				<td><input type="text" name="KATSAYI[]" value="{{$veri->KATSAYI}}" class="form-control" readonly></td>
+																				<td><input type="text" name="MASRAF_TUTARI[]" value="{{$veri->MASRAF_TUTARI}}" class="form-control number" readonly></td>
+																			</tr>
+																		@php
+																	}
+																}
+															@endphp
+														</tbody>
+													</table>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -419,9 +498,6 @@
 
 
 <script>
-	@if(session('success'))
-		mesaj({{session('success')}},'success')
-	@endif
 
 	var toplam = 0;
 	var esasMiktar = <?= @$kart_veri->ESAS_MIKTAR ?? 1;?>;
@@ -631,7 +707,7 @@
 				$('#TOPLAM_TUTAR').val(toplamTutar.toFixed(2));
 			});
 			// İlk satıra toplamları yaz
-			$('#veriTable > tbody > tr:first-child').find("input[name='FIYAT[]']").val(toplamFiyat.toFixed(2));
+			$('#veriTable > tbody > tr:first-child').find("input[name='FIYAT[]']").val((toplamTutar / $('#veriTable > tbody > tr:first-child').find("input[name='ISLEM_MIKTARI[]']").val()).toFixed(2));
 			let islemMiktari = parseFloat($('#veriTable > tbody > tr:first-child').find("input[name='ISLEM_MIKTARI[]']").val()) || 0;
 			$('#veriTable > tbody > tr:first-child').find("input[name='TUTAR[]']").val((toplamTutar).toFixed(2));
 
@@ -790,6 +866,53 @@
 			}
 			
 		});
+
+
+		$("#addRow2").on('click', function() {
+			var satirEkleInputs = getInputs('satirEkle2');
+			var TRNUM_FILL = getTRNUM();
+			var htmlCode = " ";
+
+
+        	htmlCode += " <tr> ";
+
+			htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
+			// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+			htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='"+satirEkleInputs.KAYNAK_TIPI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KOD+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='"+satirEkleInputs.KODADI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
+			htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='"+satirEkleInputs.ISLEM_BIRIMI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='"+satirEkleInputs.FIYAT+"' ></td> ";
+			htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='"+satirEkleInputs.TUTAR+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='"+satirEkleInputs.PARA_BIRIMI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='HACIM[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='AUTO[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
+
+
+        	htmlCode += " </tr> ";
+
+			if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || !validateNumbers()) {
+				eksikAlanAlert();
+			}
+			else {
+				$("#veriTable > tbody").append(htmlCode);
+				updateLastTRNUM(TRNUM_FILL);
+
+				emptyInputs('satirEkle');
+				$("#PARA_BIRIMI").val($('#teklif').val());
+			}
+			
+		});
+
+
+
 		// Satır silme
         $(".delete-row").click(function() {
             $("#addRow tbody").find('input[name="record"]').each(function() {
