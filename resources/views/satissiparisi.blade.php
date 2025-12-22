@@ -80,7 +80,7 @@
               <div class="box-body">
                 <!-- <hr> -->
 
-                <div class="row ">
+                <div class="row">
                   <div class="col-md-2 col-xs-2">
                     <select id="evrakSec" class="form-control js-example-basic-single " style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
                       @php

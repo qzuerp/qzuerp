@@ -340,14 +340,14 @@
 									</tfoot>
 									<tbody>
 										@foreach ($dosyalarVeri as $key => $veri)
-											@php $fileUrl = asset('storage/' . $veri->DOSYA); @endphp
+											@php $fileUrl = asset('dosyalar/' . $veri->DOSYA); @endphp
 										<tr id="dosya_{{ $veri->id }}">
 											<td>{{ $veri->DOSYATURU }}</td>
 											<td>{{ $veri->ACIKLAMA }}</td>
 											<td>{{ $veri->created_at }}</td>
 											<td>
 												@if ($fileUrl)
-													<a class="btn btn-outline-primary" href="{{ $fileUrl }}" target="_blank"><i class="fa fa-file"></i></a>
+													<a class="btn btn-outline-primary" data-evrak-kontrol href="{{ $fileUrl }}" target="_blank"><i class="fa fa-file"></i></a>
 												@endif
 												<button type="button" class="btn btn-outline-danger btn-dosya-sil" id="dosyaSil" value="{{ $veri->id }},{{ $firma }}">
 													<i class="fa fa-trash"></i>

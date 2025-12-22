@@ -398,7 +398,7 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
 
     var satirEkleInputs = {};
 
-    $("."+className+" input, ."+className+" select").each(function() {
+    $("."+className+" input, ."+className+" select, ."+className+" textarea").each(function() {
       var elementID = $(this).attr('id');
       var elementValue = $(this).val();
       satirEkleInputs[elementID] = elementValue;
@@ -410,6 +410,7 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
 
  function emptyInputs(className) {
     $("."+className+" input").val("");
+    $("."+className+" textarea").val("");
     $("."+className+" select").val(" ").change();
     $("."+className+" checkbox").prop('checked', false);
  }

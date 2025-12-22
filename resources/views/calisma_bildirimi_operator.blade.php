@@ -202,6 +202,7 @@
                   <li class="nav-item"><a href="#calisma_bildirimi" class="nav-link" data-bs-toggle="tab">Çalışma Bildirimi</a></li>
                   <li class="" id="surec_bi"><a href="#surec_bilgileri" class="nav-link" data-bs-toggle="tab">Süreç Bilgileri</a></li>
                   <li class=""><a href="#hatalar" class="nav-link" data-bs-toggle="tab">Hatalar</a></li>
+                  <li class=""><a href="#hammade" class="nav-link" data-bs-toggle="tab">Kullanılan Hammade / Diğer Malzemeler</a></li>
                   <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                   <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                 </ul>
@@ -624,6 +625,221 @@
                         </div>
                     </div>
                   {{-- HATALAR BİTİŞ --}}
+
+                  
+                  {{-- HAMMADE BAŞLANGIÇ --}}
+                    <div class="tab-pane" id="hammade">
+                      <div class="row">
+                        <div class="col-123">
+                          <button type="button" class="btn btn-default delete-row" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
+                        </div>
+                        <div class="col-12">
+                          <table class="table table-bordered text-center" id="hammade_table" >
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th style="display:none;">Sıra</th>
+                                <th>Stok Kodu</th>
+                                <th>Stok Adı</th>
+                                <th>Lot No</th>
+                                <th>Seri No</th>
+                                <th>İşlem Mik.</th>
+                                <th>İşlem Br.</th>
+                                <th>Depo</th>
+                                <th>Lokasyon 1</th>
+                                <th>Lokasyon 2</th>
+                                <th>Lokasyon 3</th>
+                                <th>Lokasyon 4</th>
+                                <th>Not</th>
+                                <th>Varyant Text 1</th>
+                                <th>Varyant Text 2</th>
+                                <th>Varyant Text 3</th>
+                                <th>Varyant Text 4</th>
+                                <th>Ölçü 1</th>
+                                <th>Ölçü 2</th>
+                                <th>Ölçü 3</th>
+                                <th>Ölçü 4</th>
+                                <th>#</th>
+                              </tr>
+
+                              <tr class="satirEkle" style="background-color:#3c8dbc">
+
+                                <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button></td>
+                                <td style="display:none;"></td>
+                                <td style="min-width: 150px;">
+                                  <select class="form-control select2" onchange="stokAdiGetir(this.value)" id="STOK_KODU_SHOW">
+                                    <option value=" ">Seç</option>
+                                    @php
+                                      $evraklar=DB::table($database .'stok00')->orderBy('id', 'ASC')->get();
+
+                                      foreach ($evraklar as $key => $veri) {
+                                          echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD."</option>";
+                                      }
+                                    @endphp
+                                  </select>
+                                  <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                                  <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="12" style="color: red" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="28" style="color: red" type="text" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="6 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
+                                  <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
+                                </td>
+                                <td style="min-width: 150px;">
+                                  <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation1()" name="AMBCODE_FILL" id="AMBCODE_FILL">
+                                    <option value=" ">Seç</option>
+                                    @php
+                                      $evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
+
+                                      foreach ($evraklar as $key => $veri) {
+
+                                        if ($veri->KOD == @$kart_veri->AMBCODE) {
+                                            echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                                        }
+                                        else {
+                                            echo "<option value ='".$veri->KOD."'>".$veri->KOD."|".$veri->AD."</option>";
+                                        }
+
+                                      }
+                                    @endphp
+                                  </select>
+                                </td>
+                                <td style="min-width: 150px;">
+                                    <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation2()" name="LOCATION1_FILL" id="LOCATION1_FILL">
+                                      <option value=" ">Seç</option>
+                                      @php
+                                        $locat1_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+
+                                        foreach ($locat1_kodlar as $key => $veri) {
+                                            echo "<option value ='".$veri->LOCATION1."'>".$veri->LOCATION1."</option>";
+                                        }
+                                      @endphp
+                                    </select>
+                                  </td>
+                                  <td style="min-width: 150px;">
+                                    <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation3()" name="LOCATION2_FILL" id="LOCATION2_FILL">
+                                      <option value=" ">Seç</option>
+                                      @php
+                                        $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+
+                                        foreach ($locat2_kodlar as $key => $veri) {
+                                            echo "<option value ='".$veri->LOCATION2."'>".$veri->LOCATION2."</option>";
+                                        }
+                                      @endphp
+                                    </select>
+                                  </td>
+                                  <td style="min-width: 150px;">
+                                    <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation4()" name="LOCATION3_FILL" id="LOCATION3_FILL">
+                                      <option value=" ">Seç</option>
+                                      @php
+                                        $locat3_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+
+                                        foreach ($locat3_kodlar as $key => $veri) {
+                                            echo "<option value ='".$veri->LOCATION3."'>".$veri->LOCATION3."</option>";
+                                        }
+                                      @endphp
+                                    </select>
+                                  </td>
+                                  <td style="min-width: 150px;">
+                                    <select class="form-control select2 js-example-basic-single" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
+                                      <option value=" ">Seç</option>
+                                      @php
+                                        $locat4_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+
+                                        foreach ($locat4_kodlar as $key => $veri) {
+                                            echo "<option value ='".$veri->LOCATION4."'>".$veri->LOCATION4."</option>";
+                                        }
+                                      @endphp
+                                    </select>
+                                  </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" id="NOT1_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="text" name="TEXT2_FILL" id="TEXT2_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="text" name="TEXT3_FILL" id="TEXT3_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="text" name="TEXT4_FILL" id="TEXT4_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="number" name="NUM1_FILL" id="NUM1_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="number" name="NUM2_FILL" id="NUM2_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="number" name="NUM3_FILL" id="NUM3_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
+                                </td>
+                                <td>#</td>
+
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              @php
+                                  $t_kart_veri = DB::table($database.'sfdc20t1')->orderBy('id', 'ASC')->get();
+                              @endphp
+                              @foreach ($t_kart_veri as $key => $veri)
+                                <tr>
+                                  <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
+                                  <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+                                  <td><input type="text" class="form-control KOD"  name="KOD_SHOW_T" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
+                                  <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
+                                  <td><input type="text" class="form-control LOTNUMBER" id='Lot-{{ $veri->id }}-CAM' data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}"></td>
+                                  <td class="d-flex ">
+                                    <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" value="{{ $veri->SERINO }}">
+                                    <span class="d-flex -btn">
+                                      <button class="btn btn-primary" onclick='veriCek("{{ $veri->KOD }}","{{ $veri->id }}-CAM")' data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4" type="button">
+                                        <span class="fa-solid fa-magnifying-glass">
+                                        </span>
+                                      </button>
+                                    </span>
+                                  </td>
+                                  <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' readonly name="KUL_MIK[]" value="{{ $veri->SF_MIKTAR }}"></td>
+                                  <td><input type="text" class="form-control STOK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
+                                  <td><input type="text" class="form-control AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                                  <td><input type="text LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+                                  <td><input type="text LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="form-control" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2_SHOW_T" value="{{ $veri->LOCATION2 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                                  <td><input type="text LOCATION3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" class="form-control" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3_SHOW_T" value="{{ $veri->LOCATION3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
+                                  <td><input type="text LOCATION4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" class="form-control" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
+                                  <td><input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1"  name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                                  <td><input type="text" class="form-control TEXT1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
+                                  <td><input type="text" class="form-control TEXT2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
+                                  <td><input type="text" class="form-control TEXT3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
+                                  <td><input type="text" class="form-control TEXT4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT4" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
+                                  <td><input type="number" class="form-control NUM1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM1" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
+                                  <td><input type="number" class="form-control NUM2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
+                                  <td><input type="number" class="form-control NUM3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
+                                  <td><input type="number" class="form-control NUM4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                                  <td><button type="button" class="btn btn-default delete-row"><i class="fa fa-minus" style="color: red"></i></button></td>
+                                </tr>
+                               @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  {{-- HAMMADE BİTİŞ --}}
 
                   {{-- LİSTE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="liste">
@@ -2341,6 +2557,561 @@
         `);
         newWindow.document.close();
       }
+    </script>
+
+    <!-- Hızlı işlem  -->
+    <script>
+      function veriCek(kod,id) {
+        Swal.fire({
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        $.ajax({
+          url: '/mevcutVeriler',
+          type: 'get',
+          data: { KOD: kod },
+          success: function (res) {
+            let htmlCode = '';
+
+            res.forEach((row) => {
+              htmlCode += `
+                <tr>
+                  <td>${id || ''}</td>
+                  <td>${row.KOD || ''}</td>
+                  <td>${row.STOK_ADI || ''}</td>
+                  <td>${row.MIKTAR || ''}</td>
+                  <td>${row.SF_SF_UNIT || ''}</td>
+                  <td>${row.LOTNUMBER || ''}</td>
+                  <td>${row.SERINO || ''}</td>
+                  <td>${row.AMBCODE || ''}</td>
+                  <td>${row.TEXT1 || ''}</td>
+                  <td>${row.TEXT2 || ''}</td>
+                  <td>${row.TEXT3 || ''}</td>
+                  <td>${row.TEXT4 || ''}</td>
+                  <td>${row.NUM1 || ''}</td>
+                  <td>${row.NUM2 || ''}</td>
+                  <td>${row.NUM3 || ''}</td>
+                  <td>${row.NUM4 || ''}</td>
+                  <td>${row.LOCATION1 || ''}</td>
+                  <td>${row.LOCATION2 || ''}</td>
+                  <td>${row.LOCATION3 || ''}</td>
+                  <td>${row.LOCATION4 || ''}</td>
+                </tr>`;
+            });
+
+            $("#seriNoSec > tbody").html(htmlCode);
+          },
+          error: function (error) {
+            console.log(error);
+          },complete: function () {
+              Swal.close();
+          }
+        });
+      }
+
+
+      $("#addRow2").on('click', function() {
+
+        var TRNUM_FILL = getTRNUM();
+
+        var satirEkleInputs = getInputs('satirEkle');
+
+        var htmlCode = " ";
+
+        htmlCode += " <tr> ";
+        htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+        htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
+        htmlCode += "<td class='d-flex'>";
+        htmlCode += "<input type='text' id='serino-" + TRNUM_FILL + "' class='form-control' name='SERINO[]' value='" + satirEkleInputs.SERINO_FILL + "' readonly>";
+        htmlCode += "<span class='ms-1'>";
+        htmlCode += "<button class='btn btn-primary' onclick='veriCek(\"" + satirEkleInputs.STOK_KODU_FILL + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>";
+        htmlCode += "<i class='fa-solid fa-magnifying-glass'></i>";
+        htmlCode += "</button>";
+        htmlCode += "</span>";
+        htmlCode += "</td>";
+        htmlCode += " <td><input type='number' class='form-control' name='KUL_MIK[]' id='miktar-"+TRNUM_FILL+"' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2_SHOW_T' value='"+satirEkleInputs.LOCATION2_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3_SHOW_T' value='"+satirEkleInputs.LOCATION3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4_SHOW_T' value='"+satirEkleInputs.LOCATION4_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOCATION4_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
+        htmlCode += " <td><input type='number' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
+        htmlCode += " <td><input type='number' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
+        htmlCode += " <td><input type='number' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
+        htmlCode += " <td><input type='num  ber' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+        // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+        htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+        htmlCode += " </tr> ";
+
+        if (satirEkleInputs.STOK_KODU_FILL==null || satirEkleInputs.STOK_KODU_FILL==" " || satirEkleInputs.STOK_KODU_FILL=="") {
+          eksikAlanHataAlert2();
+        }
+
+        else {
+
+        $("#hammade_table > tbody").append(htmlCode);
+        updateLastTRNUM(TRNUM_FILL);
+
+        emptyInputs('satirEkle');
+
+        }
+
+      });
+        $('#seriNoSec tbody').on('click', 'tr', function () {
+          var $row = $(this);
+          var $cells = $row.find('td');
+
+          var ID = $cells.eq(0).text().trim();
+          var MIKTAR = $cells.eq(3).text().trim();
+          var LOTNO = $cells.eq(5).text().trim();
+          var SERINO = $cells.eq(6).text().trim();
+          var DEPO = $cells.eq(7).text().trim();
+          var V1 = $cells.eq(8).text().trim();
+          var V2 = $cells.eq(9).text().trim();
+          var V3 = $cells.eq(10).text().trim();
+          var V4 = $cells.eq(11).text().trim();
+
+          var O1 = $cells.eq(12).text().trim();
+          var O2 = $cells.eq(13).text().trim();
+          var O3 = $cells.eq(14).text().trim();
+          var O4 = $cells.eq(15).text().trim();
+
+          var L1 = $cells.eq(16).text().trim();
+          var L2 = $cells.eq(17).text().trim();
+          var L3 = $cells.eq(18).text().trim();
+          var L4 = $cells.eq(19).text().trim();
+
+          $('#serino-' + ID).val(SERINO);
+          $('#Lot-' + ID).val(LOTNO);
+          $('#depo-' + ID).val(DEPO);
+          $('#miktar-' + ID).val(MIKTAR);
+          $('#num1-' + ID).val(V1);
+          $('#num2-' + ID).val(V2);
+          $('#num3-' + ID).val(V3);
+          $('#num4-' + ID).val(V4);
+          
+          $('#text1-' + ID).val(O1);
+          $('#text2-' + ID).val(O2);
+          $('#text3-' + ID).val(O3);
+          $('#text4-' + ID).val(O4);
+
+          $('#lok1-' + ID).val(L1);
+          $('#lok2-' + ID).val(L2);
+          $('#lok3-' + ID).val(L3);
+          $('#lok4-' + ID).val(L4);
+
+          $("#modal_popupSelectModal4").modal('hide');
+      });
+
+      $('#hizli_islem_tablo tbody').on('click', 'tr', function () {
+        $("#hizli_islem_tablo tbody tr").removeClass("selected-row");
+
+        $(this).addClass("selected-row");
+        var $row = $(this);
+        var $cells = $row.find('td');
+
+        var KOD = $cells.eq(0).text().trim();
+        var AD = $cells.eq(1).text().trim();
+        var MIKTAR = $cells.eq(2).text().trim();
+
+        var LOTNO = $cells.eq(4).text().trim();
+        var SERINO = $cells.eq(5).text().trim();
+        var DEPO = $cells.eq(6).text().trim();
+        var V1 = $cells.eq(7).text().trim();
+        var V2 = $cells.eq(8).text().trim();
+        var V3 = $cells.eq(9).text().trim();
+        var V4 = $cells.eq(10).text().trim();
+
+        var O1 = $cells.eq(11).text().trim();
+        var O2 = $cells.eq(12).text().trim();
+        var O3 = $cells.eq(13).text().trim();
+        var O4 = $cells.eq(14).text().trim();
+
+        var L1 = $cells.eq(15).text().trim();
+        var L2 = $cells.eq(16).text().trim();
+        var L3 = $cells.eq(17).text().trim();
+        var L4 = $cells.eq(18).text().trim();
+
+
+        $('#stok_kodu').val(KOD);
+        $('#stok_adi').val(AD);
+        // $('#islem_miktari').val(MIKTAR);
+
+        $('#serinoH').val(SERINO);
+        $('#lotH').val(LOTNO);
+        $('#depoH').val(DEPO);
+
+        $('#num1H').val(V1);
+        $('#num2H').val(V2);
+        $('#num3H').val(V3);
+        $('#num4H').val(V4);
+        
+        $('#text1H').val(O1);
+        $('#text2H').val(O2);
+        $('#text3H').val(O3);
+        $('#text4H').val(O4);
+
+        $('#lok-1').val(L1);
+        $('#lok-2').val(L2);
+        $('#lok-3').val(L3);
+        $('#lok-4').val(L4);
+      });
+      
+
+      function temizleVeKapat(modalId) {
+            const modal = $('#' + modalId);
+
+            modal.find('input[type="text"], input[type="number"], input[type="email"], input[type="date"], textarea').val('');
+            modal.find('select').val('').trigger('change');
+            modal.find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
+
+            modal.modal('hide');
+
+            $('hizli_islem_tablo tbody').empty();
+            
+        }
+
+        $('#satirEkleModal').on('click',function(){
+
+          let $btn = $(this);
+          let $btnText = $('#satirEkleText');
+          
+          let requiredFields = [
+            '#stok_kodu',
+            '#stok_adi',
+            '#islem_miktari',
+            '#barcode-result'
+          ];
+
+          let bosVarMi = false;
+
+          requiredFields.forEach(function (selector) {
+            let input = $(selector);
+            if (!input.val() || input.val().trim() === '') {
+              input.addClass('is-invalid');
+              input.css('box-shadow', '0 0 0px 1px #ff5770');
+              bosVarMi = true;
+            } else {
+              input.removeClass('is-invalid');
+              input.css('box-shadow', '');
+            }
+          });
+
+          if(bosVarMi)
+          {
+            mesaj('Lütfen zorunlu alanları doldurun','error');
+            return;
+          }
+          $btn.prop('disabled', true);
+          $btnText.html("<span class='spinner-border spinner-border-sm'></span>");
+          var TRNUM_FILL = getTRNUM();
+
+          var vrb1 = $('#stok_kodu').val();
+          var vrb2 = $('#stok_adi').val();
+
+          var vrb3 = $('#serinoH').val();
+          var vrb4 = $('#lotH').val();
+          var vrb5 = $('#depoH').val();
+
+          var vrb6 = $('#num1H').val();
+          var vrb7 = $('#num2H').val();
+          var vrb8 = $('#num3H').val();
+          var vrb9 = $('#num4H').val();
+
+          var vrb11 = $('#text1H').val();
+          var vrb12 = $('#text2H').val();
+          var vrb13 = $('#text3H').val();
+          var vrb14 = $('#text4H').val();
+
+          var vrb15 = $('#lok-1').val();
+          var vrb16 = $('#lok-2').val();
+          var vrb17 = $('#lok-3').val();
+          var vrb18 = $('#lok-4').val();
+
+          var vrb19 = $('#LOCATION_NEW1_FILL2').val();
+          var vrb20 = $('#LOCATION_NEW2_FILL2').val();
+          var vrb21 = $('#LOCATION_NEW3_FILL2').val();
+          var vrb22 = $('#LOCATION_NEW4_FILL2').val();
+
+          var MIKTAR = $('#islem_miktari').val(); 
+
+          $.ajax({
+            url:'/sevkirsaliyesi_stokAdiGetir',
+            type:'post',
+            data: {
+              kod: vrb1,
+              _token: '{{ csrf_token() }}'
+            },
+            success:function(res){
+              htmlCode = '';
+              htmlCode += " <tr> ";
+              htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+              htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+vrb1+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+vrb1+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+vrb2+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+vrb2+"'></td> ";
+              htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+vrb4+"'></td> ";
+              htmlCode += "<td class='d-flex'>";
+              htmlCode += "<input type='text' id='serino-" + TRNUM_FILL + "' class='form-control' name='SERINO[]' value='" + vrb3 + "' readonly>";
+              htmlCode += "<span class='ms-1'>";
+              htmlCode += "<button class='btn btn-primary' onclick='veriCek(\"" + vrb1 + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>";
+              htmlCode += "<i class='fa-solid fa-magnifying-glass'></i>";
+              htmlCode += "</button>";
+              htmlCode += "</span>";
+              htmlCode += "</td>";
+              htmlCode += " <td><input type='number' class='form-control' name='KUL_MIK[]' value='"+MIKTAR+"'></td> ";
+              htmlCode += "<td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + res.IUNIT + "'></td>";
+              htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+vrb5+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+vrb5+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+vrb15+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+vrb15+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2_SHOW_T' value='"+vrb16+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION2[]' value='"+vrb16+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3_SHOW_T' value='"+vrb17+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION3[]' value='"+vrb17+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4_SHOW_T' value='"+vrb18+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION4[]' value='"+vrb18+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value=''></td> ";
+              htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+vrb11+"'></td> ";
+              htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+vrb12+"'></td> ";
+              htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+vrb13+"'></td> ";
+              htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+vrb14+"'></td> ";
+              htmlCode += " <td><input type='number' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+vrb6+"'></td> ";
+              htmlCode += " <td><input type='number' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+vrb7+"'></td> ";
+              htmlCode += " <td><input type='number' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+vrb8+"'></td> ";
+              htmlCode += " <td><input type='number' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+vrb9+"'></td> ";
+              // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+              htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+              htmlCode += " </tr> ";
+
+              
+              $("#hammade_table > tbody").append(htmlCode);
+              updateLastTRNUM(TRNUM_FILL);
+              temizleVeKapat('hizli_islem');
+              $btn.prop('disabled', false);
+              $btnText.html("<i class='fa fa-plus'></i> Satır Ekle");
+            }
+          });
+        });
+
+        let table = null;
+
+        $(document).ready(function () {
+          table = $('#hizli_islem_tablo').DataTable({
+            lengthChange: false,
+            searching: true,
+            paging: true,
+            info: true,
+            ordering: true,
+            processing: true,
+            language: {
+              url: '{{ asset("tr.json") }}'
+            }
+          });
+        });
+
+        function barcodeDegisti() {
+          var kod = $('#barcode-result').val();
+          var kod_parca = kod.split('-');
+          
+          $.ajax({
+            url: '/hizli_islem_verileri',
+            type: 'post',
+            data: { veriler: kod_parca },
+            success: function (res) {
+              table.clear().draw();
+
+              res.forEach((row) => {
+                table.row.add([
+                  row.KOD || '',
+                  row.STOK_ADI || '',
+                  row.MIKTAR || '',
+                  row.SF_SF_UNIT || '',
+                  row.LOTNUMBER || '',
+                  row.SERINO || '',
+                  row.AMBCODE || '',
+                  row.TEXT1 || '',
+                  row.TEXT2 || '',
+                  row.TEXT3 || '',
+                  row.TEXT4 || '',
+                  row.NUM1 || '',
+                  row.NUM2 || '',
+                  row.NUM3 || '',
+                  row.NUM4 || '',
+                  row.LOCATION1 || '',
+                  row.LOCATION2 || '',
+                  row.LOCATION3 || '',
+                  row.LOCATION4 || ''
+                ]).draw(false);
+              });
+            }
+          });
+
+          if ($('#stok_kodu').val()?.trim() !== '') {
+            zincirlemeDoldur(kod_parca);
+          }
+        }
+
+        function zincirlemeDoldur(parcalar) {
+          if (parcalar[3]?.trim()) {
+            $('#LOCATION_NEW1_FILL2').val(parcalar[3]).trigger('change');
+            
+            setTimeout(() => {
+              if (parcalar[4]?.trim()) {
+                $('#LOCATION_NEW2_FILL2').val(parcalar[4]).trigger('change');
+
+                setTimeout(() => {
+                  if (parcalar[5]?.trim()) {
+                    $('#LOCATION_NEW3_FILL2').val(parcalar[5]).trigger('change');
+
+                    setTimeout(() => {
+                      if (parcalar[6]?.trim()) {
+                        $('#LOCATION_NEW4_FILL2').val(parcalar[6]).trigger('change');
+                      }
+                    }, 1000);
+                  }
+                }, 1000);
+              }
+            }, 1000);
+          }
+        }
+
+        $('#basic-addon2').on('click',function(){
+          barcodeDegisti();
+        });
+
+        $('#barcode-result').on('keydown', function (e) {
+          if (e.key === 'Enter') {
+            barcodeDegisti();
+          }
+        });
+
+        $('#barcode-result').on('focus', function () {
+          $(this).select();
+        });
+
+        function getLocation1() {
+
+          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
+
+                $.ajax({
+                    url: '/stok26_createLocationSelect',
+                    data: {'islem': 'LOCATION1', 'AMBCODE': AMBCODE_FILL, '_token': $('#token').val()},
+                    type: 'POST',
+
+                    success: function (response) {
+
+                      $('#LOCATION1_FILL').find('option').remove().end();
+                      $('#LOCATION1_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
+
+                      //$('#LOCATION1_FILL').find('option').empty();
+                      $('#LOCATION1_FILL').append(response);
+
+                    },
+                    error: function (response) {
+                      console.log(response);
+
+                    }
+                });
+
+          }
+
+        function getLocation2() {
+
+          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
+          var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
+
+
+                $.ajax({
+                    url: '/stok26_createLocationSelect',
+                    data: {'islem': 'LOCATION2', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL, '_token': $('#token').val()},
+                    type: 'POST',
+
+                    success: function (response) {
+
+                      $('#LOCATION2_FILL').find('option').remove().end();
+                      $('#LOCATION2_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
+
+                      //$('#LOCATION1_FILL').find('option').empty();
+                      $('#LOCATION2_FILL').append(response);
+
+                    },
+                    error: function (response) {
+                      console.log(response);
+
+                    }
+                });
+
+          }
+
+        function getLocation3() {
+
+          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
+          var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
+          var LOCATION2_FILL = document.getElementById("LOCATION2_FILL").value;
+
+
+                $.ajax({
+                    url: '/stok26_createLocationSelect',
+                    data: {'islem': 'LOCATION3', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL,'LOCATION2': LOCATION2_FILL, '_token': $('#token').val()},
+                    type: 'POST',
+
+                    success: function (response) {
+
+                      $('#LOCATION3_FILL').find('option').remove().end();
+                      $('#LOCATION3_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
+
+                      //$('#LOCATION1_FILL').find('option').empty();
+                      $('#LOCATION3_FILL').append(response);
+
+                    },
+                    error: function (response) {
+                      console.log(response);
+
+                    }
+                });
+
+          }
+
+        function getLocation4() {
+
+          var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
+          var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
+          var LOCATION2_FILL = document.getElementById("LOCATION2_FILL").value;
+          var LOCATION3_FILL = document.getElementById("LOCATION3_FILL").value;
+
+
+                $.ajax({
+                    url: '/stok26_createLocationSelect',
+                    data: {'islem': 'LOCATION4', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL,'LOCATION2': LOCATION2_FILL,'LOCATION3': LOCATION3_FILL, '_token': $('#token').val()},
+                    type: 'POST',
+
+                    success: function (response) {
+
+                      $('#LOCATION4_FILL').find('option').remove().end();
+                      $('#LOCATION4_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
+
+                      //$('#LOCATION1_FILL').find('option').empty();
+                      $('#LOCATION4_FILL').append(response);
+
+                    },
+                    error: function (response) {
+                      console.log(response);
+
+                    }
+                });
+
+          }
+
+          $('.delete-row').on('click', function () {
+            $(this).closest('tr').remove();
+          });
     </script>
   </div>
 @endsection
