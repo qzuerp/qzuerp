@@ -222,6 +222,68 @@ class Teklif_fiyat_analiz extends Controller
                         ->delete();
                 }
 
+
+                $currentTRNUMS2 = [];
+                $liveTRNUMS2 = [];
+                
+                $currentTRNUMSObj2 = DB::table($firma.'tekl20tı')
+                    ->where('EVRAKNO', $EVRAKNO)
+                    ->select('TRNUM')
+                    ->get();
+
+                foreach ($currentTRNUMSObj2 as $veri) {
+                    array_push($currentTRNUMS2, $veri->TRNUM);
+                }
+
+                foreach ($TRNUM2 as $veri) {
+                    array_push($liveTRNUMS2, $veri);
+                }
+
+                $deleteTRNUMS2 = array_diff($currentTRNUMS2, $liveTRNUMS2);
+                $newTRNUMS2 = array_diff($liveTRNUMS2, $currentTRNUMS2);
+                $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
+
+                for ($i = 0; $i < count($TRNUM2); $i++) {
+                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+
+                    if (in_array($TRNUM2[$i], $newTRNUMS2)) {
+                        // Yeni satır ekle
+                        DB::table($firma.'tekl20tr')->insert([
+                            'EVRAKNO' => $EVRAKNO,
+                            'MASRAF_TURU' => $MASRAF_TURU[$i],
+                            'MASRAF_ACIKLAMASI' => $MASRAF_ACIKLAMASI[$i],
+                            'KATSAYI_TURU' => $KATSAYI_TURU[$i],
+                            'KATSAYI_ACIKLAMASI' => $KATSAYI_ACIKLAMASI[$i],
+                            'KATSAYI' => $KATSAYI[$i],
+                            'MASRAF_TUTARI' => $MASRAF_TUTARI[$i],
+                            'TRNUM' => $TRNUM2[$i]
+                        ]);
+                    }
+
+                    if (in_array($TRNUM[$i], $updateTRNUMS2)) {
+                        // Mevcut satırı güncelle
+                        DB::table($firma.'tekl20tr')
+                            ->where('EVRAKNO', $EVRAKNO)
+                            ->where('TRNUM', $TRNUM2[$i])
+                            ->update([
+                                'MASRAF_TURU' => $MASRAF_TURU[$i],
+                                'MASRAF_ACIKLAMASI' => $MASRAF_ACIKLAMASI[$i],
+                                'KATSAYI_TURU' => $KATSAYI_TURU[$i],
+                                'KATSAYI_ACIKLAMASI' => $KATSAYI_ACIKLAMASI[$i],
+                                'KATSAYI' => $KATSAYI[$i],
+                                'MASRAF_TUTARI' => $MASRAF_TUTARI[$i],
+                            ]);
+                    }
+                }
+
+                // Silinen satırları kaldır
+                foreach ($deleteTRNUMS2 as $deleteTRNUM2) {
+                    DB::table($firma.'tekl20tr')
+                        ->where('EVRAKNO', $EVRAKNO)
+                        ->where('TRNUM', $deleteTRNUM2)
+                        ->delete();
+                }
+
                 $veri = DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->first();
                 return redirect('teklif_fiyat_analiz?ID='.$request->ID_TO_REDIRECT)->with('success', 'Düzenleme işlemi başarılı');
                 break;

@@ -479,7 +479,7 @@
 
 					htmlCode += `<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[${currentRowCount}]' value='${TRNUM_FILL}'></td>`;
 					htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
-
+					var satirEkleInputs = getInputs('satirEkle');
 					// 'ALAN_TURU_FILL', 'UZUNLUK_FILL', 'DESIMAL_FILL' sonradan eklenebilr
 					const inputs = [
 						'STOK_KODU_FILL', 'OZEL_ACIKLAMA_FILL', 'OLCUM_NO_FILL', 'GECERLI_KOD_FILL', 'MIN_DEGER_FILL', 'MAX_DEGER_FILL', 'OLCUM_BIRIMI_FILL', 'OLCUM_TIPI_FILL',
@@ -505,11 +505,18 @@
 					});
 
 					htmlCode += "</tr>";
-
-					$("#veriTable > tbody").append(htmlCode);
-					updateLastTRNUM(TRNUM_FILL);
-					emptyInputs('satirEkle');
-					$("#GECERLI_KOD_FILL").prop('checked', false); // Checkbox’ı sıfırla
+					
+					if (!satirEkleInputs.STOK_KODU_FILL) {
+						eksikAlanHataAlert2();
+						return;
+					}
+					else
+					{
+						$("#veriTable > tbody").append(htmlCode);
+						updateLastTRNUM(TRNUM_FILL);
+						emptyInputs('satirEkle');
+						$("#GECERLI_KOD_FILL").prop('checked', false); // Checkbox’ı sıfırla
+					}
 				});
 
 				$('#KRITERCODE_1').on('change',function(){

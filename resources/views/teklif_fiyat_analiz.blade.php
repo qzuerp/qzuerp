@@ -425,7 +425,7 @@
 																	<button type="button" class="btn btn-default" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button>
 																</td>
 																<td>
-																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_TURU" style="width:100% !important;" data-isim="Kaynak Tipi" name="" id="MASRAF_TURU">
+																	<select class="select2 w-100 form-control" onchange="masraf_aciklamasi(this)"	 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_TURU" id="MASRAF_TURU">
 																		<option value=" ">Seç</option>
 																		@php
 																			$masraf_turlari = DB::table($database.'gecoust')->where('EVRAKNO','MASRAF_TURU')->get();
@@ -439,7 +439,7 @@
 																	<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_ACIKLAMASI" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="MASRAF_ACIKLAMASI" readonly>
 																</td>
 																<td>
-																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASRAF_TURU" style="width:100% !important;" data-isim="Kaynak Tipi" name="" id="MASRAF_TURU">
+																	<select class="form-control select2 js-example-basic-single req" onchange="katsayi_aciklamasi(this)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYI_TURU" style="width:100% !important;" data-isim="Kaynak Tipi" name="" id="KATSAYI_TURU">
 																		<option value=" ">Seç</option>
 																		@php
 																			$katsayi_turlari = DB::table($database.'gecoust')->where('EVRAKNO','KATSAYI_TURU')->get();
@@ -453,10 +453,10 @@
 																	<input type="text" name="" id="KATSAYI_ACIKLAMASI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYI_ACIKLAMASI" data-isim="İşlem Birimi" class="form-control" value="" readonly>
 																</td>
 																<td>
-																	<input type="number" name="" id="KATSAYISI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYISI" class="form-control" value="">
+																	<input type="number" name="" id="KATSAYI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KATSAYI" class="form-control" value="">
 																</td>
 																<td> 
-																	<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="">
+																	<input type="number" name="" id="MASRAF_TUTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="">
 																</td>
 															</tr>
 														</thead>
@@ -617,7 +617,6 @@
 			throw error;
 		}
 	}
-
 
 	async function fiyat_hesapla() {
 		if(!validateNumbers()){
@@ -879,34 +878,24 @@
 			htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='"+TRNUM_FILL+"'></td> ";
 			// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 			htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='"+satirEkleInputs.KAYNAK_TIPI+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KOD+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='"+satirEkleInputs.KODADI+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
-			htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='"+satirEkleInputs.ISLEM_BIRIMI+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='"+satirEkleInputs.FIYAT+"' ></td> ";
-			htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='"+satirEkleInputs.TUTAR+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='"+satirEkleInputs.PARA_BIRIMI+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='HACIM[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='AUTO[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
-			htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='MASRAF_TURU[]' value='"+satirEkleInputs.MASRAF_TURU+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='MASRAF_ACIKLAMASI[]' value='"+satirEkleInputs.MASRAF_ACIKLAMASI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KATSAYI_TURU[]' value='"+satirEkleInputs.KATSAYI_TURU+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='KATSAYI_ACIKLAMASI[]' value='"+satirEkleInputs.KATSAYI_ACIKLAMASI+"'></td>";
+			htmlCode += " <td><input type='text' class='form-control' name='KATSAYI[]' value='"+satirEkleInputs.KATSAYI+"' readonly></td> ";
+			htmlCode += " <td><input type='text' class='form-control' name='MASRAF_TUTARI[]' value='"+satirEkleInputs.MASRAF_TUTARI+"' ></td> ";
 
 
         	htmlCode += " </tr> ";
 
-			if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || !validateNumbers()) {
-				eksikAlanAlert();
+			if (!satirEkleInputs.MASRAF_TURU || !satirEkleInputs.KATSAYI_TURU || !satirEkleInputs.KATSAYI) {
+				eksikAlanHataAlert2();
 			}
 			else {
-				$("#veriTable > tbody").append(htmlCode);
+				$("#masrafTable > tbody").append(htmlCode);
 				updateLastTRNUM(TRNUM_FILL);
 
-				emptyInputs('satirEkle');
-				$("#PARA_BIRIMI").val($('#teklif').val());
+				emptyInputs('satirEkle2');
 			}
 			
 		});
@@ -1055,6 +1044,28 @@
 		});
 	});
 	
+
+	function masraf_aciklamasi(select)
+	{
+		const selectData = select.options[select.selectedIndex]
+			.text
+			.split(' - ')
+			.map(s => s.trim());
+
+		$('#MASRAF_ACIKLAMASI').val(selectData[1]);
+
+	}
+
+	function katsayi_aciklamasi(select)
+	{
+		const selectData = select.options[select.selectedIndex]
+			.text
+			.split(' - ')
+			.map(s => s.trim());
+
+		$('#KATSAYI_ACIKLAMASI').val(selectData[1]);
+
+	}
 </script>
 
 <script>

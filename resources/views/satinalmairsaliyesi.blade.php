@@ -662,6 +662,7 @@
 														<thead>
 															<tr>
 																<th style="min-width: 50px;">#</th>
+																<th style="min-width: 50px;">#</th>
 																<th style="display:none;">Sıra</th>
 																<th style="min-width: 150px;">Stok Kodu</th>
 																<th style="min-width: 150px;">Stok Adı</th>
@@ -1652,7 +1653,7 @@
 						var TRNUM_FILL = getTRNUM();
 
 						htmlCode += " <tr> ";
-
+						htmlCode += detayBtnForJS(setValueOfJsonObject(kartVerisi2.KOD));
 						htmlCode += " <td><input type='checkbox' checked name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
 						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='TRNUM[]' id='TRNUM' value='" + TRNUM_FILL + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + setValueOfJsonObject(kartVerisi2.KOD) + "' disabled><input type='hidden' class='form-control' name='KOD[]' value='" + setValueOfJsonObject(kartVerisi2.KOD) + "'></td> ";
