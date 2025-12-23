@@ -216,9 +216,19 @@ class stok29_controller extends Controller
             'FIYAT' => $FIYAT[$i],
             'FIYAT_PB' => $FIYAT_PB[$i]
           ]);
-          
+
           if($SIPARTNO[$i] != null)
-            DB::update("UPDATE ".$firma."stok46t SET NETKAPANANMIK = NETKAPANANMIK + ".$SF_MIKTAR[$i].", SF_BAKIYE = SF_MIKTAR - NETKAPANANMIK - ".$SF_MIKTAR[$i]." WHERE EVRAKNO + TRNUM = ".$SIPARTNO[$i]."");
+           DB::update("
+              UPDATE {$firma}stok46t
+              SET
+                  NETKAPANANMIK = NETKAPANANMIK + ?,
+                  SF_BAKIYE = SF_MIKTAR - NETKAPANANMIK - ?
+              WHERE EVRAKNO + ISNULL(TRNUM,0) = ?
+          ", [
+              $SF_MIKTAR[$i],
+              $SF_MIKTAR[$i],
+              $SIPARTNO[$i] ?? 0
+          ]);
 
 
           DB::table($firma.'stok10a')->insert([
