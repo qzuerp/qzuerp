@@ -913,6 +913,16 @@
           var TRNUM_FILL = getTRNUM();
 
           var satirEkleInputs = getInputs('satirEkle');
+
+          Swal.fire({
+            title: ' ',
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
           $.ajax({
             url: '{{ route('bakiyeHesapla2') }}',
             type: 'post',
@@ -963,6 +973,7 @@
                 updateLastTRNUM(TRNUM_FILL);
 
                 emptyInputs('satirEkle');
+                Swal.close();
               }
             }
           });

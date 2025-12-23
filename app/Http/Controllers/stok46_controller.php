@@ -171,7 +171,8 @@ class stok46_controller extends Controller
             'created_at' => date('Y-m-d H:i:s'),
             'FIYAT' => $FIYAT[$i],
             'FIYAT_PB' => $FIYAT_PB[$i], 
-            'NETKAPANANMIK' => 0
+            'NETKAPANANMIK' => 0,
+            'ARTNO' => $EVRAKNO.$TRNUM[$i]
           ]);
 
         }
@@ -208,7 +209,7 @@ class stok46_controller extends Controller
         break;
 
       case 'kart_duzenle':
-FunctionHelpers::Logla('STOK46',$EVRAKNO,'W',$TARIH);
+        FunctionHelpers::Logla('STOK46',$EVRAKNO,'W',$TARIH);
 
         DB::table($firma.'stok46e')->where('EVRAKNO',$EVRAKNO)->update([
           'TARIH' => $TARIH,
@@ -271,7 +272,8 @@ FunctionHelpers::Logla('STOK46',$EVRAKNO,'W',$TARIH);
               'created_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
-              'NETKAPANANMIK' => 0
+              'NETKAPANANMIK' => 0,
+              'ARTNO' => $EVRAKNO.$TRNUM[$i]
             ]);
 
           }
