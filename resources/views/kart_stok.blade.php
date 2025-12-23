@@ -295,7 +295,7 @@
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ağırlık</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_AGIRLIK" id="B_AGIRLIK" step="0.01" value="{{ @$kart_veri->B_AGIRLIK }}">
+														<input type="number" class="form-control input-sm" maxlength="28" name="B_AGIRLIK" id="B_AGIRLIK" step="0.0001" value="{{ @$kart_veri->B_AGIRLIK }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
