@@ -24,7 +24,7 @@ class dosyalar00_controller extends Controller
 
         $unallowedTables = ['stok', 'urun', 'musteri'];
         $maxRows = 1020;
-        $chunkSize = 500;
+        
         $blacklistColumns = ['id', 'created_at', 'updated_at'];
 
         $tableName = $request->input('table');
@@ -98,7 +98,7 @@ class dosyalar00_controller extends Controller
                 'table_columns' => array_values($tableColumnsLowerMap)
             ], 422);
         }
-
+        $chunkSize = floor(2000 / count($indexToColumn));
         // ------------------------------------------------------------------------------------
         // *** STOK KODU KONTROL ENTEGRASYONU ***
         $possibleCodeFields = ['kod', 'stok_kodu', 'stok_kod']; // lowercase
