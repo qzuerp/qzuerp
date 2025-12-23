@@ -102,7 +102,7 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Kodu</label>
-										<input type="text" class="form-control DOKUMAN_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_NO" name="DOKUMAN_NO"  id="DOKUMAN_NO" maxlength="16" value="{{ @$kart_veri->DOKUMAN_NO }}">
+										<input type="text" class="form-control DOKUMAN_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_NO" name="DOKUMAN_NO"  id="DOKUMAN_NO" value="{{ @$kart_veri->DOKUMAN_NO }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
