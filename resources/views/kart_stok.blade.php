@@ -1573,7 +1573,6 @@
 					placeholder: 'Stok kodu seç...',
 					ajax: {
 						url: '/stok-kodu-ara',
-						dataType: 'json',
 						delay: 250,
 						data: function (params) {
 							return {
