@@ -194,7 +194,7 @@ class dosyalar00_controller extends Controller
 
             // ------------------------------------------------------------------------------------
             // *** STOK00 KONTROLÜ: kod yoksa satırı SKIP ***
-            if ($codeColumn) {
+            if ($codeColumn && $tableName !== 'stok00') {
                 $excelKod = isset($rowData[$codeColumn]) ? strtolower(trim($rowData[$codeColumn])) : '';
 
                 if ($excelKod === '' || !isset($existingCodes[$excelKod])) {
