@@ -125,7 +125,7 @@
 										<option value="">Seç</option>
 										@php
 											$stok00_evraklar = DB::table($database.'stok00')
-												->where('KOD', $kart_veri->MAMULCODE)
+												->where('KOD', @$kart_veri->MAMULCODE)
 												->first();
 
 											if ($stok00_evraklar && @$kart_veri->MAMULCODE == $stok00_evraklar->KOD) {

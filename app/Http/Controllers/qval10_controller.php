@@ -79,7 +79,8 @@ class qval10_controller extends Controller
                     'KRITERCODE_3' => $KRITERCODE_3,
                     'KRITERVALUE_1' => $KRITERVALUE_1,
                     'KRITERVALUE_2' => $KRITERVALUE_2,
-                    'KRITERVALUE_3' => $KRITERVALUE_3
+                    'KRITERVALUE_3' => $KRITERVALUE_3,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 $max_id = DB::table($firma.'QVAL10E')->max('id');
@@ -128,7 +129,8 @@ class qval10_controller extends Controller
                     'KRITERCODE_3' => $KRITERCODE_3,
                     'KRITERVALUE_1' => $KRITERVALUE_1,
                     'KRITERVALUE_2' => $KRITERVALUE_2,
-                    'KRITERVALUE_3' => $KRITERVALUE_3
+                    'KRITERVALUE_3' => $KRITERVALUE_3,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
