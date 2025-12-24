@@ -813,9 +813,9 @@
                 <div class="tab-pane" id="baglantiliDokumanlar">
                   @include('layout.util.baglantiliDokumanlar')
                 </div>
-              </div><br><br><br>
+              </div>
             </div>
-          </div><br>
+          </div>
         </div>
 
       </form>

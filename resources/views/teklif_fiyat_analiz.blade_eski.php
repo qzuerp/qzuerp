@@ -21,7 +21,7 @@
 		$ekranLink = "teklif_fiyat_analiz";
         
 		$ekranTableE = $database."tekl20e";
-		$ekranTableTI = $database."tekl20tı";
+		$ekranTableT = $database."tekl20tı";
 		$ekranTableTR = $database."tekl20tr";
         
         $ekranKayitSatirKontrol = "false";
@@ -38,10 +38,12 @@
 		$evrakno = $sonID;
 
 		if (isset($kart_veri)) {
-			$ilkEvrak=DB::table($ekranTableE)->min('EVRAKNO');
-			$sonEvrak=DB::table($ekranTableE)->max('EVRAKNO');
-			$sonrakiEvrak=DB::table($ekranTableE)->where('EVRAKNO', '>', $sonID)->min('EVRAKNO');
-			$oncekiEvrak=DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
+
+		$ilkEvrak=DB::table($ekranTableE)->min('EVRAKNO');
+		$sonEvrak=DB::table($ekranTableE)->max('EVRAKNO');
+		$sonrakiEvrak=DB::table($ekranTableE)->where('EVRAKNO', '>', $sonID)->min('EVRAKNO');
+		$oncekiEvrak=DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
+
 		}
 	@endphp
 
@@ -80,17 +82,20 @@
                         <tbody>
 
                             @php
+
                                 $evraklar2=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
                                 foreach ($evraklar2 as $key => $suzVeri) {
-									$mus = DB::table($database.'cari00')->where('KOD',$suzVeri->BASE_DF_CARIHESAP)->first();
-									echo "<tr>";    
-										echo "<td>".$suzVeri->EVRAKNO."</td>";
-										echo "<td>".$suzVeri->TARIH."</td>";
-										echo "<td>".$suzVeri->TEKLIF_FIYAT_PB."</td>";
-										echo "<td>".($mus ? $mus->AD : $suzVeri->BASE_DF_CARIHESAP) ."</td>";
-										echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
-									echo "</tr>";
+										$mus = DB::table($database.'cari00')->where('KOD',$suzVeri->BASE_DF_CARIHESAP)->first();
+                                        echo "<tr>";    
+											echo "<td>".$suzVeri->EVRAKNO."</td>";
+											echo "<td>".$suzVeri->TARIH."</td>";
+											echo "<td>".$suzVeri->TEKLIF_FIYAT_PB."</td>";
+											echo "<td>".($mus ? $mus->AD : $suzVeri->BASE_DF_CARIHESAP) ."</td>";
+											echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
+                                        echo "</tr>";
+
                                 }
+
                             @endphp
 
                         </tbody>
@@ -310,7 +315,7 @@
 																<td>
 																	<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
 																</td>
-																<!-- <td>
+																<td>
 																	<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
 																		<option value=" ">Seç</option>
 																		<option value="M">M - Mamul</option>
@@ -318,25 +323,14 @@
 																		<option value="I">I - Tezgah / İş Merk</option>
 																		<option value="Y">Y - Yan Ürün</option>
 																	</select>
-																</td> -->
+																</td>
 																<td>
 																	<div class="d-flex  " style="display: flex;">
-																		<select class="form-control select2 txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
-																			<option value=" " >Seç</option>
-																			@php
-																			foreach ($stok_evraklar as $key => $veri) {
-																				echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD." - ".$veri->AD."</option>";
-																			}
-																			@endphp
+																		<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
+																			<option value=" ">Seç</option>
 																		</select>
-																		<span class="d-flex -btn">
-																			<button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button">
-																			<span class="fa-solid fa-magnifying-glass txt-radius"  ></span>
-																			</button>
-																		</span>
-																	</div>
-																	<input type="hidden" id="STOK_KOD">
-																	<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#a" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
+																		<input type="hidden" id="STOK_KOD">
+																		<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#a" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
 																	</div>
 																</td>
 																<td>
@@ -382,7 +376,7 @@
 														</thead>
 														<tbody>
 															@php
-																$veri = DB::table($ekranTableTI)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
+																$veri = DB::table($ekranTableT)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
 																if(!$veri->isEmpty()) {
 																	foreach ($veri as $key => $veri) {
 																		@endphp
@@ -504,13 +498,7 @@
 
 
 <script>
-	function stokAdiGetir3(veri) {
-		const veriler = veri.split("|||");
-		//$('#STOK_KODU_SHOW').val(veriler[0]);
-		$('#STOK_KOD').val(veriler[0]);
-		$('#KODADI').val(veriler[1]);
-		$('#ISLEM_BIRIMI').val(veriler[2]);
-	}
+
 	var toplam = 0;
 	var esasMiktar = <?= @$kart_veri->ESAS_MIKTAR ?? 1;?>;
 
@@ -730,6 +718,7 @@
 	}
 
 	async function receteden_hesapla() {
+		console.log('1');
 		$("#veriTable tbody tr").each(function() {
 			let trnum = $(this).find('input[name="TRNUM[]"]').val();
 			updateLastTRNUM(trnum);

@@ -200,8 +200,11 @@ class stok46_controller extends Controller
         $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
         ->where('GK_3','SAT')
         ->first();
-        Mail::to($kontakt->SIRKET_EMAIL_1)
-          ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
+        if(isset($kontakt->SIRKET_EMAIL_1))
+        {
+          Mail::to($kontakt->SIRKET_EMAIL_1)
+            ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
+        }
 
         $sonID=DB::table($firma.'stok46e')->max('id');
         return redirect()->route('satinalmasiparisi', ['ID' => $sonID,'kayit' => 'ok']);
