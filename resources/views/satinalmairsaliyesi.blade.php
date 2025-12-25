@@ -146,20 +146,12 @@
 								<div>
 									<div class="row ">
 										<div class="col-md-2 col-sm-3 col-xs-6">
-											<label>Fiş No</label>
-											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
-												data-bs-title="EVRAKNO" class="form-control EVRAKNO" maxlength="24"
-												name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" value="{{ @$kart_veri->EVRAKNO }}"
-												disabled>
-											<input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E"
-												value="{{ @$kart_veri->EVRAKNO }}">
-										</div>
-
-										<div class="col-md-2 col-sm-3 col-xs-6">
 											<label>Tarih</label>
 											<input type="date" data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="TARIH" class="form-control TARIH" name="TARIH" id="TARIH_E"
 												value="{{ @$kart_veri->TARIH }}">
+											<input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E"
+												value="{{ @$kart_veri->EVRAKNO }}">
 										</div>
 
 										<div class="col-md-2 col-sm-2 col-xs-6">
@@ -183,7 +175,7 @@
 											</select>
 										</div>
 
-										<div class="col-md-4 col-sm-4 col-xs-6">
+										<div class="col-md-3 col-sm-4 col-xs-6">
 											<label>Tedarikçi Kodu</label>
 											<select data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="CARIHESAPCODE"
@@ -207,6 +199,19 @@
 										</div>
 
 										<div class="col-md-2 col-sm-1 col-xs-2">
+											<label>Seri No</label>
+											<input type="text" name="IRSALIYE_SERINO" class="IRSALIYE_SERINO form-control"
+											data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="IRSALIYE_SERINO" value="{{ @$kart_veri->IRSALIYE_SERINO }}">
+										</div>
+										<div class="col-md-2 col-sm-1 col-xs-2">
+											<label>İrsaliye No</label>
+											<input type="text" name="IRSALIYENO" class="IRSALIYENO form-control"
+											data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="IRSALIYENO" value="{{ @$kart_veri->IRSALIYENO }}">
+										</div>
+
+										<div class="col-md-1 col-sm-1 col-xs-2">
 											<label>Kapalı</label>
 											<div class="d-flex ">
 												<div class="" aria-checked="false" aria-disabled="false"

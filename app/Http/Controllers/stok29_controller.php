@@ -94,6 +94,8 @@ class stok29_controller extends Controller
     $TRNUM = $request->input('TRNUM');
     $FIYAT = $request->FIYAT;
     $FIYAT_PB = $request->FIYAT_PB;
+    $IRSALIYE_SERINO = $request->IRSALIYE_SERINO;
+    $IRSALIYENO = $request->IRSALIYENO;
     
     if ($KOD == null) {
       $satir_say = 0;
@@ -130,7 +132,7 @@ class stok29_controller extends Controller
         break;
 
       case 'kart_sil':
-    FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
+        FunctionHelpers::Logla('STOK29',$EVRAKNO,'D',$TARIH);
 
         DB::table($firma.'stok29e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok29t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -160,6 +162,8 @@ class stok29_controller extends Controller
             'AK' => $AK,
             'LAST_TRNUM' => $LAST_TRNUM,
             'created_at' => date('Y-m-d H:i:s'),
+            'IRSALIYENO' => $IRSALIYENO,
+            'IRSALIYE_SERINO' => $IRSALIYE_SERINO
         ]);
         if(DB::table($firma.'dosyalar00')->where('TEMP_ID',$request->temp_id)->count() == 0)
         {
@@ -214,7 +218,7 @@ class stok29_controller extends Controller
             'SIPARTNO' => $SIPARTNO[$i],
             'created_at' => date('Y-m-d H:i:s'),
             'FIYAT' => $FIYAT[$i],
-            'FIYAT_PB' => $FIYAT_PB[$i]
+            'FIYAT_PB' => $FIYAT_PB[$i],
           ]);
 
           if($SIPARTNO[$i] != null)
@@ -278,6 +282,8 @@ class stok29_controller extends Controller
           'CARIHESAPCODE' => $CARIHESAPCODE,
           'AK' => $AK,
           'LAST_TRNUM' => $LAST_TRNUM,
+          'IRSALIYENO' => $IRSALIYENO,
+          'IRSALIYE_SERINO' => $IRSALIYE_SERINO
         ]);
 
         // Yeni TRNUM Yapisi
