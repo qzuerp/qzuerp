@@ -183,6 +183,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('stok21_islemler', [stok21_controller::class, 'islemler']);
     Route::post('stok21_createLocationSelect', [stok21_controller::class, 'createLocationSelect']);
 
+    // - - Stok Sayımı
+    Route::get('stokSayim', [stok21_controller::class, 'index'])->name('stokSayim');
+    Route::post('stok21_islemler', [stok21_controller::class, 'islemler']);
+    Route::post('stok21_createLocationSelect', [stok21_controller::class, 'createLocationSelect']);
+
     // Stok25 - Etiket Bölme
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');
     Route::post('stok25_islemler', [stok25_controller::class, 'islemler']);
@@ -391,6 +396,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('sablonGetir', [qval02_controller::class, 'sablonGetir']);
 
     Route::get('final_kalite_kontrol', [fkk_controller::class, 'index'])->name('final_kalite_kontrol');
+    Route::post('final_kalite_kontrol_satir_detay', [fkk_controller::class, 'final_kalite_kontrol_satir_detay']);
     Route::post('fkk_islemler', [fkk_controller::class, 'islemler']);
 
     /*

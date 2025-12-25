@@ -509,6 +509,7 @@ if (isset($kart_veri)) {
                           <th>Fason Üretici Ad</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
+                          <th>Depo Kodu</th>
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>Miktar</th>
@@ -521,6 +522,7 @@ if (isset($kart_veri)) {
                           <th>Fason Üretici Ad</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
+                          <th>Depo Kodu</th>
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>Miktar</th>
@@ -579,6 +581,7 @@ if (isset($kart_veri)) {
                                 <td>{{ $row->AD }}</td>
                                 <td>{{ $row->KOD }}</td>
                                 <td>{{ $row->STOK_ADI }}</td>
+                                <td>{{ $row->TARGETAMBCODE }}</td>
                                 <td>{{ $row->LOTNUMBER }}</td>
                                 <td>{{ $row->SERINO }}</td>
                                 <td>{{ $row->SF_MIKTAR }}</td>

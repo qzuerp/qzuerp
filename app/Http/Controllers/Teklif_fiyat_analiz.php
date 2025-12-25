@@ -12,7 +12,7 @@ class Teklif_fiyat_analiz extends Controller
 {
     public function index()
     {
-        return view('teklif_fiyat_analiz');
+        return view('teklif_fiyat_analiz_eski');
     }
 
     public function islemler(Request $request)

@@ -13,6 +13,9 @@ class fkk_controller extends Controller
     public function index() {
         return view('final_kalite_kontrol');
     }
+    public function final_kalite_kontrol_satir_detay(Request $request) {
+        
+    }
     public function islemler(Request $request)
     {
         // dd($request->all());

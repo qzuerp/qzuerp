@@ -494,6 +494,8 @@
                               <th>Fason Üretici Ad</th>
                               <th>Stok Kodu</th>
                               <th>Stok Adı</th>
+                              <th>Alan Depo</th>
+                              <th>Fason Depo</th>
                               <th>Lot No</th>
                               <th>Seri No</th>
                               <th>Miktar</th>
@@ -505,6 +507,8 @@
                               <th>Fason Üretici Ad</th>
                               <th>Stok Kodu</th>
                               <th>Stok Adı</th>
+                              <th>Alan Depo</th>
+                              <th>Fason Depo</th>
                               <th>Lot No</th>
                               <th>Seri No</th>
                               <th>Miktar</th>
@@ -562,6 +566,8 @@
                                     <td>{{ $row->AD }}</td>
                                     <td>{{ $row->KOD }}</td>
                                     <td>{{ $row->STOK_ADI }}</td>
+                                    <td>{{ $row->IMALATAMBCODE }}</td>
+                                    <td>{{ $row->AMBCODE }}</td>
                                     <td>{{ $row->LOTNUMBER }}</td>
                                     <td>{{ $row->SERINO }}</td>
                                     <td>{{ $row->SF_MIKTAR }}</td>

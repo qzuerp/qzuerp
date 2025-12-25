@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Schema;
+use Intervention\Image\ImageManagerStatic as Image;
 class dosyalar00_controller extends Controller
 {
     public function import(Request $request)
@@ -284,33 +285,48 @@ class dosyalar00_controller extends Controller
 
     public function dosyaEkle(Request $request)
     {
-        if (Auth::check()) {
-            $u = Auth::user();
-        }
-        $firma = trim($u->firma) . '.dbo.';
-        $f = trim($u->firma);
+        $u = Auth::user();
+        $firmaDb = trim($u->firma) . '.dbo.';
+        $firma   = trim($u->firma);
+    
         $dosya = $request->file('dosyaFile');
-        $dosyaAdi = time() . '_' . $dosya->getClientOriginalName();
-
-        $hedefKlasor = public_path('dosyalar/' . trim($u->firma));
-        $kaydedilecekYol = "{$f}/{$dosyaAdi}";
-
+        $ext   = strtolower($dosya->getClientOriginalExtension());
+    
+        $hedefKlasor = public_path('dosyalar/' . $firma);
         if (!file_exists($hedefKlasor)) {
             mkdir($hedefKlasor, 0777, true);
         }
-
-        $dosya->move($hedefKlasor, $dosyaAdi);
-
-        DB::table($firma . 'dosyalar00')->insert([
-            'EVRAKNO' => $request->input('dosyaEvrakNo'),
-            'DOSYATURU' => $request->input('dosyaTuruKodu'),
-            'EVRAKTYPE' => $request->input('dosyaEvrakType'),
-            'ACIKLAMA' => $request->input('dosyaAciklama'),
-            'TEMP_ID' => $request->input('dosyaTempID'),
-            'DOSYA' => $kaydedilecekYol
+    
+        // Resim mi?
+        $resimExt = ['jpg','jpeg','png','gif','bmp','webp'];
+    
+        if (in_array($ext, $resimExt)) {
+            $dosyaAdi = time() . '.webp';
+    
+            Image::make($dosya)
+                ->encode('webp', 80) // kalite ayarı
+                ->save($hedefKlasor . '/' . $dosyaAdi);
+        } else {
+            // Normal dosya
+            $dosyaAdi = time() . '_' . $dosya->getClientOriginalName();
+            $dosya->move($hedefKlasor, $dosyaAdi);
+        }
+    
+        $kaydedilecekYol = "{$firma}/{$dosyaAdi}";
+    
+        DB::table($firmaDb . 'dosyalar00')->insert([
+            'EVRAKNO'   => $request->dosyaEvrakNo,
+            'DOSYATURU' => $request->dosyaTuruKodu,
+            'EVRAKTYPE' => $request->dosyaEvrakType,
+            'ACIKLAMA'  => $request->dosyaAciklama,
+            'TEMP_ID'   => $request->dosyaTempID,
+            'DOSYA'     => $kaydedilecekYol
         ]);
-
-        $veri = DB::table($firma . 'dosyalar00')->where('DOSYA', $kaydedilecekYol)->first();
+    
+        $veri = DB::table($firmaDb . 'dosyalar00')
+            ->where('DOSYA', $kaydedilecekYol)
+            ->first();
+    
         return $veri->id . '|*|*|*|' . $veri->DOSYA . '|*|*|*|' . $veri->created_at;
     }
 

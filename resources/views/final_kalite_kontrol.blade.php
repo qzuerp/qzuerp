@@ -245,7 +245,7 @@
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','HSCODE')->get();
 
 																foreach ($gk_kodlari as $key => $veri) {
-																	echo "<option value ='".$veri->EVRAKNO."'>".$veri->EVRAKNO."</option>";
+																	echo "<option value ='".$veri->EVRAKNO."'>".$veri->KOD." - ".$veri->AD."</option>";
 																}
 																@endphp
 															</select>
@@ -290,11 +290,10 @@
 																<input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}">
 															</td>
 															<td>
-																<button type='button' id='deleteSingleRow' class='btn btn-default delete-row'>
-																	<i class='fa fa-minus' style='color: red'></i>
+																<button type='button' class='btn btn-default satirDetay' data-trnum="{{ $veri->TRNUM }}" data-bs-toggle="modal" data-bs-target="#modal_satirDetay">
+																	<i class="fa-solid fa-plus"></i>
 																</button>
 															</td>
-
 															<td><input type="text" class="form-control" name="KOD[]" value="{{ $veri->QS_VARCODE }}" readonly></td>
 															<td><input type="number" class="form-control" name="OLCUM_NO[]" value="{{ $veri->QS_VARINDEX }}"></td>
 															<td><input type="text" class="form-control" name="ALAN_TURU[]" value="{{ $veri->QS_VARTYPE }}"></td>
@@ -321,7 +320,11 @@
 															<td><input type="text" class="form-control" name="NOT[]" value="{{ $veri->NOTES }}"></td>
 															<td><input type="text" class="form-control" name="DURUM[]" value="{{ $veri->DURUM }}" readonly></td>
 															<td><input type="date" class="form-control" name="ONAY_TARIH[]" value="{{ $veri->DURUM_ONAY_TARIHI }}"></td>
-
+															<td>
+																<button type='button' id='deleteSingleRow' class='btn btn-default delete-row'>
+																	<i class='fa fa-minus' style='color: red'></i>
+																</button>
+															</td>
 														</tr>
 													@endforeach
 												</tbody>
@@ -434,11 +437,87 @@
 			</div>
 			</div>
 		</div>
+
+		<div class="modal fade bd-example-modal-lg" id="modal_satirDetay" tabindex="-1" role="dialog" aria-labelledby="modal_satirDetay"  >
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Satır Detay</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<table id="detayTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+								<thead>
+									<tr class="bg-primary">
+									<th style="min-width: 150px;">Kod</th>
+									<th style="min-width: 150px;">Ölçüm No</th>
+									<th style="min-width: 120px;">Alan Türü</th>
+									<th style="min-width: 120px;">Uzunluk</th>
+									<th style="min-width: 120px;">Alan Ondalık Sayısı</th>
+									<th style="min-width: 120px;">Ölçüm Sonucu</th>
+									<th style="min-width: 120px;">Ölçüm Sonucu (Tarih)</th>
+									<th style="min-width: 120px;">Minimum Değer</th>
+									<th style="min-width: 120px;">Maksimum Değer</th>
+									<th>Zorunlu Mu</th>
+									<th style="min-width: 120px;">Test Ölçüm Birim</th>
+									<th style="min-width: 120px;">Kalite Parametresi Grup Kodu</th>
+									<th style="min-width: 120px;">Referans Değer Başlangıç</th>
+									<th style="min-width: 120px;">Referans Değer Bitiş</th>
+									<th style="min-width: 120px;">Tablo Türü</th>
+									<th style="min-width: 120px;">Kalite Parametresi Giriş Türü</th>
+									<th style="min-width: 100px;">Miktar Kriter Türü</th>
+									<th style="min-width: 100px;">Miktar Kriter - 1</th>
+									<th style="min-width: 100px;">Miktar Kriter - 2</th>
+									<th style="min-width: 100px;">Ölçüm Cihaz Tipi</th>
+									<th style="min-width: 100px;">Not</th>
+									<th style="min-width: 100px;">Durum</th>
+									<th style="min-width: 100px;">Onay Tarihi</th>
+									<th>#</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	<!-- Modals -->
 
 	<!-- JS -->
 		<script>
 			$(document).ready(function () {
+				$('.satirDetay').on('click',function () {
+					var TRNUM = $(this).data('trnum');
+
+					$.ajax({
+						url: '/final_kalite_kontrol_satir_detay',
+						type: 'POST',
+						data: {
+							"TRNUM": TRNUM,
+							"EVRAKNO": {{ @$kart_veri->EVRAKNO }}
+						},
+						success: function (data) {
+							if(data.length > 0) {
+								
+								$('#detayTable tbody').html(data);
+							}
+							else{
+								var SATIR = $(this).closest('tr');
+								$('#detayTable tbody').html(SATIR);
+							}
+						}
+					});
+				})
+
+
 				$('#STOK_KODU_SHOW').select2({
 					placeholder: 'Stok kodu seç...',
 					ajax: {
