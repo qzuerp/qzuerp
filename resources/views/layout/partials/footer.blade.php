@@ -438,6 +438,7 @@
     var table = $('#evrakSuzTable2').DataTable({
       "order": [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       buttons: ['copy', 'excel', 'print'],
       language: {
         url: '{{ asset("tr.json") }}'
@@ -477,6 +478,7 @@
     var table = $('#popupSelect').DataTable({
       "order": [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       buttons: ['copy', 'excel', 'print'],
       language: {
         url: '{{ asset("tr.json") }}'
@@ -498,6 +500,7 @@
     var table = $('#example2').DataTable({
       order: [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       paging: false, // << bu olacak
       buttons: ['copy', 'excel', 'print'],
       language: {
@@ -520,6 +523,7 @@
     var table = $('#popupInfo').DataTable({
       "order": [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       buttons: ['copy', 'excel', 'print'],
       language: {
         url: '{{ asset("tr.json") }}'
@@ -543,6 +547,7 @@
     var table = $('#popupSelect2').DataTable({
       "order": [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       buttons: ['copy', 'excel', 'print'],
       language: {
         url: '{{ asset("tr.json") }}'

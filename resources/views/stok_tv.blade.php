@@ -67,16 +67,16 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 							<div class="col-md-12">
 								<label class="form-label fw-bold">İşlemler</label>
 								<div class="action-btn-group flex gap-2 flex-wrap">
-								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('evrakSuzTable')">
+								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('table')">
 									<i class="fas fa-file-excel"></i> Excel'e Aktar
 								</button>
-								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportAllTableToExcel('evrakSuzTable')">
+								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportAllTableToExcel('table')">
 									<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
 								</button>
-								<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('evrakSuzTable')">
+								<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('table')">
 									<i class="fas fa-file-word"></i> Word'e Aktar
 								</button>
-								<!-- <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('evrakSuzTable')">
+								<!-- <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('table')">
 									<i class="fas fa-print"></i> Yazdır
 								</button> -->
 								</div>
@@ -84,7 +84,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 						</div>
 						<div class="row " style="overflow: auto">
 
-							<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10">
+							<table id="table" class="table table-hover text-center" data-page-length="10">
 								<thead>
 									<tr class="bg-primary">
 										<th style="min-width: 150px">Kod</th>
@@ -255,6 +255,44 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 				overlay.innerHTML = '';
 			}
 		});
+
+		$(document).ready(function() {
+			$('#table tfoot th').each(function () {
+				var title = $(this).text();
+				if (title == "#") {
+				$(this).html('<b>Git</b>');
+				}
+				else {
+				$(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+				}
+
+			});
+
+			var table = $('#table').DataTable({
+				"order": [[0, "desc"]],
+				dom: 'rtip',
+				buttons: ['copy', 'excel', 'print'],
+				deferRender: true,
+				language: {
+					url: '{{ asset("tr.json") }}'
+				},
+				initComplete: function () {
+					// Apply the search
+					this.api().columns().every(function () {
+					var that = this;
+
+					$('input', this.footer()).on('keyup change clear', function () {
+						if (that.search() !== this.value) {
+						that
+							.search(this.value)
+							.draw();
+						}
+					});
+					});
+				}
+			});
+
+		})
 	</script>
     <script>
       function exportTableToExcel(tableId)
