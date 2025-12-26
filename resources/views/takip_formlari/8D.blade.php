@@ -2,18 +2,66 @@
     <!-- Genel Bilgiler -->
     <div class=" mb-3">
         <div class="row g-2">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label ">Rapor No</label>
                 <input type="text" class="form-control" name="report_no" value="{{ @$kart_veri->d8_report_no }}" >
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label ">Tarih</label>
                 <input type="date" class="form-control" name="report_date" value="{{ @$kart_veri->d8_report_date }}"
                     >
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Sorumlu Ekip</label>
                 <input type="text" class="form-control" name="team" placeholder="Ekip adı / lider" value="{{ @$kart_veri->d8_team }}"">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Adet</label>
+                <input type="text" class="form-control" name="d8_adet" value="{{ @$kart_veri->d8_adet }}"">
+            </div>
+        </div>
+        <div class="row g-2">
+            <div class="col-md-3">
+                <label class="form-label ">Parça No</label>
+                <select name="d8_parca_no" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="d8_parca_no" id="d8_parca_no" class="form-control select2">
+                    <option value="">Seç</option>
+                    @php
+                        $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
+
+                        foreach ($evraklar as $key => $veri) {
+                            if ($veri->KOD == @$kart_veri->d8_parca_no) {
+                                echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+                            }
+                            else {
+                                echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                            }
+                        }
+                    @endphp
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label ">Müşteri</label>
+                <select class="form-control js-example-basic-single" style="width: 100%;" name="d8_cari">
+                    @php
+                        $evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
+                        foreach ($evraklar as $key => $veri) {
+                            if ($veri->KOD == @$kart_veri->d8_cari) {
+                                echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." - ".$veri->AD."</option>";
+                                }
+                                else {
+                                    echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                }
+                            }
+                    @endphp
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Sipariş Kodu</label>
+                <input type="text" class="form-control" name="d8_sipNo" value="{{ @$kart_veri->d8_sipNo }}"">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">UBF no / İlgili belge no</label>
+                <input type="text" class="form-control" name="d8_belge" value="{{ @$kart_veri->d8_belge }}"">
             </div>
         </div>
     </div>

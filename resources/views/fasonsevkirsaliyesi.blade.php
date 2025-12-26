@@ -544,15 +544,15 @@ if (isset($kart_veri)) {
 
 
                             $sql_sorgu = "
-                                SELECT T.*, E.*, C.*
+                                SELECT T.*, E.*, C.KOD AS CARIKOD, C.AD AS CARIADI,G.AD as DEPO_ADI
                                 FROM {$ekranTableT} AS T
                                 LEFT JOIN {$ekranTableE} AS E 
                                     ON T.EVRAKNO = E.EVRAKNO
                                 LEFT JOIN cari00 AS C
                                     ON E.CARIHESAPCODE = C.KOD
+                                left join gdef00 as G on E.TARGETAMBCODE = G.KOD
                                 WHERE 1 = 1
                             ";
-
 
 
                             if(Trim($KOD_B) <> '') {
@@ -578,10 +578,10 @@ if (isset($kart_veri)) {
                                 <td>{{ $row->EVRAKNO }}</td>
                                 <td>{{ $row->TARIH }}</td>
                                 <td>{{ $row->CARIHESAPCODE }}</td>
-                                <td>{{ $row->AD }}</td>
+                                <td>{{ $row->CARIADI }}</td>
                                 <td>{{ $row->KOD }}</td>
                                 <td>{{ $row->STOK_ADI }}</td>
-                                <td>{{ $row->TARGETAMBCODE }}</td>
+                                <td>{{ $row->TARGETAMBCODE }} - {{ $row->DEPO_ADI }}</td>
                                 <td>{{ $row->LOTNUMBER }}</td>
                                 <td>{{ $row->SERINO }}</td>
                                 <td>{{ $row->SF_MIKTAR }}</td>

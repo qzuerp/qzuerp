@@ -639,9 +639,6 @@
                     alert('Lütfen bir form tipi seçin!');
                     return false;
                 }
-                
-                // Loading göster
-                $('#loadingOverlay').css('display', 'flex');
             });
         });
     </script>

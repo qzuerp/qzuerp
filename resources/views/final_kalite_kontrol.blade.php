@@ -245,7 +245,7 @@
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','HSCODE')->get();
 
 																foreach ($gk_kodlari as $key => $veri) {
-																	echo "<option value ='".$veri->EVRAKNO."'>".$veri->KOD." - ".$veri->AD."</option>";
+																	echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
 																}
 																@endphp
 															</select>
@@ -439,52 +439,58 @@
 		</div>
 
 		<div class="modal fade bd-example-modal-lg" id="modal_satirDetay" tabindex="-1" role="dialog" aria-labelledby="modal_satirDetay"  >
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-xl">
 				<div class="modal-content">
 
 					<div class="modal-header">
 						<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Satır Detay</h4>
 					</div>
 					<div class="modal-body">
-						<div class="row">
-							<table id="detayTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
-								<thead>
-									<tr class="bg-primary">
-									<th style="min-width: 150px;">Kod</th>
-									<th style="min-width: 150px;">Ölçüm No</th>
-									<th style="min-width: 120px;">Alan Türü</th>
-									<th style="min-width: 120px;">Uzunluk</th>
-									<th style="min-width: 120px;">Alan Ondalık Sayısı</th>
-									<th style="min-width: 120px;">Ölçüm Sonucu</th>
-									<th style="min-width: 120px;">Ölçüm Sonucu (Tarih)</th>
-									<th style="min-width: 120px;">Minimum Değer</th>
-									<th style="min-width: 120px;">Maksimum Değer</th>
-									<th>Zorunlu Mu</th>
-									<th style="min-width: 120px;">Test Ölçüm Birim</th>
-									<th style="min-width: 120px;">Kalite Parametresi Grup Kodu</th>
-									<th style="min-width: 120px;">Referans Değer Başlangıç</th>
-									<th style="min-width: 120px;">Referans Değer Bitiş</th>
-									<th style="min-width: 120px;">Tablo Türü</th>
-									<th style="min-width: 120px;">Kalite Parametresi Giriş Türü</th>
-									<th style="min-width: 100px;">Miktar Kriter Türü</th>
-									<th style="min-width: 100px;">Miktar Kriter - 1</th>
-									<th style="min-width: 100px;">Miktar Kriter - 2</th>
-									<th style="min-width: 100px;">Ölçüm Cihaz Tipi</th>
-									<th style="min-width: 100px;">Not</th>
-									<th style="min-width: 100px;">Durum</th>
-									<th style="min-width: 100px;">Onay Tarihi</th>
-									<th>#</th>
-									</tr>
-								</thead>
+						<form id="detayForm">
+							<div class="row">
+								<div class="col-12" style="overflow:auto;">
+									<table id="detayTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+										<thead>
+											<tr class="bg-primary">
+											<th>#</th>
+											<th style="min-width: 150px;">Kod</th>
+											<th style="min-width: 150px;">Ölçüm No</th>
+											<th style="min-width: 120px;">Alan Türü</th>
+											<th style="min-width: 120px;">Uzunluk</th>
+											<th style="min-width: 120px;">Alan Ondalık Sayısı</th>
+											<th style="min-width: 120px;">Ölçüm Sonucu</th>
+											<th style="min-width: 120px;">Ölçüm Sonucu (Tarih)</th>
+											<th style="min-width: 120px;">Minimum Değer</th>
+											<th style="min-width: 120px;">Maksimum Değer</th>
+											<th>Zorunlu Mu</th>
+											<th style="min-width: 120px;">Test Ölçüm Birim</th>
+											<th style="min-width: 120px;">Kalite Parametresi Grup Kodu</th>
+											<th style="min-width: 120px;">Referans Değer Başlangıç</th>
+											<th style="min-width: 120px;">Referans Değer Bitiş</th>
+											<th style="min-width: 120px;">Tablo Türü</th>
+											<th style="min-width: 120px;">Kalite Parametresi Giriş Türü</th>
+											<th style="min-width: 100px;">Miktar Kriter Türü</th>
+											<th style="min-width: 100px;">Miktar Kriter - 1</th>
+											<th style="min-width: 100px;">Miktar Kriter - 2</th>
+											<th style="min-width: 100px;">Ölçüm Cihaz Tipi</th>
+											<th style="min-width: 100px;">Not</th>
+											<th style="min-width: 100px;">Durum</th>
+											<th style="min-width: 100px;">Onay Tarihi</th>
+											<th>#</th>
+											</tr>
+										</thead>
 
-								<tbody>
-									
-								</tbody>
-							</table>
-						</div>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</form>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="detayKaydet" style="margin-top: 15px;">Kaydet</button>
 					</div>
 				</div>
 			</div>
@@ -493,9 +499,85 @@
 
 	<!-- JS -->
 		<script>
+			$('#detayKaydet').on('click', function () {
+
+				let formData = $('#detayForm').serialize();
+
+				$.ajax({
+					url: 'finalkalitekontrolkaydet',
+					type: 'POST',
+					data: formData + '&EVRAKNO={{ @$kart_veri->EVRAKNO }}',
+					success: function (res) {
+						mesaj('Kaydedildi', 'success');
+					},
+					error: function (err) {
+						console.error(err);
+						alert('Hata oluştu');
+					}
+				});
+
+			});
+
+
+			$(document).on('click', '.delete-row', function () {
+				$(this).closest('tr').remove();
+			});
+			function yeniTRNUM() {
+				let satirSayisi = $('#detayTable tbody tr').length + 1;
+				return satirSayisi.toString().padStart(6, '0');
+			}
+
+			$(document).on('click', '.satirKopyala', function () {
+				// Kopyalama animasyonu
+				$(this).find('i').addClass('fa-spin');
+				
+				var yeniSatir = $(this).closest('tr').clone();
+				let trnum = yeniTRNUM();
+
+				// Eski TRNUM varsa temizle
+				yeniSatir.find('input[name="TRNUM_TI[]"]').remove();
+
+				// Yeni gizli input oluştur
+				let trnumInput = $('<input>', {
+					type: 'hidden',
+					name: 'TRNUM_TI[]',
+					value: trnum
+				});
+
+				yeniSatir.append(trnumInput);
+				
+				// Yumuşak ekleme animasyonu
+				yeniSatir.hide();
+				$('#detayTable tbody').append(yeniSatir);
+				yeniSatir.fadeIn(400);
+				
+				// İkon animasyonunu durdur
+				setTimeout(() => {
+					$(this).find('i').removeClass('fa-spin');
+				}, 400);
+			});
+
 			$(document).ready(function () {
-				$('.satirDetay').on('click',function () {
+				$('.satirDetay').on('click', function () {
+					$('#detayTable tbody').empty();
 					var TRNUM = $(this).data('trnum');
+					var SATIR = $(this).closest('tr').clone();
+					
+					SATIR.children('td,th').eq(1).html(`
+						<button type="button" class="btn satirKopyala">
+							<i class="fa-solid fa-copy" style="color:blue;"></i>
+						</button>
+					`);
+
+					// Profesyonel loader
+					Swal.fire({
+						title: 'Veriler yükleniyor...',
+						allowOutsideClick: false,
+						showConfirmButton: false,
+						didOpen: () => {
+							Swal.showLoading();
+						}
+					});
 
 					$.ajax({
 						url: '/final_kalite_kontrol_satir_detay',
@@ -504,20 +586,97 @@
 							"TRNUM": TRNUM,
 							"EVRAKNO": {{ @$kart_veri->EVRAKNO }}
 						},
-						success: function (data) {
-							if(data.length > 0) {
+						beforeSend: function() {
+							$('#detayTable').css('opacity', '0.3');
+						},
+						success: function (res) {
+							$('#detayTable').css('opacity', '1');
+							
+							if(res.length > 0 && res) {
+								res.forEach(function (veri, index) {
+									setTimeout(() => {
+										let htmlCode = "<tr style='display:none;'>";
+										htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM_TI[]' value='${veri.TRNUM}'></td>`;
+										htmlCode += `<td><button type="button" class="btn satirKopyala"> <i class="fa-solid fa-copy" style="color:blue;"></i> </button></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="KOD[]" value="${veri.QS_VARCODE ?? ''}" readonly></td>`;
+										htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[]" value="${veri.QS_VARINDEX ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[]" value="${veri.QS_VARTYPE ?? ''}"></td>`;
+										htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[]" value="${veri.QS_VARLEN ?? ''}"></td>`;
+										htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[]" value="${veri.QS_VARSIG ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[]" value="${veri.QS_VALUE ?? ''}"></td>`;
+										htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[]" value="${veri.QS_TARIH ?? ''}"></td>`;
+										htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+										htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+
+										let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
+										htmlCode += `<td class="text-center">
+											<input type="hidden" name="GECERLI_KOD[]" value="0">
+											<input type="checkbox" name="GECERLI_KOD[]" value="1" ${isChecked}>
+										</td>`;
+
+										htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[]" value="${veri.QS_UNIT ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="GK_1[]" value="${veri.QS_GK1 ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[]" value="${veri.REFDEGER1 ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[]" value="${veri.REFDEGER2 ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+										htmlCode += `<td><input type="text" class="form-control" name="NOT[]" value="${veri.NOTES ?? ''}"></td>`;
+
+										let durum = veri.DURUM ?? '';
+										htmlCode += `<td>
+											<select name="DURUM[]" class="form-select">
+												<option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
+												<option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
+												<option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
+											</select>
+										</td>`;
+
+										htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[]" value="${veri.DURUM_ONAY_TARIHI ?? ''}"></td>`;
+										htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
+										htmlCode += "</tr>";
+
+										let $row = $(htmlCode);
+										$('#detayTable tbody').append($row);
+										$row.fadeIn(300);
+										
+										if(index === res.length - 1) {
+											setTimeout(() => Swal.close(), 200);
+										}
+									}, index * 100);
+								});
+							} else {
+								let trnum = yeniTRNUM();
+								let trnumInput = $('<input>', {
+									type: 'hidden',
+									name: 'TRNUM_TI[]',
+									value: trnum
+								});
+								SATIR.append(trnumInput);
+								$('#detayTable tbody').empty().append(SATIR);
+								SATIR.hide().fadeIn(400);
 								
-								$('#detayTable tbody').html(data);
+								setTimeout(() => Swal.close(), 300);
 							}
-							else{
-								var SATIR = $(this).closest('tr');
-								$('#detayTable tbody').html(SATIR);
-							}
+						},
+						error: function(xhr, status, error) {
+							$('#detayTable').css('opacity', '1');
+							Swal.fire({
+								icon: 'error',
+								title: 'Hata!',
+								text: 'Veriler yüklenirken bir hata oluştu.',
+								confirmButtonText: 'Tamam'
+							});
+							console.error('Ajax Error:', error);
 						}
 					});
-				})
+				});
+			});
 
-
+			$(document).ready(function () {
 				$('#STOK_KODU_SHOW').select2({
 					placeholder: 'Stok kodu seç...',
 					ajax: {
@@ -569,53 +728,49 @@
 							
 							
 							res.forEach(function (veri, index) {
-								var TRNUM_FILL = getTRNUM();
-
-								// Mevcut satır sayısını al ve index’i buna göre ayarla
-								let rowIndex = $("#veriTable > tbody > tr").length + index;
-
+								var TRNUM_FILL = index.toString().padStart(6, '0');
 								let htmlCode = "<tr>";
-								htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
+								htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[]' value='${TRNUM_FILL + 1}'></td>`;
 								htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
-								htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="KOD[]" value="${veri.VARCODE ?? ''}" readonly></td>`;
+								htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[]" value="${veri.VARINDEX ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[]" value="${veri.VARTYPE ?? ''}"></td>`;
+								htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[]" value="${veri.VARLEN ?? ''}"></td>`;
+								htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[]" value="${veri.VARSIG ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[]" value="${veri.VALUE ?? ''}"></td>`;
+								htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[]" value="${veri.TARIH ?? ''}"></td>`;
+								htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+								htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
 
 								let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
 								htmlCode += `<td class="text-center">
-									<input type="hidden" name="GECERLI[${rowIndex}]" value="0">
-									<input type="checkbox" name="GECERLI[${rowIndex}]" value="1" ${isChecked}>
+									<input type="hidden" name="GECERLI_KOD[]" value="0">
+									<input type="checkbox" name="GECERLI_KOD[]" value="1" ${isChecked}>
 								</td>`;
 
-								htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[]" value="${veri.UNIT ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="GK_1[]" value="${veri.GK1 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[]" value="${veri.REFDEGER1 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[]" value="${veri.REFDEGER2 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="NOT[]" value="${veri.NOTES ?? ''}"></td>`;
 
 								// DURUM select
 								let durum = veri.DURUM ?? '';
 								htmlCode += `<td>
-									<select name="DURUM[${rowIndex}]" class="form-select">
+									<select name="DURUM[]" class="form-select">
 										<option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
 										<option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
 										<option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
 									</select>
 								</td>`;
 
-								htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIHI ?? ''}"></td>`;
+								htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[]" value="${veri.DURUM_ONAY_TARIHI ?? ''}"></td>`;
 
 								htmlCode += "</tr>";
 

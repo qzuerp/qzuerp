@@ -250,7 +250,7 @@ function alanKontrolu(className) {
     $('.'+className).each(function () {
       var hasNonEmptyValue = false;
 
-      $(this).find('input').each(function () {
+      $(this).find('input[type="text"]').each(function () {
         if (degeriVarMi(this)) {
           hasNonEmptyValue = true;
           return false;
@@ -515,8 +515,6 @@ function inputTemizle2() {
   //$('#EVRAKNO_E_SHOW').val('');
 
 
-  
-
   $('#veriTable tbody').empty();
   $('#baglantiliDokumanlarTable tbody').empty();
 
@@ -659,10 +657,14 @@ var title = $(this).text();
 });
 
 $(document).ready(function() {
+  $(document).on('click', '.delete-row', function () {
+    $(this).closest('tr').remove();
+  });
 // DataTable
 var table = $('#popupSelect').DataTable({
   "order": [[ 0, "desc" ]],
   dom: 'rtip',
+  deferRender:true,
   buttons: ['copy', 'excel', 'print'],
           language: {
             url: '{{ asset("tr.json") }}'
@@ -1121,7 +1123,8 @@ function padLeft(value, length=6, padChar='0') {
 }
 
 function getTRNUM(tableID = '') {
-
+  // var TRNUM = $('#'+tableID+'tbody tr').length + 1;
+  
   var LAST_TRNUM_OBJ = $('#LAST_TRNUM'+tableID)
   var LAST_TRNUM = +LAST_TRNUM_OBJ.val();
   var TRNUM = LAST_TRNUM+1;

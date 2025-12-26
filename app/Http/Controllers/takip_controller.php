@@ -64,6 +64,11 @@ class takip_controller extends Controller
         // Ekler
         $attachments = $request->attachments;
         $notes = $request->notes;
+        $d8_adet = $request->d8_adet;
+        $d8_parca_no = $request->d8_parca_no;
+        $d8_cari = $request->d8_cari;
+        $d8_sipNo = $request->d8_sipNo;
+        $d8_belge = $request->d8_belge;
 
 
         // İç Hata Formu
@@ -265,6 +270,11 @@ class takip_controller extends Controller
                         : $attachments,
 
                     'd8_notes' => $notes,
+                    'd8_adet' => $d8_adet,
+                    'd8_parca_no' => $d8_parca_no,
+                    'd8_cari' => $d8_cari,
+                    'd8_sipNo' => $d8_sipNo,
+                    'd8_belge' => $d8_belge,
 
 
 
@@ -464,6 +474,11 @@ class takip_controller extends Controller
                         : $attachments,
 
                     'd8_notes' => $notes,
+                    'd8_adet' => $d8_adet,
+                    'd8_parca_no' => $d8_parca_no,
+                    'd8_cari' => $d8_cari,
+                    'd8_sipNo' => $d8_sipNo,
+                    'd8_belge' => $d8_belge,
 
 
 

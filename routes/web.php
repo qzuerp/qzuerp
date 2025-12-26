@@ -397,6 +397,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('final_kalite_kontrol', [fkk_controller::class, 'index'])->name('final_kalite_kontrol');
     Route::post('final_kalite_kontrol_satir_detay', [fkk_controller::class, 'final_kalite_kontrol_satir_detay']);
+    Route::post('finalkalitekontrolkaydet', [fkk_controller::class, 'finalkalitekontrolkaydet']);
     Route::post('fkk_islemler', [fkk_controller::class, 'islemler']);
 
     /*

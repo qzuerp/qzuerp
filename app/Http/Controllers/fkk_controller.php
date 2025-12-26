@@ -14,7 +14,143 @@ class fkk_controller extends Controller
         return view('final_kalite_kontrol');
     }
     public function final_kalite_kontrol_satir_detay(Request $request) {
+        $u = Auth::user();
+        $firma = trim($u->firma).'.dbo.';
+
+        return DB::table($firma.'FKKT')->leftJoin($firma.'FKKTI', 'FKKT.EVRAKNO', '=', 'FKKTI.EVRAKNO')->where('FKKT.TRNUM', $request->TRNUM)->get();
+    }
+    public function finalkalitekontrolkaydet(Request $request)
+    {
+        // dd($request->all());
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        $EVRAKNO = $request->input('EVRAKNO');
+        $KOD = $request->KOD;
+        $OLCUM_NO = $request->OLCUM_NO;
+        $ALAN_TURU = $request->ALAN_TURU;
+        $UZUNLUK = $request->UZUNLUK;
+        $DESIMAL = $request->DESIMAL;
+        $OLCUM_SONUC = $request->OLCUM_SONUC;
+        $OLCUM_SONUC_TARIH = $request->OLCUM_SONUC_TARIH;
+        $MIN_DEGER = $request->MIN_DEGER;
+        $MAX_DEGER = $request->MAX_DEGER;
+        $GECERLI_KOD = $request->GECERLI_KOD;
+        $OLCUM_BIRIMI = $request->OLCUM_BIRIMI;
+        $GK_1 = $request->GK_1;
+        $REFERANS_DEGER1 = $request->REFERANS_DEGER1;
+        $REFERANS_DEGER2 = $request->REFERANS_DEGER2;
+        $VTABLEINPUT = $request->VTABLEINPUT;
+        $QVALINPUTTYPE = $request->QVALINPUTTYPE;
+        $KRITERMIK_OPT = $request->KRITERMIK_OPT;
+        $KRITERMIK_1 = $request->KRITERMIK_1;
+        $KRITERMIK_2 = $request->KRITERMIK_2;
+        $QVALCHZTYPE = $request->QVALCHZTYPE;
+        $NOT = $request->NOT;
+        $DURUM = $request->DURUM;
+        $ONAY_TARIH = $request->ONAY_TARIH;
+        $ids = $request->ids;
+        $OR_TRNUM = isset($request->TRNUM) ? $request->TRNUM : [];
+        $TRNUM = isset($request->TRNUM_TI) ? $request->TRNUM_TI : [];
+
+        // Mevcut ve yeni TRNUM'ları karşılaştır
+        $currentTRNUMS = [];
+        $liveTRNUMS = [];
         
+        $currentTRNUMSObj = DB::table($firma.'FKKTI')
+            ->where('EVRAKNO', $EVRAKNO)
+            ->select('TRNUM')
+            ->get();
+
+        foreach ($currentTRNUMSObj as $veri) {
+            array_push($currentTRNUMS, $veri->TRNUM);
+        }
+
+        foreach ($TRNUM as $veri) {
+            array_push($liveTRNUMS, $veri);
+        }
+
+        $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
+        $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
+        $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+        // dd($deleteTRNUMS, $newTRNUMS, $updateTRNUMS, $currentTRNUMS, $liveTRNUMS);
+        // Satırları güncelle veya yeni satır ekle
+        for ($i = 0; $i < count($TRNUM); $i++) {
+            $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+            if (in_array($TRNUM[$i], $newTRNUMS)) {
+                // Yeni satır ekle
+                DB::table($firma.'FKKTI')->insert([
+                    'EVRAKNO' => $EVRAKNO,
+                    'OR_TRNUM' => $OR_TRNUM[$i],
+                    'TRNUM' => $TRNUM[$i],
+                    'QS_VARCODE'             => $KOD[$i],
+                    'QS_VARINDEX'            => $OLCUM_NO[$i],
+                    'QS_VARTYPE'             => $ALAN_TURU[$i],
+                    'QS_VARLEN'              => $UZUNLUK[$i],
+                    'QS_VARSIG'              => $DESIMAL[$i],
+                    'QS_VALUE'               => $OLCUM_SONUC[$i],
+                    'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
+                    'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
+                    'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
+                    'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i] ?? 0,
+                    'QS_UNIT'                => $OLCUM_BIRIMI[$i],
+                    'QS_GK1'                 => $GK_1[$i],
+                    'REFDEGER1'              => $REFERANS_DEGER1[$i],
+                    'REFDEGER2'              => $REFERANS_DEGER2[$i],
+                    'VTABLEINPUT'            => $VTABLEINPUT[$i],
+                    'QVALINPUTTYPE'          => $QVALINPUTTYPE[$i],
+                    'KRITERMIK_OPT'          => $KRITERMIK_OPT[$i],
+                    'KRITERMIK_1'            => $KRITERMIK_1[$i],
+                    'KRITERMIK_2'            => $KRITERMIK_2[$i],
+                    'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
+                    'NOTES'                  => $NOT[$i],
+                    'DURUM'                  => $DURUM[$i],
+                    'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i]
+                ]);
+            }
+
+            if (in_array($TRNUM[$i], $updateTRNUMS)) {
+                // Mevcut satırı güncelle
+                DB::table($firma.'FKKTI')
+                    ->where('EVRAKNO', $EVRAKNO)
+                    ->where('TRNUM', $TRNUM[$i])
+                    ->update([
+                        'EVRAKNO' => $EVRAKNO,
+                        // 'OR_TRNUM' => $OR_TRNUM[$i],
+                        'QS_VARCODE'             => $KOD[$i],
+                        'QS_VARINDEX'            => $OLCUM_NO[$i],
+                        'QS_VARTYPE'             => $ALAN_TURU[$i],
+                        'QS_VARLEN'              => $UZUNLUK[$i],
+                        'QS_VARSIG'              => $DESIMAL[$i],
+                        'QS_VALUE'               => $OLCUM_SONUC[$i],
+                        'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
+                        'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
+                        'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
+                        'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i] ?? 0,
+                        'QS_UNIT'                => $OLCUM_BIRIMI[$i],
+                        'QS_GK1'                 => $GK_1[$i],
+                        'REFDEGER1'              => $REFERANS_DEGER1[$i],
+                        'REFDEGER2'              => $REFERANS_DEGER2[$i],
+                        'VTABLEINPUT'            => $VTABLEINPUT[$i],
+                        'QVALINPUTTYPE'          => $QVALINPUTTYPE[$i],
+                        'KRITERMIK_OPT'          => $KRITERMIK_OPT[$i],
+                        'KRITERMIK_1'            => $KRITERMIK_1[$i],
+                        'KRITERMIK_2'            => $KRITERMIK_2[$i],
+                        'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
+                        'NOTES'                  => $NOT[$i],
+                        'DURUM'                  => $DURUM[$i],
+                        'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i]
+                    ]);
+            }
+        }
+
+        foreach ($deleteTRNUMS as $deleteTRNUM) {
+            DB::table($firma.'FKKTI')
+                ->where('EVRAKNO', $EVRAKNO)
+                ->where('TRNUM', $deleteTRNUM)
+                ->delete();
+        }
     }
     public function islemler(Request $request)
     {
@@ -87,7 +223,8 @@ class fkk_controller extends Controller
                     'KOD_STOK00_AD' => $STOK_ADI,
                     'VTABLEINPUT' => $TABLO_TURU,
                     'KRITERMIK_OPT' => $MIKTAR_KRITER_TURU,
-                    'SF_MIKTAR' => $ISLEM_MIKTARI
+                    'SF_MIKTAR' => $ISLEM_MIKTARI,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 $max_id = DB::table($firma.'FKKE')->max('EVRAKNO');
@@ -144,7 +281,8 @@ class fkk_controller extends Controller
                     'KOD_STOK00_AD' => $STOK_ADI,
                     'VTABLEINPUT' => $TABLO_TURU,
                     'KRITERMIK_OPT' => $MIKTAR_KRITER_TURU,
-                    'SF_MIKTAR' => $ISLEM_MIKTARI
+                    'SF_MIKTAR' => $ISLEM_MIKTARI,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır

@@ -529,12 +529,13 @@
 
 
                                 $sql_sorgu = "
-                                    SELECT T.*, E.*, C.*
+                                    SELECT T.*, E.*, C.*, G.AD as DEPO_ADI
                                     FROM {$ekranTableT} AS T
                                     LEFT JOIN {$ekranTableE} AS E 
                                         ON T.EVRAKNO = E.EVRAKNO
                                     LEFT JOIN cari00 AS C
                                         ON E.CARIHESAPCODE = C.KOD
+                                    left join gdef00 as G on E.AMBCODE = G.KOD
                                     WHERE 1 = 1
                                 ";
 
@@ -567,7 +568,7 @@
                                     <td>{{ $row->KOD }}</td>
                                     <td>{{ $row->STOK_ADI }}</td>
                                     <td>{{ $row->IMALATAMBCODE }}</td>
-                                    <td>{{ $row->AMBCODE }}</td>
+                                    <td>{{ $row->AMBCODE }} - {{ $row->DEPO_ADI }}</td>
                                     <td>{{ $row->LOTNUMBER }}</td>
                                     <td>{{ $row->SERINO }}</td>
                                     <td>{{ $row->SF_MIKTAR }}</td>

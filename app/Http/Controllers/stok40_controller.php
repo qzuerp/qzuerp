@@ -137,8 +137,8 @@ class stok40_controller extends Controller
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->TRNUM;
     $T_AK = $request->T_AK;
-    // $FIYAT = $request->FIYAT;
-    // $FIYAT_PB = $request->FIYAT_PB;
+    $FIYAT = $request->FIYAT;
+    $FIYAT_PB = $request->FIYAT_PB;
     
     if ($KOD == null) {
       $satir_say = 0;
@@ -241,8 +241,8 @@ class stok40_controller extends Controller
         'TERMIN_TAR' => $TERMIN_TAR[$i],
         'AK' => $T_AK[$i],
         'created_at' => date('Y-m-d H:i:s'),
-        // 'FIYAT' => $FIYAT[$i],
-        // 'FIYAT_PB' => $FIYAT_PB[$i]
+        'FIYAT' => $FIYAT[$i],
+        'FIYAT_PB' => $FIYAT_PB[$i]
       ]);
 
     }
@@ -325,8 +325,8 @@ class stok40_controller extends Controller
           'TERMIN_TAR' => $TERMIN_TAR[$i],
           'AK' => $T_AK[$i],
           'created_at' => date('Y-m-d H:i:s'),
-          // 'FIYAT' => $FIYAT[$i],
-          // 'FIYAT_PB' => $FIYAT_PB[$i]
+          'FIYAT' => $FIYAT[$i],
+          'FIYAT_PB' => $FIYAT_PB[$i]
         ]);
 
       }
@@ -354,8 +354,8 @@ class stok40_controller extends Controller
           'TERMIN_TAR' => $TERMIN_TAR[$i],
           'AK' => $T_AK[$i],
           'updated_at' => date('Y-m-d H:i:s'),
-          // 'FIYAT' => $FIYAT[$i],
-          // 'FIYAT_PB' => $FIYAT_PB[$i]
+          'FIYAT' => $FIYAT[$i],
+          'FIYAT_PB' => $FIYAT_PB[$i]
         ]);
 
       }
