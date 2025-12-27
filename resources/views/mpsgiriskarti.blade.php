@@ -1484,6 +1484,7 @@
 											<th>Birim</th>
 											<th>Bakiye</th>
 											<th>Tarih</th>
+											<th>Müşteri Sipariş No</th>
 										</tr>
 									</thead>
 									<tfoot>
@@ -1497,6 +1498,7 @@
 											<th>Birim</th>
 											<th>Bakiye</th>
 											<th>Tarih</th>
+											<th>Müşteri Sipariş No</th>
 										</tr>
 									</tfoot>
 									<tbody>
@@ -1520,6 +1522,7 @@
 										        <td>{{ $veri->SF_SF_UNIT }}</td>
 										        <td>{{ $veri->SF_BAKIYE }}</td>
 										        <td>{{ $veri->TERMIN_TAR }}</td>
+										        <td>{{ $veri->CHSIPNO }}</td>
 										    </tr>
 										    @php
 										}

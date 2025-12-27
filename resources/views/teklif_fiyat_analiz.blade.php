@@ -482,7 +482,7 @@
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
 																	value="{{$kart_veri->TEKLIF_TUTAR}}">
 																<td>
-																	<button type='button' class='btn btn-default' data-bs-toggle="modal" onclick='receteden_hesapla($veri->KOD)'
+																	<button type='button' class='btn btn-default' data-bs-toggle="modal" onclick='receteden_hesapla("{{$veri->KOD}}","{{$veri->SF_MIKTAR}}")'
 																	data-bs-target="#modal_maliyetListesi"><i
 																			class='fa fa-plus'></i></button>
 																</td>
@@ -729,7 +729,7 @@
 
 			<div class="modal fade bd-example-modal-lg" id="modal_maliyetListesi" tabindex="-1" role="dialog"
 				aria-labelledby="modal_maliyetListesi">
-				<div class="modal-dialog modal-lg">
+				<div class="modal-dialog modal-xl">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
@@ -740,7 +740,8 @@
 								<table class="table table-bordered text-center" id="maliyetListesi">
 									<thead>
 										<tr>
-											<th>#</th>
+											<th style="min-width:280px; font-size: 13px !important;">
+												Kaynak Tipi</th>
 											<th style="min-width:280px; font-size: 13px !important;">
 												Stok Kodu</th>
 											<th style="min-width:200px; font-size: 13px !important;">
@@ -998,7 +999,7 @@
 				didOpen: () => { Swal.showLoading(); }
 			});
 
-			const rows = $("#veriTable > tbody > tr");
+			const rows = $("#maliyetListesi > tbody > tr");
 			let toplamTutar = 0;
 			let toplamFiyat = 0;
 
@@ -1072,6 +1073,7 @@
 				let trnum = $(this).find('input[name="TRNUM[]"]').val();
 				updateLastTRNUM(trnum);
 			});
+			$("#maliyetListesi tbody").empty();
 			const tab = document.getElementById('evrakSec');
 
 
@@ -1128,7 +1130,6 @@
 						<tr>
 							<td style='display: none;'><input type='hidden' maxlength='6' name='TRNUM[]' value='${getTRNUM()}'> </td>
 							<td style='display: none;'><input type="hidden" name="ESAS_MIKTAR" value="${esasMiktar}" ></td>
-							<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row' style='color:red'><i class='fa fa-minus'></i></button></td>
 							<td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='${table.BOMREC_INPUTTYPE || ''}' readonly></td>
 							<td><input type='text' class='form-control' name='KOD[]' value='${table.BOMREC_KAYNAKCODE || ''}' readonly></td>
 							<td><input type='text' class='form-control' name='KODADI[]' value='${table.KAYNAK_AD || ''}' readonly></td>
@@ -1150,6 +1151,7 @@
 
 				$("#maliyetListesi > tbody").append(htmlCode);
 				Swal.close();
+				fiyat_hesapla();
 			} catch (error) {
 				console.error('Reçeteden Hesaplama Genel Hatası:', error);
 				Swal.fire({
@@ -1180,7 +1182,7 @@
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
 				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='" + satirEkleInputs.KAYNAK_TIPI + "' readonly></td> ";
+				// htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='" + satirEkleInputs.KAYNAK_TIPI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";
@@ -1199,7 +1201,7 @@
 
 				htmlCode += " </tr> ";
 
-				if (satirEkleInputs.KAYNAK_TIPI == null || satirEkleInputs.KOD == " " || satirEkleInputs.ISLEM_MIKTARI == "" || !validateNumbers()) {
+				if (satirEkleInputs.KOD == " " || satirEkleInputs.ISLEM_MIKTARI == "" || !validateNumbers()) {
 					eksikAlanAlert();
 				}
 				else {

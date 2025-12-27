@@ -806,41 +806,41 @@
 
   <script>
 
-    $(document).on('click', '#evrakDuzenle', function (e) {
-        e.preventDefault(); // sadece bu butonu kes
+    // $(document).on('click', '#evrakDuzenle', function (e) {
+    //     e.preventDefault(); // sadece bu butonu kes
 
-        let form = $('#verilerForm')[0];
-        let formData = new FormData(form);
+    //     let form = $('#verilerForm')[0];
+    //     let formData = new FormData(form);
 
-        // bu butonun name/value'su garanti gitsin
-        formData.append(this.name, this.value);
+    //     // bu butonun name/value'su garanti gitsin
+    //     formData.append(this.name, this.value);
 
-        $.ajax({
-            url: form.action,
-            type: form.method,
-            data: formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function () {
-              Swal.fire({
-                  title: 'İşlem devam ediyor',
-                  text: 'Lütfen bekleyiniz',
-                  allowOutsideClick: false,
-                  didOpen: () => Swal.showLoading()
-              });
-            },
-            success: function () {
-              Swal.close();
-              mesaj('Değişiklikler başarıyla kaydedildi', 'success');
-            },
-            error: function (xhr) {
-                Swal.fire(
-                    'Patladı',
-                    xhr.responseJSON?.message ?? 'Bir şey ters gitti',
-                    'error'
-                );
-            }
-        });
+    //     $.ajax({
+    //         url: form.action,
+    //         type: form.method,
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         beforeSend: function () {
+    //           Swal.fire({
+    //               title: 'İşlem devam ediyor',
+    //               text: 'Lütfen bekleyiniz',
+    //               allowOutsideClick: false,
+    //               didOpen: () => Swal.showLoading()
+    //           });
+    //         },
+    //         success: function () {
+    //           Swal.close();
+    //           mesaj('Değişiklikler başarıyla kaydedildi', 'success');
+    //         },
+    //         error: function (xhr) {
+    //             Swal.fire(
+    //                 'Hata',
+    //                 xhr.responseJSON?.message ?? 'Bir şey ters gitti',
+    //                 'error'
+    //             );
+    //         }
+    //     });
     });
 
   </script>

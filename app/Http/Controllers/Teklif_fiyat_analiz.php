@@ -74,7 +74,7 @@ class Teklif_fiyat_analiz extends Controller
         $KATSAYI_ACIKLAMASI = isset($request->KATSAYI_ACIKLAMASI) ? $request->KATSAYI_ACIKLAMASI : ' ';
         $KATSAYI = isset($request->KATSAYI) ? $request->KATSAYI : ' ';
         $MASRAF_TUTARI = isset($request->MASRAF_TUTARI) ? $request->MASRAF_TUTARI : ' ';
-        $TRNUM2 = isset($request->TRNUM2) ? $request->TRNUM2 : ' ';
+        $TRNUM2 = isset($request->TRNUM2) ? $request->TRNUM2 : [];
 
         switch ($kart_islemleri) {
             case 'kart_olustur':

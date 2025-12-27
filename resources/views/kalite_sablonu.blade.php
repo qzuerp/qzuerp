@@ -180,6 +180,7 @@
 												<thead>
 													<tr class="satirEkle">
 														<th><i class="fa-solid fa-plus"></i></th>
+														<th>#</th>
 														<th style="min-width: 150px;">Kod</th>
 														<th style="min-width: 120px;">Özel Açıklama</th>
 														<th style="min-width: 120px;">Ölçüm No</th>
@@ -202,8 +203,9 @@
 													</tr>
 													<tr class="satirEkle">
 														<td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
+														<td>Sil</td>
 														<td style="flex-wrap:nowrap;">
-															<select class="form-control select2" style="width:200px" onchange="stokAdiGetir(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+															<select class="form-control select2" style="width:200px" onchange="stokAdiGetir(this.value)" name="STOK_KODU_SHOW" data-name="STOK_KODU" id="STOK_KODU_SHOW">
 																<option value=" ">Seç</option>
 																@php
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','HSCODE')->get();
@@ -215,20 +217,20 @@
 															</select>
 															<input type="hidden" id="STOK_KODU_FILL">
 														</td>
-														<td><input type="text" class="form-control" id="OZEL_ACIKLAMA_FILL" readonly></td>
-														<td><input type="number" class="form-control" id="OLCUM_NO_FILL"></td>
-														<!-- <td><input type="text" class="form-control" id="ALAN_TURU_FILL"></td>
-														<td><input type="number" class="form-control" id="UZUNLUK_FILL"></td>
-														<td><input type="number" class="form-control" id="DESIMAL_FILL"></td> -->
+														<td><input type="text" class="form-control" data-name="OZEL_ACIKLAMA" id="OZEL_ACIKLAMA_FILL" readonly></td>
+														<td><input type="number" class="form-control" data-name="OLCUM_NO" id="OLCUM_NO_FILL"></td>
+														<!-- <td><input type="text" class="form-control" data-name="ALAN_TURU" id="ALAN_TURU_FILL"></td>
+														<td><input type="number" class="form-control" data-name="UZUNLUK" id="UZUNLUK_FILL"></td>
+														<td><input type="number" class="form-control" data-name="DESIMAL" id="DESIMAL_FILL"></td> -->
 
 														<td class="text-center">
-															<input type="checkbox" class="form-check-input" id="GECERLI_KOD_FILL">
+															<input type="checkbox" class="form-check-input" data-name="GECERLI_KOD" id="GECERLI_KOD_FILL">
 														</td>
 
-														<td><input type="number" class="form-control" id="MIN_DEGER_FILL"></td>
-														<td><input type="number" class="form-control" id="MAX_DEGER_FILL"></td>
+														<td><input type="number" class="form-control" data-name="MIN_DEGER" id="MIN_DEGER_FILL"></td>
+														<td><input type="number" class="form-control" data-name="MAX_DEGER" id="MAX_DEGER_FILL"></td>
 														<td>
-															<select class="form-control select2" style="width:200px" id="OLCUM_BIRIMI_FILL">
+															<select class="form-control select2" style="width:200px" data-name="OLCUM_BIRIMI" id="OLCUM_BIRIMI_FILL">
 																<option value=" ">Seç</option>
 																@php
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','QIUNIT')->get();
@@ -240,7 +242,7 @@
 															</select>
 														</td>
 														<td>
-															<select class="form-control select2" style="width:200px" id="OLCUM_TIPI_FILL">
+															<select class="form-control select2" style="width:200px" data-name="OLCUM_TIPI" id="OLCUM_TIPI_FILL">
 																<option value=" ">Seç</option>
 																@php
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','QMEASURE')->get();
@@ -252,7 +254,7 @@
 															</select>
 														</td>
 														<td>
-															<select class="select2" style="width:200px" id="OLCUM_CIH_FILL">
+															<select class="select2" style="width:200px" data-name="OLCUM_CIH" id="OLCUM_CIH_FILL">
 																<option value=" ">Seç</option>
 																@php
 																$gk_kodlari=DB::table($database.'gecoust')->where('EVRAKNO','TEZGAHGK4')->get();
@@ -263,13 +265,13 @@
 																@endphp
 															</select>
 														</td>
-														<td><input type="number" class="form-control" id="BEKLENEN_DEGER_FILL"></td>
-														<td><input type="text" class="form-control" id="REFERANS_DEGER1_FILL"></td>
-														<td><input type="text" class="form-control" id="REFERANS_DEGER2_FILL"></td>
-														<td><input type="number" class="form-control" id="TOLERANS_NEG_FILL"></td>
-														<td><input type="number" class="form-control" id="TOLERANS_POZ_FILL"></td>
-														<td><input type="text" class="form-control" id="GK1_FILL"></td>
-														<td><input type="text" class="form-control" id="NOT_FILL"></td>
+														<td><input type="number" class="form-control" data-name="BEKLENEN_DEGER" id="BEKLENEN_DEGER_FILL"></td>
+														<td><input type="text" class="form-control" data-name="REFERANS_DEGER1" id="REFERANS_DEGER1_FILL"></td>
+														<td><input type="text" class="form-control" data-name="REFERANS_DEGER2" id="REFERANS_DEGER2_FILL"></td>
+														<td><input type="number" class="form-control" data-name="TOLERANS_NEG" id="TOLERANS_NEG_FILL"></td>
+														<td><input type="number" class="form-control" data-name="TOLERANS_POZ" id="TOLERANS_POZ_FILL"></td>
+														<td><input type="text" class="form-control" data-name="GK1" id="GK1_FILL"></td>
+														<td><input type="text" class="form-control" data-name="NOT" id="NOT_FILL"></td>
 
 													</tr>
 												</thead>
@@ -278,6 +280,9 @@
 														<tr>
 															<td style="display: none;">
 																<input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}">
+															</td>
+															<td>
+																@include('components.detayBtn', ['KOD' => @$kart_veri->KRITERCODE_1])
 															</td>
 															<td>
 																<button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button>
@@ -422,6 +427,8 @@
 	<!-- Modals -->
 
 	<!-- JS -->
+		@include('components/detayBtnLib')
+		<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 		<script>
 			$(document).ready(function () {
 				$('#KRITERCODE_1').select2({
@@ -478,6 +485,7 @@
 					let htmlCode = "<tr>";
 
 					htmlCode += `<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[${currentRowCount}]' value='${TRNUM_FILL}'></td>`;
+					htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
 					htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
 					var satirEkleInputs = getInputs('satirEkle');
 					// 'ALAN_TURU_FILL', 'UZUNLUK_FILL', 'DESIMAL_FILL' sonradan eklenebilr
