@@ -804,6 +804,46 @@
 
   </script>
 
+  <!-- <script>
+
+    $(document).on('submit', '#verilerForm', function (e) {
+        e.preventDefault();
+        setTimeout(function () {
+          $('#loader').css('display','none');
+        }, 300);
+        $('#loader').css('display','none');
+
+        let form = $(this);
+        let formData = new FormData(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Bekle la...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+            },
+            success: function (res) {
+                Swal.fire('Bitti', 'Güncellendi', 'success');
+            },
+            error: function (xhr) {
+                Swal.fire(
+                    'Patladı',
+                    xhr.responseJSON?.message ?? 'Bir şey ters gitti',
+                    'error'
+                );
+            }
+        });
+    });
+  </script> -->
+
+
   @if(isset($ekranTableE))
     <script>
       @php

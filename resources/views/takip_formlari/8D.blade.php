@@ -2,6 +2,7 @@
     <!-- Genel Bilgiler -->
     <div class=" mb-3">
         <div class="row g-2">
+
             <div class="col-md-3">
                 <label class="form-label ">Rapor No</label>
                 <input type="text" class="form-control" name="report_no" value="{{ @$kart_veri->d8_report_no }}" >
@@ -62,6 +63,9 @@
             <div class="col-md-3">
                 <label class="form-label">UBF no / İlgili belge no</label>
                 <input type="text" class="form-control" name="d8_belge" value="{{ @$kart_veri->d8_belge }}"">
+            </div>
+            <div class="col-2">
+                <img width="150" height="100" style="object-fit: contain; border-radius: 8px;" src="https://community.softr.io/uploads/db9110/original/2X/7/74e6e7e382d0ff5d7773ca9a87e6f6f8817a68a6.jpeg" alt="" id="stok_gorsel">
             </div>
         </div>
     </div>
@@ -333,3 +337,20 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#d8_parca_no').trigger('change');
+    });
+
+    $('#d8_parca_no').on('change',function(){
+        var kod = $(this).val();
+        $.ajax({
+            'url':'sapma/kod_gorsel',
+            'type':'post',
+            'data':{KOD:kod},
+            'success':function(res){
+                $('#stok_gorsel').attr('src',res ?? 'https://community.softr.io/uploads/db9110/original/2X/7/74e6e7e382d0ff5d7773ca9a87e6f6f8817a68a6.jpeg');
+            }
+        })
+    });
+</script>

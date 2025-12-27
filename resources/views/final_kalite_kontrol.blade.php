@@ -231,6 +231,7 @@
 														<th style="min-width: 100px;">Miktar Kriter - 1</th>
 														<th style="min-width: 100px;">Miktar Kriter - 2</th>
 														<th style="min-width: 100px;">Ölçüm Cihaz Tipi</th>
+														<th style="min-width: 100px;">Ölçüm Cihaz Kodu</th>
 														<th style="min-width: 100px;">Not</th>
 														<th style="min-width: 100px;">Durum</th>
 														<th style="min-width: 100px;">Onay Tarihi</th>
@@ -269,6 +270,16 @@
 														<td><input type="text" class="form-control" id="KRITERMIK_1_FILL"></td>
 														<td><input type="text" class="form-control" id="KRITERMIK_2_FILL"></td>
 														<td><input type="text" class="form-control" id="QVALCHZTYPE_FILL"></td>
+														<td>
+															<select name="QVALCHZCODE" class="form-control select2" id="">
+																@php
+																	$kalibrasyon = DB::table($database.'SRVKC0')->get();
+																@endphp
+																@foreach ($kalibrasyon as $cihaz)
+																	<option value="{{ $cihaz->KOD }}">{{ $cihaz->KOD }} - {{ $cihaz->AD }}</option>
+																@endforeach
+															</select>
+														</td>
 														<td><input type="text" class="form-control" id="NOT_FILL"></td>
 
 														<td>

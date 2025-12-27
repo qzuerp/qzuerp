@@ -526,8 +526,8 @@
                           <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $t_veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD_F[]" value="{{ $t_veri->KOD }}"></td>
                           <td><input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $t_veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI_F[]" value="{{ $t_veri->STOK_ADI }}"></td>
 
-                          <td><input type="number" class="form-control" name="SF_MIKTAR_F[]" value="{{ floor($t_veri->SF_MIKTAR) }}"></td>
-                          <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $t_veri->FIYAT ?? $record->PRICE }}"></td>
+                          <td><input type="number" class="form-control" name="SF_MIKTAR_F[]" value="{{ floor(@$t_veri->SF_MIKTAR) }}"></td>
+                          <td><input type="number" class="form-control" name="FIYAT[]" value="{{ @$t_veri->FIYAT ?? @$record->PRICE }}"></td>
                           <td>
                             <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control js-example-basic-single select2 req" style="width: 100%;">
                               <option value="">Seç</option>
