@@ -804,33 +804,34 @@
 
   </script>
 
-  <!-- <script>
+  <script>
 
-    $(document).on('submit', '#verilerForm', function (e) {
-        e.preventDefault();
-        setTimeout(function () {
-          $('#loader').css('display','none');
-        }, 300);
-        $('#loader').css('display','none');
+    $(document).on('click', '#evrakDuzenle', function (e) {
+        e.preventDefault(); // sadece bu butonu kes
 
-        let form = $(this);
-        let formData = new FormData(this);
+        let form = $('#verilerForm')[0];
+        let formData = new FormData(form);
+
+        // bu butonun name/value'su garanti gitsin
+        formData.append(this.name, this.value);
 
         $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
+            url: form.action,
+            type: form.method,
             data: formData,
             processData: false,
             contentType: false,
             beforeSend: function () {
-                Swal.fire({
-                    title: 'Bekle la...',
-                    allowOutsideClick: false,
-                    didOpen: () => Swal.showLoading()
-                });
+              Swal.fire({
+                  title: 'İşlem devam ediyor',
+                  text: 'Lütfen bekleyiniz',
+                  allowOutsideClick: false,
+                  didOpen: () => Swal.showLoading()
+              });
             },
-            success: function (res) {
-                Swal.fire('Bitti', 'Güncellendi', 'success');
+            success: function () {
+              Swal.close();
+              mesaj('Değişiklikler başarıyla kaydedildi', 'success');
             },
             error: function (xhr) {
                 Swal.fire(
@@ -841,7 +842,8 @@
             }
         });
     });
-  </script> -->
+
+  </script>
 
 
   @if(isset($ekranTableE))

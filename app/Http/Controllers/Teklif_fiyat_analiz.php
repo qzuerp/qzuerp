@@ -12,7 +12,7 @@ class Teklif_fiyat_analiz extends Controller
 {
     public function index()
     {
-        return view('teklif_fiyat_analiz_eski');
+        return view('teklif_fiyat_analiz');
     }
 
     public function islemler(Request $request)
@@ -101,9 +101,9 @@ class Teklif_fiyat_analiz extends Controller
                     for ($i = 0; $i < count($TRNUM); $i++) {
                         $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
                         
-                        DB::table($firma.'tekl20tı')->insert([
+                        DB::table($firma.'tekl20t')->insert([
                             'EVRAKNO' => $EVRAKNO,
-                            'KAYNAKTYPE' => $KAYNAK_TIPI[$i],
+                            'KAYNAKTYPE' => 'M',
                             'KOD' => $KOD[$i],
                             'STOK_AD1' => $KODADI[$i],
                             'SF_MIKTAR' => $ISLEM_MIKTARI[$i],
@@ -144,7 +144,7 @@ class Teklif_fiyat_analiz extends Controller
                 $currentTRNUMS = [];
                 $liveTRNUMS = [];
                 
-                $currentTRNUMSObj = DB::table($firma.'tekl20tı')
+                $currentTRNUMSObj = DB::table($firma.'tekl20t')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
@@ -167,9 +167,9 @@ class Teklif_fiyat_analiz extends Controller
 
                     if (in_array($TRNUM[$i], $newTRNUMS)) {
                         // Yeni satır ekle
-                        DB::table($firma.'tekl20tı')->insert([
+                        DB::table($firma.'tekl20t')->insert([
                             'EVRAKNO' => $EVRAKNO,
-                            'KAYNAKTYPE' => $KAYNAK_TIPI[$i],
+                            'KAYNAKTYPE' => 'M',
                             'KOD' => $KOD[$i],
                             'STOK_AD1' => $KODADI[$i],
                             'SF_MIKTAR' => $ISLEM_MIKTARI[$i],
@@ -190,11 +190,11 @@ class Teklif_fiyat_analiz extends Controller
 
                     if (in_array($TRNUM[$i], $updateTRNUMS)) {
                         // Mevcut satırı güncelle
-                        DB::table($firma.'tekl20tı')
+                        DB::table($firma.'tekl20t')
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM[$i])
                             ->update([
-                                'KAYNAKTYPE' => $KAYNAK_TIPI[$i],
+                                'KAYNAKTYPE' => 'M',
                                 'KOD' => $KOD[$i],
                                 'STOK_AD1' => $KODADI[$i],
                                 'SF_MIKTAR' => $ISLEM_MIKTARI[$i],
@@ -216,7 +216,7 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS as $deleteTRNUM) {
-                    DB::table($firma.'tekl20tı')
+                    DB::table($firma.'tekl20t')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
                         ->delete();
@@ -260,7 +260,7 @@ class Teklif_fiyat_analiz extends Controller
                         ]);
                     }
 
-                    if (in_array($TRNUM[$i], $updateTRNUMS2)) {
+                    if (in_array($TRNUM2[$i], $updateTRNUMS2)) {
                         // Mevcut satırı güncelle
                         DB::table($firma.'tekl20tr')
                             ->where('EVRAKNO', $EVRAKNO)

@@ -294,6 +294,7 @@ class stok40_controller extends Controller
     //   't' => $TRNUM,
     //   'all' => $request->all()
     // ]);
+
     for ($i = 0; $i < $satir_say; $i++) {
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
