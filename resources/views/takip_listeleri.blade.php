@@ -477,6 +477,7 @@
                                     <th>Sapma Değişken Tanımı</th>
                                     <th>İç Hata Parça No</th>
                                     <th>8D Parça No</th>
+                                    <th>Sipariş No</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -489,6 +490,7 @@
                                     <th>Sapma Değişken Tanımı</th>
                                     <th>İç Hata Parça No</th>
                                     <th>8D Parça No</th>
+                                    <th>Sipariş No</th>
                                     <th>#</th>
                                 </tr>
                             </tfoot>
@@ -507,6 +509,7 @@
                                         echo "<td>" . $suzVeri->sapma_degisim_tanimi . "</td>";
                                         echo "<td>" . $suzVeri->ich_part_code . "</td>";
                                         echo "<td>" . $suzVeri->d8_parca_no . "</td>";
+                                        echo "<td>" . $suzVeri->d8_sipNo . "</td>";
                                         echo "<td>" . "<a class='btn btn-info' href='takip_listeleri?ID=" . $suzVeri->ID . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
                                     echo "</tr>";
 
