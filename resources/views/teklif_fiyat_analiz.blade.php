@@ -379,6 +379,7 @@
 																			<button class="btn btn-radius btn-primary"
 																				data-bs-toggle="modal"
 																				data-bs-target="#modal_popupSelectModal"
+																				
 																				type="button">
 																				<span
 																					class="fa-solid fa-magnifying-glass txt-radius"></span>
@@ -481,7 +482,7 @@
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
 																	value="{{$kart_veri->TEKLIF_TUTAR}}">
 																<td>
-																	<button type='button' class='btn btn-default' data-bs-toggle="modal"
+																	<button type='button' class='btn btn-default' data-bs-toggle="modal" onclick='receteden_hesapla($veri->KOD)'
 																	data-bs-target="#modal_maliyetListesi"><i
 																			class='fa fa-plus'></i></button>
 																</td>
@@ -637,40 +638,40 @@
 														</thead>
 														<tbody>
 															@php
-																$veri = DB::table($ekranTableTR)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
-																if (!$veri->isEmpty()) {
-																	foreach ($veri as $key => $veri) {
-															@endphp
-															<tr>
-																<input type="hidden" name="TRNUM2[]"
-																	value="{{$veri->TRNUM}}">
-																// <input type="hidden" name="TOPLAM_TUTAR"
-																	id="TOPLAM_TUTAR" value="{{$kart_veri->TEKLIF_TUTAR}}">
-																<td><button type='button' id='deleteSingleRow'
-																		class='btn btn-default delete-row'><i
-																			class='fa fa-minus'
-																			style='color: red'></i></button>
-																</td>
-																<td><input type="text" name="MASRAF_TURU[]"
-																		value="{{$veri->MASRAF_TURU}}" class="form-control"
-																		readonly></td>
-																<td><input type="text" name="MASRAF_ACIKLAMASI[]"
-																		value="{{$veri->MASRAF_ACIKLAMASI}}"
-																		class="form-control" readonly></td>
-																<td><input type="text" name="KATSAYI_TURU[]"
-																		value="{{$veri->KATSAYI_TURU}}" class="form-control"
-																		readonly></td>
-																<td><input type="text" name="KATSAYI_ACIKLAMASI[]"
-																		value="{{$veri->KATSAYI_ACIKLAMASI}}"
-																		class="form-control number"></td>
-																<td><input type="text" name="KATSAYI[]"
-																		value="{{$veri->KATSAYI}}" class="form-control"
-																		readonly></td>
-																<td><input type="text" name="MASRAF_TUTARI[]"
-																		value="{{$veri->MASRAF_TUTARI}}"
-																		class="form-control number" readonly></td>
-															</tr>
-															@php
+																$veri2 = DB::table($ekranTableTR)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
+																if (!$veri2->isEmpty()) {
+																	foreach ($veri2 as $key => $veri) {
+																		@endphp
+																		<tr>
+																			<input type="hidden" name="TRNUM2[]"
+																				value="{{$veri->TRNUM}}">
+																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR" value="{{$kart_veri->TEKLIF_TUTAR}}">
+
+																			<td><button type='button' id='deleteSingleRow'
+																					class='btn btn-default delete-row'><i
+																						class='fa fa-minus'
+																						style='color: red'></i></button>
+																			</td>
+																			<td><input type="text" name="MASRAF_TURU[]"
+																					value="{{$veri->MASRAF_TURU}}" class="form-control"
+																					readonly></td>
+																			<td><input type="text" name="MASRAF_ACIKLAMASI[]"
+																					value="{{$veri->MASRAF_ACIKLAMASI}}"
+																					class="form-control" readonly></td>
+																			<td><input type="text" name="KATSAYI_TURU[]"
+																					value="{{$veri->KATSAYI_TURU}}" class="form-control"
+																					readonly></td>
+																			<td><input type="text" name="KATSAYI_ACIKLAMASI[]"
+																					value="{{$veri->KATSAYI_ACIKLAMASI}}"
+																					class="form-control number"></td>
+																			<td><input type="text" name="KATSAYI[]"
+																					value="{{$veri->KATSAYI}}" class="form-control"
+																					readonly></td>
+																			<td><input type="text" name="MASRAF_TUTARI[]"
+																					value="{{$veri->MASRAF_TUTARI}}"
+																					class="form-control number" readonly></td>
+																		</tr>
+																		@php
 																	}
 																}
 															@endphp
