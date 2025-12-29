@@ -189,14 +189,25 @@
       <div class="action-group">
         <div id="kartDuzenleme" name="kartDuzenle">
           <a href="javascript:void(0)" 
-             id="kartDuzenle" 
-             class="evrak-btn new-btn" 
-             title="Yeni Kart"
-             onclick="inputTemizle2(); if (typeof ozelInput === 'function') { ozelInput(); }">
+            id="kartDuzenle" 
+            class="evrak-btn new-btn" 
+            title="Yeni Kart"
+            onclick="inputTemizle2(); if (typeof ozelInput === 'function') { ozelInput(); }">
             <i class="fa-solid fa-file-circle-plus"></i>
           </a>
         </div>
         
+        <div id="kartKopyalama" name="kartDuzenle">
+          <a href="javascript:void(0)"
+            id="kartKopyala"
+            class="evrak-btn new-btn"
+            title="Kopyasını Oluştur"
+            onclick="kartKopyala()"
+            >
+            <i class="fa-solid fa-copy"></i>
+          </a>
+        </div>
+
         <div id="kartDuzenle2" name="kartDuzenle2">
           <a href="javascript:void(0)" 
              class="evrak-btn save-btn" 

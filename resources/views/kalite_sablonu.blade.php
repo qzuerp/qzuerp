@@ -176,7 +176,7 @@
                         		<div class="tab-content">
                           			<div class="active tab-pane" id="veri">
 										<div>
-											<table class="table table-hover text-center" id="veriTable">
+											<table class="table table-hover text-center" id="veriTable" style="overflow:visible;">
 												<thead>
 													<tr class="satirEkle">
 														<th><i class="fa-solid fa-plus"></i></th>
@@ -485,7 +485,7 @@
 					let htmlCode = "<tr>";
 
 					htmlCode += `<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[${currentRowCount}]' value='${TRNUM_FILL}'></td>`;
-					htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+					htmlCode += detayBtnForJS('{{ @$kart_veri->KRITERCODE_1 }}');
 					htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
 					
 					// 'ALAN_TURU_FILL', 'UZUNLUK_FILL', 'DESIMAL_FILL' sonradan eklenebilr

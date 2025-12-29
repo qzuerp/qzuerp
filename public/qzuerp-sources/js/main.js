@@ -497,6 +497,18 @@ function inputTemizle() {
 
 }
 
+function kartKopyala() {
+  $('#kartOlustur').css('display', 'inline');
+  $('#kartOlustur2').css('display', 'inline');
+  $('#kartDuzenle').hide();
+  $('#kartDuzenle2').hide();
+  $('#kartDuzenle3').hide();
+  $('#kartKopyala').hide();
+  var ID = document.getElementById("evrakSec").value;
+  $('#ID_TO_REDIRECT').val(ID);
+
+  $('#evrakSec').prop('disabled', 'disabled');
+}
 
 function inputTemizle2() {
   
@@ -505,6 +517,7 @@ function inputTemizle2() {
   $('#kartDuzenle').hide();
   $('#kartDuzenle2').hide();
   $('#kartDuzenle3').hide();
+  $('#kartKopyala').hide();
   //$('#verilerForm')[0].reset();
   var ID = document.getElementById("evrakSec").value;
   $('#ID_TO_REDIRECT').val(ID);
@@ -1124,7 +1137,7 @@ function padLeft(value, length=6, padChar='0') {
 
 function getTRNUM(tableID = '') {
   // var TRNUM = $('#'+tableID+'tbody tr').length + 1;
-  
+
   var LAST_TRNUM_OBJ = $('#LAST_TRNUM'+tableID)
   var LAST_TRNUM = +LAST_TRNUM_OBJ.val();
   var TRNUM = LAST_TRNUM+1;

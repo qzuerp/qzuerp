@@ -1004,7 +1004,6 @@
 
 			try {
 				for (let i = 0; i < rows.length; i++) {
-					if (i == 0) continue; // İlk satırı atla
 
 					const row = rows[i];
 					const kod = $(row).find("input[name='KOD[]']").val();
@@ -1045,7 +1044,7 @@
 				}
 
 				// Toplamları hesapla
-				$('#veriTable > tbody > tr:not(:first)').each(function () {
+				$('#maliyetListesi > tbody > tr').each(function () {
 					const fiyat = parseFloat($(this).find("input[name='FIYAT[]']").val()) || 0;
 					const tutar = parseFloat($(this).find("input[name='TUTAR[]']").val()) || 0;
 

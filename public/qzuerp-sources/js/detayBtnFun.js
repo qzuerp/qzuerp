@@ -154,7 +154,7 @@ function SatirKopyala(button) {
                     if (val?.startsWith(sadeceKod + '|||')) {
                         yukariInput.val(val).trigger('change.select2');
                         bulundu = true;
-                        return false; 
+                        return false;
                     }
                 });
 
