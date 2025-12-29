@@ -345,7 +345,7 @@ class mmps10_controller extends Controller
       case 'kart_sil':
         FunctionHelpers::Logla('MMPS10',$EVRAKNO,'D');
 
-        $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t']);
+        $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t','stok48t','stok48e']);
 
         if ($msg) {
           return redirect()->back()->with('error_swal', $msg);
