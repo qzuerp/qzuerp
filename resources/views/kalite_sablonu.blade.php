@@ -299,8 +299,8 @@
 																<input type="checkbox" name="GECERLI_KOD[{{$index}}]" value="1" {{ $veri->VERIFIKASYONTIPI2 == 1 ? 'checked' : '' }}>
 															</td>
 
-															<td><input type="number" class="form-control" value="{{ $veri->VERIFIKASYONNUM1 }}" name="MIN_DEGER[]"></td>
-															<td><input type="number" class="form-control" value="{{ $veri->VERIFIKASYONNUM2 }}" name="MAX_DEGER[]"></td>
+															<td><input type="number" step="any" class="form-control" value="{{ $veri->VERIFIKASYONNUM1 }}" name="MIN_DEGER[]"></td>
+															<td><input type="number" step="any" class="form-control" value="{{ $veri->VERIFIKASYONNUM2 }}" name="MAX_DEGER[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTUNIT }}" name="OLCUM_BIRIMI[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTTYPE }}" name="OLCUM_TIPI[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->QVALCHZTYPE }}" name="OLCUM_CIH[]"></td>
