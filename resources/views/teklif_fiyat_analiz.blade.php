@@ -312,9 +312,8 @@
 
 											<div class="tab-content">
 												<div class="active tab-pane" id="tab_1">
-													<div
+													<!-- <div
 														style="display: flex; justify-content: end; align-items: center; gap: 10px; margin-top: 15px; padding: 0px 10px;">
-														<!-- <h3 id="sonuc"></h3> -->
 														<div>
 															<button type="button" class="btn btn-primary btn-custom"
 																onclick="receteden_hesapla()" name="stokDusum"
@@ -325,7 +324,7 @@
 																style="font-size: 12px; width:120px;">Maliyet
 																Hesapla</button>
 														</div>
-													</div>
+													</div> -->
 													<table class="table table-bordered text-center" id="veriTable">
 														<thead>
 															<tr>
@@ -1016,7 +1015,6 @@
 
 					try {
 						sonuc_fiyat = await maliyet_hesapla(kod, ad, tarih, endex, teklif);
-						console.log(sonuc_fiyat);
 					} catch (error) {
 						if (mevcutFiyat) {
 							sonuc_fiyat = mevcutFiyat;
@@ -1181,8 +1179,8 @@
 
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
 				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				// htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='" + satirEkleInputs.KAYNAK_TIPI + "' readonly></td> ";
+				htmlCode += " <button type='button' class='btn btn-default' data-bs-toggle='modal' onclick='receteden_hesapla('" + satirEkleInputs.STOK_KOD + "','" + satirEkleInputs.ISLEM_BIRIMI + "')' data-bs-target='#modal_maliyetListesi'><i class='fa fa-plus'></i></button>"
 				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";
@@ -1197,7 +1195,8 @@
 				htmlCode += " <td><input type='text' class='form-control' name='AUTO[]' value='" + satirEkleInputs.AUTO + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR[]' value='" + satirEkleInputs.STOKMIKTAR + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM[]' value='" + satirEkleInputs.STOKTEMELBIRIM + "' readonly></td> ";
-
+				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+				
 
 				htmlCode += " </tr> ";
 
