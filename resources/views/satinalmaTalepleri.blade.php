@@ -496,7 +496,7 @@
                             @php
                               $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
                               foreach ($evraklar as $key => $veri) {
-                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "'>" . $veri->KOD . " | " . $veri->STOK_ADI . "</option>";
+                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "|||" . $veri->LOTNUMBER . "|||" . $veri->NOT1 . "'>" . $veri->KOD . " - " . $veri->STOK_ADI . "</option>";
                               }
                             @endphp
                           </select>
@@ -526,6 +526,8 @@
                             <th>Fiyat</th>
                             <th style="min-width:130px;">Para Birimi</th>
                             <th>Termin Tar.</th>
+                            <th>Lot no</th>
+                            <th>Not</th>
                           </tr>
 
                           <tr class="satirEkle2" style="background-color:#3c8dbc">
@@ -589,6 +591,16 @@
                                 name="TERMIN_TAR_FILL" id="TI_TERMIN_TAR_FILL" data-bs-toggle="tooltip"
                                 data-bs-placement="top" data-bs-title="TERMIN_TAR" class="TERMIN_TAR form-control">
                             </td>
+                            <td style="min-width: 150px">
+                              <input maxlength="255" style="color: red" type="text" data-name="TI_LOTNUMBER_FILL"
+                                id="TI_LOTNUMBER_FILL" data-bs-toggle="tooltip" readonly
+                                data-bs-placement="top" data-bs-title="LOTNUMBER" class="LOTNUMBER form-control">
+                            </td>
+                            <td style="min-width: 150px">
+                              <input maxlength="255" style="color: red" type="text" data-name="TI_NOT1_FILL"
+                                id="TI_NOT1_FILL" data-bs-toggle="tooltip" readonly
+                                data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">
+                            </td>
                             <td>#</td>
 
                           </tr>
@@ -645,7 +657,14 @@
                                 <input type="text" class="form-control" name="TI_TERMIN_TAR[]"
                                   value="{{ $veri->TERMIN_TAR }}" readonly>
                               </td>
-
+                              <td>
+                                <input type="text" class="form-control" name="TI_LOTNUMBER[]"
+                                  value="{{ $veri->LOTNUMBER }}" readonly>
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" name="TI_NOT1[]"
+                                  value="{{ $veri->NOT1 }}" readonly>
+                              </td>
                               <td>
                                 <button type="button" id="deleteSingleRow2" class="btn btn-default delete-row2">
                                   <i class="fa fa-minus" style="color: red"></i>
@@ -1052,6 +1071,8 @@
         const veriler = veri.split("|||");
         $('#T_STOK_KODU').val(veriler[0]);
         $('#TI_ARTNO').val(veriler[1]);
+        $('#TI_LOTNUMBER_FILL').val(veriler[2]);
+        $('#TI_NOT1_FILL').val(veriler[3]);
       }
       function stokAdiGetirName2(veri) {
         const veriler = veri.split("|||");
@@ -1338,6 +1359,8 @@
           htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB_FILL + "' readonly></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='TI_TERMIN_TAR[]' value='" + satirEkleInputs.TI_TERMIN_TAR_FILL + "' readonly></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='TI_LOTNUMBER[]' value='" + satirEkleInputs.TI_LOTNUMBER_FILL + "' readonly></td> ";
+          htmlCode += " <td><input type='text' class='form-control' name='TI_NOT1[]' value='" + satirEkleInputs.TI_NOT1_FILL + "' readonly></td> ";
           htmlCode += "<td><button type='button' id='deleteSingleRow2' class='btn btn-default delete-row2'><i class='fa fa-minus' style='color: red'></i></button></td>";
           htmlCode += '</tr>'
 

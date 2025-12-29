@@ -1018,7 +1018,7 @@ class mmps10_controller extends Controller
             'KOD' => [$hm->BOMREC_KAYNAKCODE],
             'AD' => [$hm->BOMREC_KAYNAKCODE],
             'EVRAKNO' => $EVRAKNO
-        ]),$mpsCount,$sonEvrak,$visited);
+        ]),$mpsCount,$tipKodu.$sonEvrak->EVRAKNO,$visited);
       }
     }
     return $sonuclar[] = [

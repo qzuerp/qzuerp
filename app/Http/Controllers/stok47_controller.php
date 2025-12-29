@@ -80,6 +80,8 @@ class stok47_controller extends Controller
     $TI_TERMIN_TAR = $request->TI_TERMIN_TAR;
     $NAME2 = $request->NAME2;
     $AGIRLIK = $request->AGIRLIK;
+    $TI_LOTNUMBER = $request->TI_LOTNUMBER;
+    $TI_NOT1 = $request->TI_NOT1;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -189,7 +191,8 @@ class stok47_controller extends Controller
             // 'FIYAT_PB' => $FIYAT_PB[$i], 
             'NETKAPANANMIK' => 0,
             'NAME2' => $NAME2[$i],
-            'AGIRLIK' => $AGIRLIK[$i]
+            'AGIRLIK' => $AGIRLIK[$i],
+            
           ]);
 
         }
@@ -346,7 +349,9 @@ class stok47_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
-              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i]
+              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
+              'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'NOT1' => $TI_NOT1[$i]
             ]);
 
           }
@@ -366,7 +371,9 @@ class stok47_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
-              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i]
+              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
+              'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'NOT1' => $TI_NOT1[$i]
             ]);
 
           }
@@ -424,7 +431,9 @@ class stok47_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
-              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i]
+              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
+              'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'NOT1' => $TI_NOT1[$i]
             ]);
 
           }
@@ -444,7 +453,9 @@ class stok47_controller extends Controller
               'created_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
-              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i]
+              'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
+              'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'NOT1' => $TI_NOT1[$i]
             ]);
 
           }
@@ -454,6 +465,7 @@ class stok47_controller extends Controller
           $u = Auth::user();
         }
         $firma = trim($u->firma).'.dbo.';
+        dd($request->all());
         sort($CARI_KOD);
         $ONCEKI_CARI = "";
         //Sipariş ekle
@@ -492,7 +504,9 @@ class stok47_controller extends Controller
             'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
             'SF_SF_UNIT' => $STOK->IUNIT,
             'ARTNO' => $request->TI_ARTNO[$i],
-            'TALEP_EVRAKNO' => $EVRAKNO
+            'TALEP_EVRAKNO' => $EVRAKNO,
+            'LOTNUMBER' => $TI_LOTNUMBER[$i],
+            'NOT1' => $TI_NOT1[$i]
           ]);
           $ONCEKI_CARI = $CARI_KOD[$i];
         }
