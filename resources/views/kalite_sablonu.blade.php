@@ -481,13 +481,13 @@
 
 					// Mevcut satır sayısını al (index için)
 					let currentRowCount = $("#veriTable > tbody > tr").length;
-
+					var satirEkleInputs = getInputs('satirEkle');
 					let htmlCode = "<tr>";
 
 					htmlCode += `<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[${currentRowCount}]' value='${TRNUM_FILL}'></td>`;
 					htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
 					htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
-					var satirEkleInputs = getInputs('satirEkle');
+					
 					// 'ALAN_TURU_FILL', 'UZUNLUK_FILL', 'DESIMAL_FILL' sonradan eklenebilr
 					const inputs = [
 						'STOK_KODU_FILL', 'OZEL_ACIKLAMA_FILL', 'OLCUM_NO_FILL', 'GECERLI_KOD_FILL', 'MIN_DEGER_FILL', 'MAX_DEGER_FILL', 'OLCUM_BIRIMI_FILL', 'OLCUM_TIPI_FILL',
