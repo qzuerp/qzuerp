@@ -69,7 +69,6 @@
 
 @endphp
 @section('content')
-
   <div class="content-wrapper">
 
     @include('layout.util.evrakContentHeader')
@@ -467,7 +466,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <button type="button" class="w-100 action-btn h-50 btn btn-danger" id="button5">
+                                                        <button type="button" class="w-100 action-btn btn btn-danger" id="button5">
                                                             <i class="fas fa-pause-circle"></i> Duruş Başladı
                                                         </button>
                                                         <div class="row g-2 mt-2">
@@ -480,7 +479,7 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <button type="button" class="w-100 action-btn btn h-50 btn-danger" id="button6">
+                                                        <button type="button" class="w-100 action-btn btn btn-danger" id="button6">
                                                             <i class="fas fa-stop-circle"></i> Duruş Bitti
                                                         </button>
                                                         <div class="row g-2 mt-2">

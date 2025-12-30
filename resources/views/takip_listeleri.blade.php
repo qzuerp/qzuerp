@@ -378,9 +378,9 @@
                                         <input type='hidden' value='{{ @$kart_veri->ID }}' name='ID_TO_REDIRECT' id='ID_TO_REDIRECT'>
                                     </div>
 
-                                    <div class="col-md-2 col-6 mb-2 mb-md-0">
+                                    <div class="col-md-1 col-6 mb-2 mb-md-0">
                                         <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz">
-                                            <i class="fa fa-filter"></i> Filtrele
+                                            <i class="fa fa-filter"></i>
                                         </button>
                                     </div>
 
@@ -427,6 +427,11 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="#liste" class="nav-link" data-bs-toggle="tab">
+                                            <i class="fa-solid fa-clipboard-list"></i> Raporlama
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="#baglantiliDokumanlar" class="nav-link" data-bs-toggle="tab">
                                             <i class="fa fa-file-text" style="color: orange"></i> Bağlantılı Dokümanlar
                                         </a>
@@ -446,6 +451,17 @@
                                         @include('takip_formlari.IC', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.ICHATA', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.SAPMA', ['kart_veri' => @$kart_veri])
+                                    </div>
+
+                                    <div class="tab-pane" id="liste">
+                                        <button class="btn btn-success">-- SÜZ --</button>
+
+                                        @php
+                                            $form = @$kart_veri->FORM;
+
+                                            $veri = DB::table($database.'cgc70')->where('FORM',$form)->get();
+                                        @endphp
+                                        @include('takip_formlari.Liste.mainList', ['kart_veri' => @$kart_veri, 'veri' => $veri])
                                     </div>
                                     
                                     <div class="tab-pane" id="baglantiliDokumanlar">
