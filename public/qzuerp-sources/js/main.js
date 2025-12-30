@@ -7,12 +7,7 @@ $(function () {
     $('select[data-modal]').each(function () {
       const modalId = $(this).data('modal');
       $(this).select2({
-        dropdownParent: $('#' + 
-          
-          
-          
-          
-          modalId)
+        dropdownParent: $('#' + modalId)
       });
     });
     //$.fn.selectpicker.Constructor.BootstrapVersion = '3';

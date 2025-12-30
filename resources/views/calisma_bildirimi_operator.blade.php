@@ -11,7 +11,7 @@
   $ekran = "CLSMBLDRMOPRT";
   $ekranRumuz = "calisma_bildirimi";
   $ekranAdi = "Çalışma Bildirimi"; 
-  $ekranLink = "calisma_bildirimi";
+  $ekranLink = "calisma_bildirimi_oprt";
   $ekranTableE = $database."sfdc31e";
   $ekranTableT = $database."sfdc31t";
   $ekranKayitSatirKontrol = "false";
@@ -423,8 +423,6 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                        
-  
                                         <!-- Üretim Kolonu -->
                                         <div class="col" id="uretim">
                                             <div class="card h-100 shadow-sm rounded-3">
@@ -461,49 +459,51 @@
                                         </div>
                                         <!-- Duruş Kolonu -->
                                         <div class="col" id="durus">
-                                            <div class="card h-100 shadow-sm rounded-3">
-                                                <h5 class="card-header">Duruş İşlemi</h5>
-                                                <div class="card-body">
-                                                    <div class="mb-2 w-100">
-                                                        <select class="form-select w-100 select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
-                                                            <option value="" disabled selected>Duruş Sebebi</option>
-                                                            @php
-                                                                $DURUSSEBEBI = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
-                                                                foreach ($DURUSSEBEBI as $key => $veri) {
-                                                                    echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                                                                }
-                                                            @endphp
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <button type="button" class="w-100 action-btn h-buton btn btn-danger" id="button5">
-                                                            <i class="fas fa-pause-circle"></i> Duruş Başladı
-                                                        </button>
-                                                        <div class="row g-2 mt-2">
-                                                            <div class="col">
-                                                                <input type="date" class="form-control text-center date-time-input" id="DRSTARIH1" placeholder="Tarih">
-                                                            </div>
-                                                            <div class="col">
-                                                                <input type="time" class="form-control text-center date-time-input" id="DRSTIME1" placeholder="Saat">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <button type="button" class="w-100 action-btn btn h-buton btn-danger" id="button6">
-                                                            <i class="fas fa-stop-circle"></i> Duruş Bitti
-                                                        </button>
-                                                        <div class="row g-2 mt-2">
-                                                            <div class="col">
-                                                                <input type="date" class="form-control text-center date-time-input" id="DRSTARIH2" placeholder="Tarih">
-                                                            </div>
-                                                            <div class="col">
-                                                                <input type="time" class="form-control text-center date-time-input" id="DRSTIME2" placeholder="Saat">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                          <div class="card h-100 shadow-sm rounded-3">
+                                              <h5 class="card-header">Duruş İşlemi</h5>
+                                              <div class="card-body d-flex flex-column justify-content-center">
+                                                  <div class="mb-3 w-100">
+                                                      <select class="form-select w-100 select2 js-example-basic-single" name="DURMA_SEBEBI" id="DURMA_SEBEBI">
+                                                          <option value="" disabled selected>Duruş Sebebi</option>
+                                                          @php
+                                                              $DURUSSEBEBI = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
+                                                              foreach ($DURUSSEBEBI as $key => $veri) {
+                                                                  echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                                              }
+                                                          @endphp
+                                                      </select>
+                                                  </div>
+
+                                                  <div class="mb-3 w-100">
+                                                      <button type="button" class="w-100 action-btn btn btn-danger" id="button5">
+                                                          <i class="fas fa-pause-circle"></i> Duruş Başladı
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="DRSTARIH1" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="DRSTIME1" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                                  <div class="w-100">
+                                                      <button type="button" class="w-100 action-btn btn btn-danger" id="button6">
+                                                          <i class="fas fa-stop-circle"></i> Duruş Bitti
+                                                      </button>
+                                                      <div class="row g-2 mt-2">
+                                                          <div class="col">
+                                                              <input type="date" class="form-control text-center date-time-input" id="DRSTARIH2" placeholder="Tarih">
+                                                          </div>
+                                                          <div class="col">
+                                                              <input type="time" class="form-control text-center date-time-input" id="DRSTIME2" placeholder="Saat">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
                                     </div>
                                     <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
                                         <div id="chart" style="height: 270px;"></div>

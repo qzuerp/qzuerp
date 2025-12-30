@@ -465,8 +465,9 @@ class stok47_controller extends Controller
           $u = Auth::user();
         }
         $firma = trim($u->firma).'.dbo.';
-        dd($request->all());
-        sort($CARI_KOD);
+        // dd($request->all());
+        if($CARI_KOD != NULL)
+          sort($CARI_KOD);
         $ONCEKI_CARI = "";
         //Sipariş ekle
         for ($i = 0; $i < $satir_say2; $i++) {

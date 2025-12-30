@@ -684,6 +684,7 @@
 							</div>
 						</div>
 					</div>
+				</div>
 			</form>
 			<div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal" tabindex="-1" role="dialog"
 				aria-labelledby="modal_popupSelectModal">
@@ -739,6 +740,7 @@
 								<table class="table table-bordered text-center" id="maliyetListesi">
 									<thead>
 										<tr>
+											<th style="">#</th>
 											<th style="min-width:280px; font-size: 13px !important;">
 												Kaynak Tipi</th>
 											<th style="min-width:280px; font-size: 13px !important;">
@@ -769,6 +771,67 @@
 												Stok miktarı</th>
 											<th style="min-width:120px; font-size: 13px !important;">
 												Stok temel birim</th>
+										</tr>
+										<tr class="satirEkle3" style="background-color:#3c8dbc">
+											<td>
+												<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+											</td>
+											<td>
+												<select data-modal="modal_maliyetListesi" class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
+													<option value=" ">Seç</option>
+													<option value="H">H - Hammadde</option>
+													<option value="I">I - Tezgah / İş Merk</option>
+													<option value="Y">Y - Yan Ürün</option>
+												</select>
+											</td>
+											<td>
+												<div class="d-flex" data-modal="modal_maliyetListesi" style="display: flex;">
+													<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir3(this.value)" id="KOD">
+														<option value=" ">Seç</option>
+													</select>
+													<input type="hidden" id="STOK_KOD">
+													<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#a" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
+												</div>
+											</td>
+											<td>
+												<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_AD1" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI" readonly>
+											</td>
+											<td>
+												<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control req number" value="">
+											</td>
+											<td>
+												<input type="text" name="" id="ISLEM_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi" class="form-control" value="" readonly>
+											</td>
+											<td>
+												<input type="number" name="" id="FIYAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="form-control" value="" readonly>
+											</td>
+											<td> 
+												<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="" readonly>
+											</td>
+											<td>
+												<input type="text" name="" id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICEUNIT" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
+											</td>
+											<td>
+												<input type="number" name="NETAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
+											</td>
+											<td>
+												<input type="number" name="BRUTAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
+											</td>
+											<td>
+												<input type="number" name="HACIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HACIM" id="HACIM" class="form-control" value="">
+											</td>
+											<td>
+												<input type="number" name="AMBALAJAGIRLIK"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBALAJ_AGIRLIGI" id="AMBALAJAGIRLIK" class="form-control" value="">
+											</td>
+											<td>
+												<input type="checkbox" name="AUTO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_AUTOCALC" id="AUTO" class="form-control" value="">
+											</td>
+											<td>
+												<input type="number" name="STOKMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_STOK_MIKTAR" id="STOKMIKTAR" class="form-control" value="">
+											</td>
+											<td>
+												<input type="text" name="STOKTEMELBIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD_STOK00_IUNIT" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
+											</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -1244,6 +1307,48 @@
 					emptyInputs('satirEkle2');
 				}
 
+			});
+
+			$("#addRow3").on('click', function() {
+				var satirEkleInputs = getInputs('satirEkle3');
+				var TRNUM_FILL = getTRNUM();
+				var htmlCode = " ";
+
+
+				htmlCode += " <tr> ";
+
+				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='"+satirEkleInputs.KAYNAK_TIPI+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KOD+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='"+satirEkleInputs.KODADI+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
+				htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='"+satirEkleInputs.ISLEM_BIRIMI+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='"+satirEkleInputs.FIYAT+"' ></td> ";
+				htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='"+satirEkleInputs.TUTAR+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='"+satirEkleInputs.PARA_BIRIMI+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='HACIM[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='AUTO[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
+
+
+				htmlCode += " </tr> ";
+
+				if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || !validateNumbers()) {
+					eksikAlanAlert();
+				}
+				else {
+					$("#maliyetListesi > tbody").append(htmlCode);
+					updateLastTRNUM(TRNUM_FILL);
+
+					emptyInputs('satirEkle3');
+				}
+				
 			});
 
 
