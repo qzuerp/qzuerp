@@ -4,19 +4,12 @@ $(function () {
     $('.select2').select2()
     $('.js-example-basic-single').select2();
     
-    $(document).on('shown.bs.modal', '.modal', function () {
-      const modal = $(this);
-    
-      modal.find('select[data-modal]').each(function () {
-        if (!$(this).hasClass('select2-hidden-accessible')) {
-          $(this).select2({
-            dropdownParent: modal,
-            width: '100%'
-          });
-        }
+    $('select[data-modal]').each(function () {
+      const modalId = $(this).data('modal');
+      $(this).select2({
+        dropdownParent: $('#' + modalId)
       });
     });
-    
     //$.fn.selectpicker.Constructor.BootstrapVersion = '3';
 
     //$('.select2').attr('class','selectpicker form-control')
