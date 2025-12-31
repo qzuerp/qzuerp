@@ -454,7 +454,7 @@
                                     </div>
 
                                     <div class="tab-pane" id="liste">
-                                        <button class="btn btn-success">-- SÜZ --</button>
+                                        <button class="btn btn-success" type="button">-- SÜZ --</button>
 
                                         @php
                                             $form = @$kart_veri->FORM;
