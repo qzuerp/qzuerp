@@ -446,6 +446,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/doviz_kur_getir', [Teklif_fiyat_analiz::class, 'doviz_kur_getir'])->name('doviz_kur_getir');
     Route::post('/recetedenHesapla', [Teklif_fiyat_analiz::class, 'recetedenHesapla'])->name('recetedenHesapla');
     Route::post('/evrakNoGetir', [Teklif_fiyat_analiz::class, 'evrakNoGetir'])->name('evrakNoGetir');
+    Route::post('/satir_fiyat_hesapla', [Teklif_fiyat_analiz::class, 'satir_fiyat_hesapla']);
 
     /*
     |--------------------------------------------------------------------------

@@ -76,6 +76,25 @@ class Teklif_fiyat_analiz extends Controller
         $MASRAF_TUTARI = isset($request->MASRAF_TUTARI) ? $request->MASRAF_TUTARI : ' ';
         $TRNUM2 = isset($request->TRNUM2) ? $request->TRNUM2 : [];
 
+        $TRNUM3 = isset($request->TRNUM3) ? $request->TRNUM3 : [];
+        $OR_TRNUM = isset($request->OR_TRNUM) ? $request->OR_TRNUM : [];
+        $KAYNAK_TIPI2 = isset($request->KAYNAKTYPE2) ? $request->KAYNAKTYPE2 : ' ';
+        $KOD2 = isset($request->KOD2) ? $request->KOD2 : ' ';
+        $KODADI2 = isset($request->KODADI2) ? $request->KODADI2 : ' ';
+        $ACIKLAMA2 = isset($request->ACIKLAMA2) ? $request->ACIKLAMA2 : ' ';
+        $ISLEM_MIKTARI2 = isset($request->ISLEM_MIKTARI2) ? $request->ISLEM_MIKTARI2 : ' ';
+        $ISLEM_BIRIMI2 = isset($request->ISLEM_BIRIMI2) ? $request->ISLEM_BIRIMI2 : ' ';
+        $FIYAT2 = isset($request->FIYAT2) ? $request->FIYAT2 : ' ';
+        $TUTAR2 = isset($request->TUTAR2) ? $request->TUTAR2 : ' ';
+        $PARA_BIRIMI2 = isset($request->PARA_BIRIMI2) ? $request->PARA_BIRIMI2 : ' ';
+        $NETAGIRLIK2 = isset($request->NETAGIRLIK2) ? $request->NETAGIRLIK2 : ' ';
+        $BRUTAGIRLIK2 = isset($request->BRUTAGIRLIK2) ? $request->BRUTAGIRLIK2 : ' ';
+        $HACIM2 = isset($request->HACIM2) ? $request->HACIM2 : ' ';
+        $AMBALAJAGIRLIK2 = isset($request->AMBALAJAGIRLIK2) ? $request->AMBALAJAGIRLIK2 : ' ';
+        // $AUTO = isset($request->AUTO) ? $request->AUTO : ' ';
+        $STOKMIKTAR2 = isset($request->STOKMIKTAR2) ? $request->STOKMIKTAR2 : ' ';
+        $STOKTEMELBIRIM2 = isset($request->STOKTEMELBIRIM2) ? $request->STOKTEMELBIRIM2 : ' ';
+
         switch ($kart_islemleri) {
             case 'kart_olustur':
                 // dd($request->all());
@@ -222,6 +241,89 @@ class Teklif_fiyat_analiz extends Controller
                         ->delete();
                 }
 
+
+                $currentTRNUMS3 = [];
+                $liveTRNUMS3 = [];
+                
+                $currentTRNUMSObj3 = DB::table($firma.'tekl20tı')
+                    ->where('EVRAKNO', $EVRAKNO)
+                    ->select('TRNUM')
+                    ->get();
+
+                foreach ($currentTRNUMSObj3 as $veri) {
+                    array_push($currentTRNUMS3, $veri->TRNUM);
+                }
+
+                foreach ($TRNUM3 as $veri) {
+                    array_push($liveTRNUMS3, $veri);
+                }
+
+                $deleteTRNUMS3 = array_diff($currentTRNUMS3, $liveTRNUMS3);
+                $newTRNUMS3 = array_diff($liveTRNUMS3, $currentTRNUMS3);
+                $updateTRNUMS3 = array_intersect($currentTRNUMS3, $liveTRNUMS3);
+
+                // Satırları güncelle veya yeni satır ekle
+                for ($i = 0; $i < count($TRNUM3); $i++) {
+                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+
+                    if (in_array($TRNUM3[$i], $newTRNUMS3)) {
+                        // Yeni satır ekle
+                        DB::table($firma.'tekl20tı')->insert([
+                            'EVRAKNO' => $EVRAKNO,
+                            'KAYNAKTYPE' => $KAYNAK_TIPI2[$i],
+                            'KOD' => $KOD2[$i],
+                            'STOK_AD1' => $KODADI2[$i],
+                            'SF_MIKTAR' => $ISLEM_MIKTARI2[$i],
+                            'SF_SF_UNIT' => $ISLEM_BIRIMI2[$i],
+                            'FIYAT' => $FIYAT2[$i],
+                            'TUTAR' => $TUTAR2[$i],
+                            'PRICEUNIT' => $PARA_BIRIMI2[$i],
+                            'TRNUM' => $TRNUM3[$i],
+                            'OR_TRNUM' => $OR_TRNUM[$i],
+                            // 'NETAGIRLIK' => $NETAGIRLIK[$i],
+                            // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
+                            // 'HACIM' => $HACIM[$i],
+                            // 'AMBALAJ_AGIRLIGI' => $AMBALAJAGIRLIK[$i],
+                            // 'SF_AUTOCALC' => $AUTO[$i],
+                            // 'SF_STOK_MIKTAR' => $STOKMIKTAR[$i],
+                            // 'KOD_STOK00_IUNIT' => $STOKTEMELBIRIM[$i]
+                        ]);
+                    }
+
+                    if (in_array($TRNUM3[$i], $updateTRNUMS3)) {
+                        // Mevcut satırı güncelle
+                        DB::table($firma.'tekl20tı')
+                            ->where('EVRAKNO', $EVRAKNO)
+                            ->where('TRNUM', $TRNUM3[$i])
+                            ->update([
+                                'KAYNAKTYPE' => $KAYNAK_TIPI2[$i],
+                                'KOD' => $KOD2[$i],
+                                'STOK_AD1' => $KODADI2[$i],
+                                'SF_MIKTAR' => $ISLEM_MIKTARI2[$i],
+                                'SF_SF_UNIT' => $ISLEM_BIRIMI2[$i],
+                                'FIYAT' => $FIYAT2[$i],
+                                'TUTAR' => $TUTAR2[$i],
+                                'PRICEUNIT' => $PARA_BIRIMI2[$i],
+                                'TRNUM' => $TRNUM3[$i],
+                                'OR_TRNUM' => $OR_TRNUM[$i],
+                                // 'NETAGIRLIK' => $NETAGIRLIK[$i],
+                                // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
+                                // 'HACIM' => $HACIM[$i],
+                                // 'AMBALAJ_AGIRLIGI' => $AMBALAJAGIRLIK[$i],
+                                // 'SF_AUTOCALC' => $AUTO[$i],
+                                // 'SF_STOK_MIKTAR' => $STOKMIKTAR[$i],
+                                // 'KOD_STOK00_IUNIT' => $STOKTEMELBIRIM[$i]
+                            ]);
+                    }
+                }
+
+                // Silinen satırları kaldır
+                foreach ($deleteTRNUMS3 as $deleteTRNUM) {
+                    DB::table($firma.'tekl20tı')
+                        ->where('EVRAKNO', $EVRAKNO)
+                        ->where('TRNUM', $deleteTRNUM)
+                        ->delete();
+                }
 
                 $currentTRNUMS2 = [];
                 $liveTRNUMS2 = [];
@@ -437,7 +539,15 @@ class Teklif_fiyat_analiz extends Controller
             ], 500);
         }
     }
+    public function satir_fiyat_hesapla(Request $request)
+    {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
 
+        
+    }
     public function doviz_kur_getir(Request $request)
     {
         try {
