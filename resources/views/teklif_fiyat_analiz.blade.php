@@ -774,7 +774,7 @@
 										</tr>
 										<tr class="satirEkle3" style="background-color:#3c8dbc">
 											<td>
-												<button type="button" class="btn btn-default" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+												<button type="button" class="btn btn-default" id="addRow3"><i class="fa fa-plus" style="color: blue"></i></button>
 											</td>
 											<td>
 												<select data-modal="modal_maliyetListesi" class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
@@ -790,7 +790,6 @@
 														<option value=" ">Seç</option>
 													</select>
 													<input type="hidden" id="STOK_KOD">
-													<button class="btn btn-primary" style="height:30px; border-radius:0px 5px 5px 0px;" data-bs-toggle="modal" data-bs-target="#a" type="button"><span class="fa-solid fa-magnifying-glass"  ></span></button>
 												</div>
 											</td>
 											<td>
