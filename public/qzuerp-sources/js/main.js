@@ -530,6 +530,7 @@ function inputTemizle2() {
   $('.nav-tabs-custom input[type="number"]').val('');
   $('#REVTAR').val('');
   $('select:not(#evrakSec)').val('').trigger('change');
+  $('select:not(#evrakSec)').val(' ').trigger('change');
 
 
   $(':input','#verilerForm')
@@ -549,13 +550,20 @@ function inputTemizle2() {
 
   //yeniEvrakNo();
   const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // 0-11
-  const year = today.getFullYear();
+  const TARIH_FP = flatpickr("#TARIH", {
+    dateFormat: "Y-m-d",
+    altInput: true,
+    altFormat: "d.m.Y"  
+  });
 
-  const formattedDate = `${year}-${month}-${day}`;
-  $('#TARIH').val(formattedDate);
-  $('#TARIH_E').val(formattedDate);
+  const TARIH_E_FP = flatpickr("#TARIH_E", {
+    dateFormat: "Y-m-d",
+    altInput: true,
+    altFormat: "d.m.Y"  
+  });
+
+  TARIH_FP.setDate(today, true);
+  TARIH_E_FP.setDate(today, true);
 }
 
 function inputTemizle3() {

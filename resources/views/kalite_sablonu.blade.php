@@ -301,9 +301,9 @@
 
 															<td><input type="number" step="any" class="form-control" value="{{ $veri->VERIFIKASYONNUM1 }}" name="MIN_DEGER[]"></td>
 															<td><input type="number" step="any" class="form-control" value="{{ $veri->VERIFIKASYONNUM2 }}" name="MAX_DEGER[]"></td>
-															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTUNIT }}" name="OLCUM_BIRIMI[]"></td>
-															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTTYPE }}" name="OLCUM_TIPI[]"></td>
-															<td><input type="text" class="form-control" value="{{ $veri->QVALCHZTYPE }}" name="OLCUM_CIH[]"></td>
+															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTUNIT }}" readonly name="OLCUM_BIRIMI[]"></td>
+															<td><input type="text" class="form-control" value="{{ $veri->QVALINPUTTYPE }}" readonly name="OLCUM_TIPI[]"></td>
+															<td><input type="text" class="form-control" value="{{ $veri->QVALCHZTYPE }}" readonly name="OLCUM_CIH[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->REFDEGER }}" name="BEKLENEN_DEGER[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->REFDEGER1 }}" name="REFERANS_DEGER1[]"></td>
 															<td><input type="text" class="form-control" value="{{ $veri->REFDEGER2 }}" name="REFERANS_DEGER2[]"></td>
@@ -528,14 +528,29 @@
 				});
 
 				$('#KRITERCODE_1').on('change',function(){
+					const val = $(this).val();
+					if (!val) {
+						$('#KRITERVALUE_1').val('');
+						return;
+					}
 					var kod = $(this).val().split('|||');
 					$('#KRITERVALUE_1').val(kod[1]);
 				});
 				$('#KRITERCODE_2').on('change',function(){
+					const val = $(this).val();
+					if (!val) {
+						$('#KRITERVALUE_2').val('');
+						return;
+					}
 					var kod = $(this).val().split('|||');
 					$('#KRITERVALUE_2').val(kod[1]);
 				});
 				$('#KRITERCODE_3').on('change',function(){
+					const val = $(this).val();
+					if (!val) {
+						$('#KRITERCODE_3').val('');
+						return;
+					}
 					var kod = $(this).val().split('|||');
 					$('#KRITERVALUE_3').val(kod[1]);
 				});
@@ -549,7 +564,9 @@
 
 			function ozelInput()
 			{
-				$('select').val('').trigger('change');
+				// $('select').each(function () {
+				// 	$(this).val(null).trigger('change.select2');
+				// });
 			}
 		</script>
 	<!-- JS -->

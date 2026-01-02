@@ -55,8 +55,8 @@ class Teklif_fiyat_analiz extends Controller
         $ACIKLAMA = isset($request->ACIKLAMA) ? $request->ACIKLAMA : ' ';
         $ISLEM_MIKTARI = isset($request->ISLEM_MIKTARI) ? $request->ISLEM_MIKTARI : ' ';
         $ISLEM_BIRIMI = isset($request->ISLEM_BIRIMI) ? $request->ISLEM_BIRIMI : ' ';
-        $FIYAT = isset($request->FIYAT) ? $request->FIYAT : ' ';
-        $TUTAR = isset($request->TUTAR) ? $request->TUTAR : ' ';
+        $FIYAT = isset($request->FIYAT) ? $request->FIYAT : 0;
+        $TUTAR = isset($request->TUTAR) ? $request->TUTAR : 0;
         $PARA_BIRIMI = isset($request->PARA_BIRIMI) ? $request->PARA_BIRIMI : ' ';
         $NETAGIRLIK = isset($request->NETAGIRLIK) ? $request->NETAGIRLIK : ' ';
         $BRUTAGIRLIK = isset($request->BRUTAGIRLIK) ? $request->BRUTAGIRLIK : ' ';
@@ -213,7 +213,6 @@ class Teklif_fiyat_analiz extends Controller
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM[$i])
                             ->update([
-                                'KAYNAKTYPE' => 'M',
                                 'KOD' => $KOD[$i],
                                 'STOK_AD1' => $KODADI[$i],
                                 'SF_MIKTAR' => $ISLEM_MIKTARI[$i],
@@ -546,7 +545,51 @@ class Teklif_fiyat_analiz extends Controller
         }
         $firma = trim($u->firma).'.dbo.';
 
-        
+        $KOD = $request->KOD;
+        $PB = $request->PB;
+        $TARIH = $request->TARIH;
+        $ENDEX = $request->ENDEX;
+
+        $veri = DB::table($firma.'stdm10t')
+        ->where('kod', $KOD)
+        ->where('ENDEKS', '=', $ENDEX)
+        ->where('VALIDAFTERTARIH', '<=', $TARIH)
+        ->orderBy('VALIDAFTERTARIH', 'desc')
+        ->first();
+
+
+        // dd($veri);
+        $FIYAT = 0;
+        try {
+            if($veri->PARABIRIMI == $PB) {
+                $FIYAT = $veri->TUTAR;
+            }
+            else
+            {
+                $tarih = date('Y/m/d', strtotime($TARIH));
+
+                $kur1 = DB::table($firma.'excratt')
+                    ->where('CODEFROM',  $PB)
+                    ->where('EVRAKNOTARIH', $tarih)
+                    ->first();
+
+                $kur2 = DB::table($firma.'excratt')
+                    ->where('CODEFROM', $veri->PARABIRIMI)
+                    ->where('EVRAKNOTARIH', $tarih)
+                    ->first();
+
+                if (!$kur1 || !$kur2) {
+                    throw new Exception('Kur bulunamadı');
+                }
+
+                $FIYAT = $veri->TUTAR * ($kur1->KURS_1 / $kur2->KURS_1);
+            }
+            return $FIYAT;
+        } catch (\Throwable $th) {
+            $FIYAT = 0;
+            print_r($th);
+        }
+
     }
     public function doviz_kur_getir(Request $request)
     {
@@ -639,17 +682,14 @@ class Teklif_fiyat_analiz extends Controller
         $user = Auth::user();
         $firma = trim($user->firma).'.dbo.';
         $kod = $request->input('KOD');
-        $MaxevrakNo = DB::table($firma.'stdm10t')
-            ->where('kod', $kod)
-            ->where('ENDEKS', '=', $request->input('ENDEX'))
-            ->where('VALIDAFTERTARIH', '<=', $request->input('TARIH'))
-            ->max('VALIDAFTERTARIH');
 
-        $evrakNo = DB::table($firma.'stdm10t')
-            ->where('kod', $kod)
-            ->where('ENDEKS', '=', $request->input('ENDEX'))
-            ->where('VALIDAFTERTARIH', '=', $MaxevrakNo)
-            ->first();
+        $evrakNo = $evrakNo = DB::table($firma.'stdm10t')
+        ->where('kod', $request->KOD)
+        ->where('ENDEKS', $request->ENDEX)
+        ->where('VALIDAFTERTARIH', '<=', $request->TARIH)
+        ->orderBy('VALIDAFTERTARIH', 'desc')
+        ->first();
+    
         return response()->json([
             'success' => true,
             'veri' => $evrakNo
