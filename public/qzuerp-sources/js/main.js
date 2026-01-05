@@ -550,20 +550,24 @@ function inputTemizle2() {
 
   //yeniEvrakNo();
   const today = new Date();
-  const TARIH_FP = flatpickr("#TARIH", {
-    dateFormat: "Y-m-d",
-    altInput: true,
-    altFormat: "d.m.Y"  
-  });
+  if (document.querySelector('#TARIH')) {
+      TARIH_FP = flatpickr('#TARIH', {
+          dateFormat: 'Y-m-d',
+          altInput: true,
+          altFormat: 'd.m.Y'
+      });
+      TARIH_FP.setDate(today, true);
+  }
 
-  const TARIH_E_FP = flatpickr("#TARIH_E", {
-    dateFormat: "Y-m-d",
-    altInput: true,
-    altFormat: "d.m.Y"  
-  });
+  if (document.querySelector('#TARIH_E')) {
+      TARIH_E_FP = flatpickr('#TARIH_E', {
+          dateFormat: 'Y-m-d',
+          altInput: true,
+          altFormat: 'd.m.Y'
+      });
+      TARIH_E_FP.setDate(today, true);
+  }
 
-  TARIH_FP.setDate(today, true);
-  TARIH_E_FP.setDate(today, true);
 }
 
 function inputTemizle3() {

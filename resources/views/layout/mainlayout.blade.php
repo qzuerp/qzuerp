@@ -686,6 +686,33 @@
 
       localStorage.setItem('recentPages', JSON.stringify(recent));
     }
+    $(document).ready(function () {
+      $('input[type="number"]').each(function () {
+        $(this)
+            .attr('type', 'text')
+            .addClass('decimal');
+      });
+    });
+
+    $(document).on('input', '.decimal', function () {
+      let val = this.value;
+
+      // sadece rakam, nokta, virgül
+      val = val.replace(/[^0-9.,]/g, '');
+
+      // ilk virgülü noktaya çevir
+      val = val.replace(',', '.');
+
+      // birden fazla nokta varsa fazlasını sil
+      const parts = val.split('.');
+      if (parts.length > 2) {
+          val = parts.shift() + '.' + parts.join('');
+      }
+
+      this.value = val;
+    });
+
+
   </script>
 
   <script>

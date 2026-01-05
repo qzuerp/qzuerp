@@ -306,7 +306,7 @@
 											<ul class="nav nav-tabs">
 												<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
 												<li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a>
-												<!-- <li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Maliyet Detayı</a> -->
+												<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Maliyet Detayı</a>
 												</li>
 											</ul>
 
@@ -703,74 +703,60 @@
 														</thead>
 														<tbody>
 														@php
-															$veri = DB::table($ekranTableTI)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
-															if (!$veri->isEmpty()) {
-																foreach ($veri as $key => $veri) {
-																@endphp
-																<tr>
-																	<input type="hidden" name="TRNUM3[]"
-																		value="{{$veri->TRNUM}}">
-																	<input type="hidden" name="OR_TRNUM[]"
-																		value="{{$veri->OR_TRNUM}}">
-																	<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
-																		value="{{$kart_veri->TEKLIF_TUTAR}}">
-																	<td><input type="text" name="KAYNAKTYPE3[]" value="{{$veri->KAYNAKTYPE}}" class="form-control" readonly></td>
-																	<td><input type="text" name="KOD3[]" value="{{$veri->KOD}}"
-																			class="form-control" readonly></td>
+															$veri = DB::table($ekranTableTI)
+																->where('EVRAKNO', @$evrakno)
+																->orderBy('OR_TRNUM', 'ASC')
+																->orderBy('TRNUM', 'ASC')
+																->get()
+																->groupBy('OR_TRNUM');
 
-																	<td><input type="text" name="KODADI3[]"
-																			value="{{$veri->STOK_AD1}}" class="form-control"
-																			readonly></td>
-																	<td><input type="text" name="ISLEM_MIKTARI3[]"
-																			value="{{$veri->SF_MIKTAR}}"
-																			class="form-control number">
-																	</td>
-																	<td><input type="text" name="ISLEM_BIRIMI3[]"
-																			value="{{$veri->SF_SF_UNIT}}" class="form-control"
-																			readonly>
-																	</td>
-																	<td><input type="text" name="FIYAT3[]"
-																			value="{{$veri->FIYAT}}"
-																			class="form-control number"></td>
-																	<td><input type="text" name="TUTAR3[]"
-																			value="{{$veri->TUTAR}}" class="form-control number"
-																			readonly></td>
-																	<td><input type="text" name="PARA_BIRIMI3[]"
-																			value="{{$veri->PRICEUNIT}}" class="form-control"
-																			readonly>
-																	</td>
-																	<td><input type="number" name="NETAGIRLIK3[]"
-																			value="{{$veri->NETAGIRLIK}}" class="form-control"
-																			readonly>
-																	</td>
-																	<td><input type="number" name="BRUTAGIRLIK3[]"
-																			value="{{$veri->BRUTAGIRLIK}}" class="form-control"
-																			readonly></td>
-																	<td><input type="number" name="HACIM3[]"
-																			value="{{$veri->HACIM}}" class="form-control"
-																			readonly></td>
-																	<td><input type="number" name="AMBALAJAGIRLIK3[]"
-																			value="{{$veri->AMBALAJ_AGIRLIGI}}"
-																			class="form-control" readonly></td>
-																	<td><input type="checkbox" name="AUTO3[]"
-																			value="{{$veri->SF_AUTOCALC}}" class="form-control"
-																			readonly></td>
-																	<td><input type="number" name="STOKMIKTAR3[]"
-																			value="{{$veri->SF_STOK_MIKTAR}}"
-																			class="form-control" readonly></td>
-																	<td><input type="text" name="STOKTEMELBIRIM3[]"
-																			value="{{$veri->KOD_STOK00_IUNIT}}"
-																			class="form-control" readonly>
-																	</td>
-																	<td><button type='button' id='deleteSingleRow'
-																			class='btn btn-default delete-row'><i
-																				class='fa fa-minus'
-																				style='color: red'></i></button>
-																	</td>
-																</tr>
-																@php
+															if (!$veri->isEmpty()) {
+																foreach ($veri as $orTrnum => $grupVeri) {
+															@endphp
+																	
+																	@php
+																	foreach ($grupVeri as $key => $satir) {
+																	@endphp
+																	<tr>
+																		<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																		<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																		<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																		
+																		<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																		<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																		<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{$satir->SF_MIKTAR}}" class="form-control number"></td>
+																		<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																		<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																		<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																		<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																		<td><input type="number" name="NETAGIRLIK2[]" value="{{$satir->NETAGIRLIK}}" class="form-control" readonly></td>
+																		<td><input type="number" name="BRUTAGIRLIK2[]" value="{{$satir->BRUTAGIRLIK}}" class="form-control" readonly></td>
+																		<td><input type="number" name="HACIM2[]" value="{{$satir->HACIM}}" class="form-control" readonly></td>
+																		<td><input type="number" name="AMBALAJAGIRLIK2[]" value="{{$satir->AMBALAJ_AGIRLIGI}}" class="form-control" readonly></td>
+																		<td><input type="checkbox" name="AUTO2[]" value="{{$satir->SF_AUTOCALC}}" class="form-control" readonly></td>
+																		<td><input type="number" name="STOKMIKTAR2[]" value="{{$satir->SF_STOK_MIKTAR}}" class="form-control" readonly></td>
+																		<td><input type="text" name="STOKTEMELBIRIM2[]" value="{{$satir->KOD_STOK00_IUNIT}}" class="form-control" readonly></td>
+																		<td>
+																			<button type='button' class='btn btn-default delete-row'>
+																				<i class='fa fa-minus' style='color: red'></i>
+																			</button>
+																		</td>
+																	</tr>
+																	@php
 																	}
+																	@endphp
+																	
+																	<!-- Grup Toplamı (İsteğe Bağlı) -->
+																	<tr class="group-footer" style="background-color: #f9f9f9;">
+																		<td colspan="6" class="text-right"><strong>Grup Toplamı:</strong></td>
+																		<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
+																		<td colspan="9"></td>
+																	</tr>
+																	
+															@php
 																}
+															}
 															@endphp
 														</tbody>
 													</table>
@@ -1001,7 +987,7 @@
 
 					const yeniSatir = $('<tr></tr>');
 
-					kaynakTr.find('td').not(':eq(3)').each(function () {
+					kaynakTr.find('td').not(':eq(2)').each(function () {
 						yeniSatir.append($(this).clone());
 					});
 					fragment.append(yeniSatir);
@@ -1332,7 +1318,6 @@
 						<tr>
 							<td style='display: none;'><input type='hidden' maxlength='6' name='TRNUM3[]' value='${getTRNUM()}'> </td>
 							<td style='display: none;'><input type='hidden' maxlength='6' name='OR_TRNUM[]' value='${ OR_TRNUM }'> </td>
-							<td style='display: none;'><input type="hidden" name="ESAS_MIKTAR" value="${esasMiktar}" ></td>
 							<td>#</td>
 							<td><input type='text' class='form-control' name='KAYNAKTYPE2[]' value='${table.BOMREC_INPUTTYPE || ''}' readonly></td>
 							<td><input type='text' class='form-control' name='KOD2[]' value='${table.BOMREC_KAYNAKCODE || ''}' readonly></td>
