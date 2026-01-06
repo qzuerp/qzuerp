@@ -1629,7 +1629,6 @@
 		function ozelInput() {
 			$('#KOD_ALANI').removeAttr('readonly');
 			$('#kart_img').fadeOut(200);
-			$('#grupkodu select').val('').trigger('change');
 			$('#AP10').val('1');
 		}
 		</script>
