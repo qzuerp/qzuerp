@@ -2598,7 +2598,7 @@
           },
           yAxis: {
             min: 0,
-            max: 150,
+            max: 1000,
             tickInterval: 30,
             minorTickInterval: 10,
             tickWidth: 2,
