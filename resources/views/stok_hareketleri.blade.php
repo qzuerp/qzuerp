@@ -120,11 +120,17 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 
 											@php
 
-												$evraklar = DB::table($database.'stok10a as s10')
-													->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
-													->select('s10.*', 's0.NAME2')
-													->orderBy('s10.created_at', 'desc')
-													->get();
+											$evraklar = DB::table($database.'stok10a as s10')
+												->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+												->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+												->select(
+													's10.*',
+													's0.NAME2',
+													'g.AD as DEPO_ADI'
+												)
+												->orderBy('s10.created_at', 'desc')
+												->get();
+
 
 											foreach ($evraklar as $key => $suzVeri) {
 													echo "<tr>";
@@ -138,7 +144,7 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 													echo "<td>".$suzVeri->EVRAKNO."</td>";
 													echo "<td>".$suzVeri->LOTNUMBER."</td>";
 													echo "<td>".$suzVeri->SERINO."</td>";
-													echo "<td>".$suzVeri->AMBCODE."</td>";
+													echo "<td>".$suzVeri->AMBCODE." - ".$suzVeri->DEPO_ADI."</td>";
 													echo "<td>".$suzVeri->TEXT1."</td>";
 													echo "<td>".$suzVeri->TEXT2."</td>";
 													echo "<td>".$suzVeri->TEXT3."</td>";

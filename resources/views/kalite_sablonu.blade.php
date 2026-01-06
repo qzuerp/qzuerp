@@ -288,7 +288,7 @@
 																<button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button>
 															</td>
 															<td><input type="text" class="form-control" value="{{ $veri->VARCODE }}" readonly name="STOK_KODU[]"></td>
-															<td><input type="text" class="form-control" value="{{ $veri->VARASPNAME }}" name="OZEL_ACIKLAMA[]"></td>
+															<td><input type="text" class="form-control" value="{{ $veri->VARASPNAME }}" readonly name="OZEL_ACIKLAMA[]"></td>
 															<td><input type="number" class="form-control" value="{{ $veri->VARINDEX }}" name="OLCUM_NO[]"></td>
 															<!-- <td><input type="text" class="form-control" value="{{ $veri->VARTYPE }}" name="ALAN_TURU[]"></td>
 															<td><input type="number" class="form-control" value="{{ $veri->VARLEN }}" name="UZUNLUK[]"></td>

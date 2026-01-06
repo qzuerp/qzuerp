@@ -146,15 +146,23 @@ function SatirKopyala(button) {
             if (yukariInput.is(':checkbox')) {
                 yukariInput.prop('checked', $(this).is(':checked'));
             } else if (yukariInput.hasClass('select2-hidden-accessible')) {
-                const fullValue = $(this).val();
-                const sadeceKod = fullValue?.split('|||')[0];
+                const fullValue  = $(this).val();
+                const sadeceKod =
+                    fullValue?.split('|||')[0]
+                    ?? fullValue?.split('-')[0]
+                    ?? fullValue;
+
                 let bulundu = false;
+
                 yukariInput.find('option').each(function () {
                     const val = $(this).val();
-                    if (val?.startsWith(sadeceKod + '|||')) {
+
+                    if (!val) return;
+
+                    if (val.startsWith(sadeceKod + '|||') || val === sadeceKod) {
                         yukariInput.val(val).trigger('change.select2');
                         bulundu = true;
-                        return false;
+                        return false; // eşleşti → çık
                     }
                 });
 

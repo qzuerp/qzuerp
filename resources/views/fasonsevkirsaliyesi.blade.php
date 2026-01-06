@@ -287,7 +287,7 @@ if (isset($kart_veri)) {
                         </tr>
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
-                          <td><input type="checkbox" name="" id=""></td>
+                          <td>#</td>
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
