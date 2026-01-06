@@ -198,7 +198,8 @@ class stok26_controller extends Controller
         DB::table($firma . 'stok26e')->where('EVRAKNO', $EVRAKNO)->delete();
         DB::table($firma . 'stok26t')->where('EVRAKNO', $EVRAKNO)->delete();
 
-        DB::table($firma . 'stok10a')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTIPI', 'STOK26T')->delete();
+        DB::table($firma . 'stok10a')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTIPI', 'STOK26T-G')->delete();
+        DB::table($firma . 'stok10a')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTIPI', 'STOK26T-C')->delete();
 
         print_r("Silme işlemi başarılı.");
 

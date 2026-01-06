@@ -2116,7 +2116,7 @@
 						},
 						data: {
 							PB: PB,
-							EVRAKNO: {{ @$kart_veri->EVRAKNO }}
+							EVRAKNO: '{{ @$kart_veri->EVRAKNO }}'
 						},
 						success: function (response) {
 							let kur = parseFloat(response.toString().replace(',', '.'));
