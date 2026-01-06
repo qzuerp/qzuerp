@@ -541,7 +541,12 @@ function inputTemizle2() {
   
   $(':input','#verilerForm').prop('checked',false)
 
-  $('input[date]')[0]._flatpickr.clear();
+  const el = $('input[date]')[0];
+
+  if (el && el._flatpickr) {
+      el._flatpickr.clear();
+  }
+  
 
   $('#AP10').prop('checked', false);
 
