@@ -128,7 +128,7 @@
 													if(@$kart_veri->KRITERCODE_2 == $veri->KOD)
 														echo "<option value ='".$veri->KOD."|||".$veri->AD."' selected>".$veri->KOD."</option>";
 													else
-														echo "<option value ='".$veri->KOD."|||".$veri->AD."'>".$veri->KOD."|||".$veri->AD."</option>";
+														echo "<option value ='".$veri->KOD."|||".$veri->AD."'>".$veri->KOD." - ".$veri->AD."</option>";
 												}
 												@endphp
 											</select>

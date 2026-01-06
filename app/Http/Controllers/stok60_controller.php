@@ -659,11 +659,39 @@ class stok60_controller extends Controller
     }
     $firma = trim($u->firma).'.dbo.';
     $KOD = $request->KOD;
-    $res = DB::table($firma.'stok10a')
-      ->selectRaw('ROW_NUMBER() OVER (ORDER BY [KOD])  AS id, KOD, STOK_ADI, SUM(SF_MIKTAR) MIKTAR, SF_SF_UNIT, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4')
-      ->where('KOD',$KOD)
-      ->groupBy('KOD', 'STOK_ADI', 'SF_SF_UNIT', 'LOTNUMBER','SERINO', 'AMBCODE', 'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4', 'NUM1', 'NUM2', 'NUM3', 'NUM4', 'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4')
-      ->get();
+
+    $res = DB::table($firma.'stok10a as s')
+    ->leftJoin($firma.'gdef00 as g', 'g.KOD', '=', 's.AMBCODE')
+    ->selectRaw('
+        ROW_NUMBER() OVER (ORDER BY s.KOD) AS id,
+        s.KOD,
+        s.STOK_ADI,
+        SUM(s.SF_MIKTAR) AS MIKTAR,
+        s.SF_SF_UNIT,
+        s.LOTNUMBER,
+        s.SERINO,
+        s.AMBCODE,
+        g.AD,
+        s.TEXT1, s.TEXT2, s.TEXT3, s.TEXT4,
+        s.NUM1, s.NUM2, s.NUM3, s.NUM4,
+        s.LOCATION1, s.LOCATION2, s.LOCATION3, s.LOCATION4
+    ')
+    ->where('s.KOD', $KOD)
+    ->groupBy(
+        's.KOD',
+        's.STOK_ADI',
+        's.SF_SF_UNIT',
+        's.LOTNUMBER',
+        's.SERINO',
+        's.AMBCODE',
+        'g.AD',
+        's.TEXT1', 's.TEXT2', 's.TEXT3', 's.TEXT4',
+        's.NUM1', 's.NUM2', 's.NUM3', 's.NUM4',
+        's.LOCATION1', 's.LOCATION2', 's.LOCATION3', 's.LOCATION4'
+    )
+    ->get();
+
+
 
     return $res;
   }

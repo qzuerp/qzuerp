@@ -21,7 +21,7 @@ function DepoMevcutlari(kod) {
                         <td>${row.SF_SF_UNIT || ''}</td>
                         <td>${row.LOTNUMBER || ''}</td>
                         <td>${row.SERINO || ''}</td>
-                        <td>${row.AMBCODE || ''}</td>
+                        <td>${row.AMBCODE || ''} - ${row.AD || ''}</td>
                         <td>${row.TEXT1 || ''}</td>
                         <td>${row.TEXT2 || ''}</td>
                         <td>${row.TEXT3 || ''}</td>
@@ -89,7 +89,7 @@ function StokHareketleri(kod) {
                     <td>${row.SF_SF_UNIT || ''}</td>
                     <td>${row.LOTNUMBER || ''}</td>
                     <td>${row.SERINO || ''}</td>
-                    <td>${row.AMBCODE || ''}</td>
+                    <td>${row.AMBCODE || ''} - ${row.DEPO_AD || ''}</td>
                     <td>${row.TEXT1 || ''}</td>
                     <td>${row.TEXT2 || ''}</td>
                     <td>${row.TEXT3 || ''}</td>

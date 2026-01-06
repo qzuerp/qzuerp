@@ -79,7 +79,17 @@ class main_controller extends Controller
     }
     $firma = trim($u->firma).'.dbo.';
     $KOD = $request->KOD;
-    return DB::table($firma.'stok10a')->where('KOD',$KOD)->orderBy('created_at', 'desc')->get();
+
+    return DB::table($firma.'stok10a as s')
+        ->leftJoin($firma.'gdef00 as g', 'g.KOD', '=', 's.AMBCODE')
+        ->select(
+            's.*',
+            'g.AD as DEPO_AD'
+        )
+        ->where('s.KOD', $KOD)
+        ->orderBy('s.created_at', 'desc')
+        ->get();
+    
   }
   public function StokKartinaGit(Request $request)
   {

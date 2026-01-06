@@ -203,6 +203,7 @@ class pers00_opt_controller extends Controller
       'END_DATE' => $END_DATE,
       'bagli_hesap' => $bagli_hesap,
       'created_at' => date('Y-m-d H:i:s'),
+      'LAST_TRNUM' => $request->LAST_TRNUM
       ]);
       for ($i=0; $i < count($TRNUM); $i++) { 
         DB::table($firma.'pers00z')->insert([
@@ -261,6 +262,7 @@ class pers00_opt_controller extends Controller
         'END_DATE' => $END_DATE,
         'bagli_hesap' => $bagli_hesap,
         'updated_at' => date('Y-m-d H:i:s'),
+        'LAST_TRNUM' => $request->LAST_TRNUM
       ]);
 
       if (!isset($TRNUM)) {

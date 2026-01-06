@@ -12,7 +12,7 @@
   $ekranAdi = "Operator Kartı";
   $ekranLink = "kart_operator";
   $ekranTableE = $database . "pers00";
-  $ekranKayitSatirKontrol = "false";
+  $ekranKayitSatirKontrol = "true";
 
 
   $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
