@@ -241,8 +241,8 @@ class stok40_controller extends Controller
         'TERMIN_TAR' => $TERMIN_TAR[$i],
         'AK' => $T_AK[$i],
         'created_at' => date('Y-m-d H:i:s'),
-        'FIYAT' => $FIYAT[$i],
-        'FIYAT_PB' => $FIYAT_PB[$i]
+        'FIYAT' => $FIYAT[$i] ?? NULL,
+        'FIYAT_PB' => $FIYAT_PB[$i] ?? NULL
       ]);
 
     }
