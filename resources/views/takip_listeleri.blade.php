@@ -461,7 +461,15 @@
 
                                             $veri = DB::table($database.'cgc70')->where('FORM',$form)->get();
                                         @endphp
-                                        @include('takip_formlari.Liste.mainList', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @if($form == '8D')
+                                            @include('takip_formlari.Liste.8D', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @elseif($form == 'IC')
+                                            @include('takip_formlari.Liste.IC', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @elseif($form == 'ICHATA')
+                                            @include('takip_formlari.Liste.ICHATA', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @elseif($form == 'SAPMA')
+                                            @include('takip_formlari.Liste.SAPMA', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @endif
                                     </div>
                                     
                                     <div class="tab-pane" id="baglantiliDokumanlar">

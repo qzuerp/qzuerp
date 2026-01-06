@@ -541,6 +541,7 @@ function inputTemizle2() {
   
   $(':input','#verilerForm').prop('checked',false)
 
+  $('input[date]')[0]._flatpickr.clear();
 
   $('#AP10').prop('checked', false);
 
