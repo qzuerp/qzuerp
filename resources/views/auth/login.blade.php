@@ -6,385 +6,497 @@
   <title>Giriş | Karakuzu ERP</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    :root {
-      --primary: #3a7bd5;
-      --primary-dark: #2a5db0;
-      --secondary: #00d2ff;
-      --text-dark: #333;
-      --text-light: #767676;
-      --white: #fff;
-      --background: #f8faff;
-      --error: #e74c3c;
-      --success: #2ecc71;
     }
 
     body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 900px;
-      width: 100%;
-      background: var(--white);
-      border-radius: 20px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-      display: flex;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
       overflow: hidden;
-    }
-    
-    .input-group input:valid {
-      box-shadow: 0 0 0 3px rgba(46, 204, 112, 0.4);
+      background: #0a0e27;
     }
 
-    .image-side {
-      width: 50%;
+    .login-container {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* Sol Taraf - Animasyonlu Görsel */
+    .left-side {
+      flex: 1;
       position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .animated-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
     }
 
-    .image-side img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-
-    .image-side img:hover {
-      transform: scale(1.05);
-    }
-
-    .image-overlay {
+    .circle {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(58, 123, 213, 0.75), rgba(0, 210, 255, 0.75));
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .circle:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 70%;
+      animation-delay: 2s;
+    }
+
+    .circle:nth-child(3) {
+      width: 150px;
+      height: 150px;
+      top: 30%;
+      left: 60%;
+      animation-delay: 4s;
+    }
+
+    .circle:nth-child(4) {
+      width: 100px;
+      height: 100px;
+      top: 70%;
+      left: 20%;
+      animation-delay: 6s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(-50px) rotate(180deg);
+        opacity: 0.6;
+      }
+    }
+
+    .content-overlay {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: white;
+      padding: 40px;
+      max-width: 500px;
+    }
+
+    .logo-container {
+      margin-bottom: 40px;
+    }
+
+    .logo-icon {
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px;
+      margin: 0 auto 30px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+      }
+    }
+
+    .logo-icon h1 {
+      font-size: 70px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .welcome-text h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-text p {
+      font-size: 18px;
+      line-height: 1.6;
+      opacity: 0.95;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .features {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      justify-content: center;
+    }
+
+    .feature-item {
       text-align: center;
     }
 
-    .image-overlay img.logo {
-      width: 120px;
-      margin-bottom: 20px;
-    }
-
-    .overlay-text h1 {
-      color: var(--white);
-      font-size: 30px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .overlay-text p {
-      color: var(--white);
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    .form-side {
-      width: 50%;
-      padding: 50px 40px;
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-icon i {
+      font-size: 24px;
+      color: white;
+    }
+
+    .feature-item h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .feature-item p {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    /* Sağ Taraf - Login Form */
+    .right-side {
+      flex: 1;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 450px;
     }
 
     .form-header {
       margin-bottom: 40px;
-      text-align: center;
     }
 
     .form-header h2 {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-      position: relative;
-    }
-
-    .form-header h2:after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: -8px;
-      height: 3px;
-      width: 50px;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      transform: translateX(-50%);
-      border-radius: 10px;
+      font-size: 32px;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
 
     .form-header p {
-      color: var(--text-light);
-      font-size: 14px;
+      color: #666;
+      font-size: 16px;
     }
 
-    .input-group {
-      margin-bottom: 24px;
+    .form-group {
+      margin-bottom: 25px;
     }
 
-    .input-group label {
+    .form-group label {
       display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-dark);
       margin-bottom: 8px;
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .input-wrapper {
       position: relative;
     }
 
-    .input-wrapper i.left-icon {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
-      color: var(--text-light);
-      font-size: 18px;
-      transition: color 0.3s ease;
-    }
-
-    .input-wrapper i.right-icon {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      color: var(--text-light);
-      font-size: 18px;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .input-group input {
+    .input-wrapper input {
       width: 100%;
-      height: 50px;
-      padding: 0 45px 0 45px;
-      border: none;
+      padding: 15px 20px 15px 50px;
+      border: 2px solid #e0e0e0;
       border-radius: 12px;
-      background: var(--background);
       font-size: 15px;
-      color: var(--text-dark);
-      transition: box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
     }
 
-    .input-group input:focus {
+    .input-wrapper input:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.2);
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
     }
 
-    .input-group input:focus + i {
-      color: var(--primary);
+    .input-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 18px;
+      pointer-events: none;
     }
 
-    .error-message {
-      color: var(--error);
-      font-size: 13px;
-      margin-top: 6px;
+    .input-wrapper input:focus ~ .input-icon {
+      color: #667eea;
     }
 
-    .remember-forgot {
+    .toggle-password {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      cursor: pointer;
+      font-size: 18px;
+      transition: color 0.3s;
+    }
+
+    .toggle-password:hover {
+      color: #667eea;
+    }
+
+    .form-options {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      font-size: 13px;
+      margin-bottom: 30px;
     }
 
-    .custom-checkbox {
+    .remember-me {
       display: flex;
       align-items: center;
       cursor: pointer;
     }
 
-    .custom-checkbox input {
-      display: none;
-    }
-
-    .checkbox-mark {
+    .remember-me input[type="checkbox"] {
       width: 18px;
       height: 18px;
-      border: 2px solid #d1d5db;
-      border-radius: 4px;
       margin-right: 8px;
-      position: relative;
-      transition: all 0.3s ease;
+      cursor: pointer;
+      accent-color: #667eea;
     }
 
-    .custom-checkbox input:checked + .checkbox-mark {
-      background: var(--primary);
-      border-color: var(--primary);
+    .remember-me label {
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
     }
 
-    .checkbox-mark:after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 1px;
-      width: 5px;
-      height: 10px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-      display: none;
-    }
-
-    .custom-checkbox input:checked + .checkbox-mark:after {
-      display: block;
-    }
-
-    .forgot-link {
-      color: var(--primary);
+    .forgot-password {
+      color: #667eea;
       text-decoration: none;
-      transition: color 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.3s;
     }
 
-    .forgot-link:hover {
-      color: var(--primary-dark);
-      text-decoration: underline;
+    .forgot-password:hover {
+      color: #764ba2;
     }
 
-    .submit-btn {
+    .login-button {
       width: 100%;
-      height: 50px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
       border: none;
       border-radius: 12px;
-      color: var(--white);
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.1s ease;
-      box-shadow: 0 5px 15px rgba(58, 123, 213, 0.3);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
 
-    .submit-btn:hover {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    .login-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 7px 20px rgba(58, 123, 213, 0.4);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
 
-    .submit-btn:disabled {
-      background:rgb(165, 184, 213);
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .login-button:disabled {
+      background: linear-gradient(135deg, #ccc 0%, #999 100%);
       cursor: not-allowed;
-      transform: none;
       box-shadow: none;
+      transform: none;
     }
 
-    @media (max-width: 768px) {
-      .container {
+    .error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 968px) {
+      .login-container {
         flex-direction: column;
-        max-width: 450px;
       }
 
-      .image-side, .form-side {
-        width: 100%;
+      .left-side {
+        min-height: 300px;
       }
 
-      .image-side {
-        height: 200px;
+      .welcome-text h1 {
+        font-size: 36px;
       }
 
-      .form-side {
-        padding: 40px 30px;
+      .features {
+        flex-direction: column;
+        gap: 20px;
       }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.8); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="image-side">
-      <img src="{{URL::asset('/assets/img/QZU ERP.png')}}" alt="Login Background">
-      <div class="image-overlay">
+  <div class="login-container">
+    <!-- Sol Taraf -->
+    <div class="left-side">
+      <div class="animated-background">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      
+      <div class="content-overlay">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <h1>Q</h1>
+          </div>
+        </div>
+        
+        <div class="welcome-text">
+          <h1>QZU ERP</h1>
+          <p>İşletmenizi dijital dünyaya taşıyın. Tüm operasyonlarınızı tek platformdan yönetin.</p>
+        </div>
 
+        <div class="features">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Güvenli</h3>
+            <p>256-bit şifreleme</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Hızlı</h3>
+            <p>Gerçek zamanlı veri</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Ekip Çalışması</h3>
+            <p>Kolay işbirliği</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="form-side">
-      <div class="form-header">
-        <h2>Giriş Yap</h2>
-        <p>Hesabına erişmek için bilgilerini gir!</p>
+
+    <!-- Sağ Taraf -->
+    <div class="right-side">
+      <div class="form-container">
+        <div class="form-header">
+          <h2>Hoş Geldiniz</h2>
+          <p>Hesabınıza giriş yapın ve işinize devam edin</p>
+        </div>
+
+        <form method="POST" action="{{ route('login') }}" id="loginForm">
+          @csrf
+          
+          <div class="form-group">
+            <label for="email">E-posta Adresi</label>
+            <div class="input-wrapper">
+              <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="ornek@karakuzu.com">
+              <i class="fas fa-envelope input-icon"></i>
+            </div>
+            @error('email')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="form-group">
+            <label for="password">Şifre</label>
+            <div class="input-wrapper">
+              <input type="password" id="password" name="password" required placeholder="••••••••">
+              <i class="fas fa-lock input-icon"></i>
+              <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+            @error('password')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="form-options">
+            <div class="remember-me">
+              <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+              <label for="remember">Beni Hatırla</label>
+            </div>
+            <a href="{{ route('password.request') }}" class="forgot-password">Şifremi Unuttum?</a>
+          </div>
+
+          <button type="submit" class="login-button" id="loginBtn">
+            Giriş Yap
+          </button>
+        </form>
       </div>
-
-      <form method="POST" action="{{ route('login') }}" id="loginForm">
-        @csrf
-        <div class="input-group">
-          <label for="email">E-posta Adresi</label>
-          <div class="input-wrapper">
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="ornek@gmail.com">
-            <i class="left-icon fas fa-envelope"></i>
-          </div>
-          @error('email')
-            <div class="error-message">{{ $message }}</div>
-          @enderror
-        </div>
-
-        <div class="input-group">
-          <label for="password">Şifre</label>
-          <div class="input-wrapper">
-            <input id="passwordInput" type="password" name="password" required placeholder="••••••">
-            <i class="left-icon fas fa-lock"></i>
-            <i class="right-icon fas fa-eye-slash" id="togglePassword"></i>
-          </div>
-          @error('password')
-            <div class="error-message">Şifre yanlış</div>
-          @enderror
-        </div>
-
-        <div class="remember-forgot">
-          <label class="custom-checkbox">
-            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-            <span class="checkbox-mark"></span>
-            Beni Hatırla
-          </label>
-          <a href="{{ route('password.request') }}" class="forgot-link">Şifremi Unuttum</a>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">Giriş Yap</button>
-      </form>
     </div>
   </div>
 
   <script>
-    const toggleIcon = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("passwordInput");
-    const submitBtn = document.getElementById("submitBtn");
-    const loginForm = document.getElementById("loginForm");
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
 
-    toggleIcon.addEventListener("click", () => {
-      const isPassword = passwordInput.type === "password";
-      passwordInput.type = isPassword ? "text" : "password";
-      toggleIcon.classList.toggle("fa-eye");
-      toggleIcon.classList.toggle("fa-eye-slash");
+    togglePassword.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
     });
 
-    loginForm.addEventListener("submit", () => {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Giriş Yapılıyor...";
+    // Form submit handling
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+
+    loginForm.addEventListener('submit', function() {
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Giriş Yapılıyor...';
     });
   </script>
 </body>

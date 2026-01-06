@@ -897,7 +897,8 @@
                           ->orderBy('t.id', 'ASC')
                           ->select(
                               't.*',
-                              's.NAME2 as AD2'
+                              's.NAME2 as AD2',
+                              'e.id as EVRAKID',
                           )
                           ->get();
 
@@ -919,7 +920,7 @@
 
                         echo "
                         <td>
-                            <a href='{$ekranLink}?ID={$suzVeri->id}&KOD={$suzVeri->KOD}' class='btn btn-info'>
+                            <a href='{$ekranLink}?ID={$suzVeri->EVRAKID}&KOD={$suzVeri->KOD}' class='btn btn-info'>
                                 <i class='fa fa-chevron-circle-right text-white'></i>
                             </a>
                         </td>";
