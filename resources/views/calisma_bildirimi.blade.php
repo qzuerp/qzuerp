@@ -2713,7 +2713,7 @@
           const offset = (Math.random() - 0.5) * 15 * animationRange;
           let newTarget = baseValue + offset;
           if (newTarget < 0) newTarget = 0;
-          if (newTarget > 150) newTarget = 150;
+          if (newTarget > 1000) newTarget = 1000;
           return newTarget;
         }
 
