@@ -1310,37 +1310,38 @@
 
 						<div class="modal-body">
 							<div class="row">
-								<table id="evrakSuzTablee" class="table table-hover text-center" data-page-length="10">
+								<table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10">
 									<thead>
 										<tr class="bg-primary">
-											<th>id</th>
 											<th>Kod</th>
 											<th>Ad</th>
+											<th>Ad2</th>
 											<th>Birim</th>
 											<th>#</th>
 										</tr>
 									</thead>
-									<!-- <tfoot>
+									<tfoot>
 										<tr class="bg-info">
 											<th>Kod</th>
 											<th>Ad</th>
+											<th>Ad2</th>
 											<th>Birim</th>
 											<th>#</th>
 										</tr>
-									</tfoot> -->
+									</tfoot>
 									<tbody> 	
 
 										@php
 
-										$evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->limit(50)->get();
+										$evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
 
 										foreach ($evraklar as $key => $suzVeri) {
 											echo "<tr>";
-											echo "<td>".$suzVeri->KOD."</td>";
-											echo "<td>".$suzVeri->AD."</td>";
-											echo "<td>".$suzVeri->IUNIT."</td>";
-											echo "<td>"."<a class='btn btn-info' href='kart_stok?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
-
+												echo "<td>".$suzVeri->KOD."</td>";
+												echo "<td>".$suzVeri->AD."</td>";
+												echo "<td>".$suzVeri->NAME2."</td>";
+												echo "<td>".$suzVeri->IUNIT."</td>";
+												echo "<td>"."<a class='btn btn-info' href='kart_stok?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 											echo "</tr>";
 
 										}
@@ -1500,74 +1501,49 @@
 					});
 				}
 
-				$.fn.dataTable.ext.search.push(function(settings, searchData, index, rowData, counter) {
-					if (settings.nTable.id !== 'evrakSuzTable') {
-						return true;
-					}
-					
-					const searchTerm = $('.dataTables_filter input').val();
-					if (!searchTerm) {
-						return true;
-					}
-					
-					const normalizedSearchTerm = turkishNormalize(searchTerm);
-					
-					for (let i = 0; i < searchData.length; i++) {
-						const cellData = searchData[i] || '';
-						const normalizedCellData = turkishNormalize(cellData);
-						
-						if (normalizedCellData.includes(normalizedSearchTerm)) {
-							return true;
-						}
-					}
-					
-					return false;
-				});
+				// $('#evrakSuzTablee').DataTable({
+				// 	"order": [[ 0, "desc" ]],
+				// 	dom: 'Bfrtip',
+				// 	buttons: ['copy', 'excel', 'print'],
+				// 	processing: true,
+				// 	serverSide: true,
+				// 	searching: true,
+				// 	autoWidth: false,
+				// 	scrollX: false,
+				// 	ajax: '/evraklar-veri',
+				// 	columns: [
+				// 		{ data: 'id', name: 'id' },
+				// 		{ data: 'KOD', name: 'KOD' },
+				// 		{ data: 'AD', name: 'AD' },
+				// 		{ data: 'IUNIT', name: 'IUNIT' },
+				// 		{
+				// 			data: 'id',
+				// 			name: 'id',
+				// 			render: function(data, type, row) {
+				// 				return `<a class='btn btn-info' href='kart_stok?ID=${data}'>
+				// 							<i class='fa fa-chevron-circle-right' style='color: white'></i>
+				// 						</a>`;
+				// 			},
+				// 			orderable: false,
+				// 			searchable: false
+				// 		}
+				// 	],
+				// 	language: {
+				// 		url: '{{ asset("tr.json") }}'
+				// 	}
+				// });
 
-				$('#evrakSuzTablee').DataTable({
-					"order": [[ 0, "desc" ]],
-					dom: 'Bfrtip',
-					buttons: ['copy', 'excel', 'print'],
-					processing: true,
-					serverSide: true,
-					searching: true, // DataTables'ın kendi search'ünü kapat
-					autoWidth: false,
-					scrollX: false,
-					ajax: '/evraklar-veri',
-					columns: [
-						{ data: 'id', name: 'id' },
-						{ data: 'KOD', name: 'KOD' },
-						{ data: 'AD', name: 'AD' },
-						{ data: 'IUNIT', name: 'IUNIT' },
-						{
-							data: 'id',
-							name: 'id',
-							render: function(data, type, row) {
-								return `<a class='btn btn-info' href='kart_stok?ID=${data}'>
-											<i class='fa fa-chevron-circle-right' style='color: white'></i>
-										</a>`;
-							},
-							orderable: false,
-							searchable: false
-						}
-					],
-					language: {
-						url: '{{ asset("tr.json") }}'
-					}
-				});
-
-				// DataTable dışında manuel search input ekle
-				let debounceTimer;
-				$('.dataTables_filter input').on('input', function(e) {
-					e.stopImmediatePropagation(); // Tüm event'leri durdur
-					clearTimeout(debounceTimer);
-					const searchValue = this.value;
-					const table = $('#evrakSuzTablee').DataTable();
+				// let debounceTimer;
+				// $('.dataTables_filter input').on('input', function(e) {
+				// 	e.stopImmediatePropagation();
+				// 	clearTimeout(debounceTimer);
+				// 	const searchValue = this.value;
+				// 	const table = $('#evrakSuzTablee').DataTable();
 					
-					debounceTimer = setTimeout(function() {
-						table.search(searchValue).draw();
-					}, 500);
-				});
+				// 	debounceTimer = setTimeout(function() {
+				// 		table.search(searchValue).draw();
+				// 	}, 500);
+				// });
 
 				$('#evrakSec').select2({
 					placeholder: 'Stok kodu seç...',

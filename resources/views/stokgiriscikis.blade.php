@@ -844,7 +844,7 @@
       </div>
 
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz2"  >
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
 
             <div class="modal-header">
@@ -857,9 +857,10 @@
                     <tr class="bg-primary">
                       <th>Evrak No</th>
                       <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Ad2</th>
                       <th>Lot</th>
                       <th>Miktar</th>
-                      <th>Tarih</th>
                       <th>Depo</th>
                       <th>Lokasyon 1</th>
                       <th>Lokasyon 2</th>
@@ -873,9 +874,10 @@
                     <tr class="bg-info">
                       <th>Evrak No</th>
                       <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Ad2</th>
                       <th>Lot</th>
                       <th>Miktar</th>
-                      <th>Tarih</th>
                       <th>Depo</th>
                       <th>Lokasyon 1</th>
                       <th>Lokasyon 2</th>
@@ -889,18 +891,25 @@
 
                     @php
 
-                      $evraklar = DB::table($ekranTableT)
-                          ->leftJoin($ekranTableE, $ekranTableE.'.EVRAKNO', '=', $ekranTableT.'.EVRAKNO')
-                          ->orderBy($ekranTableT.'.id', 'ASC')
+                      $evraklar = DB::table($database.'stok21t as t')
+                          ->leftJoin($database.'stok21e as e', 'e.EVRAKNO', '=', 't.EVRAKNO')
+                          ->leftJoin($database.'stok00 as s', 's.KOD', '=', 't.KOD')
+                          ->orderBy('t.id', 'ASC')
+                          ->select(
+                              't.*',
+                              's.NAME2 as AD2'
+                          )
                           ->get();
+
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
                         echo "<td>".$suzVeri->EVRAKNO."</td>";
                         echo "<td>".$suzVeri->KOD."</td>";
+                        echo "<td>".$suzVeri->AD."</td>";
+                        echo "<td>".$suzVeri->AD2."</td>";
                         echo "<td>".$suzVeri->LOTNUMBER."</td>";
                         echo "<td>".$suzVeri->SF_MIKTAR."</td>";
-                        echo "<td>".$suzVeri->TARIH."</td>";
                         echo "<td>".$suzVeri->AMBCODE."</td>";
                         echo "<td>".$suzVeri->LOCATION1."</td>";
                         echo "<td>".$suzVeri->LOCATION2."</td>";
