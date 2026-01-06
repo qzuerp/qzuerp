@@ -80,6 +80,12 @@ class pers00_opt_controller extends Controller
     $START_DATE = $request->input('START_DATE');
     $END_DATE = $request->input('END_DATE');
     $bagli_hesap = $request->input('bagli_hesap');
+    $KODZ = $request->KODZ;
+    $ADZ = $request->ADZ;
+    $TESLIM_KISI = $request->TESLIM_KISI;
+    $TAR = $request->TAR;
+    $ACIKLAMA = $request->ACIKLAMA;
+    $TRNUM = $request->TRNUM;
 
     switch($islem_turu) {
 
@@ -198,7 +204,17 @@ class pers00_opt_controller extends Controller
       'bagli_hesap' => $bagli_hesap,
       'created_at' => date('Y-m-d H:i:s'),
       ]);
-
+      for ($i=0; $i < count($TRNUM); $i++) { 
+        DB::table($firma.'pers00z')->insert([
+          'KOD' => $KODZ[$i],
+          'AD' => $ADZ[$i],
+          'TESLIM_EDEN' => $TESLIM_KISI[$i],
+          'TESLIM_TAR' => $TAR[$i],
+          'ACIKLAMA' => $ACIKLAMA[$i],
+          'TRNUM' => $TRNUM[$i],
+          'OPRT_ID' => $KOD
+        ]);
+      }
       print_r("Kayıt işlemi başarılı.");
 
       $sonID=DB::table($firma.'pers00')->max('id');
@@ -207,45 +223,97 @@ class pers00_opt_controller extends Controller
     break;
 
     case 'kart_duzenle':
-    FunctionHelpers::Logla('PERS00',$KOD,'W');
+      FunctionHelpers::Logla('PERS00',$KOD,'W');
 
-    DB::table($firma.'pers00')->where('id',$request->user_id)->update([
-      'KOD' => $KOD,
-      'AD' => $AD,
-      'AP10' => $AP10,
-      'NAME2' => $NAME2,
-      'ADRES_IL' => $ADRES_IL,
-      'ADRES_ILCE' => $ADRES_ILCE,
-      'ADRES_1' => $ADRES_1,
-      'ADRES_2' => $ADRES_2,
-      'ADRES_3' => $ADRES_3,
-      'TELEFONNO_1' => $TELEFONNO_1,
-      'TELEFONNO_2' => $TELEFONNO_2,
-      'EMAIL' => $EMAIL,
-      'SEHIRKODU' => $SEHIRKODU,
-      'FAXNO' => $FAXNO,
-      'POSTAKODU' => $POSTAKODU,
-      'GK_1' => $GK_1,
-      'GK_2' => $GK_2,
-      'GK_3' => $GK_3,
-      'GK_4' => $GK_4,
-      'GK_5' => $GK_5,
-      'GK_6' => $GK_6,
-      'GK_7' => $GK_7,
-      'GK_8' => $GK_8,
-      'GK_9' => $GK_9,
-      'GK_10' => $GK_10,
-      'KONTAKTNAME_1' => $KONTAKTNAME_1,
-      'KONTAKTGOREVI_1' => $KONTAKTGOREVI_1,
-      'KONTAKTBOLUMU_1' => $KONTAKTBOLUMU_1,
-      'KONTAKTNAME_2' => $KONTAKTNAME_2,
-      'KONTAKTGOREVI_2' => $KONTAKTGOREVI_2,
-      'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
-      'START_DATE' => $START_DATE,
-      'END_DATE' => $END_DATE,
-      'bagli_hesap' => $bagli_hesap,
-      'updated_at' => date('Y-m-d H:i:s'),
-    ]);
+      DB::table($firma.'pers00')->where('id',$request->user_id)->update([
+        'KOD' => $KOD,
+        'AD' => $AD,
+        'AP10' => $AP10,
+        'NAME2' => $NAME2,
+        'ADRES_IL' => $ADRES_IL,
+        'ADRES_ILCE' => $ADRES_ILCE,
+        'ADRES_1' => $ADRES_1,
+        'ADRES_2' => $ADRES_2,
+        'ADRES_3' => $ADRES_3,
+        'TELEFONNO_1' => $TELEFONNO_1,
+        'TELEFONNO_2' => $TELEFONNO_2,
+        'EMAIL' => $EMAIL,
+        'SEHIRKODU' => $SEHIRKODU,
+        'FAXNO' => $FAXNO,
+        'POSTAKODU' => $POSTAKODU,
+        'GK_1' => $GK_1,
+        'GK_2' => $GK_2,
+        'GK_3' => $GK_3,
+        'GK_4' => $GK_4,
+        'GK_5' => $GK_5,
+        'GK_6' => $GK_6,
+        'GK_7' => $GK_7,
+        'GK_8' => $GK_8,
+        'GK_9' => $GK_9,
+        'GK_10' => $GK_10,
+        'KONTAKTNAME_1' => $KONTAKTNAME_1,
+        'KONTAKTGOREVI_1' => $KONTAKTGOREVI_1,
+        'KONTAKTBOLUMU_1' => $KONTAKTBOLUMU_1,
+        'KONTAKTNAME_2' => $KONTAKTNAME_2,
+        'KONTAKTGOREVI_2' => $KONTAKTGOREVI_2,
+        'KONTAKTBOLUMU_2' => $KONTAKTBOLUMU_2,
+        'START_DATE' => $START_DATE,
+        'END_DATE' => $END_DATE,
+        'bagli_hesap' => $bagli_hesap,
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]);
+
+      if (!isset($TRNUM)) {
+        $TRNUM = array();
+      }
+  
+      $currentTRNUMS = array();
+      $liveTRNUMS = array();
+      $currentTRNUMSObj = DB::table($firma.'pers00z')->where('OPRT_ID',$KOD)->select('TRNUM')->get();
+  
+      foreach ($currentTRNUMSObj as $key => $veri) {
+        array_push($currentTRNUMS,$veri->TRNUM);
+      }
+  
+      foreach ($TRNUM as $key => $veri) {
+        array_push($liveTRNUMS,$veri);
+      }
+  
+      $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
+      $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
+      $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+
+      for ($i = 0; $i < count($TRNUM); $i++) {
+  
+        if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
+          DB::table($firma.'pers00z')->insert([
+            'KOD' => $KODZ[$i],
+            'AD' => $ADZ[$i],
+            'TESLIM_EDEN' => $TESLIM_KISI[$i],
+            'TESLIM_TAR' => $TAR[$i],
+            'ACIKLAMA' => $ACIKLAMA[$i],
+            'TRNUM' => $TRNUM[$i],
+            'OPRT_ID' => $KOD
+          ]);
+        }
+  
+        if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
+          DB::table($firma.'pers00z')->where('OPRT_ID', $KOD)->where('TRNUM', $TRNUM[$i])->update([
+            'KOD' => $KODZ[$i],
+            'AD' => $ADZ[$i],
+            'TESLIM_EDEN' => $TESLIM_KISI[$i],
+            'TESLIM_TAR' => $TAR[$i],
+            'ACIKLAMA' => $ACIKLAMA[$i],  
+            'TRNUM' => $TRNUM[$i],
+            'OPRT_ID' => $KOD
+          ]);
+        }
+  
+      }
+
+      foreach ($deleteTRNUMS as $key => $veri) {
+        DB::table($firma.'pers00z')->where('OPRT_ID',$KOD)->where('TRNUM',$veri)->delete();
+      }
 
       print_r("Düzenleme işlemi başarılı.");
 

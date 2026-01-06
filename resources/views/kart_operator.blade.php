@@ -206,10 +206,9 @@
                       <li class="nav-item"><a href="#persbilgileri" class="nav-link" data-bs-toggle="tab">Personel
                           Bilgileri</a></li>
                       <li class=""><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Grup Kodları</a></li>
+                      <li class=""><a href="#zimmet" class="nav-link" data-bs-toggle="tab">Zimmet Listesi</a></li>
                       <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
-                      <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar"
-                          id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i
-                            style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+                      <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                     </ul>
                     <div class="tab-content">
                       <div class="active tab-pane" id="persbilgileri">
@@ -290,6 +289,7 @@
                           </div>
                         </div>
                       </div>
+
                       <div class="tab-pane" id="persozlukbilgileri">
                         <div class="col-md-2">
                           <label>İsim</label>
@@ -2090,6 +2090,93 @@
                           </div>
                         </div>
                       </div>
+                      
+                      <div class="tab-pane" id="zimmet">
+                        <table class="table table-bordered text-center" id="veriTable">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th style="display:none;">Sıra</th>
+                              <th>Kod</th>
+                              <th>Ad</th>
+                              <th>Teslim Eden Kişi</th>
+                              <th>Teslim Tarihi</th>
+                              <th>Açıklama</th>
+                              <th style="text-align:right;">#</th>
+                            </tr>
+
+                            <tr class="satirEkle" style="background-color:#3c8dbc">
+
+                              <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus"
+                                    style="color: blue"></i></button></td>
+                              <td style="display:none;">
+                              </td>
+                              <td style="min-width: 150px;">
+                                <select class="select2" onchange="cihazSec(this.value)">
+                                  <option value="STOKSUZ">STOKSUZ</option>
+                                  @php
+                                    $cihaz_veri = DB::table($database.'SRVKC0')->get();
+                                    foreach ($cihaz_veri as $key => $veri) {
+                                      echo "<option value ='" . $veri->KOD . "|||" . $veri->AD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
+                                    }
+                                  @endphp
+                                </select>
+                                <input type="hidden" id="KOD_FILL">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input style="color: red" type="text" id="AD_FILL"
+                                  class=" form-control" readonly>
+                              </td>
+                              <td style="min-width: 150px">
+                                <select id="TESLIM_KISI_FILL" class="form-control select2">
+                                  <option value=" ">Seç</option>
+                                  @php
+                                    $pers = DB::table($database.'pers00')->get();
+                                    foreach ($pers as $key => $veri) {
+                                      echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
+                                    }
+                                  @endphp
+                                </select>
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="date" id="TAR_FILL"
+                                  class=" form-control">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="text" id="ACIKLAMA_FILL"
+                                  class=" form-control">
+                              </td>
+                              <td>#</td>
+                            </tr>
+
+                          </thead>
+
+                          <tbody>
+                            @php
+                              $t_veri = DB::table($database.'pers00z')->where('OPRT_ID',@$kart_veri->KOD)->get();
+                            @endphp
+                            @foreach ($t_veri as $key => $veri)
+                              @php
+                                $pers_name = DB::table($database.'pers00')
+                                              ->where('KOD', $veri->TESLIM_EDEN)
+                                              ->value('AD');
+
+                              @endphp
+                              <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td style="display:none;"><input type="text" name="TRNUM[]" class="form-control" value="{{ $veri->TRNUM }}"></td>
+                                <td><input type="text" name="KODZ[]" readonly class="form-control" value="{{ $veri->KOD }}"></td>
+                                <td><input type="text" name="ADZ[]" readonly class="form-control" value="{{ $veri->AD }}"></td>
+                                <td><input type="text" name="TESLIM_KISI[]" readonly class="form-control" value="{{ $veri->TESLIM_EDEN }} - {{ $pers_name }}"></td>
+                                <td><input type="text" name="TAR[]" readonly class="form-control" value="{{ $veri->TESLIM_TAR }}"></td>
+                                <td><input type="text" name="ACIKLAMA[]" class="form-control" value="{{ $veri->ACIKLAMA }}"></td>
+                                <td><button type="button" class="btn btn-default delete-row" id="delete-row"><i
+                                      class="fa fa-minus" style="color: red"></i></button></td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
 
                       <div class="tab-pane" id="liste">
                         @php
@@ -2492,7 +2579,13 @@
     </section>
 
     <script>
+      function cihazSec(veri)
+      {
+        var veriler = veri.split("|||");
 
+        $('#KOD_FILL').val(veriler[0]);
+        $('#AD_FILL').val(veriler[1]);
+      }
       function evrakGetir() {
         var evrakNo = document.getElementById("evrakSec").value;
         //alert(evrakNo);
@@ -2593,6 +2686,66 @@
 
   </script>
   <script>
+    $(document).ready(function () {
+
+      $("#addRow").on('click', function () {
+
+        const TRNUM = getTRNUM();
+        const data = getInputs('satirEkle');
+        console.log(TRNUM);
+        // zorunlu alan kontrolü
+        if (!data.KOD_FILL || !data.TESLIM_KISI_FILL || !data.TAR_FILL) {
+            eksikAlanHataAlert2();
+            return;
+        }
+
+        let htmlCode = `
+            <tr>
+                <td>
+                    <input type="checkbox" style="width:20px;height:20px;">
+                </td>
+
+                <td style="display:none;">
+                    <input type="hidden" name="TRNUM[]" value="${TRNUM}">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="KODZ[]" value="${data.KOD_FILL}" readonly>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="ADZ[]" value="${data.AD_FILL}" readonly>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" readonly name="TESLIM_KISI[]" value="${data.TESLIM_KISI_FILL}">
+                </td>
+
+                <td>
+                    <input type="date" class="form-control" name="TAR[]" value="${data.TAR_FILL}">
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" name="ACIKLAMA[]" value="${data.ACIKLAMA_FILL}">
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-default delete-row">
+                        <i class="fa fa-minus" style="color:red"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+
+        $("#veriTable > tbody").append(htmlCode);
+        updateLastTRNUM(TRNUM_FILL);
+
+        emptyInputs('satirEkle');
+      });
+
+
+    });
 
     $(document).ready(function () {
 

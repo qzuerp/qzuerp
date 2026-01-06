@@ -712,7 +712,9 @@
       this.value = val;
     });
 
-
+    $(document).on('click', '.delete-row', function () {
+        $(this).closest('tr').remove();
+      });
   </script>
 
   <script>

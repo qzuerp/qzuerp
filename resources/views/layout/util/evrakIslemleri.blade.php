@@ -202,7 +202,7 @@
             id="kartKopyala"
             class="evrak-btn new-btn"
             title="Kopyasını Oluştur"
-            onclick="kartKopyala()"
+            onclick="kartKopyala(); if (typeof ozelInput === 'function') { ozelInput(); }"
             >
             <i class="fa-solid fa-copy"></i>
           </a>

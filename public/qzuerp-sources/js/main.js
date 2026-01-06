@@ -677,9 +677,6 @@ var title = $(this).text();
 });
 
 $(document).ready(function() {
-  $(document).on('click', '.delete-row', function () {
-    $(this).closest('tr').remove();
-  });
 // DataTable
 var table = $('#popupSelect').DataTable({
   "order": [[ 0, "desc" ]],
