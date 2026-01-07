@@ -418,7 +418,7 @@ class stok68_controller extends Controller
             if($JOBNO[$i] != null)
             {
               $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
-              if($R_YMAMULCODE->R_YMAMULKODU)
+              if(isset($R_YMAMULCODE->R_YMAMULKODU))
               {
                 $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
               }
