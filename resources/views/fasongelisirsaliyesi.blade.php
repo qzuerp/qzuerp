@@ -946,7 +946,8 @@
   </div>
 </div>
     </section>
-
+    @include('components/detayBtnLib')
+    <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
     <script>
       function fasonSuz()
       {
