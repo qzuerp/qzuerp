@@ -239,7 +239,7 @@
 																		<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" data-name="SIRANO" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
 																	</td>
 																	<td>
-																		<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_INPUTTYPE" data-name="BOMREC_INPUTTYPE" class="form-control txt-radius select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
+																		<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_INPUTTYPE" class="form-control txt-radius select2 js-example-basic-single" onchange="getKaynakCodeSelect()" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW">
 																			<option value=" ">Seç</option>
 																			<option value="H">H - Hammadde</option>
 																			<option value="I">I - Tezgah / İş Merk</option>

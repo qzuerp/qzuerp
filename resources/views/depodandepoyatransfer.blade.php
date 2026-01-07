@@ -237,6 +237,9 @@
                               <th>Yeni Lokasyon 3</th>
                               <th>Yeni Lokasyon 4</th>
                               <th>Not</th>
+                              <th>Teslim Alan Kişi</th>
+                              <th>Tezgah</th>
+                              <th style="min-width:120px;">Mps No</th>
                               <th>Varyant Text 1</th>
                               <th>Varyant Text 2</th>
                               <th>Varyant Text 3</th>
@@ -377,6 +380,51 @@
                                 <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" id="NOT1_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
+                                <select class="form-control select2 js-example-basic-single TESLIM_ALAN" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TESLIM_ALAN" id="TESLIM_ALAN_FILL">
+                                  <option value="" selected></option>
+                                  @php
+                                    $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+
+                                    foreach ($pers00_evraklar as $key => $veri) {
+
+                                      if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
+                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                      else {
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                    }
+                                  @endphp
+                                </select>
+                              </td>
+                              <td style="min-width: 150px">
+                                <select class="form-control select2 js-example-basic-single TEZGAH" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH" id="TEZGAH_FILL">
+                                  <option value="" selected></option>
+                                  @php
+                                    $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+                                    foreach ($imlt00_evraklar as $key => $veri) {
+                                      if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) 
+                                      {
+                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
+                                      }
+                                      else 
+                                      {
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";
+                                      }
+                                    }
+                                  @endphp
+                                </select>
+                              </td>
+                              <td class="d-flex ">
+                                <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
+                                <span class="d-flex -btn">
+                                  <button class="btn btn-radius btn-primary"  data-bs-toggle="modal"  data-bs-target="#modal_mpsSuz" type="button">
+                                    <span class="fa-solid fa-magnifying-glass">
+                                    </span>
+                                  </button>
+                                </span>
+                              </td>
+                              <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="text" name="TEXT1_FILL" id="TEXT1_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
@@ -407,6 +455,10 @@
 
                           <tbody>
                             @foreach ($t_kart_veri as $key => $veri)
+                                    
+                              @php
+                                $name = DB::table($database.'pers00')->where('KOD', $veri->TESLIM_ALAN)->value('AD');
+                              @endphp
                               <tr>
                                 <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
                                 <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
@@ -422,7 +474,7 @@
                                     </button>
                                   </span>
                                 </td>
-                                <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' readonly name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
+                                <td><input type="number" class="form-control SF_MIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id='miktar-{{ $veri->id }}-CAM' {{ $veri->SERINO == '' ? '' : 'readonly' }} name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
                                 <td><input type="text" class="form-control STOK_BIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_BRİM" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->STOK_BIRIM }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->STOK_BIRIM }}"></td>
                                 <td><input type="text" class="form-control AMBCODE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                 <td><input type="text LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="form-control" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1_SHOW_T" value="{{ $veri->LOCATION1 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
@@ -434,6 +486,9 @@
                                 <td><input type="text" class="form-control LOCATION_NEW3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW3" name="LOCATION_NEW3_SHOW_T" value="{{ $veri->LOCATION_NEW3 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW3[]" value="{{ $veri->LOCATION_NEW3 }}"></td>
                                 <td><input type="text" class="form-control LOCATION_NEW4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" name="LOCATION_NEW4_SHOW_T" value="{{ $veri->LOCATION_NEW4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION_NEW4[]" value="{{ $veri->LOCATION_NEW4 }}"></td>
                                 <td><input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1"  name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                                <td><input type="text" class="form-control" readonly name="TESLIM_ALAN[]" value="{{ $veri->TESLIM_ALAN }} - {{ $name }}"></td>
+                                <td><input type="text" class="form-control" readonly name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
+                                <td><input type="text" class="form-control" readonly name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
                                 <td><input type="text" class="form-control TEXT1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
                                 <td><input type="text" class="form-control TEXT2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
                                 <td><input type="text" class="form-control TEXT3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -939,7 +994,7 @@
               <div class="modal-content">
 
                 <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Stok Seç</h4>
                 </div>
                 <div class="modal-body">
                   <div class="row" style="overflow:auto;">
@@ -1068,7 +1123,11 @@
               var L2 = $cells.eq(17).text().trim();
               var L3 = $cells.eq(18).text().trim();
               var L4 = $cells.eq(19).text().trim();
-
+              console.log(SERINO);
+              if(SERINO == '')
+              {
+                $('#miktar-' + ID).attr('readonly', false);
+              }
               $('#serino-' + ID).val(SERINO);
               $('#Lot-' + ID).val(LOTNO);
               $('#depo-' + ID).val(DEPO);
@@ -1179,6 +1238,9 @@
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW3_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW3[]' value='"+satirEkleInputs.LOCATION_NEW3_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW4_SHOW_T' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW4[]' value='"+satirEkleInputs.LOCATION_NEW4_FILL+"'></td> ";
             htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TESLIM_ALAN[]' value='"+satirEkleInputs.TESLIM_ALAN_FILL+"' readonly></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TEZGAH[]' value='"+satirEkleInputs.TEZGAH_FILL+"' readonly></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='MPS_NO[]' value='"+satirEkleInputs.MPS_NO_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";

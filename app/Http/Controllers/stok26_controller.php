@@ -156,6 +156,9 @@ class stok26_controller extends Controller
     $LOCATION_NEW4 = $request->LOCATION_NEW4;
     $LAST_TRNUM = $request->LAST_TRNUM;
     $TARGETAMBCODE_E = $request->TARGETAMBCODE_E;
+    $TESLIM_ALAN = $request->TESLIM_ALAN;
+    $TEZGAH = $request->TEZGAH;
+    $MPS_NO = $request->MPS_NO;
 
     // dd($request->TRNUM);
     if ($KOD == null) {
@@ -387,6 +390,9 @@ class stok26_controller extends Controller
             'LOCATION2' => $LOCATION_NEW2[$i],
             'LOCATION3' => $LOCATION_NEW3[$i],
             'LOCATION4' => $LOCATION_NEW4[$i],
+            'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+            'TEZGAH' => $TEZGAH[$i],
+            'MPS_NO' => $MPS_NO[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -539,6 +545,9 @@ class stok26_controller extends Controller
               'LOCATION2' => $LOCATION_NEW2[$i],
               'LOCATION3' => $LOCATION_NEW3[$i],
               'LOCATION4' => $LOCATION_NEW4[$i],
+              'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+              'TEZGAH' => $TEZGAH[$i],
+              'MPS_NO' => $MPS_NO[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -689,9 +698,12 @@ class stok26_controller extends Controller
               'LOCATION2' => $LOCATION2[$i],
               'LOCATION3' => $LOCATION3[$i],
               'LOCATION4' => $LOCATION4[$i],
+              'TESLIM_ALAN' => $TESLIM_ALAN[$i],
+              'TEZGAH' => $TEZGAH[$i],
+              'MPS_NO' => $MPS_NO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
-            print_r("s5");
+            
             DB::table($firma . 'stok10a')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTIPI', 'STOK26T-C')->where('TRNUM', $TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
               'KOD' => $KOD[$i],
