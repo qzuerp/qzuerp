@@ -275,7 +275,7 @@ class stok21_controller extends Controller
                   ->where('LOCATION3',$LOCATION3[$i])
                   ->where('LOCATION4',$LOCATION4[$i])
                   ->where('EVRAKNO',$EVRAKNO)
-                  ->where('EVRAKTIPI','STOK20TI')
+                  ->where('EVRAKTIPI','STOK21T')
                   ->where('TRNUM',$TRNUM[$i])
                 ->sum('SF_MIKTAR');
           
@@ -461,7 +461,7 @@ class stok21_controller extends Controller
                     ->where('LOCATION3',$LOCATION3[$i])
                     ->where('LOCATION4',$LOCATION4[$i])
                     ->where('EVRAKNO',$EVRAKNO)
-                    ->where('EVRAKTIPI','STOK20TI')
+                    ->where('EVRAKTIPI','STOK21T')
                     ->where('TRNUM',$TRNUM[$i])
                   ->sum('SF_MIKTAR');
             
