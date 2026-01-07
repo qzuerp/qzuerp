@@ -171,6 +171,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('stok_hareketleri', [stok01_controller::class, 'index2'])->name('stok_hareketleri');
     Route::post('stok01_getStok01', [stok01_controller::class, 'getStok01']);
     Route::get('stok_harketleri', [main_controller::class, 'stok_harketleri'])->name('stok_harketleri');
+    Route::get('/stok-tv-data', [main_controller::class, 'stokTvData'])->name('stok_tv_data');
 
     // Stok20 - Üretim Fişi
     Route::get('uretim_fisi', [stok20_controller::class, 'index'])->name('uretim_fisi');

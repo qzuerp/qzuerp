@@ -2598,7 +2598,7 @@
           },
           yAxis: {
             min: 0,
-            max: 1000,
+            max: 150,
             tickInterval: 30,
             minorTickInterval: 10,
             tickWidth: 2,
@@ -2713,7 +2713,7 @@
           const offset = (Math.random() - 0.5) * 15 * animationRange;
           let newTarget = baseValue + offset;
           if (newTarget < 0) newTarget = 0;
-          if (newTarget > 1000) newTarget = 1000;
+          if (newTarget > 150) newTarget = 150;
           return newTarget;
         }
 

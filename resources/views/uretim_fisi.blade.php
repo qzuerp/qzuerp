@@ -493,7 +493,7 @@ if (isset($kart_veri)) {
                             ->orderBy('id', 'ASC')->get();
 
                             foreach ($evraklar as $key => $veri) {
-                              echo "<option value ='".$veri->EVRAKNO."|||".$veri->MAMULSTOKKODU."|||".$veri->MAMULSTOKADI."|||".$veri->BIRIM."'>".$veri->EVRAKNO."|||".$veri->MAMULSTOKKODU."|||".$veri->MAMULSTOKADI."</option>";
+                              echo "<option value ='".$veri->EVRAKNO."|||".$veri->MAMULSTOKKODU."|||".$veri->MAMULSTOKADI."|||".$veri->BIRIM."'>".$veri->EVRAKNO." - ".$veri->MAMULSTOKKODU." - ".$veri->MAMULSTOKADI."</option>";
                             }
                             @endphp
                           </select>

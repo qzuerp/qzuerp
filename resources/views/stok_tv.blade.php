@@ -1,27 +1,18 @@
 @extends('layout.mainlayout')
 
 @php
-
 if (Auth::check()) {
 	$user = Auth::user();
 }
 $kullanici_veri = DB::table('users')->where('id',$user->id)->first();
-$database = trim($kullanici_veri->firma).".dbo.";
 
 $ekran = "STOKTV";
 $ekranAdi = "Depo Mevcutları";
-$ekranLink ="stok_tv";
-
+$ekranLink = "stok_tv";
 
 $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
 $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
 $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
-
-$evrakno = null;
-
-$evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
-
-
 @endphp
 
 @section('content')
@@ -47,43 +38,56 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 	#overlay.show img {
 		transform: scale(1);
 	}
+	.refresh-icon.spinning {
+		animation: spin 1s linear infinite;
+	}
+	@keyframes spin {
+		100% { transform: rotate(360deg); }
+	}
+	.last-update {
+		display: inline-block;
+		padding: 5px 10px;
+		background: #f8f9fa;
+		border-radius: 5px;
+		font-size: 12px;
+		margin-top: 10px;
+	}
 </style>
 
 <div id="overlay"></div>
 
-
 <div class="content-wrapper" style="min-height: 822px;">
-
 	@include('layout.util.evrakContentHeader')
 
 	<section class="content">
 		<div class="row">
 			<div class="col">
 				<div class="box box-info">
-					<!-- <h5 class="box-title">Bordered Table</h5> -->
 					<div class="box-body">
-						<!-- <hr> -->
-						 <div class="row align-items-end">
+						<div class="row align-items-end">
 							<div class="col-md-12">
 								<label class="form-label fw-bold">İşlemler</label>
 								<div class="action-btn-group flex gap-2 flex-wrap">
-								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportTableToExcel('table')">
-									<i class="fas fa-file-excel"></i> Excel'e Aktar
-								</button>
-								<button type="button" class="action-btn btn btn-success" type="button" onclick="exportAllTableToExcel('table')">
-									<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
-								</button>
-								<button type="button" class="action-btn btn btn-danger" type="button" onclick="exportTableToWord('table')">
-									<i class="fas fa-file-word"></i> Word'e Aktar
-								</button>
-								<!-- <button type="button" class="action-btn btn btn-primary" type="button" onclick="printTable('table')">
-									<i class="fas fa-print"></i> Yazdır
-								</button> -->
+									<button type="button" class="action-btn btn btn-primary" onclick="refreshData()">
+										<i class="fas fa-sync refresh-icon"></i> Verileri Yenile
+									</button>
+									<button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('table')">
+										<i class="fas fa-file-excel"></i> Excel'e Aktar
+									</button>
+									<button type="button" class="action-btn btn btn-success" onclick="exportAllTableToExcel('table')">
+										<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
+									</button>
+									<button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('table')">
+										<i class="fas fa-file-word"></i> Word'e Aktar
+									</button>
+								</div>
+								<div class="last-update">
+									<i class="fas fa-clock"></i> Son Güncelleme: <span id="lastUpdate">Yükleniyor...</span>
 								</div>
 							</div>
 						</div>
-						<div class="row " style="overflow: auto">
 
+						<div class="row mt-3" style="overflow: auto">
 							<table id="table" class="table table-hover text-center" data-page-length="10">
 								<thead>
 									<tr class="bg-primary">
@@ -111,7 +115,6 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 										<th>#</th>
 									</tr>
 								</thead>
-
 								<tfoot>
 									<tr class="bg-info">
 										<th>Kod</th>
@@ -138,117 +141,25 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 										<th>#</th>
 									</tr>
 								</tfoot>
-
 								<tbody>
-									@php
-										$evraklar = DB::table($database.'stok10a as s10')
-											->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
-											->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
-											->selectRaw('
-												s10.KOD,
-												s10.STOK_ADI,
-												SUM(s10.SF_MIKTAR) AS MIKTAR,
-												s10.SF_SF_UNIT,
-												s10.LOTNUMBER,
-												s10.SERINO,
-												s10.AMBCODE,
-												g.AD AS DEPO_ADI,
-												s10.TEXT1,
-												s10.TEXT2,
-												s10.TEXT3,
-												s10.TEXT4,
-												s10.NUM1,
-												s10.NUM2,
-												s10.NUM3,
-												s10.NUM4,
-												s10.LOCATION1,
-												s10.LOCATION2,
-												s10.LOCATION3,
-												s10.LOCATION4,
-												s0.NAME2,
-												s0.id
-											')
-											->groupBy(
-												's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
-												's10.SERINO','s10.AMBCODE','g.AD',
-												's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
-												's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
-												's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
-												's0.NAME2','s0.id'
-											)
-											->get();
-
-
-										$kodlar = $evraklar->pluck('KOD')->toArray();
-
-										$gorseller = collect();
-										foreach (array_chunk($kodlar, 2000) as $chunk) {
-											$part = DB::table($database.'dosyalar00')
-												->whereIn('EVRAKNO', $chunk)
-												->where('EVRAKTYPE', 'STOK00')
-												->where('DOSYATURU', 'GORSEL')
-												->get();
-											$gorseller = $gorseller->merge($part);
-										}
-
-										$gorseller = $gorseller->keyBy('EVRAKNO');
-									@endphp
-
-
-										@foreach ($evraklar as $suzVeri)
-											@php
-												$img = $gorseller[$suzVeri->KOD] ?? null;
-												$imgSrc = $img ? asset('dosyalar/'.$img->DOSYA) : '';
-											@endphp
-											<tr>
-												<td><b>{{ $suzVeri->KOD }}</b></td>
-												<td><b>{{ $suzVeri->STOK_ADI }}</b></td>
-												<td><b>{{ $suzVeri->NAME2 }}</b></td>
-												<td style="color:blue"><b>{{ $suzVeri->MIKTAR }}</b></td>
-												<td><b>{{ $suzVeri->SF_SF_UNIT }}</b></td>
-												<td>{{ $suzVeri->LOTNUMBER }}</td>
-												<td>{{ $suzVeri->SERINO }}</td>
-												<td>{{ $suzVeri->AMBCODE }} - {{ $suzVeri->DEPO_ADI }}</td>
-												<td>{{ $suzVeri->TEXT1 }}</td>
-												<td>{{ $suzVeri->TEXT2 }}</td>
-												<td>{{ $suzVeri->TEXT3 }}</td>
-												<td>{{ $suzVeri->TEXT4 }}</td>
-												<td>{{ $suzVeri->NUM1 }}</td>
-												<td>{{ $suzVeri->NUM2 }}</td>
-												<td>{{ $suzVeri->NUM3 }}</td>
-												<td>{{ $suzVeri->NUM4 }}</td>
-												<td>{{ $suzVeri->LOCATION1 }}</td>
-												<td>{{ $suzVeri->LOCATION2 }}</td>
-												<td>{{ $suzVeri->LOCATION3 }}</td>
-												<td>{{ $suzVeri->LOCATION4 }}</td>
-												<td>
-													@if ($imgSrc)
-														<img id="kart_img" src="{{ $imgSrc }}" alt="" width="100">
-													@endif
-												</td>
-												<td>
-													<a class="btn btn-info" href="kart_stok?ID={{ $suzVeri->id }}" target="_blank">
-														<i class="fa fa-chevron-circle-right text-white"></i>
-													</a>
-												</td>
-											</tr>
-										@endforeach
-
+									<!-- DataTable otomatik dolduracak -->
 								</tbody>
 							</table>
-
-					 	</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 	<script>
+		let table;
+
+		// Görsel overlay için click handler
 		document.addEventListener('click', e => {
 			const overlay = document.getElementById('overlay');
-
-			if (e.target.tagName === 'IMG' && e.target.id === 'kart_img') {
+			if (e.target.tagName === 'IMG' && e.target.classList.contains('kart_img')) {
 				const clone = e.target.cloneNode(true);
 				overlay.innerHTML = '';
 				overlay.appendChild(clone);
@@ -260,117 +171,195 @@ $evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
 			}
 		});
 
+		// Verileri yenileme fonksiyonu
+		function refreshData() {
+			const icon = document.querySelector('.refresh-icon');
+			icon.classList.add('spinning');
+			
+			table.ajax.reload(function() {
+				icon.classList.remove('spinning');
+				updateLastRefreshTime();
+			}, false); // false = mevcut sayfada kal, filtreler korunsun
+		}
+
+		// Son güncelleme zamanını göster
+		function updateLastRefreshTime() {
+			const now = new Date();
+			const timeStr = now.toLocaleTimeString('tr-TR', { 
+				hour: '2-digit', 
+				minute: '2-digit', 
+				second: '2-digit' 
+			});
+			document.getElementById('lastUpdate').textContent = timeStr;
+		}
+
 		$(document).ready(function() {
+			// Footer'a arama inputları ekle
 			$('#table tfoot th').each(function () {
 				var title = $(this).text();
 				if (title == "#") {
-				$(this).html('<b>Git</b>');
+					$(this).html('<b>Git</b>');
+				} else {
+					$(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
 				}
-				else {
-				$(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-				}
-
 			});
 
-			var table = $('#table').DataTable({
-				"order": [[0, "desc"]],
-				dom: 'rtip',
-				buttons: ['copy', 'excel', 'print'],
-				deferRender: true,
-				language: {
-					url: '{{ asset("tr.json") }}'
+			// DataTable başlatma
+			table = $('#table').DataTable({
+				"ajax": {
+					"url": "{{ route('stok_tv_data') }}",
+					"dataSrc": "data",
+					"error": function(xhr, error, thrown) {
+						console.error('Veri yükleme hatası:', error);
+						alert('Veriler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+					}
 				},
-				initComplete: function () {
-					// Apply the search
-					this.api().columns().every(function () {
-					var that = this;
-
-					$('input', this.footer()).on('keyup change clear', function () {
-						if (that.search() !== this.value) {
-						that
-							.search(this.value)
-							.draw();
+				"columns": [
+					{ 
+						"data": "KOD", 
+						"render": function(data) { 
+							return '<b>' + (data || '') + '</b>'; 
+						} 
+					},
+					{ 
+						"data": "STOK_ADI", 
+						"render": function(data) { 
+							return '<b>' + (data || '') + '</b>'; 
+						} 
+					},
+					{ 
+						"data": "NAME2", 
+						"render": function(data) { 
+							return '<b>' + (data || '') + '</b>'; 
+						} 
+					},
+					{ 
+						"data": "MIKTAR", 
+						"render": function(data) { 
+							return '<b style="color:blue">' + (data || '0') + '</b>'; 
+						} 
+					},
+					{ 
+						"data": "SF_SF_UNIT", 
+						"render": function(data) { 
+							return '<b>' + (data || '') + '</b>'; 
+						} 
+					},
+					{ "data": "LOTNUMBER", "defaultContent": "" },
+					{ "data": "SERINO", "defaultContent": "" },
+					{ 
+						"data": null,
+						"render": function(data) { 
+							return (data.AMBCODE || '') + (data.DEPO_ADI ? ' - ' + data.DEPO_ADI : ''); 
 						}
-					});
+					},
+					{ "data": "TEXT1", "defaultContent": "" },
+					{ "data": "TEXT2", "defaultContent": "" },
+					{ "data": "TEXT3", "defaultContent": "" },
+					{ "data": "TEXT4", "defaultContent": "" },
+					{ "data": "NUM1", "defaultContent": "" },
+					{ "data": "NUM2", "defaultContent": "" },
+					{ "data": "NUM3", "defaultContent": "" },
+					{ "data": "NUM4", "defaultContent": "" },
+					{ "data": "LOCATION1", "defaultContent": "" },
+					{ "data": "LOCATION2", "defaultContent": "" },
+					{ "data": "LOCATION3", "defaultContent": "" },
+					{ "data": "LOCATION4", "defaultContent": "" },
+					{
+						"data": "imgSrc",
+						"orderable": false,
+						"render": function(data) {
+							return data ? '<img class="kart_img" src="' + data + '" alt="" width="100" style="cursor: pointer;">' : '';
+						}
+					},
+					{
+						"data": "id",
+						"orderable": false,
+						"render": function(data) {
+							return '<a class="btn btn-info" href="kart_stok?ID=' + data + '" target="_blank"><i class="fa fa-chevron-circle-right text-white"></i></a>';
+						}
+					}
+				],
+				"order": [[0, "desc"]],
+				"dom": 'rtip',
+				"deferRender": true,
+				"processing": true,
+				"language": {
+					url: '{{ asset("tr.json") }}',
+				},
+				"initComplete": function () {
+					updateLastRefreshTime();
+					
+					// Kolon bazlı arama
+					this.api().columns().every(function () {
+						var that = this;
+						$('input', this.footer()).on('keyup change clear', function () {
+							if (that.search() !== this.value) {
+								that.search(this.value).draw();
+							}
+						});
 					});
 				}
 			});
 
-		})
-	</script>
-    <script>
-      function exportTableToExcel(tableId)
-      {
-        let table = document.getElementById(tableId)
-        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-        XLSX.writeFile(wb, "tablo.xlsx");
-      }
+			// Otomatik yenileme (İsterseniz aktif edin - 60 saniyede bir)
+			// setInterval(refreshData, 60000);
+		});
 
-	function exportAllTableToExcel(tableId) {
-		let wasDataTable = $.fn.DataTable.isDataTable('#' + tableId);
-		let tableElement = document.getElementById(tableId);
-
-		if (wasDataTable) {
-			$('#' + tableId).DataTable().destroy();
+		// Excel'e aktar (görünür veriler)
+		function exportTableToExcel(tableId) {
+			let table = document.getElementById(tableId);
+			let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
+			XLSX.writeFile(wb, "Stok_Listesi_" + new Date().toLocaleDateString('tr-TR') + ".xlsx");
 		}
 
-		// Excel'e aktar
-		let wb = XLSX.utils.table_to_book(tableElement, { sheet: "Sayfa1" });
-		XLSX.writeFile(wb, "Stok Listesi.xlsx");
+		// Tüm verileri Excel'e aktar
+		function exportAllTableToExcel(tableId) {
+			let wasDataTable = $.fn.DataTable.isDataTable('#' + tableId);
+			let tableElement = document.getElementById(tableId);
 
-		if (wasDataTable) {
-			$('#' + tableId).DataTable({
-				paging: true,
-				info: true,
-				searching: false,
-				lengthChange: false,
-			});
+			if (wasDataTable) {
+				// Tüm verileri göster
+				table.page.len(-1).draw();
+				
+				setTimeout(function() {
+					let wb = XLSX.utils.table_to_book(tableElement, { sheet: "Sayfa1" });
+					XLSX.writeFile(wb, "Stok_Listesi_Tumu_" + new Date().toLocaleDateString('tr-TR') + ".xlsx");
+					
+					// Eski sayfa uzunluğuna dön
+					table.page.len(10).draw();
+				}, 500);
+			}
 		}
-	}
 
-      function exportTableToWord(tableId)
-      {
-        let table = document.getElementById(tableId).outerHTML;
-        let htmlContent = `<!DOCTYPE html>
-            <html>
-            <head><meta charset='UTF-8'></head>
-            <body>${table}</body>
-            </html>`;
+		// Word'e aktar
+		function exportTableToWord(tableId) {
+			let table = document.getElementById(tableId).outerHTML;
+			let htmlContent = `<!DOCTYPE html>
+				<html>
+				<head>
+					<meta charset='UTF-8'>
+					<style>
+						table { border-collapse: collapse; width: 100%; }
+						th, td { border: 1px solid black; padding: 8px; text-align: left; }
+						th { background-color: #4CAF50; color: white; }
+					</style>
+				</head>
+				<body>
+					<h2>Stok Listesi - ${new Date().toLocaleDateString('tr-TR')}</h2>
+					${table}
+				</body>
+				</html>`;
 
-        let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "tablo.doc";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-      }
-      function printTable(tableId)
-      {
-        let table = document.getElementById(tableId).outerHTML; // Tabloyu al
-        let newWindow = window.open("", "_blank"); // Yeni pencere aç
-        newWindow.document.write(`
-            <html>
-            <head>
-                <title>Tablo Yazdır</title>
-                <style>
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                </style>
-            </head>
-            <body>
-                ${table}
-                <script>
-                    window.onload = function() { window.print(); window.onafterprint = window.close; };
-                <\/script>
-            </body>
-            </html>
-        `);
-        newWindow.document.close();
-      }
+			let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+			let url = URL.createObjectURL(blob);
+			let link = document.createElement("a");
+			link.href = url;
+			link.download = "Stok_Listesi_" + new Date().toLocaleDateString('tr-TR') + ".doc";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}
 	</script>
 </div>
-
 @endsection

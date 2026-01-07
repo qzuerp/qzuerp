@@ -101,4 +101,100 @@ class main_controller extends Controller
     ->where('KOD', $request->KOD)
     ->value('id');
   }
+  // StokController.php içine ekleyin
+
+  public function stokTvData(Request $request)
+  {
+      $user = Auth::user();
+      $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+      $database = trim($kullanici_veri->firma).".dbo.";
+
+      $evraklar = DB::table($database.'stok10a as s10')
+          ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+          ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+          ->selectRaw('
+              s10.KOD,
+              s10.STOK_ADI,
+              SUM(s10.SF_MIKTAR) AS MIKTAR,
+              s10.SF_SF_UNIT,
+              s10.LOTNUMBER,
+              s10.SERINO,
+              s10.AMBCODE,
+              g.AD AS DEPO_ADI,
+              s10.TEXT1,
+              s10.TEXT2,
+              s10.TEXT3,
+              s10.TEXT4,
+              s10.NUM1,
+              s10.NUM2,
+              s10.NUM3,
+              s10.NUM4,
+              s10.LOCATION1,
+              s10.LOCATION2,
+              s10.LOCATION3,
+              s10.LOCATION4,
+              s0.NAME2,
+              s0.id
+          ')
+          ->groupBy(
+              's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
+              's10.SERINO','s10.AMBCODE','g.AD',
+              's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
+              's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
+              's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
+              's0.NAME2','s0.id'
+          )
+          ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
+          ->get();
+
+      // Görselleri toplu al
+      $kodlar = $evraklar->pluck('KOD')->toArray();
+      $gorseller = collect();
+      
+      foreach (array_chunk($kodlar, 2000) as $chunk) {
+          $part = DB::table($database.'dosyalar00')
+              ->whereIn('EVRAKNO', $chunk)
+              ->where('EVRAKTYPE', 'STOK00')
+              ->where('DOSYATURU', 'GORSEL')
+              ->get();
+          $gorseller = $gorseller->merge($part);
+      }
+      
+      $gorseller = $gorseller->keyBy('EVRAKNO');
+
+      // DataTable formatında hazırla
+      $data = [];
+      foreach ($evraklar as $item) {
+          $img = $gorseller[$item->KOD] ?? null;
+          $imgSrc = $img ? asset('dosyalar/'.$img->DOSYA) : '';
+          
+          $data[] = [
+              'KOD' => $item->KOD,
+              'STOK_ADI' => $item->STOK_ADI,
+              'NAME2' => $item->NAME2,
+              'MIKTAR' => $item->MIKTAR,
+              'SF_SF_UNIT' => $item->SF_SF_UNIT,
+              'LOTNUMBER' => $item->LOTNUMBER,
+              'SERINO' => $item->SERINO,
+              'AMBCODE' => $item->AMBCODE,
+              'DEPO_ADI' => $item->DEPO_ADI,
+              'TEXT1' => $item->TEXT1,
+              'TEXT2' => $item->TEXT2,
+              'TEXT3' => $item->TEXT3,
+              'TEXT4' => $item->TEXT4,
+              'NUM1' => $item->NUM1,
+              'NUM2' => $item->NUM2,
+              'NUM3' => $item->NUM3,
+              'NUM4' => $item->NUM4,
+              'LOCATION1' => $item->LOCATION1,
+              'LOCATION2' => $item->LOCATION2,
+              'LOCATION3' => $item->LOCATION3,
+              'LOCATION4' => $item->LOCATION4,
+              'imgSrc' => $imgSrc,
+              'id' => $item->id
+          ];
+      }
+
+      return response()->json(['data' => $data]);
+  }
 }
