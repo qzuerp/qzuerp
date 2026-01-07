@@ -208,7 +208,9 @@
                       <li class=""><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Grup Kodları</a></li>
                       <li class=""><a href="#zimmet" class="nav-link" data-bs-toggle="tab">Zimmet Listesi</a></li>
                       <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                      @if(in_array('PERSBAGLANTI',$kullanici_read_yetkileri))
                       <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+                      @endif
                     </ul>
                     <div class="tab-content">
                       <div class="active tab-pane" id="persbilgileri">

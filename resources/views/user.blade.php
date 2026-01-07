@@ -429,6 +429,18 @@
                                           echo " checked" @endphp></td>
                                     </tr>
                                     <tr>
+                                      <td>Operatör Kartı Baglantılı Dokümanlar</td>
+                                      <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
+                                          value="PERSBAGLANTI" @php if (in_array('PERSBAGLANTI', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="DYS_write" name="yetki_write[]"
+                                          value="PERSBAGLANTI" @php if (in_array('PERSBAGLANTI', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="DYS_delete" name="yetki_delete[]"
+                                          value="PERSBAGLANTI" @php if (in_array('PERSBAGLANTI', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
                                       <td>Stok Kartı</td>
                                       <td><input type="checkbox" class="yetki_read" id="stokkarti_read" name="yetki_read[]"
                                           value="STOKKART" @php if (in_array('STOKKART', $kullanici_read_yetkileri))
