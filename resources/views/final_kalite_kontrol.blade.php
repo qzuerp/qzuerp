@@ -594,8 +594,9 @@
 						url: '/final_kalite_kontrol_satir_detay',
 						type: 'POST',
 						data: {
+							_token: '{{ csrf_token() }}',
 							"TRNUM": TRNUM,
-							"EVRAKNO": {{ @$kart_veri->EVRAKNO }}
+							"EVRAKNO": '{{ @$kart_veri->EVRAKNO }}'
 						},
 						beforeSend: function() {
 							$('#detayTable').css('opacity', '0.3');
