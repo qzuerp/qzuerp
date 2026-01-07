@@ -52,6 +52,20 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 		font-size: 12px;
 		margin-top: 10px;
 	}
+	.auto-refresh-badge {
+		display: inline-block;
+		padding: 3px 8px;
+		background: #28a745;
+		color: white;
+		border-radius: 3px;
+		font-size: 11px;
+		margin-left: 10px;
+		animation: pulse 2s infinite;
+	}
+	@keyframes pulse {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.7; }
+	}
 </style>
 
 <div id="overlay"></div>
@@ -83,6 +97,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 								</div>
 								<div class="last-update">
 									<i class="fas fa-clock"></i> Son Güncelleme: <span id="lastUpdate">Yükleniyor...</span>
+									<!-- <span class="auto-refresh-badge"><i class="fas fa-sync-alt"></i> Otomatik Yenileme Aktif</span> -->
 								</div>
 							</div>
 						</div>
@@ -155,6 +170,8 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 	<script>
 		let table;
+		let searchDebounceTimer;
+		let autoRefreshInterval;
 
 		// Görsel overlay için click handler
 		document.addEventListener('click', e => {
@@ -171,13 +188,29 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			}
 		});
 
+		// Debounce fonksiyonu - arama için
+		function debounce(func, wait) {
+			return function executedFunction(...args) {
+				const later = () => {
+					clearTimeout(searchDebounceTimer);
+					func(...args);
+				};
+				clearTimeout(searchDebounceTimer);
+				searchDebounceTimer = setTimeout(later, wait);
+			};
+		}
+
 		// Verileri yenileme fonksiyonu
-		function refreshData() {
+		function refreshData(showAnimation = true) {
 			const icon = document.querySelector('.refresh-icon');
-			icon.classList.add('spinning');
+			if (showAnimation && icon) {
+				icon.classList.add('spinning');
+			}
 			
 			table.ajax.reload(function() {
-				icon.classList.remove('spinning');
+				if (icon) {
+					icon.classList.remove('spinning');
+				}
 				updateLastRefreshTime();
 			}, false); // false = mevcut sayfada kal, filtreler korunsun
 		}
@@ -191,6 +224,30 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 				second: '2-digit' 
 			});
 			document.getElementById('lastUpdate').textContent = timeStr;
+		}
+
+		// Otomatik yenileme başlat
+		function startAutoRefresh(intervalSeconds = 30) {
+			// Önce varsa eski interval'ı temizle
+			if (autoRefreshInterval) {
+				clearInterval(autoRefreshInterval);
+			}
+			
+			// Yeni interval başlat
+			autoRefreshInterval = setInterval(function() {
+				refreshData(false); // false = animasyon gösterme (sessiz yenileme)
+			}, intervalSeconds * 1000);
+			
+			console.log(`Otomatik yenileme başlatıldı: Her ${intervalSeconds} saniyede bir`);
+		}
+
+		// Otomatik yenilemeyi durdur
+		function stopAutoRefresh() {
+			if (autoRefreshInterval) {
+				clearInterval(autoRefreshInterval);
+				autoRefreshInterval = null;
+				console.log('Otomatik yenileme durduruldu');
+			}
 		}
 
 		$(document).ready(function() {
@@ -290,20 +347,35 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 				"initComplete": function () {
 					updateLastRefreshTime();
 					
-					// Kolon bazlı arama
+					// Kolon bazlı arama - DEBOUNCE İLE
 					this.api().columns().every(function () {
 						var that = this;
-						$('input', this.footer()).on('keyup change clear', function () {
-							if (that.search() !== this.value) {
-								that.search(this.value).draw();
+						
+						// Debounce'lu arama fonksiyonu
+						const debouncedSearch = debounce(function(value) {
+							if (that.search() !== value) {
+								that.search(value).draw();
+								// Arama sonrası verileri yenile (3 saniye sonra)
+								setTimeout(function() {
+									refreshData(false);
+								}, 3000);
 							}
+						}, 800); // 800ms bekle, sonra ara
+						
+						$('input', this.footer()).on('keyup change clear', function () {
+							debouncedSearch(this.value);
 						});
 					});
 				}
 			});
 
-			// Otomatik yenileme (İsterseniz aktif edin - 60 saniyede bir)
-			// setInterval(refreshData, 60000);
+			// Otomatik yenileme başlat - 30 saniyede bir
+			startAutoRefresh(30);
+			
+			// Sayfa kapatılırken interval'ı temizle
+			$(window).on('beforeunload', function() {
+				stopAutoRefresh();
+			});
 		});
 
 		// Excel'e aktar (görünür veriler)
