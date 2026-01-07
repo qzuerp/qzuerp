@@ -434,7 +434,7 @@ class stok68_controller extends Controller
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
               'TRNUM' => $TRNUM[$i],
-              'KOD' => $R_YMAMULCODE->R_YMAMULKODU,
+              'KOD' => $R_YMAMULCODE->R_YMAMULKODU ?? NULL,
               'STOK_ADI' => $AD->AD,
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
@@ -517,7 +517,9 @@ class stok68_controller extends Controller
             ]);
 
             $R_YMAMULCODE = DB::table($firma.'mmps10t')->where('JOBNO',$JOBNO[$i])->select('R_YMAMULKODU')->first();
-            $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+            if(isset($R_YMAMULCODE->R_YMAMULKODU)) {
+              $AD = DB::table($firma.'stok00')->where('KOD',$R_YMAMULCODE->R_YMAMULKODU)->select('AD')->first();
+            }
 
             $TOPLAM_MIK = DB::table($firma.'stok68t')->where('MPSNO',$JOBNO[$i])->sum('SF_MIKTAR');
 
@@ -528,7 +530,7 @@ class stok68_controller extends Controller
             // Mamul depoya giris
             DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
-              'KOD' => $R_YMAMULCODE->R_YMAMULKODU,
+              'KOD' => $R_YMAMULCODE->R_YMAMULKODU ?? NULL,
               'STOK_ADI' => $AD->AD,
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SF_MIKTAR' => $SF_MIKTAR[$i],
