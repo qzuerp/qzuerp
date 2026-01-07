@@ -213,9 +213,9 @@
 														<th><i class="fa-solid fa-plus"></i></th>
 														<th style="min-width: 150px;">Kod</th>
 														<th style="min-width: 150px;">Ölçüm No</th>
-														<th style="min-width: 120px;">Alan Türü</th>
+														<!-- <th style="min-width: 120px;">Alan Türü</th>
 														<th style="min-width: 120px;">Uzunluk</th>
-														<th style="min-width: 120px;">Alan Ondalık Sayısı</th>
+														<th style="min-width: 120px;">Alan Ondalık Sayısı</th> -->
 														<th style="min-width: 120px;">Ölçüm Sonucu</th>
 														<th style="min-width: 120px;">Ölçüm Sonucu (Tarih)</th>
 														<th style="min-width: 120px;">Minimum Değer</th>
@@ -252,9 +252,9 @@
 															</select>
 														</td>
 														<td><input type="number" class="form-control" id="OLCUM_NO_FILL"></td>
-														<td><input type="text" class="form-control" id="ALAN_TURU_FILL"></td>
+														<!-- <td><input type="text" class="form-control" id="ALAN_TURU_FILL"></td>
 														<td><input type="number" class="form-control" id="UZUNLUK_FILL"></td>
-														<td><input type="number" class="form-control" id="DESIMAL_FILL"></td>
+														<td><input type="number" class="form-control" id="DESIMAL_FILL"></td> -->
 														<td><input type="text" class="form-control" id="OLCUM_SONUC_FILL"></td>
 														<td><input type="date" class="form-control" id="OLCUM_SONUC_TARIH_FILL"></td>
 														<td><input type="number" class="form-control" id="MIN_DEGER_FILL"></td>
@@ -269,9 +269,8 @@
 														<td><input type="text" class="form-control" id="KRITERMIK_OPT_FILL"></td>
 														<td><input type="text" class="form-control" id="KRITERMIK_1_FILL"></td>
 														<td><input type="text" class="form-control" id="KRITERMIK_2_FILL"></td>
-														<td><input type="text" class="form-control" id="QVALCHZTYPE_FILL"></td>
 														<td>
-															<select name="QVALCHZCODE" class="form-control select2" id="">
+															<select name="QVALCHZCODE" class="form-control select2" id="QVALCHZCODE_FILL">
 																@php
 																	$kalibrasyon = DB::table($database.'SRVKC0')->get();
 																@endphp
@@ -280,8 +279,8 @@
 																@endforeach
 															</select>
 														</td>
+														<td><input type="text" class="form-control" id="CIHAZKODU_FILL"></td>
 														<td><input type="text" class="form-control" id="NOT_FILL"></td>
-
 														<td>
 														<select class="form-select" id="DURUM_FILL">
 															<option value="KABUL">KABUL</option>
@@ -307,9 +306,9 @@
 															</td>
 															<td><input type="text" class="form-control" name="KOD[]" value="{{ $veri->QS_VARCODE }}" readonly></td>
 															<td><input type="number" class="form-control" name="OLCUM_NO[]" value="{{ $veri->QS_VARINDEX }}"></td>
-															<td><input type="text" class="form-control" name="ALAN_TURU[]" value="{{ $veri->QS_VARTYPE }}"></td>
+															<!-- <td><input type="text" class="form-control" name="ALAN_TURU[]" value="{{ $veri->QS_VARTYPE }}"></td>
 															<td><input type="number" class="form-control" name="UZUNLUK[]" value="{{ $veri->QS_VARLEN }}"></td>
-															<td><input type="number" class="form-control" name="DESIMAL[]" value="{{ $veri->QS_VARSIG }}"></td>
+															<td><input type="number" class="form-control" name="DESIMAL[]" value="{{ $veri->QS_VARSIG }}"></td> -->
 															<td><input type="text" class="form-control" name="OLCUM_SONUC[]" value="{{ $veri->QS_VALUE }}"></td>
 															<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[]" value="{{ $veri->QS_TARIH }}"></td>
 															<td><input type="number" class="form-control" name="MIN_DEGER[]" value="{{ $veri->VERIFIKASYONNUM1 }}"></td>
@@ -328,6 +327,7 @@
 															<td><input type="text" class="form-control" name="KRITERMIK_1[]" value="{{ $veri->KRITERMIK_1 }}"></td>
 															<td><input type="text" class="form-control" name="KRITERMIK_2[]" value="{{ $veri->KRITERMIK_2 }}"></td>
 															<td><input type="text" class="form-control" name="QVALCHZTYPE[]" value="{{ $veri->QVALCHZTYPE }}"></td>
+															<td><input type="text" class="form-control" name="CIHAZKODU[]" value="{{ $veri->CIHAZKODU }}"></td>
 															<td><input type="text" class="form-control" name="NOT[]" value="{{ $veri->NOTES }}"></td>
 															<td><input type="text" class="form-control" name="DURUM[]" value="{{ $veri->DURUM }}" readonly></td>
 															<td><input type="date" class="form-control" name="ONAY_TARIH[]" value="{{ $veri->DURUM_ONAY_TARIHI }}"></td>
@@ -746,9 +746,9 @@
 								htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
 								htmlCode += `<td><input type="text" class="form-control" name="KOD[]" value="${veri.VARCODE ?? ''}" readonly></td>`;
 								htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[]" value="${veri.VARINDEX ?? ''}"></td>`;
-								htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[]" value="${veri.VARTYPE ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[]" value="${veri.VARLEN ?? ''}"></td>`;
-								htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[]" value="${veri.VARSIG ?? ''}"></td>`;
+								// htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[]" value="${veri.VARTYPE ?? ''}"></td>`;
+								// htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[]" value="${veri.VARLEN ?? ''}"></td>`;
+								// htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[]" value="${veri.VARSIG ?? ''}"></td>`;
 								htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[]" value="${veri.VALUE ?? ''}"></td>`;
 								htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[]" value="${veri.TARIH ?? ''}"></td>`;
 								htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
@@ -770,6 +770,7 @@
 								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
 								htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
 								htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+								htmlCode += `<td><input type="text" class="form-control" name="CIHAZKODU[]" value=""></td>`;
 								htmlCode += `<td><input type="text" class="form-control" name="NOT[]" value="${veri.NOTES ?? ''}"></td>`;
 
 								// DURUM select

@@ -201,6 +201,7 @@ class fkk_controller extends Controller
         $NOT = $request->NOT;
         $DURUM = $request->DURUM;
         $ONAY_TARIH = $request->ONAY_TARIH;
+        $CIHAZKODU = $request->CIHAZKODU;
 
 
         // Satır bilgileri array olarak
@@ -239,9 +240,9 @@ class fkk_controller extends Controller
                             'TRNUM' => $TRNUM[$i],
                             'QS_VARCODE'             => $KOD[$i],
                             'QS_VARINDEX'            => $OLCUM_NO[$i],
-                            'QS_VARTYPE'             => $ALAN_TURU[$i],
-                            'QS_VARLEN'              => $UZUNLUK[$i],
-                            'QS_VARSIG'              => $DESIMAL[$i],
+                            // 'QS_VARTYPE'             => $ALAN_TURU[$i],
+                            // 'QS_VARLEN'              => $UZUNLUK[$i],
+                            // 'QS_VARSIG'              => $DESIMAL[$i],
                             'QS_VALUE'               => $OLCUM_SONUC[$i],
                             'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                             'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
@@ -260,6 +261,7 @@ class fkk_controller extends Controller
                             'NOTES'                  => $NOT[$i],
                             'DURUM'                  => $DURUM[$i],
                             'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
+                            'CIHAZKODU'      => $CIHAZKODU[$i],
 
                         ]);
                     }
@@ -317,9 +319,9 @@ class fkk_controller extends Controller
                             'TRNUM' => $TRNUM[$i],
                             'QS_VARCODE'             => $KOD[$i],
                             'QS_VARINDEX'            => $OLCUM_NO[$i],
-                            'QS_VARTYPE'             => $ALAN_TURU[$i],
-                            'QS_VARLEN'              => $UZUNLUK[$i],
-                            'QS_VARSIG'              => $DESIMAL[$i],
+                            // 'QS_VARTYPE'             => $ALAN_TURU[$i],
+                            // 'QS_VARLEN'              => $UZUNLUK[$i],
+                            // 'QS_VARSIG'              => $DESIMAL[$i],
                             'QS_VALUE'               => $OLCUM_SONUC[$i],
                             'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                             'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
@@ -337,7 +339,8 @@ class fkk_controller extends Controller
                             'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
                             'NOTES'                  => $NOT[$i],
                             'DURUM'                  => $DURUM[$i],
-                            'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i]
+                            'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
+                            'CIHAZKODU'      => $CIHAZKODU[$i],
                         ]);
                     }
 
@@ -351,9 +354,9 @@ class fkk_controller extends Controller
                                 'TRNUM' => $TRNUM[$i],
                                 'QS_VARCODE'             => $KOD[$i],
                                 'QS_VARINDEX'            => $OLCUM_NO[$i],
-                                'QS_VARTYPE'             => $ALAN_TURU[$i],
-                                'QS_VARLEN'              => $UZUNLUK[$i],
-                                'QS_VARSIG'              => $DESIMAL[$i],
+                                // 'QS_VARTYPE'             => $ALAN_TURU[$i],
+                                // 'QS_VARLEN'              => $UZUNLUK[$i],
+                                // 'QS_VARSIG'              => $DESIMAL[$i],
                                 'QS_VALUE'               => $OLCUM_SONUC[$i],
                                 'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                                 'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
@@ -371,7 +374,8 @@ class fkk_controller extends Controller
                                 'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
                                 'NOTES'                  => $NOT[$i],
                                 'DURUM'                  => $DURUM[$i],
-                                'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i]
+                                'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
+                                'CIHAZKODU'      => $CIHAZKODU[$i],
                             ]);
                     }
                 }

@@ -16,7 +16,7 @@ class qval10_controller extends Controller
 
     public function islemler(Request $request)
     {
-        // dd($request->all());header
+        // dd($request->all());
         
         $kart_islemleri = $request->input('kart_islemleri');
         $firma = $request->input('firma').'.dbo.';
