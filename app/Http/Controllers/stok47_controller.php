@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PurchaseOrderEmail;
 
 class stok47_controller extends Controller
 {
@@ -197,11 +199,26 @@ class stok47_controller extends Controller
 
         }
 
-        print_r("Kayıt işlemi başarılı.");
-
         $sonID = DB::table($firma . 'stok47e')->max('id');
+        
+        FunctionHelpers::apply_mail_settings();
+        
+        if($CARIHESAPCODE == 'TAKIMHANE')
+        {
+          $mails = DB::table($firma.'pers00')->where('GK_10', 'TAKIMALM')->get();
+          $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
+          foreach ($mails as $mail) {
+              Mail::raw(
+                  "{$name} kişi {$EVRAKNO} numaralı satın alma talebini oluşturdu.",
+                  function ($message) use ($mail) {
+                      $message->to($mail->EMAIL)
+                              ->subject('Yeni Satın Alma Talebi');
+                  }
+              );
+          }
+        }
+        
         return redirect()->route('satinalmaTalepleri', ['ID' => $sonID, 'kayit' => 'ok']);
-
         break;
 
       case 'kart_duzenle':

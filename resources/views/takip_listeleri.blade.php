@@ -409,6 +409,9 @@
                                             <option value="SAPMA" {{ @$kart_veri->FORM == 'SAPMA' ? 'selected' : '' }}>
                                                 Sapma Teklifi Değerlendirme Formu
                                             </option>
+                                            <option value="TOPLANTI" {{ @$kart_veri->FORM == 'TOPLANTI' ? 'selected' : '' }}>
+                                                Toplantı Tutanağı
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -451,6 +454,7 @@
                                         @include('takip_formlari.IC', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.ICHATA', ['kart_veri' => @$kart_veri])
                                         @include('takip_formlari.SAPMA', ['kart_veri' => @$kart_veri])
+                                        @include('takip_formlari.TOPLANTI_TUTANAGI', ['kart_veri' => @$kart_veri])
                                     </div>
 
                                     <div class="tab-pane" id="liste">
