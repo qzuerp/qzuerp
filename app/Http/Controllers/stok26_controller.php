@@ -289,16 +289,6 @@ class stok26_controller extends Controller
 
           $kontrol = $s1 + (-1 * $s2);
 
-          // dd([
-          //   's1' => $s1,
-          //   's2' => $s2,
-          //   'Miktar' => $SF_MIKTAR[$i],
-          //   'Giren' => $GIREN_MIKTAR[$i],
-          //   'Çıktan' => $CIKAN_MIKTAR[$i],
-          //   'Kontrol' => $kontrol
-          // ]);
-
-
           if ($SF_MIKTAR[$i] > $kontrol) {
             return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
           }
@@ -506,16 +496,6 @@ class stok26_controller extends Controller
               ->sum('SF_MIKTAR');
 
             $kontrol = $s1 + (-1 * $s2);
-
-            // dd([
-            //   's1' => $s1,
-            //   's2' => $s2,
-            //   'Miktar' => $SF_MIKTAR[$i],
-            //   'Kontrol' => $kontrol,
-            //   'Depo' => $AMBCODE[$i],
-            //   'Depo_Sec' => $AMBCODE_SEC,
-            // ]);
-
 
             if ($SF_MIKTAR[$i] > $kontrol) {
               return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
