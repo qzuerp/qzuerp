@@ -835,10 +835,10 @@ class mmps10_controller extends Controller
           'PLANLANAN_MIKTAR' => $PLANLANAN_MIKTAR
       ]);
   }
-  public function mps_olustur(Request $request, &$mpsCount = 0, $KAYNAK_MPS = '', &$visited = [])
+  public function mps_olustur(Request $request,&$mpsCount = 0,$KAYNAK_MPS = '',&$visited = [])
   {
     if(Auth::check()) {
-        $u = Auth::user();
+      $u = Auth::user();
     }
 
     @$KOD = $request->KOD;
@@ -848,180 +848,181 @@ class mmps10_controller extends Controller
 
     $sonuclar = [];
 
+
     $MPS = DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->first();
 
-    for($i = 0; $i < count($KOD); $i++)
+    for($i = 0;$i < count($KOD);$i++)
     {
-        $key = $KOD[$i] . '_' . $i + $mpsCount;
+      $key = $KOD[$i] . '_' . $i + $mpsCount;
 
-        if(isset($visited[$key])) continue;
-        $visited[$key] = true;
+      if(isset($visited[$key])) continue;
+      $visited[$key] = true;
 
-        if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD[$i])->exists())
-        {
-            $tarihKodu = date('ymd');
-            // İlk çağrıda request'ten, sonraki çağrılarda KAYNAK_MPS'in ilk karakterinden al
-            $tipKodu = $request->MPSEVRAKTYPE ?? substr($KAYNAK_MPS, 0, 1);
+      if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD[$i])->exists())
+      {
+        $tarihKodu = date('ymd');
+        $sonEvrak = DB::table($firma.'mmps10e')
+            ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
+            ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
+            ->first();
+        $tipKodu = substr($EVRAKNO, 0, 1);
+        // dd($sonEvrak,$tipKodu);
 
-            $sonEvrak = DB::table($firma.'mmps10e')
-                ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
-                ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
-                ->first();
-
-            if ($sonEvrak && $sonEvrak->EVRAKNO) {
-                $parca = explode('-', $sonEvrak->EVRAKNO);
-                $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
-            } else {
-                $sayac = 1;
-            }
-
-            $NEXT_EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
-
-            DB::table($firma.'mmps10e')->insert([
-                'EVRAKNO' => $NEXT_EVRAKNO,
-                'MAMULSTOKKODU' => $KOD[$i],
-                'MAMULSTOKADI' => $AD[$i],
-                'HAVUZKODU' => $MPS->HAVUZKODU,
-                'STATUS' => $MPS->STATUS,
-                'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
-                'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
-                'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
-                'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
-                'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
-                'PROJEKODU' => $MPS->PROJEKODU,
-                'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
-                'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
-                'EGBS_TARIH' => $MPS->EGBS_TARIH,
-                'EGBT_TARIH' => $MPS->EGBT_TARIH,
-                'PLBS_TARIH' => $MPS->PLBS_TARIH,
-                'REBS_TARIH' => $MPS->REBS_TARIH,
-                'REBT_TARIH' => $MPS->REBT_TARIH,
-                'GK_1' => $MPS->GK_1,
-                'GK_2' => $MPS->GK_2,
-                'GK_3' => $MPS->GK_3,
-                'GK_4' => $MPS->GK_4,
-                'GK_5' => $MPS->GK_5,
-                'GK_6' => $MPS->GK_6,
-                'GK_7' => $MPS->GK_7,
-                'GK_8' => $MPS->GK_8,
-                'GK_9' => $MPS->GK_9,
-                'GK_10' => $MPS->GK_10,
-                'NOT_1' => $MPS->NOT_1,
-                'NOT_2' => $MPS->NOT_2,
-                'MUSTERIKODU' => $MPS->MUSTERIKODU,
-                'SIPNO' => $MPS->SIPNO,
-                'SIPARTNO' => $MPS->SIPARTNO,
-                'LAST_TRNUM' => $MPS->LAST_TRNUM,
-                'created_at' => now(),
-                'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI,
-                'ANAMPS' => $EVRAKNO,
-                'KAYNAK_MPS' => $KAYNAK_MPS
-            ]);
-
-            $mpsCount++;
-            
-            $sql_sorgu = "
-            SELECT
-                m10e.EVRAKNO,
-                B01T.*,
-                ISNULL(B01T.SIRANO, ' ') AS R_SIRANO,
-                ISNULL(IM01.AD, ' ') AS R_OPERASYON_IMLT01_AD,
-                CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END AS KAYNAK_AD,
-                CASE 
-                    WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN 'SAAT' 
-                    ELSE ISNULL(B01T.ACIKLAMA, S002.IUNIT) 
-                END AS KAYNAK_BIRIM,
-                TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0) AS R_MIKTAR0,
-                B01T.BOMREC_KAYNAK1 AS R_MIKTAR1,
-                B01T.BOMREC_KAYNAK2 AS R_MIKTAR2,
-                B01T.BOMREC_YMAMULPS * M10E.SF_PAKETSAYISI AS PAKETSAYISI,
-                B01T.BOMREC_YMAMULPM * M10E.SF_PAKETICERIGI AS PAKETICERIGI,
-                (TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0))
-                + ISNULL(TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0), 0) AS R_MIKTART,
-                TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0) AS TI_SF_MIKTAR,
-                S002.IUNIT AS TI_SF_SF_UNIT,
-                S00.AD AS MAMULSTOKADI
-            FROM ${firma}mmps10e m10e
-            LEFT JOIN ${firma}BOMU01E B01E1 ON B01E1.MAMULCODE = m10e.MAMULSTOKKODU
-            LEFT JOIN ${firma}BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
-            LEFT JOIN ${firma}STOK00 S00 ON S00.KOD = m10e.MAMULSTOKKODU
-            LEFT JOIN ${firma}STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
-            LEFT JOIN ${firma}imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
-            LEFT JOIN ${firma}imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
-            WHERE m10e.EVRAKNO = '${NEXT_EVRAKNO}'
-              AND B01T.EVRAKNO IS NOT NULL
-            ORDER BY B01T.SIRANO, B01T.BOMREC_INPUTTYPE ASC;";
-
-            $table = DB::select($sql_sorgu);
-            
-            for ($j=0; $j < count($table); $j++) { 
-                $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
-                $JOBNO = $NEXT_EVRAKNO.$TRNUM;
-
-                $row = $table[$j];
-
-                $miktar0 = $row->R_MIKTAR0 ?? 0;
-                $miktar1 = $row->R_MIKTAR1 ?? 0;
-                $miktar2 = $row->R_MIKTAR2 ?? 0;
-                $toplam = $miktar0 + $miktar1 + $miktar2;
-
-                DB::table($firma.'mmps10t')->insert([
-                    'EVRAKNO' => $NEXT_EVRAKNO,
-                    'TRNUM' => $TRNUM,
-                    'JOBNO' => $JOBNO,
-                    'R_SIRANO' => $row->R_SIRANO,
-                    'R_KAYNAKTYPE' => $row->BOMREC_INPUTTYPE,
-                    'R_KAYNAKKODU' => $row->BOMREC_KAYNAKCODE,
-                    'KAYNAK_AD' => $row->KAYNAK_AD,
-                    'R_OPERASYON' => $row->BOMREC_OPERASYON,
-                    'R_OPERASYON_IMLT01_AD' => $row->R_OPERASYON_IMLT01_AD,
-                    'R_MIKTAR0' => $miktar0,
-                    'R_MIKTAR1' => $miktar1,
-                    'R_MIKTAR2' => $miktar2,
-                    'R_MIKTART' => $toplam,
-                    'KAYNAK_BIRIM' => $row->KAYNAK_BIRIM,
-                    'R_YMK_YMPAKET' => $MPS->SF_PAKETSAYISI,
-                    'R_YMK_YMPAKETICERIGI' => $MPS->SF_PAKETICERIGI,
-                    'R_YMAMULMIKTAR' => $row->PAKETSAYISI * $row->PAKETICERIGI,
-                    'R_MANUEL_TMMIKTAR' => 0,
-                    'R_TMYMAMULMIKTAR' => 0,
-                    'R_BAKIYEYMAMULMIKTAR' => $MPS->SF_PAKETSAYISI * $MPS->SF_PAKETICERIGI,
-                    'KALIPKODU' => $row->KALIP_KODU1,
-                    'TEXT1' => $row->TEXT1,
-                    'TEXT2' => $row->TEXT2,
-                    'TEXT3' => $row->TEXT3,
-                    'TEXT4' => $row->TEXT4,
-                    'NUM1' => $row->NUM1,
-                    'NUM2' => $row->NUM2,
-                    'NUM3' => $row->NUM3,
-                    'NUM4' => $row->NUM4,
-                    'R_YMAMULKODU' => $row->BOMREC_YMAMULCODE,
-                    'created_at' => now(),
-                ]);
-            }
-
-            // Hammaddeler için recursive çağrı - DÜZELTİLDİ
-            $hammaddeler = DB::select('
-                SELECT B01E.EVRAKNO, B01T.* 
-                FROM ' . $firma . 'bomu01e AS B01E
-                LEFT JOIN ' . $firma . 'bomu01t AS B01T ON B01E.EVRAKNO = B01T.EVRAKNO
-                WHERE B01E.MAMULCODE = ?;
-            ', [$KOD[$i]]);
-
-            foreach ($hammaddeler as $hm) {
-                $this->mps_olustur(new Request([
-                    'KOD' => [$hm->BOMREC_KAYNAKCODE],
-                    'AD' => [$hm->BOMREC_KAYNAKCODE],
-                    'EVRAKNO' => $EVRAKNO
-                ]), $mpsCount, $NEXT_EVRAKNO, $visited);  // NEXT_EVRAKNO artık tip kodu içeriyor (U251105-001)
-            }
+        if ($sonEvrak && $sonEvrak->EVRAKNO) {
+            $parca = explode('-', $sonEvrak->EVRAKNO);
+            $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
+        } else {
+            $sayac = 1;
         }
+
+        $NEXT_EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
+
+        DB::table($firma.'mmps10e')->insert([
+            'EVRAKNO' => $NEXT_EVRAKNO,
+            'MAMULSTOKKODU' => $KOD[$i],
+            'MAMULSTOKADI' => $AD[$i],
+            'HAVUZKODU' => $MPS->HAVUZKODU,
+            'STATUS' => $MPS->STATUS,
+            'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
+            'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
+            'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
+            'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
+            'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
+            'PROJEKODU' => $MPS->PROJEKODU,
+            'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
+            'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
+            'EGBS_TARIH' => $MPS->EGBS_TARIH,
+            'EGBT_TARIH' => $MPS->EGBT_TARIH,
+            'PLBS_TARIH' => $MPS->PLBS_TARIH,
+            'REBS_TARIH' => $MPS->REBS_TARIH,
+            'REBT_TARIH' => $MPS->REBT_TARIH,
+            'GK_1' => $MPS->GK_1,
+            'GK_2' => $MPS->GK_2,
+            'GK_3' => $MPS->GK_3,
+            'GK_4' => $MPS->GK_4,
+            'GK_5' => $MPS->GK_5,
+            'GK_6' => $MPS->GK_6,
+            'GK_7' => $MPS->GK_7,
+            'GK_8' => $MPS->GK_8,
+            'GK_9' => $MPS->GK_9,
+            'GK_10' => $MPS->GK_10,
+            'NOT_1' => $MPS->NOT_1,
+            'NOT_2' => $MPS->NOT_2,
+            'MUSTERIKODU' => $MPS->MUSTERIKODU,
+            'SIPNO' => $MPS->SIPNO,
+            'SIPARTNO' => $MPS->SIPARTNO,
+            'LAST_TRNUM' => $MPS->LAST_TRNUM,
+            'created_at' => now(),
+            'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI,
+            'ANAMPS' => $EVRAKNO,
+            'KAYNAK_MPS' => $KAYNAK_MPS
+        ]);
+
+        $mpsCount++;
+        $sql_sorgu = "
+        SELECT
+            m10e.EVRAKNO,
+            B01T.*,
+            ISNULL(B01T.SIRANO, ' ') AS R_SIRANO,
+            ISNULL(IM01.AD, ' ') AS R_OPERASYON_IMLT01_AD,
+            CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END AS KAYNAK_AD,
+            CASE 
+                WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN 'SAAT' 
+                ELSE ISNULL(B01T.ACIKLAMA, S002.IUNIT) 
+            END AS KAYNAK_BIRIM,
+            TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0) AS R_MIKTAR0,
+            B01T.BOMREC_KAYNAK1 AS R_MIKTAR1,
+            B01T.BOMREC_KAYNAK2 AS R_MIKTAR2,
+            B01T.BOMREC_YMAMULPS * M10E.SF_PAKETSAYISI AS PAKETSAYISI,
+            B01T.BOMREC_YMAMULPM * M10E.SF_PAKETICERIGI AS PAKETICERIGI,
+            (TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0))
+            + ISNULL(TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0), 0) AS R_MIKTART,
+            TRY_CAST(M10E.SF_TOPLAMMIKTAR AS FLOAT) * TRY_CAST(B01T.BOMREC_KAYNAK0 AS FLOAT) / NULLIF(TRY_CAST(B01E1.MAMUL_MIKTAR AS FLOAT), 0) AS TI_SF_MIKTAR,
+            S002.IUNIT AS TI_SF_SF_UNIT,
+            S00.AD AS MAMULSTOKADI
+        FROM ${firma}mmps10e m10e
+        LEFT JOIN ${firma}BOMU01E B01E1 ON B01E1.MAMULCODE = m10e.MAMULSTOKKODU
+        LEFT JOIN ${firma}BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
+        LEFT JOIN ${firma}STOK00 S00 ON S00.KOD = m10e.MAMULSTOKKODU
+        LEFT JOIN ${firma}STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
+        LEFT JOIN ${firma}imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
+        LEFT JOIN ${firma}imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
+        WHERE m10e.EVRAKNO = '${NEXT_EVRAKNO}'
+          AND B01T.EVRAKNO IS NOT NULL
+        ORDER BY B01T.SIRANO, B01T.BOMREC_INPUTTYPE ASC;";
+
+        $table = DB::select($sql_sorgu);
+        
+        for ($j=0; $j < count($table); $j++) { 
+          $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
+          $JOBNO = $NEXT_EVRAKNO.$TRNUM;
+
+          $row = $table[$j];
+          $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
+          $JOBNO = $NEXT_EVRAKNO . $TRNUM;
+
+          $miktar0 = $row->R_MIKTAR0 ?? 0;
+          $miktar1 = $row->R_MIKTAR1 ?? 0;
+          $miktar2 = $row->R_MIKTAR2 ?? 0;
+          $toplam = $miktar0 + $miktar1 + $miktar2;
+
+          DB::table($firma.'mmps10t')->insert([
+            'EVRAKNO' => $NEXT_EVRAKNO,
+            'TRNUM' => $TRNUM,
+            'JOBNO' => $JOBNO,
+            'R_SIRANO' => $row->R_SIRANO,
+            'R_KAYNAKTYPE' => $row->BOMREC_INPUTTYPE,
+            'R_KAYNAKKODU' => $row->BOMREC_KAYNAKCODE,
+            'KAYNAK_AD' => $row->KAYNAK_AD,
+            'R_OPERASYON' => $row->BOMREC_OPERASYON,
+            'R_OPERASYON_IMLT01_AD' => $row->R_OPERASYON_IMLT01_AD,
+            'R_MIKTAR0' => $miktar0,
+            'R_MIKTAR1' => $miktar1,
+            'R_MIKTAR2' => $miktar2,
+            'R_MIKTART' => $toplam,
+            'KAYNAK_BIRIM' => $row->KAYNAK_BIRIM,
+            'R_YMK_YMPAKET' => $MPS->SF_PAKETSAYISI,
+            'R_YMK_YMPAKETICERIGI' => $MPS->SF_PAKETICERIGI,
+            'R_YMAMULMIKTAR' => $row->PAKETSAYISI * $row->PAKETICERIGI,
+            'R_MANUEL_TMMIKTAR' => 0,
+            'R_TMYMAMULMIKTAR' => 0,
+            'R_BAKIYEYMAMULMIKTAR' => $MPS->SF_PAKETSAYISI * $MPS->SF_PAKETICERIGI,
+            'KALIPKODU' => $row->KALIP_KODU1,
+            'TEXT1' => $row->TEXT1,
+            'TEXT2' => $row->TEXT2,
+            'TEXT3' => $row->TEXT3,
+            'TEXT4' => $row->TEXT4,
+            'NUM1' => $row->NUM1,
+            'NUM2' => $row->NUM2,
+            'NUM3' => $row->NUM3,
+            'NUM4' => $row->NUM4,
+            'R_YMAMULKODU' => $row->BOMREC_YMAMULCODE,
+            'created_at' => now(),
+          ]);
+        }
+      }
+
+      $hammaddeler = DB::select('
+          SELECT B01E.EVRAKNO, B01T.* 
+          FROM ' . $firma . 'bomu01e AS B01E
+          LEFT JOIN ' . $firma . 'bomu01t AS B01T ON B01E.EVRAKNO = B01T.EVRAKNO
+          WHERE B01E.MAMULCODE = ?;
+      ', [$KOD[$i]]);
+
+
+      foreach ($hammaddeler as $hm) {
+        $this->mps_olustur(new Request([
+            'KOD' => [$hm->BOMREC_KAYNAKCODE],
+            'AD' => [$hm->BOMREC_KAYNAKCODE],
+            'EVRAKNO' => $EVRAKNO,
+            'MPSEVRAKTYPE' => $tipKodu
+        ]),$mpsCount,$tipKodu.$sonEvrak->EVRAKNO,$visited);
+      }
     }
-    
     return $sonuclar[] = [
-        'status' => 'ok',
-        'count' => $mpsCount,
-    ];
+          'status' => 'ok',
+          'count' => $mpsCount,
+      ];;
   }
 
   public function mps_maliyeti_hesapla(Request $request)
