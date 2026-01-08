@@ -134,7 +134,8 @@ class main_controller extends Controller
               s10.LOCATION3,
               s10.LOCATION4,
               s0.NAME2,
-              s0.id
+              s0.id,
+              s0.REVNO
           ')
           ->groupBy(
               's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
@@ -142,7 +143,7 @@ class main_controller extends Controller
               's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
               's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
               's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
-              's0.NAME2','s0.id'
+              's0.NAME2','s0.id','s0.REVNO'
           )
           ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
           ->get();

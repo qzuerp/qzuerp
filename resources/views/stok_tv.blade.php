@@ -109,6 +109,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th style="min-width: 150px">Kod</th>
 										<th style="min-width: 200px">Ad</th>
 										<th style="min-width: 200px">Ad 2</th>
+										<th style="min-width: 100px">Revizyon No</th>
 										<th style="min-width: 100px">Miktar</th>
 										<th style="min-width: 100px">Birim</th>
 										<th style="min-width: 100px">Lot</th>
@@ -135,6 +136,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th>Kod</th>
 										<th>Ad</th>
 										<th>Ad 2</th>
+										<th>Revizyon No</th>
 										<th>Miktar</th>
 										<th>Birim</th>
 										<th>Lot</th>
@@ -286,6 +288,12 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					},
 					{ 
 						"data": "NAME2", 
+						"render": function(data) { 
+							return '<b>' + (data || '') + '</b>'; 
+						} 
+					},
+					{ 
+						"data": "REVNO", 
 						"render": function(data) { 
 							return '<b>' + (data || '') + '</b>'; 
 						} 
