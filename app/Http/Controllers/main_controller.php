@@ -173,6 +173,7 @@ class main_controller extends Controller
               'KOD' => $item->KOD,
               'STOK_ADI' => $item->STOK_ADI,
               'NAME2' => $item->NAME2,
+              'REVNO' => $item->REVNO,
               'MIKTAR' => $item->MIKTAR,
               'SF_SF_UNIT' => $item->SF_SF_UNIT,
               'LOTNUMBER' => $item->LOTNUMBER,
