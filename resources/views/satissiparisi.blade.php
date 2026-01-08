@@ -896,6 +896,7 @@
                       <!-- <th>Depo</th> -->
                       <th>Tarih</th>
                       <th>Müşteri Sipariş No</th>
+                      <th>Açık/Kapalı</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -911,6 +912,7 @@
                       <!-- <th>Depo</th> -->
                       <th>Tarih</th>
                       <th>Müşteri Sipariş No</th>
+                      <th>Açık/Kapalı</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -930,6 +932,7 @@
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
                         echo "<td>".$suzVeri->CHSIPNO."</td>";
+                        echo "<td>".$suzVeri->AK."</td>";
 
 
                         echo "<td>"."<a class='btn btn-info' href='satissiparisi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";

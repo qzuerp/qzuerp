@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use PDF;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderEmail extends Mailable
 {
@@ -23,10 +25,17 @@ class PurchaseOrderEmail extends Mailable
 
     public function build()
     {
+        // PDF oluştur
+        $pdf = PDF::loadView('emails.purchase-order-email', ['data' => $this->data]);
+        
+
         return $this->subject($this->title)
             ->view('emails.purchase-order-email')
             ->with([
                 'data' => $this->data
+            ])
+            ->attachData($pdf->output(), 'satin_alma_siparis_'.$this->data['EVRAKNO'].'.pdf', [
+                'mime' => 'application/pdf',
             ]);
     }
 }
