@@ -1226,7 +1226,7 @@
             htmlCode += "</button>";
             htmlCode += "</span>";
             htmlCode += "</td>";
-          	htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR_SHOW_T' id='miktar-"+TRNUM_FILL+"' readonly value='"+satirEkleInputs.SF_MIKTAR_FILL+"' disabled><input type='hidden' class='form-control' id='miktar-"+TRNUM_FILL+"' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+          	htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' id='miktar-"+TRNUM_FILL+"' readonly value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";

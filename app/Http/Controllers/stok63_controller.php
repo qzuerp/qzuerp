@@ -202,14 +202,14 @@ class stok63_controller extends Controller
           ]);
 
           // Depodan cikis
-          DB::table('stok10a')->insert([
+
+          DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
-            'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => -1 * $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'LOCATION1' => $LOCATION1[$i],
@@ -227,12 +227,14 @@ class stok63_controller extends Controller
             'TARIH' => $TARIH,
             'EVRAKTIPI' => 'STOK63T-C',
             'STOK_MIKTAR' => -1 * $SF_MIKTAR[$i],
-            'AMBCODE' => $AMBCODE_SEC,
+            'AMBCODE' => $AMBCODE,
+            'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
           // Fason depoya giris
-          DB::table('stok10a')->insert([
+
+          DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],

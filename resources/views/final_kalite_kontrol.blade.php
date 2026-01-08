@@ -111,7 +111,7 @@
 											<select name="KRITERCODE_2" id="KRITERCODE_2" class="select2 form-select" style="width: 100%;">
 												<option value="">Seç</option>
 												@foreach ($operasyon_evraklar as $veri)
-													<option value="{{ $veri->KOD . '|||' . $veri->AD }}" {{ @$kart_veri->KRITERCODE_2 == $veri->KOD ? 'selected' : '' }}>
+													<option value="{{ $veri->KOD }}" {{ @$kart_veri->KRITERCODE_2 == $veri->KOD ? 'selected' : '' }}>
 														{{ $veri->KOD }}
 													</option>
 												@endforeach
@@ -124,7 +124,7 @@
 												<select name="KRITERCODE_3" id="KRITERCODE_3" class="select2 form-select" style="width: 100%;">
 													<option value="">Seç</option>
 													@foreach ($cari_evraklar as $veri)
-														<option value="{{ $veri->KOD . '|||' . $veri->AD }}" {{ @$kart_veri->dur == $veri->KOD ? 'selected' : '' }}>
+														<option value="{{ $veri->KOD }}" {{ @$kart_veri->KRITERCODE_3 == $veri->KOD ? 'selected' : '' }}>
 															{{ $veri->KOD }} - {{ $veri->AD }}
 														</option>
 													@endforeach
@@ -140,47 +140,65 @@
 
 								<div class="border rounded p-2 mb-4">
 									<h6 class="text-muted mb-3-sonra-sil">Ürün ve İşlem Bilgileri</h6>
-									<div class="row g-2">
-										<div class="col-md-4">
-											<label>Lot No</label>
-											<input type="number" name="LOT_NO" class="form-control" value="{{ @$kart_veri->LOTNUMBER }}">
+									<div class="row g-3">
+										<div class="col-md-3">
+											<label class="form-label">Sipariş No</label>
+											<input type="text" name="order_no" class="form-control"
+												value="{{ $kart_veri->order_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Miktar Kriter Türü</label>
-											<select name="MIKTAR_KRITER_TURU " class="form-select select2">
-												<option disabled selected>Seçiniz</option>
-												<option>Adet</option>
-												<option>Kg</option>
-												<option>Metre</option>
-											</select>
+
+										<div class="col-md-3">
+											<label class="form-label">Rapor No</label>
+											<input type="text" name="report_no" class="form-control"
+												value="{{ $kart_veri->report_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Seri No</label>
-											<input type="text" name="SERI_NO" class="form-control" value="{{ @$kart_veri->SERINO }}">
+
+										<div class="col-md-3">
+											<label class="form-label">İş Emri No</label>
+											<input type="text" name="work_order_no" class="form-control"
+												value="{{ $kart_veri->work_order_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Varyant 1</label>
-											<input type="text" name="KONTEYNER" class="form-control" value="{{ @$kart_veri->KRITERMIK_1 }}">
+
+										<div class="col-md-3">
+											<label class="form-label">Tarih</label>
+											<input type="date" name="date" class="form-control"
+       											value="{{ $kart_veri->date ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>İş No</label>
-											<input type="text" name="IS_NO" class="form-control" value="{{ @$kart_veri->JOBNO }}">
+
+										<div class="col-md-6">
+											<label class="form-label">Teknik Resim No</label>
+											<input type="text" name="technical_drawing_no" class="form-control"
+												value="{{ $kart_veri->technical_drawing_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Uygulama Kodu</label>
-											<input type="text" name="UYGULAMA_KODU" class="form-control" value="{{ @$kart_veri->QVALOWNERAPP }}">
+
+										<div class="col-md-3">
+											<label class="form-label">Rev. No</label>
+											<input type="text" name="rev_no" class="form-control"
+       											value="{{ $kart_veri->rev_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Tablo Türü</label>
-											<input type="text" name="TABLO_TURU" class="form-control" value="{{ @$kart_veri->VTABLEINPUT }}">
+
+										<div class="col-md-3">
+											<label class="form-label">Parti / Fiş No</label>
+											<input type="text" name="batch_no" class="form-control"
+												value="{{ $kart_veri->batch_no ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>İşlem Miktarı</label>
-											<input type="text" name="ISLEM_MIKTARI" class="form-control" value="{{ @$kart_veri->SF_MIKTAR }}">
+
+										<div class="col-md-3">
+											<label class="form-label">Sevk Edilen Ürün Sayısı</label>
+											<input type="number" name="shipped_qty" class="form-control"
+       											value="{{ $kart_veri->shipped_qty ?? '' }}">
 										</div>
-										<div class="col-md-4">
-											<label>Boş Alan</label>
-											<input type="text" name="BOS_ALAN" class="form-control">
+
+										<div class="col-md-3">
+											<label class="form-label">Numune Ad.</label>
+											<input type="number" name="sample_qty" class="form-control"
+       											value="{{ $kart_veri->sample_qty ?? '' }}">
+										</div>
+
+										<div class="col-md-6">
+											<label class="form-label">Sipariş Adeti</label>
+											<input type="number" name="order_qty" class="form-control"
+       											value="{{ $kart_veri->order_qty ?? '' }}">
 										</div>
 									</div>
 								</div>

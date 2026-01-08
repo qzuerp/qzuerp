@@ -166,6 +166,8 @@ class fkk_controller extends Controller
         $EVRAKNO = $request->input('EVRAKNO');
         $STOK_KODU = explode('|||',$request->STOK_KOD)[0];
         $STOK_ADI = $request->KOD_STOK00_AD;
+        $KRITERCODE_2 = $request->KRITERCODE_2;
+        $KRITERCODE_3 = $request->KRITERCODE_3;
         $LOT_NO = $request->LOT_NO;
         $MIKTAR_KRITER_TURU = $request->MIKTAR_KRITER_TURU;
         $BOS_ALAN = $request->BOS_ALAN;
@@ -175,6 +177,17 @@ class fkk_controller extends Controller
         $UYGULAMA_KODU = $request->UYGULAMA_KODU;
         $TABLO_TURU = $request->TABLO_TURU;
         $ISLEM_MIKTARI = $request->ISLEM_MIKTARI;
+        $order_no             = $request->order_no;
+        $report_no            = $request->report_no;
+        $work_order_no        = $request->work_order_no;
+        $date                 = $request->date;
+        $technical_drawing_no = $request->technical_drawing_no;
+        $rev_no               = $request->rev_no;
+        $batch_no             = $request->batch_no;
+        $shipped_qty          = $request->shipped_qty;
+        $sample_qty           = $request->sample_qty;
+        $order_qty            = $request->order_qty;
+        
 
         // Satır bilgileri
 
@@ -217,6 +230,8 @@ class fkk_controller extends Controller
                 DB::table($firma.'FKKE')->insert([
                     'EVRAKNO' => $EVRAKNO,
                     'KOD' => $STOK_KODU,
+                    'KRITERCODE_2' => $KRITERCODE_2,
+                    'KRITERCODE_3' => $KRITERCODE_3,
                     'LOTNUMBER' => $LOT_NO,
                     'SERINO' => $SERI_NO,
                     'JOBNO' => $JOBNO,
@@ -225,7 +240,17 @@ class fkk_controller extends Controller
                     'VTABLEINPUT' => $TABLO_TURU,
                     'KRITERMIK_OPT' => $MIKTAR_KRITER_TURU,
                     'SF_MIKTAR' => $ISLEM_MIKTARI,
-                    'LAST_TRNUM' => $request->LAST_TRNUM
+                    'LAST_TRNUM' => $request->LAST_TRNUM,
+                    'order_no'              => $request->order_no,
+                    'report_no'             => $request->report_no,
+                    'work_order_no'         => $request->work_order_no,
+                    'date'                  => $request->date,
+                    'technical_drawing_no'  => $request->technical_drawing_no,
+                    'rev_no'                => $request->rev_no,
+                    'batch_no'              => $request->batch_no,
+                    'shipped_qty'           => $request->shipped_qty,
+                    'sample_qty'            => $request->sample_qty,
+                    'order_qty'             => $request->order_qty,
                 ]);
 
                 $max_id = DB::table($firma.'FKKE')->max('EVRAKNO');
@@ -276,6 +301,8 @@ class fkk_controller extends Controller
                 DB::table($firma.'FKKE')->where('EVRAKNO', $EVRAKNO)->update([
                     'EVRAKNO' => $EVRAKNO,
                     'KOD' => $STOK_KODU,
+                    'KRITERCODE_2' => $KRITERCODE_2,
+                    'KRITERCODE_3' => $KRITERCODE_3,
                     'LOTNUMBER' => $LOT_NO,
                     'SERINO' => $SERI_NO,
                     'JOBNO' => $JOBNO,
@@ -284,7 +311,17 @@ class fkk_controller extends Controller
                     'VTABLEINPUT' => $TABLO_TURU,
                     'KRITERMIK_OPT' => $MIKTAR_KRITER_TURU,
                     'SF_MIKTAR' => $ISLEM_MIKTARI,
-                    'LAST_TRNUM' => $request->LAST_TRNUM
+                    'LAST_TRNUM' => $request->LAST_TRNUM,
+                    'order_no'              => $request->order_no,
+                    'report_no'             => $request->report_no,
+                    'work_order_no'         => $request->work_order_no,
+                    'date'                  => $request->date,
+                    'technical_drawing_no'  => $request->technical_drawing_no,
+                    'rev_no'                => $request->rev_no,
+                    'batch_no'              => $request->batch_no,
+                    'shipped_qty'           => $request->shipped_qty,
+                    'sample_qty'            => $request->sample_qty,
+                    'order_qty'             => $request->order_qty,
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır

@@ -730,7 +730,7 @@ class stok26_controller extends Controller
               'LOCATION4' => $LOCATION4[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
-            print_r("s6");
+            
             DB::table($firma . 'stok10a')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTIPI', 'STOK26T-G')->where('TRNUM', $TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
               'KOD' => $KOD[$i],
