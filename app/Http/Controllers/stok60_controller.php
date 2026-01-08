@@ -677,6 +677,7 @@ class stok60_controller extends Controller
         s.LOCATION1, s.LOCATION2, s.LOCATION3, s.LOCATION4
     ')
     ->where('s.KOD', $KOD)
+    ->havingRaw('SUM(s.SF_MIKTAR) <> 0')
     ->groupBy(
         's.KOD',
         's.STOK_ADI',

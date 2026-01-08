@@ -1123,7 +1123,7 @@
               var L2 = $cells.eq(17).text().trim();
               var L3 = $cells.eq(18).text().trim();
               var L4 = $cells.eq(19).text().trim();
-              console.log(SERINO);
+
               if(SERINO == '')
               {
                 $('#miktar-' + ID).attr('readonly', false);
@@ -1302,7 +1302,7 @@
                     <td>${row.SF_SF_UNIT || ''}</td>
                     <td>${row.LOTNUMBER || ''}</td>
                     <td>${row.SERINO || ''}</td>
-                    <td>${row.AMBCODE || ''}</td>
+                    <td>${row.AMBCODE || ''} - ${row.AD || ''}</td>
                     <td>${row.TEXT1 || ''}</td>
                     <td>${row.TEXT2 || ''}</td>
                     <td>${row.TEXT3 || ''}</td>

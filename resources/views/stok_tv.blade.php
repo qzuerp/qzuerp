@@ -85,13 +85,13 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 									<button type="button" class="action-btn btn btn-primary" onclick="refreshData()">
 										<i class="fas fa-sync refresh-icon"></i> Verileri Yenile
 									</button>
-									<button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('table')">
+									<button type="button" data-evrak-kontrol class="action-btn btn btn-success" onclick="exportTableToExcel('table')">
 										<i class="fas fa-file-excel"></i> Excel'e Aktar
 									</button>
 									<button type="button" class="action-btn btn btn-success" onclick="exportAllTableToExcel('table')">
 										<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
 									</button>
-									<button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('table')">
+									<button type="button" data-evrak-kontrol class="action-btn btn btn-danger" onclick="exportTableToWord('table')">
 										<i class="fas fa-file-word"></i> Word'e Aktar
 									</button>
 								</div>
@@ -388,29 +388,105 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
 		// Excel'e aktar (görünür veriler)
 		function exportTableToExcel(tableId) {
-			let table = document.getElementById(tableId);
-			let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-			XLSX.writeFile(wb, "Stok_Listesi_" + new Date().toLocaleDateString('tr-TR') + ".xlsx");
+			let dt = $('#'+tableId).DataTable();
+
+			let data = [];
+			data.push(["Kod","Ad","Ad 2","Rev","Miktar","Birim"]); // basit header
+
+			dt.rows({ search: 'applied' }).every(function () {
+				let d = this.data();
+				data.push([
+					d.KOD ?? '',
+					d.STOK_ADI ?? '',
+					d.NAME2 ?? '',
+					d.REVNO ?? '',
+					d.MIKTAR ?? '',
+					d.SF_SF_UNIT ?? ''
+				]);
+			});
+
+			let wb = XLSX.utils.book_new();
+			let ws = XLSX.utils.aoa_to_sheet(data);
+			XLSX.utils.book_append_sheet(wb, ws, "Stok");
+
+			// 🔥 kritik kısım
+			let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+			let blob = new Blob(
+				[wbout],
+				{ type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+			);
+
+			let link = document.createElement("a");
+			link.href = URL.createObjectURL(blob);
+			link.download = "Stok_Listesi.xlsx";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
 		}
+
+
 
 		// Tüm verileri Excel'e aktar
 		function exportAllTableToExcel(tableId) {
-			let wasDataTable = $.fn.DataTable.isDataTable('#' + tableId);
-			let tableElement = document.getElementById(tableId);
+			let dt = $('#'+tableId).DataTable();
 
-			if (wasDataTable) {
-				// Tüm verileri göster
-				table.page.len(-1).draw();
-				
-				setTimeout(function() {
-					let wb = XLSX.utils.table_to_book(tableElement, { sheet: "Sayfa1" });
-					XLSX.writeFile(wb, "Stok_Listesi_Tumu_" + new Date().toLocaleDateString('tr-TR') + ".xlsx");
-					
-					// Eski sayfa uzunluğuna dön
-					table.page.len(10).draw();
-				}, 500);
-			}
+			let data = [];
+
+			// Header
+			data.push([
+				"Kod","Ad","Ad 2","Rev","Miktar","Birim","Lot","Seri No","Depo",
+				"Text1","Text2","Text3","Text4",
+				"Num1","Num2","Num3","Num4",
+				"Lok1","Lok2","Lok3","Lok4"
+			]);
+
+			// 🔥 TÜM VERİLER (filtre vs umrumda değil)
+			dt.rows().every(function () {
+				let d = this.data();
+				data.push([
+					d.KOD ?? '',
+					d.STOK_ADI ?? '',
+					d.NAME2 ?? '',
+					d.REVNO ?? '',
+					d.MIKTAR ?? '',
+					d.SF_SF_UNIT ?? '',
+					d.LOTNUMBER ?? '',
+					d.SERINO ?? '',
+					(d.AMBCODE ?? '') + (d.DEPO_ADI ? ' - ' + d.DEPO_ADI : ''),
+					d.TEXT1 ?? '',
+					d.TEXT2 ?? '',
+					d.TEXT3 ?? '',
+					d.TEXT4 ?? '',
+					d.NUM1 ?? '',
+					d.NUM2 ?? '',
+					d.NUM3 ?? '',
+					d.NUM4 ?? '',
+					d.LOCATION1 ?? '',
+					d.LOCATION2 ?? '',
+					d.LOCATION3 ?? '',
+					d.LOCATION4 ?? ''
+				]);
+			});
+
+			let wb = XLSX.utils.book_new();
+			let ws = XLSX.utils.aoa_to_sheet(data);
+			XLSX.utils.book_append_sheet(wb, ws, "Stok");
+
+			// 🔥 kritik nokta (Excel’i Excel yapan yer)
+			let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+			let blob = new Blob(
+				[wbout],
+				{ type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+			);
+
+			let link = document.createElement("a");
+			link.href = URL.createObjectURL(blob);
+			link.download = "Stok_Listesi_Tumu_" + new Date().toLocaleDateString('tr-TR') + ".xlsx";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
 		}
+
 
 		// Word'e aktar
 		function exportTableToWord(tableId) {
