@@ -1,87 +1,88 @@
-<!-- ===== TOPLANTI BİLGİLERİ ===== -->
-<div class="row g-3 mb-3">
-  <div class="col-md-3">
-    <label>Tarih</label>
-    <input type="date" name="tarih" value="{{ @$kart_veri->tarih }}" class="form-control">
-  </div>
-  <div class="col-md-2">
-    <label>Başlangıç</label>
-    <input type="time" name="baslangic" value="{{ @$kart_veri->baslangic }}" class="form-control">
-  </div>
-  <div class="col-md-2">
-    <label>Bitiş</label>
-    <input type="time" name="bitis" value="{{ @$kart_veri->bitis }}" class="form-control">
-  </div>
-  <div class="col-md-5">
-    <label>Toplantı Yeri</label>
-    <input type="text" name="yer" value="{{ @$kart_veri->yer }}" class="form-control">
-  </div>
+<div class="form" style="display:none;" id="TOPLANTI">
+    <!-- ===== TOPLANTI BİLGİLERİ ===== -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <label>Tarih</label>
+            <input type="date" name="tarih" value="{{ @$kart_veri->tarih }}" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <label>Başlangıç</label>
+            <input type="time" name="baslangic" value="{{ @$kart_veri->baslangic }}" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <label>Bitiş</label>
+            <input type="time" name="bitis" value="{{ @$kart_veri->bitis }}" class="form-control">
+        </div>
+        <div class="col-md-5">
+            <label>Toplantı Yeri</label>
+            <input type="text" name="yer" value="{{ @$kart_veri->yer }}" class="form-control">
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label>Toplantı Konusu</label>
+            <input type="text" name="konu" value="{{ @$kart_veri->konu }}" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label>Toplantı Türü</label>
+            <select name="tur" class="form-select select2">
+                <option {{ @$kart_veri->tur == 'Firma İçi' ? 'selected' : '' }}>Firma İçi</option>
+                <option {{ @$kart_veri->tur == 'Müşteri' ? 'selected' : '' }}>Müşteri</option>
+                <option {{ @$kart_veri->tur == 'Tedarikçi' ? 'selected' : '' }}>Tedarikçi</option>
+                <option {{ @$kart_veri->tur == 'Diğer' ? 'selected' : '' }}>Diğer</option>
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ===== KARARLAR ===== -->
+    <h6>Toplantı Kararları</h6>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th style="width:50px">#</th>
+            <th>Karar</th>
+            <th>Sorumlu</th>
+            <th>Bitiş Tarihi</th>
+            <th style="width:60px"></th>
+            </tr>
+        </thead>
+        <tbody id="kararTable"></tbody>
+    </table>
+
+    <button type="button" id="addKarar" class="btn btn-primary mb-4">
+        + Karar Ekle
+    </button>
+
+    <hr>
+
+    <!-- ===== KATILIMCILAR ===== -->
+    <h6>Katılımcılar</h6>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th style="width:50px">#</th>
+            <th>Ad Soyad</th>
+            <th style="width:60px"></th>
+            </tr>
+        </thead>
+        <tbody id="katilimciTable"></tbody>
+    </table>
+
+    <button type="button" id="addKatilimci" class="btn btn-primary">
+        + Katılımcı Ekle
+    </button>
 </div>
-
-<div class="row g-3 mb-4">
-  <div class="col-md-6">
-    <label>Toplantı Konusu</label>
-    <input type="text" name="konu" value="{{ @$kart_veri->konu }}" class="form-control">
-  </div>
-  <div class="col-md-6">
-    <label>Toplantı Türü</label>
-    <select name="tur" class="form-select select2">
-      <option {{ @$kart_veri->tur == 'Firma İçi' ? 'selected' : '' }}>Firma İçi</option>
-      <option {{ @$kart_veri->tur == 'Müşteri' ? 'selected' : '' }}>Müşteri</option>
-      <option {{ @$kart_veri->tur == 'Tedarikçi' ? 'selected' : '' }}>Tedarikçi</option>
-      <option {{ @$kart_veri->tur == 'Diğer' ? 'selected' : '' }}>Diğer</option>
-    </select>
-  </div>
-</div>
-
-<hr>
-
-<!-- ===== KARARLAR ===== -->
-<h6>Toplantı Kararları</h6>
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th style="width:50px">#</th>
-      <th>Karar</th>
-      <th>Sorumlu</th>
-      <th>Bitiş Tarihi</th>
-      <th style="width:60px"></th>
-    </tr>
-  </thead>
-  <tbody id="kararTable"></tbody>
-</table>
-
-<button type="button" id="addKarar" class="btn btn-primary mb-4">
-  + Karar Ekle
-</button>
-
-<hr>
-
-<!-- ===== KATILIMCILAR ===== -->
-<h6>Katılımcılar</h6>
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th style="width:50px">#</th>
-      <th>Ad Soyad</th>
-      <th style="width:60px"></th>
-    </tr>
-  </thead>
-  <tbody id="katilimciTable"></tbody>
-</table>
-
-<button type="button" id="addKatilimci" class="btn btn-primary">
-  + Katılımcı Ekle
-</button>
-
 <!-- ===== VERİLERİ JS'E AKTAR ===== -->
 <script>
-const kararlar     = @json(json_decode(@$kart_veri->karar ?? '[]', true));
-const sorumlular   = @json(json_decode(@$kart_veri->sorumlu ?? '[]', true));
-const kararBitis   = @json(json_decode(@$kart_veri->karar_bitis ?? '[]', true));
-const katilimcilar = @json(json_decode(@$kart_veri->katilimci ?? '[]', true));
+    const kararlar     = @json(json_decode(@$kart_veri->karar ?? '[]', true));
+    const sorumlular   = @json(json_decode(@$kart_veri->sorumlu ?? '[]', true));
+    const kararBitis   = @json(json_decode(@$kart_veri->karar_bitis ?? '[]', true));
+    const katilimcilar = @json(json_decode(@$kart_veri->katilimci ?? '[]', true));
 </script>
 
 <!-- ===== JS ===== -->

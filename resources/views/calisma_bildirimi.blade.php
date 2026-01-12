@@ -2789,6 +2789,8 @@
       });
 
       $('#X_T_ISMERKEZI').on('change',function(){
+        if($(this).val() == null || $(this).val() == '')
+          return;
           $.get({
             url:'/surec_kontrolu',
             data:{KOD:this.value},
@@ -2808,7 +2810,7 @@
                 cancelButtonText: "İptal",
               }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.cancel) {
-                $('#X_T_ISMERKEZI').val('').trigger('change');
+                  $('#X_T_ISMERKEZI').val('').trigger('change');
                 }
               });
 
