@@ -7,11 +7,11 @@
         </div>
         <div class="col-md-2">
             <label>Başlangıç</label>
-            <input type="time" name="baslangic" value="{{ @$kart_veri->baslangic }}" class="form-control">
+            <input type="time" name="baslangic" value="{{ @$kart_veri->baslangic ? substr($kart_veri->baslangic, 0, 5) : '' }}" class="form-control">
         </div>
         <div class="col-md-2">
             <label>Bitiş</label>
-            <input type="time" name="bitis" value="{{ @$kart_veri->bitis }}" class="form-control">
+            <input type="time" name="bitis" value="{{ @$kart_veri->bitis ? substr($kart_veri->bitis, 0, 5) : '' }}" class="form-control">
         </div>
         <div class="col-md-5">
             <label>Toplantı Yeri</label>
