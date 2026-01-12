@@ -542,24 +542,19 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="chart-card-large w-100">
-                    <div class="chart-header">
-                        <h3>
-                            <i class="fa-solid fa-chart-line"></i>
-                            Satış / Satın Alma / Net Fark
-                        </h3>
+                @if(in_array("SSF", $kullanici_read_yetkileri))
+                    <div class="chart-card-large w-100">
+                        <div class="chart-header">
+                            <h3>
+                                <i class="fa-solid fa-chart-line"></i>
+                                Satış / Satın Alma / Net Fark
+                            </h3>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-siparis" style="height:360px"></div>
+                        </div>
                     </div>
-                    <div class="chart-body">
-                        <div id="hc-siparis" style="height:360px"></div>
-                        <!-- <div class="quick-actions">
-                            <a href="kart_kalibrasyon?SUZ=SUZ&firma={{ $database }}#liste" class="action-btn">
-                                <i class="fa-solid fa-arrow-right"></i> Detaylı Görüntüle
-                            </a>
-                        </div> -->
-                    </div>
-                </div>
-
+                @endif
             </div>
 
 

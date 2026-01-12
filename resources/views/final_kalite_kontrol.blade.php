@@ -55,7 +55,12 @@
 @endphp
 
 @section('content')
-
+	<style>
+		#yazdir
+		{
+			display:block !important;
+		}
+	</style>
 	<div class="content-wrapper" style="min-height: 822px;">
 
 		@include('layout.util.evrakContentHeader')

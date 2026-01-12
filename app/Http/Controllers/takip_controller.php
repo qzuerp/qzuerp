@@ -205,6 +205,20 @@ class takip_controller extends Controller
         $sapma_musteri_tem_onay = $request->sapma_musteri_tem_onay;
         $sapma_parca_no = $request->sapma_parca_no;
 
+
+        // TOPLANTI TUTANAĞI
+        $tarih     = $request->tarih;
+        $baslangic = $request->baslangic;
+        $bitis     = $request->bitis;
+        $yer       = $request->yer;
+        $konu      = $request->konu;
+        $tur       = $request->tur;
+        $karar = $request->karar;
+        $sorumlu = $request->sorumlu;
+        $karar_bitis = $request->karar_bitis;
+        $katilimci = $request->katilimci;
+        
+
         switch ($islem_turu) {
             case 'kart_olustur':
                 $SON_EVRAK = DB::table($firma . 'cgc70')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
@@ -412,6 +426,27 @@ class takip_controller extends Controller
                     'sapma_gm_onay' => $sapma_gm_onay,
                     'sapma_musteri_tem_onay' => $sapma_musteri_tem_onay,
                     'sapma_parca_no' => $sapma_parca_no,
+
+
+                    // TOPLANTI TUTNAĞI
+                    'tarih'             => $tarih,
+                    'baslangic'         => $baslangic,
+                    'bitis'             => $bitis,
+                    'yer'               => $yer,
+                    'konu'              => $konu,
+                    'tur'               => $tur,
+                    'karar'             => is_array($karar)
+                    ? json_encode($karar, JSON_UNESCAPED_UNICODE)
+                    : $karar,
+                    'sorumlu'             => is_array($sorumlu)
+                    ? json_encode($sorumlu, JSON_UNESCAPED_UNICODE)
+                    : $sorumlu,
+                    'karar_bitis'             => is_array($karar_bitis)
+                    ? json_encode($karar_bitis, JSON_UNESCAPED_UNICODE)
+                    : $karar_bitis,
+                    'katilimci'             => is_array($katilimci)
+                    ? json_encode($katilimci, JSON_UNESCAPED_UNICODE)
+                    : $katilimci
                 ];
 
 
@@ -617,6 +652,26 @@ class takip_controller extends Controller
                     'sapma_gm_onay'             => $sapma_gm_onay,
                     'sapma_musteri_tem_onay'    => $sapma_musteri_tem_onay,
                     'sapma_parca_no' => $sapma_parca_no,
+
+                    // TOPLANTI TUTNAĞI
+                    'tarih'             => $tarih,
+                    'baslangic'         => $baslangic,
+                    'bitis'             => $bitis,
+                    'yer'               => $yer,
+                    'konu'              => $konu,
+                    'tur'               => $tur,
+                    'karar'             => is_array($karar)
+                    ? json_encode($karar, JSON_UNESCAPED_UNICODE)
+                    : $karar,
+                    'sorumlu'             => is_array($sorumlu)
+                    ? json_encode($sorumlu, JSON_UNESCAPED_UNICODE)
+                    : $sorumlu,
+                    'karar_bitis'             => is_array($karar_bitis)
+                    ? json_encode($karar_bitis, JSON_UNESCAPED_UNICODE)
+                    : $karar_bitis,
+                    'katilimci'             => is_array($katilimci)
+                    ? json_encode($katilimci, JSON_UNESCAPED_UNICODE)
+                    : $katilimci
                 ];
 
                 DB::table($firma . 'cgc70')->where('ID', $EVRAKNO)->update($data);

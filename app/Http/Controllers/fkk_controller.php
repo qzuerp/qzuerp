@@ -434,7 +434,38 @@ class fkk_controller extends Controller
                 DB::table($firma.'FKKT')->where('EVRAKNO', $EVRAKNO)->delete();
                 $max_id = DB::table($firma.'FKKE')->max('EVRAKNO');
                 return redirect()->route('final_kalite_kontrol', ['ID' => $max_id, 'silme' => 'ok']);
-                break;
+            break;
+
+            case 'yazdir':
+                $data = [
+                    'KOD' => $STOK_KODU,
+                    'KRITERCODE_2' => $KRITERCODE_2,
+                    'KRITERCODE_3' => $KRITERCODE_3,
+                    'order_no'              => $request->order_no,
+                    'report_no'             => $request->report_no,
+                    'work_order_no'         => $request->work_order_no,
+                    'date'                  => $request->date,
+                    'technical_drawing_no'  => $request->technical_drawing_no,
+                    'rev_no'                => $request->rev_no,
+                    'batch_no'              => $request->batch_no,
+                    'shipped_qty'           => $request->shipped_qty,
+                    'sample_qty'            => $request->sample_qty,
+                    'order_qty'             => $request->order_qty,
+                    'EVRAKNO' => $EVRAKNO,
+                    'satirlar'              => [
+                        'TRNUM' => $TRNUM,
+                        'QS_VARCODE'             => $KOD,
+                        'QS_VARINDEX'            => $OLCUM_NO,
+                        'QS_VALUE'               => $OLCUM_SONUC,
+                        'QS_TARIH'               => $OLCUM_SONUC_TARIH,
+                        'VERIFIKASYONNUM1'       => $MIN_DEGER,
+                        'VERIFIKASYONNUM2'       => $MAX_DEGER,
+                        'CIHAZKODU'      => $CIHAZKODU,
+                    ]
+                 ];
+                 $data = json_decode(json_encode($data));
+                return view('yazdirilicak_formlar.FKK_FORMU', compact('data'));
+            break;
         }
     }
 

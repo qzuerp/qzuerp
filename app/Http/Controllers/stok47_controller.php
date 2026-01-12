@@ -202,7 +202,7 @@ class stok47_controller extends Controller
         $sonID = DB::table($firma . 'stok47e')->max('id');
         
         FunctionHelpers::apply_mail_settings();
-        
+
         if($CARIHESAPCODE == 'TAKIMHANE')
         {
           $mails = DB::table($firma.'pers00')->where('GK_10', 'TAKIMALM')->get();
@@ -432,6 +432,7 @@ class stok47_controller extends Controller
         $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
         
         for ($i = 0; $i < $satir_say2; $i++) {
+
           $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
           if (in_array($TI_TRNUM[$i], $newTRNUMS2)) { //Yeni eklenen satirlar
 
@@ -528,7 +529,30 @@ class stok47_controller extends Controller
           ]);
           $ONCEKI_CARI = $CARI_KOD[$i];
         }
+        FunctionHelpers::apply_mail_settings();
 
+        $data = [
+          'EVRAKNO' => $EVRAKNO,
+          'TARIH' => $TARIH,
+          'CARIHESAPCODE' => $CARIHESAPCODE,
+          'KOD' => $KOD,
+          'STOK_ADI' => $STOK_ADI,
+          'LOTNUMBER' => $LOTNUMBER,
+          'SERINO' => $SERINO,
+          'FIYAT' => $FIYAT,
+          'FIYAT_PB' => $FIYAT_PB, 
+          'SF_MIKTAR' => $SF_MIKTAR,
+          'SF_SF_UNIT' => $SF_SF_UNIT,
+          'TERMIN_TAR' => $TERMIN_TAR,
+        ];
+        $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
+        ->where('GK_3','SAT')
+        ->first();
+        if(isset($kontakt->SIRKET_EMAIL_1))
+        {
+          Mail::to($kontakt->SIRKET_EMAIL_1)
+            ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
+        }
         return redirect()->route('satinalmaTalepleri')->with('success', 'Siparişler oluşturuldu');
       case 'delete_order':
         DB::table($firma . 'stok46e')->where('TALEP_EVRAKNO', $EVRAKNO)->delete();

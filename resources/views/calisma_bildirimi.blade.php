@@ -1399,20 +1399,22 @@
                 <table id="popupSelect" class="table table-hover text-center table-responsive" data-page-length="10" style="font-size: 0.8em;">
                   <thead>
                     <tr class="bg-primary">
-                      <th>JOB No</th>
-                      <th>MPS No</th>
-                      <th>Operasyon Kodu</th>
-                      <th>Operasyon Adı</th>
-                      <th>Tezgah Kodu</th>
-                      <th>Tezgah Adı</th>
-                      <th>Mamul Kodu</th>
-                      <th>Mamul Adı</th>
-                      <th>Sipariş No</th>
+                      <th style="min-width:100px;">Sıra No</th>
+                      <th style="min-width:120px;">JOB No</th>
+                      <th style="min-width:120px;">MPS No</th>
+                      <th style="min-width:120px;">Operasyon Kodu</th>
+                      <th style="min-width:120px;">Operasyon Adı</th>
+                      <th style="min-width:120px;">Tezgah Kodu</th>
+                      <th style="min-width:120px;">Tezgah Adı</th>
+                      <th style="min-width:120px;">Mamul Kodu</th>
+                      <th style="min-width:120px;">Mamul Adı</th>
+                      <th style="min-width:120px;">Sipariş No</th>
 
                     </tr>
                   </thead>
                   <tfoot>
                     <tr class="bg-info">
+                      <th>Sıra No</th>
                       <th>JOB No</th>
                       <th>MPS No</th>
                       <th>Operasyon Kodu</th>
@@ -1440,6 +1442,7 @@
                       foreach ($mmps10t_evraklar as $key => $veri)
                       {
                         echo "<tr>";
+                        echo "<td>".trim($veri->R_SIRANO)."</td>";
                         echo "<td>".trim($veri->JOBNO)."</td>";
                         echo "<td>".trim($veri->EVRAKNO)."</td>";
                         echo "<td>".$veri->R_OPERASYON."</td>";

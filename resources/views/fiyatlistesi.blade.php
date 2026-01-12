@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+ 2 extends('layout.mainlayout')
 
 @php
 
