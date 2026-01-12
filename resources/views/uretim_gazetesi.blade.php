@@ -49,35 +49,58 @@ $mps_no        = isset($_GET['mps_no']) ? trim($_GET['mps_no']) : '';
 // LIKE için güvenli wildcard sarmalama
 $like = function($v) {
     if ($v === '') return $v;
-    // Basit kaçış: % ve _ karakterlerini kaçır
-    $v = str_replace(['%', '_'], ['[%]', '[_]'], $v);
+    // SQL Server için escape - önce [ karakterini escape et, sonra % ve _
+    $v = str_replace(['[', '%', '_'], ['[[]', '[%]', '[_]'], $v);
     return "%$v%";
 };
 
-$where = ['M10T.R_KAYNAKTYPE = ?'];
-$params = ['I'];
+// İlk SELECT (MMPS10T) için WHERE koşulları
+$where1 = ['M10T.R_KAYNAKTYPE = ?'];
+$params1 = ['I'];
 
 if ($sipno !== '') {
-    $where[] = 'M10E.SIPNO LIKE ?';
-    $params[] = $like($sipno);
+    $where1[] = 'M10E.SIPNO LIKE ?';
+    $params1[] = $like($sipno);
 }
 if ($musteri_kodu !== '') {
-    $where[] = 'M10E.MUSTERIKODU LIKE ?';
-    $params[] = $like($musteri_kodu);
+    $where1[] = 'M10E.MUSTERIKODU LIKE ?';
+    $params1[] = $like($musteri_kodu);
 }
 if ($mamul_kod !== '') {
-    $where[] = 'M10E.MAMULSTOKKODU LIKE ?';
-    $params[] = $like($mamul_kod);
+    $where1[] = 'M10E.MAMULSTOKKODU LIKE ?';
+    $params1[] = $like($mamul_kod);
 }
 if ($mps_no !== '') {
-    $where[] = 'M10T.EVRAKNO LIKE ?';
-    $params[] = $like($mps_no);
+    $where1[] = 'M10T.EVRAKNO LIKE ?';
+    $params1[] = $like($mps_no);
 }
 
-$whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . ' AND S40T.AK IS NULL';
+
+// İkinci SELECT (UNION ALL kısmı) için WHERE koşulları
+$where2 = ['S40.AK IS NULL'];
+$params2 = [];
+
+if ($sipno !== '') {
+    $where2[] = 'S40.EVRAKNO LIKE ?';
+    $params2[] = $like($sipno);
+}
+if ($musteri_kodu !== '') {
+    $where2[] = 'S40E2.CARIHESAPCODE LIKE ?';
+    $params2[] = $like($musteri_kodu);
+}
+if ($mamul_kod !== '') {
+    $where2[] = 'S40.KOD LIKE ?';
+    $params2[] = $like($mamul_kod);
+}
+// Not: mps_no ikinci sorguda NULL olduğu için filtre eklenmedi
+
+$whereSql2 = 'WHERE ' . implode(' AND ', $where2);
+
+// Tüm parametreleri birleştir
+$params = array_merge($params1, $params2);
 
 // 3) Sorgu
-// Not: TRY_CONVERT ile hatalı metin -> NULL; yüzdelerde NULLIF ile /0 önler.
 $sql = <<<SQL
 ;WITH agg_sure AS (
     SELECT 
@@ -98,7 +121,6 @@ agg_miktar AS (
     FROM sfdc31E AS E
     GROUP BY E.JOBNO, E.OPERASYON
 )
-(
 SELECT
     M10T.EVRAKNO AS mps_no,
     M10E.MAMULSTOKKODU AS mamul_kod,
@@ -126,19 +148,15 @@ LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
 LEFT JOIN agg_sure   AS A1  
   ON A1.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
-
 LEFT JOIN agg_miktar AS A2  
   ON A2.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
-    {$whereSql}
+{$whereSql1}
 
-    and M10T.R_KAYNAKTYPE = 'I'
-    AND   S40T.AK IS NULL
--- ORDER BY M10E.SIPNO, M10T.EVRAKNO ASC;
-Union All
+UNION ALL
 
 SELECT
-    null AS mps_no,
+    NULL AS mps_no,
     S40.KOD AS mamul_kod,
     S002.AD AS mamul_ad,
     S40E2.CARIHESAPCODE AS musteri_kod,
@@ -149,20 +167,19 @@ SELECT
     S40.URETILEN_MIKTARI AS uretilen_miktar,
     S40.SF_BAKIYE AS sip_bakiye,
     S40.TERMIN_TAR AS termin,
-    null as JOBNO,
-    null as R_OPERASYON,
-    '999' as R_SIRANO,
-    null AS plan_sure,
-    null AS plan_miktar,
-    null as gerceklenen_SURE,
-    null as gerceklesen_MIKTAR
+    NULL AS JOBNO,
+    NULL AS R_OPERASYON,
+    '999' AS R_SIRANO,
+    NULL AS plan_sure,
+    NULL AS plan_miktar,
+    NULL AS gerceklenen_SURE,
+    NULL AS gerceklesen_MIKTAR
 FROM STOK40T AS S40
 LEFT JOIN STOK40E  AS S40E2  ON S40E2.EVRAKNO = S40.EVRAKNO
 LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
 LEFT JOIN cari00   AS C002   ON C002.KOD = S40E2.CARIHESAPCODE
-Where 1=1
-And S40.AK is null
-)
+{$whereSql2}
+
 ORDER BY R_SIRANO ASC, termin ASC, mps_no DESC
 SQL;
 
@@ -181,7 +198,6 @@ $ops = array_keys($ops);
 sort($ops, SORT_NATURAL | SORT_FLAG_CASE);
 
 // 4.1) M10E.SIPARTNO tekil satır olacak şekilde gruplama
-
 $grouped = [];
 foreach ($rows as $r) {
     $key = $r['sip_art_no'];
@@ -221,11 +237,11 @@ foreach ($rows as $r) {
         }
     }
 }
-$groups = array_values($grouped);
-usort($groups, function($a,$b){
-    return [$a['sip_no'],$a['mps_no']] <=> [$b['sip_no'],$b['mps_no']];
-});
 
+$groups = array_values($grouped);
+usort($groups, function($a, $b) {
+    return [$a['sip_no'], $a['mps_no']] <=> [$b['sip_no'], $b['mps_no']];
+});
 // 5) HTML çıktı
 ?>
 <!doctype html>
