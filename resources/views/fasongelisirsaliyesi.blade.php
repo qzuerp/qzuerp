@@ -235,7 +235,8 @@
                     		<div class="active tab-pane" id="irsaliye">
                           <div class="my-2 d-flex gap-2">
                             <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;Fason Süz</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;
+                          </button>
                           </div>
 
                           <table class="table table-bordered text-center overflow-visible" id="veriTable" >
@@ -394,28 +395,34 @@
                                   <td><input type="text" class="form-control SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
                                   <td><input type="number" class="form-control PKTICIADET" name="PKTICIADET[]" value="{{ $veri->PKTICIADET }}"></td>
                                   <td><input type="text" class="form-control AMBLJ_TNM" name="AMBLJ_TNM[]" value="{{ $veri->AMBLJ_TNM }}"></td>
-                                  <td >
-                                    <input type="text" class="form-control LOTNUMBER"   id='Lot-{{ $veri->id }}' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" disabled>
-                                    <input type="hidden" class="form-control" id='Lot-{{ $veri->id }}' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
+                                  <td>
+                                    <input type="text" class="form-control LOTNUMBER"   id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" disabled>
+                                    <input type="hidden" class="form-control" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
                                   </td>                          
                                   <td class="d-flex ">
-                                    <input type="text" class="form-control SERINO"   id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}" disabled>
-                                    <input type="hidden" class="form-control" id='serino-{{ $veri->id }}' name="SERINO[]" value="{{ $veri->SERINO }}">
+                                    <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}" disabled>
+                                    <input type="hidden" class="form-control" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
+                                    <span class="d-flex -btn">
+                                      <button class="btn btn-radius btn-primary" onclick='veriCek("{{ $veri->KOD }}","{{ $veri->id }}-CAM")' data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4" type="button">
+                                        <span class="fa-solid fa-magnifying-glass">
+                                        </span>
+                                      </button>
+                                    </span>
                                   </td>
-                                  <td><input type="text" id='depo-{{ $veri->id }}' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
+                                  <td><input type="text" id='depo-{{ $veri->id }}-CAM' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}-CAM' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text" readonly class="form-control MPSNO" name="JOBNO[]" value="{{ @$veri->MPSNO }}"></td>
-                                  <td><input type="text" class="form-control LOCATION1" id="lok1-{{$veri->id}}" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
-                                  <td><input type="text" class="form-control LOCATION2" id="lok2-{{$veri->id}}" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" disabled><input id="lok2-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
-                                  <td><input type="text" class="form-control LOCATION3" id="lok3-{{$veri->id}}" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" disabled><input id="lok3-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
-                                  <td><input type="text" class="form-control LOCATION4" id="lok4-{{$veri->id}}" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}" disabled><input id="lok4-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
-                                  <td><input type="text" class="form-control TEXT1" id="text1-{{$veri->id}}" name="TEXT1[]" value="{{ $veri->TEXT1 }}" disabled><input id="text1-{{$veri->id}}" type="hidden" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-                                  <td><input type="text" class="form-control TEXT2" id="text2-{{$veri->id}}" name="TEXT2[]" value="{{ $veri->TEXT2 }}" disabled><input id="text2-{{$veri->id}}" type="hidden" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-                                  <td><input type="text" class="form-control TEXT3" id="text3-{{$veri->id}}" name="TEXT3[]" value="{{ $veri->TEXT3 }}" disabled><input id="text3-{{$veri->id}}" type="hidden" class="form-control" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-                                  <td><input type="text" class="form-control TEXT4" id="text4-{{$veri->id}}" name="TEXT4[]" value="{{ $veri->TEXT4 }}" disabled><input id="text4-{{$veri->id}}" type="hidden" class="form-control" name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-                                  <td><input type="number" class="form-control NUM1" id="num1-{{$veri->id}}" name="NUM1[]" value="{{ $veri->NUM1 }}" disabled><input id="num1-{{$veri->id}}" type="hidden" class="form-control" name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
-                                  <td><input type="number" class="form-control NUM2" id="num2-{{$veri->id}}" name="NUM2[]" value="{{ $veri->NUM2 }}" disabled><input id="num2-{{$veri->id}}" type="hidden" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-                                  <td><input type="number" class="form-control NUM3" id="num3-{{$veri->id}}" name="NUM3[]" value="{{ $veri->NUM3 }}" disabled><input id="num3-{{$veri->id}}" type="hidden" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-                                  <td><input type="number" class="form-control NUM4" id="num4-{{$veri->id}}" name="NUM4[]" value="{{ $veri->NUM4 }}" disabled><input id="num4-{{$veri->id}}" type="hidden" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                                  <td><input type="text" class="form-control LOCATION1" id="lok1-{{$veri->id}}-CAM" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}-CAM" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
+                                  <td><input type="text" class="form-control LOCATION2" id="lok2-{{$veri->id}}-CAM" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" disabled><input id="lok2-{{$veri->id}}-CAM" type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
+                                  <td><input type="text" class="form-control LOCATION3" id="lok3-{{$veri->id}}-CAM" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" disabled><input id="lok3-{{$veri->id}}-CAM" type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
+                                  <td><input type="text" class="form-control LOCATION4" id="lok4-{{$veri->id}}-CAM" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}" disabled><input id="lok4-{{$veri->id}}-CAM" type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"></td>
+                                  <td><input type="text" class="form-control TEXT1" id="text1-{{$veri->id}}-CAM" name="TEXT1[]" value="{{ $veri->TEXT1 }}" disabled><input id="text1-{{$veri->id}}-CAM" type="hidden" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
+                                  <td><input type="text" class="form-control TEXT2" id="text2-{{$veri->id}}-CAM" name="TEXT2[]" value="{{ $veri->TEXT2 }}" disabled><input id="text2-{{$veri->id}}-CAM" type="hidden" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
+                                  <td><input type="text" class="form-control TEXT3" id="text3-{{$veri->id}}-CAM" name="TEXT3[]" value="{{ $veri->TEXT3 }}" disabled><input id="text3-{{$veri->id}}-CAM" type="hidden" class="form-control" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
+                                  <td><input type="text" class="form-control TEXT4" id="text4-{{$veri->id}}-CAM" name="TEXT4[]" value="{{ $veri->TEXT4 }}" disabled><input id="text4-{{$veri->id}}-CAM" type="hidden" class="form-control" name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
+                                  <td><input type="number" class="form-control NUM1" id="num1-{{$veri->id}}-CAM" name="NUM1[]" value="{{ $veri->NUM1 }}" disabled><input id="num1-{{$veri->id}}-CAM" type="hidden" class="form-control" name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
+                                  <td><input type="number" class="form-control NUM2" id="num2-{{$veri->id}}-CAM" name="NUM2[]" value="{{ $veri->NUM2 }}" disabled><input id="num2-{{$veri->id}}-CAM" type="hidden" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
+                                  <td><input type="number" class="form-control NUM3" id="num3-{{$veri->id}}-CAM" name="NUM3[]" value="{{ $veri->NUM3 }}" disabled><input id="num3-{{$veri->id}}-CAM" type="hidden" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
+                                  <td><input type="number" class="form-control NUM4" id="num4-{{$veri->id}}-CAM" name="NUM4[]" value="{{ $veri->NUM4 }}" disabled><input id="num4-{{$veri->id}}-CAM" type="hidden" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
                                   <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow" onclick=""><i class="fa fa-minus" style="color: red"></i></button></td>
                                 </tr>
                               @endforeach
@@ -862,89 +869,166 @@
           </div>
         </div>
       </div>
+
       <div class="modal fade bd-example-modal-xl" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="modal_gkk"  >
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <form action="stok29_kalite_kontrolu" method="post">
-        @csrf
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check' style='color: blue'></i>&nbsp;&nbsp;Giriş Kalite Kontrol</h4>
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <form action="stok29_kalite_kontrolu" method="post">
+              @csrf
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check' style='color: blue'></i>&nbsp;&nbsp;Giriş Kalite Kontrol</h4>
+              </div>
+                <div class="modal-body">
+                <!-- İşlem Bilgileri -->
+                <div class="card mb-2 shadow-sm border-0">
+                  <div class="card-header bg-primary text-white py-1 px-2 d-flex align-items-center" style="font-size: 0.9em;">
+                    <strong>İşlem Bilgileri</strong>
+                  </div>
+                  <div class="card-body py-2 px-3" style="font-size: 0.8em;">
+                    <div class="d-flex flex-wrap gap-3 align-items-center">
+                    <div><strong>Kod:</strong> <span id="ISLEM_KODU" class="text-secondary"></span></div>
+                    <div><strong>Adı:</strong> <span id="ISLEM_ADI" class="text-secondary"></span></div>
+                    <div><strong>Lot:</strong> <span id="ISLEM_LOTU" class="text-secondary"></span></div>
+                    <div><strong>Seri:</strong> <span id="ISLEM_SERI" class="text-secondary"></span></div>
+                    <div><strong>Miktar:</strong> <span id="ISLEM_MIKTARI" class="text-secondary"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Tablo Alanı -->
+                <div class="d-flex gap-2">
+                  <div class="flex-grow-1" style="overflow-x: auto;">
+                  <table id="gkk_table" class="table table-sm table-hover align-middle text-center" style="font-size: 0.85em;">
+                    <thead class="table-light sticky-top">
+                    <tr>
+                      <th><i class="fa-solid fa-plus"></i></th>
+                      <th style="min-width: 150px;">Kod</th>
+                      <th style="min-width: 150px;">Ölçüm No</th>
+                      <th style="min-width: 120px;">Alan Türü</th>
+                      <th style="min-width: 120px;">Uzunluk</th>
+                      <th style="min-width: 220px;">Alan Ondalık Sayısı</th>
+                      <th style="min-width: 120px;">Ölçüm Sonucu</th>
+                      <th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
+                      <th style="min-width: 120px;">Minimum Değer</th>
+                      <th style="min-width: 220px;">Maksimum Değer</th>
+                      <th style="min-width: 120px;">Zorunlu Mu</th>
+                      <th style="min-width: 220px;">Test Ölçüm Birim</th>
+                      <th style="min-width: 250px;">Kalite Parametresi Grup Kodu</th>
+                      <th style="min-width: 220px;">Referans Değer Başlangıç</th>
+                      <th style="min-width: 220px;">Referans Değer Bitiş</th>
+                      <th style="min-width: 120px;">Tablo Türü</th>
+                      <th style="min-width: 250px;">Kalite Parametresi Giriş Türü</th>
+                      <th style="min-width: 200px;">Miktar Kriter Türü</th>
+                      <th style="min-width: 200px;">Miktar Kriter - 1</th>
+                      <th style="min-width: 200px;">Miktar Kriter - 2</th>
+                      <th style="min-width: 200px;">Ölçüm Cihaz Tipi</th>
+                      <th style="min-width: 100px;">Not</th>
+                      <th style="min-width: 100px;">Durum</th>
+                      <th style="min-width: 100px;">Onay Tarihi</th>
+                      <th>#</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                  </table>
+                  </div>
+
+                  <!-- Yukarı / Aşağı Tuşları -->
+                  <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm upButton" title="Önceki Kod">
+                      <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm downButton" title="Sonraki Kod">
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+                </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Kaydet</button>
+              </div>
+            </form>
+          </div>
         </div>
-          <div class="modal-body">
-          <!-- İşlem Bilgileri -->
-          <div class="card mb-2 shadow-sm border-0">
-            <div class="card-header bg-primary text-white py-1 px-2 d-flex align-items-center" style="font-size: 0.9em;">
-              <strong>İşlem Bilgileri</strong>
+      </div>
+
+      {{-- Seri no start --}}
+      <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
             </div>
-            <div class="card-body py-2 px-3" style="font-size: 0.8em;">
-              <div class="d-flex flex-wrap gap-3 align-items-center">
-              <div><strong>Kod:</strong> <span id="ISLEM_KODU" class="text-secondary"></span></div>
-              <div><strong>Adı:</strong> <span id="ISLEM_ADI" class="text-secondary"></span></div>
-              <div><strong>Lot:</strong> <span id="ISLEM_LOTU" class="text-secondary"></span></div>
-              <div><strong>Seri:</strong> <span id="ISLEM_SERI" class="text-secondary"></span></div>
-              <div><strong>Miktar:</strong> <span id="ISLEM_MIKTARI" class="text-secondary"></span></div>
+            <div class="modal-body">
+              <div class="row" style="overflow:auto;">
+                <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th>ID</th>
+                      <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                      <th>#</th>
+                    </tr>
+                  </thead>
+
+                  <!-- <tfoot>
+                    <tr class="bg-info">
+                      <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                      <th>#</th>
+                    </tr>
+                  </tfoot> -->
+
+                  <tbody>
+                    
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
-          <!-- Tablo Alanı -->
-          <div class="d-flex gap-2">
-            <div class="flex-grow-1" style="overflow-x: auto;">
-            <table id="gkk_table" class="table table-sm table-hover align-middle text-center" style="font-size: 0.85em;">
-              <thead class="table-light sticky-top">
-              <tr>
-                <th><i class="fa-solid fa-plus"></i></th>
-                <th style="min-width: 150px;">Kod</th>
-                <th style="min-width: 150px;">Ölçüm No</th>
-                <th style="min-width: 120px;">Alan Türü</th>
-                <th style="min-width: 120px;">Uzunluk</th>
-                <th style="min-width: 220px;">Alan Ondalık Sayısı</th>
-                <th style="min-width: 120px;">Ölçüm Sonucu</th>
-                <th style="min-width: 220px;">Ölçüm Sonucu (Tarih)</th>
-                <th style="min-width: 120px;">Minimum Değer</th>
-                <th style="min-width: 220px;">Maksimum Değer</th>
-                <th style="min-width: 120px;">Zorunlu Mu</th>
-                <th style="min-width: 220px;">Test Ölçüm Birim</th>
-                <th style="min-width: 250px;">Kalite Parametresi Grup Kodu</th>
-                <th style="min-width: 220px;">Referans Değer Başlangıç</th>
-                <th style="min-width: 220px;">Referans Değer Bitiş</th>
-                <th style="min-width: 120px;">Tablo Türü</th>
-                <th style="min-width: 250px;">Kalite Parametresi Giriş Türü</th>
-                <th style="min-width: 200px;">Miktar Kriter Türü</th>
-                <th style="min-width: 200px;">Miktar Kriter - 1</th>
-                <th style="min-width: 200px;">Miktar Kriter - 2</th>
-                <th style="min-width: 200px;">Ölçüm Cihaz Tipi</th>
-                <th style="min-width: 100px;">Not</th>
-                <th style="min-width: 100px;">Durum</th>
-                <th style="min-width: 100px;">Onay Tarihi</th>
-                <th>#</th>
-              </tr>
-              </thead>
-              <tbody>
-                
-              </tbody>
-            </table>
-            </div>
-
-            <!-- Yukarı / Aşağı Tuşları -->
-            <div class="d-flex flex-column align-items-center justify-content-center gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm upButton" title="Önceki Kod">
-                <i class="fa-solid fa-chevron-up"></i>
-              </button>
-              <button type="button" class="btn btn-outline-secondary btn-sm downButton" title="Sonraki Kod">
-                <i class="fa-solid fa-chevron-down"></i>
-              </button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
             </div>
           </div>
-          </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Kaydet</button>
         </div>
-      </form>
-    </div>
-  </div>
-</div>
+      </div>
+      {{-- Seri no finish --}}
     </section>
     @include('components/detayBtnLib')
     <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
@@ -1028,6 +1112,106 @@
           
           popupToDropdown(KOD + '|||' + AD + '|||' + IUNIT, 'STOK_KODU_SHOW', 'modal_popupSelectModal');
       });
+
+      
+      $('#seriNoSec tbody').on('click', 'tr', function () {
+        var $row = $(this);
+        var $cells = $row.find('td');
+
+        var ID = $cells.eq(0).text().trim();
+        var BIRIM = $cells.eq(4).text().trim();
+        var LOTNO = $cells.eq(5).text().trim();
+        var SERINO = $cells.eq(6).text().trim();
+        var DEPO = $cells.eq(7).text().trim();
+        var V1 = $cells.eq(8).text().trim();
+        var V2 = $cells.eq(9).text().trim();
+        var V3 = $cells.eq(10).text().trim();
+        var V4 = $cells.eq(11).text().trim();
+
+        var O1 = $cells.eq(12).text().trim();
+        var O2 = $cells.eq(13).text().trim();
+        var O3 = $cells.eq(14).text().trim();
+        var O4 = $cells.eq(15).text().trim();
+
+        var L1 = $cells.eq(16).text().trim();
+        var L2 = $cells.eq(17).text().trim();
+        var L3 = $cells.eq(18).text().trim();
+        var L4 = $cells.eq(19).text().trim();
+
+        $('#serino-' + ID).val(SERINO);
+        $('#Lot-' + ID).val(LOTNO);
+        $('#depo-' + ID).val(DEPO);
+        $('#birim-' + ID).val(BIRIM);
+
+        $('#num1-' + ID).val(V1);
+        $('#num2-' + ID).val(V2);
+        $('#num3-' + ID).val(V3);
+        $('#num4-' + ID).val(V4);
+        
+        $('#text1-' + ID).val(O1);
+        $('#text2-' + ID).val(O2);
+        $('#text3-' + ID).val(O3);
+        $('#text4-' + ID).val(O4);
+
+        $('#lok1-' + ID).val(L1);
+        $('#lok2-' + ID).val(L2);
+        $('#lok3-' + ID).val(L3);
+        $('#lok4-' + ID).val(L4);
+
+        $("#modal_popupSelectModal4").modal('hide');
+      });
+
+
+      function veriCek(kod,id) {
+        Swal.fire({
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        $.ajax({
+          url: '/mevcutVeriler',
+          type: 'get',
+          data: { KOD: kod },
+          success: function (res) {
+            let htmlCode = '';
+
+            res.forEach((row) => {
+              htmlCode += `
+                <tr>
+                  <td>${id || ''}</td>
+                  <td>${row.KOD || ''}</td>
+                  <td>${row.STOK_ADI || ''}</td>
+                  <td>${row.MIKTAR || ''}</td>
+                  <td>${row.SF_SF_UNIT || ''}</td>
+                  <td>${row.LOTNUMBER || ''}</td>
+                  <td>${row.SERINO || ''}</td>
+                  <td>${row.AMBCODE || ''} - ${row.AD || ''}</td>
+                  <td>${row.TEXT1 || ''}</td>
+                  <td>${row.TEXT2 || ''}</td>
+                  <td>${row.TEXT3 || ''}</td>
+                  <td>${row.TEXT4 || ''}</td>
+                  <td>${row.NUM1 || ''}</td>
+                  <td>${row.NUM2 || ''}</td>
+                  <td>${row.NUM3 || ''}</td>
+                  <td>${row.NUM4 || ''}</td>
+                  <td>${row.LOCATION1 || ''}</td>
+                  <td>${row.LOCATION2 || ''}</td>
+                  <td>${row.LOCATION3 || ''}</td>
+                  <td>${row.LOCATION4 || ''}</td>
+                </tr>`;
+            });
+
+            $("#seriNoSec > tbody").html(htmlCode);
+          },
+          error: function (error) {
+            console.log(error);
+          },complete: function () {
+              Swal.close();
+          }
+        });
+      }
 
     </script>
 
@@ -1438,6 +1622,7 @@
           htmlCode += " <tr> ";
           htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
           htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+          htmlCode += "<td><i class='fa-solid fa-check'></i></td>";
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
@@ -1446,7 +1631,14 @@
           htmlCode += " <td><input type='number' class='form-control' name='PKTICIADET[]' value='"+satirEkleInputs.PKTICIADET_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='AMBLJ_TNM[]' value='"+satirEkleInputs.AMBLJ_TNM_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"' disabled><input type='hidden' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
-          htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"' disabled><input type='hidden' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"'></td> ";
+          htmlCode += " <td class='d-flex '>" +
+          "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' readonly value='" +satirEkleInputs.SERINO_FILL + "' readonly>" +
+          "<span class='d-flex -btn'>" +
+          "<button class='btn btn-primary' onclick='veriCek(\"" + satirEkleInputs.STOK_KODU_FILL + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>" +
+          "<span class='fa-solid fa-magnifying-glass'></span>" +
+          "</button>" +
+          "</span>" +
+          "</td>";
           htmlCode += " <td><input type='text' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='JOBNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";

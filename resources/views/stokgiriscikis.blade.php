@@ -944,79 +944,79 @@
       </div>
 
       {{-- Seri no start --}}
-        <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+      <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
 
-              <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
-              </div>
-              <div class="modal-body">
-                <div class="row" style="overflow:auto;">
-                  <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
-                    <thead>
-                      <tr class="bg-primary">
-                        <th>ID</th>
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Lot</th>
-                        <th>Seri No</th>
-                        <th>Depo</th>
-                        <th>Varyant Text 1</th>
-                        <th>Varyant Text 2</th>
-                        <th>Varyant Text 3</th>
-                        <th>Varyant Text 4</th>
-                        <th>Ölçü 1</th>
-                        <th>Ölçü 2</th>
-                        <th>Ölçü 3</th>
-                        <th>Ölçü 4</th>
-                        <th>Lok 1</th>
-                        <th>Lok 2</th>
-                        <th>Lok 3</th>
-                        <th>Lok 4</th>
-                        <th>#</th>
-                      </tr>
-                    </thead>
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row" style="overflow:auto;">
+                <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
+                  <thead>
+                    <tr class="bg-primary">
+                      <th>ID</th>
+                      <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                      <th>#</th>
+                    </tr>
+                  </thead>
 
-                    <!-- <tfoot>
-                      <tr class="bg-info">
-                        <th>Kod</th>
-                        <th>Ad</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Lot</th>
-                        <th>Seri No</th>
-                        <th>Depo</th>
-                        <th>Varyant Text 1</th>
-                        <th>Varyant Text 2</th>
-                        <th>Varyant Text 3</th>
-                        <th>Varyant Text 4</th>
-                        <th>Ölçü 1</th>
-                        <th>Ölçü 2</th>
-                        <th>Ölçü 3</th>
-                        <th>Ölçü 4</th>
-                        <th>Lok 1</th>
-                        <th>Lok 2</th>
-                        <th>Lok 3</th>
-                        <th>Lok 4</th>
-                        <th>#</th>
-                      </tr>
-                    </tfoot> -->
+                  <!-- <tfoot>
+                    <tr class="bg-info">
+                      <th>Kod</th>
+                      <th>Ad</th>
+                      <th>Miktar</th>
+                      <th>Birim</th>
+                      <th>Lot</th>
+                      <th>Seri No</th>
+                      <th>Depo</th>
+                      <th>Varyant Text 1</th>
+                      <th>Varyant Text 2</th>
+                      <th>Varyant Text 3</th>
+                      <th>Varyant Text 4</th>
+                      <th>Ölçü 1</th>
+                      <th>Ölçü 2</th>
+                      <th>Ölçü 3</th>
+                      <th>Ölçü 4</th>
+                      <th>Lok 1</th>
+                      <th>Lok 2</th>
+                      <th>Lok 3</th>
+                      <th>Lok 4</th>
+                      <th>#</th>
+                    </tr>
+                  </tfoot> -->
 
-                    <tbody>
-                      
-                    </tbody>
-                  </table>
-                </div>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
-              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
             </div>
           </div>
         </div>
+      </div>
       {{-- Seri no finish --}}
     </section>
   </div>
@@ -1545,6 +1545,7 @@
       let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
       XLSX.writeFile(wb, "tablo.xlsx");
     }
+
     function exportTableToWord(tableId)
     {
       let table = document.getElementById(tableId).outerHTML;
@@ -1564,6 +1565,7 @@
       document.body.removeChild(link);
 
     }
+
     function printTable(tableId)
     {
       let table = document.getElementById(tableId).outerHTML; // Tabloyu al
@@ -1587,6 +1589,7 @@
       `);
       newWindow.document.close();
     }
+
     function veriCek(kod,id) {
       Swal.fire({
           text: 'Lütfen bekleyin',
