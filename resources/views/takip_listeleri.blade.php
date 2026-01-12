@@ -36,6 +36,7 @@
         'IC' => 'İyileştirme Çalışmaları',
         'ICHATA' => 'İç Hata Takip Formu',
         'SAPMA' => 'Sapma Teklifi Değerlendirme Formu',
+        'TOPLANTI' => 'Toplantı Tutanağı',
     ];
 @endphp
 
