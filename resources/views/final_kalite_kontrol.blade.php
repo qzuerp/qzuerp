@@ -483,6 +483,7 @@
 						<form id="detayForm">
 							<div class="row">
 								<div class="col-12" style="overflow:auto;">
+									<input type="hidden" name="OR_TRNUM" id="OR_TRNUM">
 									<table id="detayTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
 										<thead>
 											<tr class="bg-primary">
@@ -602,6 +603,7 @@
 							<i class="fa-solid fa-copy" style="color:blue;"></i>
 						</button>
 					`);
+					$('#OR_TRNUM').val(TRNUM);
 
 					// Profesyonel loader
 					Swal.fire({

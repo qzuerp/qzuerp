@@ -17,7 +17,10 @@ class fkk_controller extends Controller
         $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
 
-        return DB::table($firma.'FKKT')->leftJoin($firma.'FKKTI', 'FKKT.EVRAKNO', '=', 'FKKTI.EVRAKNO')->where('FKKT.TRNUM', $request->TRNUM)->get();
+        return DB::table($firma.'FKKTI')
+        ->where('OR_TRNUM', $request->TRNUM)
+        ->where('EVRAKNO', $request->EVRAKNO)
+        ->get();
     }
     public function finalkalitekontrolkaydet(Request $request)
     {
@@ -51,7 +54,7 @@ class fkk_controller extends Controller
         $DURUM = $request->DURUM;
         $ONAY_TARIH = $request->ONAY_TARIH;
         $ids = $request->ids;
-        $OR_TRNUM = isset($request->TRNUM) ? $request->TRNUM : [];
+        $OR_TRNUM = isset($request->OR_TRNUM) ? $request->OR_TRNUM : [];
         $TRNUM = isset($request->TRNUM_TI) ? $request->TRNUM_TI : [];
 
         // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -82,7 +85,7 @@ class fkk_controller extends Controller
                 // Yeni satır ekle
                 DB::table($firma.'FKKTI')->insert([
                     'EVRAKNO' => $EVRAKNO,
-                    'OR_TRNUM' => $OR_TRNUM[$i],
+                    'OR_TRNUM' => $OR_TRNUM,
                     'TRNUM' => $TRNUM[$i],
                     'QS_VARCODE'             => $KOD[$i],
                     'QS_VARINDEX'            => $OLCUM_NO[$i],
