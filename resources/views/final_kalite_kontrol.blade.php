@@ -557,7 +557,7 @@
 				$(this).closest('tr').remove();
 			});
 			function yeniTRNUM() {
-				let satirSayisi = $('#detayTable tbody tr').length + 1;
+				let satirSayisi = parseInt($('input[name="TRNUM_TI[]"]').last().val() || 0) + 1;
 				return satirSayisi.toString().padStart(6, '0');
 			}
 

@@ -1751,11 +1751,11 @@
               
               var $cells = $row.find('td');
               
-              var JOBNO = $cells.eq(0).text().trim();
-              var MPSNO = $cells.eq(1).text().trim();
-              var OPERASYON_KODU = $cells.eq(2).text().trim();
-              var IS_MERKEZI = $cells.eq(4).text().trim();
-              var STOK_KOD = $cells.eq(6).text().trim();
+              var JOBNO = $cells.eq(1).text().trim();
+              var MPSNO = $cells.eq(2).text().trim();
+              var OPERASYON_KODU = $cells.eq(3).text().trim();
+              var IS_MERKEZI = $cells.eq(5).text().trim();
+              var STOK_KOD = $cells.eq(7).text().trim();
               
               $('#MPSNO_SHOW').val(MPSNO);
               $('#JOBNO_SHOW').val(JOBNO);
