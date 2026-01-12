@@ -293,7 +293,7 @@ class fkk_controller extends Controller
                 }
 
                 $ID = DB::table($firma.'QVAL02E')->max('EVRAKNO');
-                return redirect()->route('giris_kalite_kontrol', ['ID' => $ID, 'kayit' => 'ok']);
+                return redirect()->route('final_kalite_kontrol', ['ID' => $ID, 'kayit' => 'ok']);
 
             case 'kart_duzenle':
                 FunctionHelpers::Logla('FKK',$EVRAKNO,'W');
