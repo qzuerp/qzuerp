@@ -370,8 +370,8 @@ class stok63_controller extends Controller
                 ->sum('SF_MIKTAR');
             
             $kontrol = $s1 + (-1 * $s2);
-            // dd($s1,$s2,$kontrol,$SF_MIKTAR[$i]);
-            if($SF_MIKTAR[$i] >= $kontrol)
+            // dd($s1,$s2,$kontrol,$AMBCODE_SEC);
+            if($SF_MIKTAR[$i] > $kontrol)
             {
               return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
             }
@@ -478,7 +478,7 @@ class stok63_controller extends Controller
                   ->where('KOD',$KOD[$i])
                   ->where('LOTNUMBER',$LOTNUMBER[$i])
                   ->where('SERINO',$SERINO[$i])
-                  ->where('AMBCODE',$AMBCODE_SEC)
+                  ->where('AMBCODE',$AMBCODE[$i])
                   ->where('NUM1',$NUM1[$i])
                   ->where('NUM2',$NUM2[$i])
                   ->where('NUM3',$NUM3[$i])
@@ -498,7 +498,7 @@ class stok63_controller extends Controller
                   ->where('KOD',$KOD[$i])
                   ->where('LOTNUMBER',$LOTNUMBER[$i])
                   ->where('SERINO',$SERINO[$i])
-                  ->where('AMBCODE',$AMBCODE_SEC)
+                  ->where('AMBCODE',$AMBCODE[$i])
                   ->where('NUM1',$NUM1[$i])
                   ->where('NUM2',$NUM2[$i])
                   ->where('NUM3',$NUM3[$i])
@@ -517,8 +517,7 @@ class stok63_controller extends Controller
               ->sum('SF_MIKTAR');
               
               $kontrol = $s1 + (-1 * $s2);
-              // dd($s1,$s2,$kontrol,$SF_MIKTAR[$i],$AMBCODE);
-              if($SF_MIKTAR[$i] >= $KAYITLI_SF_MIKTAR)
+              if($SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR)
               {
                   $SONUC = $SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR;
                   if($SONUC > $kontrol)
