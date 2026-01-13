@@ -722,7 +722,7 @@ if (isset($kart_veri)) {
                       <td style="display:none;"></td>
 
                       <td style="min-width: 150px;">
-                        <input maxlength="6" style="color: red" type="text" name="TI_KARSITRNUM" id="TI_KARSITRNUM" data-name="TI_KARSITRNUM" class="form-control">
+                        <input maxlength="6" style="color: red" type="text" name="TI_KARSITRNUM" id="TI_KARSITRNUM" readonly data-name="TI_KARSITRNUM" class="form-control">
                       </td>
 
                       <td style="min-width: 150px;">
@@ -1309,7 +1309,7 @@ if (isset($kart_veri)) {
       var htmlCode = " ";
       htmlCode += " <tr> ";
       htmlCode += detayBtnForJS(satirEkleInputs2.STOK_KODU_FILL);
-      htmlCode += " <td><input type='text' class='form-control' maxlength='6' name='TI_KARSITRNUM[]' value='"+satirEkleInputs2.TI_KARSITRNUM+"'></td> ";
+      htmlCode += " <td><input type='text' class='form-control' maxlength='6' readonly name='TI_KARSITRNUM[]' value='"+satirEkleInputs2.TI_KARSITRNUM+"'></td> ";
       htmlCode += " <td><input type='text' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"' disabled><input type='hidden' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"'></td> ";
       htmlCode += " <td><input type='text' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"' disabled><input type='hidden' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"'></td> ";
       htmlCode += " <td><input type='text' class='form-control' name='TI_KARSILOTNUMBER[]' value='"+satirEkleInputs2.TI_KARSILOTNUMBER+"' readonly></td> ";

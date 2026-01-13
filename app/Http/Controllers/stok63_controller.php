@@ -371,7 +371,7 @@ class stok63_controller extends Controller
             
             $kontrol = $s1 + (-1 * $s2);
             // dd($s1,$s2,$kontrol,$AMBCODE_SEC);
-            if($SF_MIKTAR[$i] > $kontrol)
+            if($SF_MIKTAR[$i] >= $kontrol)
             {
               return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
             }
