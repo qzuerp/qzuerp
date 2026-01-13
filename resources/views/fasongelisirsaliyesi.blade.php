@@ -711,7 +711,7 @@
 
                   @php
 
-                  $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok68t.EVRAKNO', '=', 'stok68e.EVRAKNO')->orderBy('stok68e.id', 'ASC')->get();
+                  $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok68t.EVRAKNO', '=', 'stok68e.EVRAKNO')->orderBy('stok68e.id', 'ASC')->get(['stok68t.EVRAKNO','stok68t.KOD','stok68t.LOTNUMBER','stok68t.SF_MIKTAR','stok68e.CARIHESAPCODE','stok68t.AMBCODE','stok68e.TARIH','stok68e.id']);
 
                   foreach ($evraklar as $key => $suzVeri) {
                       echo "<tr>";
@@ -725,7 +725,7 @@
                       echo "<td>".$suzVeri->TARIH."</td>";
 
 
-                      echo "<td>"."<a class='btn btn-info' href='sevkirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+                      echo "<td>"."<a class='btn btn-info' href='fasongelisirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
                       echo "</tr>";
 

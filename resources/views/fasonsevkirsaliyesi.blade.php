@@ -713,7 +713,7 @@ if (isset($kart_veri)) {
 
                     @php
 
-                    $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok63t.EVRAKNO', '=', 'stok63e.EVRAKNO')->orderBy('stok63e.id', 'ASC')->get();
+                    $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok63t.EVRAKNO', '=', 'stok63e.EVRAKNO')->orderBy('stok63e.id', 'ASC')->get(['stok63t.EVRAKNO','stok63t.KOD','stok63t.LOTNUMBER','stok63t.SF_MIKTAR','stok63e.CARIHESAPCODE','stok63t.AMBCODE','stok63e.TARIH','stok63e.id']);
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
@@ -727,7 +727,7 @@ if (isset($kart_veri)) {
                         echo "<td>".$suzVeri->TARIH."</td>";
 
 
-                        echo "<td>"."<a class='btn btn-info' href='sevkirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+                        echo "<td>"."<a class='btn btn-info' href='fasonsevkirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
                         echo "</tr>";
 

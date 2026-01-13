@@ -67,13 +67,8 @@
         }
 
         // Fason sevk verileri
-        $FASONSEVKLER = $kayitlar = DB::table($firma.'stok63t as cikis')
-    ->whereNotExists(function ($q) use ($firma) {
-        $q->select(DB::raw(1))
-          ->from($firma.'stok63e as giris')
-          ->whereColumn('giris.LOTNUMBER', 'cikis.LOTNUMBER');
-    })
-    ->get();
+        $FASONSEVKLER = $kayitlar = DB::table($database.'stok63t')
+            ->get();
 
         $fason_data = [
             'kritik' => 0,
