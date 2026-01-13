@@ -2751,42 +2751,11 @@
         return chart;
       }
 
-      
-      
       setTimeout(() => {
         $('#charts').removeClass('opacity-0');
         $('#charts').addClass('opacity-100');
       }, 1500);
 
-      // Satır ekleme
-      $('#addRow').on('click', function() {
-        var TRNUM_FILL = getTRNUM();
-
-        var satirEkleInputs = getInputs('satirEkle');
-
-        var htmlCode = " ";
-
-        htmlCode += " <tr> ";
-        htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-        htmlCode += " <td style='display: none;'><input type='text' class='form-control' name='TRNUM[]' value='"+TRNUM_FILL+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='GK_1[]' value='"+satirEkleInputs.GK_1+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU2[]' value='"+satirEkleInputs.HATA_SEBEBI+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU3[]' value='"+satirEkleInputs.KALIPKODU2+"' readonly></td> "
-        htmlCode += " </tr> ";
-
-        if (satirEkleInputs.HATA_SEBEBI==null || satirEkleInputs.HATA_SEBEBI=="" || satirEkleInputs.HATA_SEBEBI==" " || satirEkleInputs.KALIPKODU2==null || satirEkleInputs.KALIPKODU2=="" || satirEkleInputs.KALIPKODU2==" ") {
-            eksikAlanHataAlert2();
-          }
-
-          else {
-
-            $("#veriTable > tbody").append(htmlCode);
-            updateLastTRNUM(TRNUM_FILL);
-
-            emptyInputs('satirEkle');
-
-          }
-      });
 
       $('#X_T_ISMERKEZI').on('change',function(){
         if($(this).val() == null || $(this).val() == '')
@@ -2823,6 +2792,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+      // Satır ekleme
+      $('#addRow').on('click', function() {
+        var TRNUM_FILL = getTRNUM();
+
+        var satirEkleInputs = getInputs('satirEkle');
+
+        var htmlCode = " ";
+
+        htmlCode += " <tr> ";
+        htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+        htmlCode += " <td style='display: none;'><input type='text' class='form-control' name='TRNUM[]' value='"+TRNUM_FILL+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='GK_1[]' value='"+satirEkleInputs.GK_1+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU2[]' value='"+satirEkleInputs.HATA_SEBEBI+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU3[]' value='"+satirEkleInputs.KALIPKODU2+"' readonly></td> "
+        htmlCode += " </tr> ";
+
+        if (satirEkleInputs.HATA_SEBEBI==null || satirEkleInputs.HATA_SEBEBI=="" || satirEkleInputs.HATA_SEBEBI==" " || satirEkleInputs.KALIPKODU2==null || satirEkleInputs.KALIPKODU2=="" || satirEkleInputs.KALIPKODU2==" ") {
+          eksikAlanHataAlert2();
+        }
+        else {
+          $("#veriTable > tbody").append(htmlCode);
+          updateLastTRNUM(TRNUM_FILL);
+
+          emptyInputs('satirEkle');
+        }
+      });
       function ozelInput() {
         $('#evrakSec').hide();
         $('#veri_table tbody tr').remove();

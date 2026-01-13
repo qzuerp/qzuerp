@@ -24,6 +24,7 @@
             ->where('DURUM', '!=', 'YEDEK')
             ->where('DURUM', '!=', 'GOVDE')
             ->get();
+
         $kalibrasyon_data = [
             'kritik' => 0,
             'yakin' => 0,
@@ -66,7 +67,14 @@
         }
 
         // Fason sevk verileri
-        $FASONSEVKLER = DB::table($database . 'stok63t')->get();
+        $FASONSEVKLER = $kayitlar = DB::table($firma.'stok63t as cikis')
+    ->whereNotExists(function ($q) use ($firma) {
+        $q->select(DB::raw(1))
+          ->from($firma.'stok63e as giris')
+          ->whereColumn('giris.LOTNUMBER', 'cikis.LOTNUMBER');
+    })
+    ->get();
+
         $fason_data = [
             'kritik' => 0,
             'yakin' => 0,
