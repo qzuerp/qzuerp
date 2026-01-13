@@ -1926,7 +1926,7 @@
           const durationInHours = durationInSeconds / 3600;
 
           // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
       $('#RECTIME1').on('change', ()=>{
           const table = $("#veri_table tbody");
@@ -1944,7 +1944,7 @@
           const durationInHours = durationInSeconds / 3600;
 
           // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
 
       function ayarBitti() {
@@ -2006,7 +2006,7 @@
           const durationInHours = durationInSeconds / 3600;
 
           // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
       $('#ENDTIME1').on('change', ()=>{
           const table = $("#veri_table tbody");
@@ -2024,7 +2024,7 @@
           const durationInHours = durationInSeconds / 3600;
 
           // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
 
       function uretimBasladi() {
@@ -2103,7 +2103,7 @@
         const durationInHours = durationInSeconds / 3600;
 
         // Süreyi son hücreye yazma
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
       $('#RECTIME2').on('change', ()=>{
           const table = $("#veri_table tbody");
@@ -2121,7 +2121,7 @@
           const durationInHours = durationInSeconds / 3600;
 
           // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
       });
     
       function uretimBitti() {
