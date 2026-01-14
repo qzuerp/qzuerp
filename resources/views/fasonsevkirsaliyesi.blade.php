@@ -548,9 +548,9 @@ if (isset($kart_veri)) {
                                 FROM {$ekranTableT} AS T
                                 LEFT JOIN {$ekranTableE} AS E 
                                     ON T.EVRAKNO = E.EVRAKNO
-                                LEFT JOIN cari00 AS C
+                                LEFT JOIN {$database}cari00 AS C
                                     ON E.CARIHESAPCODE = C.KOD
-                                left join gdef00 as G on E.TARGETAMBCODE = G.KOD
+                                left join {$database}gdef00 as G on E.TARGETAMBCODE = G.KOD
                                 WHERE 1 = 1
                             ";
 
