@@ -129,6 +129,7 @@ class takip_controller extends Controller
         $sapma_tarih = $request->sapma_tarih;
         $sapma_devre_tarihi = $request->sapma_devre_tarihi;
         $sapma_degisim_tanimi = $request->sapma_degisim_tanimi;
+        $sapma_ap10 = $request->sapma_ap10;
 
         // DETAYLAR
         $sapma_teklif_tarifi = $request->sapma_teklif_tarifi;
@@ -352,6 +353,7 @@ class takip_controller extends Controller
                     'sapma_tarih' => $sapma_tarih,
                     'sapma_devre_tarihi' => $sapma_devre_tarihi,
                     'sapma_degisim_tanimi' => $sapma_degisim_tanimi,
+                    'sapma_ap10' => $sapma_ap10,
 
                     // DETAYLAR
                     'sapma_teklif_tarifi' => $sapma_teklif_tarifi,
@@ -578,6 +580,7 @@ class takip_controller extends Controller
                     'sapma_tarih'               => $sapma_tarih,
                     'sapma_devre_tarihi'        => $sapma_devre_tarihi,
                     'sapma_degisim_tanimi'      => $sapma_degisim_tanimi,
+                    'sapma_ap10' => $sapma_ap10,
 
                     // DETAYLAR
                     'sapma_teklif_tarifi'       => $sapma_teklif_tarifi,

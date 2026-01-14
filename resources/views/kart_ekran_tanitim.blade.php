@@ -23,6 +23,12 @@
 @endphp
 
 @section('content')
+<!-- Quill CSS -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
 <div class="content-wrapper">
     @include('layout.util.evrakContentHeader')
     

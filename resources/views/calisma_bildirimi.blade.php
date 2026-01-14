@@ -607,14 +607,14 @@
                               </thead>
                               <tbody>
                                 @php
-                                  //$t_veri = DB::table($ekranTableE)->where("EVRAKNO", @$kart_veri->EVRAKNO)->whereNotNull('GK_1')->whereNotNull('KALIPKODU2')->whereNotNull('KALIPKODU3')->get();
+                                  $t_veri = DB::table($ekranTableE)->where("EVRAKNO", @$kart_veri->EVRAKNO)->whereNotNull('GK_1')->whereNotNull('KALIPKODU2')->whereNotNull('KALIPKODU3')->get();
                                 @endphp
                                 <tr>
-                                  <!-- <td><button type="button" type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
+                                  <td><button type="button" type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
                                   <td style="display:none;"><input type="text" value="" name="TRNUM[]"></td>
                                   <td><input type="text" class="form-control"  value="" name="GK_1[]" readonly></td>
                                   <td><input type="text" class="form-control"  value="" name="KALIPKODU2[]" readonly></td>
-                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU3[]" readonly></td> -->
+                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU3[]" readonly></td>
                                 </tr>
                               </tbody>
                             </table>

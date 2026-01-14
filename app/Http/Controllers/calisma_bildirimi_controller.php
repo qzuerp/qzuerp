@@ -647,6 +647,53 @@ class calisma_bildirimi_controller extends Controller
 
         }
 
+        if (!isset($TRNUM3)) {
+          $TRNUM3 = array();
+        }
+        $currentTRNUMS3 = array();
+        $liveTRNUMS3 = array();
+        $currentTRNUMSObj3 = DB::table($firma . 'sfdc20t1')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
+
+        foreach ($currentTRNUMSObj3 as $key => $veri) {
+          array_push($currentTRNUMS3, $veri->TRNUM);
+        }
+
+        foreach ($TRNUM3 as $key => $veri) {
+          array_push($liveTRNUMS3, $veri);
+        }
+
+        $deleteTRNUMS3 = array_diff($currentTRNUMS3, $liveTRNUMS3);
+        $newTRNUMS3 = array_diff($liveTRNUMS3, $currentTRNUMS3);
+        $updateTRNUMS3 = array_intersect($currentTRNUMS3, $liveTRNUMS3);
+
+        for ($i = 0; $i < $satir_say3; $i++) {
+          if (in_array($TRNUM3[$i], $updateTRNUMS3)) {
+            DB::table($firma . 'sfdc20t1')
+              ->where('TRNUM', $TRNUM[$i])
+              ->update([
+                'EVRAKNO' => $EVRAKNO,
+                'TRNUM' => $TRNUM3[$i],
+                
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
+          }
+          if (in_array($TRNUM3[$i], $newTRNUMS3)) {
+            DB::table($firma . 'sfdc20t1')->insert([
+              'EVRAKNO' => $EVRAKNO,
+              'TRNUM' => $TRNUM3[$i],
+              
+              'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+          }
+        }
+
+        foreach ($deleteTRNUMS3 as $key => $deleteTRNUM) { //Silinecek satirlar
+
+          DB::table($firma . 'sfdc20t1')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
+
+        }
+
+
         if ($JOBNO != NULL) {
           $MIKTAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $JOBNO)->SUM('SF_MIKTAR');
           // dd($MIKTAR == $request->TAMAMLANAN_MIK);

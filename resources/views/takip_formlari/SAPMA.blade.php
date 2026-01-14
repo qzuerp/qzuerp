@@ -80,10 +80,14 @@
                     <input type="date" name="sapma_tarih" class="form-control" 
                            value="{{ @$kart_veri->sapma_tarih ?? '' }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">Devreye Giriş Tarihi</label>
                     <input type="date" name="sapma_devre_tarihi" class="form-control"
                            value="{{ @$kart_veri->sapma_devre_tarihi ?? '' }}">
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">Kapandı</label>
+                    <input type="checkbox" name="sapma_ap10" {{ $kart_veri->sapma_ap10 == 1 ? 'checked' : '' }} value="1" class="form-check-input" id="">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label ">Değişikliğin Tanımı</label>
