@@ -220,10 +220,11 @@ class calisma_bildirimi_controller extends Controller
     $ENDTIME1 = $request->input('ENDTIME1');
     $ENDTARIH2 = $request->input('ENDTARIH2');
     $ENDTIME2 = $request->input('ENDTIME2');
-    $GK_1 = $request->GK_1;
-    $KALIPKODU2 = $request->KALIPKODU2;
-    $KALIPKODU3 = $request->KALIPKODU3;
+    $HATA_SEBEBI = $request->HATA_SEBEBI;
+    $HATALI_KOD = $request->HATALI_KOD;
+    $ADET = $request->ADET;
     $TRNUM = $request->TRNUM;
+    $TRNUM3 = $request->TRNUM3;
 
 
     $KOD = $request->KOD;
@@ -260,10 +261,10 @@ class calisma_bildirimi_controller extends Controller
       $satir_say = count($RECTARIH1);
     }
 
-    if ($GK_1 == null) {
+    if ($TRNUM3 == null) {
       $satir_say2 = 0;
     } else {
-      $satir_say2 = count($GK_1);
+      $satir_say2 = count($TRNUM3);
     }
     switch ($islem_turu) {
 
@@ -302,6 +303,8 @@ class calisma_bildirimi_controller extends Controller
         $ENDTIME2_E = $request->input('ENDTIME2_E');
         $URETIM_B = $request->input('URETIM_B');
         $URETIM_E = $request->input('URETIM_E');
+
+        // Hatalar
 
 
         return redirect()->route('calisma_bildirimi', [
@@ -652,7 +655,7 @@ class calisma_bildirimi_controller extends Controller
         }
         $currentTRNUMS3 = array();
         $liveTRNUMS3 = array();
-        $currentTRNUMSObj3 = DB::table($firma . 'sfdc20t1')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
+        $currentTRNUMSObj3 = DB::table($firma . 'sfdc31h')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
 
         foreach ($currentTRNUMSObj3 as $key => $veri) {
           array_push($currentTRNUMS3, $veri->TRNUM);
@@ -665,31 +668,35 @@ class calisma_bildirimi_controller extends Controller
         $deleteTRNUMS3 = array_diff($currentTRNUMS3, $liveTRNUMS3);
         $newTRNUMS3 = array_diff($liveTRNUMS3, $currentTRNUMS3);
         $updateTRNUMS3 = array_intersect($currentTRNUMS3, $liveTRNUMS3);
-
-        for ($i = 0; $i < $satir_say3; $i++) {
+        // dd($request->all(),$deleteTRNUMS3,$newTRNUMS3,$updateTRNUMS3);
+        for ($i = 0; $i < $satir_say2; $i++) {
           if (in_array($TRNUM3[$i], $updateTRNUMS3)) {
-            DB::table($firma . 'sfdc20t1')
-              ->where('TRNUM', $TRNUM[$i])
+            DB::table($firma . 'sfdc31h')
+              ->where('TRNUM', $TRNUM3[$i])
               ->update([
                 'EVRAKNO' => $EVRAKNO,
                 'TRNUM' => $TRNUM3[$i],
-                
-                'updated_at' => date('Y-m-d H:i:s'),
+                'KOD' => $HATALI_KOD[$i],
+                'SEBEP' => $HATA_SEBEBI[$i],
+                'ADET' => $ADET[$i],
+                'created_at' => date('Y-m-d H:i:s'),
               ]);
           }
           if (in_array($TRNUM3[$i], $newTRNUMS3)) {
-            DB::table($firma . 'sfdc20t1')->insert([
+            DB::table($firma . 'sfdc31h')->insert([
               'EVRAKNO' => $EVRAKNO,
               'TRNUM' => $TRNUM3[$i],
-              
-              'updated_at' => date('Y-m-d H:i:s'),
+              'KOD' => $HATALI_KOD[$i],
+              'SEBEP' => $HATA_SEBEBI[$i],
+              'ADET' => $ADET[$i],
+              'created_at' => date('Y-m-d H:i:s'),
             ]);
           }
         }
 
         foreach ($deleteTRNUMS3 as $key => $deleteTRNUM) { //Silinecek satirlar
 
-          DB::table($firma . 'sfdc20t1')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
+          DB::table($firma . 'sfdc31h')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
 
         }
 

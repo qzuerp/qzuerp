@@ -47,7 +47,6 @@
   $TEZGAH_veri = DB::table($database.'imlt00')->get();
   $STOKKART_veri = DB::table($database.'stok00')->get();
   $DURUSKODLARI_veri = DB::table($database.'gecoust')->where('EVRAKNO','DURUSKODLARI')->get();
-  $MPSGK2_veri = DB::table($database.'gecoust')->where('EVRAKNO','MPSGK2')->get();
   $EVRAKNO = DB::table($database.'sfdc31e')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
   $TO_ISMERKEZI = DB::table($database.'sfdc31e')->where('TO_ISMERKEZI',@$kart_veri->TO_ISMERKEZI)->get();
   $mmps10t_evraklar = DB::table($database.'mmps10t')->get();
@@ -576,18 +575,18 @@
                                   <td><button type="button" type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                   <td style="display:none;"></td>
                                   <td>
-                                    <select id="GK_1" name="" class="form-control js-example-basic-single" style="width: 100%;">
+                                    <select id="HATA_SEBEBI" name="" class="form-control js-example-basic-single" style="width: 100%;">
                                       <option value=" ">Seç</option>
                                       @php
                                       foreach ($MPSGK2_veri as $key => $veri) {
-                                        echo "<option value ='".$veri->KOD." - ".$veri->AD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
                                       }
                                       @endphp
                                     </select>
                                   </td>
                                 
                                   <td>
-                                    <select class="form-control select2"  ID="HATA_SEBEBI">
+                                    <select class="form-control select2"  id="HATALI_KOD">
                                       @php
                                        $parcalar = DB::table($database.'mmps10t')
                                        ->where('EVRAKNO', @$kart_veri->MPSNO)
@@ -601,21 +600,26 @@
                                   </td>
                                   <td>
 
-                                    <input type="number" class="form-control " maxlength="16" name="" ID="KALIPKODU2" value="">                  
+                                    <input type="number" class="form-control " maxlength="16" name="" ID="ADET" value="">                  
                                   </td>
                                 </tr>
                               </thead>
                               <tbody>
                                 @php
-                                  $t_veri = DB::table($ekranTableE)->where("EVRAKNO", @$kart_veri->EVRAKNO)->whereNotNull('GK_1')->whereNotNull('KALIPKODU2')->whereNotNull('KALIPKODU3')->get();
+                                  $h_veri = DB::table($database.'sfdc31h')->where("EVRAKNO", @$kart_veri->EVRAKNO)->get();
+                                @endphp
+                                @foreach ($h_veri as $h_veri)
+                                @php
+                                    $name = DB::table($database.'gecoust')->where('EVRAKNO','MPSGK2')->where('KOD', $h_veri->SEBEP)->value('AD');
                                 @endphp
                                 <tr>
                                   <td><button type="button" type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
-                                  <td style="display:none;"><input type="text" value="" name="TRNUM[]"></td>
-                                  <td><input type="text" class="form-control"  value="" name="GK_1[]" readonly></td>
-                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU2[]" readonly></td>
-                                  <td><input type="text" class="form-control"  value="" name="KALIPKODU3[]" readonly></td>
+                                  <td style="display:none;"><input type="text" value="{{ $h_veri->TRNUM }}" name="TRNUM3[]"></td>
+                                  <td><input type="text" class="form-control"  value="{{ $h_veri->SEBEP }} - {{ $name }}" name="HATA_SEBEBI[]" readonly></td>
+                                  <td><input type="text" class="form-control"  value="{{ $h_veri->KOD }}" name="HATALI_KOD[]" readonly></td>
+                                  <td><input type="text" class="form-control"  value="{{ $h_veri->ADET }}" name="ADET[]" readonly></td>
                                 </tr>
+                                @endforeach
                               </tbody>
                             </table>
                         </div>
@@ -2802,13 +2806,13 @@
 
         htmlCode += " <tr> ";
         htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-        htmlCode += " <td style='display: none;'><input type='text' class='form-control' name='TRNUM[]' value='"+TRNUM_FILL+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='GK_1[]' value='"+satirEkleInputs.GK_1+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU2[]' value='"+satirEkleInputs.HATA_SEBEBI+"' readonly></td> "
-        htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU3[]' value='"+satirEkleInputs.KALIPKODU2+"' readonly></td> "
+        htmlCode += " <td style='display: none;'><input type='text' class='form-control' name='TRNUM3[]' value='"+TRNUM_FILL+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='HATA_SEBEBI[]' value='"+satirEkleInputs.HATA_SEBEBI+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='HATALI_KOD[]' value='"+satirEkleInputs.HATALI_KOD+"' readonly></td> "
+        htmlCode += " <td><input type='text' class='form-control' name='ADET[]' value='"+satirEkleInputs.ADET+"' readonly></td> "
         htmlCode += " </tr> ";
 
-        if (satirEkleInputs.HATA_SEBEBI==null || satirEkleInputs.HATA_SEBEBI=="" || satirEkleInputs.HATA_SEBEBI==" " || satirEkleInputs.KALIPKODU2==null || satirEkleInputs.KALIPKODU2=="" || satirEkleInputs.KALIPKODU2==" ") {
+        if (satirEkleInputs.HATA_SEBEBI==null || satirEkleInputs.HATA_SEBEBI=="" || satirEkleInputs.HATA_SEBEBI==" " || satirEkleInputs.HATALI_KOD==null || satirEkleInputs.HATALI_KOD=="" || satirEkleInputs.HATALI_KOD==" ") {
           eksikAlanHataAlert2();
         }
         else {
