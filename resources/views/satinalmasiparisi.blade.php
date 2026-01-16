@@ -63,6 +63,10 @@
     #popupSelectt tbody tr:active {
       transform: scale(0.98);
     }
+    #mail
+    {
+      display: block !important;
+    }
   </style>
   <div class="content-wrapper">
 

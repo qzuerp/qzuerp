@@ -208,6 +208,7 @@
                     <div class="col my-2">
                       <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus"
                           style="color: red"></i>Seçili Satırları Sil</button>
+                      <button type="button" class="btn btn-success" onclick="exportTableToExcel('veriTable')">Excel'e Aktar</button>
                     </div>
 
                     <table class="table table-bordered text-center" id="veriTable"
@@ -1058,6 +1059,7 @@
     </section>
     @include('components/detayBtnLib')
     <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
       function ozelInput() {
         $('#CARIHESAPCODE_E').val('').trigger('change');
@@ -1084,6 +1086,16 @@
         $('#SF_SF_UNIT_SHOW').val(veriler[2]);
         $('#NAME2').val(veriler[3]);
         $('#AGIRLIK').val(veriler[4]);
+      }
+      function exportTableToExcel(tableSelect) {
+        // Tabloyu seç
+        var tablo = document.getElementById("veriler-tablosu");
+        
+        // Tabloyu workbook nesnesine çevir
+        var wb = XLSX.utils.table_to_book(tablo, { sheet: "Veri Listesi" });
+        
+        // Dosyayı doğrudan tarayıcıya indirt (PHP'ye gerek yok)
+        XLSX.writeFile(wb, "Veri_Listesi.xlsx");
       }
       $(document).ready(function () {
         $('#fiyat_table tfoot th').each(function () {

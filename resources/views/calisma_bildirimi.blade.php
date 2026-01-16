@@ -1820,595 +1820,336 @@
     </script>
 
     <script>
-      // Üretim Arayüzü JavaScript Kodu
-      var kontrol = false;
+      // Üretim Arayüzü - Kullanışlı Versiyon
 
-      // DOM yüklendikten sonra çalıştır
+      let sonID = typeof window.initialSonID !== 'undefined' ? window.initialSonID : 1;
+
+      // DOM yüklendikten sonra
       document.addEventListener('DOMContentLoaded', function() {
-        // Butonlara event listener'ları ekle
-        document.getElementById("button1").addEventListener("click", function() {
-          ayarBasladi();
-        });
-
-        document.getElementById("button2").addEventListener("click", function() {
-          ayarBitti();
-        });
-
-        document.getElementById("button3").addEventListener("click", function() {
-          uretimBasladi();
-        });
-
-        document.getElementById("button4").addEventListener("click", function() {
-          uretimBitti();
-        });
-
-        document.getElementById("button5").addEventListener("click", function() {
-          durusBasladi();
-        });
-
-        document.getElementById("button6").addEventListener("click", function() {
-          durusBitti();
-        });
+        initializeButtons();
+        initializeTableEdit();
       });
 
-      // Uyarı Fonksiyonu
-      function showAlert() {
-        if(kontrol) {
-          Swal.fire({
-            icon: 'warning',
-            text: "İşlemi bitirmeden başka işleme başlayamazsınız.",
-            confirmButtonText: "Tamam"  
-          });
-          return;
-        }
+      // Butonları başlat
+      function initializeButtons() {
+        // Ayar butonları
+        $("#button1").on('click', () => startProcess('A'));
+        $("#button2").on('click', () => endProcess('A'));
+        
+        // Üretim butonları
+        $("#button3").on('click', () => startProcess('U'));
+        $("#button4").on('click', () => endProcess('U'));
+        
+        // Duruş butonları
+        $("#button5").on('click', () => startProcess('D'));
+        $("#button6").on('click', () => endProcess('D'));
       }
 
-      @php
-        $sonID = DB::table($database.'sfdc31e')->max("ID");
-      @endphp
+      // Tablo satırlarını düzenlenebilir yap
+      function initializeTableEdit() {
+        // Satıra tıklayınca düzenleme modalı aç
+        $(document).on('click', '#veri_table tbody tr', function() {
+          openEditModal($(this));
+        });
+      }
 
-      function ayarBasladi() {
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "A";
-        }).last();
+      // İşlem başlat
+      function startProcess(type) {
+        const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
         
-        if(lastRow.length && lastRow.find("td").eq(4).find("input").val() === "") {
+        // Duruş için sebep kontrolü
+        if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
           Swal.fire({
             icon: 'warning',
-            text: "Tamamlanmamış ayar bulunmakta.",
+            text: "Duruş sebebi seçmelisiniz.",
             confirmButtonText: "Tamam"
           });
           return;
         }
         
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const startDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const startTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        if($("#RECTARIH1").val() == null || $("#RECTARIH1").val() == "" || $("#RECTIME1").val() == null || $("#RECTIME1").val() == "") {
-          $("#RECTARIH1").val(currentDate.toISOString().split('T')[0]);
-          $("#RECTIME1").val(hours + ":" + minutes);
+        // Önceki işlem kontrolü
+        if (type === 'U') {
+          const lastAyar = findLastRow('A');
+          if (lastAyar && !isComplete(lastAyar)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış ayar işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
         }
         
-        // Yeni satır ekleme
+        if (type === 'D') {
+          const lastUretim = findLastRow('U');
+          if (lastUretim && !isComplete(lastUretim)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış üretim işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
+        }
+        
+        // Bu tip için tamamlanmamış işlem kontrolü
+        const lastRow = findLastRow(type);
+        if (lastRow && !isComplete(lastRow)) {
+          Swal.fire({
+            icon: 'warning',
+            text: `Tamamlanmamış ${labels[type]} işlemi bulunmaktadır.`,
+            confirmButtonText: "Tamam"
+          });
+          return;
+        }
+        
+        // Yeni satır ekle
+        addNewRow(type);
+      }
+
+      // İşlem bitir
+      function endProcess(type) {
+        const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
+        
+        // Duruş için sebep kontrolü
+        if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
+          Swal.fire({
+            icon: 'warning',
+            text: "Duruş sebebi seçmelisiniz.",
+            confirmButtonText: "Tamam"
+          });
+          return;
+        }
+        
+        const lastRow = findLastRow(type);
+        
+        if (!lastRow) {
+          Swal.fire({
+            icon: 'warning',
+            text: `Tamamlanacak ${labels[type]} işlemi bulunamadı.`,
+            confirmButtonText: "Tamam"
+          });
+          return;
+        }
+        
+        if (isComplete(lastRow)) {
+          Swal.fire({
+            icon: 'warning',
+            text: `${labels[type]} işlemi zaten tamamlanmış.`,
+            confirmButtonText: "Tamam"
+          });
+          return;
+        }
+        
+        // Bitiş zamanını ekle
+        completeRow(lastRow, type);
+      }
+
+      // Yeni satır ekle
+      function addNewRow(type) {
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        
+        const durusSebebi = type === 'D' ? $("#DURMA_SEBEBI").val() : '';
+        
         const row = $("<tr>");
         row.append(`
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="A" readonly></td>
-          <td><input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$("#RECTARIH1").val()}" readonly></td>
-          <td><input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$("#RECTIME1").val()}" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" readonly></td>
-          <td><input name="" title="${$("#DURMA_SEBEBI").val()}" style="background:transparant; border:none; outline:none;" type="text" value="" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" readonly></td>
-          <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="<?= $sonID += 1 ?>"></td>
+          <td><input type="text" class="tbl-input" name="ISLEM_TURU[]" value="${type}" readonly></td>
+          <td><input type="date" class="tbl-input" name="baslangic_tarih[]" value="${date}" readonly></td>
+          <td><input type="time" class="tbl-input" name="baslangic_saat[]" value="${time}" readonly></td>
+          <td><input type="text" class="tbl-input" name="bitis_tarih[]" readonly></td>
+          <td><input type="text" class="tbl-input" name="bitis_saat[]" readonly></td>
+          <td><input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly></td>
+          <td><input type="text" class="tbl-input" name="toplam_sure[]" readonly></td>
+          <td style="display: none;"><input type="hidden" name="TRNUM[]" value="${++sonID}"></td>
         `);
-        table.append(row);
+        
+        $("#veri_table tbody").append(row);
+        
+        // Satıra vurgu efekti
+        row.addClass('table-success');
+        setTimeout(() => row.removeClass('table-success'), 1000);
       }
 
-      $('#RECTARIH1').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "A";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(1).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$('#RECTARIH1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-      $('#RECTIME1').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "A";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(2).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$('#RECTIME1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val()) ?? 0  ;
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val()) ?? 0;
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-
-      function ayarBitti() {
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "A";
-        }).last();
+      // Satırı tamamla
+      function completeRow(row, type) {
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
         
-        if(!lastRow.length) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Tamamlanacak ayar bulunamadı.",
-            confirmButtonText: "Tamam"
-          });
-          return;
+        row.find("td").eq(3).html(`<input type="date" class="tbl-input" name="bitis_tarih[]" value="${date}" readonly>`);
+        row.find("td").eq(4).html(`<input type="time" class="tbl-input" name="bitis_saat[]" value="${time}" readonly>`);
+        
+        // Duruş sebebini güncelle
+        if (type === 'D') {
+          const durusSebebi = $("#DURMA_SEBEBI").val();
+          row.find("td").eq(5).html(`<input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly>`);
         }
         
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const endDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const endTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        $("#ENDTARIH1").val(currentDate.toISOString().split('T')[0]);
-        $("#ENDTIME1").val(hours + ":" + minutes);
-
-        // Son satırdaki hücrelere değer ekleme
-        lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${endDate}" readonly>`);
-        lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${endTime}" readonly>`);
-
-        const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-        const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-        const durationInSeconds = (endDateTime - startDateTime) / 1000;
-        const durationInHours = durationInSeconds / 3600;
-
-        // Süreyi son hücreye yazma
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+        calculateDuration(row);
+        
+        // Satıra vurgu efekti
+        row.addClass('table-info');
+        setTimeout(() => row.removeClass('table-info'), 1000);
       }
 
-      $('#ENDTARIH1').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "A";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
+      // Düzenleme modalını aç
+      function openEditModal(row) {
+        const type = row.find("td").eq(0).find("input").val();
+        const startDate = row.find("td").eq(1).find("input").val();
+        const startTime = row.find("td").eq(2).find("input").val();
+        const endDate = row.find("td").eq(3).find("input").val();
+        const endTime = row.find("td").eq(4).find("input").val();
+        
+        const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
+        
+        Swal.fire({
+          title: `${labels[type]} İşlemi Düzenle`,
+          html: `
+            <div style="text-align: left;">
+              <div class="mb-3">
+                <label class="form-label fw-bold">Başlangıç Tarihi</label>
+                <input type="date" id="edit_start_date" class="form-control" value="${startDate}">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Başlangıç Saati</label>
+                <input type="time" id="edit_start_time" class="form-control" value="${startTime}" step="1">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Bitiş Tarihi</label>
+                <input type="date" id="edit_end_date" class="form-control" value="${endDate}">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Bitiş Saati</label>
+                <input type="time" id="edit_end_time" class="form-control" value="${endTime}" step="1">
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Kaydet',
+          cancelButtonText: 'İptal',
+          width: '550px',
+          preConfirm: () => {
+            return {
+              startDate: document.getElementById('edit_start_date').value,
+              startTime: document.getElementById('edit_start_time').value,
+              endDate: document.getElementById('edit_end_date').value,
+              endTime: document.getElementById('edit_end_time').value
+            };
           }
-          lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${$('#ENDTARIH1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-      $('#ENDTIME1').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "A";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
+        }).then((result) => {
+          if (result.isConfirmed) {
+            updateRow(row, result.value);
+            
+            mesaj('İşlem bilgileri başarıyla güncellendi.','success');
           }
-          lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${$('#ENDTIME1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-
-      function uretimBasladi() {
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "U";
-        }).last();
-        
-        const controlRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "A";
-        }).last();
-        
-        if(controlRow.length && controlRow.find("td").eq(4).find('input').val() == "") {
-          Swal.fire({
-            icon: 'warning',
-            text: "Bitmemiş ayar bulundu.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
-        
-        if(lastRow.length && lastRow.find("td").eq(4).find("input").val() === "") {
-          Swal.fire({
-            icon: 'warning',
-            text: "Tamamlanmamış üretim bulunmakta.",
-            confirmButtonText: "Tamam"  
-          });
-          return;
-        }
-        
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const startDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const startTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        if($("#RECTARIH2").val() == null || $("#RECTARIH2").val() == "" || $("#RECTIME2").val() == null || $("#RECTIME2").val() == "") {
-          $("#RECTARIH2").val(currentDate.toISOString().split('T')[0]);
-          $("#RECTIME2").val(hours + ":" + minutes);
-        }
-        
-        // Yeni satır ekleme
-        const row = $("<tr>");
-        row.append(`
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="U" readonly></td>
-          <td><input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$("#RECTARIH2").val()}" readonly></td>
-          <td><input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$("#RECTIME2").val()}" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" readonly></td>
-          <td><input name="" title="${$("#DURMA_SEBEBI").val()}" style="background:transparant; border:none; outline:none;" type="text" value="" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" readonly></td>
-          <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="<?= $sonID += 1 ?>"></td>
-        `);
-        table.append(row);   
+        });
       }
 
-      $('#RECTARIH2').on('change', ()=>{
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "U";
-        }).last();
+      // Satırı güncelle
+      function updateRow(row, data) {
+        row.find("td").eq(1).html(`<input type="date" class="tbl-input" name="baslangic_tarih[]" value="${data.startDate}" readonly>`);
+        row.find("td").eq(2).html(`<input type="time" class="tbl-input" name="baslangic_saat[]" value="${data.startTime}" readonly>`);
+        row.find("td").eq(3).html(`<input type="date" class="tbl-input" name="bitis_tarih[]" value="${data.endDate}" readonly>`);
+        row.find("td").eq(4).html(`<input type="time" class="tbl-input" name="bitis_saat[]" value="${data.endTime}" readonly>`);
         
-        if(!lastRow.length) {
-          return;
-        }
-        lastRow.find("td").eq(1).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$('#RECTARIH2').val()}" readonly>`);
-        const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-        const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-        const durationInSeconds = (endDateTime - startDateTime) / 1000;
-        const durationInHours = durationInSeconds / 3600;
-
-        // Süreyi son hücreye yazma
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-      $('#RECTIME2').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "U";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(2).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$('#RECTIME2').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${Number(durationInHours.toFixed(2)) || 0}" readonly>`);
-      });
-    
-      function uretimBitti() {
-        kontrol = false;
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "U";
-        }).last();
+        calculateDuration(row);
         
-        if(!lastRow.length) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Tamamlanacak üretim bulunamadı.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
-        
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const endDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const endTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        $("#ENDTARIH2").val(currentDate.toISOString().split('T')[0]);
-        $("#ENDTIME2").val(hours + ":" + minutes);
-
-        // Son satırdaki hücrelere değer ekleme
-        lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${endDate}" readonly>`);
-        lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${endTime}" readonly>`);
-
-        const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-        const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-        const durationInSeconds = (endDateTime - startDateTime) / 1000;
-        const durationInHours = durationInSeconds / 3600;
-
-        // Süreyi son hücreye yazma
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+        // Güncelleme efekti
+        row.addClass('table-warning');
+        setTimeout(() => row.removeClass('table-warning'), 1000);
       }
 
-      $('#ENDTARIH2').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "U";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${$('#ENDTARIH2').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
-      $('#ENDTIME2').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "U";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${$('#ENDTIME2').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
-
-      function validateDurusSebebi() {
-        const durusSebebi = $("#DURMA_SEBEBI").val();
-        if (!durusSebebi) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Duruş Sebebi alanı boş olamaz.",
-            confirmButtonText: "Tamam"
-          });
-          return false;
+      // Süre hesapla
+      function calculateDuration(row) {
+        const startDate = row.find("td").eq(1).find("input").val();
+        const startTime = row.find("td").eq(2).find("input").val();
+        const endDate = row.find("td").eq(3).find("input").val();
+        const endTime = row.find("td").eq(4).find("input").val();
+        
+        if (!startDate || !startTime || !endDate || !endTime) {
+          return;
         }
-        return true;
+        
+        const start = new Date(`${startDate} ${startTime}`);
+        const end = new Date(`${endDate} ${endTime}`);
+        
+        if (end <= start) {
+          row.find("td").eq(6).html(`<input type="text" class="tbl-input text-danger" name="toplam_sure[]" value="0.00" readonly>`);
+          return;
+        }
+        
+        const hours = (end - start) / (1000 * 60 * 60);
+        row.find("td").eq(6).html(`<input type="text" class="tbl-input" name="toplam_sure[]" value="${hours.toFixed(2)}" readonly>`);
       }
 
-      function durusBasladi() {
-        if (!validateDurusSebebi()) {
-          return;
-        }
-
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "D";
+      // Yardımcı fonksiyonlar
+      function findLastRow(type) {
+        return $("#veri_table tbody tr").filter(function() {
+          return $(this).find("td").eq(0).find("input").val() === type;
         }).last();
-        
-        const controlRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "U";
-        }).last();
-        
-        if (controlRow.length && controlRow.find("td").eq(4).find('input').val() == "") {
-          Swal.fire({
-            icon: 'warning',
-            text: "Bitmemiş Üretim bulundu.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
-        
-        if (lastRow.length && lastRow.find("td").eq(4).find("input").val() === "") {
-          Swal.fire({
-            icon: 'warning',
-            text: "Tamamlanmamış duruş bulunmakta.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
-
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const startDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const startTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        if ($("#DRSTARIH1").val() == null || $("#DRSTARIH1").val() == "" || $("#DRSTIME1").val() == null || $("#DRSTIME1").val() == "") {
-          $("#DRSTARIH1").val(currentDate.toISOString().split('T')[0]);
-          $("#DRSTIME1").val(hours + ":" + minutes);
-        }
-
-        // Yeni satır ekleme
-        const row = $("<tr>");
-        row.append(`
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="ISLEM_TURU[]" value="D" readonly></td>
-          <td><input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$("#DRSTARIH1").val()}" readonly></td>
-          <td><input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$("#DRSTIME1").val()}" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" readonly></td>
-          <td><input name="" title="${$("#DURMA_SEBEBI").val()}" style="background:transparant; border:none; outline:none;" type="text" value="${$("#DURMA_SEBEBI").val()}" readonly></td>
-          <td><input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" readonly></td>
-          <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="<?= $sonID += 1 ?>"></td>
-        `);
-        table.append(row);
       }
 
-      $('#DRSTARIH1').on('change', ()=>{
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "D";
-        }).last();
-        
-        if(!lastRow.length) {
-          return;
-        }
-        lastRow.find("td").eq(1).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_tarih[]" value="${$('#DRSTARIH1').val()}" readonly>`);
-        const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-        const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-        const durationInSeconds = (endDateTime - startDateTime) / 1000;
-        const durationInHours = durationInSeconds / 3600;
-
-        // Süreyi son hücreye yazma
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
-      $('#DRSTIME1').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "D";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(2).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="baslangic_saat[]" value="${$('#DRSTIME1').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
-
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
-
-      function durusBitti() {
-        if (!validateDurusSebebi()) {
-          return;
-        }
-
-        kontrol = false;
-        const table = $("#veri_table tbody");
-        const lastRow = table.find("tr").filter(function() {
-          return $(this).find("td").eq(0).find("input").val() === "D";
-        }).last();
-        
-        if(!lastRow.length) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Tamamlanacak duruş bulunamadı.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
-        
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const endDate = `${year}-${month}-${day}`;
-
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-        const endTime = `${hours}:${minutes}:${seconds}`;
-
-        // Input alanlarını doldurma
-        $("#DRSTARIH2").val(currentDate.toISOString().split('T')[0]);
-        $("#DRSTIME2").val(hours + ":" + minutes);
-
-        // Son satırdaki hücrelere değer ekleme
-        lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${endDate}" readonly>`);
-        lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${endTime}" readonly>`);
-
-        const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-        const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-        const durationInSeconds = (endDateTime - startDateTime) / 1000;
-        const durationInHours = durationInSeconds / 3600;
-
-        // Süreyi son hücreye yazma
-
-        lastRow.find("td").eq(5).html(`<input name="" style="background:transparant; border:none; outline:none;" type="text" value="${ $("#DURMA_SEBEBI").val() }" readonly>`);
-        lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
+      function isComplete(row) {
+        return row.find("td").eq(4).find("input").val() !== "";
       }
 
-      $('#DRSTARIH2').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "D";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(3).html(`<input type="date" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_tarih[]" value="${$('#DRSTARIH2').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
+      function pad(num) {
+        return String(num).padStart(2, '0');
+      }
 
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
-      $('#DRSTIME2').on('change', ()=>{
-          const table = $("#veri_table tbody");
-          const lastRow = table.find("tr").filter(function() {
-            return $(this).find("td").eq(0).find("input").val() === "D";
-          }).last();
-          
-          if(!lastRow.length) {
-            return;
-          }
-          lastRow.find("td").eq(4).html(`<input type="time" style="width:100px; border:none; outline:none;" class="bg-transparent" name="bitis_saat[]" value="${$('#DRSTIME2').val()}" readonly>`);
-          const startDateTime = new Date(lastRow.find("td").eq(1).find("input").val() + " " + lastRow.find("td").eq(2).find("input").val());
-          const endDateTime = new Date(lastRow.find("td").eq(3).find("input").val() + " " + lastRow.find("td").eq(4).find("input").val());
-          const durationInSeconds = (endDateTime - startDateTime) / 1000;
-          const durationInHours = durationInSeconds / 3600;
+      // CSS
+      const style = document.createElement('style');
+      style.textContent = `
+        .tbl-input {
+          width: 100%;
+          border: none;
+          outline: none;
+          background: transparent;
+          text-align: center;
+          padding: 0.25rem;
+        }
+        
+        #veri_table tbody tr {
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        
+        #veri_table tbody tr:hover {
+          background-color: #f8f9fa !important;
+          transform: scale(1.01);
+        }
+        
+        .table-success {
+          animation: fadeGreen 1s ease;
+        }
+        
+        .table-info {
+          animation: fadeBlue 1s ease;
+        }
+        
+        .table-warning {
+          animation: fadeYellow 1s ease;
+        }
+        
+        @keyframes fadeGreen {
+          0% { background-color: #d4edda; }
+          100% { background-color: transparent; }
+        }
+        
+        @keyframes fadeBlue {
+          0% { background-color: #d1ecf1; }
+          100% { background-color: transparent; }
+        }
+        
+        @keyframes fadeYellow {
+          0% { background-color: #fff3cd; }
+          100% { background-color: transparent; }
+        }
+      `;
+      document.head.appendChild(style);
 
-          // Süreyi son hücreye yazma
-          lastRow.find("td").eq(6).html(`<input type="text" style="width:100px; border:none; outline:none;" class="bg-transparent" name="toplam_sure[]" value="${durationInHours.toFixed(2)}" readonly>`);
-      });
       @php
       $GERCEKLESEN_MIK = DB::table($database.'sfdc31e')->where('JOBNO',@$kart_veri->JOBNO)->SUM('SF_MIKTAR');
       @endphp

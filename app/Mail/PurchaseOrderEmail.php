@@ -16,26 +16,25 @@ class PurchaseOrderEmail extends Mailable
     public $title;
     public $body;
     public $data;
+    public $pdfContent;
 
-    public function __construct($title, $data)
+    public function __construct($title, $data, $pdfContent)
     {
         $this->title = $title;
-        $this->data  = $data;
+        $this->data = $data;
+        $this->pdfContent = $pdfContent;
     }
-
+    
     public function build()
     {
-        // PDF oluştur
-        $pdf = PDF::loadView('emails.purchase-order-email', ['data' => $this->data]);
-        
-
         return $this->subject($this->title)
             ->view('emails.purchase-order-email')
-            ->with([
-                'data' => $this->data
-            ])
-            ->attachData($pdf->output(), 'satin_alma_siparis_'.$this->data['EVRAKNO'].'.pdf', [
-                'mime' => 'application/pdf',
-            ]);
+            ->with(['data' => $this->data])
+            ->attachData(
+                $this->pdfContent,
+                'satin_alma_siparis_'.$this->data['EVRAKNO'].'.pdf',
+                ['mime' => 'application/pdf']
+            );
     }
+    
 }

@@ -205,11 +205,40 @@ class stok47_controller extends Controller
 
         if($CARIHESAPCODE == 'TAKIMHANE')
         {
-          $mails = DB::table($firma.'pers00')->where('GK_10', 'TAKIMALM')->get();
+          // dd('sa');
+          $mails = DB::table($firma.'pers00')->where('NAME2', '12')->orWhere('NAME2','04')->get();
+          $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
+          // dd($mails);
+          foreach ($mails as $mail) {
+
+              DB::table($firma.'notifications')->insert([
+                  'title' => 'Yeni Satın Alma Talebi',
+                  'message' => $name .' '. $EVRAKNO.' numaralı satın alma talebini oluşturdu.',
+                  'target_user_id' => $mail->bagli_hesap,
+                  'url' => 'satinalmaTalepleri?ID='.$sonID
+              ]);
+              Mail::raw(
+                  "{$name} {$EVRAKNO} numaralı satın alma talebini oluşturdu.",
+                  function ($message) use ($mail) {
+                      $message->to($mail->EMAIL)
+                              ->subject('Yeni Satın Alma Talebi');
+                  }
+              );
+          }
+        }
+        else if($CARIHESAPCODE == 'STS')
+        {
+          $mails = DB::table($firma.'pers00')->where('NAME2','04')->get();
           $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
           foreach ($mails as $mail) {
+              DB::table($firma.'notifications')->insert([
+                  'title' => 'Yeni Satın Alma Talebi',
+                  'message' => $name .' '. $EVRAKNO.' numaralı satın alma talebini oluşturdu.',
+                  'target_user_id' => $mail->bagli_hesap,
+                  'url' => 'satinalmaTalepleri?ID='.$sonID
+              ]);
               Mail::raw(
-                  "{$name} kişi {$EVRAKNO} numaralı satın alma talebini oluşturdu.",
+                  "{$name} {$EVRAKNO} numaralı satın alma talebini oluşturdu.",
                   function ($message) use ($mail) {
                       $message->to($mail->EMAIL)
                               ->subject('Yeni Satın Alma Talebi');
