@@ -187,44 +187,58 @@ class stok46_controller extends Controller
         FunctionHelpers::apply_mail_settings();
 
         $data = [
-            'EVRAKNO' => $EVRAKNO,
-            'TARIH' => $TARIH,
-            'CARIHESAPCODE' => $CARIHESAPCODE,
-            'KOD' => $KOD,
-            'STOK_ADI' => $STOK_ADI,
-            'LOTNUMBER' => $LOTNUMBER,
-            'SERINO' => $SERINO,
-            'FIYAT' => $FIYAT,
-            'FIYAT_PB' => $FIYAT_PB,
-            'SF_MIKTAR' => $SF_MIKTAR,
-            'SF_SF_UNIT' => $SF_SF_UNIT,
-            'TERMIN_TAR' => $TERMIN_TAR,
+          'EVRAKNO' => $EVRAKNO,
+          'TARIH' => $TARIH,
+          'CARIHESAPCODE' => $CARIHESAPCODE,
+          'KOD' => $KOD,
+          'STOK_ADI' => $STOK_ADI,
+          'LOTNUMBER' => $LOTNUMBER,
+          'SERINO' => $SERINO,
+          'FIYAT' => $FIYAT,
+          'FIYAT_PB' => $FIYAT_PB, 
+          'SF_MIKTAR' => $SF_MIKTAR,
+          'SF_SF_UNIT' => $SF_SF_UNIT,
+          'TERMIN_TAR' => $TERMIN_TAR,
         ];
-        
-        $kontakt = DB::table($firma.'kontakt00')
-            ->where('SIRKET_CH_KODU', $CARIHESAPCODE)
-            ->where('GK_3', 'SAT')
-            ->first();
-        
-        $pdf = PDF::loadView('emails.purchase-order-email', [
-            'data' => $data
-        ]);
-        
-        if (!empty($kontakt->SIRKET_EMAIL_1)) {
-            Mail::to($kontakt->SIRKET_EMAIL_1)
-                ->send(new PurchaseOrderEmail(
-                    'Satın Alma Siparişi',
-                    $data,
-                    $pdf->output()
-                ));
+        $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
+        ->where('GK_3','SAT')
+        ->first();
+        $pdf = PDF::loadView('emails.purchase-order-email', ['data' => $data]);
+        $pdf->download('satin_alma_siparis_'.$data['EVRAKNO'].'.pdf');
+        if(isset($kontakt->SIRKET_EMAIL_1))
+        {
+          
+          Mail::to($kontakt->SIRKET_EMAIL_1)
+            ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
         }
+
+        return redirect()->back()->with('success','Mail Gönderildi');
+      break;
+      case 'download_btn':
+
+        $data = [
+          'EVRAKNO' => $EVRAKNO,
+          'TARIH' => $TARIH,
+          'CARIHESAPCODE' => $CARIHESAPCODE,
+          'KOD' => $KOD,
+          'STOK_ADI' => $STOK_ADI,
+          'LOTNUMBER' => $LOTNUMBER,
+          'SERINO' => $SERINO,
+          'FIYAT' => $FIYAT,
+          'FIYAT_PB' => $FIYAT_PB, 
+          'SF_MIKTAR' => $SF_MIKTAR,
+          'SF_SF_UNIT' => $SF_SF_UNIT,
+          'TERMIN_TAR' => $TERMIN_TAR,
+        ];
+
+        $pdf = PDF::loadView('emails.purchase-order-email', [
+          'data' => $data
+        ]);
         
         return response()->streamDownload(
             fn () => print($pdf->output()),
             'satin_alma_siparis_'.$data['EVRAKNO'].'.pdf'
         );
-        
-      break;
 
       case 'kart_duzenle':
         FunctionHelpers::Logla('STOK46',$EVRAKNO,'W',$TARIH);

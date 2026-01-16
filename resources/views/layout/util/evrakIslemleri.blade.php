@@ -277,6 +277,15 @@
                 value="send_mail">
               <i class="fa-solid fa-paper-plane"></i>
         </button>
+        <button style="border:none; outline:none; background: transparent; padding: 0;" 
+                type="submit" 
+                class="evrak-btn log-btn smbButton" 
+                title="PDF indir" 
+                name="kart_islemleri" 
+                id="mailButton" 
+                value="download_btn">
+              <i class="fa-solid fa-download"></i>
+        </button>
       </div>
 
       <!-- <div id="" name="">

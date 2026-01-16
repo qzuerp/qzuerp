@@ -65,7 +65,8 @@
     }
     #mail
     {
-      display: block !important;
+      display: flex !important;
+      gap: 8px;
     }
   </style>
   <div class="content-wrapper">
@@ -112,7 +113,7 @@
                         class="fa fa-filter" style="color: white;"></i></a>
                   </div>
 
-                  <div class="col-md-2 col-xs-2">
+                  <div class="col-md-1 col-xs-2">
                     <input type="text" class="form-control input-sm" maxlength="16" name="firma" id="firma"
                       value="{{ @$kullanici_veri->firma }}" disabled><input type="hidden" maxlength="16"
                       class="form-control input-sm" name="firma" id="firma" value="{{ @$kullanici_veri->firma }}">
