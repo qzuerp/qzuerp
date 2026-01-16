@@ -511,6 +511,10 @@
     $(window).on('popstate', function () {
       loaderManager.reset();
     });
+    
+    setTimeout(() => {
+      loaderManager.reset();
+    }, 10000);
 
     $(document).ready(function () {
       loaderManager.hide();

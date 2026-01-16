@@ -209,7 +209,7 @@ class stok46_controller extends Controller
         $pdf = PDF::loadView('emails.purchase-order-email', [
             'data' => $data
         ]);
-        // dd($kontakt);
+        
         if (!empty($kontakt->SIRKET_EMAIL_1)) {
             Mail::to($kontakt->SIRKET_EMAIL_1)
                 ->send(new PurchaseOrderEmail(
