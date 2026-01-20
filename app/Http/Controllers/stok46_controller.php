@@ -204,6 +204,8 @@ class stok46_controller extends Controller
           'TERMIN_TAR' => $TERMIN_TAR,
           'NOT' => $NOT,
           'SNOT' => $NOT1,
+
+          
         ];
         $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
         ->where('GK_3','SAT')

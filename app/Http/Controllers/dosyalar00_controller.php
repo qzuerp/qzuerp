@@ -16,7 +16,7 @@ class dosyalar00_controller extends Controller
 {
     public function import(Request $request)
     {
-        if (Auth::check()) {
+        if(Auth::check()) {
             $u = Auth::user();
         }
         $firma = trim($u->firma);
@@ -26,23 +26,28 @@ class dosyalar00_controller extends Controller
             'table' => 'required|string',
         ]);
 
-        $unallowedTables = ['stok', 'urun', 'musteri'];
-        $maxRows = 1020;
-        
-        $blacklistColumns = ['id', 'created_at', 'updated_at'];
+        $unallowedTables = ['stok','urun','musteri'];
+        $maxRows = 100;
+        $chunkSize = 500;
+        $blacklistColumns = ['id','created_at','updated_at'];
 
         $tableName = $request->input('table');
         $table = $firma . '.dbo.' . $tableName;
-        $EVRAKNO = $request->input('EVRAKNO', null); // Default null
+        $EVRAKNO = $request->input('EVRAKNO');
+
+        if($table == 'STOK00')
+        {
+            // Stok kartı için daha önce bu kodda açılmış stok var mı diye kontrol ettirmemiz lazım
+        }
 
         if (in_array($tableName, $unallowedTables)) {
             return response()->json(['error' => 'Bu tabloya yükleme iznin yok.'], 422);
         }
 
-        // ---- TABLO SÜTUNLARINI AL
+        // --- Table columns using INFORMATION_SCHEMA.COLUMNS
         $tableColumns = DB::table('INFORMATION_SCHEMA.COLUMNS')
             ->where('TABLE_NAME', $tableName)
-            ->where('TABLE_SCHEMA', 'dbo')
+            ->where('TABLE_SCHEMA', 'dbo') // SQL Server default schema
             ->pluck('COLUMN_NAME')
             ->toArray();
 
@@ -55,15 +60,9 @@ class dosyalar00_controller extends Controller
             unset($tableColumnsLowerMap[strtolower($b)]);
         }
 
-        // ---- EXCEL OKU
-        try {
-            $collection = Excel::toCollection(null, $request->file('file'))->first();
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Excel dosyası okunamadı: ' . $e->getMessage()], 422);
-        }
-
+        $collection = Excel::toCollection(null, $request->file('file'))->first();
         if (!$collection || $collection->count() == 0) {
-            return response()->json(['error' => 'Excel dosyası boş.'], 422);
+            return response()->json(['error' => 'Excel dosyası boş veya okunamadı.'], 422);
         }
 
         $headerRow = $collection->first();
@@ -73,203 +72,88 @@ class dosyalar00_controller extends Controller
             return response()->json(['error' => "Satır sayısı çok fazla. Maks {$maxRows} satır izinli."], 422);
         }
 
-        // ---- EXCEL → TABLO SÜTUN EŞLEŞME
         $indexToColumn = [];
-        $usedColumns = [];
-
         foreach ($headerRow as $idx => $head) {
-            $headNormalized = strtolower(trim((string) $head));
-            if ($headNormalized === '')
-                continue;
-
-            // Duplicate başlık kontrolü
-            if (isset($usedColumns[$headNormalized])) {
-                return response()->json([
-                    'error' => "Excel'de duplicate başlık bulundu: {$head}"
-                ], 422);
-            }
-
+            $headNormalized = strtolower(trim((string)$head));
+            if ($headNormalized === '') continue;
             if (isset($tableColumnsLowerMap[$headNormalized])) {
                 $indexToColumn[$idx] = $tableColumnsLowerMap[$headNormalized];
-                $usedColumns[$headNormalized] = true;
             }
         }
 
         if (count($indexToColumn) === 0) {
             return response()->json([
                 'error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.',
-                'excel_headers' => array_values($headerRow->toArray()),
-                'table_columns' => array_values($tableColumnsLowerMap)
+                'excel' => $headerRow,
+                'table' => $tableColumnsLowerMap
             ], 422);
         }
-        $chunkSize = floor(2000 / count($indexToColumn));
-        // ------------------------------------------------------------------------------------
-        // *** STOK KODU KONTROL ENTEGRASYONU ***
-        $possibleCodeFields = ['kod', 'stok_kodu', 'stok_kod']; // lowercase
-        $codeColumn = null;
-
-        foreach ($possibleCodeFields as $field) {
-            if (isset($tableColumnsLowerMap[$field])) {
-                $codeColumn = $tableColumnsLowerMap[$field]; // gerçek kolon ismi
-                break;
-            }
-        }
-
-        // Eğer kod alanı varsa → stok00'daki tüm kodları RAM'e çek
-        $existingCodes = [];
-        if ($codeColumn) {
-            try {
-                $existingCodes = DB::table($firma . '.dbo.stok00')
-                    ->pluck('KOD')
-                    ->map(fn($x) => strtolower(trim($x)))
-                    ->filter(fn($x) => $x !== '')
-                    ->flip() // Daha hızlı arama için array key'e çevir
-                    ->toArray();
-            } catch (\Exception $e) {
-                \Log::error('stok00 kontrolü başarısız: ' . $e->getMessage());
-                return response()->json(['error' => 'Stok kontrolü sırasında hata oluştu.'], 500);
-            }
-        }
-        // ------------------------------------------------------------------------------------
 
         $insertCount = 0;
-        $skippedCount = 0;
         $failed = [];
         $batch = [];
 
-        // TRNUM gereken tablolar
         $specialTables = [
-            "tekl20tı",
-            "stdm10t",
-            "stok48t",
-            "stok40t",
-            "MMPS10S_T",
-            "bomu01t",
-            "mmos10t",
-            "stok60ti",
-            "sfdc31t",
-            "stok20t",
-            "mmps10t",
-            "stok21t",
-            "plan_t",
-            "stok26t",
-            "stok29t",
-            "stok46t",
-            "stok63t",
-            "QVAL10T",
-            "stok68t",
-            "stok69t",
-            "stok25t"
+            "tekl20tı","stdm10t","stok48t","stok40t","MMPS10S_T","bomu01t","mmos10t",
+            "stok60ti","sfdc31t","stok20t","mmps10t","stok21t","plan_t","stok26t",
+            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","SRVKC0","stok25t"
         ];
 
-        $trNum = null;
-        if (in_array($tableName, $specialTables)) {
-            if (!$EVRAKNO) {
-                return response()->json(['error' => 'Bu tablo için EVRAKNO gereklidir.'], 422);
-            }
-
-            $trNum = DB::table($table)->where('EVRAKNO', $EVRAKNO)->max('TRNUM');
-            $trNum = $trNum ? (int) $trNum + 1 : 1;
+        if(in_array($tableName, $specialTables))
+        {
+            $trNum = DB::table($table)->where('EVRAKNO',$EVRAKNO)->max('TRNUM');
+            $trNum = $trNum ? (int)$trNum + 1 : 1;
         }
 
-        // ---- VERİ SATIRLARINI İŞLE
         foreach ($dataRows as $rIndex => $row) {
             $rowData = [];
-
             foreach ($indexToColumn as $idx => $colName) {
                 $val = $row->get($idx);
-                if (is_string($val))
-                    $val = trim($val);
+                if (is_string($val)) $val = trim($val);
                 $rowData[$colName] = $val;
             }
 
-            // Tamamen boş satırı atla
             $allNull = true;
-            foreach ($rowData as $v) {
-                if ($v !== null && $v !== '') {
-                    $allNull = false;
-                    break;
-                }
-            }
-            if ($allNull) {
-                continue;
-            }
+            foreach ($rowData as $v) { if ($v !== null && $v !== '') { $allNull = false; break; } }
+            if ($allNull) continue;
 
-            // ------------------------------------------------------------------------------------
-            // *** STOK00 KONTROLÜ: kod yoksa satırı SKIP ***
-            if ($codeColumn && $tableName !== 'stok00') {
-                $excelKod = isset($rowData[$codeColumn]) ? strtolower(trim($rowData[$codeColumn])) : '';
-
-                if ($excelKod === '' || !isset($existingCodes[$excelKod])) {
-                    // stok00'da karşılığı yok → satırı atla
-                    $skippedCount++;
-                    continue;
-                }
-            }
-            // ------------------------------------------------------------------------------------
-
-            // TRNUM gerekiyorsa ekle
             if (in_array($tableName, $specialTables)) {
                 $rowData['TRNUM'] = str_pad($trNum, 6, '0', STR_PAD_LEFT);
-                $rowData['EVRAKNO'] = $EVRAKNO;
                 $trNum++;
+                if ($EVRAKNO) {
+                    $rowData['EVRAKNO'] = $EVRAKNO;
+                }
             }
 
-            // Batch'e ekle
             $batch[] = $rowData;
 
-            // 500'e ulaştıysa insert yap
             if (count($batch) >= $chunkSize) {
                 try {
                     DB::table($table)->insert($batch);
                     $insertCount += count($batch);
                 } catch (\Exception $e) {
-                    $failed[] = [
-                        'excel_row_range' => ($rIndex - count($batch) + 2) . '-' . ($rIndex + 2),
-                        'error' => $e->getMessage()
-                    ];
-                    \Log::error('Batch insert failed', [
-                        'table' => $tableName,
-                        'row_range' => ($rIndex - count($batch) + 2) . '-' . ($rIndex + 2),
-                        'error' => $e->getMessage()
-                    ]);
+                    $failed[] = "Chunk insert failed at excel row ".($rIndex+2).": ".$e->getMessage();
                 }
                 $batch = [];
             }
         }
 
-        // Kalan satırları ekle
         if (count($batch) > 0) {
             try {
                 DB::table($table)->insert($batch);
                 $insertCount += count($batch);
             } catch (\Exception $e) {
-                $failed[] = [
-                    'excel_row_range' => 'final_chunk',
-                    'error' => $e->getMessage()
-                ];
-                \Log::error('Final chunk failed', [
-                    'table' => $tableName,
-                    'error' => $e->getMessage()
-                ]);
+                $failed[] = "Final chunk failed: ".$e->getMessage();
             }
         }
 
         $msg = "{$insertCount} kayıt eklendi.";
-        if ($skippedCount > 0) {
-            $msg .= " {$skippedCount} kayıt stok kartı bulunamadığı için atlandı.";
-        }
         if (count($failed) > 0) {
-            $msg .= " " . count($failed) . " batch'de hata oluştu.";
+            $msg .= " Hatalar: ".count($failed);
+            \Log::error('Import errors', $failed);
         }
 
-        return response()->json([
-            'success' => $msg,
-            'inserted' => $insertCount,
-            'skipped' => $skippedCount,
-            'failed_batches' => count($failed),
-            'errors' => $failed
-        ]);
+        return response()->json(['success' => $msg]);
     }
 
 
