@@ -11,7 +11,7 @@
 
   $ekran = "KLBRSYNKARTI";
   $ekranRumuz = "SRVKC0";
-  $ekranAdi = "Kalibrasyon Kartı / Makina Kartı";
+  $ekranAdi = "Kalibrasyon Kartı / Makina Kartı / Cihaz Kartı";
   $ekranLink = "kart_kalibrasyon";
   $ekranTableE = $database . "SRVKC0";
   $ekranKayitSatirKontrol = "false";

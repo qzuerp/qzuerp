@@ -159,7 +159,6 @@ class dosyalar00_controller extends Controller
             "QVAL10T",
             "stok68t",
             "stok69t",
-            "SRVKC0",
             "stok25t"
         ];
 

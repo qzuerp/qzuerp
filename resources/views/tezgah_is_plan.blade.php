@@ -481,7 +481,7 @@
                                 <div class="col-md-2 col-sm-3 col-xs-6">
                                     <input type="date" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}">
                                 </div>
-                                <div class="col-md-3 col-xs-2">
+                                <div class="col-md-1 col-xs-2">
                                     <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
                                     <input type="hidden" maxlength="16" class="form-control input-sm" name="firma" id="firma"  value="{{ @$kullanici_veri->firma }}">
                                 </div>

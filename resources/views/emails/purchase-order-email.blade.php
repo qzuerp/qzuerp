@@ -99,7 +99,7 @@
         .w-fiyat{ width:70px; }
         .w-pb{ width:38px; }
         .w-tutar{ width:78px; }
-        .w-tarih{ width:66px; }
+        .w-tarih{ width:100px; }
 
         .t-center{ text-align:center; }
         .t-right{ text-align:right; }
@@ -190,7 +190,7 @@
                 <td>{{ $data['EVRAKNO'] ?? '-' }}</td>
             </tr>
             <tr>
-                <td class="info-label">Tarih</td>
+                <td class="info-label">Oluşturma Tarihi</td>
                 <td>{{ $data['TARIH'] ?? '-' }}</td>
             </tr>
             <tr>
@@ -211,16 +211,15 @@
     <table class="items no-break">
         <thead>
         <tr>
-            <th class="w-no t-center">#</th>
             <th class="w-kod">Stok Kodu</th>
             <th class="w-ad">Stok Adı</th>
-            <th class="w-lot">Lot / Seri</th>
+            <th class="w-lot">Teslim</th>
             <th class="w-miktar t-right">Miktar</th>
             <th class="w-birim t-center">Birim</th>
             <th class="w-fiyat t-right">Birim Fiyat</th>
             <th class="w-pb t-center">Para B.</th>
             <th class="w-tutar t-right">Tutar</th>
-            <th class="w-tarih t-center">Teslim</th>
+            <th class="w-tarih t-center">Not</th>
         </tr>
         </thead>
         <tbody>
@@ -231,29 +230,21 @@
                 $satirTutar = $miktar * $fiyat;
                 $toplamTutar += $satirTutar;
 
-                $lot = $data['LOTNUMBER'][$i] ?? '';
-                $seri = $data['SERINO'][$i] ?? '';
-
-                $lotSeri = [];
-                if(!empty($lot) && $lot !== '-') $lotSeri[] =  $lot;
-                if(!empty($seri) && $seri !== '-') $lotSeri[] =  $seri;
-                $lotSeriText = !empty($lotSeri) ? implode(' / ', $lotSeri) : '-';
 
                 $pb = $data['FIYAT_PB'][$i] ?? ($data['FIYAT_PB'][0] ?? 'TL');
                 $birim = $data['SF_SF_UNIT'][$i] ?? '-';
             @endphp
 
             <tr>
-                <td class="t-center">{{ $i+1 }}</td>
                 <td>{{ $data['KOD'][$i] ?? '-' }}</td>
                 <td>{{ $data['STOK_ADI'][$i] ?? '-' }}</td>
-                <td class="muted">{{ $lotSeriText }}</td>
+                <td class="t-center">{{ $data['TERMIN_TAR'][$i] ?? '-' }}</td>
                 <td class="t-right">{{ number_format($miktar, 2, ',', '.') }}</td>
                 <td class="t-center">{{ $birim }}</td>
                 <td class="t-right">{{ number_format($fiyat, 2, ',', '.') }}</td>
                 <td class="t-center">{{ $pb }}</td>
                 <td class="t-right"><strong>{{ number_format($satirTutar, 2, ',', '.') }}</strong></td>
-                <td class="t-center">{{ $data['TERMIN_TAR'][$i] ?? '-' }}</td>
+                <td class="t-center">{{ $data['SNOT'][$i] ?? '-' }}</td>
             </tr>
         @endfor
         </tbody>
@@ -280,7 +271,7 @@
 
     {{-- FOOTER --}}
     <div class="footer">
-        <!-- <div>Bu belge QZUERP tarafından otomatik olarak oluşturulmuştur.</div> -->
+        <div>KDV dahil değildir.</div>
         <div>© {{ date('Y') }} - Tüm hakları saklıdır.</div>
     </div>
 
