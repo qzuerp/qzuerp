@@ -30,12 +30,134 @@
         <section class="content">
             @include('layout.util.evrakContentHeader')
 
-            @php
-                foreach($fasonGiden as $depo)
-                {
-                    
-                }
-            @endphp
+            @foreach($fasonGiden as $depo)
+                @php
+                    $evraklar = DB::table($database.'stok10a as s10')
+                        ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+                        ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+                        ->selectRaw('
+                            s10.KOD,
+                            s10.STOK_ADI,
+                            SUM(s10.SF_MIKTAR) AS MIKTAR,
+                            s10.SF_SF_UNIT,
+                            s10.LOTNUMBER,
+                            s10.SERINO,
+                            s10.AMBCODE,
+                            g.AD AS DEPO_ADI,
+                            s10.TEXT1,
+                            s10.TEXT2,
+                            s10.TEXT3,
+                            s10.TEXT4,
+                            s10.NUM1,
+                            s10.NUM2,
+                            s10.NUM3,
+                            s10.NUM4,
+                            s10.LOCATION1,
+                            s10.LOCATION2,
+                            s10.LOCATION3,
+                            s10.LOCATION4,
+                            s0.NAME2,
+                            s0.id,
+                            s0.REVNO
+                        ')
+                        ->groupBy(
+                            's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
+                            's10.SERINO','s10.AMBCODE','g.AD',
+                            's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
+                            's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
+                            's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
+                            's0.NAME2','s0.id','s0.REVNO'
+                        )
+                        ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
+                        ->where('s10.AMBCODE','=',$depo->KOD)
+                        ->get();
+                @endphp
+                <div class="row mt-3" style="overflow: auto">
+                    <table id="table" class="table table-hover text-center" data-page-length="10">
+                        <thead>
+                            <tr class="bg-primary">
+                                <th style="min-width: 150px">Kod</th>
+                                <th style="min-width: 200px">Ad</th>
+                                <th style="min-width: 200px">Ad 2</th>
+                                <th style="min-width: 100px">Revizyon No</th>
+                                <th style="min-width: 100px">Miktar</th>
+                                <th style="min-width: 100px">Birim</th>
+                                <th style="min-width: 100px">Lot</th>
+                                <th style="min-width: 100px">Seri No</th>
+                                <th style="min-width: 100px">Depo</th>
+                                <th style="min-width: 100px">Varyant Text 1</th>
+                                <th style="min-width: 100px">Varyant Text 2</th>
+                                <th style="min-width: 100px">Varyant Text 3</th>
+                                <th style="min-width: 100px">Varyant Text 4</th>
+                                <th style="min-width: 100px">Ölçü 1</th>
+                                <th style="min-width: 100px">Ölçü 2</th>
+                                <th style="min-width: 100px">Ölçü 3</th>
+                                <th style="min-width: 100px">Ölçü 4</th>
+                                <th style="min-width: 100px">Lok 1</th>
+                                <th style="min-width: 100px">Lok 2</th>
+                                <th style="min-width: 100px">Lok 3</th>
+                                <th style="min-width: 100px">Lok 4</th>
+                                <th style="min-width: 100px">Görsel</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="bg-info">
+                                <th>Kod</th>
+                                <th>Ad</th>
+                                <th>Ad 2</th>
+                                <th>Revizyon No</th>
+                                <th>Miktar</th>
+                                <th>Birim</th>
+                                <th>Lot</th>
+                                <th>Seri No</th>
+                                <th>Depo</th>
+                                <th>Varyant Text 1</th>
+                                <th>Varyant Text 2</th>
+                                <th>Varyant Text 3</th>
+                                <th>Varyant Text 4</th>
+                                <th>Ölçü 1</th>
+                                <th>Ölçü 2</th>
+                                <th>Ölçü 3</th>
+                                <th>Ölçü 4</th>
+                                <th>Lok 1</th>
+                                <th>Lok 2</th>
+                                <th>Lok 3</th>
+                                <th>Lok 4</th>
+                                <th>Görsel</th>
+                                <th>#</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach ($evraklar as $item)
+                                <tr>
+                                    <td>{{ $item->KOD }}</td>
+                                    <td>{{ $item->STOK_ADI }}</td>
+                                    <td>{{ $item->STOK_ADI2 }}</td>
+                                    <td>{{ $item->REVNO }}</td>
+                                    <td>{{ $item->SF_MIKTAR }}</td>
+                                    <td>{{ $item->SF_UNIT }}</td>
+                                    <td>{{ $item->LOTNUMBER }}</td>
+                                    <td>{{ $item->SERINO }}</td>
+                                    <td>{{ $item->NAME2 }}</td>
+                                    <td>{{ $item->TEXT1 }}</td>
+                                    <td>{{ $item->TEXT2 }}</td>
+                                    <td>{{ $item->TEXT3 }}</td>
+                                    <td>{{ $item->TEXT4 }}</td>
+                                    <td>{{ $item->NUM1 }}</td>
+                                    <td>{{ $item->NUM2 }}</td>
+                                    <td>{{ $item->NUM3 }}</td>
+                                    <td>{{ $item->NUM4 }}</td>
+                                    <td>{{ $item->LOCATION1 }}</td>
+                                    <td>{{ $item->LOCATION2 }}</td>
+                                    <td>{{ $item->LOCATION3 }}</td>
+                                    <td>{{ $item->LOCATION4 }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
         </section>
     </div>
 @endsection

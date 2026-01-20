@@ -117,7 +117,7 @@
 												<option value="">Seç</option>
 												@foreach ($operasyon_evraklar as $veri)
 													<option value="{{ $veri->KOD }}" {{ @$kart_veri->KRITERCODE_2 == $veri->KOD ? 'selected' : '' }}>
-														{{ $veri->KOD }}
+														{{ $veri->KOD }} - {{ $veri->AD }}
 													</option>
 												@endforeach
 											</select>
