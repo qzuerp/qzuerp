@@ -96,7 +96,7 @@ class dosyalar00_controller extends Controller
         $specialTables = [
             "tekl20tı","stdm10t","stok48t","stok40t","MMPS10S_T","bomu01t","mmos10t",
             "stok60ti","sfdc31t","stok20t","mmps10t","stok21t","plan_t","stok26t",
-            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","SRVKC0","stok25t"
+            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","stok25t"
         ];
 
         if(in_array($tableName, $specialTables))
