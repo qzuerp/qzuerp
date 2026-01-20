@@ -191,6 +191,9 @@
         @if (in_array('FSNSEVKIRS', $kullanici_read_yetkileri))
           <li><a href="fasonsevkirsaliyesi"><i class='bx bx-arrow-from-left'></i>Fason Sevk İrsaliyesi</a></li>
         @endif
+        @if (in_array('FSNTKB', $kullanici_read_yetkileri))
+          <li><a href="fason_takibi"><i class='bx bx-arrow-from-left'></i>Fason Takibi</a></li>
+        @endif
       </ul>
     </li>
 

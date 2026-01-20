@@ -68,13 +68,13 @@
       display: flex !important;
       gap: 8px;
     }
-  </style>
-  <div class="content-wrapper">
+    </style>
+    <div class="content-wrapper">
 
-    @include('layout.util.evrakContentHeader')
-    @include('layout.util.logModal', ['EVRAKTYPE' => 'STOK46', 'EVRAKNO' => @$kart_veri->EVRAKNO])
+      @include('layout.util.evrakContentHeader')
+      @include('layout.util.logModal', ['EVRAKTYPE' => 'STOK46', 'EVRAKNO' => @$kart_veri->EVRAKNO])
 
-    <section class="content">
+      <section class="content">
       <form method="POST" action="stok46_islemler" method="POST" name="verilerForm" id="verilerForm">
         @csrf
         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
@@ -139,7 +139,7 @@
                         data-bs-title="TARIH" name="TARIH" id="TARIH" value="{{ @$kart_veri->TARIH }}">
                     </div>
 
-                    <div class="col-md-4 col-sm-4 col-xs-6">
+                    <div class="col-md-3 col-sm-3 col-xs-5">
                       <label>Tedarikçi Kodu</label>
                       <select class="form-control select2 js-example-basic-single CARIHESAPCODE" data-bs-toggle="tooltip"
                         data-bs-placement="top" data-bs-title="CARIHESAPCODE" style="width: 100%; height: 30PX"
@@ -156,6 +156,12 @@
                           }
                         @endphp
                       </select>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Not</label>
+                      <input type="text" class="form-control NOT" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="NOT" name="NOT" id="NOT" value="{{ @$kart_veri->NOT }}">
                     </div>
 
                     <div class="col-md-2 col-sm-1 col-xs-2">

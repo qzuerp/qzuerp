@@ -4,284 +4,286 @@
     <meta charset="UTF-8">
     <title>Satın Alma Siparişi</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        .container {
-            max-width: 900px;
-            margin: 30px auto;
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .header {
-            background-color: #ffffff;
-            padding: 30px 40px 20px;
-            border-bottom: 3px solid #4a90e2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo-area {
-            flex: 1;
-        }
-        .logo-placeholder {
-            width: 180px;
-            height: 60px;
-            background-color: #f0f0f0;
-            border: 2px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: #999;
-            border-radius: 4px;
-        }
-        .header-title {
-            flex: 1;
-            text-align: right;
-        }
-        .header-title h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            color: #2c3e50;
-            letter-spacing: 0.5px;
-        }
-        .content {
-            padding: 30px 40px;
-        }
-        .info-section {
-            margin-bottom: 30px;
-            background-color: #fafafa;
-            padding: 20px;
-            border-radius: 6px;
-            border-left: 4px solid #4a90e2;
-        }
-        .info-row {
-            margin-bottom: 10px;
-            display: flex;
-        }
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-        .info-row strong {
-            display: inline-block;
-            width: 150px;
-            color: #555;
-            font-weight: 600;
-        }
-        .info-row span {
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        table th {
-            background-color: #4a90e2;
-            color: #ffffff;
-            padding: 12px 8px;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #e8e8e8;
-            font-size: 11px;
-        }
-        table tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-        table tbody tr:last-child td {
-            border-bottom: none;
-        }
-        .text-right {
-            text-align: right;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .totals {
-            margin-top: 20px;
-            float: right;
-            width: 350px;
-        }
-        .totals table {
-            margin-bottom: 0;
-            border: 1px solid #e8e8e8;
-        }
-        .totals td {
-            padding: 10px 15px;
-            border-bottom: 1px solid #e8e8e8;
-        }
-        .totals .total-row {
-            background-color: #4a90e2;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .totals .total-row td {
-            border-bottom: none;
-        }
-        .notes-section {
-            clear: both;
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #fffef0;
-            border-left: 4px solid #ffc107;
-            border-radius: 6px;
-        }
-        .notes-section h3 {
-            margin: 0 0 10px 0;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-        }
-        .notes-section p {
-            margin: 0;
-            font-size: 11px;
-            line-height: 1.6;
-            color: #666;
-        }
-        .footer {
-            padding: 20px 40px;
-            background-color: #f9f9f9;
-            text-align: center;
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        @page { margin: 12mm; }
+
+        body{
+            font-family: DejaVu Sans, Arial, sans-serif;
             font-size: 10px;
-            color: #999;
-            border-top: 1px solid #e8e8e8;
+            color:#111;
+            line-height:1.25;
+            padding:10px;
         }
-        .footer p {
-            margin: 5px 0;
+
+        .wrap{ width:100%; }
+
+        .header{
+            width:100%;
+            border-bottom: 1px solid #b8b8b8;   
+            padding: 0px 8px 10px 10px;
+            margin-bottom: 10px;
         }
+        .header-table{
+            width:100%;
+            border-collapse:collapse;
+        }
+        .header-table td{ vertical-align:middle; }
+        .logo-box{
+            width:150px;
+            height:55px;
+            text-align:center;
+        }
+        .logo-box img{
+            height:45px;
+            width:auto;
+        }
+
+        .doc-title{
+            text-align:right;
+            font-size:16px;
+            font-weight:bold;
+            letter-spacing:0.5px;
+        }
+
+        .info{
+            width:100%;
+            background:#f4f4f4;
+            border-left:1px solid #666;
+            padding:8px 10px;
+            margin-bottom:10px;
+            border-radius: 5px;
+        }
+        .info-table{
+            width:100%;
+            border-collapse:collapse;
+        }
+        .info-table td{
+            padding:2px 0;
+            font-size:10px;
+        }
+        .info-label{
+            width:110px;
+            font-weight:bold;
+            color:#444;
+        }
+
+        table.items{
+            width:100%;
+            border-collapse:collapse;
+            table-layout:fixed; /* IMPORTANT */
+        }
+        .items th{
+            background:#e7e7e7;
+            border:1px solid #cfcfcf;
+            padding:6px 4px;
+            font-size:9px;
+            font-weight:bold;
+        }
+        .items td{
+            border:1px solid #e1e1e1;
+            padding:6px 4px;
+            font-size:9.8px;
+            vertical-align:top;
+            word-wrap:break-word;
+        }
+        .items tr:nth-child(even) td{ background:#fafafa; }
+
+        /* Fixed widths (PDF-safe) */
+        .w-no{ width:24px; }
+        .w-kod{ width:78px; }
+        .w-ad{ width:190px; }
+        .w-lot{ width:92px; }
+        .w-miktar{ width:58px; }
+        .w-birim{ width:46px; }
+        .w-fiyat{ width:70px; }
+        .w-pb{ width:38px; }
+        .w-tutar{ width:78px; }
+        .w-tarih{ width:66px; }
+
+        .t-center{ text-align:center; }
+        .t-right{ text-align:right; }
+        .muted{ color:#666; font-size:9px; }
+
+        /* Total box (no float; table aligned right) */
+        .total-table{
+            width:260px;
+            border-collapse:collapse;
+            margin-left:auto;   
+            border-radius:5px;
+            padding:8px 10px;
+            background:#2a2a2a;
+            color:#fff;
+            font-weight:bold;
+            border:1px solid #2a2a2a;
+            font-size:11px;
+        }
+        .total-wrap{
+            width:100%;
+            margin-top:8px;
+        }
+        /* Notes */
+        .notes{
+            width:100%;
+            margin-top:10px;
+            background:#fffef5;
+            border-left:1px solid #c9a961;
+            padding:8px 10px;
+            border-radius: 5px;
+        }
+        .notes-title{
+            font-weight:bold;
+            font-size:10px;
+            color:#444;
+            margin-bottom:4px;
+        }
+        .notes-text{
+            font-size:9.5px;
+            color:#555;
+            min-height:18px;
+        }
+
+        /* Footer */
+        .footer{
+            width:100%;
+            margin-top:10px;
+            padding-top:6px;
+            border-top:1px solid #ddd;
+            text-align:center;
+            font-size:8.5px;
+            color:#777;
+        }
+
+        /* Page break helpers if needed */
+        .no-break { page-break-inside: avoid; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Başlık -->
-        <div class="header">
-            <div class="logo-area">
-                <div class="logo-placeholder">
-                    <!-- Buraya logo gelecek -->
-                    @php
-                        $user = Auth::user();
-                        $FIRMA = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($user->firma))->first();
-                    @endphp
+<div class="wrap">
 
-                    @if($FIRMA)
-                        <img src="{{ asset($FIRMA->LOGO_URL) }}" style="max-width: 100%; max-height: 100%;">
+    {{-- HEADER --}}
+    <div class="header">
+        <table class="header-table">
+            <tr>
+                <td style="width:170px;">
+                    <div class="logo-box">
+                        @php $FIRMA = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim(auth()->user()->firma))->first(); @endphp 
+                            @if($FIRMA && isset($FIRMA->LOGO_URL))
+                            <img  src="{{ public_path($FIRMA->LOGO_URL) }}" alt="Logo">
+                        @else
+                            Firma Logosu 
+                        @endif
+                    </div>
+                </td>
+                <td>
+                    <div class="doc-title">SATIN ALMA SİPARİŞİ</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {{-- INFO --}}
+    <div class="info">
+        <table class="info-table">
+            <tr>
+                <td class="info-label">Evrak No</td>
+                <td>{{ $data['EVRAKNO'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Tarih</td>
+                <td>{{ $data['TARIH'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Tedarikçi</td>
+                <td>
+                    {{ $data['CARIHESAPCODE'] ?? '-' }}
+                    @if(!empty($cariAdi))
+                        - {{ $cariAdi }}
                     @endif
-                    
-                    <span>Firma Logosu</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {{-- ITEMS --}}
+    @php $toplamTutar = 0; @endphp
+
+    <table class="items no-break">
+        <thead>
+        <tr>
+            <th class="w-no t-center">#</th>
+            <th class="w-kod">Stok Kodu</th>
+            <th class="w-ad">Stok Adı</th>
+            <th class="w-lot">Lot / Seri</th>
+            <th class="w-miktar t-right">Miktar</th>
+            <th class="w-birim t-center">Birim</th>
+            <th class="w-fiyat t-right">Birim Fiyat</th>
+            <th class="w-pb t-center">Para B.</th>
+            <th class="w-tutar t-right">Tutar</th>
+            <th class="w-tarih t-center">Teslim</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for($i=0; $i < count($data['KOD'] ?? []); $i++)
+            @php
+                $miktar = (float)($data['SF_MIKTAR'][$i] ?? 0);
+                $fiyat  = (float)($data['FIYAT'][$i] ?? 0);
+                $satirTutar = $miktar * $fiyat;
+                $toplamTutar += $satirTutar;
+
+                $lot = $data['LOTNUMBER'][$i] ?? '';
+                $seri = $data['SERINO'][$i] ?? '';
+
+                $lotSeri = [];
+                if(!empty($lot) && $lot !== '-') $lotSeri[] =  $lot;
+                if(!empty($seri) && $seri !== '-') $lotSeri[] =  $seri;
+                $lotSeriText = !empty($lotSeri) ? implode(' / ', $lotSeri) : '-';
+
+                $pb = $data['FIYAT_PB'][$i] ?? ($data['FIYAT_PB'][0] ?? 'TL');
+                $birim = $data['SF_SF_UNIT'][$i] ?? '-';
+            @endphp
+
+            <tr>
+                <td class="t-center">{{ $i+1 }}</td>
+                <td>{{ $data['KOD'][$i] ?? '-' }}</td>
+                <td>{{ $data['STOK_ADI'][$i] ?? '-' }}</td>
+                <td class="muted">{{ $lotSeriText }}</td>
+                <td class="t-right">{{ number_format($miktar, 2, ',', '.') }}</td>
+                <td class="t-center">{{ $birim }}</td>
+                <td class="t-right">{{ number_format($fiyat, 2, ',', '.') }}</td>
+                <td class="t-center">{{ $pb }}</td>
+                <td class="t-right"><strong>{{ number_format($satirTutar, 2, ',', '.') }}</strong></td>
+                <td class="t-center">{{ $data['TERMIN_TAR'][$i] ?? '-' }}</td>
+            </tr>
+        @endfor
+        </tbody>
+    </table>
+
+    {{-- TOTAL --}}
+    <div class="total-wrap">
+        <div class="total-table">
+                <div style="float:left;">Toplam</div>
+                <div style="text-align:right;">
+                    {{ number_format($toplamTutar, 2, ',', '.') }}
+                    {{ $data['FIYAT_PB'][0] ?? 'TL' }}
                 </div>
-            </div>
-            <div class="header-title">
-                <h1>SATIN ALMA SİPARİŞİ</h1>
-            </div>
-        </div>
-
-        <div class="content">
-            <!-- Genel Bilgiler -->
-            <div class="info-section">
-                <div class="info-row">
-                    <strong>Evrak No:</strong>
-                    <span>{{ $data['EVRAKNO'] }}</span>
-                </div>
-                <div class="info-row">
-                    <strong>Oluşturulma Tarihi:</strong>
-                    <span>{{ $data['TARIH'] }}</span>
-                </div>
-                <div class="info-row">
-                    <strong>Tedarikçi:</strong>
-                    <span>
-                        @php
-                            $cariName = DB::table(trim(auth()->user()->firma).'.dbo.cari00')
-                                ->where('KOD', $data['CARIHESAPCODE'])
-                                ->first();
-                        @endphp
-                        {{ $data['CARIHESAPCODE'] }} - {{ $cariName->AD }}
-                    </span>
-                </div>
-            </div>
-
-            <!-- Malzeme Tablosu -->
-            <table>
-                <thead>
-                    <tr>
-                        <th class="text-center" style="width: 30px;">Sıra</th>
-                        <th>Stok Kodu</th>
-                        <th>Stok Adı</th>
-                        <th>Lot No</th>
-                        <th>Seri No</th>
-                        <th class="text-right">Miktar</th>
-                        <th>Birim</th>
-                        <th class="text-right">Birim Fiyat</th>
-                        <th class="text-center">Para Birimi</th>
-                        <th class="text-right">Tutar</th>
-                        <th>Teslimat Tarihi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $toplamTutar = 0;
-                    @endphp
-                    @for($i = 0; $i < count($data['KOD']); $i++)
-                    @php
-                        $satirTutar = $data['SF_MIKTAR'][$i] * $data['FIYAT'][$i];
-                        $toplamTutar += $satirTutar;
-                    @endphp
-                    <tr>
-                        <td class="text-center">{{ $i + 1 }}</td>
-                        <td>{{ $data['KOD'][$i] }}</td>
-                        <td>{{ $data['STOK_ADI'][$i] }}</td>
-                        <td>{{ $data['LOTNUMBER'][$i] ?? '-' }}</td>
-                        <td>{{ $data['SERINO'][$i] ?? '-' }}</td>
-                        <td class="text-right">{{ number_format($data['SF_MIKTAR'][$i], 2, ',', '.') }}</td>
-                        <td>{{ $data['SF_SF_UNIT'][$i] }}</td>
-                        <td class="text-right">{{ number_format($data['FIYAT'][$i], 2, ',', '.') }}</td>
-                        <td class="text-center">{{ $data['FIYAT_PB'][$i] }}</td>
-                        <td class="text-right">{{ number_format($satirTutar, 2, ',', '.') }}</td>
-                        <td>{{ $data['TERMIN_TAR'][$i] }}</td>
-                    </tr>
-                    @endfor
-                </tbody>
-            </table>
-
-            <!-- Toplamlar -->
-            <div class="totals">
-                <table>
-                    <tr class="total-row">
-                        <td><strong>Genel Toplam</strong></td>
-                        <td class="text-right"><strong>{{ number_format($toplamTutar, 2, ',', '.') }} {{ $data['FIYAT_PB'][0] ?? 'TL' }}</strong></td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- Genel Notlar -->
-            <div class="notes-section">
-                <h3>Genel Notlar</h3>
-                <p>
-                    
-                </p>
-            </div>
-        </div>
-
-        <!-- Alt Bilgi -->
-        <div class="footer">
-            <p>Bu belge QZUERP tarafından otomatik olarak oluşturulmuştur.</p>
-            <p>© {{ date('Y') }} - Tüm hakları saklıdır.</p>
         </div>
     </div>
+
+    {{-- NOTES --}}
+    <div class="notes">
+        <div class="notes-title">Notlar</div>
+        <div class="notes-text">
+            {{ $data['NOT'] ?? '' }}
+        </div>
+    </div>
+
+    {{-- FOOTER --}}
+    <div class="footer">
+        <div>Bu belge QZUERP tarafından otomatik olarak oluşturulmuştur.</div>
+        <div>© {{ date('Y') }} - Tüm hakları saklıdır.</div>
+    </div>
+
+</div>
 </body>
 </html>

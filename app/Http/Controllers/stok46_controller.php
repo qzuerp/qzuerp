@@ -6,6 +6,7 @@ use App\Helpers\FunctionHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\PurchaseOrderEmail;
 use PDF;
 
@@ -68,6 +69,7 @@ class stok46_controller extends Controller
     $FIYAT = $request->FIYAT;
     $FIYAT_PB = $request->FIYAT_PB;
     $MPS_KODU = $request->MPS_KODU;
+    $NOT = $request->NOT;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -140,6 +142,7 @@ class stok46_controller extends Controller
           'AK' => $AK,
           'created_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
+          'NOT' => $NOT,
         ]);
 
 
@@ -199,6 +202,7 @@ class stok46_controller extends Controller
           'SF_MIKTAR' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT,
           'TERMIN_TAR' => $TERMIN_TAR,
+          'NOT' => $NOT,
         ];
         $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
         ->where('GK_3','SAT')
@@ -215,7 +219,10 @@ class stok46_controller extends Controller
         return redirect()->back()->with('success','Mail Gönderildi');
       break;
       case 'download_btn':
-
+        if(Auth::check()) {
+          $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
         $data = [
           'EVRAKNO' => $EVRAKNO,
           'TARIH' => $TARIH,
@@ -229,6 +236,7 @@ class stok46_controller extends Controller
           'SF_MIKTAR' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT,
           'TERMIN_TAR' => $TERMIN_TAR,
+          'NOT' => $NOT,
         ];
 
         $pdf = PDF::loadView('emails.purchase-order-email', [
@@ -240,6 +248,9 @@ class stok46_controller extends Controller
             'satin_alma_siparis_'.$data['EVRAKNO'].'.pdf'
         );
 
+
+        return view('emails.purchase-order-email',compact('data'));
+
       case 'kart_duzenle':
         FunctionHelpers::Logla('STOK46',$EVRAKNO,'W',$TARIH);
 
@@ -249,6 +260,7 @@ class stok46_controller extends Controller
           'AK' => $AK,
           'updated_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
+          'NOT' => $NOT,
         ]);
 
         // Yeni TRNUM Yapisi

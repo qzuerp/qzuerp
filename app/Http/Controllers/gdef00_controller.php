@@ -121,7 +121,7 @@ class gdef00_controller extends Controller
         break;
 
       case 'kart_sil':
-FunctionHelpers::Logla('GDEF00',$KOD,'D');
+        FunctionHelpers::Logla('GDEF00',$KOD,'D');
 
         DB::table($firma.'gdef00')->where('KOD',$KOD)->delete();
 
@@ -189,10 +189,7 @@ FunctionHelpers::Logla('GDEF00',$KOD,'D');
         // $veri=DB::table($firma.'gdef00')->where('KOD',$KOD)->first();
         // return redirect()->route('kart_depo', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
-        print_r("Düzenleme işlemi başarılı.");
-
-        $sonID=DB::table($firma.'gdef00')->max('id');
-        return redirect()->route('kart_depo', ['ID' => $sonID, 'duzenleme' => 'ok']);
+        return redirect()->back()->with('success', 'Değişiklikler Başarıyla Kaydedildi');
 
         break;
     }

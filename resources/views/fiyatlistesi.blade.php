@@ -36,7 +36,7 @@ else{
 
 $kart_veri = DB::table($ekranTableE)->where('EVRAKNO',$sonID)->first();
 $t_kart_veri=DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
-
+    
 $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 $stok00_evraklar=DB::table('stok00')->limit(50)->get();
 

@@ -129,13 +129,13 @@
           Swal.fire({
             icon: 'warning',
             title: 'Evrak Kaydedilmeli!',
-            text: 'Yazdırmak için önce evrakı kaydetmelisiniz.',
+            text: 'Bu işlemi yapmak için önce evrakı kaydetmelisiniz.',
             confirmButtonText: 'Tamam'
           });
 
           return false;
         }
-      });
+      }); 
     });
 
     function trackAllFormElements() {

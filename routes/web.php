@@ -250,6 +250,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('stok68_islemler', [stok68_controller::class, 'islemler']);
     Route::post('/fason/getir', [stok68_controller::class, 'fason_getir']);
 
+    // Fason Takibi 
+    Route::get('fason_takibi',function () { return view('fason_takibi'); });
+
     // Stok69 - Geçerli Lokasyonlar
     Route::get('gecerlilokasyonlar', [stok69_controller::class, 'index'])->name('gecerlilokasyonlar');
     Route::post('stok69_islemler', [stok69_controller::class, 'islemler']);

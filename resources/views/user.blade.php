@@ -705,6 +705,18 @@
                                           echo " checked" @endphp></td>
                                     </tr>
                                     <tr>
+                                      <td>Fason Takibi</td>
+                                      <td><input type="checkbox" class="yetki_read" id="fasongelisirsaliyesi_read"
+                                          name="yetki_read[]" value="FSNTKB" @php if (in_array('FSNTKB', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="fasongelisirsaliyesi_write"
+                                          name="yetki_write[]" value="FSNTKB" @php if (in_array('FSNTKB', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="fasongelisirsaliyesi_delete"
+                                          name="yetki_delete[]" value="FSNTKB" @php if (in_array('FSNTKB', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
                                       <td>Doküman Yönetimi</td>
                                       <td><input type="checkbox" class="yetki_read" id="DYS_read" name="yetki_read[]"
                                           value="DYS" @php if (in_array('DYS', $kullanici_read_yetkileri))
