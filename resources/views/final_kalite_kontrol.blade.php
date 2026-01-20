@@ -148,8 +148,16 @@
 									<div class="row g-3">
 										<div class="col-md-3">
 											<label class="form-label">Sipariş No</label>
-											<input type="text" name="order_no" class="form-control"
-												value="{{ $kart_veri->order_no ?? '' }}">
+											<div class="d-flex">
+												<input type="text" name="order_no" class="form-control"
+													value="{{ $kart_veri->order_no ?? '' }}">
+												<span class="d-flex -btn">
+													<button class="btn btn-radius btn-primary" id="modal_popupSelectModalBtn" data-bs-toggle="modal" 
+															data-bs-target="#modal_popupSelectSIPModal" type="button">
+														<i class="fa-solid fa-magnifying-glass"></i>
+													</button>
+												</span>
+											</div>
 										</div>
 
 										<div class="col-md-3">
@@ -469,6 +477,44 @@
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
 				</div>
 			</div>
+			</div>
+		</div>
+
+		<div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal"  >
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row" style="overflow: auto">
+							<table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
+								<thead>
+									<tr class="bg-primary">
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Birim</th>
+									</tr>
+								</thead>
+								<!-- <tfoot>
+									<tr class="bg-info">
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Birim</th>
+									<th>#</th>
+									</tr>
+								</tfoot> -->
+								<tbody> 	
+
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+					</div>
+				</div>
 			</div>
 		</div>
 

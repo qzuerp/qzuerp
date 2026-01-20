@@ -921,7 +921,7 @@
 
                     @php
 
-                    $evraklar=DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok40e.EVRAKNO', '=', 'stok40t.EVRAKNO')->orderBy('stok40t.id', 'ASC')->get(['']);
+                    $evraklar=DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok40e.EVRAKNO', '=', 'stok40t.EVRAKNO')->orderBy('stok40t.id', 'ASC')->get(['stok40e.EVRAKNO', 'stok40e.CHSIPNO', 'stok40e.TARIH', 'stok40e.CARIHESAPCODE', 'stok40t.*']); 
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
