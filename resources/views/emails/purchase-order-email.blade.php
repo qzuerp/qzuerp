@@ -280,7 +280,7 @@
 
     {{-- FOOTER --}}
     <div class="footer">
-        <div>Bu belge QZUERP tarafından otomatik olarak oluşturulmuştur.</div>
+        <!-- <div>Bu belge QZUERP tarafından otomatik olarak oluşturulmuştur.</div> -->
         <div>© {{ date('Y') }} - Tüm hakları saklıdır.</div>
     </div>
 
