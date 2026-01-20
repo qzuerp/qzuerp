@@ -267,7 +267,7 @@
         </button>
       </div>
 
-      <div id="mail" style="display: none;">
+      <div id="mail" style="display: none; gap:0px !important">
         <button style="border:none; outline:none; background: transparent; padding: 0;" 
                 type="submit" 
                 class="evrak-btn log-btn smbButton" 
