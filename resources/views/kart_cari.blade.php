@@ -116,13 +116,13 @@
 
 							  <div class="col-md-2 col-sm-3 col-xs-6">
 									<label>KOD</label>
-									<input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
+									<input type="text" class="form-control KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="MAIN_KOD" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 									<!-- Bu kısım kod alanı güncellenmek istenirese eğer veritabanında eşleştirme yapılacak kısım -->
 									<input type="hidden" class="form-control" name="KOD2" id="KOD" maxlength="16"  value="{{ @$kart_veri->KOD }}">
 							  </div>
 							 	<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Cari Adı</label>
-									<input type="text" class="form-control AD"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
+									<input type="text" class="form-control AD"maxlength="100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" name="MAIN_AD" id="AD"  value="{{ @$kart_veri->AD }}" >
 							 	</div>
 								<div class="col-md-2 col-sm-3 col-xs-6">
 									<label>Ad2</label>

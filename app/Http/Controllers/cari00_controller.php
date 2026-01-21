@@ -49,10 +49,10 @@ class cari00_controller extends Controller
     $islem_turu = $request->kart_islemleri;
 
     
-    $KOD = $request->input('KOD');
+    $KOD = $request->input('MAIN_KOD');
     $EVRAKNO = $request->input('KOD');
     $KOD_T = $request->input('KOD_T');
-    $AD = $request->input('AD');
+    $AD = $request->input('MAIN_AD');
     $AD_T = $request->input('AD_T');
     $AP10 = $request->input('AP10');
     $ADRES_1 = $request->input('ADRES_1');
@@ -319,7 +319,6 @@ class cari00_controller extends Controller
     
 
       case 'kart_duzenle':
-        FunctionHelpers::Logla('CARI00',$KOD,'W');
         // DB::enableQueryLog();
         DB::table($firma.'cari00')->where('KOD',$request->KOD2)->update([
           'KOD' => $KOD,
@@ -372,6 +371,7 @@ class cari00_controller extends Controller
           'DENETIM_PERIYOT' => $DENETIM_PERIYOT,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        FunctionHelpers::Logla('CARI00',$KOD,'W');
 
         if (!isset($TRNUM)) {
           $TRNUM = array();
