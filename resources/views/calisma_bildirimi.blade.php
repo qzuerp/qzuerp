@@ -1284,6 +1284,7 @@
                                   echo "<td><b>".$table->BITIS_TARIHI."</b></td>";
                                   echo "<td><b>".$table->BITIS_SAATI."</b></td>";
                                   echo "<td><b>".$table->SURE."</b></td>";
+                                  echo "<td><b>".floor($table->SF_MIKTAR)."</b></td>";
                                   echo "<td><b><a class='btn btn-primary' href='calisma_bildirimi?ID=".$table->ID."'><i class='fa fa-chevron-circle-right'></i></a></b></td>";
                                   echo "</tr>";
                                 }
