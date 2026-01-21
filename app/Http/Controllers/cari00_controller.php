@@ -426,7 +426,7 @@ class cari00_controller extends Controller
         // dd(DB::getQueryLog());
         print_r("Düzenleme işlemi başarılı.");
 
-        $veri=DB::table($firma.'cari00')->where('KOD',$request->KOD)->first();
+        $veri=DB::table($firma.'cari00')->where('KOD',$request->MAIN_KOD)->first();
         return redirect()->route('kart_cari', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
         break;
