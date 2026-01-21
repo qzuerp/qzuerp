@@ -375,6 +375,7 @@ class calisma_bildirimi_controller extends Controller
 
         DB::table($firma . 'sfdc31e')->where('EVRAKNO', $EVRAKNO)->delete();
         DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->delete();
+        DB::table($firma . 'sfdc31h')->where('EVRAKNO', $EVRAKNO)->delete();
 
         print_r("Silme işlemi başarılı.");
 
@@ -396,7 +397,7 @@ class calisma_bildirimi_controller extends Controller
           $EVRAKNO = $SONID + 1;
         }
 
-        FunctionHelpers::Logla('SFDC31', $SONID, 'C', $TARIH);
+        FunctionHelpers::Logla('SFDC31', $EVRAKNO, 'C', $TARIH);
 
 
 
