@@ -320,7 +320,7 @@ class cari00_controller extends Controller
 
       case 'kart_duzenle':
         FunctionHelpers::Logla('CARI00',$KOD,'W');
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         DB::table($firma.'cari00')->where('KOD',$request->KOD2)->update([
           'KOD' => $KOD,
           'AD' => $AD,

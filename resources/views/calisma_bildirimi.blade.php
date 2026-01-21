@@ -1046,7 +1046,8 @@
                                 <th>Başlama Saati</th>
                                 <th>Bitiş Tarihi</th>
                                 <th>Bitiş Saati</th>
-                                <th>Üretim Miktarı</th>
+                                <th>Süre</th>
+                                <th>Üretilen Miktar</th>
                                 <th>Git</th>
                               </tr>
                             </thead>
@@ -1064,7 +1065,8 @@
                                 <th>Başlama Saati</th>
                                 <th>Bitiş Tarihi</th>
                                 <th>Bitiş Saati</th>
-                                <th>Üretim Miktarı</th>
+                                <th>Süre</th>
+                                <th>Üretilen Miktar</th>
                                 <th>Git</th>
                               </tr>
                             </tfoot>
