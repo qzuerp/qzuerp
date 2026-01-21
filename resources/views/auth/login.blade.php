@@ -442,7 +442,7 @@
           <div class="form-group">
             <label for="email">E-posta Adresi</label>
             <div class="input-wrapper">
-              <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="ornek@karakuzu.com">
+              <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="ornek@karakuzu.info">
               <i class="fas fa-envelope input-icon"></i>
             </div>
             @error('email')

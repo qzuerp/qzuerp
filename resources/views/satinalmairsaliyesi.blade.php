@@ -44,12 +44,10 @@
 	$stok_evraklar = DB::table($database . 'stok00')->get();
 
 	if (isset($kart_veri)) {
-
 		$ilkEvrak = DB::table($database . $ekranTableE)->min('id');
 		$sonEvrak = DB::table($database . $ekranTableE)->max('id');
 		$sonrakiEvrak = DB::table($database . $ekranTableE)->where('id', '>', $sonID)->min('id');
 		$oncekiEvrak = DB::table($database . $ekranTableE)->where('id', '<', $sonID)->max('id');
-
 	}
 
 @endphp
