@@ -12,6 +12,8 @@
       <span class="live-clock">00:00:00</span>
       <span class="separator">|</span>
       <span class="today-date">7 Kasım 2025, Cuma</span>
+      <span class="separator">|</span>
+      <span class="modul">{{ $ekranRumuz ?? 'TANIMSIZ' }}</span>
     </div>
 
     <div class="right-side">
@@ -115,6 +117,9 @@
 
   body {
     padding-bottom: 45px !important;
+  }
+  .separator{
+    margin: 0 4px;
   }
 </style>
 

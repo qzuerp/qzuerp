@@ -46,20 +46,6 @@
             margin-bottom: 30px;
         }
 
-        .label-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
-
-        .label-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
 
         .label-header {
             display: flex;
@@ -103,17 +89,17 @@
 
         .barcode-info {
             /* margin-top: 15px; */
-            padding: 10px;
+            /* padding: 10px;
             background: linear-gradient(135deg, #667eea10, #764ba210);
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #667eea; */
         }
 
         .barcode-text {
             font-family: 'Courier New', monospace;
             font-weight: bold;
-            color: #4a5568;
-            font-size: 45px;
+            /* color: #4a5568; */
+            /* font-size: 45px; */
             word-break: break-all;
         }
 
@@ -197,22 +183,22 @@
             }
             
             .label-card {
-                transform: rotate(90deg) !important;
-                display: block;
-                width: 93%;
-                max-width: 300px; /* Etiket genişliğini sabitle, gerekirse A4 için 210mm yap */
-                min-height: 150px; /* Minimum yükseklik, etiket içeriğine göre ayarla */
-                margin: 40px auto;
-                padding: 20px;
+                /* transform: rotate(90deg); */
+                width: 30mm !important;   /* ⬅️ ters */
+                height: 15mm !important;  /* ⬅️ ters */
                 border: 1px solid #ddd;
-                page-break-before: always; /* Her etiketten ÖNCE yeni sayfa */
-                page-break-after: always; /* Her etiketten SONRA yeni sayfa */
-                break-before: page; /* Modern tarayıcılar için */
-                break-after: page; /* Modern tarayıcılar için */
-                page-break-inside: avoid; /* Etiketin bölünmesini engelle */
-                break-inside: avoid; /* Modern tarayıcılar için */
                 box-sizing: border-box;
-                box-shadow: none;
+                page-break-after: always;
+                break-after: page;
+            }
+            @page {
+                size: 50mm 30mm;   /* ETİKETİN GERÇEK BOYUTU */
+                margin: 0;         /* ÇOK KRİTİK */
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
             }
             
             .label-card:first-child {
@@ -316,8 +302,8 @@
                     try {
                         JsBarcode(barcode, value, {
                             format: "CODE128",
-                            width: 1.3,
-                            height: 80,
+                            width: 0.8,        // ⬅️ kritik
+                            height: 22,        // ⬅️ kritik          
                             displayValue: false,
                             background: "transparent",
                             lineColor: "#2d3748",
@@ -357,8 +343,6 @@
                 }
             }, 500);
         });
-
-        // Yazdırma öncesi ve sonrası olayları
         window.addEventListener('beforeprint', () => {
             document.body.style.overflow = 'visible';
         });
@@ -367,21 +351,12 @@
             document.body.style.overflow = 'auto';
         });
 
-        // Klavye kısayolu (Ctrl+P)
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'p') {
                 e.preventDefault();
                 window.print();
             }
         });
-
-        // Sayfa kapatılırken uyarı (istenirse)
-        /*
-        window.addEventListener('beforeunload', (e) => {
-            e.preventDefault();
-            e.returnValue = '';
-        });
-        */
     </script>
 </body>
 </html>
