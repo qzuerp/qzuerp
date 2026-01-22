@@ -1565,7 +1565,7 @@
 										@php
 
 										$evraklar=DB::table($ekranTableE)
-										->leftJoin('stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
+										->leftJoin($database.'stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
 										->orderBy('mmps10e.id', 'ASC')->get(['mmps10e.id','mmps10e.EVRAKNO','mmps10e.MAMULSTOKKODU','mmps10e.MAMULSTOKADI','mmps10e.MUSTERIKODU','stok40e.CHSIPNO']);
 
 										foreach ($evraklar as $key => $suzVeri) {
