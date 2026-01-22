@@ -170,6 +170,65 @@ class stok63_controller extends Controller
           }
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          
+          $sorgu = DB::table($firma.'stok10a as s10')
+          ->leftJoin($firma.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+          ->selectRaw('
+              s10.KOD,
+              s10.STOK_ADI,
+              SUM(s10.SF_MIKTAR) AS MIKTAR,
+              s10.SF_SF_UNIT,
+              s10.LOTNUMBER,
+              s10.SERINO,
+              s10.AMBCODE,
+              s10.TEXT1,
+              s10.TEXT2,
+              s10.TEXT3,
+              s10.TEXT4,
+              s10.NUM1,
+              s10.NUM2,
+              s10.NUM3,
+              s10.NUM4,
+              s10.LOCATION1,
+              s10.LOCATION2,
+              s10.LOCATION3,
+              s10.LOCATION4,
+              s0.NAME2,
+              s0.id,
+              s0.REVNO
+          ')
+          ->groupBy(
+              's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
+              's10.SERINO','s10.AMBCODE',
+              's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
+              's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
+              's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
+              's0.NAME2','s0.id','s0.REVNO'
+          )
+          ->where('s10.KOD',$KOD[$i])
+          ->where('s10.LOTNUMBER',$LOTNUMBER[$i])
+          ->where('s10.SERINO',$SERINO[$i])
+          ->where('s10.AMBCODE',$AMBCODE)
+          ->where('s10.NUM1',$NUM1[$i])
+          ->where('s10.NUM2',$NUM2[$i])
+          ->where('s10.NUM3',$NUM3[$i])
+          ->where('s10.NUM4',$NUM4[$i])
+          ->where('s10.TEXT1',$TEXT1[$i])
+          ->where('s10.TEXT2',$TEXT2[$i])
+          ->where('s10.TEXT3',$TEXT3[$i])
+          ->where('s10.TEXT4',$TEXT4[$i])
+          ->where('s10.LOCATION1',$LOCATION1[$i])
+          ->where('s10.LOCATION2',$LOCATION2[$i])
+          ->where('s10.LOCATION3',$LOCATION3[$i])
+          ->where('s10.LOCATION4',$LOCATION4[$i])
+          ->first();
+          $kontrol = $sorgu->MIKTAR ?? 0;
+          
+          // dd($sorgu,$kontrol,$AMBCODE_SEC);
+          if($SF_MIKTAR[$i] > $kontrol)
+          {
+            return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
+          }
 
           DB::table($firma.'stok63t')->insert([
             'EVRAKNO' => $EVRAKNO,
@@ -311,12 +370,6 @@ class stok63_controller extends Controller
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
 
-        // dd([
-        //   'd' => $deleteTRNUMS,
-        //   'n' => $newTRNUMS,
-        //   'u' => $updateTRNUMS,
-        // ]);
-
         for ($i = 0; $i < $satir_say; $i++) {
           if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
             $AMBCODE_SEC = $AMBCODE;
@@ -418,7 +471,6 @@ class stok63_controller extends Controller
             ]);
 
             // Depodan cikis
-
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
@@ -449,7 +501,6 @@ class stok63_controller extends Controller
             ]);
 
             // Fason depoya giris
-
             DB::table($firma.'stok10a')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,

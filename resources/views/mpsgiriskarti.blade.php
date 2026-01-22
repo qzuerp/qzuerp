@@ -39,34 +39,33 @@
 
 
 	$t_kart_veri = DB::table($ekranTableT . ' as t')
-		->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
-		->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
-		->leftJoin($database.'stdm10e as mlie', 't.R_KAYNAKKODU', '=', 'mlie.TEZGAH_KODU')
-		->leftJoin($database.'stdm10t as mlit', 'mlie.EVRAKNO', '=', 'mlit.EVRAKNO')
+    ->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
+    ->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
+    ->leftJoin($database.'stdm10e as mlie', 't.R_KAYNAKKODU', '=', 'mlie.TEZGAH_KODU')
+    ->leftJoin($database.'stdm10t as mlit', 'mlie.EVRAKNO', '=', 'mlit.EVRAKNO')
+    ->leftJoin($database.'excratt as kur', function ($join) use ($kart_veri) {
+        $join->on('mlit.PARABIRIMI', '=', 'kur.CODEFROM')
+             ->on('kur.CODETO', '=', DB::raw("'TRY'"))
+             ->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime($kart_veri->KAPANIS_TARIHI))."'"));
+    })
+    ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+    ->selectRaw("
+        DISTINCT
+        case
+            when mlit.PARABIRIMI = 'TRY' then mlit.TUTAR
+            else mlit.TUTAR *
+                CAST(REPLACE(kur.KURS_1, ',', '.') AS decimal(18,6))
+        end as TUTAR,
+        mlit.PARABIRIMI,
+        kur.KURS_1,
+        mlie.EVRAKNO,
+        t.*,
+        case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD,
+        case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM
+    ")
+    ->orderBy('t.R_SIRANO')
+    ->get();
 
-		->leftJoin($database.'excratt as kur', function ($join) use ($kart_veri) {
-			$join->on('mlit.PARABIRIMI', '=', 'kur.CODEFROM')
-				->on('kur.CODETO', '=', DB::raw("'TRY'"))
-				->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime($kart_veri->KAPANIS_TARIHI))."'"));
-		})
-
-		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-		->orderBy('t.R_SIRANO')
-
-		->selectRaw("
-			case
-				when mlit.PARABIRIMI = 'TRY' then mlit.TUTAR
-				else mlit.TUTAR *
-					CAST(REPLACE(kur.KURS_1, ',', '.') AS decimal(18,6))
-			end as TUTAR,
-			mlit.PARABIRIMI,
-			kur.KURS_1,
-			mlie.EVRAKNO,
-			t.*,
-			case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD,
-			case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM
-		")
-	->get();
 
 	// dd($t_kart_veri);
 
@@ -1543,18 +1542,20 @@
 									<thead>
 										<tr class="bg-primary">
 											<th>EVRAKNO</th>
-											<th>MAMULSTOKKODU</th>
-											<th>MAMULSTOKADI</th>
-											<th>MUSTERIKODU</th>
+											<th>MAMULSTOK KODU</th>
+											<th>MAMULSTOK ADI</th>
+											<th>MUSTERI KODU</th>
+											<th>Müşteri Sipariş No</th>
 											<th>#</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr class="bg-info">
 											<th>EVRAKNO</th>
-											<th>MAMULSTOKKODU</th>
-											<th>MAMULSTOKADI</th>
-											<th>MUSTERIKODU</th>
+											<th>MAMULSTOK KODU</th>
+											<th>MAMULSTOK ADI</th>
+											<th>MUSTERI KODU</th>
+											<th>Müşteri Sipariş No</th>
 											<th>#</th>
 										</tr>
 									</tfoot>
@@ -1562,7 +1563,9 @@
 
 										@php
 
-										$evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+										$evraklar=DB::table($ekranTableE)
+										->leftJoin('stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
+										->orderBy('mmps10e.id', 'ASC')->get();
 
 										foreach ($evraklar as $key => $suzVeri) {
 											echo "<tr>";
@@ -1570,6 +1573,7 @@
 											echo "<td>".$suzVeri->MAMULSTOKKODU."</td>";
 											echo "<td>".$suzVeri->MAMULSTOKADI."</td>";
 											echo "<td>".$suzVeri->MUSTERIKODU."</td>";
+											echo "<td>".$suzVeri->CHSIPNO."</td>";
 											echo "<td>"."<a class='btn btn-info' href='mpsgiriskarti?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
 											echo "</tr>";

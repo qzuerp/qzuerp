@@ -756,7 +756,7 @@
                   </div>
                   <div class="col-6">
                     <label for="islem_miktari">İşlem Miktarı</label>
-                    <input type="number" class="form-control" id="islem_miktari" readonly>
+                    <input type="number" class="form-control" id="islem_miktari">
                   </div>
                   <div class="col-6 mb-1">
                     <label for="stok_kodu">Stok Kod</label>
@@ -1226,7 +1226,7 @@
             htmlCode += "</button>";
             htmlCode += "</span>";
             htmlCode += "</td>";
-          	htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' id='miktar-"+TRNUM_FILL+"' readonly value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+          	htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' id='miktar-"+TRNUM_FILL+"'  value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
