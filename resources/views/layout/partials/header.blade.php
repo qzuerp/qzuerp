@@ -540,7 +540,7 @@
                         </li>
                     </ul>
                 </div>
-                <audio id="notiSound" src="{{ asset('sounds/confident-543.mp3') }}" preload="auto"></audio>
+                <!-- <audio id="notiSound" src="{{ asset('sounds/confident-543.mp3') }}" preload="auto"></audio> -->
 
 
                 <!-- Kullanıcı Dropdown -->
@@ -679,17 +679,17 @@
         }
 
         // Ses çalma
-        async function playNotificationSound() {
-            try {
-                notiSound.currentTime = 0;
-                const playPromise = notiSound.play();
-                // if (playPromise !== undefined) {
-                //     await playPromise;
-                // }
-            } catch (error) {
-                console.error('Ses çalınamadı:', error);
-            }
-        }
+        // async function playNotificationSound() {
+        //     try {
+        //         notiSound.currentTime = 0;
+        //         const playPromise = notiSound.play();
+        //         // if (playPromise !== undefined) {
+        //         //     await playPromise;
+        //         // }
+        //     } catch (error) {
+        //         console.error('Ses çalınamadı:', error);
+        //     }
+        // }
 
         // Sayfa focus olduğunda
         window.addEventListener('focus', function() {
@@ -745,9 +745,9 @@
                     toggleEmptyState();
 
                     // İlk yükleme değilse ses çal
-                    if (!isFirstLoad) {
-                        playNotificationSound();
-                    }
+                    // if (!isFirstLoad) {
+                        // playNotificationSound();
+                    // }
 
                     // Title güncelle
                     if (!document.hasFocus()) {
