@@ -38,6 +38,7 @@
 	$kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
 
 
+
 	$t_kart_veri = DB::table($ekranTableT . ' as t')
     ->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
     ->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
@@ -46,7 +47,7 @@
     ->leftJoin($database.'excratt as kur', function ($join) use ($kart_veri) {
         $join->on('mlit.PARABIRIMI', '=', 'kur.CODEFROM')
              ->on('kur.CODETO', '=', DB::raw("'TRY'"))
-             ->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime($kart_veri->KAPANIS_TARIHI))."'"));
+             ->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime(@$kart_veri->KAPANIS_TARIHI))."'"));
     })
     ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
     ->selectRaw("
@@ -1565,7 +1566,7 @@
 
 										$evraklar=DB::table($ekranTableE)
 										->leftJoin('stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
-										->orderBy('mmps10e.id', 'ASC')->get();
+										->orderBy('mmps10e.id', 'ASC')->get(['mmps10e.id','mmps10e.EVRAKNO','mmps10e.MAMULSTOKKODU','mmps10e.MAMULSTOKADI','mmps10e.MUSTERIKODU','stok40e.CHSIPNO']);
 
 										foreach ($evraklar as $key => $suzVeri) {
 											echo "<tr>";
