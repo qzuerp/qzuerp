@@ -35,7 +35,9 @@
 	}
 
  
-	$kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
+	$kart_veri = DB::table($ekranTableE)
+	->leftJoin($database.'stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
+	->where('mmps10e.id',$sonID)->first(['mmps10e.*','stok40e.CHSIPNO']);
 
 
 
@@ -224,7 +226,7 @@
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPNO" class="SIPNO form-control" style="color:red" 
 												maxlength="50" name="SIPNO_SHOW" id="SIPNO_SHOW" 
 												disabled value="{{ @$kart_veri->SIPNO }}">
-											<input type="hidden" name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO }}">
+											<input type="hidden" name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO }} - {{ @$kart_veri->CHSIPNO }}">
 										</div>
 									</div>
 
