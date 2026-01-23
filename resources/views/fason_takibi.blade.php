@@ -25,6 +25,8 @@
       $evraklar = DB::table($database.'stok10a as s10')
           ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
           ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+          ->leftJoin($database.'stok63t as sevkt', 'sevkt.KOD', '=', 's10.KOD')
+          ->leftJoin($database.'stok63e as sevke', 'sevke.EVRAKNO', '=', 'sevkt.EVRAKNO')
           ->selectRaw('
               s10.KOD,
               s10.STOK_ADI,
@@ -48,7 +50,9 @@
               s10.LOCATION4,
               s0.NAME2 AS STOK_ADI2,
               s0.id,
-              s0.REVNO
+              s0.REVNO,
+              sevkt.TERMIN_TAR,
+              sevke.TARIH
           ')
           ->groupBy(
               's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
@@ -56,7 +60,9 @@
               's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
               's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
               's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
-              's0.NAME2','s0.id','s0.REVNO'
+              's0.NAME2','s0.id','s0.REVNO',
+              'sevkt.TERMIN_TAR',
+              'sevke.TARIH'
           )
           ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
           ->where('s10.AMBCODE','=',$depo->KOD)
@@ -189,6 +195,8 @@
                                         <th style="min-width: 200px">Ad 2</th>
                                         <th style="min-width: 100px">Revizyon No</th>
                                         <th style="min-width: 100px">Miktar</th>
+                                        <th style="min-width: 100px">Geliş Tarihi</th>
+                                        <th style="min-width: 100px">Gidiş Tarihi</th>
                                         <th style="min-width: 100px">Birim</th>
                                         <th style="min-width: 100px">Lot</th>
                                         <th style="min-width: 100px">Seri No</th>
@@ -215,6 +223,8 @@
                                         <th>Ad 2</th>
                                         <th>Revizyon No</th>
                                         <th>Miktar</th>
+                                        <th>Geliş Tarihi</th>
+                                        <th>Gidiş Tarihi</th>
                                         <th>Birim</th>
                                         <th>Lot</th>
                                         <th>Seri No</th>
@@ -249,6 +259,8 @@
                                             <td>{{ $item->STOK_ADI2 }}</td>
                                             <td>{{ $item->REVNO }}</td>
                                             <td>{{ number_format($item->SF_MIKTAR, 2, ',', '.') }}</td>
+                                            <td>{{ $item->TARIH }}</td>
+                                            <td>{{ $item->TERMIN_TAR }}</td>
                                             <td>{{ $item->SF_UNIT }}</td>
                                             <td>{{ $item->LOTNUMBER }}</td>
                                             <td>{{ $item->SERINO }}</td>

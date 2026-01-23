@@ -380,9 +380,9 @@ class stok26_controller extends Controller
             'LOCATION2' => $LOCATION_NEW2[$i],
             'LOCATION3' => $LOCATION_NEW3[$i],
             'LOCATION4' => $LOCATION_NEW4[$i],
-            'TESLIM_ALAN' => $TESLIM_ALAN[$i],
-            'TEZGAH' => $TEZGAH[$i],
-            'MPS_NO' => $MPS_NO[$i],
+            'TESLIM_ALAN' => $TESLIM_ALAN[$i] ?? 0,
+            'TEZGAH' => $TEZGAH[$i] ?? 0,
+            'MPS_NO' => $MPS_NO[$i] ?? 0,
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -525,9 +525,9 @@ class stok26_controller extends Controller
               'LOCATION2' => $LOCATION_NEW2[$i],
               'LOCATION3' => $LOCATION_NEW3[$i],
               'LOCATION4' => $LOCATION_NEW4[$i],
-              'TESLIM_ALAN' => $TESLIM_ALAN[$i],
-              'TEZGAH' => $TEZGAH[$i],
-              'MPS_NO' => $MPS_NO[$i],
+              'TESLIM_ALAN' => $TESLIM_ALAN[$i] ?? 0,
+              'TEZGAH' => $TEZGAH[$i] ?? 0,
+              'MPS_NO' => $MPS_NO[$i] ?? 0,
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -678,9 +678,9 @@ class stok26_controller extends Controller
               'LOCATION2' => $LOCATION2[$i],
               'LOCATION3' => $LOCATION3[$i],
               'LOCATION4' => $LOCATION4[$i],
-              'TESLIM_ALAN' => $TESLIM_ALAN[$i],
-              'TEZGAH' => $TEZGAH[$i],
-              'MPS_NO' => $MPS_NO[$i],
+              'TESLIM_ALAN' => $TESLIM_ALAN[$i] ?? 0,
+              'TEZGAH' => $TEZGAH[$i] ?? 0,
+              'MPS_NO' => $MPS_NO[$i] ?? 0,
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
             
