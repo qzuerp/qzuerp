@@ -195,8 +195,8 @@
                                         <th style="min-width: 200px">Ad 2</th>
                                         <th style="min-width: 100px">Revizyon No</th>
                                         <th style="min-width: 100px">Miktar</th>
-                                        <th style="min-width: 100px">Geliş Tarihi</th>
                                         <th style="min-width: 100px">Gidiş Tarihi</th>
+                                        <th style="min-width: 100px">Geliş Tarihi</th>
                                         <th style="min-width: 100px">Birim</th>
                                         <th style="min-width: 100px">Lot</th>
                                         <th style="min-width: 100px">Seri No</th>
@@ -223,8 +223,8 @@
                                         <th>Ad 2</th>
                                         <th>Revizyon No</th>
                                         <th>Miktar</th>
-                                        <th>Geliş Tarihi</th>
                                         <th>Gidiş Tarihi</th>
+                                        <th>Geliş Tarihi</th>
                                         <th>Birim</th>
                                         <th>Lot</th>
                                         <th>Seri No</th>
