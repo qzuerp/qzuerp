@@ -78,6 +78,7 @@
                         <table id="example2" class="table table-hover table-bordered text-center">
                             <thead>
                                 <tr class="bg-primary">
+                                    <th style="min-width: 150px">Resim</th>
                                     <th style="min-width: 150px">Kod</th>
                                     <th style="min-width: 200px">Ad</th>
                                     <th style="min-width: 200px">Ad 2</th>
@@ -103,6 +104,7 @@
                             </thead>
                             <tfoot>
                                 <tr class="bg-info">
+                                    <th>Resim</th>
                                     <th>Kod</th>
                                     <th>Ad</th>
                                     <th>Ad 2</th>
@@ -128,7 +130,15 @@
                             </tfoot>
                             <tbody>
                                 @foreach ($tumEvraklar as $item)
+                                    @php
+                                        $img = DB::table($database.'dosyalar00')
+                                        ->where('EVRAKNO',@$item->KOD )
+                                        ->where('EVRAKTYPE','STOK00')
+                                        ->where('DOSYATURU','GORSEL')
+                                        ->first();
+                                    @endphp
                                     <tr>
+                                        <td><img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100"></td>
                                         <td>{{ $item->KOD }}</td>
                                         <td>{{ $item->STOK_ADI }}</td>
                                         <td>{{ $item->STOK_ADI2 }}</td>

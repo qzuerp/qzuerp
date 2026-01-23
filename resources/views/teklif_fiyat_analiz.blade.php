@@ -151,7 +151,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="content-wrapper">
 		<section class="content">
 			<div style="margin-bottom: 20px;">

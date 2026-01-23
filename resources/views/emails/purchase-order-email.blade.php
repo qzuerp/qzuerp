@@ -156,6 +156,10 @@
 
         /* Page break helpers if needed */
         .no-break { page-break-inside: avoid; }
+        #formID
+        {
+
+        }
     </style>
 </head>
 <body>
@@ -196,10 +200,10 @@
             <tr>
                 <td class="info-label">Tedarikçi</td>
                 <td>
-                    {{ $data['CARIHESAPCODE'] ?? '-' }}
-                    @if(!empty($cariAdi))
-                        - {{ $cariAdi }}
-                    @endif
+                    @php
+                        $cariAdi = DB::table($FIRMA.'cari00')->where('KOD',trim($data['CARIHESAPCODE']))->value('AD');
+                    @endphp
+                    {{ $data['CARIHESAPCODE'] ?? '-' }} - {{ $cariAdi }}
                 </td>
             </tr>
         </table>
@@ -271,10 +275,12 @@
 
     {{-- FOOTER --}}
     <div class="footer">
-        <div>KDV dahil değildir.</div>
+        <div>Fiyatlarımıza KDV dahil değildir.</div>
         <div>© {{ date('Y') }} - Tüm hakları saklıdır.</div>
     </div>
-
+    <div class="formID">
+        F.22 / Y.T.02.10.2023 / REV:0 / 1 - 22.01.2026
+    </div>
 </div>
 </body>
 </html>
