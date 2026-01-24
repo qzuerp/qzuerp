@@ -22,39 +22,37 @@
   
   $tumEvraklar = collect();
   foreach($fasonGiden as $depo) {
-      $evraklar = DB::table($database.'stok10a as s10')
-          ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
-          ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
-          ->leftJoin($database.'stok63t as sevkt', 'sevkt.KOD', '=', 's10.KOD')
-          ->selectRaw('
-              s10.KOD,
-              s10.STOK_ADI,
-              SUM(s10.SF_MIKTAR) AS SF_MIKTAR,
-              s10.SF_SF_UNIT AS SF_UNIT,
-              s10.LOTNUMBER,
-              s10.SERINO,
-              s10.AMBCODE,
-              g.AD AS DEPO_ADI,
-              s10.TEXT1,
-              s10.TEXT2,
-              s10.TEXT3,
-              s10.TEXT4,
-              s10.NUM1,
-              s10.NUM2,
-              s10.NUM3,
-              s10.NUM4,
-              s10.LOCATION1,
-              s10.LOCATION2,
-              s10.LOCATION3,
-              s10.LOCATION4,
-              s0.NAME2 AS STOK_ADI2,
-              s0.id,
-              s0.REVNO,
-          ')
-          ->groupBy(
+    $evraklar = DB::table($database.'stok10a as s10')
+        ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+        ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+        ->selectRaw('
+            s10.KOD,
+            s10.STOK_ADI,
+            SUM(s10.SF_MIKTAR) AS SF_MIKTAR,
+            s10.SF_SF_UNIT AS SF_UNIT,
+            s10.LOTNUMBER,
+            s10.SERINO,
+            s10.AMBCODE,
+            g.AD AS DEPO_ADI,
+            s10.TEXT1,
+            s10.TEXT2,
+            s10.TEXT3,
+            s10.TEXT4,
+            s10.NUM1,
+            s10.NUM2,
+            s10.NUM3,
+            s10.NUM4,
+            s10.LOCATION1,
+            s10.LOCATION2,
+            s10.LOCATION3,
+            s10.LOCATION4,
+            s0.NAME2 AS STOK_ADI2,
+            s0.id,
+            s0.REVNO
+        ')
+        ->groupBy(
             's10.KOD',
             's10.STOK_ADI',
-            's10.SF_MIKTAR',
             's10.SF_SF_UNIT',
             's10.LOTNUMBER',
             's10.SERINO',
@@ -74,11 +72,12 @@
             's10.LOCATION4',
             's0.NAME2',
             's0.id',
-            's0.REVNO',
-            )
-          ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
-          ->where('s10.AMBCODE','=',$depo->KOD)
-          ->get();
+            's0.REVNO'
+        )
+        ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
+        ->where('s10.AMBCODE', $depo->KOD)
+        ->get();
+
       
       $tumEvraklar = $tumEvraklar->merge($evraklar);
   }
@@ -207,8 +206,8 @@
                                         <th style="min-width: 200px">Ad 2</th>
                                         <th style="min-width: 100px">Revizyon No</th>
                                         <th style="min-width: 100px">Miktar</th>
-                                        <th style="min-width: 100px">Gidiş Tarihi</th>
-                                        <th style="min-width: 100px">Geliş Tarihi</th>
+                                        <!-- <th style="min-width: 100px">Gidiş Tarihi</th>
+                                        <th style="min-width: 100px">Geliş Tarihi</th> -->
                                         <th style="min-width: 100px">Birim</th>
                                         <th style="min-width: 100px">Lot</th>
                                         <th style="min-width: 100px">Seri No</th>
@@ -235,8 +234,8 @@
                                         <th>Ad 2</th>
                                         <th>Revizyon No</th>
                                         <th>Miktar</th>
-                                        <th>Gidiş Tarihi</th>
-                                        <th>Geliş Tarihi</th>
+                                        <!-- <th>Gidiş Tarihi</th>
+                                        <th>Geliş Tarihi</th> -->
                                         <th>Birim</th>
                                         <th>Lot</th>
                                         <th>Seri No</th>
