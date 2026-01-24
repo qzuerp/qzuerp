@@ -30,7 +30,7 @@
         ->selectRaw('
             s10.KOD,
             s10.STOK_ADI,
-            SUM(s10.SF_MIKTAR) AS SF_MIKTAR,
+            SF_MIKTAR,
             s10.SF_SF_UNIT AS SF_UNIT,
             s10.LOTNUMBER,
             s10.SERINO,
