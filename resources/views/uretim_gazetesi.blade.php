@@ -873,13 +873,7 @@ usort($groups, function($a, $b) {
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-function exportTableToExcel(tableId)
-{
-    let table = document.getElementById(tableId)
-    let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-    XLSX.writeFile(wb, "tablo.xlsx");
-}
+<script>                    
 (function(){
     const fmtNum  = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct0 = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });

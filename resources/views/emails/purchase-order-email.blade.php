@@ -201,7 +201,7 @@
                 <td class="info-label">Tedarikçi</td>
                 <td>
                     @php
-                        $cariAdi = DB::table($FIRMA.'cari00')->where('KOD',trim($data['CARIHESAPCODE']))->value('AD');
+                        $cariAdi = DB::table(trim(auth()->user()->firma).'cari00')->where('KOD',trim($data['CARIHESAPCODE']))->value('AD');
                     @endphp
                     {{ $data['CARIHESAPCODE'] ?? '-' }} - {{ $cariAdi }}
                 </td>

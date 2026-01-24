@@ -575,7 +575,21 @@ function inputTemizle2() {
   }
 
 }
+function exportTableToExcel(table)
+{
+  $("#"+table).table2excel({
+    exclude: ".noExport",
+    name: "Sayfa 1",    
+    filename: "indir",   
+    fileext: ".xlsx",    
+    preserveColors: true 
+  });
 
+
+  setTimeout(() => {
+    $('#loader').fadeOut(50);
+  }, 1500);
+}
 function inputTemizle3() {
   $('#kartOlustur').css('display', 'inline');
   $('#kartOlustur2').css('display', 'inline');

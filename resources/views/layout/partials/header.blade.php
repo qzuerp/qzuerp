@@ -48,6 +48,8 @@
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" defer></script>
     <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" defer></script>
 
+    <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js" defer></script>
+
     <!-- Bootstrap -->
     <script src="{{ URL::asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
 

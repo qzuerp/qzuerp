@@ -386,45 +386,6 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			});
 		});
 
-		// Excel'e aktar (görünür veriler)
-		function exportTableToExcel(tableId) {
-			let dt = $('#'+tableId).DataTable();
-
-			let data = [];
-			data.push(["Kod","Ad","Ad 2","Rev","Miktar","Birim"]); // basit header
-
-			dt.rows({ search: 'applied' }).every(function () {
-				let d = this.data();
-				data.push([
-					d.KOD ?? '',
-					d.STOK_ADI ?? '',
-					d.NAME2 ?? '',
-					d.REVNO ?? '',
-					d.MIKTAR ?? '',
-					d.SF_SF_UNIT ?? ''
-				]);
-			});
-
-			let wb = XLSX.utils.book_new();
-			let ws = XLSX.utils.aoa_to_sheet(data);
-			XLSX.utils.book_append_sheet(wb, ws, "Stok");
-
-			// 🔥 kritik kısım
-			let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-			let blob = new Blob(
-				[wbout],
-				{ type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
-			);
-
-			let link = document.createElement("a");
-			link.href = URL.createObjectURL(blob);
-			link.download = "Stok_Listesi.xlsx";
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		}
-
-
 
 		// Tüm verileri Excel'e aktar
 		function exportAllTableToExcel(tableId) {

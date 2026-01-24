@@ -1087,16 +1087,6 @@
         $('#NAME2').val(veriler[3]);
         $('#AGIRLIK').val(veriler[4]);
       }
-      function exportTableToExcel(tableSelect) {
-        // Tabloyu seç
-        var tablo = document.getElementById("veriler-tablosu");
-        
-        // Tabloyu workbook nesnesine çevir
-        var wb = XLSX.utils.table_to_book(tablo, { sheet: "Veri Listesi" });
-        
-        // Dosyayı doğrudan tarayıcıya indirt (PHP'ye gerek yok)
-        XLSX.writeFile(wb, "Veri_Listesi.xlsx");
-      }
       $(document).ready(function () {
         $('#fiyat_table tfoot th').each(function () {
           var title = $(this).text();

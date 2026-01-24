@@ -2685,12 +2685,6 @@
         drawVerimlilikGauge({{ 0 }},'chart2','Üretim Verimliliği');
         drawVerimlilikGauge({{ 0 }},'chart3','Toplam Verimliliği');
       }
-      function exportTableToExcel(tableId)
-      {
-        let table = document.getElementById(tableId)
-        let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-        XLSX.writeFile(wb, "tablo.xlsx");
-      }
       function exportTableToWord(tableId)
       {
         let table = document.getElementById(tableId).outerHTML;

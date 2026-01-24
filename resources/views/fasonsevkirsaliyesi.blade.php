@@ -1063,12 +1063,6 @@ if (isset($kart_veri)) {
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-function exportTableToExcel(tableId)
-{
-  let table = document.getElementById(tableId)
-  let wb = XLSX.utils.table_to_book(table, {sheet: "Sayfa1"});
-  XLSX.writeFile(wb, "tablo.xlsx");
-}
 function exportTableToWord(tableId)
 {
   let table = document.getElementById(tableId).outerHTML;

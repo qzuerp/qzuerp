@@ -396,6 +396,8 @@ class Teklif_fiyat_analiz extends Controller
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
                 return redirect('teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
+            case 'yazdir':
+                
         }
     }
 

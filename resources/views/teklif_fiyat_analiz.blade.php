@@ -44,7 +44,11 @@
 			$oncekiEvrak = DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
 		}
 	@endphp
-
+	<style>
+		#yazdir{
+			display:block !important;
+		}
+	</style>
 	<div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog"
 		aria-labelledby="modal_evrakSuz">
 		<div class="modal-dialog modal-lg">

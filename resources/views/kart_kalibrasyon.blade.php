@@ -1028,11 +1028,6 @@
       $('#KOD_ALANI').removeAttr('readonly');
     }
 
-    function exportTableToExcel(tableId) {
-      let table = document.getElementById(tableId)
-      let wb = XLSX.utils.table_to_book(table, { sheet: "Sayfa1" });
-      XLSX.writeFile(wb, "tablo.xlsx");
-    }
     function exportTableToWord(tableId) {
       let table = document.getElementById(tableId).outerHTML;
       let htmlContent = `<!DOCTYPE html>
