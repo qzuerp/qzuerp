@@ -50,8 +50,6 @@
               s0.NAME2 AS STOK_ADI2,
               s0.id,
               s0.REVNO,
-              sevkt.TERMIN_TAR,
-              sevkt.created_at
           ')
           ->groupBy(
             's10.KOD',
@@ -77,8 +75,6 @@
             's0.NAME2',
             's0.id',
             's0.REVNO',
-            'sevkt.TERMIN_TAR',
-            'sevkt.created_at'
             )
           ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
           ->where('s10.AMBCODE','=',$depo->KOD)
@@ -275,8 +271,6 @@
                                             <td>{{ $item->STOK_ADI2 }}</td>
                                             <td>{{ $item->REVNO }}</td>
                                             <td>{{ number_format($item->SF_MIKTAR, 2, ',', '.') }}</td>
-                                            <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->TERMIN_TAR }}</td>
                                             <td>{{ $item->SF_UNIT }}</td>
                                             <td>{{ $item->LOTNUMBER }}</td>
                                             <td>{{ $item->SERINO }}</td>
