@@ -20,54 +20,60 @@
 
   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
   
-  $tumEvraklar = collect();
-  foreach($fasonGiden as $depo) {
-      $evraklar = DB::table($database.'stok10a as s10')
-          ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
-          ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
-          ->leftJoin($database.'stok63t as sevkt', 'sevkt.KOD', '=', 's10.KOD')
-          ->leftJoin($database.'stok63e as sevke', 'sevke.EVRAKNO', '=', 'sevkt.EVRAKNO')
-          ->selectRaw('
-              S10A.KOD,
-              S10A.STOK_ADI,
-              SUM(S10A.SF_MIKTAR) AS SF_MIKTAR,
-              S10A.SF_SF_UNIT AS SF_UNIT,
-              S10A.LOTNUMBER,
-              S10A.SERINO,
-              S10A.AMBCODE,
-              G00.AD AS DEPO_ADI,
-              S10A.TEXT1,
-              S10A.TEXT2,
-              S10A.TEXT3,
-              S10A.TEXT4,
-              S10A.NUM1,
-              S10A.NUM2,
-              S10A.NUM3,
-              S10A.NUM4,
-              S10A.LOCATION1,
-              S10A.LOCATION2,
-              S10A.LOCATION3,
-              S10A.LOCATION4,
-              S00.NAME2 AS STOK_ADI2,
-              S00.id,
-              S00.REVNO,
-              MAX(sevkt.TERMIN_TAR) AS TERMIN_TAR,
-              MAX(sevke.TARIH) AS TARIH
-          ')
-          ->groupBy(
-              'S10A.KOD','S10A.STOK_ADI','S10A.SF_SF_UNIT','S10A.LOTNUMBER',
-              'S10A.SERINO','S10A.AMBCODE','G00.AD',
-              'S10A.TEXT1','S10A.TEXT2','S10A.TEXT3','S10A.TEXT4',
-              'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
-              'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
-              'S00.NAME2','S00.id','S00.REVNO',
-          )
-          ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
-          ->where('s10.AMBCODE','=',$depo->KOD)
-          ->get();
-      
-      $tumEvraklar = $tumEvraklar->merge($evraklar);
-  }
+  $tumEvraklar = DB::table($database.'gdef00 as G00')
+    ->leftJoin($database.'stok10a as S10A', 'S10A.AMBCODE', '=', 'G00.KOD')
+    ->join($database.'stok00 as S00', 'S00.KOD', '=', 'S10A.KOD') // INNER JOIN
+    ->leftJoin($database.'stok63t as S63T', function ($join) {
+        $join->on('S63T.KOD', '=', 'S10A.KOD')
+             ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
+    })
+    ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
+    ->where('G00.GK_2', 'FSN_G2')
+    ->selectRaw('
+        S10A.KOD,
+        S10A.STOK_ADI,
+        SUM(S10A.SF_MIKTAR) AS SF_MIKTAR,
+        S10A.SF_SF_UNIT AS SF_UNIT,
+        S10A.LOTNUMBER,
+        S10A.SERINO,
+        S10A.AMBCODE,
+        G00.AD AS DEPO_ADI,
+        S10A.TEXT1,
+        S10A.TEXT2,
+        S10A.TEXT3,
+        S10A.TEXT4,
+        S10A.NUM1,
+        S10A.NUM2,
+        S10A.NUM3,
+        S10A.NUM4,
+        S10A.LOCATION1,
+        S10A.LOCATION2,
+        S10A.LOCATION3,
+        S10A.LOCATION4,
+        S00.NAME2 AS STOK_ADI2,
+        S00.id,
+        S00.REVNO,
+        S63T.TERMIN_TAR,
+        S63E.TARIH
+    ')
+    ->groupBy(
+        'S10A.KOD',
+        'S10A.LOTNUMBER',
+        'S10A.STOK_ADI',
+        'S10A.SF_SF_UNIT',
+        'S10A.SERINO',
+        'S10A.AMBCODE',
+        'G00.AD',
+        'S10A.TEXT1','S10A.TEXT2','S10A.TEXT3','S10A.TEXT4',
+        'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
+        'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
+        'S00.NAME2','S00.id','S00.REVNO',
+        'S63T.TERMIN_TAR',
+        'S63E.TARIH'
+    )
+    ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
+    ->get();
+
 @endphp
 
 @section('content')
