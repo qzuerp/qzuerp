@@ -569,7 +569,7 @@ class stok47_controller extends Controller
           'LOTNUMBER' => $LOTNUMBER,
           'SERINO' => $SERINO,
           'FIYAT' => $FIYAT,
-          'FIYAT_PB' => $FIYAT_PB, 
+          'FIYAT_PB' => $FIYAT_PB,
           'SF_MIKTAR' => $SF_MIKTAR,
           'SF_SF_UNIT' => $SF_SF_UNIT,
           'TERMIN_TAR' => $TERMIN_TAR,
@@ -577,11 +577,19 @@ class stok47_controller extends Controller
         $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
         ->where('GK_3','SAT')
         ->first();
+
         if(isset($kontakt->SIRKET_EMAIL_1))
         {
           Mail::to($kontakt->SIRKET_EMAIL_1)
             ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
         }
+        $hesap_id = DB::table($firma.'pers00')->where('KOD', $TALEP_EDEN_KISI)->value('bagli_hesap');
+        DB::table($firma.'notifications')->insert([
+          'title' => 'Talebin Siparişe Dönüştürüldü',
+          'message' => $KOD.' için sipariş oluşturuldu.',
+          'target_user_id' => $hesap_id,
+          'url' => 'satinalmasiparisi?ID='.$sonID
+        ]);
         return redirect()->route('satinalmaTalepleri')->with('success', 'Siparişler oluşturuldu');
       case 'delete_order':
         DB::table($firma . 'stok46e')->where('TALEP_EVRAKNO', $EVRAKNO)->delete();

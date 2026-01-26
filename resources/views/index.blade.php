@@ -446,6 +446,7 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <div class="content-wrapper">
         <section class="content">
@@ -468,6 +469,10 @@
                         <span class="today-date"></span>
                     </div>
                 </div>
+                <button class="btn btn" data-bs-toggle="modal" data-bs-target="#dogumGunuModal">
+                    </i>🎂 Yaklaşan Doğum Günleri
+                </button>
+
             </div>
 
             <!-- Stats -->
@@ -560,6 +565,80 @@
                 @endif
             </div>
 
+            <div class="modal fade" id="dogumGunuModal" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">🎉 Doğum Günü Yaklaşanlar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <table class="table table-sm text-center align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Ad Soyad</th>
+                                        <th>Doğum Tarihi</th>
+                                        <th>Kalan Gün</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $today = now()->startOfDay();
+
+                                        $yaklasanlar = DB::table($database.'pers00')
+                                            ->select('AD','DOGUM_TARIHI')
+                                            ->whereNotNull('DOGUM_TARIHI')
+                                            ->get()
+                                            ->map(function ($p) use ($today) {
+                                                // Doğum tarihini parse et
+                                                $dogumTarihi = \Carbon\Carbon::parse($p->DOGUM_TARIHI);
+                                                
+                                                // Bu yılki doğum gününü hesapla
+                                                $buYilkiDogumGunu = \Carbon\Carbon::create(
+                                                    $today->year, 
+                                                    $dogumTarihi->month, 
+                                                    $dogumTarihi->day
+                                                )->startOfDay();
+                                                
+                                                // Eğer bu yılki doğum günü geçtiyse, gelecek yılı al
+                                                if ($buYilkiDogumGunu->lt($today)) {
+                                                    $buYilkiDogumGunu->addYear();
+                                                }
+
+                                                // Kalan günü hesapla
+                                                $p->kalan_gun = $today->diffInDays($buYilkiDogumGunu);
+                                                $p->dogum_gunu_tarihi = $buYilkiDogumGunu;
+                                                
+                                                return $p;
+                                            })
+                                            ->filter(fn($p) => $p->kalan_gun <= 7)
+                                            ->sortBy('kalan_gun');
+                                    @endphp
+                                    
+                                    @forelse($yaklasanlar as $p)
+                                        <tr class="{{ $p->kalan_gun == 0 ? 'table-success' : 'table-warning' }}">
+                                            <td>{{ $p->AD }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($p->DOGUM_TARIHI)->format('d.m.Y') }}</td>
+                                            <td>
+                                                @if($p->kalan_gun == 0)
+                                                    🎉 Bugün
+                                                @else
+                                                    {{ $p->kalan_gun }} gün
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="3" class="text-muted">7 gün içinde doğum günü olan personel yok</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </section>
     </div>
@@ -755,6 +834,27 @@
                     color: '#ef4444'
                 }]
             });
+        });
+
+        let confettiAtildi = false;
+
+        document.getElementById('dogumGunuModal')
+        .addEventListener('shown.bs.modal', function () {
+            if (confettiAtildi) return;
+
+            const myConfetti = confetti.create(null, {
+                resize: true,
+                useWorker: true
+            });
+
+            myConfetti({
+                particleCount: 1000,
+                spread: 200,
+                origin: { y: 0.8 },
+                zIndex: 9999
+            });
+
+            confettiAtildi = true;
         });
 
         $(function () {

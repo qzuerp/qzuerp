@@ -163,7 +163,7 @@
                         id="START_DATE" value="{{ @$kart_veri->START_DATE }}">
                     </div>
 
-                    <div class="col-md-2 col-sm-4 col-xs-6">
+                  <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>İşten Çıkış Tarihi</label>
                       <input type="date" class="form-control END_DATE" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         data-bs-title="END_DATE" data-max name="END_DATE" id="END_DATE"

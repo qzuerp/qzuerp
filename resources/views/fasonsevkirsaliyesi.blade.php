@@ -643,13 +643,15 @@ if (isset($kart_veri)) {
 
                                 @php
 
-                                $evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+                                $evraklar=DB::table($ekranTableE)
+                                ->leftJoin($database.'gdef00', 'stok63e.AMBCODE', '=', $database.'gdef00'.'.KOD')
+                                ->orderBy('id', 'ASC')->get(['stok63e.*', $database.'gdef00'.'.AD as DEPO_ADI']);
 
                                 foreach ($evraklar as $key => $suzVeri) {
                                     echo "<tr>";
                                     echo "<td>".$suzVeri->EVRAKNO."</td>";
                                     echo "<td>".$suzVeri->TARIH."</td>";
-                                    echo "<td>".$suzVeri->AMBCODE."</td>";
+                                    echo "<td>".$suzVeri->AMBCODE." - ".$suzVeri->DEPO_ADI."</td>";
                                     echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                                     echo "<td>"."<a class='btn btn-info' href='fasonsevkirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
@@ -713,7 +715,11 @@ if (isset($kart_veri)) {
 
                     @php
 
-                    $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok63t.EVRAKNO', '=', 'stok63e.EVRAKNO')->orderBy('stok63e.id', 'ASC')->get(['stok63t.EVRAKNO','stok63t.KOD','stok63t.LOTNUMBER','stok63t.SF_MIKTAR','stok63e.CARIHESAPCODE','stok63t.AMBCODE','stok63e.TARIH','stok63e.id']);
+                    $evraklar=DB::table($ekranTableE)
+                    ->leftJoin($ekranTableT, 'stok63t.EVRAKNO', '=', 'stok63e.EVRAKNO')
+                    ->leftJoin($database.'gdef00', 'stok63e.AMBCODE', '=', $database.'gdef00'.'.KOD')
+                    ->orderBy('stok63e.id', 'ASC')
+                    ->get(['stok63t.EVRAKNO','stok63t.KOD','stok63t.LOTNUMBER','stok63t.SF_MIKTAR','stok63e.CARIHESAPCODE','stok63t.AMBCODE','stok63e.TARIH','stok63e.id','gdef00.AD AS DEPO_ADI']);
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
@@ -721,7 +727,6 @@ if (isset($kart_veri)) {
                         echo "<td>".$suzVeri->KOD."</td>";
                         echo "<td>".$suzVeri->LOTNUMBER."</td>";
                         echo "<td>".$suzVeri->SF_MIKTAR."</td>";
-                        //echo "<td>".$suzVeri->SIPNO."</td>";
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>".$suzVeri->AMBCODE."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
@@ -1346,7 +1351,7 @@ function siparisleriGetir() {
               <td>${row.SF_SF_UNIT || ''}</td>
               <td>${row.LOTNUMBER || ''}</td>
               <td>${row.SERINO || ''}</td>
-              <td>${row.AMBCODE || ''}</td>
+              <td>${row.AMBCODE || ''} - ${row.AD || ''}</td>
               <td>${row.TEXT1 || ''}</td>
               <td>${row.TEXT2 || ''}</td>
               <td>${row.TEXT3 || ''}</td>

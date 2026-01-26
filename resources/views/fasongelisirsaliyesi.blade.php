@@ -641,13 +641,15 @@
 
                     @php
 
-                    $evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+                    $evraklar=DB::table($ekranTableE)
+                    ->leftJoin($database.'gdef00', 'stok68e.AMBCODE', '=', $database.'gdef00'.'.KOD')
+                    ->orderBy('id', 'ASC')->get(['stok68e.*','gdef00.AD as DEPO_ADI']);
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
                         echo "<td>".$suzVeri->EVRAKNO."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
-                        echo "<td>".$suzVeri->AMBCODE."</td>";
+                        echo "<td>".$suzVeri->AMBCODE." - ".$suzVeri->DEPO_ADI."</td>";
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>"."<a class='btn btn-info' href='fasongelisirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
@@ -711,7 +713,11 @@
 
                   @php
 
-                  $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok68t.EVRAKNO', '=', 'stok68e.EVRAKNO')->orderBy('stok68e.id', 'ASC')->get(['stok68t.EVRAKNO','stok68t.KOD','stok68t.LOTNUMBER','stok68t.SF_MIKTAR','stok68e.CARIHESAPCODE','stok68t.AMBCODE','stok68e.TARIH','stok68e.id']);
+                  $evraklar=DB::table($ekranTableE)
+                  ->leftJoin($ekranTableT, 'stok68t.EVRAKNO', '=', 'stok68e.EVRAKNO')
+                  ->leftJoin($database.'gdef00', 'stok68e.AMBCODE', '=', $database.'gdef00'.'.KOD')
+                  ->orderBy('stok68e.id', 'ASC')
+                  ->get(['stok68t.EVRAKNO','stok68t.KOD','stok68t.LOTNUMBER','stok68t.SF_MIKTAR','stok68e.CARIHESAPCODE','stok68t.AMBCODE','stok68e.TARIH','stok68e.id','gdef00.AD as DEPO_ADI']);
 
                   foreach ($evraklar as $key => $suzVeri) {
                       echo "<tr>";
@@ -721,7 +727,7 @@
                       echo "<td>".$suzVeri->SF_MIKTAR."</td>";
                       // echo "<td>".$suzVeri->SIPNO."</td>";
                       echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
-                      echo "<td>".$suzVeri->AMBCODE."</td>";
+                      echo "<td>".$suzVeri->AMBCODE." - ".$suzVeri->DEPO_ADI."</td>";
                       echo "<td>".$suzVeri->TARIH."</td>";
 
 

@@ -170,21 +170,26 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Mamul Kodu</label>
-											<select class="form-control MAMULSTOKKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULSTOKKODU" onchange="stokAdiGetir3(this.value)" 
-													name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" req>
-												<option value="">Seç</option>
-												 @php
-													$stok00_evraklar = DB::table($database.'stok00')
-														->where('KOD', @$kart_veri->MAMULSTOKKODU)
-														->first();
+											<div class="d-flex">
+												<select class="form-control MAMULSTOKKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULSTOKKODU" onchange="stokAdiGetir3(this.value)" 
+														name="MAMULSTOKKODU_SHOW" id="MAMULSTOKKODU_SHOW" disabled>
+													<option value="">Seç</option>
+													@php
+														$stok00_evraklar = DB::table($database.'stok00')
+															->where('KOD', @$kart_veri->MAMULSTOKKODU)
+															->first();
 
-													if ($stok00_evraklar) {
-														$optionValue = $stok00_evraklar->KOD . '|||' . $stok00_evraklar->AD . '|||' . $stok00_evraklar->SUPPLIERCODE;
-														$optionText  = $stok00_evraklar->KOD . ' - ' . $stok00_evraklar->AD;
-														echo "<option value='{$optionValue}' selected>{$optionText}</option>";
-													}
-												@endphp
-											</select>
+														if ($stok00_evraklar) {
+															$optionValue = $stok00_evraklar->KOD . '|||' . $stok00_evraklar->AD . '|||' . $stok00_evraklar->SUPPLIERCODE;
+															$optionText  = $stok00_evraklar->KOD . ' - ' . $stok00_evraklar->AD;
+															echo "<option value='{$optionValue}' selected>{$optionText}</option>";
+														}
+													@endphp
+												</select>
+												<button class="btn btn-primary kopyalaBtn" type="button" data-text="{{ @$kart_veri->MAMULSTOKKODU }}">
+													<i class="fa-solid fa-copy"></i>
+												</button>
+											</div>
 											<input type="hidden" name="MAMULSTOKKODU" id="MAMULSTOKKODU" value="{{ @$kart_veri->MAMULSTOKKODU }}">
 										</div>
 									</div>
@@ -2200,6 +2205,7 @@
 		<script>
 			function ozelInput()
 			{
+				$('#MAMULSTOKKODU_SHOW').prop('disabled',false);
 				$('#SF_PAKETSAYISI').val('1')
 			}
 
