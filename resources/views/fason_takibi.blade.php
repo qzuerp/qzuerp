@@ -51,8 +51,8 @@
               s0.NAME2 AS STOK_ADI2,
               s0.id,
               s0.REVNO,
-              sevkt.TERMIN_TAR,
-              sevke.TARIH
+              MAX(sevkt.TERMIN_TAR),
+              MAX(sevke.TARIH)
           ')
           ->groupBy(
               's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',

@@ -881,7 +881,7 @@
                         echo "<td>" . $suzVeri->EVRAKNO . "</td>";
                         echo "<td>" . $suzVeri->TARIH . "</td>";
                         echo "<td>" . $suzVeri->CARIHESAPCODE . "</td>";
-                        echo "<td>" . "<a class='btn btn-info' href='satinalmasiparisi?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+                        echo "<td>" . "<a class='btn btn-info' href='satinalmaTalepleri?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
 
                         echo "</tr>";
 
@@ -952,7 +952,7 @@
                         echo "<td>" . $suzVeri->TARIH . "</td>";
 
 
-                        echo "<td>" . "<a class='btn btn-info' href='satinalmasiparisi?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+                        echo "<td>" . "<a class='btn btn-info' href='satinalmaTalepleri?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
 
                         echo "</tr>";
 

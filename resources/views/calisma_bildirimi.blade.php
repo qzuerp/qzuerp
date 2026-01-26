@@ -459,7 +459,7 @@
                                                             @php
                                                                 $DURUSSEBEBI = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->get();
                                                                 foreach ($DURUSSEBEBI as $key => $veri) {
-                                                                    echo "<option value ='".$veri->KOD." | ".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                                                    echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
                                                                 }
                                                             @endphp
                                                         </select>
@@ -538,7 +538,7 @@
                                                         <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
                                                         <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
                                                         <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
-                                                        <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
+                                                        <td><input name="durus_sebebi[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
                                                         <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
                                                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
                                                     </tr>
@@ -1918,14 +1918,14 @@
         const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
         
         // Duruş için sebep kontrolü
-        if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Duruş sebebi seçmelisiniz.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
+        // if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
+        //   Swal.fire({
+        //     icon: 'warning',
+        //     text: "Duruş sebebi seçmelisiniz.",
+        //     confirmButtonText: "Tamam"
+        //   });
+        //   return;
+        // }
         
         const lastRow = findLastRow(type);
         

@@ -516,12 +516,14 @@ class stok47_controller extends Controller
         if($CARI_KOD != NULL)
           sort($CARI_KOD);
         $ONCEKI_CARI = "";
+        $hesap_id = DB::table($firma.'pers00')->where('KOD', $TALEP_EDEN_KISI)->value('bagli_hesap');
         //Sipariş ekle
         for ($i = 0; $i < $satir_say2; $i++) {
           $SON_EVRAK = DB::table($firma . 'stok46e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
           $SON_ID = $SON_EVRAK->EVRAKNO;
 
           $SON_ID = (int) $SON_ID;
+
           if ($SON_ID == NULL) {
             $SIPEVRAKNO = 1;
           } else {
@@ -530,9 +532,10 @@ class stok47_controller extends Controller
               $SIPEVRAKNO = $SON_ID + 1;
             }
           }
+
           if($ONCEKI_CARI != $CARI_KOD[$i])
           {
-            DB::table($firma . 'stok46e')->insert([
+            $EVRAKID = DB::table($firma . 'stok46e')->insertGetId([
               'EVRAKNO' => $SIPEVRAKNO,
               'CARIHESAPCODE' => $CARI_KOD[$i],
               'TARIH' => date('Y-m-d'),
@@ -557,6 +560,13 @@ class stok47_controller extends Controller
             'NOT1' => $TI_NOT1[$i]
           ]);
           $ONCEKI_CARI = $CARI_KOD[$i];
+
+          DB::table($firma.'notifications')->insert([
+            'title' => 'Talebin Siparişe Dönüştürüldü',
+            'message' => $KOD[$i].' için sipariş oluşturuldu.',
+            'target_user_id' => $hesap_id,
+            'url' => 'satinalmasiparisi?ID='.$EVRAKID
+          ]);
         }
         FunctionHelpers::apply_mail_settings();
 
@@ -574,6 +584,7 @@ class stok47_controller extends Controller
           'SF_SF_UNIT' => $SF_SF_UNIT,
           'TERMIN_TAR' => $TERMIN_TAR,
         ];
+
         $kontakt = DB::table($firma.'kontakt00')->where('SIRKET_CH_KODU', $CARIHESAPCODE)
         ->where('GK_3','SAT')
         ->first();
@@ -583,13 +594,7 @@ class stok47_controller extends Controller
           Mail::to($kontakt->SIRKET_EMAIL_1)
             ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
         }
-        $hesap_id = DB::table($firma.'pers00')->where('KOD', $TALEP_EDEN_KISI)->value('bagli_hesap');
-        DB::table($firma.'notifications')->insert([
-          'title' => 'Talebin Siparişe Dönüştürüldü',
-          'message' => $KOD.' için sipariş oluşturuldu.',
-          'target_user_id' => $hesap_id,
-          'url' => 'satinalmasiparisi?ID='.$sonID
-        ]);
+
         return redirect()->route('satinalmaTalepleri')->with('success', 'Siparişler oluşturuldu');
       case 'delete_order':
         DB::table($firma . 'stok46e')->where('TALEP_EVRAKNO', $EVRAKNO)->delete();
