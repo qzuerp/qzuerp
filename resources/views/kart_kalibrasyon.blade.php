@@ -553,11 +553,14 @@
                       <table id="example2" class="table table-hover text-center" data-page-length="10">
                         <thead>
                           <tr class="bg-primary">
+                            <th>Marka</th>
+                            <th>Model</th>
                             <th>Kod</th>
                             <th>Ad</th>
                             <th>Özellik 1</th>
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
+                            <th>Kalibrasyon Bakım Tarihi</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -566,11 +569,14 @@
 
                         <tfoot>
                           <tr class="bg-info">
+                            <th>Marka</th>
+                            <th>Model</th>
                             <th>Kod</th>
                             <th>Ad</th>
                             <th>Özellik 1</th>
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
+                            <th>Kalibrasyon Bakım Tarihi</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -757,11 +763,14 @@
                               $bugun = now();
                               $kalanGun = $bugun->diffInDays($hedefTarih, false);
                               echo "<tr>";
+                              echo "<td><b>" . $table->URETICIFIRMA . "</b></td>";
+                              echo "<td><b>" . $table->MODEL . "</b></td>";
                               echo "<td><b>" . $table->KOD . "</b></td>";
                               echo "<td><b>" . $table->AD . "</b></td>";
                               echo "<td><b>" . $table->OZELLIK1 . "</b></td>";
                               echo "<td><b>" . $table->OLCUM_ARALIGI . "</b></td>";
                               echo "<td><b>" . $table->OZELLIK3 . "</b></td>";
+                              echo "<td><b>" . $table->KALIBRASYONBAKIMTARIHI . "</b></td>";
                               echo "<td><b>" . $kalanGun . "</b></td>";
                               echo "<td><b>" . $table->DURUM . "</b></td>";
 
