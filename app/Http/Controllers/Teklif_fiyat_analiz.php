@@ -19,7 +19,11 @@ class Teklif_fiyat_analiz extends Controller
     {
         // dd($request->all());
         $kart_islemleri = $request->input('kart_islemleri');
-        $firma = $request->input('firma').'.dbo.';
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        // $firma = $request->input('firma').'.dbo.';
 
         // Header bilgileri
 
@@ -397,7 +401,7 @@ class Teklif_fiyat_analiz extends Controller
                 return redirect('teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
             case 'yazdir':
-                
+
         }
     }
 

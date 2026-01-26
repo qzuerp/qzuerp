@@ -1008,7 +1008,9 @@
 									@php
 										if(isset($_GET['SUZ'])) {
 									@endphp
-
+										<div class="mt-3">
+											<button type="button" class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+										</div>
 										<table id="example2" class="table table-hover text-center" data-page-length="10">
 											<thead>
 												<tr class="bg-primary">
