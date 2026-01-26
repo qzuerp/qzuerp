@@ -87,7 +87,7 @@ class stok68_controller extends Controller
     else {
       $satir_say = count($KOD);
     }
-
+    
     switch($islem_turu) {
 
       case 'listele':
@@ -447,22 +447,22 @@ class stok68_controller extends Controller
                 's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
                 's0.NAME2','s0.id','s0.REVNO'
             )
-            ->where('s10.KOD',$KOD[$i])
-            ->where('s10.LOTNUMBER',$LOTNUMBER[$i])
-            ->where('s10.SERINO',$SERINO[$i])
-            ->where('s10.AMBCODE',$AMBCODE)
-            ->where('s10.NUM1',$NUM1[$i])
-            ->where('s10.NUM2',$NUM2[$i])
-            ->where('s10.NUM3',$NUM3[$i])
-            ->where('s10.NUM4',$NUM4[$i])
-            ->where('s10.TEXT1',$TEXT1[$i])
-            ->where('s10.TEXT2',$TEXT2[$i])
-            ->where('s10.TEXT3',$TEXT3[$i])
-            ->where('s10.TEXT4',$TEXT4[$i])
-            ->where('s10.LOCATION1',$LOCATION1[$i])
-            ->where('s10.LOCATION2',$LOCATION2[$i])
-            ->where('s10.LOCATION3',$LOCATION3[$i])
-            ->where('s10.LOCATION4',$LOCATION4[$i])
+              ->where('s10.KOD',$KOD[$i])
+              ->where('s10.LOTNUMBER',$LOTNUMBER[$i])
+              ->where('s10.SERINO',$SERINO[$i])
+              ->where('s10.AMBCODE',$AMBCODE)
+              ->where('s10.NUM1',$NUM1[$i])
+              ->where('s10.NUM2',$NUM2[$i])
+              ->where('s10.NUM3',$NUM3[$i])
+              ->where('s10.NUM4',$NUM4[$i])
+              ->where('s10.TEXT1',$TEXT1[$i])
+              ->where('s10.TEXT2',$TEXT2[$i])
+              ->where('s10.TEXT3',$TEXT3[$i])
+              ->where('s10.TEXT4',$TEXT4[$i])
+              ->where('s10.LOCATION1',$LOCATION1[$i])
+              ->where('s10.LOCATION2',$LOCATION2[$i])
+              ->where('s10.LOCATION3',$LOCATION3[$i])
+              ->where('s10.LOCATION4',$LOCATION4[$i])
             ->first();
             $kontrol = $sorgu->MIKTAR ?? 0;
             

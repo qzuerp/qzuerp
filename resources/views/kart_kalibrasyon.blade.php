@@ -561,6 +561,7 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
+                            <th>Bir sonraki Kalibrasyon Tarihi</th>
                             <th>Bir Sonraki Kalibrasyona kalan gün</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -577,6 +578,7 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
+                            <th>Bir sonraki Kalibrasyon Tarihi</th>
                             <th>Bir Sonraki Kalibrasyona kalan gün</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -771,6 +773,7 @@
                               echo "<td><b>" . $table->OLCUM_ARALIGI . "</b></td>";
                               echo "<td><b>" . $table->OZELLIK3 . "</b></td>";
                               echo "<td><b>" . $table->KALIBRASYONBAKIMTARIHI . "</b></td>";
+                              echo "<td><b>" . $table->BIRSONRAKIKALIBRASYONTARIHI . "</b></td>";
                               echo "<td><b>" . $kalanGun . "</b></td>";
                               echo "<td><b>" . $table->DURUM . "</b></td>";
 
