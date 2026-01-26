@@ -579,7 +579,7 @@ class stok68_controller extends Controller
 
           if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
 
-            $KAYITLI_SF_MIKTAR = DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
+            $KAYITLI_SF_MIKTAR = DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->where(column: 'TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
 
             if($KAYITLI_SF_MIKTAR != $SF_MIKTAR[$i])
             {

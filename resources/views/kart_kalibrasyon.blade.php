@@ -555,10 +555,9 @@
                           <tr class="bg-primary">
                             <th>Kod</th>
                             <th>Ad</th>
-                            <th>GK_1</th>
-                            <th>GK_2</th>
-                            <th>GK_3</th>
-                            <th>GK_4</th>
+                            <th>Özellik 1</th>
+                            <th>Özellik 2</th>
+                            <th>Özellik 3</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -569,10 +568,9 @@
                           <tr class="bg-info">
                             <th>Kod</th>
                             <th>Ad</th>
-                            <th>GK_1</th>
-                            <th>GK_2</th>
-                            <th>GK_3</th>
-                            <th>GK_4</th>
+                            <th>Özellik 1</th>
+                            <th>Özellik 2</th>
+                            <th>Özellik 3</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Durum</th>
                             <th>#</th>
@@ -761,10 +759,9 @@
                               echo "<tr>";
                               echo "<td><b>" . $table->KOD . "</b></td>";
                               echo "<td><b>" . $table->AD . "</b></td>";
-                              echo "<td><b>" . $table->GK_1 . "</b></td>";
-                              echo "<td><b>" . $table->GK_2 . "</b></td>";
-                              echo "<td><b>" . $table->GK_3 . "</b></td>";
-                              echo "<td><b>" . $table->GK_4 . "</b></td>";
+                              echo "<td><b>" . $table->OZELLIK1 . "</b></td>";
+                              echo "<td><b>" . $table->OLCUM_ARALIGI . "</b></td>";
+                              echo "<td><b>" . $table->OZELLIK3 . "</b></td>";
                               echo "<td><b>" . $kalanGun . "</b></td>";
                               echo "<td><b>" . $table->DURUM . "</b></td>";
 
@@ -784,16 +781,7 @@
                   <div class="tab-pane" id="baglantiliDokumanlar">
                     @include('layout.util.baglantiliDokumanlar')
                   </div>
-
-
                 </div>
-
-
-
-
-
-                <br>
-
               </div>
             </div>
 
