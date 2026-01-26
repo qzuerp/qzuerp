@@ -221,18 +221,20 @@ class stok29_controller extends Controller
             'FIYAT_PB' => $FIYAT_PB[$i],
           ]);
 
-          if($SIPARTNO[$i] != null)
-           DB::update("
-              UPDATE {$firma}stok46t
-              SET
-                  NETKAPANANMIK = NETKAPANANMIK + ?,
-                  SF_BAKIYE = SF_MIKTAR - NETKAPANANMIK - ?
-              WHERE EVRAKNO + ISNULL(TRNUM,0) = ?
-          ", [
-              $SF_MIKTAR[$i],
-              $SF_MIKTAR[$i],
-              $SIPARTNO[$i] ?? 0
-          ]);
+          if (!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
+            DB::table($firma.'stok46t')
+              ->whereRaw("CONCAT(EVRAKNO, TRNUM) = ?", [$SIPARTNO[$i]])
+              ->update([
+                  'NETKAPANANMIK' => DB::raw("NETKAPANANMIK + {$SF_MIKTAR[$i]}"),
+                  'SF_BAKIYE'     => DB::raw("SF_BAKIYE - {$SF_MIKTAR[$i]}"),
+                  'AK' => DB::raw("
+                      CASE 
+                          WHEN {$SF_MIKTAR[$i]} >= SF_MIKTAR THEN 'K'
+                          ELSE 'A'
+                      END
+                  ")
+              ]);
+          }
 
 
           DB::table($firma.'stok10a')->insert([
@@ -354,14 +356,25 @@ class stok29_controller extends Controller
             'FIYAT_PB' => $FIYAT_PB[$i]
           ]);
 
-          if(!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
+          if (!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
+
+            $mik = (float) $SF_MIKTAR[$i];
+        
             DB::table($firma.'stok46t')
-                ->whereRaw("CONCAT(EVRAKNO, TRNUM) = ?", [$SIPARTNO[$i]])
+                ->where('ARTNO', $SIPARTNO[$i])
                 ->update([
-                    'NETKAPANANMIK' => DB::raw("NETKAPANANMIK + ".$SF_MIKTAR[$i]),
-                    'SF_BAKIYE' => DB::raw("SF_BAKIYE - ".$SF_MIKTAR[$i])
+                    'NETKAPANANMIK' => DB::raw("ISNULL(NETKAPANANMIK,0) + {$mik}"),
+                    'SF_BAKIYE'     => DB::raw("ISNULL(SF_BAKIYE,0) - {$mik}"),
+                    'AK' => DB::raw("
+                        CASE 
+                            WHEN {$mik} >= SF_MIKTAR THEN 'K'
+                            ELSE 'A'
+                        END
+                    ")
                 ]);
-          }
+        }
+        
+        
           DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,

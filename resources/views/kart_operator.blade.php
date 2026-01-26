@@ -136,7 +136,7 @@
                     <div class="col-md-3 col-sm-4 col-xs-6">
                       <label>Personel Adı</label>
                       <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        data-bs-title="AD" maxlength="50" name="AD" id="AD" value="{{ @$kart_veri->AD }}">
+                        data-bs-title="AD" data-max name="AD" id="AD" value="{{ @$kart_veri->AD }}">
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>Ünvanı</label>
@@ -159,14 +159,14 @@
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>İşe Başlangıç Tarihi</label>
                       <input type="date" class="form-control START_DATE" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" data-bs-title="START_DATE" maxlength="50" name="START_DATE"
+                        data-bs-placement="bottom" data-bs-title="START_DATE" data-max name="START_DATE"
                         id="START_DATE" value="{{ @$kart_veri->START_DATE }}">
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>İşten Çıkış Tarihi</label>
                       <input type="date" class="form-control END_DATE" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        data-bs-title="END_DATE" maxlength="50" name="END_DATE" id="END_DATE"
+                        data-bs-title="END_DATE" data-max name="END_DATE" id="END_DATE"
                         value="{{ @$kart_veri->END_DATE }}">
                     </div>
 
@@ -271,19 +271,19 @@
                           <div class="col-md-6">
                             <label>Adres</label>
                             <input type="text" class="form-control ADRES_1" data-bs-toggle="tooltip"
-                              data-bs-placement="bottom" data-bs-title="ADRES_1" maxlength="50" name="ADRES_1"
+                              data-bs-placement="bottom" data-bs-title="ADRES_1" data-max name="ADRES_1"
                               id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
                           </div>
                           <div class="col-md-6">
                             <label>Adres 2</label>
                             <input type="text" class="form-control ADRES_2" data-bs-toggle="tooltip"
-                              data-bs-placement="bottom" data-bs-title="ADRES_2" maxlength="50" name="ADRES_2"
+                              data-bs-placement="bottom" data-bs-title="ADRES_2" data-max name="ADRES_2"
                               id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}">
                           </div>
                           <div class="col-md-6">
                             <label>Adres 3</label>
                             <input type="text" class="form-control ADRES_3 " data-bs-toggle="tooltip"
-                              data-bs-placement="bottom" data-bs-title="ADRES_3" maxlength="50" name="ADRES_3"
+                              data-bs-placement="bottom" data-bs-title="ADRES_3" data-max name="ADRES_3"
                               id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}">
                           </div>
                           <div class="col-md-6">
@@ -1837,31 +1837,31 @@
 
                         <div class="col-md-2">
                           <label>Adres</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Cep Telefonu 1</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Cep Telefonu 2</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Mail</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Diploma</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Beden</label>
-                          <input type="text" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="text" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-2">
                           <label>Giriş Tarihi</label>
-                          <input type="date" class="form-control " maxlength="50" name="" id="" value="">
+                          <input type="date" class="form-control " data-max name="" id="" value="">
                         </div>
                         <div class="col-md-6">
                           <br><br>

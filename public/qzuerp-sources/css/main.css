@@ -19,6 +19,11 @@
   width: 100% !important;
 
 }
+.kopyalaBtn
+{
+  border-top-left-radius:0px !important;
+  border-bottom-left-radius: 0px !important;
+}
 .select2-container .select2-selection--single .select2-selection__rendered
 {
   margin-top:0 !important;

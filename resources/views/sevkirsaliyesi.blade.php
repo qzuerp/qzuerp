@@ -261,8 +261,8 @@
                                     <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
-                                    <input maxlength="50" style="color: red" type="text" data-name="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" class="STOK_ADI form-control" disabled>
-                                    <input maxlength="50" style="color: red" type="hidden" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                                    <input data-max style="color: red" type="text" data-name="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" class="STOK_ADI form-control" disabled>
+                                    <input data-max style="color: red" type="hidden" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
                                     <input  tmaxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
@@ -288,19 +288,19 @@
                                   </td>
                                   <td style="min-width: 150px">
                                     <input maxlength="50 "style="color: red" type="text" data-name="LOTNUMBER" name="LOTNUMBER_SHOW" id="LOTNUMBER_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" class="LOTNUMBER form-control">
-                                    <input maxlength="50" type="hidden" name="LOTNUMBER_FILL" data-name="LOTNUMBER" id="LOTNUMBER_FILL" class="form-control">
+                                    <input data-max type="hidden" name="LOTNUMBER_FILL" data-name="LOTNUMBER" id="LOTNUMBER_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
                                     <input maxlength="50 "style="color: red" type="text" data-name="SERINO" name="SERINO_SHOW" id="SERINO_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" class="SERINO form-control">
-                                    <input maxlength="50" type="hidden" name="SERINO_FILL" data-name="SERINO" id="SERINO_FILL" class="form-control">
+                                    <input data-max type="hidden" name="SERINO_FILL" data-name="SERINO" id="SERINO_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
                                     <input maxlength="50 "style="color: red" type="text" data-name="AMBCODE" name="AMBCODE_SHOW" id="AMBCODE_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control" disabled>
-                                    <input maxlength="50" type="hidden" name="AMBCODE_FILL" data-name="AMBCODE" id="AMBCODE_FILL" class="form-control">
+                                    <input data-max type="hidden" name="AMBCODE_FILL" data-name="AMBCODE" id="AMBCODE_FILL" class="form-control">
                                   </td>
                                   <td style="min-width: 150px">
                                      <div class="d-flex ">
-                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPNO" class="SIPNO form-control input-sm" style="color:red" maxlength="50" name="SIPNO_FILL" id="SIPNO_FILL" readonly>
+                                        <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPNO" class="SIPNO form-control input-sm" style="color:red" data-max name="SIPNO_FILL" id="SIPNO_FILL" readonly>
                                         <span class="d-flex -btn">
                                           <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal3" type="button">
                                             <span class="fa-solid fa-magnifying-glass"  >
@@ -1389,7 +1389,7 @@
 
           var selectHtml = "<option value=''>Sipariş seç...</option>";
           $.each(allData, function(index, row) {
-              selectHtml += "<option value='"+(row.EVRAKNO ?? '')+"'>"+(row.EVRAKNO ?? '')+"</option>";
+              selectHtml += "<option value='"+(row.EVRAKNO ?? '')+"'>"+(row.EVRAKNO ?? '')+" - "+(row.CHSIPNO ?? '')+"</option>";
           });
           $('#SIP_NO_SEC').empty().append(selectHtml);
 

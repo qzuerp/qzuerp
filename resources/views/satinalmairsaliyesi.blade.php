@@ -331,12 +331,12 @@
 																		class="form-control">
 																</td>
 																<td style="min-width: 150px">
-																	<input maxlength="50" style="color: red" type="text"
+																	<input data-max style="color: red" type="text"
 																		name="STOK_ADI_SHOW" id="STOK_ADI_SHOW"
 																		data-bs-toggle="tooltip" data-bs-placement="top"
 																		data-bs-title="STOK_ADI"
 																		class="form-control STOK_ADI" disabled>
-																	<input maxlength="50" style="color: red" type="hidden"
+																	<input data-max style="color: red" type="hidden"
 																		name="STOK_ADI_FILL" id="STOK_ADI_FILL"
 																		class="form-control">
 																</td>

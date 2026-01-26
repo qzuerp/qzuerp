@@ -30,7 +30,7 @@
 
 	if(isset($_GET['ID'])) {
 		$sonID = $_GET['ID'];
-	}Else{
+	}else{
 		$sonID = DB::table($ekranTableE)->max('id');
 	}
 
@@ -193,7 +193,7 @@
 										<div class="form-group">
 											<label>Mamul Adı</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULSTOKADI" class="MAMULSTOKADI form-control" style="color:red" 
-												maxlength="50" name="MAMULSTOKADI_SHOW" id="MAMULSTOKADI_SHOW" 
+												data-max name="MAMULSTOKADI_SHOW" id="MAMULSTOKADI_SHOW" 
 												disabled value="{{ @$kart_veri->MAMULSTOKADI }}">
 											<input type="hidden" name="MAMULSTOKADI" id="MAMULSTOKADI" value="{{ @$kart_veri->MAMULSTOKADI }}">
 										</div>
@@ -203,7 +203,7 @@
 										<div class="form-group">
 											<label>Müşteri Kodu</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERIKODU" class="MUSTERIKODU form-control" style="color:red" 
-												maxlength="50" name="MUSTERIKODU" id="MUSTERIKODU" 
+												data-max name="MUSTERIKODU" id="MUSTERIKODU" 
 												readonly value="{{ @$kart_veri->MUSTERIKODU }}">
 											<input type="hidden" name="MUSTERIKODU_SHOW" id="MUSTERIKODU_SHOW" value="{{ @$kart_veri->MUSTERIKODU }}">
 										</div>
@@ -212,7 +212,7 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Proje Kodu</label>
-											<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PROJEKODU" class="PROJEKODU form-control" maxlength="50" 
+											<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PROJEKODU" class="PROJEKODU form-control" data-max 
 												name="PROJEKODU" id="PROJEKODU" value="{{ @$kart_veri->PROJEKODU }}">
 										</div>
 									</div>
@@ -224,9 +224,9 @@
 										<div class="form-group">
 											<label>Sipariş No</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPNO" class="SIPNO form-control" style="color:red" 
-												maxlength="50" name="SIPNO_SHOW" id="SIPNO_SHOW" 
-												disabled value="{{ @$kart_veri->SIPNO }}">
-											<input type="hidden" name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO }} - {{ @$kart_veri->CHSIPNO }}">
+												data-max name="SIPNO_SHOW" id="SIPNO_SHOW" 
+												disabled value="{{ @$kart_veri->SIPNO }} - {{ @$kart_veri->CHSIPNO }}">
+											<input type="hidden" name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO }}">
 										</div>
 									</div>
 
@@ -235,7 +235,7 @@
 											<label>Sipariş Art No</label>
 											<div class="d-flex ">
 												<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="SIPARTNO form-control txt-radius" style="color:red" 
-													maxlength="50" name="SIPARTNO" id="SIPARTNO" 
+													data-max name="SIPARTNO" id="SIPARTNO" 
 													value="{{ @$kart_veri->SIPARTNO }}" readonly>
 												<span class="d-flex -btn">
 													<button class="btn btn-radius btn-primary" id="modal_popupSelectModalBtn" data-bs-toggle="modal" 
@@ -285,7 +285,7 @@
 										<div class="form-group">
 											<label>Üretimden Teslim Tarihi</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="URETIMDENTESTARIH" readonly 
-												class="form-control URETIMDENTESTARIH" maxlength="50" 
+												class="form-control URETIMDENTESTARIH" data-max 
 												name="URETIMDENTESTARIH" id="URETIMDENTESTARIH" 
 												value="{{ @$kart_veri->URETIMDENTESTARIH }}">
 											<!-- Siparişin müşteriye teslim tarihi -->
@@ -296,7 +296,7 @@
 										<div class="form-group">
 											<label>Kapanış Tarihi</label>
 											<input type="date" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAPANIS_TARIHI" 
-												class="form-control KAPANIS_TARIHI" maxlength="50" 
+												class="form-control KAPANIS_TARIHI" data-max 
 												name="KAPANIS_TARIHI" id="KAPANIS_TARIHI" 
 												value="{{ @$kart_veri->KAPANIS_TARIHI }}">
 										</div>
@@ -337,7 +337,7 @@
 											<label>Paket İçeriği</label>
 											<input type="{{ $user->firma == 'yukselcnc' ? 'hidden' : 'number' }}" 
 												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_PAKETICERIGI"
-												class="form-control SF_PAKETICERIGI" maxlength="50" 
+												class="form-control SF_PAKETICERIGI" data-max 
 												name="SF_PAKETICERIGI" id="SF_PAKETICERIGI"
 												value="{{ @$kart_veri->SF_PAKETICERIGI }}">
 										</div>
@@ -346,7 +346,7 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Toplam Miktar</label>
-											<input type="number" class="form-control SF_TOPLAMMIKTAR" maxlength="50" 
+											<input type="number" class="form-control SF_TOPLAMMIKTAR" data-max 
 												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_TOPLAMMIKTAR"
 												name="SF_TOPLAMMIKTAR" id="SF_TOPLAMMIKTAR" 
 												value="{{ @$kart_veri->SF_TOPLAMMIKTAR }}">
@@ -369,7 +369,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>{{ trim($user->firma) == 'yukselcnc' ? 'Yüksel Cnc İş Emri Numarası' : 'Not 1' }}</label>
-											<input type="text" class="form-control NOT_1" maxlength="50" 
+											<input type="text" class="form-control NOT_1" data-max 
 												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT_1"
 												name="NOT_1" id="NOT_1" value="{{ @$kart_veri->NOT_1 }}">
 										</div>
@@ -378,7 +378,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>Not 2</label>
-											<input type="text" class="form-control NOT_2" maxlength="50" 
+											<input type="text" class="form-control NOT_2" data-max 
 												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT_2"
 												name="NOT_2" id="NOT_2" value="{{ @$kart_veri->NOT_2 }}">
 										</div>
@@ -598,16 +598,16 @@
 																		</td>
 																		<td style="{{ $bgColor }} display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
 																		
-																		<td style="{{ $bgColor }}">
-																			<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
-																				<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
-																					Açık
-																				</option>
-																				<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
-																					Kapalı
-																				</option>
-																			</select>
-																		</td>
+																			<td style="{{ $bgColor }}">
+																				<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
+																					<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
+																						Açık
+																					</option>
+																					<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
+																						Kapalı
+																					</option>
+																				</select>
+																			</td>
 
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="R_SIRANO[]" value="{{ $veri->R_SIRANO }}"></td>
 																		<td style="{{ $bgColor }}">
@@ -667,27 +667,27 @@
 														<div class="row">
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>En Geç Başlama</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="EGBS_TARIH" id="EGBS_TARIH" value="{{ @$kart_veri->EGBS_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="EGBS_TARIH" id="EGBS_TARIH" value="{{ @$kart_veri->EGBS_TARIH }}">
 															</div>
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>Planlanan Başlama</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="PLBS_TARIH" id="PLBS_TARIH" value="{{ @$kart_veri->PLBS_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="PLBS_TARIH" id="PLBS_TARIH" value="{{ @$kart_veri->PLBS_TARIH }}">
 															</div>
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>Gerçekleşen Başlama</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="REBS_TARIH" id="REBS_TARIH" value="{{ @$kart_veri->REBS_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="REBS_TARIH" id="REBS_TARIH" value="{{ @$kart_veri->REBS_TARIH }}">
 															</div>
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>En Geç Bitiş</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="EGBT_TARIH" id="EGBT_TARIH" value="{{ @$kart_veri->EGBT_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="EGBT_TARIH" id="EGBT_TARIH" value="{{ @$kart_veri->EGBT_TARIH }}">
 															</div>
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>Planlanan Bitiş</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="PLBT_TARIH" id="PLBT_TARIH" value="{{ @$kart_veri->PLBT_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="PLBT_TARIH" id="PLBT_TARIH" value="{{ @$kart_veri->PLBT_TARIH }}">
 															</div>
 															<div class="col-md-4 col-sm-4 col-xs-6">
 																<label>Gerçekleşen Bitiş</label>
-																<input type="date" class="form-control input-sm" maxlength="50" name="REBT_TARIH" id="REBT_TARIH" value="{{ @$kart_veri->REBT_TARIH }}">
+																<input type="date" class="form-control input-sm" data-max name="REBT_TARIH" id="REBT_TARIH" value="{{ @$kart_veri->REBT_TARIH }}">
 															</div>
 															<div class="row">
 																<br><br>

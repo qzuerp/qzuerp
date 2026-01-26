@@ -133,23 +133,23 @@
 									</div>
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Mamul Adı</label>
-										<input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="MAMULSTOKADI_SHOW" id="MAMULSTOKADI_SHOW" disabled value="{{ @$kart_veri->MAMULSTOKADI; }}" >
-										<input type="hidden" class="form-control input-sm" maxlength="50" name="MAMULSTOKADI" id="MAMULSTOKADI" value="{{ @$kart_veri->MAMULSTOKADI; }}" >
+										<input type="text" class="form-control input-sm" style="color:red" data-max name="MAMULSTOKADI_SHOW" id="MAMULSTOKADI_SHOW" disabled value="{{ @$kart_veri->MAMULSTOKADI; }}" >
+										<input type="hidden" class="form-control input-sm" data-max name="MAMULSTOKADI" id="MAMULSTOKADI" value="{{ @$kart_veri->MAMULSTOKADI; }}" >
 									</div>
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Müşteri Kodu</label>
-										<input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="MUSTERIKODU" id="MUSTERIKODU" disabled value="{{ @$kart_veri->MUSTERIKODU; }}" >
-										<input type="hidden" class="form-control input-sm" maxlength="50" name="MUSTERIKODU" id="MUSTERIKODU" value="{{ @$kart_veri->MUSTERIKODU; }}" >
+										<input type="text" class="form-control input-sm" style="color:red" data-max name="MUSTERIKODU" id="MUSTERIKODU" disabled value="{{ @$kart_veri->MUSTERIKODU; }}" >
+										<input type="hidden" class="form-control input-sm" data-max name="MUSTERIKODU" id="MUSTERIKODU" value="{{ @$kart_veri->MUSTERIKODU; }}" >
 									</div>
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Sipariş No</label>
-										<input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="SIPNO_SHOW" id="SIPNO_SHOW" disabled value="{{ @$kart_veri->SIPNO; }}" >
-										<input type="hidden" class="form-control input-sm" maxlength="50" name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO; }}" >
+										<input type="text" class="form-control input-sm" style="color:red" data-max name="SIPNO_SHOW" id="SIPNO_SHOW" disabled value="{{ @$kart_veri->SIPNO; }}" >
+										<input type="hidden" class="form-control input-sm" data-max name="SIPNO" id="SIPNO" value="{{ @$kart_veri->SIPNO; }}" >
 									</div>
 									<div class="col-md-2 col-sm-4 col-xs-6">
 										<label>Sipariş Art No</label>
 										<div class="d-flex ">
-											<input type="number" class="form-control input-sm" style="color:red" maxlength="50" name="SIPARTNO" id="SIPARTNO"  value="{{ @$kart_veri->SIPARTNO; }}" disabled>
+											<input type="number" class="form-control input-sm" style="color:red" data-max name="SIPARTNO" id="SIPARTNO"  value="{{ @$kart_veri->SIPARTNO; }}" disabled>
 											<span class="d-flex -btn">
 												<button class="btn btn-primary" data-bs-toggle="modal" onclick="getSipToEvrak()" data-bs-target="#modal_popupSelectModal" type="button">
 													<span class="fa-solid fa-magnifying-glass"  ></span>
@@ -161,12 +161,12 @@
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Reçete Föy No</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="BOMU01_FOYNO" id="BOMU01_FOYNO" value="{{ @$kart_veri->BOMU01_FOYNO; }}">
+									<input type="number" class="form-control input-sm" data-max name="BOMU01_FOYNO" id="BOMU01_FOYNO" value="{{ @$kart_veri->BOMU01_FOYNO; }}">
 								</div> 
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Proje Kodu</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="PROJEKODU" id="PROJEKODU" value="{{ @$kart_veri->PROJEKODU; }}">
+									<input type="number" class="form-control input-sm" data-max name="PROJEKODU" id="PROJEKODU" value="{{ @$kart_veri->PROJEKODU; }}">
 								</div>
 
 								<div class="col-md-1 col-sm-4 col-xs-6">
@@ -205,12 +205,12 @@
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Ü. Teslim Tarihi</label>
-									<input type="date" class="form-control input-sm" maxlength="50" name="URETIMDENTESTARIH" id="URETIMDENTESTARIH" value="{{ @$kart_veri->URETIMDENTESTARIH; }}">
+									<input type="date" class="form-control input-sm" data-max name="URETIMDENTESTARIH" id="URETIMDENTESTARIH" value="{{ @$kart_veri->URETIMDENTESTARIH; }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kapanış Tarihi</label>
-									<input type="date"  class="form-control input-sm" maxlength="50" name="KAPANIS_TARIHI" id="KAPANIS_TARIHI" value="{{ @$kart_veri->KAPANIS_TARIHI; }}">
+									<input type="date"  class="form-control input-sm" data-max name="KAPANIS_TARIHI" id="KAPANIS_TARIHI" value="{{ @$kart_veri->KAPANIS_TARIHI; }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
@@ -224,17 +224,17 @@
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Miktar</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="SF_PAKETSAYISI" id="SF_PAKETSAYISI"  value="{{ @$kart_veri->SF_PAKETSAYISI; }}">
+									<input type="number" class="form-control input-sm" data-max name="SF_PAKETSAYISI" id="SF_PAKETSAYISI"  value="{{ @$kart_veri->SF_PAKETSAYISI; }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Paket İçeriği</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="SF_PAKETICERIGI" id="SF_PAKETICERIGI" value="{{ @$kart_veri->SF_PAKETICERIGI; }}">
+									<input type="number" class="form-control input-sm" data-max name="SF_PAKETICERIGI" id="SF_PAKETICERIGI" value="{{ @$kart_veri->SF_PAKETICERIGI; }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Toplam Miktar</label>
-									<input type="number" class="form-control input-sm" maxlength="50" name="SF_TOPLAMMIKTAR" id="SF_TOPLAMMIKTAR" value="{{ @$kart_veri->SF_TOPLAMMIKTAR; }}">
+									<input type="number" class="form-control input-sm" data-max name="SF_TOPLAMMIKTAR" id="SF_TOPLAMMIKTAR" value="{{ @$kart_veri->SF_TOPLAMMIKTAR; }}">
 								</div>
 
 								<div class="col-md-6 col-sm-4 col-xs-6">
@@ -243,12 +243,12 @@
 
 								<div class="col-md-6 col-sm-4 col-xs-6">
 									<label>Not1</label>
-									<input type="text" class="form-control input-sm" maxlength="50" name="NOT_1" id="NOT_1" value="{{ @$kart_veri->NOT_1; }}">
+									<input type="text" class="form-control input-sm" data-max name="NOT_1" id="NOT_1" value="{{ @$kart_veri->NOT_1; }}">
 								</div>
 
 								<div class="col-md-6 col-sm-4 col-xs-6">
 									<label>Not2</label>
-									<input type="text" class="form-control input-sm" maxlength="50" name="NOT_2" id="NOT_2" value="{{ @$kart_veri->NOT_2; }}">
+									<input type="text" class="form-control input-sm" data-max name="NOT_2" id="NOT_2" value="{{ @$kart_veri->NOT_2; }}">
 								</div>
 							</div>
 						</div>
@@ -431,27 +431,27 @@
 													<div class="row">
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>En Geç Başlama</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="EGBS_TARIH" id="EGBS_TARIH" value="{{ @$kart_veri->EGBS_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="EGBS_TARIH" id="EGBS_TARIH" value="{{ @$kart_veri->EGBS_TARIH; }}">
 														</div>
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>Planlanan Başlama</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="PLBS_TARIH" id="PLBS_TARIH" value="{{ @$kart_veri->PLBS_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="PLBS_TARIH" id="PLBS_TARIH" value="{{ @$kart_veri->PLBS_TARIH; }}">
 														</div>
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>Gerçekleşen Başlama</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="REBS_TARIH" id="REBS_TARIH" value="{{ @$kart_veri->REBS_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="REBS_TARIH" id="REBS_TARIH" value="{{ @$kart_veri->REBS_TARIH; }}">
 														</div>
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>En Geç Bitiş</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="EGBT_TARIH" id="EGBT_TARIH" value="{{ @$kart_veri->EGBT_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="EGBT_TARIH" id="EGBT_TARIH" value="{{ @$kart_veri->EGBT_TARIH; }}">
 														</div>
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>Planlanan Bitiş</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="PLBT_TARIH" id="PLBT_TARIH" value="{{ @$kart_veri->PLBT_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="PLBT_TARIH" id="PLBT_TARIH" value="{{ @$kart_veri->PLBT_TARIH; }}">
 														</div>
 														<div class="col-md-4 col-sm-4 col-xs-6">
 															<label>Gerçekleşen Bitiş</label>
-															<input type="date" class="form-control input-sm" maxlength="50" name="REBT_TARIH" id="REBT_TARIH" value="{{ @$kart_veri->REBT_TARIH; }}">
+															<input type="date" class="form-control input-sm" data-max name="REBT_TARIH" id="REBT_TARIH" value="{{ @$kart_veri->REBT_TARIH; }}">
 														</div>
 														{{-- <div class="row">
 															<br><br>

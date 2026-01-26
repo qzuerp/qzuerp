@@ -64,6 +64,7 @@ class stok46_controller extends Controller
     $NOT1 = $request->input('NOT1');
     $TERMIN_TAR = $request->input('TERMIN_TAR');
     $AK = $request->input('AK');
+    $T_AK = $request->input('T_AK');
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->input('TRNUM');
     $FIYAT = $request->FIYAT;
@@ -72,7 +73,7 @@ class stok46_controller extends Controller
     $NOT = $request->NOT;
 
     if ($KOD == null) {
-      $satir_say = 0;
+      $satir_say = 0; 
     }
 
     else {
@@ -176,6 +177,7 @@ class stok46_controller extends Controller
             'FIYAT' => $FIYAT[$i],
             'FIYAT_PB' => $FIYAT_PB[$i], 
             'NETKAPANANMIK' => 0,
+            'AK' => $T_AK[$i],
             'ARTNO' => $EVRAKNO.$TRNUM[$i]
           ]);
 
@@ -321,6 +323,7 @@ class stok46_controller extends Controller
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
               'NETKAPANANMIK' => 0,
+              'AK' => $T_AK[$i],
               'ARTNO' => $EVRAKNO.$TRNUM[$i]
             ]);
 
@@ -350,7 +353,8 @@ class stok46_controller extends Controller
               'TERMIN_TAR' => $TERMIN_TAR[$i],
               'updated_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
-              'FIYAT_PB' => $FIYAT_PB[$i]
+              'FIYAT_PB' => $FIYAT_PB[$i],  
+              'AK' => $T_AK[$i],
             ]);
 
           }

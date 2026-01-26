@@ -14,100 +14,45 @@ class stok_gecmisi_controller extends Controller
         $db = trim($u->firma) . '.dbo.';
         $stokKodu = $request->stok_kodu;
 
-        $sql = "
-            SELECT *
-                FROM (
-                    SELECT 
-                        CONVERT(NVARCHAR(19), SIP.created_at, 120) AS TARIH,
-                        'SATIŞ SİPARİŞ' AS KAYNAK,
-                        CAST(SIP.EVRAKNO AS NVARCHAR(50)) AS NO,
-                        'satissiparisi?ID=' + CAST(E.id AS NVARCHAR) AS URL,
-                        'Satış siparişi açıldı' AS ACIKLAMA
-                    FROM {$db}stok40t SIP
-                    INNER JOIN stok40e E ON E.EVRAKNO = SIP.EVRAKNO
-                    WHERE SIP.KOD = ?
+        // Yeni kaynak eklemek için buraya ekle
+        $kaynaklar = [
+            ['table' => 'stok40t', 'join' => 'stok40e', 'where' => 'KOD', 'kaynak' => 'SATIŞ SİPARİŞ', 'url' => 'satissiparisi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Satış siparişi açıldı', 'date' => 'created_at'],
+            ['table' => 'mmps10e', 'join' => null, 'where' => 'MAMULSTOKKODU', 'kaynak' => 'MPS', 'url' => 'mpsgiriskarti?ID=', 'url_field' => 'id', 'aciklama' => 'MPS planına alındı', 'date' => 'created_at'],
+            ['table' => 'cgc70', 'join' => null, 'where' => 'sapma_parca_no', 'kaynak' => 'SAPMA', 'url' => 'takip_listeleri?ID=', 'url_field' => 'ID', 'aciklama' => 'Sapma kaydı oluşturuldu', 'date' => 'sapma_tarih'],
+            ['table' => 'bomu01e', 'join' => null, 'where' => 'MAMULCODE', 'kaynak' => 'ÜRÜN AĞACI', 'url' => 'urunagaci?ID=', 'url_field' => 'id', 'aciklama' => 'Ürün ağacı oluşturduldu', 'date' => 'created_at'],
+            ['table' => 'sfdc31e', 'join' => null, 'where' => 'STOK_CODE', 'kaynak' => 'ÇALIŞMA BİLDİRİMİ', 'url' => 'calisma_bildirimi?ID=', 'url_field' => 'ID', 'aciklama' => 'Çalışma bildirimi oluşturuldu', 'date' => 'created_at'],
+            ['table' => 'stok60t', 'join' => 'stok60e', 'where' => 'KOD', 'kaynak' => 'SEVK İRSALİYESİ', 'url' => 'sevkirsaliyesi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Sevk irsaliyesi kesildi', 'date' => 'created_at'],
+            ['table' => 'stok48t', 'join' => 'stok48e', 'where' => 'KOD', 'kaynak' => 'FİYAT LİSTESİ', 'url' => 'fiyat_listesi?ID=', 'url_field' => 'E.EVRAKNO', 'aciklama' => 'Fiyat listesi eklendi', 'date' => 'created_at'],
+            ['table' => 'stok20t', 'join' => 'stok20e', 'where' => 'KOD', 'kaynak' => 'ÜRETİM FİŞİ', 'url' => 'uretim_fisi?ID=', 'url_field' => 'E.EVRAKNO', 'aciklama' => 'Üretim fişi oluşturuldu', 'date' => 'created_at'],
+            ['table' => 'stok63t', 'join' => 'stok63e', 'where' => 'KOD', 'kaynak' => 'FASON SEVK İRSALİYESİ', 'url' => 'fasonsevkirsaliyesi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Fason sevkiyatı yapıldı', 'date' => 'created_at'],
+            ['table' => 'stok68t', 'join' => 'stok68e', 'where' => 'KOD', 'kaynak' => 'FASON GELİŞ İRSALİYESİ', 'url' => 'fasongelisirsaliyesi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Fason girişi yapıldı', 'date' => 'created_at'],
+            ['table' => 'stok46t', 'join' => 'stok46e', 'where' => 'KOD', 'kaynak' => 'SATIN ALMA SİPARİŞ', 'url' => 'satinalmasiparisi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Satın alma siparişi oluşturuldu', 'date' => 'created_at'],
+            ['table' => 'stok29t', 'join' => 'stok29e', 'where' => 'KOD', 'kaynak' => 'SATIN ALMA İRSALİYES', 'url' => 'satinalmairsaliyesi?ID=', 'url_field' => 'E.id', 'aciklama' => 'Satın alma irsaliyesi oluşturuldu', 'date' => 'created_at'],
+        ];
 
-                    UNION ALL
+        $unions = [];
+        $bindings = [];
+
+        foreach ($kaynaklar as $k) {
+            $join = $k['join'] ? "INNER JOIN {$k['join']} E ON E.EVRAKNO = SIP.EVRAKNO" : '';
             
-                    SELECT
-                        CONVERT(NVARCHAR(19), MPS.created_at, 120),
-                        'MPS',
-                        CAST(MPS.EVRAKNO AS NVARCHAR(50)),
-                        'mpsgiriskarti?ID=' + CAST(MPS.id AS NVARCHAR) AS URL,
-                        'MPS planına alındı'
-                    FROM {$db}mmps10e MPS
-                    WHERE MPS.MAMULSTOKKODU = ?
-            
-                    UNION ALL
-            
-                    SELECT
-                        CONVERT(NVARCHAR(19), SAP.sapma_tarih, 120),
-                        'SAPMA',
-                        CAST(SAP.EVRAKNO AS NVARCHAR(50)),
-                        'takip_listeleri?ID=' + CAST(SAP.ID AS NVARCHAR) AS URL, 
-                        'Sapma kaydı oluşturuldu'
-                    FROM {$db}cgc70 SAP
-                    WHERE SAP.sapma_parca_no = ?
-
-                    UNION ALL
-            
-                    SELECT
-                        CONVERT(NVARCHAR(19), bomu.created_at, 120),
-                        'ÜRÜN AĞACI',
-                        CAST(bomu.EVRAKNO AS NVARCHAR(50)),
-                        'urunagaci?ID=' + CAST(bomu.id AS NVARCHAR) AS URL,
-                        'Ürün ağacı oluşturduldu'
-                    FROM {$db}bomu01e bomu
-                    WHERE bomu.MAMULCODE = ?
-
-                    UNION ALL
-            
-                    SELECT
-                        CONVERT(NVARCHAR(19), sfdc.created_at, 120),
-                        'ÇALIŞMA BİLDİRİMİ',
-                        CAST(sfdc.EVRAKNO AS NVARCHAR(50)),
-                        'calisma_bildirimi?ID=' + CAST(sfdc.ID AS NVARCHAR) AS URL,
-                        'Çalışma bildirimi oluşturuldu'
-                    FROM {$db}sfdc31e sfdc
-                    WHERE sfdc.STOK_CODE = ?
-
-                    UNION ALL
-                    
-                    SELECT 
-                        CONVERT(NVARCHAR(19), SIP.created_at, 120) AS TARIH,
-                        'SEVK İRSALİYESİ' AS KAYNAK,
-                        CAST(SIP.EVRAKNO AS NVARCHAR(50)) AS NO,
-                        'sevkirsaliyesi?ID=' + CAST(E.id AS NVARCHAR) AS URL,
-                        'Sevk irsaliyesi kesildi' AS ACIKLAMA
-                    FROM {$db}stok60t SIP
-                    INNER JOIN stok60e E ON E.EVRAKNO = SIP.EVRAKNO
-                    WHERE SIP.KOD = ?
-
-                    UNION ALL
-
-                    SELECT 
-                        CONVERT(NVARCHAR(19), SIP.created_at, 120) AS TARIH,
-                        'FİYAT LİSTESİ' AS KAYNAK,
-                        CAST(SIP.EVRAKNO AS NVARCHAR(50)) AS NO,
-                        'fiyat_listesi?ID=' + CAST(E.EVRAKNO AS NVARCHAR) AS URL,
-                        'Fiyat listesi eklendi' AS ACIKLAMA
-                    FROM {$db}stok48t SIP
-                    INNER JOIN stok48e E ON E.EVRAKNO = SIP.EVRAKNO
-                    WHERE SIP.KOD = ?
-                ) X
-                ORDER BY X.TARIH DESC
+            $unions[] = "
+                SELECT
+                    CONVERT(NVARCHAR(19), SIP.{$k['date']}, 120) AS TARIH,
+                    '{$k['kaynak']}' AS KAYNAK,
+                    CAST(SIP.EVRAKNO AS NVARCHAR(50)) AS NO,
+                    '{$k['url']}' + CAST({$k['url_field']} AS NVARCHAR) AS URL,
+                    '{$k['aciklama']}' AS ACIKLAMA
+                FROM {$db}{$k['table']} SIP
+                {$join}
+                WHERE SIP.{$k['where']} = ?
             ";
+            $bindings[] = $stokKodu;
+        }
 
+        $sql = "SELECT * FROM (" . implode(" UNION ALL ", $unions) . ") X ORDER BY X.TARIH DESC";
 
-        $data = DB::select($sql, [
-            $stokKodu,
-            $stokKodu,
-            $stokKodu,
-            $stokKodu,
-            $stokKodu,
-            $stokKodu,
-            $stokKodu,
-        ]);
+        $data = DB::select($sql, $bindings);
 
         return response()->json(
             collect($data)->map(function ($row) {

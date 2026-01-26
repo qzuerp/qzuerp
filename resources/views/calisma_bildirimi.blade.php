@@ -152,8 +152,8 @@
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>Tezgah Planı</label>
                       <div class="d-flex ">
-                        <input type="text" class="form-control input-sm" style="color:red" maxlength="50" name="TO_ISMERKEZI_SHOW" id="TO_ISMERKEZI_SHOW" disabled>
-                        <input type="hidden" class="form-control input-sm" maxlength="50" name="TO_ISMERKEZI2" id="TO_ISMERKEZI">
+                        <input type="text" class="form-control input-sm" style="color:red" data-max name="TO_ISMERKEZI_SHOW" id="TO_ISMERKEZI_SHOW" disabled>
+                        <input type="hidden" class="form-control input-sm" data-max name="TO_ISMERKEZI2" id="TO_ISMERKEZI">
                         <span class="d-flex -btn">
                           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_planSuz" type="button">
                             <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -164,14 +164,14 @@
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>MPS No</label>
-                      <input type="text" class="form-control input-sm MPSNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" style="color:red" maxlength="50" name="MPSNO_SHOW" id="MPSNO" readonly value="{{ @$kart_veri->MPSNO }}" >
+                      <input type="text" class="form-control input-sm MPSNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" style="color:red" data-max name="MPSNO_SHOW" id="MPSNO" readonly value="{{ @$kart_veri->MPSNO }}" >
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
                       <label>JOB No</label>
                       <div class="d-flex ">
-                        <input type="text" class="form-control JOBNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="JOBNO" style="color:red" maxlength="50" name="JOBNO_SHOW" id="JOBNO_SHOW"   value="{{ @$kart_veri->JOBNO }}" disabled>
-                        <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO"  value="{{ @$kart_veri->JOBNO }}" >
+                        <input type="text" class="form-control JOBNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="JOBNO" style="color:red" data-max name="JOBNO_SHOW" id="JOBNO_SHOW"   value="{{ @$kart_veri->JOBNO }}" disabled>
+                        <input type="hidden" class="form-control input-sm" data-max name="JOBNO" onchange="verileriGetir()" id="JOBNO"  value="{{ @$kart_veri->JOBNO }}" >
                         <span class="d-flex -btn">
                           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" id="modal_popupSelectModalBtn" type="button">
                             <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -275,16 +275,16 @@
                             
                             <div class="col-md-2 col-sm-4 col-xs-6">
                               <label>Üretim Miktarı</label>
-                              <input type="hidden" class="form-control input-sm" maxlength="50" name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}" >
+                              <input type="hidden" class="form-control input-sm" data-max name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}" >
                               <div class="d-flex gap-1">
-                                  <input type="text" class="form-control input-sm SF_MIKTAR" style="color:red" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR"
+                                  <input type="text" class="form-control input-sm SF_MIKTAR" style="color:red" data-max data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR"
                                         name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}">
 
                                   @php
                                       $MPS = DB::table($database.'mmps10t')->where('JOBNO', @$kart_veri->JOBNO)->first();
                                   @endphp
 
-                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm" style="color:red" maxlength="50" value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
+                                  <input type="text" readonly name="TAMAMLANAN_MIK" class="form-control input-sm" style="color:red" data-max value="{{ $MPS->R_YMK_YMPAKETICERIGI ?? '' }}">
                               </div>
 
                             </div>
@@ -680,8 +680,8 @@
                                   <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
-                                  <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
-                                  <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                                  <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                                  <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="12" style="color: red" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">

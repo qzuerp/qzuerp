@@ -113,7 +113,7 @@
             ['title' => 'Toplam Kalibrasyon', 'value' => $kalibrasyon_data['toplam'], 'icon' => 'fa-gauge-high', 'color' => '#3b82f6'],
             ['title' => 'Kritik Kalibrasyonlar', 'value' => $kalibrasyon_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444', 'link' => "kart_kalibrasyon?SUZ=SUZ&firma={$database}&tarih=1#liste"],
             ['title' => 'Fason Sevkler', 'value' => $fason_data['toplam'], 'icon' => 'fa-truck-fast', 'color' => '#8b5cf6'],
-            ['title' => 'Bekleyen İşlemler', 'value' => $kalibrasyon_data['yakin'] + $fason_data['yakin'], 'icon' => 'fa-clock', 'color' => '#f59e0b']
+            ['title' => 'Bekleyen İşlemler', 'value' => $fason_data['kritik'], 'icon' => 'fa-triangle-exclamation', 'color' => '#ef4444', 'link' => "fasonsevkirsaliyesi?SUZ=SUZ&firma={$database}#liste"]
         ];
     @endphp
 

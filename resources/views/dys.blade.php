@@ -107,7 +107,7 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Kaynağı</label>
-										<input type="text" class="form-control DOKUMAN_KAYNAGI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_KAYNAGI" maxlength="50"  name="DOKUMAN_KAYNAGI" id="DOKUMAN_KAYNAGI" value="{{ @$kart_veri->DOKUMAN_KAYNAGI }}">
+										<input type="text" class="form-control DOKUMAN_KAYNAGI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_KAYNAGI" data-max  name="DOKUMAN_KAYNAGI" id="DOKUMAN_KAYNAGI" value="{{ @$kart_veri->DOKUMAN_KAYNAGI }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
@@ -117,22 +117,22 @@
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Gözden Geç. Sorumlu</label>
-										<input type="text" class="form-control GOZ_GECIRME_SOR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GOZ_GECIRME_SOR" maxlength="50" name="GOZ_GECIRME_SOR" id="GOZ_GECIRME_SOR" value="{{ @$kart_veri->GOZ_GECIRME_SOR }}">
+										<input type="text" class="form-control GOZ_GECIRME_SOR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GOZ_GECIRME_SOR" data-max name="GOZ_GECIRME_SOR" id="GOZ_GECIRME_SOR" value="{{ @$kart_veri->GOZ_GECIRME_SOR }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>İlgili Süreç</label>
-										<input type="text" class="form-control ILGILI_SUREC" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_SUREC" maxlength="50" name="ILGILI_SUREC" id="ILGILI_SUREC" value="{{ @$kart_veri->ILGILI_SUREC }}">
+										<input type="text" class="form-control ILGILI_SUREC" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_SUREC" data-max name="ILGILI_SUREC" id="ILGILI_SUREC" value="{{ @$kart_veri->ILGILI_SUREC }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Adı</label>
-										<input type="text" class="form-control DOKUMAN_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_ADI" maxlength="50"  name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
+										<input type="text" class="form-control DOKUMAN_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_ADI" data-max  name="DOKUMAN_ADI" id="DOKUMAN_ADI" value="{{ @$kart_veri->DOKUMAN_ADI }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Türü-1</label>
-										<input type="text" class="form-control DOKUMAN_TURU_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_TURU_1" maxlength="50" name="DOKUMAN_TURU_1" id="DOKUMAN_TURU_1" value="{{ @$kart_veri->DOKUMAN_TURU_1 }}">
+										<input type="text" class="form-control DOKUMAN_TURU_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_TURU_1" data-max name="DOKUMAN_TURU_1" id="DOKUMAN_TURU_1" value="{{ @$kart_veri->DOKUMAN_TURU_1 }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
@@ -142,27 +142,27 @@
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Gözden Geç. Pery. (AY)</label>
-										<input type="text" class="form-control GOZ_GECIRME_PERY" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GOZ_GECIRME_PERY" maxlength="50" name="GOZ_GECIRME_PERY" id="GOZ_GECIRME_PERY" value="{{ @$kart_veri->GOZ_GECIRME_PERY }}">
+										<input type="text" class="form-control GOZ_GECIRME_PERY" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GOZ_GECIRME_PERY" data-max name="GOZ_GECIRME_PERY" id="GOZ_GECIRME_PERY" value="{{ @$kart_veri->GOZ_GECIRME_PERY }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>İlgili Prosedür</label>
-										<input type="text" class="form-control ILGILI_PROSEDUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_PROSEDUR" maxlength="50" name="ILGILI_PROSEDUR" id="ILGILI_PROSEDUR" value="{{ @$kart_veri->ILGILI_PROSEDUR }}">
+										<input type="text" class="form-control ILGILI_PROSEDUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_PROSEDUR" data-max name="ILGILI_PROSEDUR" id="ILGILI_PROSEDUR" value="{{ @$kart_veri->ILGILI_PROSEDUR }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Revizyon No</label>
-										<input type="text" class="form-control REVIZYON_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="REVIZYON_NO" maxlength="50" name="REVIZYON_NO" id="REVIZYON_NO" value="{{ @$kart_veri->REVIZYON_NO }}">
+										<input type="text" class="form-control REVIZYON_NO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="REVIZYON_NO" data-max name="REVIZYON_NO" id="REVIZYON_NO" value="{{ @$kart_veri->REVIZYON_NO }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Türü-2</label>
-										<input type="text" class="form-control DOKUMAN_TURU_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_TURU_2" maxlength="50" name="DOKUMAN_TURU_2" id="DOKUMAN_TURU_2" value="{{ @$kart_veri->DOKUMAN_TURU_2 }}">
+										<input type="text" class="form-control DOKUMAN_TURU_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_TURU_2" data-max name="DOKUMAN_TURU_2" id="DOKUMAN_TURU_2" value="{{ @$kart_veri->DOKUMAN_TURU_2 }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Durumu</label>
-										<input type="text" class="form-control DURUMU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DURUMU" maxlength="50" name="DURUMU" id="DURUMU" value="{{ @$kart_veri->DURUMU }}">
+										<input type="text" class="form-control DURUMU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DURUMU" data-max name="DURUMU" id="DURUMU" value="{{ @$kart_veri->DURUMU }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
@@ -172,7 +172,7 @@
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>İlgili Talimat</label>
-										<input type="text" class="form-control ILGILI_TALIMAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_TALIMAT" maxlength="50" name="ILGILI_TALIMAT" id="ILGILI_TALIMAT" value="{{ @$kart_veri->ILGILI_TALIMAT }}">
+										<input type="text" class="form-control ILGILI_TALIMAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_TALIMAT" data-max name="ILGILI_TALIMAT" id="ILGILI_TALIMAT" value="{{ @$kart_veri->ILGILI_TALIMAT }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
@@ -182,12 +182,12 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Müşteri</label>
-										<input type="text" class="form-control MUSTERI_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERI_KOD" maxlength="50" name="MUSTERI_KOD" id="MUSTERI_KOD" value="{{ @$kart_veri->MUSTERI_KOD }}">
+										<input type="text" class="form-control MUSTERI_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MUSTERI_KOD" data-max name="MUSTERI_KOD" id="MUSTERI_KOD" value="{{ @$kart_veri->MUSTERI_KOD }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Arşiv Süresi (YIL)</label>
-										<input type="text" class="form-control ARSIV_SURESI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ARSIV_SURESI" maxlength="50" name="ARSIV_SURESI" id="ARSIV_SURESI" value="{{ @$kart_veri->ARSIV_SURESI }}">
+										<input type="text" class="form-control ARSIV_SURESI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ARSIV_SURESI" data-max name="ARSIV_SURESI" id="ARSIV_SURESI" value="{{ @$kart_veri->ARSIV_SURESI }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
@@ -197,27 +197,27 @@
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Doküman Sınıfı</label>
-										<input type="text" class="form-control DOKUMAN_SINIFI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_SINIFI" maxlength="50" name="DOKUMAN_SINIFI" id="DOKUMAN_SINIFI" value="{{ @$kart_veri->DOKUMAN_SINIFI }}">
+										<input type="text" class="form-control DOKUMAN_SINIFI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DOKUMAN_SINIFI" data-max name="DOKUMAN_SINIFI" id="DOKUMAN_SINIFI" value="{{ @$kart_veri->DOKUMAN_SINIFI }}">
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-12">
 										<label>Tedarikçi</label>
-										<input type="text" class="form-control TEDARIKCI_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEDARIKCI_KOD" maxlength="50" name="TEDARIKCI_KOD" id="TEDARIKCI_KOD" value="{{ @$kart_veri->TEDARIKCI_KOD }}">
+										<input type="text" class="form-control TEDARIKCI_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEDARIKCI_KOD" data-max name="TEDARIKCI_KOD" id="TEDARIKCI_KOD" value="{{ @$kart_veri->TEDARIKCI_KOD }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Hata Bildirimi</label>
-										<input type="text" class="form-control HATA_BILDIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HATA_BILDIRIMI" maxlength="50" name="HATA_BILDIRIMI" id="HATA_BILDIRIMI" value="{{ @$kart_veri->HATA_BILDIRIMI }}">
+										<input type="text" class="form-control HATA_BILDIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HATA_BILDIRIMI" data-max name="HATA_BILDIRIMI" id="HATA_BILDIRIMI" value="{{ @$kart_veri->HATA_BILDIRIMI }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Master Kod</label>
-										<input type="text" class="form-control MASTER_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASTER_KOD" maxlength="50" name="MASTER_KOD" id="MASTER_KOD" value="{{ @$kart_veri->MASTER_KOD }}">
+										<input type="text" class="form-control MASTER_KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MASTER_KOD" data-max name="MASTER_KOD" id="MASTER_KOD" value="{{ @$kart_veri->MASTER_KOD }}">
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12">
 										<label>Parça Adı</label>
-										<input type="text" class="form-control PARCA_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARCA_ADI" maxlength="50" name="PARCA_ADI" id="PARCA_ADI" value="{{ @$kart_veri->PARCA_ADI }}">
+										<input type="text" class="form-control PARCA_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARCA_ADI" data-max name="PARCA_ADI" id="PARCA_ADI" value="{{ @$kart_veri->PARCA_ADI }}">
 									</div>
 
 								</div>
@@ -227,12 +227,12 @@
 									<div class="row">
 										<div class="col-md-6 col-sm-4 col-xs-6">
 											<label>İlgili Tezgah</label>
-											<input type="text" class="form-control ILGILI_TEZGAH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_TEZGAH" maxlength="50" name="ILGILI_TEZGAH" id="ILGILI_TEZGAH" value="{{ @$kart_veri->ILGILI_TEZGAH }}">
+											<input type="text" class="form-control ILGILI_TEZGAH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_TEZGAH" data-max name="ILGILI_TEZGAH" id="ILGILI_TEZGAH" value="{{ @$kart_veri->ILGILI_TEZGAH }}">
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>İlgili Personel</label>
-											<input type="text" class="form-control ILGILI_PERSONEL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_PERSONEL" maxlength="50" name="ILGILI_PERSONEL" id="ILGILI_PERSONEL" value="{{ @$kart_veri->ILGILI_PERSONEL }}">
+											<input type="text" class="form-control ILGILI_PERSONEL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ILGILI_PERSONEL" data-max name="ILGILI_PERSONEL" id="ILGILI_PERSONEL" value="{{ @$kart_veri->ILGILI_PERSONEL }}">
 										</div>
 									</div>
 								</div>
@@ -252,15 +252,15 @@
 
 										<div class="col-xs-12">
 											<label>Hazırlayan</label>
-											<input type="text" class="form-control HAZIRLAYAN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HAZIRLAYAN" maxlength="50" name="HAZIRLAYAN" id="HAZIRLAYAN" value="{{ @$kart_veri->HAZIRLAYAN }}">
+											<input type="text" class="form-control HAZIRLAYAN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HAZIRLAYAN" data-max name="HAZIRLAYAN" id="HAZIRLAYAN" value="{{ @$kart_veri->HAZIRLAYAN }}">
 										</div>
 										<div class="col-xs-12">
 											<label>Kontrol Eden</label>
-											<input type="text" class="form-control KONTROL_EDEN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KONTROL_EDEN" maxlength="50" name="KONTROL_EDEN" id="KONTROL_EDEN" value="{{ @$kart_veri->KONTROL_EDEN }}">
+											<input type="text" class="form-control KONTROL_EDEN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KONTROL_EDEN" data-max name="KONTROL_EDEN" id="KONTROL_EDEN" value="{{ @$kart_veri->KONTROL_EDEN }}">
 										</div>
 										<div class="col-xs-12">
 											<label>Onaylayan</label>
-											<input type="text" class="form-control ONAYLAYAN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ONAYLAYAN" maxlength="50" name="ONAYLAYAN" id="KONTROL_EDEN" value="{{ @$kart_veri->ONAYLAYAN }}">
+											<input type="text" class="form-control ONAYLAYAN" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ONAYLAYAN" data-max name="ONAYLAYAN" id="KONTROL_EDEN" value="{{ @$kart_veri->ONAYLAYAN }}">
 										</div>
 									</div>
 								</div>

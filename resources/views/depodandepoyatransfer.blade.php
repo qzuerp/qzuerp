@@ -127,7 +127,7 @@
 
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Tarih</label>
-                        <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
+                        <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" data-max name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
                       </div>
 
                       <div class="col-md-2 col-sm-4 col-xs-6">
@@ -269,8 +269,8 @@
                                 <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
-                                <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
-                                <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                                <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control" disabled>
+                                <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                               </td>
                               <td style="min-width: 150px">
                                 <input maxlength="12" style="color: red" type="text" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">

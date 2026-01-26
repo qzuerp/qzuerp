@@ -125,12 +125,12 @@
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Stok Adı</label>
-											<input type="text" class="form-control" maxlength="50" name="AD" id="AD"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD"  value="{{ @$kart_veri->AD }}" >
+											<input type="text" class="form-control" data-max name="AD" id="AD"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD"  value="{{ @$kart_veri->AD }}" >
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Ad2</label>
-											<input type="text" class="form-control" maxlength="50" name="NAME2" id="NAME2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NAME2" value="{{ @$kart_veri->NAME2 }}">
+											<input type="text" class="form-control" data-max name="NAME2" id="NAME2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NAME2" value="{{ @$kart_veri->NAME2 }}">
 										</div>
 
 										<div class="col-md-1 col-sm-1 col-xs-2">
@@ -1120,9 +1120,9 @@
 													@endphp
 												</tbody>
 											</table>
-											{{-- <button class="btn btn-success" onclick="exportTableToExcel('example2', 'tablo_excel')">Excel'e Aktar</button>
+											<button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
 											<button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
-											<button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button> --}}
+											<button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
 											@php
 												}
 											@endphp
@@ -1610,71 +1610,45 @@
 		</script>
 		{{-- Excel Doküman çekme yeni kod --}}
 
-			{{-- <script>
-		      	// Tabloyu Excel formatında indirme
-				function exportTableToExcel(tableID, filename = '') {
-			        var downloadLink;
-			        var dataType = 'application/vnd.ms-excel';
-			        var tableSelect = document.getElementById(tableID);
-			        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+		<script>
+			// Tabloyu Word formatında indirme
+			function exportTableToWord(tableID, filename = '') {
+				var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>HTML Table</title></head><body>";
+				var postHtml = "</body></html>";
+				var html = preHtml + document.getElementById(tableID).outerHTML + postHtml;
 
-			        filename = filename ? filename + '.xls' : 'excel_data.xls';
+				var blob = new Blob(['\ufeff', html], {
+					type: 'application/msword'
+				});
 
-			        downloadLink = document.createElement("a");
+				filename = filename ? filename + '.doc' : 'document.doc';
+				var downloadLink = document.createElement("a");
 
-			        document.body.appendChild(downloadLink);
+				document.body.appendChild(downloadLink);
 
-			        if (navigator.msSaveOrOpenBlob) {
-				        var blob = new Blob(['\ufeff', tableHTML], {
-		          			type: dataType
-				        });
-			          navigator.msSaveOrOpenBlob(blob, filename);
-			        } 
-			        else {
-				        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-				        downloadLink.download = filename;
-				        downloadLink.click();
-			        }
-			  	}
+				if (navigator.msSaveOrOpenBlob) {
+					navigator.msSaveOrOpenBlob(blob, filename);
+				} 
+				else {
+					downloadLink.href = 'data:application/msword,' + encodeURIComponent(html);
+					downloadLink.download = filename;
+					downloadLink.click();
+				}
+			}
 
-			    // Tabloyu Word formatında indirme
-			    function exportTableToWord(tableID, filename = '') {
-			        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>HTML Table</title></head><body>";
-			        var postHtml = "</body></html>";
-			        var html = preHtml + document.getElementById(tableID).outerHTML + postHtml;
+			// Tabloyu yazdırma
+			function printTable(tableID) {
+				var printWindow = window.open('', '', 'height=400,width=800');
+				printWindow.document.write('<html><head><title>Tablo Yazdır</title>');
+				printWindow.document.write('</head><body >');
+				printWindow.document.write(document.getElementById(tableID).outerHTML);
+				printWindow.document.write('</body></html>');
+				printWindow.document.close();
+				printWindow.print();
+			}
 
-			        var blob = new Blob(['\ufeff', html], {
-			          type: 'application/msword'
-			        });
-
-			        filename = filename ? filename + '.doc' : 'document.doc';
-			        var downloadLink = document.createElement("a");
-
-			        document.body.appendChild(downloadLink);
-
-			        if (navigator.msSaveOrOpenBlob) {
-		         		navigator.msSaveOrOpenBlob(blob, filename);
-			        } 
-			        else {
-						downloadLink.href = 'data:application/msword,' + encodeURIComponent(html);
-						downloadLink.download = filename;
-						downloadLink.click();
-			        }
-		      	}
-
-		      	// Tabloyu yazdırma
-		      	function printTable(tableID) {
-			        var printWindow = window.open('', '', 'height=400,width=800');
-			        printWindow.document.write('<html><head><title>Tablo Yazdır</title>');
-			        printWindow.document.write('</head><body >');
-			        printWindow.document.write(document.getElementById(tableID).outerHTML);
-			        printWindow.document.write('</body></html>');
-			        printWindow.document.close();
-			        printWindow.print();
-		      	}
-
-				
-		    </script> --}}
+			
+		</script>
 		
 	</div>
 

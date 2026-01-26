@@ -118,11 +118,11 @@ if (isset($kart_veri)) {
                       </div>
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Personel Adı</label>
-                        <input type="text" class="form-control" maxlength="50" name="AD" req id="AD" value="{{ @$kart_veri->AD }}">
+                        <input type="text" class="form-control" data-max name="AD" req id="AD" value="{{ @$kart_veri->AD }}">
                       </div>
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <label>Ünvanı</label>
-                        <input type="text" class="form-control" maxlength="50" name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
+                        <input type="text" class="form-control" data-max name="NAME2" id="NAME2" value="{{ @$kart_veri->NAME2 }}">
                       </div>
                       <div class="col-md-2 col-sm-1 col-xs-6">
                         <label>Aktif/Pasif</label>
@@ -191,7 +191,7 @@ if (isset($kart_veri)) {
                       </div>
                       <div class="col-md-3">
                         <label>e-Mail</label>
-                        <input type="text" class="form-control" maxlength="50" name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
+                        <input type="text" class="form-control" data-max name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
                       </div>
                       <div class="col-md-3">
                         <label>Şehir Kodu</label>
@@ -207,15 +207,15 @@ if (isset($kart_veri)) {
                       </div>
                       <div class="col-md-6">
                         <label>Adres</label>
-                        <input type="text" class="form-control" maxlength="50" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
+                        <input type="text" class="form-control" data-max name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
                       </div>
                       <div class="col-md-6">
                         <label>Adres 2</label>
-                        <input type="text" class="form-control" maxlength="50" name="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}">
+                        <input type="text" class="form-control" data-max name="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}">
                       </div>
                       <div class="col-md-6">
                         <label>Adres 3</label>
-                        <input type="text" class="form-control" maxlength="50" name="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}">
+                        <input type="text" class="form-control" data-max name="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}">
                       </div>
                       <div class="col-md-6">
                         <br><br>
@@ -430,7 +430,7 @@ if (isset($kart_veri)) {
                       </div>
                       <div class="col-md-2">
                         <label>Dogum Yeri</label>
-                        <input type="text" class="form-control" maxlength="50" name="DOGUM_YERI" id="DOGUM_YERI" value="{{ @$kart_veri->DOGUM_YERI }}">
+                        <input type="text" class="form-control" data-max name="DOGUM_YERI" id="DOGUM_YERI" value="{{ @$kart_veri->DOGUM_YERI }}">
                       </div>
                       <div class="col-md-2">
                         <label>Dogum Tarihi</label>
@@ -454,7 +454,7 @@ if (isset($kart_veri)) {
                       </div>
                       <div class="col-md-2">
                         <label>Mail</label>
-                        <input type="text" class="form-control" maxlength="50" name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
+                        <input type="text" class="form-control" data-max name="EMAIL" id="EMAIL" value="{{ @$kart_veri->EMAIL }}">
                       </div>
                       <div class="col-md-2">
                         <label>İl</label>
@@ -1973,34 +1973,34 @@ if (isset($kart_veri)) {
 
                       <div class="col-md-2">
                         <label>Cep Telefonu 1</label>
-                        <input type="text" class="form-control" maxlength="50" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
+                        <input type="text" class="form-control" data-max name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
                       </div>
                       <div class="col-md-2">
                         <label>Cep Telefonu 2</label>
-                        <input type="text" class="form-control" maxlength="50" name="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}">
+                        <input type="text" class="form-control" data-max name="TELEFONNO_2" id="TELEFONNO_2" value="{{ @$kart_veri->TELEFONNO_2 }}">
                       </div>
                       <div class="col-md-2">
                         <label>Eğitim Durumu</label>
-                        <input type="text" class="form-control" maxlength="50" name="EGITIM_DURUMU" id="EGITIM_DURUMU" value="{{ @$kart_veri->EGITIM_DURUMU }}">
+                        <input type="text" class="form-control" data-max name="EGITIM_DURUMU" id="EGITIM_DURUMU" value="{{ @$kart_veri->EGITIM_DURUMU }}">
                       </div>
                       <div class="col-md-2">
                         <label>Giysi Bedeni</label>
-                        <input type="text" class="form-control" maxlength="50" name="GIYSI_BEDENI" id="GIYSI_BEDENI" value="{{ @$kart_veri->GIYSI_BEDENI }}">
+                        <input type="text" class="form-control" data-max name="GIYSI_BEDENI" id="GIYSI_BEDENI" value="{{ @$kart_veri->GIYSI_BEDENI }}">
                       </div>
                       <div class="col-md-2">
                         <label>Giriş Tarihi</label>
-                        <input type="date" class="form-control" maxlength="50" name="GIRIS_TARIHI" id="GIRIS_TARIHI" value="{{ @$kart_veri->GIRIS_TARIHI }}">
+                        <input type="date" class="form-control" data-max name="GIRIS_TARIHI" id="GIRIS_TARIHI" value="{{ @$kart_veri->GIRIS_TARIHI }}">
                       </div>
                       <div class="col-md-2">
                         <label>Çıkış Tarihi</label>
-                        <input type="date" class="form-control" maxlength="50" name="CIKIS_TARIHI" id="CIKIS_TARIHI" value="{{ @$kart_veri->CIKIS_TARIHI }}">
+                        <input type="date" class="form-control" data-max name="CIKIS_TARIHI" id="CIKIS_TARIHI" value="{{ @$kart_veri->CIKIS_TARIHI }}">
                       </div>
                       {{-- <div class="col-md-6">
                         <br><br>
                       </div> --}}
                       <div class="col-md-4">
                         <label>Adres</label>
-                        <input type="text" class="form-control" maxlength="50" name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
+                        <input type="text" class="form-control" data-max name="ADRES_1" id="ADRES_1" value="{{ @$kart_veri->ADRES_1 }}">
                       </div>
 
                     </div>

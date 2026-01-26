@@ -509,7 +509,7 @@ if (isset($kart_veri)) {
                           <input style="color: red" type="text" data-name="KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control" readonly>
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="50" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control"  readonly>
+                          <input data-max style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control"  readonly>
                         </td>
                         <td style="min-width: 150px">
                           <input maxlength="12" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" data-name="LOTNUMBER" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
@@ -739,8 +739,8 @@ if (isset($kart_veri)) {
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW1" data-name="STOK_ADI_SHOW" class="form-control" onchange="stokAdiGetir2(this.value)" disabled>
-                        <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL1" data-name="STOK_ADI_FILL" class="form-control">
+                        <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW1" data-name="STOK_ADI_SHOW" class="form-control" onchange="stokAdiGetir2(this.value)" disabled>
+                        <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL1" data-name="STOK_ADI_FILL" class="form-control">
                       </td>
 
                       <td style="min-width: 150px;">
@@ -760,79 +760,79 @@ if (isset($kart_veri)) {
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_KOD" id="TI_KOD" data-name="TI_KOD" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_KOD" id="TI_KOD" data-name="TI_KOD" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_STOK_ADI" id="TI_STOK_ADI" data-name="TI_STOK_ADI" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_STOK_ADI" id="TI_STOK_ADI" data-name="TI_STOK_ADI" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_SF_MIKTAR" id="TI_SF_MIKTAR" data-name="TI_SF_MIKTAR" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_SF_MIKTAR" id="TI_SF_MIKTAR" data-name="TI_SF_MIKTAR" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_SF_SF_UNIT" id="TI_SF_SF_UNIT" data-name="TI_SF_SF_UNIT" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_SF_SF_UNIT" id="TI_SF_SF_UNIT" data-name="TI_SF_SF_UNIT" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="AMBCODE" id="TI_SERINO" data-name="AMBCODE" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="AMBCODE" id="TI_SERINO" data-name="AMBCODE" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_SERINO" id="TI_SERINO" data-name="TI_SERINO" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_SERINO" id="TI_SERINO" data-name="TI_SERINO" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_LOT" id="TI_LOT" data-name="TI_LOT" class="form-control">
+                        <input data-max style="color: red" type="text" name="TI_LOT" id="TI_LOT" data-name="TI_LOT" class="form-control">
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_TEXT1" id="TI_TEXT1" data-name="TI_TEXT1" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_TEXT1" id="TI_TEXT1" data-name="TI_TEXT1" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_TEXT2" id="TI_TEXT2" data-name="TI_TEXT2" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_TEXT2" id="TI_TEXT2" data-name="TI_TEXT2" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_TEXT3" id="TI_TEXT3" data-name="TI_TEXT3" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_TEXT3" id="TI_TEXT3" data-name="TI_TEXT3" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_TEXT4" id="TI_TEXT4" data-name="TI_TEXT4" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_TEXT4" id="TI_TEXT4" data-name="TI_TEXT4" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_OLCU1" id="TI_OLCU1" data-name="TI_OLCU1" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_OLCU1" id="TI_OLCU1" data-name="TI_OLCU1" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_OLCU2" id="TI_OLCU2" data-name="TI_OLCU2" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_OLCU2" id="TI_OLCU2" data-name="TI_OLCU2" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_OLCU3" id="TI_OLCU3" data-name="TI_OLCU3" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_OLCU3" id="TI_OLCU3" data-name="TI_OLCU3" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="TI_OLCU4" id="TI_OLCU4" data-name="TI_OLCU4" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="TI_OLCU4" id="TI_OLCU4" data-name="TI_OLCU4" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="LOK1" id="LOK1" data-name="LOK1" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="LOK1" id="LOK1" data-name="LOK1" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="LOK2" id="LOK2" data-name="LOK2" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="LOK2" id="LOK2" data-name="LOK2" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="LOK3" id="LOK3" data-name="LOK3" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="LOK3" id="LOK3" data-name="LOK3" class="form-control" readonly>
                       </td>
 
                       <td style="min-width: 150px">
-                        <input maxlength="50" style="color: red" type="text" name="LOK4" id="LOK4" data-name="LOK4" class="form-control" readonly>
+                        <input data-max style="color: red" type="text" name="LOK4" id="LOK4" data-name="LOK4" class="form-control" readonly>
                       </td>
 
                     <td>#</td>

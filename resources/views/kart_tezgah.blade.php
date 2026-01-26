@@ -124,7 +124,7 @@ if (isset($kart_veri)) {
 							 
 							<div class="col-md-3 col-sm-4 col-xs-6">
 								<label>Cihaz Tipi</label>
-								{{-- <input type="hidden" class="form-control "maxlength="50" name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
+								{{-- <input type="hidden" class="form-control "data-max name="CIHAZTIPI" value="{{ @$kart_veri->id }}" > --}}
 								<select name="CIHAZTIPI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIHAZTIPI" id="CIHAZTIPI" class="CIHAZTIPI form-control select2">
 									<option>Seç</option>
 									<option value="I" {{ @$kart_veri->CIHAZTIPI == "I" ? "selected" : "" }}>Tezgah</option>
@@ -198,13 +198,13 @@ if (isset($kart_veri)) {
          <!-- <p>Grup Kodu Tanımları</p> -->
          <div class="col-xs-6 col-md-3">
           <label>Toplam Tezgah Sayısı</label>
-          <input type="number" class="form-control B_MAKINASAYISI" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_MAKINASAYISI" name="B_MAKINASAYISI" id="B_MAKINASAYISI" value="{{ @$kart_veri->B_MAKINASAYISI }}" >
+          <input type="number" class="form-control B_MAKINASAYISI" data-max data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_MAKINASAYISI" name="B_MAKINASAYISI" id="B_MAKINASAYISI" value="{{ @$kart_veri->B_MAKINASAYISI }}" >
         </div>
 
 
         <div class="col-md-2 col-xs-6">
           <label>İç/Dış Fason [I/D] ?</label>
-          <!-- <input type="text" class="form-control "maxlength="50" name="ICDIS"  value="" > -->
+          <!-- <input type="text" class="form-control "data-max name="ICDIS"  value="" > -->
           <input type="hidden" class="form-control "maxlength="10" name="ICDIS"   value="" >
           <select name="ICDIS" id="ICDIS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ICDIS" class="ICDIS form-control select2">
 						<option>İç</option>
@@ -234,7 +234,7 @@ if (isset($kart_veri)) {
 
        <div class="col-md-2 col-xs-6 col-sm-6">
         <label>OEE Oranı</label>
-        <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_PLANCALISMAYUZDE" class="form-control B_PLANCALISMAYUZDE"maxlength="50" step="0.01" name="B_PLANCALISMAYUZDE" id="B_PLANCALISMAYUZDE" value="{{ @$kart_veri->B_PLANCALISMAYUZDE }}" >
+        <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="B_PLANCALISMAYUZDE" class="form-control B_PLANCALISMAYUZDE"data-max step="0.01" name="B_PLANCALISMAYUZDE" id="B_PLANCALISMAYUZDE" value="{{ @$kart_veri->B_PLANCALISMAYUZDE }}" >
       </div>
 
       <div class="col-md-2 col-xs-6  col-sm-6">
@@ -513,7 +513,7 @@ if (isset($kart_veri)) {
 
 									    <div class="col-xs-6 col-md-2 col-sm-4">
 									      <label>Takım ve Sarf</label>
-									      <input type="number" class="form-control" step="0.01" maxlength="50" name="B_MASRF_DGTM_KATS5" id="B_MASRF_DGTM_KATS5" value="{{ @$kart_veri->B_MASRF_DGTM_KATS5 }}" >
+									      <input type="number" class="form-control" step="0.01" data-max name="B_MASRF_DGTM_KATS5" id="B_MASRF_DGTM_KATS5" value="{{ @$kart_veri->B_MASRF_DGTM_KATS5 }}" >
 									    </div>
 									  </div>
 									</div>

@@ -36,7 +36,7 @@ else{
 
 $kart_veri = DB::table($ekranTableE)->where('EVRAKNO',$sonID)->first();
 $t_kart_veri=DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
-    
+  
 $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 $stok00_evraklar=DB::table('stok00')->limit(50)->get();
 
@@ -235,8 +235,8 @@ if (isset($kart_veri)) {
                           <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                         </td>
                         <td style="min-width: 150px">
-                          <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
-                          <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                          <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
+                          <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                         </td>
                         
                         <td style="min-width: 150px">

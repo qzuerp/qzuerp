@@ -309,8 +309,8 @@ if (isset($kart_veri)) {
                             <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="STOK_ADI form-control" disabled>
-                            <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                            <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="STOK_ADI form-control" disabled>
+                            <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input style="color: red" type="number" name="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" id="SF_MIKTAR_FILL" class="SF_MIKTAR form-control">
@@ -320,29 +320,29 @@ if (isset($kart_veri)) {
                             <input maxlength="50 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="50" style="color: red" type="date" name="TERMIN_TAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TERMIN_TAR" id="TERMIN_TAR_FILL" class="TERMIN_TAR form-control">
+                            <input data-max style="color: red" type="date" name="TERMIN_TAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TERMIN_TAR" id="TERMIN_TAR_FILL" class="TERMIN_TAR form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="50" style="color: red" type="number" name="PKTICIADET_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PKTICIADET" id="PKTICIADET_FILL" class="PKTICIADET form-control">
+                            <input data-max style="color: red" type="number" name="PKTICIADET_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PKTICIADET" id="PKTICIADET_FILL" class="PKTICIADET form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="50" min="0" style="color: red" type="text" name="AMBLJ_TNM_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBLJ_TNM" id="AMBLJ_TNM_FILL" class="AMBLJ_TNM form-control">
+                            <input data-max min="0" style="color: red" type="text" name="AMBLJ_TNM_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBLJ_TNM" id="AMBLJ_TNM_FILL" class="AMBLJ_TNM form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="LOTNUMBER_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" id="LOTNUMBER_SHOW" class="LOTNUMBER form-control" disabled>
-                            <input maxlength="50" type="hidden" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                            <input data-max type="hidden" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="SERINO_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" id="SERINO_SHOW" class="form-control" disabled>
-                            <input maxlength="50" type="hidden" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                            <input data-max type="hidden" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="AMBCODE_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" id="AMBCODE_SHOW" class="AMBCODE form-control" disabled>
-                            <input maxlength="50" type="hidden" name="AMBCODE_FILL" id="AMBCODE_FILL" class="form-control">
+                            <input data-max type="hidden" name="AMBCODE_FILL" id="AMBCODE_FILL" class="form-control">
                           </td>
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="SIP_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" id="SIP_SHOW" class="SIP form-control" disabled>
-                            <input maxlength="50" type="hidden" name="SIP_FILL" id="SIP_FILL" class="form-control">
+                            <input data-max type="hidden" name="SIP_FILL" id="SIP_FILL" class="form-control">
                           </td> 
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="LOCATION1_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" id="LOCATION1_SHOW" class="LOCATION1 form-control" disabled>

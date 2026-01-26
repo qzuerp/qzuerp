@@ -1,106 +1,106 @@
 $(function () {
-    $.fn.select2.defaults.set( "theme", "bootstrap" );
-    $.fn.select2.defaults.set("language", "tr");
-    $('.select2').select2()
-    $('.js-example-basic-single').select2();
-    
-    $('select[data-modal]').each(function () {
-      const modalId = $(this).data('modal');
-      $(this).select2({
-        dropdownParent: $('#' + modalId)
-      });
+  $.fn.select2.defaults.set("theme", "bootstrap");
+  $.fn.select2.defaults.set("language", "tr");
+  $('.select2').select2()
+  $('.js-example-basic-single').select2();
+
+  $('select[data-modal]').each(function () {
+    const modalId = $(this).data('modal');
+    $(this).select2({
+      dropdownParent: $('#' + modalId)
     });
-    //$.fn.selectpicker.Constructor.BootstrapVersion = '3';
+  });
+  //$.fn.selectpicker.Constructor.BootstrapVersion = '3';
 
-    //$('.select2').attr('class','selectpicker form-control')
+  //$('.select2').attr('class','selectpicker form-control')
 
-    //$('.selectpicker').attr('data-live-search','true')
+  //$('.selectpicker').attr('data-live-search','true')
 
-    //$('.selectpicker').attr('data-style','btn-primary')
+  //$('.selectpicker').attr('data-style','btn-primary')
 
-    //$('.selectpicker').attr('data-width','auto')
+  //$('.selectpicker').attr('data-width','auto')
 
-    //$('.selectpicker').selectpicker()
+  //$('.selectpicker').selectpicker()
 
 
 
-    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-    $('[data-mask]').inputmask()
+  $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+  $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+  $('[data-mask]').inputmask()
 
-    //$('#reservation').daterangepicker()
-    //$('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
-    //$('#daterange-btn').daterangepicker(
-    //{
-    //  ranges   : {
-    //    'Today'       : [moment(), moment()],
-    //    'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    //    'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-    //    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    //    'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-    //    'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    //  },
-    //  startDate: moment().subtract(29, 'days'),
-    //  endDate  : moment()
-    //},
-    //function (start, end) {
-    //  $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-    //}
-    //)
+  //$('#reservation').daterangepicker()
+  //$('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
+  //$('#daterange-btn').daterangepicker(
+  //{
+  //  ranges   : {
+  //    'Today'       : [moment(), moment()],
+  //    'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+  //    'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+  //    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+  //    'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+  //    'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  //  },
+  //  startDate: moment().subtract(29, 'days'),
+  //  endDate  : moment()
+  //},
+  //function (start, end) {
+  //  $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+  //}
+  //)
 
-    //$('#datepicker').datepicker({
-    //  autoclose: true
-    //})
+  //$('#datepicker').datepicker({
+  //  autoclose: true
+  //})
 
-    // $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-    //   checkboxClass: 'icheckbox_minimal-blue',
-    //   radioClass   : 'iradio_minimal-blue'
-    // })
-    // $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-    //   checkboxClass: 'icheckbox_minimal-red',
-    //   radioClass   : 'iradio_minimal-red'
-    // })
-    // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-    //   checkboxClass: 'icheckbox_flat-green',
-    //   radioClass   : 'iradio_flat-green'
-    // })
+  // $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+  //   checkboxClass: 'icheckbox_minimal-blue',
+  //   radioClass   : 'iradio_minimal-blue'
+  // })
+  // $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+  //   checkboxClass: 'icheckbox_minimal-red',
+  //   radioClass   : 'iradio_minimal-red'
+  // })
+  // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+  //   checkboxClass: 'icheckbox_flat-green',
+  //   radioClass   : 'iradio_flat-green'
+  // })
 
-    //$('.my-colorpicker1').colorpicker()
-    //$('.my-colorpicker2').colorpicker()
+  //$('.my-colorpicker1').colorpicker()
+  //$('.my-colorpicker2').colorpicker()
 
-    //$('.timepicker').timepicker({
-    //  showInputs: false
-    //})
-    
+  //$('.timepicker').timepicker({
+  //  showInputs: false
+  //})
+
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-$("#veriTable").on("click", "#deleteSingleRow", function() {
-   $(this).closest("tr").remove();
-});
+  $("#veriTable").on("click", "#deleteSingleRow", function () {
+    $(this).closest("tr").remove();
+  });
 
-$("#veriTable2").on("click", "#deleteSingleRow2", function() {
-   $(this).closest("tr").remove();
-});
-$("#suzTable").on("click", "#deleteSingleRow3", function() {
-  $(this).closest("tr").remove();
-});
-$('#deleteRow').on('click', function() {
-   $('td input:checked').closest('tr').remove();
-});
+  $("#veriTable2").on("click", "#deleteSingleRow2", function () {
+    $(this).closest("tr").remove();
+  });
+  $("#suzTable").on("click", "#deleteSingleRow3", function () {
+    $(this).closest("tr").remove();
+  });
+  $('#deleteRow').on('click', function () {
+    $('td input:checked').closest('tr').remove();
+  });
 
-$.ajaxSetup({
-  headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
-});
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
 
   $(":input").attr('autocomplete', 'off');
 
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
+  $(window).keydown(function (event) {
+    if (event.keyCode == 13) {
       event.preventDefault();
       return false;
     }
@@ -111,39 +111,39 @@ $.ajaxSetup({
 
 
 $('tfoot').each(function () {
-    $(this).insertAfter($(this).siblings('thead'));
+  $(this).insertAfter($(this).siblings('thead'));
 });
 
 
 function pageLoaded() {
-   document.querySelector('body').classList.add("loaded")  
+  document.querySelector('body').classList.add("loaded")
 }
 
 
 function kayitBasariliTopLeft() {
-   Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Kayıt başarıyla tamamlandı',
-        showConfirmButton: false,
-        timer: 1500
-   });
+  Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: 'Kayıt başarıyla tamamlandı',
+    showConfirmButton: false,
+    timer: 1500
+  });
 }
 
 function ozelHataAlert(message) {
-   Swal.fire({
-        icon: 'error',
-        title: 'Hata',
-        text: message
-   });
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: message
+  });
 }
 
 function eksikAlanHataAlert2() {
-   Swal.fire({
-     icon: 'error',
-     title: 'Hata!',
-     text: 'Lütfen zorunlu alanları doldurunuz!'
-   });
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata!',
+    text: 'Lütfen zorunlu alanları doldurunuz!'
+  });
 }
 function kontrolZorunluAlanlar(alanlar) {
   const eksiklar = Object.entries(alanlar)
@@ -169,26 +169,26 @@ function eksikAlanlarAlert(eksiklar) {
 }
 
 
- function eksikAlanHataAlert(alan) {
+function eksikAlanHataAlert(alan) {
 
-     Swal.fire({
-       icon: 'error',
-       title: 'Hata!',
-       text: 'Lütfen '+ alan +' seçimi yapınız!'
-   });
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata!',
+    text: 'Lütfen ' + alan + ' seçimi yapınız!'
+  });
 
- }
+}
 
 
- function degisikliklerKaydedildiTop() {
+function degisikliklerKaydedildiTop() {
 
-   // Swal.fire({
-   //   position: 'top-end',
-   //   icon: 'success',
-   //   title: 'Değişiklikler başarıyla kaydedildi',
-   //   showConfirmButton: false,
-   //   timer: 1500
-   // })
+  // Swal.fire({
+  //   position: 'top-end',
+  //   icon: 'success',
+  //   title: 'Değişiklikler başarıyla kaydedildi',
+  //   showConfirmButton: false,
+  //   timer: 1500
+  // })
   new Toast({
     message: 'Değişiklikler Başarıyla Kaydedildi',
     type: 'success'
@@ -211,38 +211,38 @@ function basariylaKaydedildi() {
 }
 
 function onayAlert(argument) {
-Swal.fire({
-title: 'Devam etmek istediğinize emin misiniz?',
-text: "Kayıt sisteme atılacaktır!",
-icon: 'warning',
-showCancelButton: true,
-confirmButtonColor: '#3085d6',
-cancelButtonColor: '#d33',
-cancelButtonText: 'Hayır',
-confirmButtonText: 'Evet'
-}).then((result) => {
-if (result.isConfirmed) {
-Swal.fire(
- 'İşlem tamam!',
- 'Kayıt başarıyla tamamlandı.',
- 'success'
-)
-}
-});
+  Swal.fire({
+    title: 'Devam etmek istediğinize emin misiniz?',
+    text: "Kayıt sisteme atılacaktır!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Hayır',
+    confirmButtonText: 'Evet'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'İşlem tamam!',
+        'Kayıt başarıyla tamamlandı.',
+        'success'
+      )
+    }
+  });
 
 }
 
 
 function degeriVarMi(element) {
-    var value = $(element).val();
-    return value !== null && value.trim() !== '' && value != 0;
+  var value = $(element).val();
+  return value !== null && value.trim() !== '' && value != 0;
 }
 
 function alanKontrolu(className) {
 
   return new Promise((resolve) => {
 
-    $('.'+className).each(function () {
+    $('.' + className).each(function () {
       var hasNonEmptyValue = false;
 
       $(this).find('input[type="text"]').each(function () {
@@ -262,22 +262,22 @@ function satirEklenecekMiSwal() {
 
   return new Promise((resolve) => {
     Swal.fire({
-        title: 'Tabloya eklenmemiş satır var!',
-        text: "Satır eklensin mi?",
-        icon: 'question',
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#dc3545',
-        showCancelButton: true,
-        cancelButtonText: 'Hayır',
-        confirmButtonText: 'Evet'
-      }).then((result) => {
-        resolve(result.isConfirmed);
-      });
+      title: 'Tabloya eklenmemiş satır var!',
+      text: "Satır eklensin mi?",
+      icon: 'question',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      showCancelButton: true,
+      cancelButtonText: 'Hayır',
+      confirmButtonText: 'Evet'
+    }).then((result) => {
+      resolve(result.isConfirmed);
+    });
   });
 
 }
 function evrakIslemleriSwal(islemTipi) {
-  
+
   // Geçersiz islem tipi kontrolü
   const validTypes = ["evrakKaydet", "evrakDuzenle", "evrakSil"];
   if (!validTypes.includes(islemTipi)) {
@@ -293,7 +293,7 @@ function evrakIslemleriSwal(islemTipi) {
       icon: 'question'
     };
   }
-  
+
   if (islemTipi == "evrakDuzenle") {
     config = {
       title: 'Evrak Güncellensin mi?',
@@ -301,7 +301,7 @@ function evrakIslemleriSwal(islemTipi) {
       icon: 'question'
     };
   }
-  
+
   if (islemTipi == "evrakSil") {
     config = {
       title: 'Evrak Silinsin mi?',
@@ -309,7 +309,7 @@ function evrakIslemleriSwal(islemTipi) {
       icon: 'warning'
     };
   }
-  
+
 
   return new Promise((resolve) => {
     Swal.fire({
@@ -328,7 +328,7 @@ function evrakIslemleriSwal(islemTipi) {
 async function evrakIslemleri(islemTipi, kontrolVar) {
   try {
     if ((islemTipi == "evrakKaydet" || islemTipi == "evrakDuzenle") && kontrolVar) {
-      
+
       const eklenmemisSatirVarMi = await alanKontrolu('satirEkle');
 
       if (eklenmemisSatirVarMi) {
@@ -351,11 +351,11 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
 
     if (onay) {
       $("#" + islemTipi).click();
-    } 
+    }
     else {
       console.log("İşlem iptal edildi");
     }
-    
+
   } catch (error) {
     // Alert düzeltildi - tek parametre string olarak
     alert("Bir hata oluştu: " + error.message);
@@ -363,15 +363,15 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
   }
 }
 
- function evrakGetirRedirect(evrakNo,pageName) {
-   location.href = pageName+"?ID="+evrakNo;
- }
+function evrakGetirRedirect(evrakNo, pageName) {
+  location.href = pageName + "?ID=" + evrakNo;
+}
 
- function yeniEvrakNo(pageTable) {
+function yeniEvrakNo(pageTable) {
 
   $.ajax({
-    url: '/'+pageTable+'_yeniEvrakNo',
-    data: {"_token": $('#token').val()},
+    url: '/' + pageTable + '_yeniEvrakNo',
+    data: { "_token": $('#token').val() },
     type: 'POST',
 
     success: function (response) {
@@ -388,54 +388,78 @@ async function evrakIslemleri(islemTipi, kontrolVar) {
   });
 
 }
+$(document).on('click', '.kopyalaBtn', function () {
+  const btn = $(this);
+  const icon = btn.find('i');
+  const text = btn.data('text');
 
- function getInputs(className) {
+  const input = $('<input>');
+  $('body').append(input);
+  input.val(text).select();
+  document.execCommand('copy');
+  input.remove();
 
-    var satirEkleInputs = {};
+  // ikon değiştir
+  icon.removeClass('fa-copy').addClass('fa-check');
 
-    $("."+className+" input, ."+className+" select, ."+className+" textarea").each(function() {
-      var elementID = $(this).attr('id');
-      var elementValue = $(this).val();
-      satirEkleInputs[elementID] = elementValue;
-    });
+  // hafif animasyon
+  btn.addClass('kopyalandi');
 
-    return satirEkleInputs;
-
- }
-
- function emptyInputs(className) {
-    $("."+className+" input").val("");
-    $("."+className+" textarea").val("");
-    $("."+className+" select").val(" ").change();
-    $("."+className+" checkbox").prop('checked', false);
- }
+  // geri eski haline dön
+  setTimeout(() => {
+      icon.removeClass('fa-check').addClass('fa-copy');
+      btn.removeClass('kopyalandi');
+  }, 1200);
+});
 
 
- function popupToDropdown(value, inputName, modalName) {
+function getInputs(className) {
+
+  var satirEkleInputs = {};
+
+  $("." + className + " input, ." + className + " select, ." + className + " textarea").each(function () {
+    var elementID = $(this).attr('id');
+    var elementValue = $(this).val();
+    satirEkleInputs[elementID] = elementValue;
+  });
+
+  return satirEkleInputs;
+
+}
+
+function emptyInputs(className) {
+  $("." + className + " input").val("");
+  $("." + className + " textarea").val("");
+  $("." + className + " select").val(" ").change();
+  $("." + className + " checkbox").prop('checked', false);
+}
+
+
+function popupToDropdown(value, inputName, modalName) {
   var parts = value.split('|||');
   var KOD = parts[0];
   var AD = parts[1];
   var IUNIT = parts[2];
-  
+
   var $select = $("#" + inputName);
-  
+
   // Backend'den gelen format: id = 'KOD|||AD|||IUNIT', text = 'KOD - AD'
   var optionValue = KOD + '|||' + AD + '|||' + IUNIT;
   var optionText = KOD + ' - ' + AD;
-  
+
   // Mevcut option var mı kontrol et
   if (!$select.find('option[value="' + optionValue + '"]').length) {
-      // Yeni option ekle (backend ile aynı format)
-      var newOption = new Option(optionText, optionValue, true, true);
-      $select.append(newOption);
+    // Yeni option ekle (backend ile aynı format)
+    var newOption = new Option(optionText, optionValue, true, true);
+    $select.append(newOption);
   } else {
-      // Varsa seç
-      $select.val(optionValue);
+    // Varsa seç
+    $select.val(optionValue);
   }
-  
+
   // Select2'de trigger et
   $select.trigger('change');
-  
+
   // Modal'ı kapat
   $("#" + modalName).modal('hide');
 }
@@ -462,11 +486,11 @@ function inputTemizle() {
   // $(".nav-tabs-custom select").select2();
 
 
-  $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
-  .val('')
-  .prop('checked', false)
-  .prop('selected', false);
+  $(':input', '#verilerForm')
+    .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
+    .val('')
+    .prop('checked', false)
+    .prop('selected', false);
 
   $('#AP10').prop('checked', false);
 
@@ -477,7 +501,7 @@ function inputTemizle() {
   const today = new Date();
 
   // DD/MM/YYYY format istersen gene formatlarsın ama flatpickr direkt Date nesnesiyle çalışıyor
-  const formattedDate = today.toLocaleDateString('tr-TR'); 
+  const formattedDate = today.toLocaleDateString('tr-TR');
 
   // Eğer sadece <span> ya da <div> içindeyse
   $('#TARIH').text(formattedDate);
@@ -506,7 +530,7 @@ function kartKopyala() {
 }
 
 function inputTemizle2() {
-  
+
   $('#kartOlustur').css('display', 'inline');
   $('#kartOlustur2').css('display', 'inline');
   $('#kartDuzenle').hide();
@@ -533,20 +557,20 @@ function inputTemizle2() {
   $('select:not(#evrakSec)').val(' ').trigger('change');
 
 
-  $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
-  .val('')
-  .prop('checked', false)
-  .prop('selected', false);
-  
-  $(':input','#verilerForm').prop('checked',false)
+  $(':input', '#verilerForm')
+    .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
+    .val('')
+    .prop('checked', false)
+    .prop('selected', false);
+
+  $(':input', '#verilerForm').prop('checked', false)
 
   const el = $('input[date]')[0];
 
   if (el && el._flatpickr) {
-      el._flatpickr.clear();
+    el._flatpickr.clear();
   }
-  
+
 
   $('#AP10').prop('checked', false);
 
@@ -557,32 +581,31 @@ function inputTemizle2() {
   //yeniEvrakNo();
   const today = new Date();
   if (document.querySelector('#TARIH')) {
-      TARIH_FP = flatpickr('#TARIH', {
-          dateFormat: 'Y-m-d',
-          altInput: true,
-          altFormat: 'd.m.Y'
-      });
-      TARIH_FP.setDate(today, true);
+    TARIH_FP = flatpickr('#TARIH', {
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: 'd.m.Y'
+    });
+    TARIH_FP.setDate(today, true);
   }
 
   if (document.querySelector('#TARIH_E')) {
-      TARIH_E_FP = flatpickr('#TARIH_E', {
-          dateFormat: 'Y-m-d',
-          altInput: true,
-          altFormat: 'd.m.Y'
-      });
-      TARIH_E_FP.setDate(today, true);
+    TARIH_E_FP = flatpickr('#TARIH_E', {
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: 'd.m.Y'
+    });
+    TARIH_E_FP.setDate(today, true);
   }
 
 }
-function exportTableToExcel(table)
-{
-  $("#"+table).table2excel({
+function exportTableToExcel(table) {
+  $("#" + table).table2excel({
     exclude: ".noExport",
-    name: "Sayfa 1",    
-    filename: "indir",   
-    fileext: ".xlsx",    
-    preserveColors: true 
+    name: "Sayfa 1",
+    filename: "indir",
+    fileext: ".xlsx",
+    preserveColors: true
   });
 
 
@@ -614,11 +637,11 @@ function inputTemizle3() {
   $(".nav-tabs-custom select").select2("destroy");
   $(".nav-tabs-custom select").select2();
 
-  $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
-  .val('')
-  .prop('checked', false)
-  .prop('selected', false);
+  $(':input', '#verilerForm')
+    .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
+    .val('')
+    .prop('checked', false)
+    .prop('selected', false);
 
   $('#AP10').prop('checked', false);
 
@@ -639,7 +662,7 @@ function buttonRollback() {
 
 function buttonRollback2(ekranLink) {
   var ID = document.getElementById("ID_TO_REDIRECT").value;
-  evrakGetirRedirect(ID,ekranLink);
+  evrakGetirRedirect(ID, ekranLink);
 }
 
 function buttonRollback3() {
@@ -662,11 +685,11 @@ function buttonRollback3() {
   $('.nav-tabs-custom input[type="number"]').val('');
   $('.nav-tabs-custom select').val(' ').change();
 
-  $(':input','#verilerForm')
-  .not(':button, :submit, :reset, :hidden')
-  .val('')
-  .prop('checked', false)
-  .prop('selected', false);
+  $(':input', '#verilerForm')
+    .not(':button, :submit, :reset, :hidden')
+    .val('')
+    .prop('checked', false)
+    .prop('selected', false);
 
   //yeniEvrakNo();
 }
@@ -685,225 +708,225 @@ function stokAdiGetir(veri) {
 
 function refreshPopupSelect() {
 
-$('#popupSelect tfoot th').each( function () {
-var title = $(this).text();
- if(title == "#") {
-   $(this).html( '<b>Seç</b>' );
- }
- else {
-   $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />' );
- }
+  $('#popupSelect tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Seç</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
 
-});
+  });
 
-$(document).ready(function() {
-// DataTable
-var table = $('#popupSelect').DataTable({
-  "order": [[ 0, "desc" ]],
-  dom: 'rtip',
-  deferRender:true,
-  buttons: ['copy', 'excel', 'print'],
-          language: {
-            url: '{{ asset("tr.json") }}'
-          },
-  initComplete: function () {
-     // Apply the search
-     this.api().columns().every( function () {
-       var that = this;
+  $(document).ready(function () {
+    // DataTable
+    var table = $('#popupSelect').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      deferRender: true,
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-       $( 'input', this.footer() ).on( 'keyup change clear', function () {
-         if ( that.search() !== this.value ) {
-           that
-           .search( this.value )
-           .draw();
-         }
-       });
-     });
-   }
-}); 
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
 
-});
+  });
 
 }
 
 function refreshPopupSelect2() {
 
-$('#popupSelect2 tfoot th').each( function () {
-var title = $(this).text();
- if(title == "#") {
-   $(this).html( '<b>Seç</b>' );
- }
- else {
-   $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />' );
- }
+  $('#popupSelect2 tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Seç</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
 
-});
+  });
 
-$(document).ready(function() {
-// DataTable
-var table = $('#popupSelect2').DataTable({
-"order": [[ 0, "desc" ]],
-dom: 'rtip',
-buttons: ['copy', 'excel', 'print'],
-          language: {
-            url: '{{ asset("tr.json") }}'
-          },
-initComplete: function () {
-   // Apply the search
-   this.api().columns().every( function () {
-     var that = this;
+  $(document).ready(function () {
+    // DataTable
+    var table = $('#popupSelect2').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-     $( 'input', this.footer() ).on( 'keyup change clear', function () {
-       if ( that.search() !== this.value ) {
-         that
-         .search( this.value )
-         .draw();
-       }
-     } );
-   } );
- }
-});
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
 
-});
+  });
 
 }
 
 function refreshPopupInfo() {
 
-$('#popupInfo tfoot th').each( function () {
-var title = $(this).text();
- if(title == "#") {
-   $(this).html( '<b>Seç</b>' );
- }
- else {
-   $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />' );
- }
+  $('#popupInfo tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Seç</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
 
-});
+  });
 
-$(document).ready(function() {
-// DataTable
-var table = $('#popupInfo').DataTable({
-"order": [[ 0, "desc" ]],
-dom: 'rtip',
-buttons: ['copy', 'excel', 'print'],
-          language: {
-            url: '{{ asset("tr.json") }}'
-          },
-initComplete: function () {
-   // Apply the search
-   this.api().columns().every( function () {
-     var that = this;
+  $(document).ready(function () {
+    // DataTable
+    var table = $('#popupInfo').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-     $( 'input', this.footer() ).on( 'keyup change clear', function () {
-       if ( that.search() !== this.value ) {
-         that
-         .search( this.value )
-         .draw();
-       }
-     } );
-   } );
- }
-});
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
 
-});
+  });
 
 }
 
 
 function refreshPopupSelect2() {
 
-$('#popupSelect2 tfoot th').each( function () {
-var title = $(this).text();
- if(title == "#") {
-   $(this).html( '<b>Seç</b>' );
- }
- else {
-   $(this).html( '<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />' );
- }
+  $('#popupSelect2 tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Seç</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
 
-});
+  });
 
-$(document).ready(function() {
-// DataTable
-var table = $('#popupSelect2').DataTable({
-"order": [[ 0, "desc" ]],
-dom: 'rtip',
-buttons: ['copy', 'excel', 'print'],
-          language: {
-            url: '{{ asset("tr.json") }}'
-          },
-initComplete: function () {
-   // Apply the search
-   this.api().columns().every( function () {
-     var that = this;
+  $(document).ready(function () {
+    // DataTable
+    var table = $('#popupSelect2').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-     $( 'input', this.footer() ).on( 'keyup change clear', function () {
-       if ( that.search() !== this.value ) {
-         that
-         .search( this.value )
-         .draw();
-       }
-     } );
-   } );
- }
-});
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
 
-});
+  });
 
 }
 
 function refreshBaglantiliDokumanlarTable() {
 
-$('#baglantiliDokumanlarTable tfoot th').each( function () {
+  $('#baglantiliDokumanlarTable tfoot th').each(function () {
 
-var title = $(this).text();
-if(title == "Dosya") {
-  $(this).html('');
-}
-else {
-  $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-}
+    var title = $(this).text();
+    if (title == "Dosya") {
+      $(this).html('');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
 
-});
+  });
 
-var table = $('#baglantiliDokumanlarTable').DataTable({
-    "order": [[ 1, "desc" ]],
+  var table = $('#baglantiliDokumanlarTable').DataTable({
+    "order": [[1, "desc"]],
     dom: 'tip',
     language: {
-        "decimal":        "",
-        "emptyTable":     "Tabloda veri yok",
-        "info":           "_TOTAL_ kayıttan _START_ - _END_ arası gösteriliyor",
-        "infoEmpty":      "0 kayıttan 0 - 0 arası gösteriliyor",
-        "infoFiltered":   "(_MAX_ kayıt içerisinden filtrelendi)",
-        "lengthMenu":     "Sayfada _MENU_ kayıt göster",
-        "loadingRecords": "Yükleniyor...",
-        "processing":     "İşleniyor...",
-        "search":         "Ara:",
-        "zeroRecords":    "Eşleşen kayıt bulunamadı",
-        "paginate": {
-            "first":      "İlk",
-            "last":       "Son",
-            "next":       "Sonraki",
-            "previous":   "Önceki"
-        },
-        "aria": {
-            "sortAscending":  ": artan sütun sıralaması",
-            "sortDescending": ": azalan sütun sıralaması"
-        }
+      "decimal": "",
+      "emptyTable": "Tabloda veri yok",
+      "info": "_TOTAL_ kayıttan _START_ - _END_ arası gösteriliyor",
+      "infoEmpty": "0 kayıttan 0 - 0 arası gösteriliyor",
+      "infoFiltered": "(_MAX_ kayıt içerisinden filtrelendi)",
+      "lengthMenu": "Sayfada _MENU_ kayıt göster",
+      "loadingRecords": "Yükleniyor...",
+      "processing": "İşleniyor...",
+      "search": "Ara:",
+      "zeroRecords": "Eşleşen kayıt bulunamadı",
+      "paginate": {
+        "first": "İlk",
+        "last": "Son",
+        "next": "Sonraki",
+        "previous": "Önceki"
+      },
+      "aria": {
+        "sortAscending": ": artan sütun sıralaması",
+        "sortDescending": ": azalan sütun sıralaması"
+      }
     },
     initComplete: function () {
-        var api = this.api();
-        api.columns().every(function () {
-            var that = this;
-            $('input', this.footer()).on('keyup change clear', function () {
-                if (that.search() !== this.value) {
-                    that.search(this.value).draw();
-                }
-            });
+      var api = this.api();
+      api.columns().every(function () {
+        var that = this;
+        $('input', this.footer()).on('keyup change clear', function () {
+          if (that.search() !== this.value) {
+            that.search(this.value).draw();
+          }
         });
+      });
     }
-});
+  });
 
 
 }
@@ -916,7 +939,7 @@ function getStok01(islem) {
   $.ajax({
 
     url: '/stok01_getStok01',
-    data: {'islem': islem, '_token': $('#token').val()},
+    data: { 'islem': islem, '_token': $('#token').val() },
     type: 'POST',
 
     success: function (response) {
@@ -938,16 +961,16 @@ function getStok01(islem) {
 
 }
 
-function getIlceler(ilObj,targetObj) {
+function getIlceler(ilObj, targetObj) {
 
   var ilSecimi = $(ilObj).val();
-  var targetObj = $('#'+targetObj);
+  var targetObj = $('#' + targetObj);
 
   targetObj.empty();
 
   $.ajax({
     url: '/main_getIlceler',
-    data: {'ilSecimi': ilSecimi, '_token': $('#token').val()},
+    data: { 'ilSecimi': ilSecimi, '_token': $('#token').val() },
     type: 'POST',
     dataType: 'json',
 
@@ -990,48 +1013,48 @@ function dosyalariGetir() {
   //table.clear().draw();
 
   $.ajax({
-      url: '/dosyalar00_dosyalariGetir',
-      type: 'POST',
-      data: formData,
-      dataType: 'json',
-      processData: false,
-      contentType: false,
-      success: function(data) {
+    url: '/dosyalar00_dosyalariGetir',
+    type: 'POST',
+    data: formData,
+    dataType: 'json',
+    processData: false,
+    contentType: false,
+    success: function (data) {
 
-        $.each(data, function (key, value) {
+      $.each(data, function (key, value) {
 
-          table.row.add($('<tr>')).draw();
-          table.row.add($('<td>'+value.DOSYATURU+'</td>')).draw();
-          table.row.add($('<td>'+value.ACIKLAMA+'</td>')).draw();
-          table.row.add($('<td>'+value.created_at+'</td>')).draw();
-          table.row.add($('<td><a class="btn btn-info" href="dosyalar/'+value.DOSYA+'" target="_blank"><i class="fa fa-file-text"></i></a></td>')).draw();
-          table.row.add($('</tr>')).draw();
+        table.row.add($('<tr>')).draw();
+        table.row.add($('<td>' + value.DOSYATURU + '</td>')).draw();
+        table.row.add($('<td>' + value.ACIKLAMA + '</td>')).draw();
+        table.row.add($('<td>' + value.created_at + '</td>')).draw();
+        table.row.add($('<td><a class="btn btn-info" href="dosyalar/' + value.DOSYA + '" target="_blank"><i class="fa fa-file-text"></i></a></td>')).draw();
+        table.row.add($('</tr>')).draw();
 
-        });
+      });
 
-        refreshBaglantiliDokumanlarTable();
-        var dosyalarTable = $('#baglantiliDokumanlarTable').DataTable();
-        dosyalarTable.ajax.reload();
+      refreshBaglantiliDokumanlarTable();
+      var dosyalarTable = $('#baglantiliDokumanlarTable').DataTable();
+      dosyalarTable.ajax.reload();
 
-        table.data.reload().draw();
+      table.data.reload().draw();
 
-      }
+    }
   });
 
 }
 function createUUID() {
   if (window.crypto && window.crypto.randomUUID) {
-      return window.crypto.randomUUID();
+    return window.crypto.randomUUID();
   }
 
   // Fallback (yeterince sağlam)
-  return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
+  return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
   });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   var tempId = createUUID();
   var tempInput = document.getElementById('temp_id');
 
@@ -1077,7 +1100,7 @@ $(document).ready(function() {
     if (!tab || tab.trim() === "") {
       formData.append('dosyaTempID', dosya_tempID);
     }
-    else{
+    else {
       formData.append('dosyaEvrakNo', dosyaEvrakNo);
     }
     formData.append('dosyaTuruKodu', dosyaTuruKodu);
@@ -1119,59 +1142,59 @@ $(document).ready(function() {
 
 $(document).on('click', '.btn-dosya-sil', function () {
 
-    Swal.showLoading();
+  Swal.showLoading();
 
-    var table = $('#baglantiliDokumanlarTable').DataTable();
+  var table = $('#baglantiliDokumanlarTable').DataTable();
 
-    var formData = new FormData();
-    var dosya_firma = $('#dosya_firma').val();
-    var dosyaID = $(this).val();
-    var token = $('meta[name="csrf-token"]').attr('content');
+  var formData = new FormData();
+  var dosya_firma = $('#dosya_firma').val();
+  var dosyaID = $(this).val();
+  var token = $('meta[name="csrf-token"]').attr('content');
 
-    formData.append('dosyaID', dosyaID);
-    formData.append('firma', dosya_firma);
-    formData.append('_token', token);
+  formData.append('dosyaID', dosyaID);
+  formData.append('firma', dosya_firma);
+  formData.append('_token', token);
 
-    $.ajax({
-      url: '/dosyalar00_dosyaSil',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) {
-        Swal.close();
+  $.ajax({
+    url: '/dosyalar00_dosyaSil',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      Swal.close();
 
-        
-        mesaj('Dosya başarıyla silindi','success');
 
-        table.row("#dosya_"+dosyaID).remove().draw();
-        baglantiliDokumanlarTable();
-      }
-    });
+      mesaj('Dosya başarıyla silindi', 'success');
+
+      table.row("#dosya_" + dosyaID).remove().draw();
+      baglantiliDokumanlarTable();
+    }
+  });
 
 });
 
-function padLeft(value, length=6, padChar='0') {
-    var result = value.toString();
-    while (result.length < length) {
-        result = padChar + result;
-    }
-    return result;
+function padLeft(value, length = 6, padChar = '0') {
+  var result = value.toString();
+  while (result.length < length) {
+    result = padChar + result;
+  }
+  return result;
 }
 
 function getTRNUM(tableID = '') {
   // var TRNUM = $('#'+tableID+'tbody tr').length + 1;
 
-  var LAST_TRNUM_OBJ = $('#LAST_TRNUM'+tableID)
+  var LAST_TRNUM_OBJ = $('#LAST_TRNUM' + tableID)
   var LAST_TRNUM = +LAST_TRNUM_OBJ.val();
-  var TRNUM = LAST_TRNUM+1;
+  var TRNUM = LAST_TRNUM + 1;
 
   //alert(padLeft(TRNUM));
   return padLeft(TRNUM);
 }
 
 function updateLastTRNUM(newTRNUM, tableID = '') {
-  $('#LAST_TRNUM'+tableID).val(newTRNUM);
+  $('#LAST_TRNUM' + tableID).val(newTRNUM);
 }
 
 function setValueOfJsonObject(value) {
@@ -1184,73 +1207,73 @@ function setValueOfJsonObject(value) {
 }
 
 
-$(document).ready(function(){
-    document.querySelectorAll('.glyphicon-search').forEach(child => {
-        child.parentElement.style.height = "31px";
-        child.parentElement.style.borderRadius = "0px 5px 5px 0px";
-    });
+$(document).ready(function () {
+  document.querySelectorAll('.glyphicon-search').forEach(child => {
+    child.parentElement.style.height = "31px";
+    child.parentElement.style.borderRadius = "0px 5px 5px 0px";
+  });
 
-    $(window).on('scroll', function () {
-      let scroll = $(window).scrollTop();
-      let opacity = 1;
-  
-      if (scroll > 0) {
-        opacity = Math.max(1 - scroll / 300, 0.8);
-      }
-  
-      $('header').css('opacity', opacity);
-    });
+  $(window).on('scroll', function () {
+    let scroll = $(window).scrollTop();
+    let opacity = 1;
+
+    if (scroll > 0) {
+      opacity = Math.max(1 - scroll / 300, 0.8);
+    }
+
+    $('header').css('opacity', opacity);
+  });
 });
 function mesaj(str, type) {
-    if (type == "success") {
-        iziToast.success({
-            message: str,
-            position: 'topRight',
-            timeout: 5000,
-            progressBar: true,
-            transitionIn: 'fadeInUp',
-            transitionOut: 'fadeOut',
-            close: true,
-            backgroundColor: '#f9f9f9',
-            titleColor: '#333',
-            messageColor: '#555',
-            progressBarColor: '#4CAF50',
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
-            closeOnEscape: true
-        });
-    } else if (type == "error") {
-        iziToast.error({
-            message: str,
-            position: 'topRight',
-            timeout: 5000,
-            progressBar: true,
-            transitionIn: 'fadeInUp',
-            transitionOut: 'fadeOut',
-            close: true,
-            backgroundColor: '#f9f9f9',
-            titleColor: '#333',
-            messageColor: '#555',
-            progressBarColor: '#fd0100',
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845648.png',
-            closeOnEscape: true
-        });
-    } else if (type == "info") {
-        iziToast.info({
-            message: str,
-            position: 'topRight',
-            timeout: 5000,
-            progressBar: true,
-            transitionIn: 'fadeInUp',
-            transitionOut: 'fadeOut',
-            close: true,
-            backgroundColor: '#f9f9f9',
-            titleColor: '#333',
-            messageColor: '#555',
-            progressBarColor: '#2196F3',
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845655.png',
-            closeOnEscape: true
-        });
-    }
+  if (type == "success") {
+    iziToast.success({
+      message: str,
+      position: 'topRight',
+      timeout: 5000,
+      progressBar: true,
+      transitionIn: 'fadeInUp',
+      transitionOut: 'fadeOut',
+      close: true,
+      backgroundColor: '#f9f9f9',
+      titleColor: '#333',
+      messageColor: '#555',
+      progressBarColor: '#4CAF50',
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
+      closeOnEscape: true
+    });
+  } else if (type == "error") {
+    iziToast.error({
+      message: str,
+      position: 'topRight',
+      timeout: 5000,
+      progressBar: true,
+      transitionIn: 'fadeInUp',
+      transitionOut: 'fadeOut',
+      close: true,
+      backgroundColor: '#f9f9f9',
+      titleColor: '#333',
+      messageColor: '#555',
+      progressBarColor: '#fd0100',
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845648.png',
+      closeOnEscape: true
+    });
+  } else if (type == "info") {
+    iziToast.info({
+      message: str,
+      position: 'topRight',
+      timeout: 5000,
+      progressBar: true,
+      transitionIn: 'fadeInUp',
+      transitionOut: 'fadeOut',
+      close: true,
+      backgroundColor: '#f9f9f9',
+      titleColor: '#333',
+      messageColor: '#555',
+      progressBarColor: '#2196F3',
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845655.png',
+      closeOnEscape: true
+    });
+  }
 }
 
 

@@ -121,7 +121,7 @@ if (isset($kart_veri)) {
 
 							<div class="col-md-3 col-sm-4 col-xs-6">
 								<label>Ad</label>
-								<input type="text" class="form-control input-sm AD" data-bs-toggle="tooltip" data-bs-container="body" data-bs-placement="bottom" data-bs-title="AD" name="AD" id="AD" maxlength="50"  value="{{ @$kart_veri->AD }}">
+								<input type="text" class="form-control input-sm AD" data-bs-toggle="tooltip" data-bs-container="body" data-bs-placement="bottom" data-bs-title="AD" name="AD" id="AD" data-max  value="{{ @$kart_veri->AD }}">
 							</div>
 
 							<div class="col-md-2 col-sm-1 col-xs-2">

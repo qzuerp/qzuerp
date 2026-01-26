@@ -120,33 +120,37 @@
 								<!-- Ürün Bilgileri -->
 								<div class="col-md-4">
 									<label>Reçete Ürün Kodu</label>
-									<select class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULCODE" data-name="MAMULCODE" onchange="stokAdiGetir5(this.value)" 
-											name="MAMULCODE_SHOW" id="MAMULCODE_SHOW">
-										<option value="">Seç</option>
-										@php
-											$stok00_evraklar = DB::table($database.'stok00')
-												->where('KOD', @$kart_veri->MAMULCODE)
-												->first();
+									<div class="d-flex">
+										<select class="form-control" disabled data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMULCODE" data-name="MAMULCODE" onchange="stokAdiGetir5(this.value)" name="MAMULCODE_SHOW" id="MAMULCODE_SHOW">
+											<option value="">Seç</option>
+											@php
+												$stok00_evraklar = DB::table($database.'stok00')
+													->where('KOD', @$kart_veri->MAMULCODE)
+													->first();
 
-											if ($stok00_evraklar && @$kart_veri->MAMULCODE == $stok00_evraklar->KOD) {
-												$optionValue = $stok00_evraklar->KOD . '|||' . $stok00_evraklar->AD;
-												echo "<option value='{$optionValue}' selected>{$stok00_evraklar->KOD}</option>";
-											}
-										@endphp
-									</select>
+												if ($stok00_evraklar && @$kart_veri->MAMULCODE == $stok00_evraklar->KOD) {
+													$optionValue = $stok00_evraklar->KOD . '|||' . $stok00_evraklar->AD;
+													echo "<option value='{$optionValue}' selected>{$stok00_evraklar->KOD}</option>";
+												}
+											@endphp
+										</select>
+										<button class="btn btn-primary kopyalaBtn" type="button" data-text="{{ @$kart_veri->MAMULCODE }}">
+											<i class="fa-solid fa-copy"></i>
+										</button>
+									</div>
 									<input type="hidden" name="MAMULCODE" id="MAMULCODE" value="{{ @$kart_veri->MAMULCODE }}">
 								</div>
 
 								<div class="col-md-4">
 									<label>Ürün Adı</label>
-									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" data-name="AD" class="form-control text-danger" maxlength="50" 
+									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" data-name="AD" class="form-control text-danger" data-max 
 										name="AD_SHOW" id="AD_SHOW" value="{{ @$kart_veri->AD }}" disabled>
 									<input type="hidden" name="AD" id="AD" value="{{ @$kart_veri->AD }}">
 								</div>
 
 								<div class="col-md-2">
 									<label>Esas Miktar</label>
-									<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMUL_MIKTAR" data-name="MAMUL_MIKTAR" class="form-control" maxlength="50" 
+									<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MAMUL_MIKTAR" data-name="MAMUL_MIKTAR" class="form-control" data-max 
 										name="MAMUL_MIKTAR" id="MAMUL_MIKTAR" value="{{ @$kart_veri->MAMUL_MIKTAR }}">
 								</div>
 								
@@ -164,7 +168,7 @@
 							<div class="row mt-3">
 								<div class="row">
 									<label>Açıklama</label>
-									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" data-name="ACIKLAMA" class="form-control mg-left" maxlength="50" 
+									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" data-name="ACIKLAMA" class="form-control mg-left" data-max 
 										name="ACIKLAMA_E" id="ACIKLAMA_E" value="{{ @$kart_veri->ACIKLAMA }}">
 								</div>
 							</div>
@@ -430,11 +434,11 @@
 																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE_AD[]" id="BOMREC_KAYNAKCODE_AD" value="{{ $veri->STOK_ADI }}">
 																		</td>																	
 																		<td>
-																			<input type="text" class="form-control" maxlength="50" name="BOMREC_OPERASYON[]" id="BOMREC_OPERASYON" value="{{ $veri->BOMREC_OPERASYON }}">
+																			<input type="text" class="form-control" readonly data-max name="BOMREC_OPERASYON[]" id="BOMREC_OPERASYON" value="{{ $veri->BOMREC_OPERASYON }}">
 																		</td>
 																		<td>
-																			<input type="text" class="form-control" maxlength="50" name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
-																			<input type="hidden" class="form-control" maxlength="50" name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
+																			<input type="text" class="form-control" data-max name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
+																			<input type="hidden" class="form-control" data-max name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
 																		</td>																
 																		<td class="d-flex">
 																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
@@ -1105,6 +1109,7 @@
 			
 			function ozelInput()
 			{
+				$('#MAMULCODE_SHOW').prop('disabled', false);
 				$('#MAMULCODE_SHOW').val('').trigger('change');
 			}
 			

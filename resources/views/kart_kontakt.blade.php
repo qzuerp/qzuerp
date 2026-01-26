@@ -123,11 +123,11 @@
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
    <label>Tarih</label>
-   <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" maxlength="50" name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
+   <input type="date" class="form-control TARIH" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARIH" data-max name="TARIH" id="TARIH"  value="{{ @$kart_veri->TARIH }}" >
  </div>
  <div class="col-md-3 col-sm-4 col-xs-6">
 	 <label>Ad Soyad</label>
-	 <input type="text" class="form-control AD_SOYAD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD_SOYAD" name="AD_SOYAD" maxlength="50" name="AD_SOYAD" id="AD_SOYAD"  value="{{ @$kart_veri->AD_SOYAD }}" >
+	 <input type="text" class="form-control AD_SOYAD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD_SOYAD" name="AD_SOYAD" data-max name="AD_SOYAD" id="AD_SOYAD"  value="{{ @$kart_veri->AD_SOYAD }}" >
  </div>
 
 </div>
@@ -171,26 +171,26 @@
 									}
 								@endphp
 							</select>
-							<input type="hidden" class="form-control" maxlength="50" name="SIRKET_CH_KODU" id="SIRKET_CH_KODU" value="{{ @$kart_veri->SIRKET_CH_KODU }}">
+							<input type="hidden" class="form-control" data-max name="SIRKET_CH_KODU" id="SIRKET_CH_KODU" value="{{ @$kart_veri->SIRKET_CH_KODU }}">
 						</div>
 				  <div class="col-xs-6 col-md-3 col-sm-6">
 					<label>Şirket Adı</label>
-					<input type="text" class="form-control SIRKET_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRKET_ADI" maxlength="50" style="color:red" name="SIRKET_ADI" id="SIRKET_ADI" value="{{ @$kart_veri->SIRKET_ADI }}" disabled>
+					<input type="text" class="form-control SIRKET_ADI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRKET_ADI" data-max style="color:red" name="SIRKET_ADI" id="SIRKET_ADI" value="{{ @$kart_veri->SIRKET_ADI }}" disabled>
 				  </div>
 	
 						<div class="col-xs-6 col-md-3 col-sm-6">
 							<label>İş Telefonu</label>
-							<input type="text" class="form-control TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_1" maxlength="50" style="color:red" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
+							<input type="text" class="form-control TELEFONNO_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TELEFONNO_1" data-max style="color:red" name="TELEFONNO_1" id="TELEFONNO_1" value="{{ @$kart_veri->TELEFONNO_1 }}">
 						 </div>
 	
 					 <div class="col-xs-6 col-md-3 col-sm-6">
 					  <label>Dahili</label>
-							<input type="text" class="form-control DAHILI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DAHILI" maxlength="50" name="DAHILI" id="DAHILI" value="{{ @$kart_veri->DAHILI }}" >
+							<input type="text" class="form-control DAHILI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DAHILI" data-max name="DAHILI" id="DAHILI" value="{{ @$kart_veri->DAHILI }}" >
 					</div>
 	
 						<div class="col-xs-6 col-md-3 col-sm-6">
 							<label>Fax</label>
-							<input type="text" class="form-control FAXNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FAXNO" maxlength="50" style="color:red" name="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}" disabled>
+							<input type="text" class="form-control FAXNO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FAXNO" data-max style="color:red" name="FAXNO" id="FAXNO" value="{{ @$kart_veri->FAXNO }}" disabled>
 						 </div>
 	
 					<div class="col-xs-6 col-md-3 col-sm-6">

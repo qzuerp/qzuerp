@@ -106,7 +106,7 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kalıp Adı</label>
-									<input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
+									<input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" data-max name="AD" id="AD"  value="{{ @$kart_veri->AD }}">
 								</div>
 
 								<div class="col-md-2 col-sm-1 col-xs-2">
@@ -121,12 +121,12 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Seri No</label>
-									<input type="text" class="form-control SERINO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" maxlength="50" name="SERINO" id="SERINO" value="{{ @$kart_veri->SERINO }}">
+									<input type="text" class="form-control SERINO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" data-max name="SERINO" id="SERINO" value="{{ @$kart_veri->SERINO }}">
 								</div>
 
 								<div class="col-md-2 col-sm-4 col-xs-6">
 									<label>Kalan Ömür</label>
-									<input type="number" class="form-control KALAN_OMUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALAN_OMUR" maxlength="50" name="KALAN_OMUR" id="KALAN_OMUR" value="{{ @$kart_veri->KALAN_OMUR }}">
+									<input type="number" class="form-control KALAN_OMUR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALAN_OMUR" data-max name="KALAN_OMUR" id="KALAN_OMUR" value="{{ @$kart_veri->KALAN_OMUR }}">
 								</div>
 
 							</div>
@@ -297,18 +297,18 @@ if (isset($kart_veri)) {
 
 								<div class="col-md-3">
 									<label>Önleyici Bakım Frekansı</label>
-									<input type="number" class="form-control ONL_BAKIM_FREK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_KODU" maxlength="50" name="ONL_BAKIM_FREK" id="ONL_BAKIM_FREK" value="{{ @$kart_veri->ONL_BAKIM_FREK }}">
+									<input type="number" class="form-control ONL_BAKIM_FREK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_KODU" data-max name="ONL_BAKIM_FREK" id="ONL_BAKIM_FREK" value="{{ @$kart_veri->ONL_BAKIM_FREK }}">
 								</div>
 
 								<div class="col-md-3">
 									<label>Planlanan Baskı Adedi</label>
-									<input type="number" class="form-control PLAN_BASKI_AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PLAN_BASKI_AD" maxlength="50" name="PLAN_BASKI_AD" id="PLAN_BASKI_AD" value="{{ @$kart_veri->PLAN_BASKI_AD }}">
+									<input type="number" class="form-control PLAN_BASKI_AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PLAN_BASKI_AD" data-max name="PLAN_BASKI_AD" id="PLAN_BASKI_AD" value="{{ @$kart_veri->PLAN_BASKI_AD }}">
 								</div>
 
 
 								<div class="col-md-3">
 									<label>Not</label>
-									<input type="text" class="form-control NOTES_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES_1" maxlength="50" name="NOTES_1" id="NOTES_1" value="{{ @$kart_veri->NOTES_1 }}">
+									<input type="text" class="form-control NOTES_1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOTES_1" data-max name="NOTES_1" id="NOTES_1" value="{{ @$kart_veri->NOTES_1 }}">
 								</div>
 
 									</div>

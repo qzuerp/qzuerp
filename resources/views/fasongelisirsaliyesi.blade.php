@@ -297,8 +297,8 @@
                                   <input style="color: red" type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
-                                  <input maxlength="50" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
-                                  <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                                  <input data-max style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
+                                  <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="SF_MIKTAR form-control">
@@ -308,26 +308,26 @@
                                   <input maxlength="50 "style="color: red" type="hidden" name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
-                                  <input maxlength="50" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PKTICIADET" name="PKTICIADET_FILL" id="PKTICIADET_FILL" class="PKTICIADET form-control">
+                                  <input data-max style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PKTICIADET" name="PKTICIADET_FILL" id="PKTICIADET_FILL" class="PKTICIADET form-control">
                                 </td>
                                 <td style="min-width: 150px">
-                                  <input maxlength="50" min="0" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBLJ_TNM" name="AMBLJ_TNM_FILL" id="AMBLJ_TNM_FILL" class="AMBLJ_TNM form-control">
+                                  <input data-max min="0" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBLJ_TNM" name="AMBLJ_TNM_FILL" id="AMBLJ_TNM_FILL" class="AMBLJ_TNM form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOTNUMBER" name="LOTNUMBER_SHOW" id="LOTNUMBER_SHOW" class="form-control LOTNUMBER" disabled>
-                                  <input maxlength="50" type="hidden" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
+                                  <input data-max type="hidden" name="LOTNUMBER_FILL" id="LOTNUMBER_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" name="SERINO_SHOW" id="SERINO_SHOW" class="form-control SERINO" disabled>
-                                  <input maxlength="50" type="hidden" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                                  <input data-max type="hidden" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" name="AMBCODE_SHOW" id="AMBCODE_SHOW" class="form-control AMBCODE" disabled>
-                                  <input maxlength="50" type="hidden" name="AMBCODE_FILL" id="AMBCODE_FILL" class="form-control">
+                                  <input data-max type="hidden" name="AMBCODE_FILL" id="AMBCODE_FILL" class="form-control">
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" name="MPSNO_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" id="MPSNO_SHOW" class="form-control MPSNO" disabled>
-                                  <input maxlength="50" type="hidden" name="MPSNO_FILL" id="MPSNO_FILL" class="form-control">
+                                  <input data-max type="hidden" name="MPSNO_FILL" id="MPSNO_FILL" class="form-control">
                                 </td>            
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" name="LOCATION1_SHOW" id="LOCATION1_SHOW" class="LOCATION1 form-control" disabled>

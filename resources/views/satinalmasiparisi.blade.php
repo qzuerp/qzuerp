@@ -205,6 +205,7 @@
                         <tr>
                           <th>#</th>
                           <th style="display:none;">Sıra</th>
+                          <th style="min-width: 100px;">Açık / Kapalı</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Lot No</th>
@@ -235,6 +236,16 @@
                                 style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
+                          <th style="min-width:0px !important; width:50px;">
+                            <select class="form-select" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AK" style="font-size: 0.7rem !important;" id="T_AK_FILL">
+                              <option value="A">
+                                Açık
+                              </option>
+                              <option value="K">
+                                Kapalı
+                              </option>
+                            </select>
+                          </th>
                           <td style="min-width: 240px;">
                             <div class="d-flex ">
                               <select class="form-control txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -261,10 +272,10 @@
                               class="form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="50" style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW"
+                            <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" id="STOK_ADI_SHOW"
                               data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI"
                               class="STOK_ADI form-control" disabled>
-                            <input maxlength="50" style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL"
+                            <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL"
                               class="form-control">
                           </td>
                           <td style="min-width: 150px">
@@ -389,6 +400,16 @@
                             </td>
                             <td style="display: none;"><input type="hidden" class="form-control" maxlength="6"
                                 name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+                            <td>
+                              <select class="form-select" style="font-size: 0.7rem !important;" name="T_AK[]">
+                                <option value="" {{ $veri->AK == 'A' ? 'selected' : '' }}>
+                                  Açık
+                                </option>
+                                <option value="K" {{ $veri->AK == 'K' ? 'selected' : '' }}>
+                                  Kapalı
+                                </option>
+                              </select>
+                            </td>
                             <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}"
                                 disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}">
                             </td>
@@ -568,6 +589,7 @@
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>A/K</th>
                         </tr>
                       </thead>
 
@@ -584,6 +606,7 @@
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>A/K</th>
                         </tr>
                       </tfoot>
 
@@ -622,7 +645,7 @@
                             $DURUM = 'K';
                           }
 
-                          $sql_sorgu = 'SELECT S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.* FROM ' . $database . 'STOK46E S46E
+                          $sql_sorgu = 'SELECT S46E.AK, S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.* FROM ' . $database . 'STOK46E S46E
                                                   LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S46E.CARIHESAPCODE
                                                   LEFT JOIN ' . $database . 'STOK46T S46T ON S46T.EVRAKNO = S46E.EVRAKNO
                                                   WHERE 1 = 1 AND S46E.AK = \'' . $DURUM . '\';';
@@ -661,6 +684,7 @@
                             echo "<td><b>" . $table->SF_SF_UNIT . "</b></td>";
                             echo "<td><b>" . $table->SF_BAKIYE . "</b></td>";
                             echo "<td><b>" . $table->TERMIN_TAR . "</b></td>";
+                            echo "<td><b>" . $table->AK . "</b></td>";
 
                             // echo "<td><a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
                             echo "</tr>";
@@ -952,6 +976,12 @@
               // htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
               htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
               htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
+              htmlCode += "<td>" +
+                "<select class='form-select' style='font-size: 0.7rem !important;' name='T_AK[]'>" +
+                  "<option value='' " + (satirEkleInputs.T_AK_FILL === 'A' ? 'selected' : '') + ">Açık</option>" +
+                  "<option value='K' " + (satirEkleInputs.T_AK_FILL === 'K' ? 'selected' : '') + ">Kapalı</option>" +
+                "</select>" +
+              "</td>";
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "' disabled><input type='hidden' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + satirEkleInputs.LOTNUMBER_FILL + "'></td> ";

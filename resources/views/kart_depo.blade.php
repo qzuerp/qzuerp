@@ -119,7 +119,7 @@
 
   <div class="col-md-3 col-sm-4 col-xs-6">
     <label>Depo Adı</label>
-    <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" maxlength="50" name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
+    <input type="text" class="form-control AD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AD" data-max name="AD" id="AD"  value="{{ @$kart_veri->AD }}" >
   </div>
 
   <div class="col-md-2 col-sm-1 col-xs-2">

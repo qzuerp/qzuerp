@@ -168,7 +168,7 @@
                           <td style="display:none;">
                           </td>
                           <td style="min-width: 150px;">
-                            <input maxlength="50" style="color: red" type="text" name="KOD_FILL" id="KOD_FILL"
+                            <input data-max style="color: red" type="text" name="KOD_FILL" id="KOD_FILL"
                               class=" form-control">
                           </td>
                           <td style="min-width: 150px">

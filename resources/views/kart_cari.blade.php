@@ -213,7 +213,7 @@
 														}
 													@endphp
 							     		</select> -->
-							   			<input type="text" class="form-control ADRES_2"maxlength="50" name="ADRES_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}" >
+							   			<input type="text" class="form-control ADRES_2"data-max name="ADRES_2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_2" id="ADRES_2" value="{{ @$kart_veri->ADRES_2 }}" >
 							   		</div>
 
 							     	<div class="col-xs-6 col-md-3 col-sm-6">
@@ -231,17 +231,17 @@
 													}
 												@endphp
 							      	</select> -->
-							      	<input type="text" class="form-control ADRES_3"maxlength="50" name="ADRES_3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}" >
+							      	<input type="text" class="form-control ADRES_3"data-max name="ADRES_3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_3" id="ADRES_3" value="{{ @$kart_veri->ADRES_3 }}" >
 							    	</div>
 
 								    <div class="col-xs-6 col-md-3 col-sm-6">
 								      <label>Ülke</label>
-								      <input type="text" class="form-control ADRES_4"maxlength="50" name="ADRES_4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_4" id="ADRES_4" value="{{ @$kart_veri->ADRES_4 }}" >
+								      <input type="text" class="form-control ADRES_4"data-max name="ADRES_4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_4" id="ADRES_4" value="{{ @$kart_veri->ADRES_4 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-3 col-sm-6">
 								      <label>Posta Kodu</label>
-								      <input type="text" class="form-control ADRES_5"maxlength="50" name="ADRES_5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_5" id="ADRES_5" value="{{ @$kart_veri->ADRES_5 }}" >
+								      <input type="text" class="form-control ADRES_5"data-max name="ADRES_5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ADRES_5" id="ADRES_5" value="{{ @$kart_veri->ADRES_5 }}" >
 								    </div>
 
 								    <div class="col-xs-6 col-md-3">
@@ -497,32 +497,32 @@
 							    <div class="row">
 								    <div class="col-xs-3">
 								      <label>Yetkili 1 </label>
-								      <input type="text" class="form-control "maxlength="50" name="KONTAKTNAME_1" id="KONTAKTNAME_1" value="{{ @$kart_veri->KONTAKTNAME_1 }}" >
+								      <input type="text" class="form-control "data-max name="KONTAKTNAME_1" id="KONTAKTNAME_1" value="{{ @$kart_veri->KONTAKTNAME_1 }}" >
 								    </div>
 								    
 								    <div class="col-xs-4">
 								      <label>Telefonu</label>
-								      <input type="text" class="form-control "maxlength="50" name="KONTAKTGOREVI_1" id="KONTAKTGOREVI_1" value="{{ @$kart_veri->KONTAKTGOREVI_1 }}" >
+								      <input type="text" class="form-control "data-max name="KONTAKTGOREVI_1" id="KONTAKTGOREVI_1" value="{{ @$kart_veri->KONTAKTGOREVI_1 }}" >
 								    </div>
 								    
 								    <div class="col-xs-5">
 								      <label>Bölümü</label>
-								      <input type="text" class="form-control "maxlength="50" name="KONTAKTBOLUMU_1" id="KONTAKTBOLUMU_1" value="{{ @$kart_veri->KONTAKTBOLUMU_1 }}" >
+								      <input type="text" class="form-control "data-max name="KONTAKTBOLUMU_1" id="KONTAKTBOLUMU_1" value="{{ @$kart_veri->KONTAKTBOLUMU_1 }}" >
 								    </div>
 								    
 								    <div class="col-xs-3">
 								      <label>Yetkili 2 </label>
-								      <input type="text" class="form-control " maxlength="50" name="KONTAKTNAME_2" id="KONTAKTNAME_2" value="{{ @$kart_veri->KONTAKTNAME_2 }}" >
+								      <input type="text" class="form-control " data-max name="KONTAKTNAME_2" id="KONTAKTNAME_2" value="{{ @$kart_veri->KONTAKTNAME_2 }}" >
 								    </div>
 								    
 								    <div class="col-xs-4">
 								      <label>Telefonu</label>
-								      <input type="text" class="form-control " maxlength="50" name="KONTAKTGOREVI_2" id="KONTAKTGOREVI_2" value="{{ @$kart_veri->KONTAKTGOREVI_2 }}" >
+								      <input type="text" class="form-control " data-max name="KONTAKTGOREVI_2" id="KONTAKTGOREVI_2" value="{{ @$kart_veri->KONTAKTGOREVI_2 }}" >
 								    </div>
 								    
 								    <div class="col-xs-5">
 								      <label>Bölümü</label>
-								      <input type="text" class="form-control " maxlength="50" name="KONTAKTBOLUMU_2" id="KONTAKTBOLUMU_2" value="{{ @$kart_veri->KONTAKTBOLUMU_2 }}" >
+								      <input type="text" class="form-control " data-max name="KONTAKTBOLUMU_2" id="KONTAKTBOLUMU_2" value="{{ @$kart_veri->KONTAKTBOLUMU_2 }}" >
 								    </div>
 								    
 								    <div class="col-xs-12">
@@ -537,7 +537,7 @@
 								<div class="row mb-3">
 									<div class="col-xs-3">
 									<label>Muhasebe Hesap Kodu</label>
-									<input type="text" class="form-control "maxlength="50" name="MUHASEBECODE" id="MUHASEBECODE" value="{{ @$kart_veri->MUHASEBECODE }}" >
+									<input type="text" class="form-control "data-max name="MUHASEBECODE" id="MUHASEBECODE" value="{{ @$kart_veri->MUHASEBECODE }}" >
 									</div>
 
 									<div class="col-xs-4">
@@ -561,17 +561,17 @@
 
 									<div class="col-xs-5">
 									<label>Varsayılan Vade</label>
-									<input type="text" class="form-control "maxlength="50" name="B_DEFAULT_VADEGUN" id="B_DEFAULT_VADEGUN" value="{{ @$kart_veri->B_DEFAULT_VADEGUN }}" >
+									<input type="text" class="form-control "data-max name="B_DEFAULT_VADEGUN" id="B_DEFAULT_VADEGUN" value="{{ @$kart_veri->B_DEFAULT_VADEGUN }}" >
 									</div>
 
 									<div class="col-xs-3">
 									<label>Açık Hesap Limiti </label>
-									<input type="number" class="form-control " maxlength="50" name="ACIKHESAPLIMITI" id="ACIKHESAPLIMITI" value="{{ @$kart_veri->ACIKHESAPLIMITI }}" >
+									<input type="number" class="form-control " data-max name="ACIKHESAPLIMITI" id="ACIKHESAPLIMITI" value="{{ @$kart_veri->ACIKHESAPLIMITI }}" >
 									</div>
 
 									<div class="col-xs-4">
 									<label>Risk Limiti</label>
-									<input type="number" class="form-control " maxlength="50" name="B_RISKLIMITI" id="B_RISKLIMITI" value="{{ @$kart_veri->B_RISKLIMITI }}" >
+									<input type="number" class="form-control " data-max name="B_RISKLIMITI" id="B_RISKLIMITI" value="{{ @$kart_veri->B_RISKLIMITI }}" >
 									</div>
 
 									<div class="col-xs-5">
@@ -612,7 +612,7 @@
 																}
 															@endphp
 														</select>
-														<input maxlength="50" style="color: red" type="hidden" name="KOD_FILL" id="KOD_FILL" class=" form-control">
+														<input data-max style="color: red" type="hidden" name="KOD_FILL" id="KOD_FILL" class=" form-control">
 													</td>
 													<td style="min-width: 150px">
 														<input maxlength="255" style="color: red" type="text" id="AD_FILL" class=" form-control" readonly>
