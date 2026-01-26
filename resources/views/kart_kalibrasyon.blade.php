@@ -561,7 +561,7 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
-                            <th>Bir Sonraki Kalibrasyon Tarihi</th>
+                            <th>Bir Sonraki Kalibrasyona kalan gün</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
@@ -577,7 +577,7 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
-                            <th>Bir Sonraki Kalibrasyon Tarihi</th>
+                            <th>Bir Sonraki Kalibrasyona kalan gün</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
