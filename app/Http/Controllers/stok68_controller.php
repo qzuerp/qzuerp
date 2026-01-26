@@ -77,17 +77,17 @@ class stok68_controller extends Controller
     $NUM4 = $request->input('NUM4');
     $AK = $request->input('AK');
     $LAST_TRNUM = $request->input('LAST_TRNUM');
-    $TRNUM = $request->input('TRNUM');
+    $TRNUM = $request->TRNUM;
     $JOBNO = $request->JOBNO;
     
-    if ($KOD == null) {
+    if ($TRNUM == null) {
       $satir_say = 0;
     }
 
     else {
-      $satir_say = count($KOD);
+      $satir_say = count($TRNUM);
     }
-    
+    // dd($request->all(),$satir_say);
     switch($islem_turu) {
 
       case 'listele':
@@ -193,6 +193,7 @@ class stok68_controller extends Controller
           // else {
           //   $AMBCODE_SEC = $AMBCODE_T[$i];
           // }
+
           $sorgu = DB::table($firma.'stok10a as s10')
           ->leftJoin($firma.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
           ->selectRaw('
@@ -353,8 +354,6 @@ class stok68_controller extends Controller
 
         }
 
-        print_r("Kayıt işlemi başarılı.");
-
         $sonID=DB::table($firma.'stok68e')->max('id');
         return redirect()->route('fasongelisirsaliyesi', ['ID' => $sonID, 'kayit' => 'ok']);
 
@@ -399,7 +398,6 @@ class stok68_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-
         for ($i = 0; $i < $satir_say; $i++) {
 
           $AMBCODE_SEC = $IMALATAMBCODE;
@@ -408,9 +406,8 @@ class stok68_controller extends Controller
           // else {
           //   $AMBCODE_SEC = $AMBCODE_T[$i];
           // }
-
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-
+          // dd($satir_say,$i);
           if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
 
             $sorgu = DB::table($firma.'stok10a as s10')
@@ -466,7 +463,6 @@ class stok68_controller extends Controller
             ->first();
             $kontrol = $sorgu->MIKTAR ?? 0;
             
-            // dd($sorgu,$kontrol,$AMBCODE_SEC);
             if($SF_MIKTAR[$i] > $kontrol)
             {
               return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
@@ -576,8 +572,9 @@ class stok68_controller extends Controller
             ]);
 
           }
-
+          // dd($deleteTRNUMS,$newTRNUMS,$updateTRNUMS,$TRNUM,'u');
           if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
+           
 
             $KAYITLI_SF_MIKTAR = DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
 
@@ -652,7 +649,7 @@ class stok68_controller extends Controller
                       return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
                   }
               }
-
+            }
             DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
               'KOD' => $KOD[$i],
@@ -763,20 +760,13 @@ class stok68_controller extends Controller
             ]);
           }
         }
-
-        print_r("Düzenleme işlemi başarılı.");
-
         $veri=DB::table($firma.'stok68e')->where('EVRAKNO',$EVRAKNO)->first();
-        return redirect()->route('fasongelisirsaliyesi', ['ID' => $veri->id, 'duzenleme' => 'ok']);
-
-        break;
-      
+        return redirect()->route('fasongelisirsaliyesi', ['ID' => $veri->id, 'duzenleme' => 'ok']);      
 
     }
 
   }
-}
-
+  
 
   public function fason_getir(Request $request)
   {
