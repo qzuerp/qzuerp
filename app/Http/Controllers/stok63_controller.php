@@ -432,12 +432,13 @@ class stok63_controller extends Controller
             ->where('s10.LOCATION3',$LOCATION3[$i])
             ->where('s10.LOCATION4',$LOCATION4[$i])
             ->first();
+
             $kontrol = $sorgu->MIKTAR ?? 0;
             
             // dd($sorgu,$kontrol,$AMBCODE_SEC);
             if($SF_MIKTAR[$i] > $kontrol)
             {
-              return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
+              return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeterli miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
             }
 
             DB::table($firma.'stok63t')->insert([
@@ -634,7 +635,6 @@ class stok63_controller extends Controller
               ]);
 
               // Fason depoya giris
-
               DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK63T-G')->where('TRNUM',$TRNUM[$i])->update([
                 'SRNUM' => $SRNUM,
                 'KOD' => $KOD[$i],
