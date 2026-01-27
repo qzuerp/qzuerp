@@ -312,7 +312,7 @@
 @if (!isset($kart_veri))
   <script>
     $(document).ready(function () {
-      inputTemizle();
+      inputTemizle2();
     });
   </script>
 @endif

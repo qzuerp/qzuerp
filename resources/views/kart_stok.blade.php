@@ -30,7 +30,7 @@
 
 	if(isset($_GET['ID'])) {
 	  $sonID = $_GET['ID'];
-	}Else{
+	}else{
 		$sonID = DB::table($ekranTableE)->min('id');
 	}
 

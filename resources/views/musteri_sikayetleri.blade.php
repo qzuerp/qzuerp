@@ -120,7 +120,7 @@
                                     <div class="row ">
                                         <div class="col-md-3">
                                             <label class="form-label">Stok Kodu</label>
-                                            <select class="form-control select2" name="" onchange="stokAdiGetir3(this.value)" style="height: 30px; width:100%;">
+                                            <select class="form-control select2" name="" id="STOK_KODU_SHOW" onchange="stokAdiGetir3(this.value)" style="height: 30px; width:100%;">
                                                 <option disabled selected>Seç</option>
                                                 @foreach ($stok_evraklar as $veri)
                                                     @if(@$kart_veri->STOK_KODU == $veri->KOD)

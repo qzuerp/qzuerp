@@ -77,46 +77,48 @@
 </div>
 
 <script>
-    $('#logSuzTable').DataTable({
-        processing: true,
-        serverSide: true,
-        searching: true,
-        autoWidth: false,
-        scrollX: false,
-        lengthChange: false,
-        ajax: {
-            url: '{{ route('loglar.ajax') }}',
-            data: {
-                EVRAKTYPE: '{{ $EVRAKTYPE }}',
-                EVRAKNO: '{{ $EVRAKNO }}'
-            }
-        },
-        columns: [
-            { data: 'EVRAKNO', name: 'EVRAKNO' },
-            { 
-                data: 'PROCESS', 
-                name: 'PROCESS',
-                render: function(data, type, row) {
-                    switch (data) {
-                        case 'W': return 'Düzenleme (W)';
-                        case 'C': return 'Yeni Oluşturma (C)';
-                        case 'D': return 'Silme (D)';
-                        case 'P': return 'Yazdırma (P)';
-                        default: return data;
-                    }
+    $(document).ready(function() {
+        $('#logSuzTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            autoWidth: false,
+            scrollX: false,
+            lengthChange: false,
+            ajax: {
+                url: '{{ route('loglar.ajax') }}',
+                data: {
+                    EVRAKTYPE: '{{ $EVRAKTYPE }}',
+                    EVRAKNO: '{{ $EVRAKNO }}'
                 }
             },
-            { data: 'LOGTARIH', name: 'LOGTARIH' },
-            { data: 'LOGTIME', name: 'LOGTIME' },
-            { data: 'USERNAME', name: 'USERNAME' }
-        ],language: {
-            url: '{{ asset("tr.json") }}'
-        },
-        initComplete: function() {
-            const table = this.api();
-            $('.dataTables_filter input').on('keyup', function() {
-                table.draw();
-            });
-        }
+            columns: [
+                { data: 'EVRAKNO', name: 'EVRAKNO' },
+                { 
+                    data: 'PROCESS', 
+                    name: 'PROCESS',
+                    render: function(data, type, row) {
+                        switch (data) {
+                            case 'W': return 'Düzenleme (W)';
+                            case 'C': return 'Yeni Oluşturma (C)';
+                            case 'D': return 'Silme (D)';
+                            case 'P': return 'Yazdırma (P)';
+                            default: return data;
+                        }
+                    }
+                },
+                { data: 'LOGTARIH', name: 'LOGTARIH' },
+                { data: 'LOGTIME', name: 'LOGTIME' },
+                { data: 'USERNAME', name: 'USERNAME' }
+            ],language: {
+                url: '{{ asset("tr.json") }}'
+            },
+            initComplete: function() {
+                const table = this.api();
+                $('.dataTables_filter input').on('keyup', function() {
+                    table.draw();
+                });
+            }
+        });
     });
 </script>

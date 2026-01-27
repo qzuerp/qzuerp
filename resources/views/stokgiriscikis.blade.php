@@ -54,6 +54,7 @@
     $oncekiEvrak=DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
   }
 
+  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 @endphp
 
 @section('content')
@@ -442,8 +443,6 @@
                             <td>
                               <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="LOCATION1 form-control select2 js-example-basic-single" data-name="LOCATION1" style=" height: 30PX" onchange="" name="LOCATION1[]" id="">
                                 @php
-                                  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
-
                                   foreach ($locat2_kodlar as $key => $Lveri) {
                                     if($Lveri->LOCATION1 == $veri->LOCATION1)
                                     {
@@ -461,8 +460,6 @@
                             <td>
                               <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control select2 js-example-basic-single" data-name="LOCATION2" style=" height: 30PX" onchange="" name="LOCATION2[]" id="">
                                 @php
-                                  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
-
                                   foreach ($locat2_kodlar as $key => $Lveri) {
                                     if($Lveri->LOCATION2 == $veri->LOCATION2)
                                     {
@@ -481,8 +478,6 @@
                             <td>
                               <select data-bs-toggle="tooltip" data-bs-placement="top" id="lok3-{{ $veri->id }}-CAM" data-bs-title="LOCATION3" class="LOCATION3 form-control select2 js-example-basic-single" data-name="LOCATION3" style=" height: 30PX" onchange="" name="LOCATION3[]" id="">
                                 @php
-                                  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
-
                                   foreach ($locat2_kodlar as $key => $Lveri) {
                                     if($Lveri->LOCATION3 == $veri->LOCATION3)
                                     {
@@ -500,8 +495,6 @@
                             <td>
                               <select data-bs-toggle="tooltip" data-bs-placement="top" id="lok4-{{ $veri->id }}-CAM" data-bs-title="LOCATION4" class="LOCATION4 form-control select2 js-example-basic-single" data-name="LOCATION4" style=" height: 30PX" onchange="" name="LOCATION4[]" id="">
                                 @php
-                                  $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
-
                                   foreach ($locat2_kodlar as $key => $Lveri) {
                                     if($Lveri->LOCATION4 == $veri->LOCATION4)
                                     {

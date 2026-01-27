@@ -16,6 +16,7 @@ class stok00_controller extends Controller
 
     return view('kart_stok')->with('sonID', $sonID);
   }
+
   public function getEvraklarAjax(Request $request)
   {
     if(Auth::check()) {

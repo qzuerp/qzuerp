@@ -1,19 +1,9 @@
 @php
 
-  if (Auth::check()) {
-    $user = Auth::user();
-  }
-
-  $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
-
-  $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
-  $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
-  $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
-
   $firmaAdi = "QZU ERP";
 @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
   <meta charset="UTF-8">
@@ -21,20 +11,15 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{$firmaAdi}}</title>
   <link rel="icon" href="{{ asset('assets/img/qzu_logo.png') }}">
-</head>
-
-<body class='skin-blue sidebar-mini sidebar-collapse'>
   <style>
     .input-icon {
       position: relative;
       display: flex;
       align-items: center;
     }
-
     .input-icon input {
       padding-right: 2.2rem;
     }
-
     .input-icon i {
       position: absolute;
       right: 10px;
@@ -42,62 +27,164 @@
       pointer-events: none;
       transform: scale(0.80);
     }
-
     .main {
-      width: 1000%;
-      height: 1000%;
+      width: 100%;
+      height: 100%;
       z-index: 9999;
-      background-color:rgba(57, 57, 57, 0.18);
+      background-color: rgba(57, 57, 57, 0.18);
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0;
+      left: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 10px;
       backdrop-filter: blur(8px);
     }
   </style>
-  <div class="main" id="loader">
-    <div class="d-flex justify-content-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Yükleniyor...</span>
-      </div>
+</head>
+
+<body class='skin-blue sidebar-mini sidebar-collapse'>
+  <div class="main" id="loader" style="display:none;">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Yükleniyor...</span>
     </div>
   </div>
 
   @include('layout.partials.header', ['firmaAdi' => $firmaAdi])
   @include('layout.partials.sidebar', ['firmaAdi' => $firmaAdi])
 
-
   @yield('content')
 
   <script>
-    var evrakDegisti = false;
-    var originalValues = {};
-    var elementCounter = 0;
-    var originalTableRowCounts = {};
+    // Global değişkenler
+    const state = {
+      evrakDegisti: false,
+      originalValues: {},
+      originalTableRowCounts: {},
+      isNavigating: false,
+      elementCounter: 0
+    };
 
-    $(document).ready(function () {
-      trackAllFormElements();
-      trackAllTables();
+    // Debounce fonksiyonu - gereksiz işlemleri azaltır
+    const debounce = (func, wait) => {
+      let timeout;
+      return function executedFunction(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    };
 
-      observeNewElements();
+    // Element value kontrolü - optimize edilmiş
+    const getElementValue = ($element) => {
+      const type = $element.attr('type');
+      if (type === 'checkbox' || type === 'radio') {
+        return $element.is(':checked') ? ($element.val() || true) : null;
+      }
+      return $element.val() || '';
+    };
 
-      // window.addEventListener('beforeunload', function (e) {
-      //   if (evrakDegisti) {
-      //     console.log('⚠️ Sayfa kapatılmaya çalışılıyor, evrak değişikliği tespit edildi');
-      //     e.preventDefault();
-      //     e.returnValue = 'Evrakta kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';
-      //     return e.returnValue;
-      //   }
-      // });
+    // Unique key oluşturma - optimize edilmiş
+    const generateUniqueKey = ($element) => {
+      const id = $element.attr('id');
+      if (id) return `${$element[0].tagName.toLowerCase()}_id_${id}`;
+      
+      const name = $element.attr('name');
+      if (name) {
+        const index = $(`[name="${name}"]`).index($element[0]);
+        return `${$element[0].tagName.toLowerCase()}_name_${name}_${index}`;
+      }
+      
+      return `${$element[0].tagName.toLowerCase()}_counter_${++state.elementCounter}`;
+    };
 
-      $(document).on('click', '[data-evrak-kontrol]', function (e) {
+    // Skip kontrolü - optimize edilmiş
+    const shouldSkipElement = ($element) => {
+      if ($element.attr('data-skip-tracking') === 'true') return true;
+      if ($element.prop('readonly') || $element.prop('disabled')) return true;
+      
+      const skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
+      if (skipClasses.some(cls => $element.hasClass(cls))) return true;
+      
+      const type = $element.attr('type');
+      if (['hidden', 'submit', 'button', 'reset', 'image'].includes(type)) return true;
+      
+      const name = $element.attr('name');
+      if (['_token', 'csrf_token', 'authenticity_token'].includes(name)) return true;
+      
+      const id = $element.attr('id');
+      if (['search', 'filter', 'temp'].includes(id)) return true;
+      
+      return false;
+    };
 
-        if (!evrakDegisti) return;
+    // Element tracking - optimize edilmiş
+    const trackElement = ($element) => {
+      if ($element.attr('data-tracked') || shouldSkipElement($element)) return;
+      
+      const uniqueKey = generateUniqueKey($element);
+      $element.attr('data-tracked', 'true').attr('data-unique-key', uniqueKey);
+      state.originalValues[uniqueKey] = getElementValue($element);
+    };
 
+    // Değişiklik kontrolü - debounced
+    const checkForChanges = debounce(() => {
+      let anyChanged = false;
+      
+      $('[data-tracked]').each(function() {
+        const $element = $(this);
+        const uniqueKey = $element.attr('data-unique-key');
+        const currentValue = getElementValue($element);
+        const originalValue = state.originalValues[uniqueKey];
+        
+        if (String(currentValue) !== String(originalValue)) {
+          anyChanged = true;
+          return false; // break
+        }
+      });
+      
+      state.evrakDegisti = anyChanged;
+    }, 100);
+
+    // Tablo kontrolü - optimize edilmiş
+    const checkTableChanges = debounce(() => {
+      const $veriTable = $('#veriTable');
+      if (!$veriTable.length || !$veriTable.attr('data-table-tracked')) return;
+      
+      const uniqueKey = $veriTable.attr('data-table-unique-key');
+      const currentRowCount = $veriTable.find('tbody tr').length;
+      const originalRowCount = state.originalTableRowCounts[uniqueKey];
+      
+      if (currentRowCount !== originalRowCount) {
+        state.evrakDegisti = true;
+      }
+    }, 100);
+
+    // Tablo tracking
+    const trackTable = ($table) => {
+      if ($table.attr('data-table-tracked') || $table.attr('data-skip-table-tracking') === 'true') return;
+      
+      const uniqueKey = `table_${$table.attr('id') || ++state.elementCounter}`;
+      $table.attr('data-table-tracked', 'true').attr('data-table-unique-key', uniqueKey);
+      state.originalTableRowCounts[uniqueKey] = $table.find('tbody tr').length;
+    };
+
+    // Event delegation - performans için
+    $(document).ready(function() {
+      // Tüm elementleri track et
+      $('input, textarea, select').each((_, el) => trackElement($(el)));
+      
+      const $veriTable = $('#veriTable');
+      if ($veriTable.length) trackTable($veriTable);
+
+      // Event delegation ile tüm input olaylarını yakala
+      $(document).on('input change keyup paste', '[data-tracked]', function() {
+        checkForChanges();
+      });
+
+      // Evrak kontrol
+      $(document).on('click', '[data-evrak-kontrol]', function(e) {
+        if (!state.evrakDegisti) return;
+        
         e.preventDefault();
         const href = $(this).attr('href');
         const $button = $(this);
@@ -112,7 +199,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             if (href) {
-              $('#loader').fadeIn(300);
+              $('#loader').fadeIn(150);
               window.location.href = href;
             } else {
               $button.trigger('devamEt');
@@ -121,829 +208,312 @@
         });
       });
 
-      $('.smbButton').on('click', function (e) {
-        if (evrakDegisti) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          Swal.fire({
-            icon: 'warning',
-            title: 'Evrak Kaydedilmeli!',
-            text: 'Bu işlemi yapmak için önce evrakı kaydetmelisiniz.',
-            confirmButtonText: 'Tamam'
-          });
-
-          return false;
-        }
-      }); 
-    });
-
-    function trackAllFormElements() {
-      $('input, textarea, select').each(function (index, element) {
-        trackElement($(element));
-      });
-    }
-
-    function trackAllTables() {
-      // Sadece veriTable'ı takip et
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length > 0) {
-        trackTable($veriTable);
-      }
-    }
-
-    function trackTable($table) {
-
-      if ($table.attr('data-table-tracked')) return;
-
-      if (shouldSkipTable($table)) {
-        return;
-      }
-
-      var uniqueKey = generateTableUniqueKey($table);
-
-      $table.attr('data-table-tracked', 'true');
-      $table.attr('data-table-unique-key', uniqueKey);
-
-      // Başlangıç satır sayısını kaydet
-      originalTableRowCounts[uniqueKey] = getTableRowCount($table);
-
-    }
-
-    function shouldSkipTable($table) {
-      // Tablo atlanacaksa (özel class'lar vs.)
-      if ($table.attr('data-skip-table-tracking') === 'true') {
-        return true;
-      }
-
-      var skipClasses = ['no-track-table', 'skip-table-tracking', 'ignore-table-changes'];
-      for (var i = 0; i < skipClasses.length; i++) {
-        if ($table.hasClass(skipClasses[i])) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    function generateTableUniqueKey($table) {
-      var table = $table[0];
-      var id = $table.attr('id');
-      var classes = $table.attr('class') || '';
-
-      if (id) {
-        return 'table_id_' + id;
-      } else {
-        elementCounter++;
-        return 'table_counter_' + elementCounter + '_' + classes.replace(/\s+/g, '_');
-      }
-    }
-
-    function getTableRowCount($table) {
-      var $tbody = $table.find('tbody');
-      if ($tbody.length > 0) {
-        return $tbody.find('tr').length;
-      } else {
-        var $thead = $table.find('thead');
-        var totalRows = $table.find('tr').length;
-        var headerRows = $thead.find('tr').length;
-        return totalRows - headerRows;
-      }
-    }
-
-    function checkTableChanges() {
-      // Sadece veriTable'ı kontrol et
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length === 0) {
-        return;
-      }
-
-      // veriTable takip ediliyor mu kontrol et
-      if (!$veriTable.attr('data-table-tracked')) {
-        return;
-      }
-
-      var uniqueKey = $veriTable.attr('data-table-unique-key');
-      var currentRowCount = getTableRowCount($veriTable);
-      var originalRowCount = originalTableRowCounts[uniqueKey];
-
-      if (currentRowCount !== originalRowCount) {
-
-        if (!evrakDegisti) {
-          evrakDegisti = true;
-        }
-      }
-    }
-
-    function trackElement($element) {
-      if ($element.attr('data-tracked')) return;
-
-      if (shouldSkipElement($element)) {
-        return;
-      }
-
-      var uniqueKey = generateUniqueKey($element);
-
-      $element.attr('data-tracked', 'true');
-      $element.attr('data-unique-key', uniqueKey);
-
-      originalValues[uniqueKey] = getElementValue($element);
-
-      $element.on('input change keyup paste', function () {
-        checkForChanges($(this), uniqueKey);
-      });
-
-    }
-
-    function shouldSkipElement($element) {
-      if ($element.attr('data-skip-tracking') === 'true') {
-        return true;
-      }
-
-      var skipClasses = ['no-track', 'skip-tracking', 'ignore-changes'];
-      for (var i = 0; i < skipClasses.length; i++) {
-        if ($element.hasClass(skipClasses[i])) {
-          return true;
-        }
-      }
-
-      var skipTypes = ['hidden', 'submit', 'button', 'reset', 'image'];
-      var inputType = $element.attr('type');
-      if (inputType && skipTypes.indexOf(inputType) !== -1) {
-        return true;
-      }
-
-      var skipNames = ['_token', 'csrf_token', 'authenticity_token'];
-      var elementName = $element.attr('name');
-      if (elementName && skipNames.indexOf(elementName) !== -1) {
-        return true;
-      }
-
-      var skipIds = ['search', 'filter', 'temp'];
-      var elementId = $element.attr('id');
-      if (elementId && skipIds.indexOf(elementId) !== -1) {
-        return true;
-      }
-
-      if ($element.prop('readonly') || $element.prop('disabled')) {
-        return true;
-      }
-
-      return false;
-    }
-
-    function generateUniqueKey($element) {
-      var element = $element[0];
-      var tagName = element.tagName.toLowerCase();
-      var id = $element.attr('id');
-      var name = $element.attr('name');
-      var type = $element.attr('type') || '';
-
-      if (id) {
-        return tagName + '_id_' + id;
-      } else if (name) {
-        var sameNameElements = $('[name="' + name + '"]');
-        var elementIndex = sameNameElements.index(element);
-        return tagName + '_name_' + name + '_' + elementIndex;
-      } else {
-        elementCounter++;
-        return tagName + '_counter_' + elementCounter;
-      }
-    }
-
-    function getElementValue($element) {
-      var type = $element.attr('type');
-
-      if (type === 'checkbox') {
-        return $element.is(':checked');
-      } else if (type === 'radio') {
-        return $element.is(':checked') ? $element.val() : null;
-      } else {
-        return $element.val() || '';
-      }
-    }
-
-    function checkForChanges($element, uniqueKey) {
-      var currentValue = getElementValue($element);
-      var originalValue = originalValues[uniqueKey];
-
-      var hasChanged = false;
-
-      if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
-        hasChanged = Boolean(currentValue) !== Boolean(originalValue);
-      } else {
-        hasChanged = String(currentValue) !== String(originalValue);
-      }
-
-      if (hasChanged) {
-
-        if (!evrakDegisti) {
-          evrakDegisti = true;
-        }
-      }
-
-      checkAllElements();
-      checkTableChanges();
-    }
-
-    function checkAllElements() {
-      var anyChanged = false;
-
-      $('[data-tracked]').each(function () {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
-        var currentValue = getElementValue($element);
-        var originalValue = originalValues[uniqueKey];
-
-        var hasChanged = false;
-        if (typeof currentValue === 'boolean' || typeof originalValue === 'boolean') {
-          hasChanged = Boolean(currentValue) !== Boolean(originalValue);
-        } else {
-          hasChanged = String(currentValue) !== String(originalValue);
-        }
-
-        if (hasChanged) {
-          anyChanged = true;
-          return false;
-        }
-      });
-
-      evrakDegisti = anyChanged;
-    }
-
-    function observeNewElements() {
-      var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          mutation.addedNodes.forEach(function (node) {
-            if (node.nodeType === 1) {
-              var $node = $(node);
-
-              var newElements = $node.find('input, textarea, select').addBack().filter('input, textarea, select');
-              newElements.each(function () {
-                var $element = $(this);
-                if (!$element.attr('data-tracked')) {
-                  trackElement($element);
-                }
-              });
-
-              var newTables = $node.find('table').addBack().filter('table');
-              newTables.each(function () {
-                var $table = $(this);
-                // Sadece veriTable'ı takip et
-                if ($table.attr('id') === 'veriTable' && !$table.attr('data-table-tracked')) {
-                  trackTable($table);
-                }
-              });
-            }
-          });
-
-          mutation.removedNodes.forEach(function (node) {
-            if (node.nodeType === 1) {
-              if (node.tagName === 'TR' || $(node).find('tr').length > 0) {
-                setTimeout(function () {
-                  checkTableChanges();
-                }, 10);
-              }
-            }
-          });
+      // SMB Button kontrolü
+      $(document).on('click', '.smbButton', function(e) {
+        if (!state.evrakDegisti) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Evrak Kaydedilmeli!',
+          text: 'Bu işlemi yapmak için önce evrakı kaydetmelisiniz.',
+          confirmButtonText: 'tamam'
         });
+        return false;
       });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    function resetEvrakDegisiklikFlag() {
-      evrakDegisti = false;
-
-      $('[data-tracked]').each(function () {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
-        originalValues[uniqueKey] = getElementValue($element);
-      });
-
-      $('[data-table-tracked]').each(function () {
-        var $table = $(this); // $('#veriTable') yerine $(this) kullan
-        var uniqueKey = $table.attr('data-table-unique-key');
-        originalTableRowCounts[uniqueKey] = getTableRowCount($table);
-      });
-    }
-
-    function addSkipRule(selector) {
-      $(selector).attr('data-skip-tracking', 'true');
-    }
-
-    function removeSkipRule(selector) {
-      $(selector).removeAttr('data-skip-tracking');
-    }
-
-    function addTableSkipRule(selector) {
-      $(selector).attr('data-skip-table-tracking', 'true');
-    }
-
-    function removeTableSkipRule(selector) {
-      $(selector).removeAttr('data-skip-table-tracking');
-    }
-
-    function showTrackedElements() {
-      $('[data-tracked]').each(function () {
-        var $element = $(this);
-        var uniqueKey = $element.attr('data-unique-key');
-        var currentValue = getElementValue($element);
-        var originalValue = originalValues[uniqueKey];
-      });
-
-      // Sadece veriTable'ı göster
-      var $veriTable = $('#veriTable');
-      if ($veriTable.length > 0 && $veriTable.attr('data-table-tracked')) {
-        var uniqueKey = $veriTable.attr('data-table-unique-key');
-        var currentRowCount = getTableRowCount($veriTable);
-        var originalRowCount = originalTableRowCounts[uniqueKey];
-      }
-    }
-
-    function manualTableCheck() {
-      checkTableChanges();
-    }
-  </script>
-
-  <!-- Loader Script -->
-  <script>
-    $(document).ready(function () {
-      $('#loader').fadeOut(300);
     });
 
-    let isNavigating = false;
-    const $loader = $('#loader');
-    const $body = $('body');
+    // Mutation observer - optimize edilmiş
+    const observer = new MutationObserver(debounce((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== 1) return;
+          
+          const $node = $(node);
+          $node.find('input, textarea, select').addBack('input, textarea, select').each((_, el) => {
+            trackElement($(el));
+          });
+          
+          const $table = $node.find('#veriTable').addBack('#veriTable');
+          if ($table.length) trackTable($table);
+        });
+        
+        if (mutation.removedNodes.length) {
+          setTimeout(checkTableChanges, 10);
+        }
+      });
+    }, 50));
 
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Reset fonksiyonu
+    window.resetEvrakDegisiklikFlag = () => {
+      state.evrakDegisti = false;
+      $('[data-tracked]').each(function() {
+        const $element = $(this);
+        state.originalValues[$element.attr('data-unique-key')] = getElementValue($element);
+      });
+      $('[data-table-tracked]').each(function() {
+        const $table = $(this);
+        state.originalTableRowCounts[$table.attr('data-table-unique-key')] = $table.find('tbody tr').length;
+      });
+    };
+
+    // Loader yönetimi - optimize edilmiş
     const loaderManager = {
+      timeoutId: null,
       show() {
-        if (!isNavigating) {
-          isNavigating = true;
-          $loader.fadeIn(300);
+        if (!state.isNavigating) {
+          state.isNavigating = true;
+          $('#loader').fadeIn(150);
         }
       },
-
       hide() {
-        isNavigating = false;
-        $loader.fadeOut(300);
+        state.isNavigating = false;
+        $('#loader').fadeOut(150);
       },
-
       reset() {
         this.hide();
         clearTimeout(this.timeoutId);
       }
     };
 
-    $(window).on('beforeunload', function () {
-      loaderManager.show();
-    });
-
-    $(window).on('pageshow', function (e) {
+    $(window).on('beforeunload', () => loaderManager.show());
+    $(window).on('pageshow', (e) => {
       if (e.originalEvent.persisted || window.performance.navigation.type === 2) {
         loaderManager.reset();
       }
     });
+    $(window).on('popstate', () => loaderManager.reset());
 
-    $(window).on('popstate', function () {
-      loaderManager.reset();
-    });
-    
-    setTimeout(() => {
-      loaderManager.reset();
-    }, 10000);
+    // Güvenlik timeout
+    setTimeout(() => loaderManager.reset(), 10000);
 
-    $(document).ready(function () {
+    // Link ve form yönetimi - tek event handler
+    $(document).ready(function() {
       loaderManager.hide();
-    });
 
-    $body.on('click', 'a:not([target="_blank"])', function (e) {
-      if (isNavigating) {
-        return false;
-      }
+      // Link tıklama - optimize edilmiş
+      $(document).on('click', 'a:not([target="_blank"])', function(e) {
+        if (state.isNavigating) return false;
+        
+        const $a = $(this);
+        const href = $a.attr('href');
 
-      const $a = $(this);
-      const href = $a.attr('href');
+        if ($a.data('skip') == 1) return;
+        if ($a.is('[data-evrak-kontrol]') && state.evrakDegisti) return;
+        if (!href || href === '#' || href === 'javascript:void(0)' || href === '') return;
+        if (href.startsWith('http') && !href.includes(window.location.hostname)) return;
+        if (href.startsWith('#')) return;
 
-      if ($a.attr('target') === '_blank') {
-        return;
-      }
+        const currentPath = window.location.pathname + window.location.search + window.location.hash;
+        if (href === currentPath || href === window.location.pathname) return;
 
-      if ($a.data('skip') == 1) {
-        return;
-      }
-
-      if ($a.is('[data-evrak-kontrol]') && typeof evrakDegisti !== 'undefined' && evrakDegisti) {
-        return;
-      }
-
-      if (!href || href === '#' || href === 'javascript:void(0)' || href === '') {
-        return;
-      }
-
-      if (href.startsWith('http') && !href.includes(window.location.hostname)) {
-        return;
-      }
-
-      if (href.startsWith('#')) {
-        return;
-      }
-
-      const currentPath = window.location.pathname + window.location.search + window.location.hash;
-      const isCurrentPage =
-        href === currentPath ||
-        href === window.location.pathname ||
-        (href.includes('#') && href === currentPath);
-
-      if (isCurrentPage) {
-        return;
-      }
-
-      e.preventDefault();
-
-      loaderManager.show();
-
-      setTimeout(() => {
-        window.location.href = href;
-      }, 2);
-    });
-
-
-    $body.on('submit', 'form', function (e) {
-      if (e.defaultPrevented || isNavigating) return;
-
-      const $form = $(this);
-      const action = $form.attr('action');
-
-      if (!action || action === '#' || action === 'javascript:void(0)') {
-        return;
-      }
-
-      if ($form.data('ajax') || $form.hasClass('ajax-form')) {
-        return;
-      }
-
-      loaderManager.show();
-    });
-
-    $(window).on('error', function () {
-      loaderManager.reset();
-    });
-
-    let networkTimeout;
-    $(document).ajaxStart(function () {
-      networkTimeout = setTimeout(() => {
-        loaderManager.reset();
-      }, 10000);
-    });
-
-    $(document).ajaxStop(function () {
-      clearTimeout(networkTimeout);
-    });
-
-    $(window).on('unload', function () {
-      $body.off('click', 'a');
-      $body.off('submit', 'form');
-    });
-
-    document.querySelectorAll('.nav-tabs').forEach(ul => {
-      const firstLink = ul.querySelector('.nav-link');
-      if (firstLink) firstLink.classList.add('active');
-    });
-  </script>
-
-  <!-- Loader Script -->
-  <script>
-    $(document).ready(function () {
-      $('#loader').fadeOut(150);
-    });
-
-    $('a').on('click', function (e) {
-      const $a = $(this);
-      const href = $a.attr('href');
-
-      if ($a.is('[data-evrak-kontrol]') && evrakDegisti) return;
-
-      e.preventDefault();
-
-      if (href == '#' || href == 'javascript:void(0)' || href == '') return;
-
-      const currentFull = window.location.pathname + window.location.hash;
-      const targetFull = href.includes('#') ? href : href + '#';
-
-      if (currentFull === targetFull || href.startsWith('#')) return;
-
-      $('#loader').fadeIn(150);
-      window.location.href = href;
-    });
-
-    $('form').on('submit', function (e) {
-      if (e.defaultPrevented) return;
-
-      const action = $(this).attr('action');
-      if (!action || action === '#' || action === 'javascript:void(0)') return;
-
-      $('#loader').fadeIn(150);
-    });
-
-    document.querySelectorAll('.nav-tabs').forEach(ul => {
-      const firstLink = ul.querySelector('.nav-link');
-      if (firstLink) firstLink.classList.add('active');
-    });
-
-
-    function adjustZoom() {
-      const width = window.innerWidth;
-      let zoom = 1;
-
-      if (width < 600) zoom = 0.7;      // telefon
-      else if (width < 900) zoom = 0.8; // tablet
-      else if (width < 1400) zoom = 0.9;  // laptop
-      else zoom = 1.1;                  // geniş ekran
-
-      document.body.style.zoom = zoom;
-    }
-
-    // window.addEventListener('resize', adjustZoom);
-    // window.addEventListener('load', adjustZoom);
-
-    saveRecentPage('{{ $ekranAdi }}', '{{ $ekranLink }}')
-
-    function saveRecentPage(title, url, icon = 'fa-file') {
-      if (url == 'index')
-        return;
-      let recent = JSON.parse(localStorage.getItem('recentPages') || '[]');
-
-      recent = recent.filter(item => item.url !== url);
-
-      recent.unshift({
-        title: title,
-        url: url,
-        icon: icon,
-        timestamp: new Date().getTime()
+        e.preventDefault();
+        loaderManager.show();
+        setTimeout(() => window.location.href = href, 2);
       });
 
-      recent = recent.slice(0, 5);
+      // Form submit
+      $(document).on('submit', 'form', function(e) {
+        if (e.defaultPrevented || state.isNavigating) return;
+        
+        const $form = $(this);
+        const action = $form.attr('action');
 
-      localStorage.setItem('recentPages', JSON.stringify(recent));
-    }
-    $(document).ready(function () {
-      $('input[type="number"]').each(function () {
-        $(this)
-            .attr('type', 'text')
-            .addClass('decimal');
+        if (!action || action === '#' || action === 'javascript:void(0)') return;
+        if ($form.data('ajax') || $form.hasClass('ajax-form')) return;
+
+        loaderManager.show();
       });
+
+      // Evrak düzenle - AJAX
+      // $(document).on('click', '#evrakDuzenle', function(e) {
+      //   e.preventDefault();
+
+      //   const form = $('#verilerForm')[0];
+      //   const formData = new FormData(form);
+      //   formData.append(this.name, this.value);
+
+      //   $.ajax({
+      //     url: form.action,
+      //     type: form.method,
+      //     data: formData,
+      //     processData: false,
+      //     contentType: false,
+      //     beforeSend: () => {
+      //       Swal.fire({
+      //         title: 'İşlem devam ediyor',
+      //         text: 'Lütfen bekleyiniz',
+      //         allowOutsideClick: false,
+      //         didOpen: () => Swal.showLoading()
+      //       });
+      //     },
+      //     success: () => {
+      //       Swal.close();
+      //       mesaj('Değişiklikler başarıyla kaydedildi', 'success');
+      //       resetEvrakDegisiklikFlag();
+      //     },
+      //     error: (xhr) => {
+      //       Swal.fire('Hata', xhr.responseJSON?.message ?? 'Bir şey ters gitti', 'error');
+      //     }
+      //   });
+      // });
     });
 
-    $(document).on('input', '.decimal', function () {
-      let val = this.value;
+    // Decimal input handling
+    $(document).ready(function() {
+      $('input[type="number"]').attr('type', 'text').addClass('decimal');
+    });
 
-      // sadece rakam, nokta, virgül
-      val = val.replace(/[^0-9.,]/g, '');
-
-      // ilk virgülü noktaya çevir
-      val = val.replace(',', '.');
-
-      // birden fazla nokta varsa fazlasını sil
+    $(document).on('input', '.decimal', function() {
+      let val = this.value.replace(/[^0-9.,]/g, '').replace(',', '.');
       const parts = val.split('.');
-      if (parts.length > 2) {
-          val = parts.shift() + '.' + parts.join('');
-      }
-
+      if (parts.length > 2) val = parts.shift() + '.' + parts.join('');
       this.value = val;
     });
 
-    $(document).on('click', '.delete-row', function () {
-        $(this).closest('tr').remove();
-      });
-  </script>
+    $(document).on('click', '.delete-row', function() {
+      $(this).closest('tr').remove();
+      checkTableChanges();
+    });
 
-  <script>
-
-    function initTooltips() {
+    // Tooltip yönetimi - optimize edilmiş
+    const initTooltips = debounce(() => {
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
         const inst = bootstrap.Tooltip.getInstance(el);
         if (inst) inst.dispose();
+        new bootstrap.Tooltip(el, { container: 'body', trigger: 'hover focus' });
       });
+    }, 100);
 
-      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-        new bootstrap.Tooltip(el, {
-          container: 'body',
-          trigger: 'hover focus'
-        });
-      });
-    }
-
-    $(document).ready(function () {
+    $(document).ready(function() {
       flatpickr.localize(flatpickr.l10ns.tr);
-
       initTooltips();
 
-      $(document).on('select2:open', function () {
-        initTooltips();
-      });
-
-      $("input[type='date'], input[type='time']").each(function () {
-        var $el = $(this);
-
-        // wrapper + ikon (senin koddan alındı)
-        var $wrapper = $("<div>").addClass("input-icon");
-        $el.wrap($wrapper);
-        var $icon = $("<i>").addClass($el.attr('type') === 'time' ? 'fa-regular fa-clock' : 'fa-regular fa-calendar');
-        $el.after($icon);
-
-        $el.attr("placeholder", $el.attr('type') === 'time' ? "00:00" : "gg.aa.yyyy");
+      // Flatpickr için optimize edilmiş init
+      $("input[type='date'], input[type='time']").each(function() {
+        const $el = $(this);
+        const isTime = $el.attr('type') === 'time';
+        
+        $el.wrap("<div class='input-icon'>");
+        $el.after(`<i class='fa-regular fa-${isTime ? 'clock' : 'calendar'}'></i>`);
+        $el.attr("placeholder", isTime ? "00:00" : "gg.aa.yyyy");
 
         $el.flatpickr({
-          enableTime: $el.attr('type') === 'time',
-          noCalendar: $el.attr('type') === 'time',
-          dateFormat: $el.attr('type') === 'time' ? "H:i" : "Y-m-d",
-          altInput: $el.attr('type') === 'date',
+          enableTime: isTime,
+          noCalendar: isTime,
+          dateFormat: isTime ? "H:i" : "Y-m-d",
+          altInput: !isTime,
           altFormat: "d.m.Y",
           time_24hr: true,
           locale: "tr",
-
-          onReady: function (selectedDates, dateStr, instance) {
-            // orijinal ve alt input'ları güvenli al
-            var orig = instance.input || instance._input || instance.element;
-            var alt = instance.altInput || orig;
-
-            // sadece gerekli attribute'ları kopyala (data-*, title, aria-*)
-            Array.from(orig.attributes).forEach(function (attr) {
+          onReady: function(selectedDates, dateStr, instance) {
+            const orig = instance.input || instance._input || instance.element;
+            const alt = instance.altInput || orig;
+            
+            Array.from(orig.attributes).forEach(attr => {
               if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
-                try { alt.setAttribute(attr.name, attr.value); } catch (e) { }
+                try { alt.setAttribute(attr.name, attr.value); } catch(e) {}
               }
             });
-
-            // eğer altInput varsa bazı stilleri koru (opsiyonel)
-            if (instance.altInput) {
-              // örneğin placeholder'ı alt inputa aktarmak istersen
-              if (orig.placeholder) alt.setAttribute('placeholder', orig.placeholder);
+            
+            if (instance.altInput && orig.placeholder) {
+              alt.setAttribute('placeholder', orig.placeholder);
             }
-
-            // tooltip'leri / popover'ları yeniden başlat
-            initTooltips();
-          },
-
-          onOpen: function () {
-            initTooltips();
-          },
-
-          onChange: function () {
-            // eğer seçim sonrası tooltip güncellemesi gerekirse
             initTooltips();
           }
         });
       });
-    });
 
-
-    // Sayfa yüklendiğinde hem initTooltips çalışsın hem de select2 seçimlerine attribute kopyalansın
-    $(document).ready(function () {
-
-      // --- Select2 için ilk yüklemede attribute kopyala ---
-      $('.select2').each(function () {
-        var $select = $(this);
-        var $selection = $select.next('.select2').find('.select2-selection');
-
-        Array.from(this.attributes).forEach(function (attr) {
+      // Select2 attribute kopyalama
+      $('.select2').each(function() {
+        const $select = $(this);
+        const $selection = $select.next('.select2').find('.select2-selection');
+        
+        Array.from(this.attributes).forEach(attr => {
           if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
-            try { $selection.attr(attr.name, attr.value); } catch (e) { }
+            try { $selection.attr(attr.name, attr.value); } catch(e) {}
           }
         });
       });
 
-      // Tooltips başlat
-      initTooltips();
-
-      // Eğer select2 sonradan dinamik eklenirse yine kopyala
-      $(document).on('select2:open select2:select', function (e) {
-        var $select = $(e.target);
-        var $selection = $select.next('.select2').find('.select2-selection');
-
-        Array.from($select[0].attributes).forEach(function (attr) {
+      $(document).on('select2:open select2:select', function(e) {
+        const $select = $(e.target);
+        const $selection = $select.next('.select2').find('.select2-selection');
+        
+        Array.from($select[0].attributes).forEach(attr => {
           if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
-            try { $selection.attr(attr.name, attr.value); } catch (e) { }
+            try { $selection.attr(attr.name, attr.value); } catch(e) {}
           }
         });
-
         initTooltips();
       });
     });
 
+    // Recent page tracking
+    const saveRecentPage = (title, url, icon = 'fa-file') => {
+      if (url === 'index') return;
+      
+      let recent = JSON.parse(localStorage.getItem('recentPages') || '[]');
+      recent = recent.filter(item => item.url !== url);
+      recent.unshift({ title, url, icon, timestamp: Date.now() });
+      localStorage.setItem('recentPages', JSON.stringify(recent.slice(0, 5)));
+    };
 
+    saveRecentPage('{{ $ekranAdi ?? "" }}', '{{ $ekranLink ?? "" }}');
+
+    // Nav tabs activation
+    document.querySelectorAll('.nav-tabs').forEach(ul => {
+      const firstLink = ul.querySelector('.nav-link');
+      if (firstLink) firstLink.classList.add('active');
+    });
   </script>
-
-  <script>
-
-    // $(document).on('click', '#evrakDuzenle', function (e) {
-    //     e.preventDefault(); // sadece bu butonu kes
-
-    //     let form = $('#verilerForm')[0];
-    //     let formData = new FormData(form);
-
-    //     // bu butonun name/value'su garanti gitsin
-    //     formData.append(this.name, this.value);
-
-    //     $.ajax({
-    //         url: form.action,
-    //         type: form.method,
-    //         data: formData,
-    //         processData: false,
-    //         contentType: false,
-    //         beforeSend: function () {
-    //           Swal.fire({
-    //               title: 'İşlem devam ediyor',
-    //               text: 'Lütfen bekleyiniz',
-    //               allowOutsideClick: false,
-    //               didOpen: () => Swal.showLoading()
-    //           });
-    //         },
-    //         success: function () {
-    //           Swal.close();
-    //           mesaj('Değişiklikler başarıyla kaydedildi', 'success');
-    //         },
-    //         error: function (xhr) {
-    //             Swal.fire(
-    //                 'Hata',
-    //                 xhr.responseJSON?.message ?? 'Bir şey ters gitti',
-    //                 'error'
-    //             );
-    //         }
-    //     });
-    // });
-
-  </script>
-
 
   @if(isset($ekranTableE))
     <script>
       @php
-        if (Auth::check()) {
-          $Zuser = Auth::user();
-        }
-
-        $Zkullanici_veri = DB::table('users')->where('id', $Zuser->id)->first();
-        $db = trim($Zkullanici_veri->firma) . ".dbo.";
+        $Zuser = Auth::user();
+        $db = trim($Zuser->firma) . ".dbo.";
         $ZORUNLU_ALANLARE = DB::table($db . 'TMUSTRT')
           ->where('TABLO_KODU', str_replace($db, '', $ekranTableE))
-          ->get();
+          ->pluck('ALAN_ADI');
       @endphp
 
-      const zorunluAlanlar = @json($ZORUNLU_ALANLARE->pluck('ALAN_ADI'));
-      $(document).ready(function () {
+      const zorunluAlanlar = @json($ZORUNLU_ALANLARE);
+      
+      $(document).ready(function() {
+        zorunluAlanlar.forEach(alan => $('.' + alan).addClass('validation'));
 
-        zorunluAlanlar.forEach(function (alan) {
-          $('.' + alan).addClass('validation');
-        });
+        const validateInput = ($input) => {
+          let value = $input.val();
+          const isEmpty = !value || 
+            value === '0' || 
+            value.trim() === '' ||
+            (Array.isArray(value) && (value.length === 0 || value[0] === ''));
 
-        $('#verilerForm').on('submit', function (e) {
-          let isValid = true;
-
-          $('.validation').each(function () {
-            let $input = $(this);
-            let value = $input.val();
-            let isEmpty = false;
-
+          if (isEmpty) {
+            $input.addClass('is-invalid').removeClass('is-valid');
             if ($input.hasClass('select2-hidden-accessible')) {
-              value = $input.val();
-
-              if (value === null ||
-                value === undefined ||
-                value === '' ||
-                value === '0' ||
-                (Array.isArray(value) && value.length === 0) ||
-                (Array.isArray(value) && value[0] === '') ||
-                (typeof value === 'string' && value.trim() === '')) {
-                isEmpty = true;
-              }
-            } else {
-              if (!value ||
-                value.length === 0 ||
-                value.trim?.() === '' ||
-                value.trim?.() === ' ') {
-                isEmpty = true;
-              }
+              $input.next('.select2-container').find('.select2-selection')
+                .addClass('is-invalid').css('border-color', '#dc3545');
             }
-
-            if (isEmpty) {
-              $input.addClass('is-invalid').removeClass('is-valid');
-
-              if ($input.hasClass('select2-hidden-accessible')) {
-                $input.next('.select2-container').find('.select2-selection')
-                  .addClass('is-invalid').css('border-color', '#dc3545');
-              }
-              isValid = false;
-            } else {
-              $input.removeClass('is-invalid').addClass('is-valid');
-              if ($input.hasClass('select2-hidden-accessible')) {
-                $input.next('.select2-container').find('.select2-selection')
-                  .removeClass('is-invalid').css('border-color', '#28a745');
-              }
+            return false;
+          } else {
+            $input.removeClass('is-invalid').addClass('is-valid');
+            if ($input.hasClass('select2-hidden-accessible')) {
+              $input.next('.select2-container').find('.select2-selection')
+                .removeClass('is-invalid').css('border-color', '#28a745');
             }
+            return true;
+          }
+        };
+
+        $('#verilerForm').on('submit', function(e) {
+          let isValid = true;
+          $('.validation').each(function() {
+            if (!validateInput($(this))) isValid = false;
           });
 
           if (!isValid) {
@@ -953,44 +523,6 @@
             e.stopPropagation();
           }
         });
-
-        function validateInput($input) {
-          let value = $input.val();
-          let isEmpty = false;
-
-          if ($input.hasClass('select2-hidden-accessible')) {
-            if (value === null ||
-              value === undefined ||
-              value === '' ||
-              value === '0' ||
-              (Array.isArray(value) && value.length === 0) ||
-              (Array.isArray(value) && value[0] === '') ||
-              (typeof value === 'string' && value.trim() === '')) {
-              isEmpty = true;
-            }
-          } else {
-            if (!value ||
-              value.length === 0 ||
-              value.trim?.() === '' ||
-              value.trim?.() === ' ') {
-              isEmpty = true;
-            }
-          }
-
-          if (isEmpty) {
-            $input.addClass('is-invalid').removeClass('is-valid');
-            if ($input.hasClass('select2-hidden-accessible')) {
-              $input.next('.select2-container').find('.select2-selection')
-                .addClass('is-invalid').css('border-color', '#dc3545');
-            }
-          } else {
-            $input.removeClass('is-invalid').addClass('is-valid');
-            if ($input.hasClass('select2-hidden-accessible')) {
-              $input.next('.select2-container').find('.select2-selection')
-                .removeClass('is-invalid').css('border-color', '#28a745');
-            }
-          }
-        }
       });
     </script>
   @endif
@@ -998,68 +530,46 @@
   @if(isset($ekranTableT))
     <script>
       @php
-        if (Auth::check()) {
-          $Zuser = Auth::user();
-        }
-
-        $Zkullanici_veri = DB::table('users')->where('id', $Zuser->id)->first();
-        $db = trim($Zkullanici_veri->firma) . ".dbo.";
+        $Zuser = Auth::user();
+        $db = trim($Zuser->firma) . ".dbo.";
         $ZORUNLU_ALANLART = DB::table($db . 'TMUSTRT')
           ->where('TABLO_KODU', str_replace($db, '', $ekranTableT))
-          ->get();
+          ->pluck('ALAN_ADI');
       @endphp
 
-      const zorunluAlanlarT = @json($ZORUNLU_ALANLART->pluck('ALAN_ADI'));
-      $(document).ready(function () {
+      const zorunluAlanlarT = @json($ZORUNLU_ALANLART);
+      
+      $(document).ready(function() {
+        zorunluAlanlarT.forEach(alan => $('.' + alan).addClass('validation'));
 
-        zorunluAlanlarT.forEach(function (alan) {
-          $('.' + alan).addClass('validation');
-        });
+        const validateInput = ($input) => {
+          let value = $input.val();
+          const isEmpty = !value || 
+            value === '0' || 
+            value.trim() === '' ||
+            (Array.isArray(value) && (value.length === 0 || value[0] === ''));
 
-        $('#verilerForm').on('submit', function (e) {
-          let isValid = true;
-
-          $('.validation').each(function () {
-            let $input = $(this);
-            let value = $input.val();
-            let isEmpty = false;
-
+          if (isEmpty) {
+            $input.addClass('is-invalid').removeClass('is-valid');
             if ($input.hasClass('select2-hidden-accessible')) {
-              value = $input.val();
-
-              if (value === null ||
-                value === undefined ||
-                value === '' ||
-                value === '0' ||
-                (Array.isArray(value) && value.length === 0) ||
-                (Array.isArray(value) && value[0] === '') ||
-                (typeof value === 'string' && value.trim() === '')) {
-                isEmpty = true;
-              }
-            } else {
-              if (!value ||
-                value.length === 0 ||
-                value.trim?.() === '' ||
-                value.trim?.() === ' ') {
-                isEmpty = true;
-              }
+              $input.next('.select2-container').find('.select2-selection')
+                .addClass('is-invalid').css('border-color', '#dc3545');
             }
-
-            if (isEmpty) {
-              $input.addClass('is-invalid').removeClass('is-valid');
-              if ($input.hasClass('select2-hidden-accessible')) {
-                $input.next('.select2-container').find('.select2-selection')
-                  .addClass('is-invalid').css('border-color', '#dc3545');
-              }
-
-              isValid = false;
-            } else {
-              $input.removeClass('is-invalid').addClass('is-valid');
-              if ($input.hasClass('select2-hidden-accessible')) {
-                $input.next('.select2-container').find('.select2-selection')
-                  .removeClass('is-invalid').css('border-color', '#28a745');
-              }
+            return false;
+          } else {
+            $input.removeClass('is-invalid').addClass('is-valid');
+            if ($input.hasClass('select2-hidden-accessible')) {
+              $input.next('.select2-container').find('.select2-selection')
+                .removeClass('is-invalid').css('border-color', '#28a745');
             }
+            return true;
+          }
+        };
+
+        $('#verilerForm').on('submit', function(e) {
+          let isValid = true;
+          $('.validation').each(function() {
+            if (!validateInput($(this))) isValid = false;
           });
 
           if (!isValid) {
@@ -1068,56 +578,11 @@
             e.stopPropagation();
           }
         });
-
-        function validateInput($input) {
-          let value = $input.val();
-          let isEmpty = false;
-
-          if ($input.hasClass('select2-hidden-accessible')) {
-            if (value === null ||
-              value === undefined ||
-              value === '' ||
-              value === '0' ||
-              (Array.isArray(value) && value.length === 0) ||
-              (Array.isArray(value) && value[0] === '') ||
-              (typeof value === 'string' && value.trim() === '')) {
-              isEmpty = true;
-            }
-          } else {
-            if (!value ||
-              value.length === 0 ||
-              value.trim?.() === '' ||
-              value.trim?.() === ' ') {
-              isEmpty = true;
-            }
-          }
-
-          if (isEmpty) {
-            $input.addClass('is-invalid').removeClass('is-valid');
-            if ($input.hasClass('select2-hidden-accessible')) {
-              $input.next('.select2-container').find('.select2-selection')
-                .addClass('is-invalid').css('border-color', '#dc3545');
-            }
-          } else {
-            $input.removeClass('is-invalid').addClass('is-valid');
-            if ($input.hasClass('select2-hidden-accessible')) {
-              $input.next('.select2-container').find('.select2-selection')
-                .removeClass('is-invalid').css('border-color', '#28a745');
-            }
-          }
-        }
       });
-
-      // Tüm tooltip’leri aktive et
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-      })
     </script>
   @endif
 
   @include('layout.partials.footer', ['firmaAdi' => $firmaAdi])
 
 </body>
-
 </html>

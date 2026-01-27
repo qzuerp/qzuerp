@@ -34,10 +34,11 @@
   }
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
-  $t_kart_veri=DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+  $t_kart_veri=DB::table($ekranTableT)
+  ->leftJoin($database.'mmps10e as m10e','m10e.SIPARTNO','=','stok40t.ARTNO')
+  ->orderBy('id', 'ASC')->where('stok40t.EVRAKNO',@$kart_veri->EVRAKNO)->get(['stok40t.*','m10e.EVRAKNO as MPS_EVRAK']);
   // dd($t_kart_veri);
   $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
-  $stok00_evraklar=DB::table($database.'stok00')->limit(50)->get();
   $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();
 
   if (isset($kart_veri)) {
@@ -329,9 +330,6 @@
                         
                         @foreach ($t_kart_veri as $key => $t_veri)
                         <tr>
-                            @php
-                              $MPS_BILGISI = DB::table('mmps10e')->where('SIPARTNO', $t_veri->ARTNO)->value('EVRAKNO');
-                            @endphp
                             <!-- <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
                             <td>
                               @include('components.detayBtn', ['KOD' => $t_veri->KOD])
@@ -384,7 +382,7 @@
                             <td><input type="number" class="form-control" name="NUM2[]" value="{{ floor($t_veri->NUM2) }}"></td>
                             <td><input type="number" class="form-control" name="NUM3[]" value="{{ floor($t_veri->NUM3) }}"></td>
                             <td><input type="number" class="form-control" name="NUM4[]" value="{{ floor($t_veri->NUM4) }}"></td>
-                            <td><input type="text" class="form-control" name="" disabled value="{{ $MPS_BILGISI }}"></td>
+                            <td><input type="text" class="form-control" name="" disabled value="{{ $t_veri->MPS_EVRAK }}"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach

@@ -1,18 +1,17 @@
-
 {{-- CSS Başlangıç --}}
     <!-- Temel CSS Kütüphaneleri -->
     <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/bootsrap-5.3.7.css') }}">
 
     <!-- AdminLTE Tema -->
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/adminlte/AdminLTE.min.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/adminlte/skins/_all-skins.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/3rd-party/adminlte/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/3rd-party/adminlte/skins/_all-skins.min.css') }}">
 
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/select2/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/select2/select2-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/3rd-party/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/3rd-party/select2/select2-bootstrap.min.css') }}">
 
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/3rd-party/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/3rd-party/sweetalert2/sweetalert2.min.css') }}">
 
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/dataTables-1.13.6.css') }}">
@@ -20,88 +19,69 @@
     <!-- iziToast -->
     <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/izitoast-1.4.0.css') }}">
 
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- Google Fonts - Preconnect ekleyerek hızlandırma -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap">
+
+    <!-- Fontawesome - Preload ile hızlandırma -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"></noscript>
+
+    <!-- Boxicons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/flatpickr.css') }}">
     
+    <!-- Quill -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
 
-    <!-- Fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />      <!-- Ana CSS -->
-    
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/flatpickr.css') }}">
-    
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ URL::asset('qzuerp-sources/css/main.css') }}">
-
+    <!-- Ana CSS -->
+    <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/main.css') }}">
 {{-- CSS Bitiş --}}
 
 {{-- JavaScript Başlangıç --}}
+    <!-- jQuery Core -->
+    <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}" ></script>
 
-    <!-- jQuery Core (3.6.0) -->
-    <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}"></script>
+    <!-- Bootstrap - Kritik, defer yok -->
+    <script src="{{ asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}" defer></script>
 
-    <!-- jQuery input mask eklentisi -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" defer></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" defer></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" defer></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" defer></script>
+    <!-- SweetAlert2 - Kritik, defer yok -->
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}" defer></script>
 
+    <!-- DataTables - Kritik -->
+    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}" defer></script>
+
+    <!-- iziToast -->
+    <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}" defer></script>
+
+    <!-- Flatpickr -->
+    <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}" defer></script>   
+    <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" defer></script>
+
+    <!-- Ana Javascript - Kritik -->
+    <script src="{{ asset('qzuerp-sources/js/main.js') }}" defer></script>
+
+    <!-- Defer ile yüklenecek scriptler -->
+    <!-- <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" defer></script> -->
+    <!-- <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" defer></script> -->
     <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js" defer></script>
-
-    <!-- Bootstrap -->
-    <script src="{{ URL::asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
-
-    <!-- AdminLTE -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}" defer></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}" defer></script>
-
-    <!-- Select2 -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}" defer></script>
-
-    <!-- SweetAlert2 -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}"></script>
-
-    <!-- DataTables ve Eklentileri -->
-    <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}"></script>
-    <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}" ></script>
-    <!-- <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.colVis.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.html5.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.print.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/jszip.min.js') }}"></script>
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/pdfmake.min.js') }}"></script> -->
-    <!-- <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
-    <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css"> -->
-    <!-- Yardımcı Kütüphaneler -->
-    <script src="{{ URL::asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" defer></script>
-
-    <!-- iziTo  ast -->
-    <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
-
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/dataTables-1.13.6/buttons.bootstrap.min.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/3rd-party/exceljs/exceljs.min.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/select2-4.0.13-tr.js') }}" defer></script>
-
     <script src="{{ asset('qzuerp-sources/js/highcharts.js') }}" defer></script>
-
     <script src="{{ asset('qzuerp-sources/js/highcharts-more.js') }}" defer></script>
-
-    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js')}}" defer></script>
-
-    <script src="{{ asset('qzuerp-sources/js/accessibility.js')}}" defer></script>
-
-    <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}" ></script>   
-    <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" ></script>
-    
+    <script src="{{ asset('qzuerp-sources/js/solid-gauge.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/accessibility.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-
-    <!-- Ana Javascript -->
-    <script src="{{ URL::asset('qzuerp-sources/js/main.js') }}"></script>
 {{-- JS Bitiş --}}
 <style>
     :root {
@@ -495,7 +475,6 @@
         background: #a8a8a8;
     }
 </style>
-
 <div class="wrapper">
     <header class="modern-header">
         <div class="header-container">
@@ -512,11 +491,14 @@
 
             <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
                 @php
-                    $FIRMA = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($user->firma))->first();
+                    // Cache kullanarak firma bilgisini optimize et
+                    $FIRMA = Cache::remember('firma_' . trim($user->firma), 3600, function() use ($user) {
+                        return DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->first();
+                    });
                 @endphp
 
                 @if($FIRMA)
-                    <img src="{{ asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="{{ $FIRMA->FIRMA_ADI }}">
+                    <img src="{{ asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="{{ $FIRMA->FIRMA_ADI }}" loading="lazy">
                     <a href="index" class="logo-link">
                         <span class="logo-mini" style="color: #f2f2f2;"><b>{{ $FIRMA->FIRMA_ADI }}</b></span>
                     </a>
@@ -542,16 +524,14 @@
                         </li>
                     </ul>
                 </div>
-                <!-- <audio id="notiSound" src="{{ asset('sounds/confident-543.mp3') }}" preload="auto"></audio> -->
-
 
                 <!-- Kullanıcı Dropdown -->
                 <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         @if($FIRMA)
-                            <img src="{{ URL::asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User">
+                            <img src="{{ asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User" loading="lazy">
                         @else
-                            <img src="{{ URL::asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="User Image">
+                            <img src="{{ asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="User Image" loading="lazy">
                         @endif
                         <span class="user-name d-none d-sm-block">{{ $user->name }}</span>
                     </button>
@@ -559,9 +539,9 @@
                     <ul class="dropdown-menu dropdown-menu-user dropdown-menu-end" aria-labelledby="userDropdown">
                         <li class="dropdown-user-header">
                             @if($FIRMA)
-                                <img src="{{ URL::asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User">
+                                <img src="{{ asset($FIRMA->LOGO_URL) }}" class="user-avatar" alt="User" loading="lazy">
                             @else
-                                <img src="{{ URL::asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="QZUERP">
+                                <img src="{{ asset('/qzuerp-sources/img/qzu_logo.png') }}" class="user-avatar" alt="QZUERP" loading="lazy">
                             @endif
                             <div class="dropdown-user-name">{{ $user->name }}</div>
                             <div class="dropdown-user-role">
@@ -576,13 +556,13 @@
                         <li>
                             <a href="change_password" class="dropdown-item-user">
                                 <i class="fa fa-user"></i>
-                                <span>{{ __('Profil') }}</span>
+                                <span>Profil</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item-user" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-out"></i>
-                                <span>{{ __('Çıkış') }}</span>
+                                <span>Çıkış</span>
                             </a>
                         </li>
                     </ul>
@@ -593,263 +573,295 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        let lastId = 0;
-        let isPolling = false;
-        let isFirstLoad = true;
-        const originalTitle = document.title;
-        let titleInterval = null;
+    (() => {
+        'use strict';
 
-        const notiList = document.getElementById("notiList");
-        const notiCount = document.getElementById("notiCount");
-        const notiSound = document.getElementById("notiSound");
-        const emptyState = document.getElementById("emptyState");
-
-        // Badge'i göster/gizle
-        function updateBadge(count) {
-            if (count > 0) {
-                notiCount.textContent = count > 99 ? '99+' : count;
-                notiCount.style.display = 'inline-block';
-            } else {
-                notiCount.style.display = 'none';
-            }
-        }
-
-        // Empty state göster/gizle
-        function toggleEmptyState() {
-            const items = notiList.querySelectorAll('.notification-item');
-            if (items.length === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
-        }
-
-        // Zaman farkını hesapla (örn: "2 dakika önce")
-        function timeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
+        // State yönetimi
+        const NotificationState = {
+            lastId: 0,
+            isPolling: false,
+            isFirstLoad: true,
+            originalTitle: document.title,
+            titleInterval: null,
+            pollingTimeout: null,
+            POLL_INTERVAL: 60000,
             
-            if (seconds < 60) return 'Az önce';
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return minutes + ' dakika önce';
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return hours + ' saat önce';
-            const days = Math.floor(hours / 24);
-            if (days < 7) return days + ' gün önce';
-            const weeks = Math.floor(days / 7);
-            if (weeks < 4) return weeks + ' hafta önce';
-            return 'Bir ay önce';
-        }
-
-        // Bildirim tipi ikonları
-        function getNotificationIcon(type) {
-            const icons = {
-                'info': '<i class="fa-solid fa-info-circle text-primary"></i>',
-                'success': '<i class="fa-solid fa-check-circle text-success"></i>',
-                'warning': '<i class="fa-solid fa-exclamation-triangle text-warning"></i>',
-                'error': '<i class="fa-solid fa-times-circle text-danger"></i>',
-                'default': '<i class="fa-solid fa-bell text-secondary"></i>'
-            };
-            return icons[type] || icons['default'];
-        }
-
-        // Başlık animasyonu
-        function updateTitleNotification(count) {
-            if (titleInterval) {
-                clearInterval(titleInterval);
-            }
+            // DOM elementleri cache'le
+            elements: {
+                notiList: null,
+                notiCount: null,
+                emptyState: null,
+                notiDropdown: null,
+                markAllRead: null
+            },
             
-            if (count > 0) {
-                let toggle = false;
-                document.title = toggle ? originalTitle : `(${count}) Bildirim`;
-                titleInterval = setInterval(() => {
-                    toggle = !toggle;
-                }, 1000);
-            } else {
-                document.title = originalTitle;
+            init() {
+                this.elements.notiList = document.getElementById("notiList");
+                this.elements.notiCount = document.getElementById("notiCount");
+                this.elements.emptyState = document.getElementById("emptyState");
+                this.elements.notiDropdown = document.getElementById("notiDropdown");
+                this.elements.markAllRead = document.getElementById("markAllRead");
             }
-        }
+        };
 
-        function stopTitleNotification() {
-            if (titleInterval) {
-                clearInterval(titleInterval);
-                titleInterval = null;
-                document.title = originalTitle;
+        // Utility fonksiyonları
+        const Utils = {
+            updateBadge(count) {
+                const { notiCount } = NotificationState.elements;
+                if (count > 0) {
+                    notiCount.textContent = count > 99 ? '99+' : count;
+                    notiCount.style.display = 'inline-block';
+                } else {
+                    notiCount.style.display = 'none';
+                }
+            },
+
+            toggleEmptyState() {
+                const { notiList, emptyState } = NotificationState.elements;
+                const items = notiList.querySelectorAll('.notification-item');
+                emptyState.style.display = items.length === 0 ? 'block' : 'none';
+            },
+
+            timeAgo(dateString) {
+                const seconds = Math.floor((Date.now() - new Date(dateString)) / 1000);
+                
+                if (seconds < 60) return 'Az önce';
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) return `${minutes} dakika önce`;
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return `${hours} saat önce`;
+                const days = Math.floor(hours / 24);
+                if (days < 7) return `${days} gün önce`;
+                const weeks = Math.floor(days / 7);
+                return weeks < 4 ? `${weeks} hafta önce` : 'Bir ay önce';
+            },
+
+            getNotificationIcon(type) {
+                const icons = {
+                    'info': 'fa-info-circle text-primary',
+                    'success': 'fa-check-circle text-success',
+                    'warning': 'fa-exclamation-triangle text-warning',
+                    'error': 'fa-times-circle text-danger'
+                };
+                const iconClass = icons[type] || 'fa-bell text-secondary';
+                return `<i class="fa-solid ${iconClass}"></i>`;
+            },
+
+            // Title animasyonu
+            updateTitleNotification(count) {
+                const { titleInterval, originalTitle } = NotificationState;
+                
+                if (titleInterval) {
+                    clearInterval(titleInterval);
+                    NotificationState.titleInterval = null;
+                }
+                
+                if (count > 0) {
+                    let toggle = false;
+                    NotificationState.titleInterval = setInterval(() => {
+                        toggle = !toggle;
+                        document.title = toggle ? `(${count}) Bildirim` : originalTitle;
+                    }, 1000);
+                } else {
+                    document.title = originalTitle;
+                }
+            },
+
+            stopTitleNotification() {
+                if (NotificationState.titleInterval) {
+                    clearInterval(NotificationState.titleInterval);
+                    NotificationState.titleInterval = null;
+                    document.title = NotificationState.originalTitle;
+                }
             }
-        }
+        };
 
-        // Ses çalma
-        // async function playNotificationSound() {
-        //     try {
-        //         notiSound.currentTime = 0;
-        //         const playPromise = notiSound.play();
-        //         // if (playPromise !== undefined) {
-        //         //     await playPromise;
-        //         // }
-        //     } catch (error) {
-        //         console.error('Ses çalınamadı:', error);
-        //     }
-        // }
+        // API çağrıları
+        const NotificationAPI = {
+            async poll() {
+                if (NotificationState.isPolling) return;
+                NotificationState.isPolling = true;
 
-        // Sayfa focus olduğunda
-        window.addEventListener('focus', function() {
-            stopTitleNotification();
-        });
-
-        // Long polling
-        async function pollNotifications() {
-            if (isPolling) return;
-            isPolling = true;
-
-            try {
-                const response = await fetch(`/notifications/poll?lastId=${lastId}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.notifications.length > 0) {
-                    lastId = data.lastId;
-                    
-                    // Bildirimleri ekle
-                    data.notifications.forEach(n => {
-                        let li = document.createElement("li");
-                        li.classList.add("dropdown-item", "notification-item", "notification-unread");
-                        li.dataset.id = n.id;
-                        
-                        li.innerHTML = `
-                            <div class="notification-icon bg-light">
-                                ${getNotificationIcon(n.type || 'default')}
-                            </div>
-                            <a href='${n.url || '#'}' class="notification-content">
-                                <div class="notification-title text-truncate">${n.title}</div>
-                                <div class="notification-message text-truncate">${n.message}</div>
-                                <div class="notification-time">${timeAgo(n.created_at)}</div>
-                            </a>
-                            <div class="notification-dot"></div>
-                        `;
-                        
-                        // Header'dan sonra ekle
-                        const divider = notiList.querySelector('.dropdown-divider');
-                        divider.parentNode.insertBefore(li, divider.nextSibling);
+                try {
+                    const response = await fetch(`/notifications/poll?lastId=${NotificationState.lastId}`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        signal: AbortSignal.timeout(8000) // 8 saniye timeout
                     });
 
-                    // Sayıyı güncelle
-                    const currentCount = parseInt(notiCount.textContent) || 0;
-                    const newTotalCount = currentCount + data.notifications.length;
-                    updateBadge(newTotalCount);
+                    if (!response.ok) throw new Error('Network error');
 
-                    // Empty state'i gizle
-                    toggleEmptyState();
+                    const data = await response.json();
 
-                    // İlk yükleme değilse ses çal
-                    // if (!isFirstLoad) {
-                        // playNotificationSound();
-                    // }
+                    if (data.notifications?.length > 0) {
+                        NotificationState.lastId = data.lastId;
+                        this.renderNotifications(data.notifications);
+                        
+                        const currentCount = parseInt(NotificationState.elements.notiCount.textContent) || 0;
+                        const newTotalCount = currentCount + data.notifications.length;
+                        Utils.updateBadge(newTotalCount);
+                        Utils.toggleEmptyState();
 
-                    // Title güncelle
-                    if (!document.hasFocus()) {
-                        updateTitleNotification(newTotalCount);
+                        if (!document.hasFocus()) {
+                            Utils.updateTitleNotification(newTotalCount);
+                        }
                     }
-                }
-                
-                if (isFirstLoad) {
-                    isFirstLoad = false;
-                }
-                
-            } catch (error) {
-                console.error('Bildirim alınamadı:', error);
-            } finally {
-                isPolling = false;
-            }
-        }
 
-        // Bildirime tıklandığında
-        $(document).on('click', '.notification-item', function() {
-            const li = $(this);
-            const notificationId = li.data('id');
-            
-            // Okunmamış işaretini kaldır
-            li.removeClass('notification-unread');
-            li.find('.notification-dot').remove();
-            
-            // Sayıyı azalt
-            const currentCount = parseInt(notiCount.textContent) || 0;
-            if (currentCount > 0) {
-                updateBadge(currentCount - 1);
-            }
-            
-            // Backend'e okundu bilgisi gönder
-            fetch('/notifications/mark-read', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: JSON.stringify({ ids: [notificationId] })
-            });
-        });
+                    NotificationState.isFirstLoad = false;
+                    
+                } catch (error) {
+                    console.error('Bildirim alınamadı:', error);
+                } finally {
+                    NotificationState.isPolling = false;
+                }
+            },
 
-        // Tümünü okundu işaretle
-        $('#markAllRead').on('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const unreadItems = $('.notification-item.notification-unread');
-            const ids = unreadItems.map(function() {
-                return $(this).data('id');
-            }).get();
-            
-            if (ids.length > 0) {
-                unreadItems.removeClass('notification-unread');
-                unreadItems.find('.notification-dot').remove();
-                updateBadge(0);
-                stopTitleNotification();
-                
-                // Backend'e gönder
-                fetch('/notifications/mark-read', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify({ ids: ids })
+            renderNotifications(notifications) {
+                const { notiList } = NotificationState.elements;
+                const divider = notiList.querySelector('.dropdown-divider');
+                const fragment = document.createDocumentFragment();
+
+                notifications.forEach(n => {
+                    const li = document.createElement("li");
+                    li.className = "dropdown-item notification-item notification-unread";
+                    li.dataset.id = n.id;
+                    
+                    li.innerHTML = `
+                        <div class="notification-icon bg-light">
+                            ${Utils.getNotificationIcon(n.type || 'default')}
+                        </div>
+                        <a href='${n.url || '#'}' class="notification-content">
+                            <div class="notification-title text-truncate">${n.title}</div>
+                            <div class="notification-message text-truncate">${n.message}</div>
+                            <div class="notification-time">${Utils.timeAgo(n.created_at)}</div>
+                        </a>
+                        <div class="notification-dot"></div>
+                    `;
+                    
+                    fragment.appendChild(li);
+                });
+
+                divider.after(fragment);
+            },
+
+            async markAsRead(ids) {
+                try {
+                    await fetch('/notifications/mark-read', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({ ids })
+                    });
+                } catch (error) {
+                    console.error('Okundu işaretleme hatası:', error);
+                }
+            }
+        };
+
+        // Event handlers
+        const EventHandlers = {
+            init() {
+                // Bildirime tıklama - event delegation
+                document.addEventListener('click', (e) => {
+                    const item = e.target.closest('.notification-item');
+                    if (!item) return;
+
+                    const notificationId = item.dataset.id;
+                    item.classList.remove('notification-unread');
+                    item.querySelector('.notification-dot')?.remove();
+                    
+                    const currentCount = parseInt(NotificationState.elements.notiCount.textContent) || 0;
+                    if (currentCount > 0) {
+                        Utils.updateBadge(currentCount - 1);
+                    }
+                    
+                    NotificationAPI.markAsRead([notificationId]);
+                });
+
+                // Tümünü okundu işaretle
+                NotificationState.elements.markAllRead?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const unreadItems = document.querySelectorAll('.notification-item.notification-unread');
+                    const ids = Array.from(unreadItems).map(item => item.dataset.id);
+                    
+                    if (ids.length > 0) {
+                        unreadItems.forEach(item => {
+                            item.classList.remove('notification-unread');
+                            item.querySelector('.notification-dot')?.remove();
+                        });
+                        
+                        Utils.updateBadge(0);
+                        Utils.stopTitleNotification();
+                        NotificationAPI.markAsRead(ids);
+                    }
+                });
+
+                // Dropdown açıldığında
+                NotificationState.elements.notiDropdown?.addEventListener('click', () => {
+                    Utils.stopTitleNotification();
+                });
+
+                // Visibility change
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) {
+                        Utils.stopTitleNotification();
+                        NotificationAPI.poll();
+                    }
+                });
+
+                // Window focus
+                window.addEventListener('focus', () => {
+                    Utils.stopTitleNotification();
                 });
             }
-        });
+        };
 
-        // Dropdown açıldığında
-        $('#notiDropdown').on('click', function() {
-            stopTitleNotification();
-        });
+        // Polling scheduler
+        const PollingScheduler = {
+            start() {
+                this.scheduleNext();
+            },
 
-        // Ses izni
-        $(document).one('click', function() {
-            notiSound.play().then(() => {
-                notiSound.pause();
-                notiSound.currentTime = 0;
-            }).catch(e => {});
-        });
+            scheduleNext() {
+                if (NotificationState.pollingTimeout) {
+                    clearTimeout(NotificationState.pollingTimeout);
+                }
 
-        // İlk yükleme
-        pollNotifications();
-        setInterval(pollNotifications, 5000);
+                NotificationState.pollingTimeout = setTimeout(async () => {
+                    await NotificationAPI.poll();
+                    this.scheduleNext();
+                }, NotificationState.POLL_INTERVAL);
+            },
 
-        // Visibility change
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                stopTitleNotification();
-                pollNotifications();
+            stop() {
+                if (NotificationState.pollingTimeout) {
+                    clearTimeout(NotificationState.pollingTimeout);
+                    NotificationState.pollingTimeout = null;
+                }
             }
+        };
+
+        // Ana initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            NotificationState.init();
+            EventHandlers.init();
+            Utils.toggleEmptyState();
+            
+            // İlk polling
+            NotificationAPI.poll();
+            PollingScheduler.start();
         });
 
-        // İlk yüklemede empty state'i göster
-        toggleEmptyState();
-    });
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            PollingScheduler.stop();
+            Utils.stopTitleNotification();
+        });
+
+    })();
 </script>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
