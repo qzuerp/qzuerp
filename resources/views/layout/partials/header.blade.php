@@ -63,7 +63,7 @@
     <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" defer></script>
 
     <!-- Ana Javascript - Kritik -->
-    <script src="{{ asset('qzuerp-sources/js/main.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/main.js') }}" ></script>
 
     <!-- Defer ile yüklenecek scriptler -->
     <!-- <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" defer></script>
@@ -860,7 +860,6 @@
             PollingScheduler.stop();
             Utils.stopTitleNotification();
         });
-
     })();
 </script>
 
