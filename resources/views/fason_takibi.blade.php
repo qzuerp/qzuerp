@@ -18,7 +18,7 @@
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-  $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
+//   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
   
   $tumEvraklar = DB::table($database.'gdef00 as G00')
     ->leftJoin($database.'stok10a as S10A', 'S10A.AMBCODE', '=', 'G00.KOD')
@@ -28,7 +28,10 @@
              ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
     })
     ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
+    ->leftJoin($database.'dosyalar00 as D00','D00.EVRAKNO','=','S10A.KOD')
     ->where('G00.GK_2', 'FSN_G2')
+    ->where('D00.EVRAKTYPE','STOK00')
+    ->where('D00.DOSYATURU','GORSEL')
     ->selectRaw('
         S10A.KOD,
         S10A.STOK_ADI,
@@ -54,7 +57,8 @@
         S00.id,
         S00.REVNO,
         S63T.TERMIN_TAR,
-        S63E.TARIH
+        S63E.TARIH,
+        D00.DOSYA
     ')
     ->groupBy(
         'S10A.KOD',
@@ -69,7 +73,8 @@
         'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
         'S00.NAME2','S00.id','S00.REVNO',
         'S63T.TERMIN_TAR',
-        'S63E.TARIH'
+        'S63E.TARIH',
+        'D00.DOSYA'
     )
     ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
     ->get();
@@ -249,15 +254,8 @@
                                 </tfoot>
                                 <tbody>
                                     @foreach ($tumEvraklar as $item)
-                                        @php
-                                            $img = DB::table($database.'dosyalar00')
-                                            ->where('EVRAKNO',@$item->KOD )
-                                            ->where('EVRAKTYPE','STOK00')
-                                            ->where('DOSYATURU','GORSEL')
-                                            ->first();
-                                        @endphp
                                         <tr>
-                                            <td><img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" class="kart-img" width="100"></td>
+                                            <td><img src="{{ isset($item->DOSYA) ? asset('dosyalar/'.$item->DOSYA) : '' }}" alt="" class="kart-img" width="100"></td>
                                             <td>{{ $item->KOD }}</td>
                                             <td>{{ $item->STOK_ADI }}</td>
                                             <td>{{ $item->STOK_ADI2 }}</td>
