@@ -1149,15 +1149,15 @@
         $('#depo-' + ID).val(DEPO);
         $('#birim-' + ID).val(BIRIM);
 
-        $('#num1-' + ID).val(V1);
-        $('#num2-' + ID).val(V2);
-        $('#num3-' + ID).val(V3);
-        $('#num4-' + ID).val(V4);
+        $('#num1-' + ID).val(O1);
+        $('#num2-' + ID).val(O2);
+        $('#num3-' + ID).val(O3);
+        $('#num4-' + ID).val(O4);
         
-        $('#text1-' + ID).val(O1);
-        $('#text2-' + ID).val(O2);
-        $('#text3-' + ID).val(O3);
-        $('#text4-' + ID).val(O4);
+        $('#text1-' + ID).val(V1);
+        $('#text2-' + ID).val(V2);
+        $('#text3-' + ID).val(V3);
+        $('#text4-' + ID).val(V4);
 
         $('#lok1-' + ID).val(L1);
         $('#lok2-' + ID).val(L2);
