@@ -1445,7 +1445,7 @@
                         M10E.MAMULSTOKADI,
                         M10E.SIPNO FROM ".$database." mmps10t M10T 
                         LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO 
-                        WHERE M10T.R_KAYNAKTYPE = 'I'";
+                        WHERE M10T.R_KAYNAKTYPE = 'I' AND ACIK_KAPALI = 'A'";
 
                       $mmps10t_evraklar = DB::select($sql_sorgu);
 
