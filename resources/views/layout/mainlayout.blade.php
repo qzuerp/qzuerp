@@ -1,5 +1,13 @@
 @php
+  if (Auth::check()) {
+    $user = Auth::user();
+  }
 
+  $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+
+  $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
+  $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
+  $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
   $firmaAdi = "QZU ERP";
 @endphp
 <!DOCTYPE html>
