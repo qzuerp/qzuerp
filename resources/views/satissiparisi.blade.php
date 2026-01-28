@@ -34,9 +34,26 @@
   }
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
-  $t_kart_veri=DB::table($ekranTableT)
-  ->leftJoin($database.'mmps10e as m10e','m10e.SIPARTNO','=','stok40t.ARTNO')
-  ->orderBy('id', 'ASC')->where('stok40t.EVRAKNO',@$kart_veri->EVRAKNO)->get(['stok40t.*','m10e.EVRAKNO as MPS_EVRAK']);
+  $t_kart_veri = DB::table(DB::raw("
+      stok40t as s40
+      OUTER APPLY (
+          SELECT TOP 1
+              created_at,
+              EVRAKNO
+          FROM mmps10e
+          WHERE SIPARTNO = s40.ARTNO
+          ORDER BY created_at
+      ) as m10e
+  "))
+  ->where('s40.EVRAKNO', 2)
+  ->orderBy('s40.id', 'ASC')
+  ->select(
+      's40.*',
+      's40.ARTNO',
+      DB::raw('m10e.EVRAKNO as MPS_EVRAK')
+  )
+  ->get();
+
   // dd($t_kart_veri);
   $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
   $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();

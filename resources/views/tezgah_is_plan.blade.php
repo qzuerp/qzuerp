@@ -15,7 +15,7 @@
   $ekranTableT = $database."plan_t";
   $ekranKayitSatirKontrol = "false";
 
-  $kullanici_read_yetkilrei = explode("|", $kullanici_veri->read_perm);
+  $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
   $evrakno = null;
