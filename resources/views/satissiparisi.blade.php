@@ -35,12 +35,12 @@
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
   $t_kart_veri = DB::table(DB::raw("
-      {$firma}stok40t as s40
+      {$database}stok40t as s40
       OUTER APPLY (
           SELECT TOP 1
               created_at,
               EVRAKNO
-          FROM {$firma}mmps10e
+          FROM {$database}mmps10e
           WHERE SIPARTNO = s40.ARTNO
           ORDER BY created_at
       ) as m10e
