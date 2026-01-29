@@ -325,7 +325,7 @@
                                 $pers00_evraklar=DB::table($database.'pers00')->where('KOD',@$personel->KOD)->orderBy('id', 'ASC')->first();
                               @endphp
                               <input type="text" disabled value="{{ $pers00_evraklar->KOD }} - {{ $pers00_evraklar->AD }}" class="form-control">
-                              <input type="hidden" name="TO_OPERATOR" value="{{ $pers00_evraklar->KOD }} - {{ $pers00_evraklar->AD }}" class="form-control">
+                              <input type="hidden" name="TO_OPERATOR" value="{{ $pers00_evraklar->KOD }}" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
