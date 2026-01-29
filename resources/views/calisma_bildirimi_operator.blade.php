@@ -27,7 +27,9 @@
     $EVRAKNO = $_GET['EVRAKNO'];
   }
 
-  $personel = DB::table($database.'pers00')->where('bagli_hesap',auth()->user()->id)->first();
+  $personel = DB::table($database.'pers00')
+  ->where('bagli_hesap', (int) auth()->user()->id)
+  ->first();
 
   if(isset($_GET['ID']))
   {
