@@ -28,7 +28,7 @@
   }
 
   $personel = DB::table($database.'pers00')
-  ->where('bagli_hesap', (int) auth()->user()->id)
+  ->where('bagli_hesap', (string) auth()->user()->id)
   ->first();
 
   if(isset($_GET['ID']))
@@ -42,7 +42,7 @@
 
   
 
-  $kart_veri = DB::table($ekranTableE)->where('ID', $sonID)->first();
+  $kart_veri = DB::table($ekranTableE)->where('TO_OPERATOR',@$personel->KOD)->where('ID', $sonID)->first();
   // $evraklar=DB::table($ekranTableE)->where('TO_OPERATOR',@$personel->KOD)->orderBy('ID', 'ASC')->get();
   // $sfdc31e_evraklar = DB::table($ekranTableE)->get();
   // $OPERASYON_veri = DB::table($database.'imlt01')->get();
@@ -322,7 +322,7 @@
                                 $pers00_evraklar=DB::table($database.'pers00')->where('KOD',@$personel->KOD)->orderBy('id', 'ASC')->first();
                               @endphp
                               <input type="text" disabled value="{{ $pers00_evraklar->KOD }} - {{ $pers00_evraklar->AD }}" class="form-control">
-                              <input type="hidden" name="TO_OPERATOR" value="{{ $pers00_evraklar->KOD }}" class="form-control">
+                              <input type="hidden" id="TO_OPERATOR" name="TO_OPERATOR" value="{{ $pers00_evraklar->KOD }}" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
@@ -2681,7 +2681,7 @@
         $('#evrakSec').hide();
         $('#veri_table tbody tr').remove();
         $('#STOK_CODE').val('').trigger('change');
-        $('#TO_OPERATOR').val('{{ @$personel->KOD }}').trigger('change');
+        $('#TO_OPERATOR').val('{{ @$personel->KOD }}');
         $('#OPERASYON').val('').trigger('change');
         
         drawVerimlilikGauge({{ 0 }},'chart1','Ayar Verimliliği');
