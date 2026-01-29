@@ -29,6 +29,7 @@ class Teklif_fiyat_analiz extends Controller
 
         $EVRAKNO = $request->input('evrakSec') ?? 1;
         $TARIH = $request->input('TARIH');
+        $GECERLILIK_TARIHI = $request->input('GECERLILIK_TARIHI');
         $TEKLIF = $request->input('TEKLIF');
         $MUSTERI = $request->input('MUSTERI');
         $ENDEKS = $request->input('ENDEKS');
@@ -114,7 +115,8 @@ class Teklif_fiyat_analiz extends Controller
                     'NOTES_2' => $NOT_2,
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
                     'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
-                    'ENDEKS' => $ENDEKS
+                    'ENDEKS' => $ENDEKS,
+                    '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI
                 ]);
 
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
@@ -160,7 +162,8 @@ class Teklif_fiyat_analiz extends Controller
                     'NOTES_2' => $NOT_2,
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
                     'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
-                    'ENDEKS' => $ENDEKS
+                    'ENDEKS' => $ENDEKS,
+                    'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -401,7 +404,26 @@ class Teklif_fiyat_analiz extends Controller
                 return redirect('teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
             case 'yazdir':
-                
+                $data = [
+                    'EVRAKNO' => $EVRAKNO,
+                    'TARIH' => $TARIH,
+                    'TEKLIF_FIYAT_PB' => $TEKLIF,
+                    'BASE_DF_CARIHESAP' => $ESAS_MUSTERI,
+                    'NOTES_1' => $NOT_1,
+                    'NOTES_2' => $NOT_2,
+                    'ESAS_MIKTAR' => $ESAS_MIKTAR,
+                    'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
+                    'ENDEKS' => $ENDEKS,
+                    'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
+                    'KOD' => $KOD,
+                    'STOK_AD1' => $KODADI,
+                    'SF_MIKTAR' => $ISLEM_MIKTARI,
+                    'SF_SF_UNIT' => $ISLEM_BIRIMI,
+                    'FIYAT' => $FIYAT,
+                    'TUTAR' => $TUTAR,
+                    'PRICEUNIT' => $PARA_BIRIMI,
+                ];
+                return view('yazdirilicak_formlar.teklif_formu', compact('data'));
         }
     }
 

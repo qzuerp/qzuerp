@@ -214,11 +214,17 @@
 												sistemiyle hesaplanan stok maliyeti</option>
 										</select>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-2">
 										<label for="tarih">Tarih</label>
 										<input type="date" name="TARIH" id="TARIH" data-bs-toggle="tooltip"
 											data-bs-placement="top" data-bs-title="TARIH" class="form-control"
 											value="{{ @$kart_veri->TARIH }}">
+									</div>
+									<div class="col-md-2">
+										<label for="gecerlilik_tarih">GECERLILIK TARIHI</label>
+										<input type="date" name="GECERLILIK_TARIHI" id="GECERLILIK_TARIHI" data-bs-toggle="tooltip"
+											data-bs-placement="top" data-bs-title="GECERLILIK_TARIHI" class="form-control"
+											value="{{ @$kart_veri->GECERLILIK_TARIHI }}">
 									</div>
 									<div class="col-md-4">
 										<label for="teklif">Teklif Birimi</label>

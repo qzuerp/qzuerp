@@ -56,7 +56,7 @@
     <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}" defer></script>
 
     <!-- iziToast -->
-    <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
 
     <!-- Flatpickr -->
     <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}" defer></script>   

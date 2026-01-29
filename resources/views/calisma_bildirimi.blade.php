@@ -70,6 +70,63 @@
 
 @endphp
 @section('content')
+<style>
+.sf-indicator {
+  --sf-indicator-size: 18px;
+  --sf-indicator-green: #0bbf0b;
+  --sf-indicator-red: #c51b1b;
+  --sf-indicator-orange: #db8719;
+}
+.sf-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    margin-top: -28px;
+    margin-right: 12px;
+  }
+
+  .sf-indicator .status-dot {
+    width: var(--sf-indicator-size);
+    height: var(--sf-indicator-size);
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .sf-indicator .status-dot::before,
+  .sf-indicator .status-dot::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: sf-indicator-pulse 2s infinite linear;
+    opacity: 0.3;
+  }
+
+  .sf-indicator .status-dot::after {
+    animation-delay: 1s;
+  }
+
+  @keyframes sf-indicator-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .status-green { background-color: var(--sf-indicator-green); }
+  .status-red { background-color: var(--sf-indicator-red); }
+  .status-orange { background-color: var(--sf-indicator-orange); }
+</style>
   <div class="content-wrapper">
 
     @include('layout.util.evrakContentHeader')
@@ -182,13 +239,36 @@
                       </div>                    
                     </div>
                   
-                    <!-- <div class="col-md-2 col-sm-1 col-xs-2">
-                      <label>Aktif/Pasif</label>
-                      <div class="d-flex ">
-                        <input type='hidden' value='0' name='AP10'>
-                        <input type="checkbox" class="" name="AP10" id="AP10" value="1" @if (@$kart_veri->AP10 == "1") checked @endif>
-                      </div>
-                    </div> -->
+                    <div class="col-md-2 col-sm-1 col-xs-2">
+                      @php
+                        $surecB = DB::table($ekranTableT)
+                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                        ->orderBy('BASLANGIC_SAATI', 'asc')
+                        ->get();
+                        $sonSurec = DB::table($ekranTableT)
+                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                        ->orderBy('BASLANGIC_SAATI', 'desc')
+                        ->first();
+                      @endphp
+                      @if(@$sonSurec->ISLEM_TURU == 'A' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                        <p class="sf-indicator">
+                          <span class="status-dot status-orange"></span>
+                          <!-- <span class="status-text">Ayar</span> -->
+                        </p>
+                      @elseif(@$sonSurec->ISLEM_TURU == 'U' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                      <p class="sf-indicator">
+                        <span class="status-dot status-green"></span>
+                        <!-- <span class="status-text">Üretim</span> -->
+                      </p>
+                      @elseif(@$sonSurec->ISLEM_TURU == 'D' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                      <p class="sf-indicator">
+                        <span class="status-dot status-red"></span>
+                        <!-- <span class="status-text">Duruş</span> -->
+                      </p>
+                      @else
+
+                      @endif
+                    </div>
                   </div>
                 </div>
               </div>
@@ -518,10 +598,6 @@
                                             </thead>
                                             <tbody>
                                                 @php
-                                                    $surecB = DB::table($ekranTableT)
-                                                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                                                        ->orderBy('BASLANGIC_SAATI', 'asc')
-                                                        ->get();
                                                     $AYAR = 0;
                                                     $URETIM = 0;
                                                     $TOPLAM_SURE = 0;
@@ -1876,8 +1952,30 @@
         }
         
         // Önceki işlem kontrolü
+        if (type === 'A') {
+          const lastUretim = findLastRow('U');
+          const lastDurus = findLastRow('D');
+          if (lastUretim && !isComplete(lastUretim)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış üretim işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
+          if (lastDurus && !isComplete(lastDurus)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış duruş işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
+        }
+
         if (type === 'U') {
           const lastAyar = findLastRow('A');
+          const lastDurus = findLastRow('D');
           if (lastAyar && !isComplete(lastAyar)) {
             Swal.fire({
               icon: 'warning',
@@ -1886,14 +1984,31 @@
             });
             return;
           }
+          if (lastDurus && !isComplete(lastDurus)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış duruş işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
         }
         
         if (type === 'D') {
           const lastUretim = findLastRow('U');
+          const lastAyar = findLastRow('A');
           if (lastUretim && !isComplete(lastUretim)) {
             Swal.fire({
               icon: 'warning',
               text: "Tamamlanmamış üretim işlemi bulunmaktadır.",
+              confirmButtonText: "Tamam"
+            });
+            return;
+          }
+          if (lastAyar && !isComplete(lastAyar)) {
+            Swal.fire({
+              icon: 'warning',
+              text: "Tamamlanmamış ayar işlemi bulunmaktadır.",
               confirmButtonText: "Tamam"
             });
             return;
