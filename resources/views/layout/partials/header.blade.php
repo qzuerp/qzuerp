@@ -46,7 +46,7 @@
     <script src="{{ asset('qzuerp-sources/js/jquery-3.7.1.js') }}" ></script>
 
     <!-- Bootstrap - Kritik, defer yok -->
-    <script src="{{ asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}" defer></script>
+    <script src="{{ asset('qzuerp-sources/js/bootstrap-5.3.7.js') }}"></script>
 
     <!-- SweetAlert2 - Kritik, defer yok -->
     <script src="{{ asset('qzuerp-sources/js/3rd-party/sweetalert2/sweetalert2.js') }}" defer></script>

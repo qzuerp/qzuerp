@@ -180,7 +180,7 @@ function SatirKopyala(button) {
 
 function SatirYazdir(button)
 {
-    if(!evrakDegisti)
+    if(!state.evrakDegisti)
     {
         let row = $(button).closest('tr');
         let table = row.closest('table');
