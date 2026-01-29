@@ -265,20 +265,36 @@
                 </ul>
 
                 <div class="tab-content" >
-                <p class="sf-indicator">
-                  <span class="status-dot status-green"></span>
-                  <span class="status-text">Ayar</span>
-                </p>
+                  <div class="container">
+                    @php
+                      $surecB = DB::table($ekranTableT)
+                      ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                      ->orderBy('BASLANGIC_SAATI', 'asc')
+                      ->get();
+                      $sonSurec = DB::table($ekranTableT)
+                      ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                      ->orderBy('BASLANGIC_SAATI', 'desc')
+                      ->first();
+                    @endphp
+                    @if(@$sonSurec->ISLEM_TURU == 'A' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                      <p class="sf-indicator">
+                        <span class="status-dot status-orange"></span>
+                        <span class="status-text">Ayar</span>
+                      </p>
+                    @elseif(@$sonSurec->ISLEM_TURU == 'U' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                    <p class="sf-indicator">
+                      <span class="status-dot status-green"></span>
+                      <span class="status-text">Üretim</span>
+                    </p>
+                    @elseif(@$sonSurec->ISLEM_TURU == 'D' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                    <p class="sf-indicator">
+                      <span class="status-dot status-red"></span>
+                      <span class="status-text">Duruş</span>
+                    </p>
+                    @else
 
-                <p class="sf-indicator">
-                  <span class="status-dot status-red"></span>
-                  <span class="status-text">Üretim</span>
-                </p>
-
-                <p class="sf-indicator">
-                  <span class="status-dot status-orange"></span>
-                  <span class="status-text">Duruş</span>
-                </p>
+                    @endif
+                  </div>
                   {{-- ÇALIŞMA BİLDİRİMİ BAŞLANGIÇ --}}
                     <div class="active tab-pane" id="calisma_bildirimi">
                       <div class="row">
@@ -577,10 +593,6 @@
                                             </thead>
                                             <tbody>
                                                 @php
-                                                    $surecB = DB::table($ekranTableT)
-                                                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                                                        ->orderBy('BASLANGIC_SAATI', 'asc')
-                                                        ->get();
                                                     $AYAR = 0;
                                                     $URETIM = 0;
                                                     $TOPLAM_SURE = 0;
