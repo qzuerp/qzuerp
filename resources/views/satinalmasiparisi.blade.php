@@ -573,6 +573,7 @@
                     @php
                       if (isset($_GET['SUZ'])) {
                     @endphp
+                    <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
 
                     <table id="example2" class="table table-hover text-center" data-page-length="50"
                       style="font-size: 0.75em">
@@ -648,27 +649,8 @@
                           $sql_sorgu = 'SELECT S46E.AK, S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.* FROM ' . $database . 'STOK46E S46E
                                                   LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S46E.CARIHESAPCODE
                                                   LEFT JOIN ' . $database . 'STOK46T S46T ON S46T.EVRAKNO = S46E.EVRAKNO
-                                                  WHERE 1 = 1 AND S46E.AK = \'' . $DURUM . '\';';
+                                                  WHERE 1 = 1';
 
-
-                          if (Trim($KOD_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46T.KOD >= '" . $KOD_B . "' ";
-                          }
-                          if (Trim($KOD_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46T.KOD <= '" . $KOD_E . "' ";
-                          }
-                          if (Trim($TEDARIKCI_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.CARIHESAPCODE >= '" . $TEDARIKCI_B . "' ";
-                          }
-                          if (Trim($TEDARIKCI_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.CARIHESAPCODE <= '" . $TEDARIKCI_E . "' ";
-                          }
-                          if (Trim($TARIH_B) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.TARIH >= '" . $TARIH_B . "' ";
-                          }
-                          if (Trim($TARIH_E) <> '') {
-                            $sql_sorgu = $sql_sorgu . " AND S46E.TARIH <= '" . $TARIH_E . "' ";
-                          }
 
                           $table = DB::select($sql_sorgu);
 

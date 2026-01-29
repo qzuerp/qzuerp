@@ -630,15 +630,15 @@
 
 												<div class="tab-pane" id="siparis">
 													<div class="row mb-2">
-														<div class="col-md-6">
+														<div class="col-md-4">
 															<button type="button" class="btn btn-default"
 																id="secilenleriAktar"><i class="fa fa-plus-square"
 																	style="color: blue"></i> Seçilenleri Ekle</button>
 														</div>
-														<div class="col-md-6">
+														<div class="col-md-8">
 															<div class="input-group flex-nowrap" style="height:32px;">
 																<span class="d-flex">
-																	<button class="btn btn-primary input-group-text"
+																	<button class="d-none btn btn-primary input-group-text"
 																		style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
 																		id="basic-addon1" data-bs-toggle="modal"
 																		data-bs-target="#modal_popupSelectModal2"
@@ -648,7 +648,7 @@
 																		</span></button>
 																</span>
 																<select class="form-control select2 js-example-basic-single"
-																	style="width: 100%" onchange="stokAdiGetir(this.value)"
+																	style="width: 100%; border-top-left-radius: 8px !important; border-bottom-left-radius: 8px !important;" onchange="stokAdiGetir(this.value)"
 																	name="SIP_NO_SEC" id="SIP_NO_SEC" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
 																	<option value=" ">Sipariş seç...</option>
 																</select>
@@ -1592,7 +1592,7 @@
 					var htmlCode = "<option value=''>Sipariş seç...</option>";
 
 					$.each(jsonData2, function (index, kartVerisi2) {
-						htmlCode += "<option value='" + kartVerisi2.EVRAKNO + "'>" + kartVerisi2.EVRAKNO + "</option>";
+						htmlCode += "<option value='" + kartVerisi2.EVRAKNO + "'>" + kartVerisi2.EVRAKNO + " - "+  kartVerisi2.KOD +" - "+ kartVerisi2.STOK_ADI +"</option>";
 					});
 
 					$('#SIP_NO_SEC').empty();

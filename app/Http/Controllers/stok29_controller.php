@@ -44,7 +44,10 @@ class stok29_controller extends Controller
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
-    $veri=DB::table($firma.'stok46e')->where('CARIHESAPCODE',$CARI_KODU)->get();
+    $veri=DB::table($firma.'stok46e')
+    ->leftJoin($firma.'stok46t', $firma.'stok46e.EVRAKNO', '=', $firma.'stok46t.EVRAKNO')
+    ->where('stok46e.CARIHESAPCODE',$CARI_KODU)
+    ->get(['stok46e.EVRAKNO','stok46t.KOD','stok46t.STOK_ADI']);
 
     return json_encode($veri);
   }

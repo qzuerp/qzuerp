@@ -47,6 +47,9 @@
 											onclick="exportTableToExcel('evrakSuzTable')">
 											<i class="fas fa-file-excel"></i> Excel'e Aktar
 										</button>
+										<button type="button" class="action-btn btn btn-success" onclick="exportAllTableToExcel('evrakSuzTable')">
+											<i class="fas fa-file-excel"></i> Tümünü Excel'e Aktar
+										</button>
 										<button type="button" class="action-btn btn btn-danger" type="button"
 											onclick="exportTableToWord('evrakSuzTable')">
 											<i class="fas fa-file-word"></i> Word'e Aktar
@@ -216,6 +219,23 @@
 			`);
 			newWindow.document.close();
 		}
+		function exportAllTableToExcel(tableId) {
+			$('#' + tableId).DataTable().destroy();
+
+			$("#" + tableId).table2excel({
+				exclude: ".noExport",
+				name: "Sayfa 1",
+				filename: "indir",
+				fileext: ".xlsx",
+				preserveColors: true
+			});
+
+			setTimeout(() => {
+				location.reload();
+			}, 5000);
+		}
+
+
 	</script>
 
 @endsection

@@ -671,7 +671,7 @@
 
 
                             $sql_sorgu = 
-                              'SELECT S26E.TARIH, S26T.* FROM ' . $database . ' stok26t S26T 
+                              'SELECT S26E.TARIH,S26E.id as EVRAK_ID, S26T.* FROM ' . $database . ' stok26t S26T 
                               LEFT JOIN stok26E S26E ON S26E.EVRAKNO = S26T.EVRAKNO
                               WHERE 1 = 1
                               -- SELECT S21E.TARIH, S21T.* FROM ' . $database . 'stok21t S21T 
@@ -711,7 +711,7 @@
                               echo "<td><b>".$table->SERINO."</b></td>";
                               echo "<td><b>".$table->SF_MIKTAR."</b></td>";
                               echo "<td><b>".$table->SF_SF_UNIT."</b></td>";
-                              echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+                              echo "<td>"."<a class='btn btn-info' href='depodandepoyatransfer?ID=".$table->EVRAK_ID."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                               echo "</tr>";
                             }
 

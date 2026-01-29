@@ -1312,26 +1312,26 @@
 
 																	$sql_sorgu = 'SELECT * FROM ' . $database . 'mmps10t WHERE 1 = 1';
 																	// $sql_sorgu = 'SELECT * FROM pers00 WHERE 1 = 1';
-																	if(Trim($R_KAYNAKTYPE_B) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKTYPE >= '".$R_KAYNAKTYPE_B."' ";
-																	}
-																	if(Trim($R_KAYNAKTYPE_E) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKTYPE <= '".$R_KAYNAKTYPE_E."' ";
-																	}
+																	// if(Trim($R_KAYNAKTYPE_B) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKTYPE >= '".$R_KAYNAKTYPE_B."' ";
+																	// }
+																	// if(Trim($R_KAYNAKTYPE_E) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKTYPE <= '".$R_KAYNAKTYPE_E."' ";
+																	// }
 
-																	if(Trim($R_KAYNAKKODU_B) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU >= '".$R_KAYNAKKODU_B."' ";
-																	}
-																	if(Trim($R_KAYNAKKODU_E) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU <= '".$R_KAYNAKKODU_E."' ";
-																	}
+																	// if(Trim($R_KAYNAKKODU_B) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU >= '".$R_KAYNAKKODU_B."' ";
+																	// }
+																	// if(Trim($R_KAYNAKKODU_E) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU <= '".$R_KAYNAKKODU_E."' ";
+																	// }
 																	
-																	if(Trim($TEZGAH_KODU_B) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU >= '".$TEZGAH_KODU_B."' ";
-																	}
-																	if(Trim($TEZGAH_KODU_E) <> ''){
-																		$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU <= '".$TEZGAH_KODU_E."' ";
-																	}
+																	// if(Trim($TEZGAH_KODU_B) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU >= '".$TEZGAH_KODU_B."' ";
+																	// }
+																	// if(Trim($TEZGAH_KODU_E) <> ''){
+																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKKODU <= '".$TEZGAH_KODU_E."' ";
+																	// }
 																	
 																	$table = DB::select($sql_sorgu);
 

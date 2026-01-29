@@ -40,21 +40,21 @@
   
 
   $kart_veri = DB::table($ekranTableE)->where('ID', $sonID)->first();
-  $evraklar=DB::table($ekranTableE)->orderBy('ID', 'ASC')->get();
-  $sfdc31e_evraklar = DB::table($ekranTableE)->get();
-  $OPERASYON_veri = DB::table($database.'imlt01')->get();
-  $MPS_veri = DB::table($database.'mmps10e')->get();
-  $TEZGAH_veri = DB::table($database.'imlt00')->get();
-  $STOKKART_veri = DB::table($database.'stok00')->get();
-  $DURUSKODLARI_veri = DB::table($database.'gecoust')->where('EVRAKNO','DURUSKODLARI')->get();
-  $EVRAKNO = DB::table($database.'sfdc31e')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
-  $TO_ISMERKEZI = DB::table($database.'sfdc31e')->where('TO_ISMERKEZI',@$kart_veri->TO_ISMERKEZI)->get();
-  $mmps10t_evraklar = DB::table($database.'mmps10t')->get();
+  // $evraklar=DB::table($ekranTableE)->orderBy('ID', 'ASC')->get();
+  // $sfdc31e_evraklar = DB::table($ekranTableE)->get();
+  // $OPERASYON_veri = DB::table($database.'imlt01')->get();
+  // $MPS_veri = DB::table($database.'mmps10e')->get();
+  // $TEZGAH_veri = DB::table($database.'imlt00')->get();
+  // $STOKKART_veri = DB::table($database.'stok00')->get();
+  // $DURUSKODLARI_veri = DB::table($database.'gecoust')->where('EVRAKNO','DURUSKODLARI')->get();
+  // $EVRAKNO = DB::table($database.'sfdc31e')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+  // $TO_ISMERKEZI = DB::table($database.'sfdc31e')->where('TO_ISMERKEZI',@$kart_veri->TO_ISMERKEZI)->get();
+  // $mmps10t_evraklar = DB::table($database.'mmps10t')->get();
   
-  $MPSSTOKKODU =DB::table($database.'mmps10e')->where('MAMULSTOKKODU','MAMULSTOKKODU')->get();
-  $TO_OPERATOR = DB::table($database.'pers00')->where('KOD', 'KOD')->get();
-  $OPERASYON = DB::table($database.'imlt01')->where('KOD', 'KOD')->get();
-  $X_T_ISMERKEZI = DB::table($database.'imlt00')->where('KOD', 'KOD')->get();
+  // $MPSSTOKKODU =DB::table($database.'mmps10e')->where('MAMULSTOKKODU','MAMULSTOKKODU')->get();
+  // $TO_OPERATOR = DB::table($database.'pers00')->where('KOD', 'KOD')->get();
+  // $OPERASYON = DB::table($database.'imlt01')->where('KOD', 'KOD')->get();
+  // $X_T_ISMERKEZI = DB::table($database.'imlt00')->where('KOD', 'KOD')->get();
   $MPSGK2_veri = DB::table($database.'gecoust')->where('EVRAKNO','MPSGK2')->get();
   //$D7_ISLEM_KODU = DB::table($database.'sfdc31e')->where('D7_ISLEM_KODU','D7_ISLEM_KODU')->get();
 
@@ -65,6 +65,8 @@
     $sonrakiEvrak = DB::table($ekranTableE)->where('ID', '>', $sonID)->min('ID');
     $oncekiEvrak = DB::table($ekranTableE)->where('ID', '<', $sonID)->max('ID');
   }
+
+  
 
 @endphp
 @section('content')

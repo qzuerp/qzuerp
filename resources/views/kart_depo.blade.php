@@ -945,7 +945,7 @@
 										echo "<td><b>".$table->GK_9."</b></td>";
 										echo "<td><b>".$table->GK_10."</b></td>";
 										
-										echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+										echo "<td>"."<a class='btn btn-info' href='kart_depo?ID=".$table->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 										echo "</tr>";
 									}
 								@endphp

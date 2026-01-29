@@ -539,6 +539,7 @@ function inputTemizle2() {
 
 }
 function exportTableToExcel(table) {
+  $('#' + table + 'tfoot').remove();
   $("#" + table).table2excel({
     exclude: ".noExport",
     name: "Sayfa 1",
@@ -549,8 +550,8 @@ function exportTableToExcel(table) {
 
 
   setTimeout(() => {
-    $('#loader').fadeOut(50);
-  }, 1500);
+    location.reload();
+  }, 5000);
 }
 function inputTemizle3() {
   $('#kartOlustur').css('display', 'inline');

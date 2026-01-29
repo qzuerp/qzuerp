@@ -915,7 +915,7 @@ if (isset($kart_veri)) {
 								    </select>
 								  </div>
 									<div class="col-sm-3">
-								    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="ele" value="ele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+								    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
 									</div><br><br><br>
 
 								  <div class="row " style="overflow: auto">
@@ -1099,7 +1099,7 @@ if (isset($kart_veri)) {
 														echo "<td><b>".$table->GK_9."</b></td>";
 														echo "<td><b>".$table->GK_10."</b></td>";
 														
-														echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+														echo "<td>"."<a class='btn btn-info' href='kart_tezgah?ID=".$table->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 														echo "</tr>";
 													}
 

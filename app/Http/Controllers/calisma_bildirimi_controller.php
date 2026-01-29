@@ -180,6 +180,7 @@ class calisma_bildirimi_controller extends Controller
     $TO_OPERATOR = $request->input('TO_OPERATOR');
     $OPERASYON = $request->input('OPERASYON');
     $ISLEM_TURU = $request->ISLEM_TURU;
+    $dosyaEvrakType = $request->dosyaEvrakType;
 
     $EVRAKNO = $request->input('dosyaEvrakNo');
     $AP10 = $request->input('AP10');
@@ -380,7 +381,11 @@ class calisma_bildirimi_controller extends Controller
         print_r("Silme işlemi başarılı.");
 
         $sonID = DB::table($firma . 'sfdc31e')->min('ID');
+        if($dosyaEvrakType == 'calisma_bildirimi')
         return redirect()->route('calisma_bildirimi', ['ID' => $sonID, 'silme' => 'ok']);
+        else
+        return redirect()->route('calisma_bildirimi_oprt', ['ID' => $sonID, 'silme' => 'ok']);
+
 
       // break;
 
@@ -491,7 +496,10 @@ class calisma_bildirimi_controller extends Controller
         }
 
         $sonID = DB::table($firma . 'sfdc31e')->max('ID');
-        return redirect()->route('calisma_bildirimi', ['ID' => $sonID, 'kayit' => 'ok']);
+        if($dosyaEvrakType == 'calisma_bildirimi')
+        return redirect()->route('calisma_bildirimi', ['ID' => $sonID, 'silme' => 'ok']);
+        else
+        return redirect()->route('calisma_bildirimi_oprt', ['ID' => $sonID, 'silme' => 'ok']);
 
       // break;
 
@@ -736,7 +744,10 @@ class calisma_bildirimi_controller extends Controller
         }
 
         $veri = DB::table($firma . 'sfdc31e')->where('ID', $ID)->first();
-        return redirect()->route('calisma_bildirimi', ['ID' => $ID, 'duzenleme' => 'ok']);
+        if($dosyaEvrakType == 'calisma_bildirimi')
+        return redirect()->route('calisma_bildirimi', ['ID' => $ID, 'silme' => 'ok']);
+        else
+        return redirect()->route('calisma_bildirimi_oprt', ['ID' => $ID, 'silme' => 'ok']);
 
       // break;
     }

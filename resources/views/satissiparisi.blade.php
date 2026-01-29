@@ -45,7 +45,7 @@
           ORDER BY created_at
       ) as m10e
   "))
-  ->where('s40.EVRAKNO', 2)
+  ->where('s40.EVRAKNO', @$kart_veri->EVRAKNO)
   ->orderBy('s40.id', 'ASC')
   ->select(
       's40.*',

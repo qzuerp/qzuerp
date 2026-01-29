@@ -686,7 +686,7 @@
 
 
 
-																$sql_sorgu = 'SELECT * FROM ' . $database . 'bomu01t WHERE 1 = 1';
+																$sql_sorgu = 'SELECT B10T.*,B10E.id as EVRAK_ID FROM ' . $database . 'bomu01t as B10T LEFT JOIN ' . $database . 'bomu01e as B10E ON B10T.EVRAKNO = B10E.EVRAKNO WHERE 1 = 1';
 																// $sql_sorgu = 'SELECT * FROM pers00 WHERE 1 = 1';
 																if(Trim($MAMULCODE_B) <> ''){
 																	$sql_sorgu = $sql_sorgu .  "AND MAMULCODE >= '".$MAMULCODE_B."' ";
@@ -729,7 +729,7 @@
 
 																	echo "<td><b>".$table->BOMREC_KAYNAKCODE_AD."</b></td>";
 																	echo "<td><b>".$table->BOMREC_KAYNAK0."</b></td>";															
-																	echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+																	echo "<td>"."<a class='btn btn-info' href='urunagaci?ID=".$table->EVRAK_ID."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 																	echo "</tr>";
 																}
 

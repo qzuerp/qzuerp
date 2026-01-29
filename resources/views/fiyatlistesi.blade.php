@@ -172,6 +172,7 @@ if (isset($kart_veri)) {
     <div  class="nav-tabs-custom box box-info">
       <ul class="nav nav-tabs">
         <li class="nav-item" ><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Grup Kodları</a></li>
+        <li class="nav-item" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
         <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
       </ul>
       <div class="tab-content">
@@ -331,7 +332,54 @@ if (isset($kart_veri)) {
 
               
 
+              <div class="tab-pane" id="liste">
 
+                <a href="fiyat_listesi?SUZ=1" class="btn btn-success">SÜZ</a>
+
+                @if(@$_GET['SUZ']=="1")
+                  <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+                  
+                  <table id="example2" class="table table-hover text-center" data-page-length="50" style="font-size: 0.75em">
+                    <thead>
+                      <th>Cari</th>
+                      <th>Kod</th>
+                      <th>AD</th>
+                      <th>FİYAT</th>
+                      <th>PARA BİRİMİ</th>
+                      <th>GEÇERLİLİK SÜRESİ</th>
+                      <th>NOT</th>
+                    </thead>
+                    <tfoot>
+                      <th>Cari</th>
+                      <th>KOD</th>
+                      <th>AD</th>
+                      <th>FİYAT</th>
+                      <th>PARA BİRİMİ</th>
+                      <th>GEÇERLİLİK SÜRESİ</th>
+                      <th>NOT</th>
+                    </tfoot>
+                    <tbody>
+                      @php
+                        $veri = DB::table($database.'stok48t as S48T')
+                        ->leftJoin($database.'stok48e as S48E','S48T.EVRAKNO','=','S48E.EVRAKNO')
+                        ->leftJoin($database.'cari00 as C00','S48E.CARIHESAPCODE','=','C00.KOD')
+                        ->get(['S48E.CARIHESAPCODE','S48T.*','C00.AD']);
+                      @endphp
+                      @foreach($veri as $key => $veri)
+                        <tr>
+                          <td>{{ $veri->CARIHESAPCODE }} - {{ $veri->AD }}</td>
+                          <td>{{ $veri->KOD }}</td>
+                          <td>{{ $veri->STOK_ADI }}</td>
+                          <td>{{ $veri->PRICE }}</td>
+                          <td>{{ $veri->PRICE_UNIT }}</td>
+                          <td>{{ $veri->GECERLILIK_TAR }}</td>
+                          <td>{{ $veri->NOT1 }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                @endif
+              </div>
 
 
               <div class="tab-pane" id="baglantiliDokumanlar">
