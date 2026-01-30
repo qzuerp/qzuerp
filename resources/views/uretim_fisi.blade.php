@@ -669,7 +669,7 @@ if (isset($kart_veri)) {
                   <div  class="col-md-4 col-sm-6 col-xs-8 m-auto">
                     <select class="form-control select2 js-example-basic-single"  onchange="receteden_hesapla(this.value)" name="stokDusum" id="stokDusum">
                      <option value=" ">Seç</option>
-                     <option value="">Ürün Ağacından Hammaddeleri Hesapla</option>
+                     <option value="category3">Ürün Ağacından Hammaddeleri Hesapla</option>
                      <option value="category2">MPS'den veya Ürün Ağaçlarından Hammaddeleri Hesapla</option>
                      <option value="category1">MPS'den fason operasyonlarını hesapla</option>
                      <!-- <option value="category3">Transferlerden veya MPS'den Hammaddeleri Hesapla</option>

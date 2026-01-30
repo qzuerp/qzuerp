@@ -128,11 +128,15 @@
 											$evraklar = DB::table($database . 'stok10a as s10')
 												->leftJoin($database . 'stok00 as s0', 's10.KOD', '=', 's0.KOD')
 												->leftJoin($database . 'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+												->leftJoin($database . 'table00 as t0', 't0.tablo', '=', 's10.EVRAKTIPI')
+												
 												->select(
 													's10.*',
 													's0.NAME2',
 													's0.id as STOK_ID',
-													'g.AD as DEPO_ADI'
+													'g.AD as DEPO_ADI',
+													't0.BLADE AS EKRAN_ADI',
+													't0.baslik AS BASLIK'
 												)
 												->orderBy('s10.created_at', 'desc')
 												->get();
@@ -146,7 +150,7 @@
 												echo "<td><b>" . $suzVeri->NAME2 . "</b></td>";
 												echo "<td style='color:blue'><b>" . $suzVeri->SF_MIKTAR . "</b></td>";
 												echo "<td><b>" . $suzVeri->SF_SF_UNIT . "</b></td>";
-												echo "<td>" . $suzVeri->EVRAKTIPI . "</td>";
+												echo "<td>" . $suzVeri->BASLIK . "</td>";
 												echo "<td>" . $suzVeri->EVRAKNO . "</td>";
 												echo "<td>" . $suzVeri->LOTNUMBER . "</td>";
 												echo "<td>" . $suzVeri->SERINO . "</td>";
@@ -163,7 +167,7 @@
 												echo "<td>" . $suzVeri->LOCATION2 . "</td>";
 												echo "<td>" . $suzVeri->LOCATION3 . "</td>";
 												echo "<td>" . $suzVeri->LOCATION4 . "</td>";
-												echo "<td>" . "<a class='btn btn-info' href='kart_stok?id=" . $suzVeri->STOK_ID . "' target='_blank'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+												echo "<td>" . "<a class='btn btn-info' href='" . Trim($suzVeri->EKRAN_ADI). "?id=" . $suzVeri->EVRAKNO . "' target='_blank'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
 												echo "</tr>";
 											}
 										@endphp
