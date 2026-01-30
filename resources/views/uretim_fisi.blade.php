@@ -1423,6 +1423,8 @@ if (isset($kart_veri)) {
     $('#stokDusum').val(' ').trigger('change');
   }
   function receteden_hesapla(value) {
+    if(value.trim()=="")
+    return;
       // var selected = document.getElementById("stokDusum").value;
       Swal.fire({
 				title: 'Yükleniyor...',
@@ -1432,6 +1434,7 @@ if (isset($kart_veri)) {
 					Swal.showLoading();
 				}
 			});
+      
       if(value == "category1")
       {
         $.ajax({
