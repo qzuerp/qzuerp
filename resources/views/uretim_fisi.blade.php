@@ -1418,7 +1418,10 @@ if (isset($kart_veri)) {
       sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
     return (sa);
   }
-
+  function ozelInput()
+  {
+    $('#stokDusum').val(' ').trigger('change');
+  }
   function receteden_hesapla(value) {
       // var selected = document.getElementById("stokDusum").value;
       Swal.fire({

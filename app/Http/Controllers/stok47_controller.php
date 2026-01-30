@@ -532,7 +532,9 @@ class stok47_controller extends Controller
               $SIPEVRAKNO = $SON_ID + 1;
             }
           }
-
+          DB::table($firma . 'stok47e')->where('EVRAKNO', $EVRAKNO)->update([
+            'AK' => 'K' 
+          ]);
           if($ONCEKI_CARI != $CARI_KOD[$i])
           {
             $EVRAKID = DB::table($firma . 'stok46e')->insertGetId([

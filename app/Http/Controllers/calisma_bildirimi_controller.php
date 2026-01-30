@@ -202,7 +202,7 @@ class calisma_bildirimi_controller extends Controller
     $DRSTIME2 = $request->input('DRSTIME2');
     $D7_AKSIYON = $request->input('D7_AKSIYON');
     $VARDIYA = $request->input('VARDIYA');
-    $DURMA_SEBEBI = $request->input('DURMA_SEBEBI');
+    $DURMA_SEBEBI = $request->input('durus_sebebi');
     $IS_OPERATOR_1 = $request->input('IS_OPERATOR_1');
     $JOBNO = $request->input('JOBNO');
     $ALLOC_SYSSTATUS = $request->input('ALLOC_SYSSTATUS');
@@ -422,7 +422,7 @@ class calisma_bildirimi_controller extends Controller
           DB::table($firma . 'sfdc31t')->insert([
             'EVRAKNO' => $EVRAKNO,
             'ISLEM_TURU' => $ISLEM_TURU[$i],
-            'DURMA_SEBEBI' => $DURMA_SEBEBI ?? null,
+            'DURMA_SEBEBI' => $DURMA_SEBEBI[$i] ?? null,
             'BASLANGIC_TARIHI' => $RECTARIH1[$i] ?? null,
             'BASLANGIC_SAATI' => $RECTIME1[$i] ?? null,
             'BITIS_TARIHI' => $RECTARIH2[$i] ?? null,
@@ -539,9 +539,11 @@ class calisma_bildirimi_controller extends Controller
 
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+        $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         // dd([
         //   "N" => $newTRNUMS,
-        //   'U' => $updateTRNUMS
+        //   'U' => $updateTRNUMS,
+        //   'D' => $deleteTRNUMS
         // ]);
         for ($i = 0; $i < $satir_say; $i++) {
           if (in_array($TRNUM[$i], $updateTRNUMS)) {
@@ -550,7 +552,7 @@ class calisma_bildirimi_controller extends Controller
               ->update([
                 'EVRAKNO' => $EVRAKNO,
                 'ISLEM_TURU' => $ISLEM_TURU[$i],
-                'DURMA_SEBEBI' => $DURMA_SEBEBI ?? null,
+                'DURMA_SEBEBI' => $DURMA_SEBEBI[$i] ?? null,
                 'BASLANGIC_TARIHI' => $RECTARIH1[$i] ?? null,
                 'BASLANGIC_SAATI' => $RECTIME1[$i] ?? null,
                 'BITIS_TARIHI' => $RECTARIH2[$i] ?? null,
@@ -563,7 +565,7 @@ class calisma_bildirimi_controller extends Controller
             DB::table($firma . 'sfdc31t')->insert([
               'EVRAKNO' => $EVRAKNO,
               'ISLEM_TURU' => $ISLEM_TURU[$i],
-              'DURMA_SEBEBI' => $DURMA_SEBEBI ?? null,
+              'DURMA_SEBEBI' => $DURMA_SEBEBI[$i] ?? null,
               'BASLANGIC_TARIHI' => $RECTARIH1[$i] ?? null,
               'BASLANGIC_SAATI' => $RECTIME1[$i] ?? null,
               'BITIS_TARIHI' => $RECTARIH2[$i] ?? null,
@@ -573,7 +575,9 @@ class calisma_bildirimi_controller extends Controller
             ]);
           }
         }
-
+        foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
+          DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
+        }
 
         if (!isset($TRNUM2)) {
           $TRNUM2 = array();

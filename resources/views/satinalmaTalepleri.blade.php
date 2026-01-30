@@ -776,11 +776,13 @@
                     @php
                       if (isset($_GET['SUZ'])) {
                         $veriler = DB::table($database . 'stok47ti as ti')
+                          ->join($database . 'stok47e as S47E', 'ti.EVRAKNO', '=', 'S47E.EVRAKNO')
                           ->join($database . 'stok00 as s', 'ti.KOD', '=', 's.KOD')
                           ->select(
                             'ti.*',
                             's.AD as STOK_AD',
-                            's.IUNIT'
+                            's.IUNIT',
+                            'S47E.AK',
                           )
                           ->get();
                     @endphp
@@ -795,6 +797,7 @@
                           <th>Fiyat</th>
                           <th>Para Birimi</th>
                           <th>Termin Tarihi</th>
+                          <th>A/K</th>
                         </tr>
                       </thead>
                       <tfoot>
@@ -807,6 +810,7 @@
                           <th>Fiyat</th>
                           <th>Para Birimi</th>
                           <th>Termin Tarihi</th>
+                          <th>A/K</th>
                         </tr>
                       </tfoot>
                       <tbody>
@@ -820,6 +824,7 @@
                             <td>{{ $row->FIYAT }}</td>
                             <td>{{ $row->FIYAT_PB }}</td>
                             <td>{{ $row->TERMIN_TAR }}</td>
+                            <td>{{ $row->AK }}</td>
                           </tr>
                         @endforeach
                       </tbody>

@@ -1554,6 +1554,7 @@
 											<th>MAMULSTOK ADI</th>
 											<th>MUSTERI KODU</th>
 											<th>Müşteri Sipariş No</th>
+											<th>A/K</th>
 											<th>#</th>
 										</tr>
 									</thead>
@@ -1564,6 +1565,7 @@
 											<th>MAMULSTOK ADI</th>
 											<th>MUSTERI KODU</th>
 											<th>Müşteri Sipariş No</th>
+											<th>A/K</th>
 											<th>#</th>
 										</tr>
 									</tfoot>
@@ -1573,7 +1575,7 @@
 
 										$evraklar=DB::table($ekranTableE)
 										->leftJoin($database.'stok40e', 'mmps10e.SIPNO', '=', 'stok40e.EVRAKNO')
-										->orderBy('mmps10e.id', 'ASC')->get(['mmps10e.id','mmps10e.EVRAKNO','mmps10e.MAMULSTOKKODU','mmps10e.MAMULSTOKADI','mmps10e.MUSTERIKODU','stok40e.CHSIPNO']);
+										->orderBy('mmps10e.id', 'ASC')->get(['mmps10e.id','mmps10e.ACIK_KAPALI','mmps10e.EVRAKNO','mmps10e.MAMULSTOKKODU','mmps10e.MAMULSTOKADI','mmps10e.MUSTERIKODU','stok40e.CHSIPNO']);
 
 										foreach ($evraklar as $key => $suzVeri) {
 											echo "<tr>";
@@ -1582,6 +1584,7 @@
 											echo "<td>".$suzVeri->MAMULSTOKADI."</td>";
 											echo "<td>".$suzVeri->MUSTERIKODU."</td>";
 											echo "<td>".$suzVeri->CHSIPNO."</td>";
+											echo "<td>".$suzVeri->ACIK_KAPALI."</td>";
 											echo "<td>"."<a class='btn btn-info' href='mpsgiriskarti?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
 											echo "</tr>";

@@ -616,7 +616,7 @@
                                                         <td><input name="baslangic_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BASLANGIC_SAATI }}" readonly></td>
                                                         <td><input name="bitis_tarih[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_TARIHI }}" readonly></td>
                                                         <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
-                                                        <td><input name="" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
+                                                        <td><input name="durus_sebebi[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
                                                         <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
                                                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
                                                     </tr>

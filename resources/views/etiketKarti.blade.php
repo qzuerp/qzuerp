@@ -147,7 +147,8 @@ h1 {
       window.onafterprint = () => window.close(); 
     }, 500);
   };
-  window.onafterprint = function() {
-      window.history.back();
+  window.onafterprint = function () {
+    window.location.href = document.referrer;
   };
+
 </script>
