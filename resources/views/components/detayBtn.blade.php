@@ -9,5 +9,6 @@
         <li><button type="submit" name='kart_islemleri' value='yazdir' class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
         <li><button type="button" class="dropdown-item delete-row" id="deleteSingleRow">Satırı Sil</button></li>
         <li><button type="button" class="dropdown-item" onclick='SatirKopyala(this)'>Satırı Kopyala</button></li>
+        <li><button type="button" class="dropdown-item" onclick='SatirDuzenle(this)'>Satırı Düzenle</button></li>
     </ul>
 </div>

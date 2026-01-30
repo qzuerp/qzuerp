@@ -211,3 +211,50 @@ function StokKartinaGit(KOD) {
     });
 }
 
+
+function SatirDuzenle(button) {
+    const satir = $(button).closest('tr');
+
+    satir.find('input, select, textarea').each(function () {
+        const name = $(this).attr('name')?.replace(/\[\]$/, '');
+        if (!name) return;
+
+        const yukariInput = $(`[data-name="${name}"]`);
+
+        if (yukariInput.length) {
+            if (yukariInput.is(':checkbox')) {
+                yukariInput.prop('checked', $(this).is(':checked'));
+            } else if (yukariInput.hasClass('select2-hidden-accessible')) {
+                const fullValue  = $(this).val();
+                const sadeceKod =
+                    fullValue?.split('|||')[0]
+                    ?? fullValue?.split('-')[0]
+                    ?? fullValue;
+
+                let bulundu = false;
+
+                yukariInput.find('option').each(function () {
+                    const val = $(this).val();
+
+                    if (!val) return;
+
+                    if (val.startsWith(sadeceKod + '|||') || val === sadeceKod) {
+                        yukariInput.val(val).trigger('change.select2');
+                        bulundu = true;
+                        return false; // eşleşti → çık
+                    }
+                });
+
+                if (!bulundu) {
+                    console.warn(`Kod eşleşmedi: ${sadeceKod}`);
+                }
+            } else {
+                yukariInput.val($(this).val());
+            }
+        }
+    });
+    $(satir).closest('tr').remove();
+    mesaj("Veriler yukarı alındı, düzenle sonra ekle", "success");
+}
+
+

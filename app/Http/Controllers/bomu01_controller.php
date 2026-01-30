@@ -377,7 +377,7 @@ class bomu01_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-
+       // dd($deleteTRNUMS,$updateTRNUMS,$newTRNUMS);
         for ($i = 0; $i < $satir_say; $i++) {
           $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
@@ -461,11 +461,11 @@ class bomu01_controller extends Controller
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
           $KONTROL_KOD = DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->value('BOMREC_KAYNAKCODE');
-          $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['bomu01t','bomu01e']);
+          // $msg = FunctionHelpers::KodKontrol($KONTROL_KOD,['bomu01t','bomu01e']);
 
-          if ($msg) {
-            return redirect()->back()->with('error_swal', $msg);
-          }
+          // if ($msg) {
+          //   return redirect()->back()->with('error_swal', $msg);
+          // }
           DB::table(trim($firma) . '.dbo.' . 'bomu01t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
 
         }
