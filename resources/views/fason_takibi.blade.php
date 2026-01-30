@@ -28,10 +28,12 @@
              ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
     })
     ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
-    ->leftJoin($database.'dosyalar00 as D00','D00.EVRAKNO','=','S10A.KOD')
+    ->leftJoin($database.'dosyalar00 as D00', function ($join) {
+    $join->on('D00.EVRAKNO', '=', 'S10A.KOD')
+         ->where('D00.EVRAKTYPE', 'STOK00')
+         ->where('D00.DOSYATURU', 'GORSEL');
+    })
     ->where('G00.GK_2', 'FSN_G2')
-    ->where('D00.EVRAKTYPE','STOK00')
-    ->where('D00.DOSYATURU','GORSEL')
     ->selectRaw('
         S10A.KOD,
         S10A.STOK_ADI,
