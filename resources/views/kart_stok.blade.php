@@ -36,26 +36,26 @@
 
 	$kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
 
-	$GK1_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK1')->get();
-	$GK2_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK2')->get();
-	$GK3_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK3')->get();
-	$GK4_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK4')->get();
-	$GK5_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK5')->get();
-	$GK6_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK6')->get();
-	$GK7_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK7')->get();
-	$GK8_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK8')->get();
-	$GK9_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK9')->get();
-	$GK10_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK10')->get();
-	$GK11_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK11')->get();
-	$GK12_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK12')->get();
-	$GK13_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK13')->get();
-	$GK14_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK14')->get();
-	$GK15_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK15')->get();
-	$GK16_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK16')->get();
-	$GK17_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK17')->get();
-	$GK18_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK18')->get();
-	$GK19_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK19')->get();
-	$GK20_veri = DB::table($database.'gecoust')->where('EVRAKNO','STKGK20')->get();
+	$GK1_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK1')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK2_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK2')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK3_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK3')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK4_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK4')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK5_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK5')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK6_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK6')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK7_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK7')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK8_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK8')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK9_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK9')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK10_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK10')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK11_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK11')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK12_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK12')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK13_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK13')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK14_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK14')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK15_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK15')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK16_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK16')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK17_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK17')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK18_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK18')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK19_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK19')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK20_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','STKGK20')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
 	
 	if (isset($kart_veri)) {
 
@@ -246,23 +246,41 @@
 									<div class="active tab-pane overflow-hidden" id="grupkodu">
 										<div class="row">
 											<div class="row">
-												@for($i = 1; $i <= 20; $i++)
-													<div class="col-md-2 col-xs-4 col-sm-4">
-														<label>Grup Kodu {{ $i }}</label>
-														<select id="GK_{{ $i }}" name="GK_{{ $i }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GK_{{ $i }}" class="form-control js-example-basic-single" style="width: 100%;">
-															<option value=" ">Seç</option>
-															@php
-																$variable = 'GK' . $i . '_veri';
-																if (isset($$variable)) {
-																	foreach ($$variable as $key => $veri) {
-																		$selected = ($veri->KOD == @$kart_veri->{'GK_'.$i}) ? 'selected' : '';
-																		echo "<option value='".$veri->KOD."' ".$selected.">".$veri->KOD." - ".$veri->AD."</option>";
-																	}
-																}
-															@endphp
-														</select>
-													</div>
-												@endfor
+											@for($i = 1; $i <= 20; $i++)
+												<div class="col-md-2 col-xs-4 col-sm-4">
+													@php
+														$variable = 'GK' . $i . '_veri';
+													@endphp
+
+													<label>
+														{{ isset($$variable[0]) ? $$variable[0]->LABEL_AD : 'GK_'.$i }}
+													</label>
+
+													<select
+														id="GK_{{ $i }}"
+														name="GK_{{ $i }}"
+														class="form-control js-example-basic-single"
+														data-bs-toggle="tooltip"
+														data-bs-placement="top"
+														data-bs-title="GK_{{ $i }}"
+														style="width:100%;"
+													>
+														<option value="">Seç</option>
+
+														@if(isset($$variable))
+															@foreach($$variable as $veri)
+																<option
+																	value="{{ $veri->KOD }}"
+																	{{ $veri->KOD == ($kart_veri->{'GK_'.$i} ?? null) ? 'selected' : '' }}
+																>
+																	{{ $veri->KOD }} - {{ $veri->AD }}
+																</option>
+															@endforeach
+														@endif
+													</select>
+												</div>
+											@endfor
+
 
 
 											</div>
