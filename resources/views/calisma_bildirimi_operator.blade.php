@@ -323,8 +323,8 @@
                               @php
                                 $pers00_evraklar=DB::table($database.'pers00')->where('KOD',@$personel->KOD)->orderBy('id', 'ASC')->first();
                               @endphp
-                              <input type="text" disabled value="{{ $pers00_evraklar->KOD }} - {{ $pers00_evraklar->AD }}" class="form-control">
-                              <input type="hidden" id="TO_OPERATOR" name="TO_OPERATOR" value="{{ $pers00_evraklar->KOD }}" class="form-control">
+                              <input type="text" disabled value="{{ @$pers00_evraklar->KOD }} - {{ @$pers00_evraklar->AD }}" class="form-control">
+                              <input type="hidden" id="TO_OPERATOR" name="TO_OPERATOR" value="{{ @$pers00_evraklar->KOD }}" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
@@ -461,11 +461,11 @@
                                             <div class="card h-100 shadow-sm rounded-3">
                                                 <h5 class="card-header">Ayar İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                                                    <div class="mb-3 w-100">
-                                                        <button type="button" id="button1" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                    <div class="h-25 mb-3 w-100">
+                                                        <button type="button" id="button1" class="btn btn-warning h-100 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-play me-2"></i> Ayar Başladı
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="row g-2 mt-2 d-none">
                                                             <div class="col">
                                                                 <input type="date" class="form-control date-time-input text-center" id="RECTARIH1" placeholder="Tarih">
                                                             </div>
@@ -474,11 +474,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="w-100">
-                                                        <button type="button" id="button2" class="btn btn-warning h-50 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
+                                                    <div class="h-25 w-100">
+                                                        <button type="button" id="button2" class="btn btn-warning h-100 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-stop me-2"></i> Ayar Bitti
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="row g-2 mt-2 d-none">
                                                             <div class="col">
                                                                 <input type="date" class="form-control date-time-input text-center" id="ENDTARIH1" placeholder="Tarih">
                                                             </div>
@@ -495,11 +495,11 @@
                                             <div class="card h-100 shadow-sm rounded-3">
                                                 <h5 class="card-header">Üretim İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                                                    <div class="mb-3 w-100">
-                                                        <button type="button" class="w-100 action-btn btn h-50 btn-success" id="button3">
+                                                    <div class="h-25 mb-3 w-100">
+                                                        <button type="button" class="h-100 w-100 action-btn btn h-50 btn-success" id="button3">
                                                             <i class="fas fa-play-circle"></i> Üretim Başladı
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="d-none row g-2 mt-2">
                                                             <div class="col">
                                                                 <input type="date" class="form-control text-center date-time-input" id="RECTARIH2" placeholder="Tarih">
                                                             </div>
@@ -508,11 +508,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="w-100">
-                                                        <button type="button" class="w-100 action-btn h-50 btn btn-success" id="button4">
+                                                    <div class="h-25 w-100">
+                                                        <button type="button" class="h-100 w-100 action-btn h-50 btn btn-success" id="button4">
                                                             <i class="fas fa-stop-circle"></i> Üretim Bitti
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="d-none row g-2 mt-2">
                                                             <div class="col">
                                                                 <input type="date" class="form-control text-center date-time-input" id="ENDTARIH2" placeholder="Tarih">
                                                             </div>

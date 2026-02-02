@@ -4,11 +4,32 @@
     }
     $firma = trim($u->firma).'.dbo.';
 
+    $sonIslem = DB::table($firma.'sfdc31t')
+    ->select('EVRAKNO', DB::raw('MAX(id) as SON_ID'))
+    ->groupBy('EVRAKNO');
+
     $isler = DB::table($firma.'imlt00 as I00')
     ->leftJoin($firma.'sfdc31e as S31E', 'I00.KOD', '=', 'S31E.TO_ISMERKEZI')
-    ->leftJoin($firma.'sfdc31t as S31T', 'S31E.EVRAKNO', '=', 'S31T.EVRAKNO')
+
+    ->leftJoinSub($sonIslem, 'SON', function ($join) {
+        $join->on('S31E.EVRAKNO', '=', 'SON.EVRAKNO');
+    })
+
+    ->leftJoin($firma.'sfdc31t as S31T', function ($join) {
+        $join->on('S31T.id', '=', 'SON.SON_ID')
+             ->where('S31T.ISLEM_TURU', '!=', 'D');
+    })
+
     ->leftJoin($firma.'stok00 as S00', 'S31E.STOK_CODE', '=', 'S00.KOD')
-    ->get(['S00.AD as STOK_AD', 'I00.AD as TEZGAH_AD', 'S31E.*', 'S31T.*']);
+
+    ->select(
+        'I00.AD as TEZGAH_AD',
+        'S00.AD as STOK_AD',
+        'S31T.*',
+        'S31E.*'
+    )
+    ->get();
+
 @endphp
 <!DOCTYPE html>
 <html lang="tr">
@@ -20,7 +41,7 @@
   <style>
     @keyframes breathe {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.1); }
+      50% { opacity: 0.7; transform: scale(1.3); }
     }
     .breathe {
       animation: breathe 2s ease-in-out infinite;

@@ -69,7 +69,7 @@ if (isset($kart_veri)) {
 <div class="content-wrapper">
 
     @include('layout.util.evrakContentHeader')
-		@include('layout.util.logModal',['EVRAKTYPE' => 'PERS00'])
+		@include('layout.util.logModal',['EVRAKTYPE' => 'PERS00','EVRAKNO' => @$kart_veri->EVRAKNO])
     <section class="content">
       <form class="form-horizontal mt-3 " action="pers00_islemler" method="POST" name="verilerForm" id="verilerForm">
         @csrf

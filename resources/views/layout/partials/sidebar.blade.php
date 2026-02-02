@@ -285,9 +285,9 @@
         @if (in_array('PRMTR', $kullanici_read_yetkileri))
           <li><a href="parametreler"><i class='bx bx-slider'></i>Parametreler</a></li>
         @endif
-        <!-- @if (in_array('PERSKART', $kullanici_read_yetkileri))
+        @if (in_array('PERSKART', $kullanici_read_yetkileri))
           <li><a href="kart_personel"><i class='bx bx-user'></i>Personel Kartı</a></li>
-        @endif -->
+        @endif
       </ul>
     </li>
 
