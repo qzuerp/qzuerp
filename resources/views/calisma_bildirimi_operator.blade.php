@@ -540,7 +540,7 @@
                                                             @endphp
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3 h-50">
+                                                    <div class="mb-3 h-25">
                                                         <button type="button" class="h-100 w-100 action-btn btn btn-danger" id="button5">
                                                             <i class="fas fa-pause-circle"></i> Duruş Başladı
                                                         </button>
@@ -553,7 +553,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="h-50">
+                                                    <div class="h-25">
                                                         <button type="button" class="h-100 w-100 action-btn btn btn-danger" id="button6">
                                                             <i class="fas fa-stop-circle"></i> Duruş Bitti
                                                         </button>
