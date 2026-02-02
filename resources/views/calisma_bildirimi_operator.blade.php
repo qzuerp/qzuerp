@@ -461,7 +461,7 @@
                                             <div class="card h-100 shadow-sm rounded-3">
                                                 <h5 class="card-header">Ayar İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                                                    <div class="h-25 mb-3 w-100">
+                                                    <div class="h-50 mb-3 w-100">
                                                         <button type="button" id="button1" class="btn btn-warning h-100 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-play me-2"></i> Ayar Başladı
                                                         </button>
@@ -474,7 +474,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="h-25 w-100">
+                                                    <div class="h-50 w-100">
                                                         <button type="button" id="button2" class="btn btn-warning h-100 btn-lg w-100 fw-bold d-flex align-items-center justify-content-center rounded">
                                                             <i class="fas fa-stop me-2"></i> Ayar Bitti
                                                         </button>
@@ -495,7 +495,7 @@
                                             <div class="card h-100 shadow-sm rounded-3">
                                                 <h5 class="card-header">Üretim İşlemi</h5>
                                                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                                                    <div class="h-25 mb-3 w-100">
+                                                    <div class="h-50 mb-3 w-100">
                                                         <button type="button" class="h-100 w-100 action-btn btn h-50 btn-success" id="button3">
                                                             <i class="fas fa-play-circle"></i> Üretim Başladı
                                                         </button>
@@ -508,7 +508,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="h-25 w-100">
+                                                    <div class="h-50 w-100">
                                                         <button type="button" class="h-100 w-100 action-btn h-50 btn btn-success" id="button4">
                                                             <i class="fas fa-stop-circle"></i> Üretim Bitti
                                                         </button>
@@ -540,11 +540,11 @@
                                                             @endphp
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3">
-                                                        <button type="button" class="w-100 action-btn btn btn-danger" id="button5">
+                                                    <div class="mb-3 h-50">
+                                                        <button type="button" class="h-100 w-100 action-btn btn btn-danger" id="button5">
                                                             <i class="fas fa-pause-circle"></i> Duruş Başladı
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="d-none row g-2 mt-2">
                                                             <div class="col">
                                                                 <input type="date" class="form-control text-center date-time-input" id="DRSTARIH1" placeholder="Tarih">
                                                             </div>
@@ -553,11 +553,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <button type="button" class="w-100 action-btn btn btn-danger" id="button6">
+                                                    <div class="h-50">
+                                                        <button type="button" class="h-100 w-100 action-btn btn btn-danger" id="button6">
                                                             <i class="fas fa-stop-circle"></i> Duruş Bitti
                                                         </button>
-                                                        <div class="row g-2 mt-2">
+                                                        <div class="d-none row g-2 mt-2">
                                                             <div class="col">
                                                                 <input type="date" class="form-control text-center date-time-input" id="DRSTARIH2" placeholder="Tarih">
                                                             </div>
