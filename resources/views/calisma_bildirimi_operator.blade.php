@@ -237,7 +237,7 @@
                         <input type="hidden" class="form-control input-sm" maxlength="50" name="JOBNO" onchange="verileriGetir()" id="JOBNO"  value="{{ @$kart_veri->JOBNO }}" >
                         <span class="d-flex -btn">
                           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" id="modal_popupSelectModalBtn" type="button">
-                            <span class="fa-solid fa-magnifying-glass"  ></span>
+                            <span class="fa-solid fa-magnifying-glass"></span>
                           </button>
                         </span>
                       </div>                    
@@ -570,12 +570,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
+                                    <!-- <div class="d-flex tools-section mt-3 opacity-0" id="charts" style="transition: all 0.35s ease;">
                                         <div id="chart" style="height: 270px;"></div>
                                         <div id="chart1" style="height: 270px;"></div>
                                         <div id="chart2" style="height: 270px;"></div>
                                         <div id="chart3" style="height: 270px;"></div>
-                                    </div>
+                                    </div> -->
                                     <!-- Tablo -->
                                     <div class="table-responsive tools-section">
                                         <table class="table table-hover" id="veri_table">
@@ -2123,20 +2123,20 @@
         Swal.fire({
           title: `${labels[type]} İşlemi Düzenle`,
           html: `
-            <div style="text-align: left;">
-              <div class="mb-3">
+            <div style="text-align: left; padding:0 20px;">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Başlangıç Tarihi</label>
                 <input type="date" id="edit_start_date" class="form-control" value="${startDate}">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Başlangıç Saati</label>
                 <input type="time" id="edit_start_time" class="form-control" value="${startTime}" step="1">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Bitiş Tarihi</label>
                 <input type="date" id="edit_end_date" class="form-control" value="${endDate}">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Bitiş Saati</label>
                 <input type="time" id="edit_end_time" class="form-control" value="${endTime}" step="1">
               </div>

@@ -120,7 +120,7 @@
 									<div class="row">
 										<div class="col-md-2 col-sm-4 col-xs-6">
 											<label>Kod</label>
-											<input type="text" class="form-control" name="KOD" id="KOD_ALANI"  maxlength="24"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD"  value="{{ @$kart_veri->KOD }}" readonly>
+											<input type="text" class="form-control" name="KOD" id="KOD_ALANI"  maxlength="50"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD"  value="{{ @$kart_veri->KOD }}" readonly>
 										</div>
 
 										<div class="col-md-2 col-sm-4 col-xs-6">

@@ -300,6 +300,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('calisma_bildirimi_kartGetir', [calisma_bildirimi_controller::class, 'kartGetir']);
     Route::post('jobno_degerleri', [calisma_bildirimi_controller::class, 'jobno_degerleri']);
     Route::get('sirali_isleri_getir', [calisma_bildirimi_controller::class, 'sirali_isleri_getir']);
+    Route::get('aktif_isler', function () { return view('aktif_isler'); });
     Route::get('surec_kontrolu', [calisma_bildirimi_controller::class, 'surec_kontrolu']);
     Route::post('sfdc31_e_islemler', [calisma_bildirimi_controller::class, 'islemler']);
     Route::post('sfdc31_getMPSToEvrak', [calisma_bildirimi_controller::class, 'getMPSToEvrak']);

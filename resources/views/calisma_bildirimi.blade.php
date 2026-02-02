@@ -2130,20 +2130,20 @@
         Swal.fire({
           title: `${labels[type]} İşlemi Düzenle`,
           html: `
-            <div style="text-align: left;">
-              <div class="mb-3">
+            <div style="text-align: left; padding:0 20px;">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Başlangıç Tarihi</label>
                 <input type="date" id="edit_start_date" class="form-control" value="${startDate}">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Başlangıç Saati</label>
                 <input type="time" id="edit_start_time" class="form-control" value="${startTime}" step="1">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Bitiş Tarihi</label>
                 <input type="date" id="edit_end_date" class="form-control" value="${endDate}">
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label class="form-label fw-bold">Bitiş Saati</label>
                 <input type="time" id="edit_end_time" class="form-control" value="${endTime}" step="1">
               </div>
