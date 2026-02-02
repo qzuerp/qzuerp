@@ -1,8 +1,13 @@
 @php
-    $isler = DB::table('imlt00 as I00')
-    ->leftJoin('sfdc31e as S31E', 'I00.KOD', '=', 'S31E.TO_ISMERKEZI')
-    ->leftJoin('sfdc31t as S31T', 'S31E.EVRAKNO', '=', 'S31T.EVRAKNO')
-    ->leftJoin('stok00 as S00', 'S31E.STOK_CODE', '=', 'S00.KOD')
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+
+    $isler = DB::table($firma.'imlt00 as I00')
+    ->leftJoin($firma.'sfdc31e as S31E', 'I00.KOD', '=', 'S31E.TO_ISMERKEZI')
+    ->leftJoin($firma.'sfdc31t as S31T', 'S31E.EVRAKNO', '=', 'S31T.EVRAKNO')
+    ->leftJoin($firma.'stok00 as S00', 'S31E.STOK_CODE', '=', 'S00.KOD')
     ->get(['S00.AD as STOK_AD', 'I00.AD as TEZGAH_AD', 'S31E.*', 'S31T.*']);
 @endphp
 <!DOCTYPE html>

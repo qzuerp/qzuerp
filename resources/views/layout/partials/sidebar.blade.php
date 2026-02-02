@@ -108,7 +108,7 @@
           <li><a href="calisma_bildirimi_oprt"><i class='bx bx-notification'></i>Çalışma Bildirimi</a></li>
         @endif
         @if (in_array('AKTIFIS', $kullanici_read_yetkileri))
-          <li><a href="atif_isler"><i class='bx bx-cog'></i></i>Aktif İşler</a></li>
+          <li><a href="aktif_isler"><i class='bx bx-cog'></i></i>Aktif İşler</a></li>
         @endif
         @if (in_array('is_siralama', $kullanici_read_yetkileri))
           <li><a href="is_siralama"><i class='bx bx-sort'></i>İş Sıralama</a></li>
