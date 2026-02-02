@@ -961,18 +961,20 @@
 
     }
 
-    let picker1 = flatpickr("#KALIBRASYONBAKIMTARIHI", {});
-    let picker2 = flatpickr("#BIRSONRAKIKALIBRASYONTARIHI", {});
+    $(document).ready(function () {
+      let picker1 = flatpickr("#KALIBRASYONBAKIMTARIHI", {});
+      let picker2 = flatpickr("#BIRSONRAKIKALIBRASYONTARIHI", {});
 
-    $('#TARIH_HESAPLA').on('click', function () {
-      let ekYil = parseInt($('#KALIBRASYONBAKIMPERIYODU').val(), 10);
-      let baslangicTarih = picker1.selectedDates[0]; // flatpickr'den tarih alıyoruz
-      if (!baslangicTarih) return;
+      $('#TARIH_HESAPLA').on('click', function () {
+        let ekYil = parseInt($('#KALIBRASYONBAKIMPERIYODU').val(), 10);
+        let baslangicTarih = picker1.selectedDates[0]; // flatpickr'den tarih alıyoruz
+        if (!baslangicTarih) return;
 
-      let ileriTarih = new Date(baslangicTarih);
-      ileriTarih.setFullYear(baslangicTarih.getFullYear() + ekYil);
+        let ileriTarih = new Date(baslangicTarih);
+        ileriTarih.setFullYear(baslangicTarih.getFullYear() + ekYil);
 
-      picker2.setDate(ileriTarih, true);
+        picker2.setDate(ileriTarih, true);
+      });
     });
 
 

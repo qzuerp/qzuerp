@@ -97,8 +97,30 @@ if ($mamul_kod !== '') {
 
 $whereSql2 = 'WHERE ' . implode(' AND ', $where2);
 
+// İlk SELECT (MMPS10T) için WHERE koşulları
+$where3 = ['M10T.R_KAYNAKTYPE = ?'];
+$params3 = ['H'];
+
+if ($sipno !== '') {
+    $where3[] = 'M10E.SIPNO LIKE ?';
+    $params3[] = $like($sipno);
+}
+if ($musteri_kodu !== '') {
+    $where3[] = 'M10E.MUSTERIKODU LIKE ?';
+    $params3[] = $like($musteri_kodu);
+}
+if ($mamul_kod !== '') {
+    $where3[] = 'M10E.MAMULSTOKKODU LIKE ?';
+    $params3[] = $like($mamul_kod);
+}
+if ($mps_no !== '') {
+    $where3[] = 'M10T.EVRAKNO LIKE ?';
+    $params3[] = $like($mps_no);
+}
+
+$whereSql3 = 'WHERE ' . implode(' AND ', $where3);
 // Tüm parametreleri birleştir
-$params = array_merge($params1, $params2);
+$params = array_merge($params1, $params2,$params3);
 
 // 3) Sorgu
 $sql = <<<SQL
@@ -139,12 +161,17 @@ SELECT
     TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
-    A2.gerceklesen_MIKTAR
+    A2.gerceklesen_MIKTAR,
+     ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_SEVK,     
+  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_GELEN,
+  case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
 FROM MMPS10T AS M10T
 LEFT JOIN MMPS10E AS M10E ON M10E.EVRAKNO = M10T.EVRAKNO
 LEFT JOIN STOK40T  AS S40T  ON S40T.ARTNO = M10E.SIPARTNO
+LEFT JOIN STOK40E  AS S40E  ON S40E.EVRAKNO = S40T.EVRAKNO
 LEFT JOIN STOK00   AS S00   ON S00.KOD = M10E.MAMULSTOKKODU
 LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
+LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40T.KOD
 LEFT JOIN agg_sure   AS A1  
   ON A1.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
@@ -173,12 +200,52 @@ SELECT
     NULL AS plan_sure,
     NULL AS plan_miktar,
     NULL AS gerceklenen_SURE,
-    NULL AS gerceklesen_MIKTAR
+    NULL AS gerceklesen_MIKTAR,
+    NULL AS FASON_SEVK,NULL AS FASON_GELEN,NULL AS R_KAYNAKKODU ,D00.DOSYA
 FROM STOK40T AS S40
 LEFT JOIN STOK40E  AS S40E2  ON S40E2.EVRAKNO = S40.EVRAKNO
 LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
 LEFT JOIN cari00   AS C002   ON C002.KOD = S40E2.CARIHESAPCODE
+LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40.KOD
 {$whereSql2}
+UNION ALL 
+SELECT
+    M10T.EVRAKNO AS mps_no,
+    M10E.MAMULSTOKKODU AS mamul_kod,
+    S00.AD AS mamul_ad,
+    M10E.MUSTERIKODU AS musteri_kod,
+    C00.AD AS musteri_ad,
+    M10E.SIPNO AS sip_no,
+    M10E.SIPARTNO AS sip_art_no,
+    S40T.SF_MIKTAR AS sip_miktar,
+    S40T.URETILEN_MIKTARI AS uretilen_miktar,
+    S40T.SF_BAKIYE AS sip_bakiye,
+    S40T.TERMIN_TAR AS termin,
+    M10T.JOBNO,
+    M10T.R_OPERASYON,
+    M10T.R_SIRANO,
+    TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
+    TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
+    A1.gerceklenen_SURE,
+    A2.gerceklesen_MIKTAR,
+     ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_SEVK,     
+  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_GELEN,
+  case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
+FROM MMPS10T AS M10T
+LEFT JOIN MMPS10E AS M10E ON M10E.EVRAKNO = M10T.EVRAKNO
+LEFT JOIN STOK40T  AS S40T  ON S40T.ARTNO = M10E.SIPARTNO
+LEFT JOIN STOK40E  AS S40E  ON S40E.EVRAKNO = S40T.EVRAKNO
+LEFT JOIN STOK00   AS S00   ON S00.KOD = M10E.MAMULSTOKKODU
+LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
+LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40T.KOD
+LEFT JOIN agg_sure   AS A1  
+  ON A1.JOBNO = M10T.JOBNO 
+ AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
+LEFT JOIN agg_miktar AS A2  
+  ON A2.JOBNO = M10T.JOBNO 
+ AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
+{$whereSql3}
+
 
 ORDER BY R_SIRANO ASC, termin ASC, mps_no DESC
 SQL;
@@ -196,11 +263,14 @@ foreach ($rows as $r) {
 }
 $ops = array_keys($ops);
 sort($ops, SORT_NATURAL | SORT_FLAG_CASE);
+//dd($sql);
 
 // 4.1) M10E.SIPARTNO tekil satır olacak şekilde gruplama
 $grouped = [];
+
 foreach ($rows as $r) {
-    $key = $r['sip_art_no'];
+   
+    $key = $r['sip_art_no'] . '|' . $r['mamul_kod'];
     if (!isset($grouped[$key])) {
         $grouped[$key] = [
             'sip_no' => $r['sip_no'],
@@ -213,6 +283,8 @@ foreach ($rows as $r) {
             'sip_miktar' => is_null($r['sip_miktar']) ? null : (float)$r['sip_miktar'],
             'uretilen_miktar' => is_null($r['uretilen_miktar']) ? null : (float)$r['uretilen_miktar'],
             'sip_bakiye' => is_null($r['sip_bakiye']) ? null : (float)$r['sip_bakiye'],
+            'fason' => $r['FASON_SEVK'] .' / ' . $r['FASON_GELEN'],
+            'DOSYA' => $r['DOSYA'] ,
             'ops' => []
         ];
     }
@@ -236,7 +308,11 @@ foreach ($rows as $r) {
             $grouped[$key]['ops'][$op]['actSure'] += $actSure;
         }
     }
+    
+     
+    
 }
+
 
 $groups = array_values($grouped);
 usort($groups, function($a, $b) {
@@ -779,6 +855,7 @@ usort($groups, function($a, $b) {
             <table class="data-table" id="rapor">
                 <thead class="table-header">
                     <tr>
+                        <th>Resim</th>
                         <th>Sipariş No</th>
                         <th>Müşteri Kodu</th>
                         <th>Müşteri Adı</th>
@@ -789,8 +866,9 @@ usort($groups, function($a, $b) {
                         <th class="num">Sipariş Miktarı</th>
                         <th class="num">Üretilen Miktar</th>
                         <th class="num">Sipariş Bakiyesi</th>
+                         <th>Fason</th>
                         <?php if (isset($ops)): foreach ($ops as $op): ?>
-                            <th class="num"><?= htmlspecialchars($op) ?></th>
+                            <th><?= htmlspecialchars($op) ?></th>
                         <?php endforeach; endif; ?>
                     </tr>
                 </thead>
@@ -807,8 +885,11 @@ usort($groups, function($a, $b) {
                             $sip_miktar = $g['sip_miktar'] ?? null;
                             $uretilen   = $g['uretilen_miktar'] ?? null;
                             $bakiye     = $g['sip_bakiye'] ?? null;
+                            $fasonbakiye     = $g['fason'] ?? null;
                         ?>
                             <tr style="max-height:100px;">
+                                 <td><img src="{{ isset($g['DOSYA']) ? asset('dosyalar/'.$g['DOSYA']) : '' }}" alt="" class="kart-img" width="100"></td>
+                                            
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['musteri_kod'] ?? '') ?></td>
                                 <td>
@@ -832,6 +913,7 @@ usort($groups, function($a, $b) {
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {
                                         $m = $g['ops'][$op];
