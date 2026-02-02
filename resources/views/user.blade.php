@@ -369,6 +369,18 @@
                                           echo " checked" @endphp></td>
                                     </tr>
                                     <tr>
+                                      <td>Aktif İşler </td>
+                                      <td><input type="checkbox" class="yetki_read" id="calismabildirimi_read"
+                                          name="yetki_read[]" value="AKTIFIS" @php if (in_array('AKTIFIS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="calismabildirimi_write"
+                                          name="yetki_write[]" value="AKTIFIS" @php if (in_array('AKTIFIS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="calismabildirimi_delete"
+                                          name="yetki_delete[]" value="AKTIFIS" @php if (in_array('AKTIFIS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
                                       <td>Kontakt Kartı</td>
                                       <td><input type="checkbox" class="yetki_read" id="kontaktkarti_read"
                                           name="yetki_read[]" value="KNTKKART" @php if (in_array('KNTKKART', $kullanici_read_yetkileri))
