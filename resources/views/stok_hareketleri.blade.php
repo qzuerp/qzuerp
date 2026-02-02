@@ -167,7 +167,7 @@
 												echo "<td>" . $suzVeri->LOCATION2 . "</td>";
 												echo "<td>" . $suzVeri->LOCATION3 . "</td>";
 												echo "<td>" . $suzVeri->LOCATION4 . "</td>";
-												echo "<td>" . "<a class='btn btn-info' href='" . Trim($suzVeri->EKRAN_ADI). "?id=" . $suzVeri->EVRAKNO . "' target='_blank'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+												echo "<td>" . "<a class='btn btn-info' href='" . Trim($suzVeri->EKRAN_ADI). "?ID=" . $suzVeri->EVRAKNO . "' target='_blank'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
 												echo "</tr>";
 											}
 										@endphp

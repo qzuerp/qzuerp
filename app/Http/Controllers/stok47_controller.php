@@ -84,6 +84,7 @@ class stok47_controller extends Controller
     $AGIRLIK = $request->AGIRLIK;
     $TI_LOTNUMBER = $request->TI_LOTNUMBER;
     $TI_NOT1 = $request->TI_NOT1;
+    $T_AK = $request->T_AK;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -194,6 +195,7 @@ class stok47_controller extends Controller
             'NETKAPANANMIK' => 0,
             'NAME2' => $NAME2[$i],
             'AGIRLIK' => $AGIRLIK[$i],
+            'AK' => $T_AK[$i],
             
           ]);
 
@@ -340,7 +342,8 @@ class stok47_controller extends Controller
               'NETKAPANANMIK' => 0,
               'ARTNO' => $EVRAKNO . $TRNUM[$i],
               'NAME2' => $NAME2[$i],
-              'AGIRLIK' => $AGIRLIK[$i]
+              'AGIRLIK' => $AGIRLIK[$i],
+              'AK' => $T_AK[$i],
             ]);
 
           }
@@ -371,7 +374,8 @@ class stok47_controller extends Controller
               // 'FIYAT' => $FIYAT[$i],
               // 'FIYAT_PB' => $FIYAT_PB[$i]
               'NAME2' => $NAME2[$i],
-              'AGIRLIK' => $AGIRLIK[$i] 
+              'AGIRLIK' => $AGIRLIK[$i],
+              'AK' => $T_AK[$i],
             ]);
 
           }
@@ -532,9 +536,9 @@ class stok47_controller extends Controller
               $SIPEVRAKNO = $SON_ID + 1;
             }
           }
-          DB::table($firma . 'stok47e')->where('EVRAKNO', $EVRAKNO)->update([
-            'AK' => 'K' 
-          ]);
+          // DB::table($firma . 'stok47e')->where('EVRAKNO', $EVRAKNO)->update([
+          //   'AK' => 'K' 
+          // ]);
           if($ONCEKI_CARI != $CARI_KOD[$i])
           {
             $EVRAKID = DB::table($firma . 'stok46e')->insertGetId([
@@ -546,7 +550,9 @@ class stok47_controller extends Controller
           }
 
           $STOK = DB::table($firma . 'stok00')->where('KOD', $T_STOK_KODU[$i])->first();
-          
+          DB::table($firma . 'stok47t')->where('KOD',  $T_STOK_KODU[$i])->update([
+            'AK' => 'K'
+          ]);
           DB::table($firma . 'stok46t')->insert([
             'EVRAKNO' => $SIPEVRAKNO,
             'KOD' => $T_STOK_KODU[$i],

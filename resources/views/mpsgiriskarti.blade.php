@@ -603,16 +603,16 @@
 																		</td>
 																		<td style="{{ $bgColor }} display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
 																		
-																			<td style="{{ $bgColor }}">
-																				<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
-																					<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
-																						Açık
-																					</option>
-																					<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
-																						Kapalı
-																					</option>
-																				</select>
-																			</td>
+																		<td style="{{ $bgColor }}">
+																			<select class="form-select" style="font-size: 0.7rem !important;" name="R_ACIK_KAPALI[]">
+																				<option value="" {{ $veri->R_ACIK_KAPALI == 'K' ? '' : 'selected' }}>
+																					Açık
+																				</option>
+																				<option value="K" {{ $veri->R_ACIK_KAPALI == 'K' ? 'selected' : '' }}>
+																					Kapalı
+																				</option>
+																			</select>
+																		</td>
 
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="R_SIRANO[]" value="{{ $veri->R_SIRANO }}"></td>
 																		<td style="{{ $bgColor }}">

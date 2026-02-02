@@ -218,6 +218,7 @@
                         <tr>
                           <th>#</th>
                           <th style="display:none;">Sıra</th>
+                          <th style="min-width: 120px;">AK</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Stok Adı 2</th>
@@ -250,6 +251,16 @@
                                 style="color: blue"></i></button></td>
                           <td style="display:none;">
                           </td>
+                          <th style="min-width:0px !important; width:50px;">
+                            <select class="form-select R_ACIK_KAPALI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_ACIK_KAPALI" style="font-size: 0.7rem !important;" id="R_ACIK_KAPALI_FILL">
+                              <option value="">
+                                Açık
+                              </option>
+                              <option value="K">
+                                Kapalı
+                              </option>
+                            </select>
+                          </th>
                           <td style="min-width: 240px;">
                             <div class="d-flex ">
                               <select class="form-control txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -410,9 +421,22 @@
                             </td>
                             <td style="display: none;"><input type="hidden" class="form-control" maxlength="6"
                                 name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+                            
+                            <td>
+                              <select class="form-select" style="font-size: 0.7rem !important;" name="T_AK[]">
+                                <option value="" {{ $veri->AK == 'A' ? 'selected' : '' }}>
+                                  Açık
+                                </option>
+                                <option value="K" {{ $veri->AK == 'K' ? 'selected' : '' }}>
+                                  Kapalı
+                                </option>
+                              </select>
+                            </td>
+
                             <td><input type="text" class="form-control" name="KOD_SHOW_T" value="{{ $veri->KOD }}"
                                 disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}">
                             </td>
+
                             <td>
                               <input type="text" class="form-control" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}"
                                 disabled><input type="hidden" class="form-control" name="STOK_ADI[]"
@@ -1306,6 +1330,12 @@
               htmlCode += " <tr> ";
               // htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
               htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+              htmlCode += "<td>" +
+                "<select class='form-select' style='font-size: 0.7rem !important;' name='T_AK[]'>" +
+                  "<option value='A' " + (satirEkleInputs.R_ACIK_KAPALI_FILL === 'A' ? 'selected' : '') + ">Açık</option>" +
+                  "<option value='K' " + (satirEkleInputs.R_ACIK_KAPALI_FILL === 'K' ? 'selected' : '') + ">Kapalı</option>" +
+                "</select>" +
+              "</td>";
               htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "' disabled><input type='hidden' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "'></td> ";
