@@ -248,7 +248,8 @@
           <!-- Job No -->
           <div class="{{ $statusBg }} rounded-xl p-3 {{ $borderColor }} border">
             <div class="text-gray-500 text-xs font-semibold mb-1 uppercase">Job No</div>
-            <div class="{{ $statusColor }} text-base font-bold">{{ $is->JOBNO }} - {{ $is->OPERASYON }}</div>
+            <div class="{{ $statusColor }} text-base font-bold">{{ $is->JOBNO }}</div>
+            <!-- <div class="{{ $statusColor }} text-base font-bold">{{ $is->JOBNO }} - {{ $is->OPERASYON }}</div> -->
           </div>
         </div>
 
