@@ -54,13 +54,126 @@
     .card-enter {
       animation: slideIn 0.4s ease-out forwards;
     }
+
+    /* ─── TV Panel Overlay Bar ─── */
+    #tv-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background:#f5fbf9;
+      backdrop-filter: blur(6px);
+      padding: 8px 20px;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      font-size: 14px;
+      gap: 12px;
+    }
+    #tv-bar .left-group,
+    #tv-bar .right-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Saat */
+    #tv-clock {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      min-width: 80px;
+      text-align: right;
+      color:rgb(60, 60, 60);
+    }
+
+    /* Refresh gösterge */
+    #refresh-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color:rgb(60, 60, 60);
+    }
+    #refresh-indicator .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+    }
+    #refresh-indicator.refreshing .dot {
+      background: #f59e0b;
+      box-shadow: 0 0 6px #f59e0b;
+      animation: breathe 0.8s ease-in-out infinite;
+    }
+
+    /* Fullscreen btn */
+    #fs-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      transition: background 0.2s;
+      color:rgb(60, 60, 60);
+    }
+    #fs-btn:hover { background: rgba(255,255,255,0.22); }
+
+    /* Sayac bar */
+    #refresh-bar-wrap {
+      width: 60px;
+      height: 4px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    #refresh-bar {
+      height: 100%;
+      width: 100%;
+      background: #22c55e;
+      border-radius: 2px;
+      transition: width 0.5s linear;
+    }
+
+    /* Body padding to not hide cards behind bar */
+    body { padding-top: 48px !important; }
+
+    /* Fullscreen hide scrollbar */
+    :fullscreen body,
+    :-webkit-full-screen body {
+      overflow: hidden;
+    }
   </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen p-6">
 
-  <div class=" mx-auto">
-    <!-- Cards Grid -->
+  <!-- ─── TV Top Bar ─── -->
+  <div id="tv-bar">
+    <div class="left-group">
+      <div id="refresh-indicator">
+        <div class="dot"></div>
+        <span id="refresh-text">Sonraki güncelleme: <strong id="refresh-countdown">30s</strong></span>
+      </div>
+      <div id="refresh-bar-wrap">
+        <div id="refresh-bar"></div>
+      </div>
+    </div>
+    <div class="right-group">
+      <div id="tv-clock">00:00:00</div>
+      <button id="fs-btn" title="Tam Ekran">⛶</button>
+    </div>
+  </div>
+
+  <!-- ─── Cards Grid (unchanged) ─── -->
+  <div class="mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
       @foreach ($isler as $is)
       @php
@@ -142,8 +255,124 @@
       </div>
       @endforeach
     </div>
-
   </div>
+
+  <!-- ─── TV Panel Scripts ─── -->
+  <script>
+  (function () {
+    // ──────────────────────────────
+    // 1. SAAT (HH:MM:SS)
+    // ──────────────────────────────
+    const clockEl = document.getElementById('tv-clock');
+    function tickClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      clockEl.textContent = `${h}:${m}:${s}`;
+    }
+    tickClock();
+    setInterval(tickClock, 1000);
+
+    // ──────────────────────────────
+    // 2. AUTO-REFRESH (30 sn)
+    // ──────────────────────────────
+    const REFRESH_SECONDS = 30;          // ← burada değiştir
+    let countdown = REFRESH_SECONDS;
+
+    const countdownEl   = document.getElementById('refresh-countdown');
+    const indicatorEl   = document.getElementById('refresh-indicator');
+    const refreshBarEl  = document.getElementById('refresh-bar');
+
+    function updateBar() {
+      // bar width: tam dolu → boşalır
+      const pct = (countdown / REFRESH_SECONDS) * 100;
+      refreshBarEl.style.width = pct + '%';
+    }
+
+    // İlk çizim
+    updateBar();
+
+    setInterval(function () {
+      countdown--;
+      if (countdown <= 0) {
+        // "Güncelleniyor…" görüntüsü
+        indicatorEl.classList.add('refreshing');
+        countdownEl.textContent = '…';
+        refreshBarEl.style.width = '0%';
+
+        // Sayfayı yenile
+        location.reload();
+        return;
+      }
+      countdownEl.textContent = countdown + 's';
+      updateBar();
+    }, 1000);
+
+    // ──────────────────────────────
+    // 3. TAM EKRAN (Fullscreen API)
+    // ──────────────────────────────
+    const fsBtn = document.getElementById('fs-btn');
+
+    function enterFS() {
+      const el = document.documentElement;
+      if (el.requestFullscreen)            return el.requestFullscreen();
+      if (el.mozRequestFullScreen)         return el.mozRequestFullScreen();
+      if (el.webkitRequestFullscreen)      return el.webkitRequestFullscreen();
+      if (el.msRequestFullscreen)          return el.msRequestFullscreen();
+    }
+    function exitFS() {
+      if (document.exitFullscreen)         return document.exitFullscreen();
+      if (document.mozCancelFullScreen)    return document.mozCancelFullScreen();
+      if (document.webkitExitFullscreen)   return document.webkitExitFullscreen();
+      if (document.msExitFullscreen)       return document.msExitFullscreen();
+    }
+
+    fsBtn.addEventListener('click', function () {
+      if (!document.fullscreenElement &&
+          !document.mozFullScreenElement &&
+          !document.webkitFullscreenElement &&
+          !document.msFullscreenElement) {
+        enterFS();
+        fsBtn.textContent = '✖'; // çıkış ikonu (veya istediğin)
+        fsBtn.title = 'Tam Ekrandan Çık';
+      } else {
+        exitFS();
+        fsBtn.textContent = '⛶';
+        fsBtn.title = 'Tam Ekran';
+      }
+    });
+
+    // Browser nativeden fullscreen çıkıldığında ikonu sıfırla
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement) {
+        fsBtn.textContent = '⛶';
+        fsBtn.title = 'Tam Ekran';
+      }
+    });
+    document.addEventListener('webkitfullscreenchange', function () {
+      if (!document.webkitFullscreenElement) {
+        fsBtn.textContent = '⛶';
+        fsBtn.title = 'Tam Ekran';
+      }
+    });
+
+    // ──────────────────────────────
+    // 4. FARE GIZLEME (TV mod)
+    //    3 sn hareketsiz → fare kaybolur
+    // ──────────────────────────────
+    let mouseTimer;
+    function hideMouse() { document.documentElement.style.cursor = 'none'; }
+    function showMouse() {
+      document.documentElement.style.cursor = 'default';
+      clearTimeout(mouseTimer);
+      mouseTimer = setTimeout(hideMouse, 3000);
+    }
+    document.addEventListener('mousemove', showMouse);
+    showMouse(); // ilk açılışta 3s sonra gizle
+
+  })();
+  </script>
 
 </body>
 </html>
