@@ -266,8 +266,8 @@ class qval02_controller extends Controller
         return DB::table($firma.'QVAL10E as e')
             ->leftJoin($firma.'QVAL10T as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
             ->where('e.KRITERCODE_1', explode('|||', $request->KOD)[0])
-            ->orWhere('e.KRITERCODE_3', $request->KIRTER3)
+            ->where('e.KRITERCODE_2', $request->KIRTER2 ?? '')
+            ->where('e.KRITERCODE_3', $request->KIRTER3 ?? '')
             ->get();
-
     }
 }

@@ -766,6 +766,19 @@
                                     </tr>
 
                                     <tr>
+                                      <td>Planlanmış işler</td>
+                                      <td><input type="checkbox" class="yetki_read" id="PLNIS_read"
+                                          name="yetki_read[]" value="PLNIS" @php if (in_array('PLNIS', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="PLNIS_write"
+                                          name="yetki_write[]" value="PLNIS" @php if (in_array('PLNIS', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="PLNIS_delete"
+                                          name="yetki_delete[]" value="PLNIS" @php if (in_array('PLNIS', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+
+                                    <tr>
                                       <td>Barkod</td>
                                       <td><input type="checkbox" class="yetki_read" id="BRKD_read" name="yetki_read[]"
                                           value="BRKD" @php if (in_array('BRKD', $kullanici_read_yetkileri))
