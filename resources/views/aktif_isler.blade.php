@@ -115,7 +115,7 @@
 
           <!-- Stok Bilgisi -->
           <div class="mb-4">
-            <div class="flex justif-between">
+            <div class="flex justify-between">
                 <div>
                     <div class="text-gray-900 text-lg font-bold mb-1">{{ $is->STOK_CODE }}</div>
                     <div class="text-gray-600 text-sm leading-relaxed line-clamp-2">

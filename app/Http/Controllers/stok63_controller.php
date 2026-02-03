@@ -533,9 +533,9 @@ class stok63_controller extends Controller
           }
 
           if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
-            $KAYITLI_SF_MIKTAR = DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
+            $KAYITLI_SF_MIKTAR = DB::table($firma.'stok63t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->first();
 
-            if($KAYITLI_SF_MIKTAR != $SF_MIKTAR[$i])
+            if($KAYITLI_SF_MIKTAR->SF_MIKTAR != $SF_MIKTAR[$i] || $KAYITLI_SF_MIKTAR->AMBCODE != $TARGETAMBCODE)
             {
               $sorgu = DB::table($firma.'stok10a as s10')
               ->leftJoin($firma.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
@@ -590,9 +590,9 @@ class stok63_controller extends Controller
               ->first();
               $kontrol = $sorgu->MIKTAR ?? 0;
               
-              if($SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR)
+              if($SF_MIKTAR[$i] > $KAYITLI_SF_MIKTAR->SF_MIKTAR)
               {
-                  $SONUC = $SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR;
+                  $SONUC = $SF_MIKTAR[$i] - $KAYITLI_SF_MIKTAR->SF_MIKTAR;
                   if($SONUC > $kontrol)
                   {
                       return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
@@ -600,7 +600,7 @@ class stok63_controller extends Controller
               }
               else
               {
-                  $SONUC = $KAYITLI_SF_MIKTAR - $SF_MIKTAR[$i];
+                  $SONUC = $KAYITLI_SF_MIKTAR->SF_MIKTAR - $SF_MIKTAR[$i];
                   if($SONUC < $kontrol)
                   {
                       return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
@@ -653,7 +653,7 @@ class stok63_controller extends Controller
                 'NUM1' => $NUM1[$i],
                 'NUM2' => $NUM2[$i],
                 'NUM3' => $NUM3[$i],
-                'NUM4' => $NUM4[$i],
+                'NUM4' => $NUM4[$i], 
                 'TARIH' => $TARIH,
                 'STOK_MIKTAR' => $SF_MIKTAR[$i],
                 'AMBCODE' => $TARGETAMBCODE,
