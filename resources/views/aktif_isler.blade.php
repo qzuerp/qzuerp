@@ -8,6 +8,11 @@
     ->leftJoin($firma.'sfdc31e as S31E', 'I00.KOD', '=', 'S31E.TO_ISMERKEZI')
     ->leftJoin($firma.'sfdc31t as S31T', 'S31E.EVRAKNO', '=', 'S31T.EVRAKNO')
     ->leftJoin($firma.'stok00 as S00', 'S31E.STOK_CODE', '=', 'S00.KOD')
+    ->leftJoin($firma.'dosyalar00 as D00', function ($join) {
+    $join->on('D00.EVRAKNO', '=', 'S00.KOD')
+         ->where('D00.EVRAKTYPE', 'STOK00')
+         ->where('D00.DOSYATURU', 'GORSEL');
+    })
     ->whereNull('S31T.BITIS_TARIHI')
     ->whereNotNull('S31E.STOK_CODE')
     ->whereNotNull('S31T.EVRAKNO')
@@ -15,7 +20,8 @@
         'S00.AD as STOK_AD',
         'I00.AD as TEZGAH_AD',
         'S31E.*',
-        'S31T.*'
+        'S31T.*',
+        'D00.DOSYA'
     )
     ->get();
 
@@ -109,9 +115,17 @@
 
           <!-- Stok Bilgisi -->
           <div class="mb-4">
-            <div class="text-gray-900 text-lg font-bold mb-1">{{ $is->STOK_CODE }}</div>
-            <div class="text-gray-600 text-sm leading-relaxed line-clamp-2">
-              {{ $is->STOK_AD ?? 'Stok bilgisi yok' }}
+            <div class="flex justif-between">
+                <div>
+                    <div class="text-gray-900 text-lg font-bold mb-1">{{ $is->STOK_CODE }}</div>
+                    <div class="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                        {{ $is->STOK_AD ?? 'Stok bilgisi yok' }}
+                    </div>
+                </div>
+                
+                <div>
+                    <img src="{{ isset($is->DOSYA) ? asset('dosyalar/'.$is->DOSYA) : '' }}" alt="" id="kart_img" width="100">
+                </div>
             </div>
           </div>
 

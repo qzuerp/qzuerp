@@ -409,7 +409,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					d.STOK_ADI ?? '',
 					d.NAME2 ?? '',
 					d.REVNO ?? '',
-					d.MIKTAR ?? '',
+					d.MIKTAR.toFixed(2) ?? '',
 					d.SF_SF_UNIT ?? '',
 					d.LOTNUMBER ?? '',
 					d.SERINO ?? '',
