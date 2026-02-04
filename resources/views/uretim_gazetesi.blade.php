@@ -75,7 +75,7 @@ if ($mps_no !== '') {
     $params1[] = $like($mps_no);
 }
 
-$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . ' AND S40T.AK IS NULL';
+$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . " AND S40T.AK != 'K'";
 
 // İkinci SELECT (UNION ALL kısmı) için WHERE koşulları
 $where2 = ['S40.AK IS NULL'];
@@ -117,7 +117,7 @@ if ($mps_no !== '') {
     $where3[] = 'M10T.EVRAKNO LIKE ?';
     $params3[] = $like($mps_no);
 }
-
+// $where3[] = 'S40T.AK != K';
 $whereSql3 = 'WHERE ' . implode(' AND ', $where3);
 // Tüm parametreleri birleştir
 $params = array_merge($params1, $params2,$params3);
@@ -866,7 +866,7 @@ usort($groups, function($a, $b) {
                         <th class="num">Sipariş Miktarı</th>
                         <th class="num">Üretilen Miktar</th>
                         <th class="num">Sipariş Bakiyesi</th>
-                         <th>Fason</th>
+                        <th>Fason</th>
                         <?php if (isset($ops)): foreach ($ops as $op): ?>
                             <th><?= htmlspecialchars($op) ?></th>
                         <?php endforeach; endif; ?>

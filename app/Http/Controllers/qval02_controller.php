@@ -263,11 +263,19 @@ class qval02_controller extends Controller
         $kod = explode('|||', $request->KOD)[0] ?? null;
         $tedarikci = $request->TEDARIKCI ?? null;
 
-        return DB::table($firma.'QVAL10E as e')
-            ->leftJoin($firma.'QVAL10T as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
-            ->where('e.KRITERCODE_1', explode('|||', $request->KOD)[0])
-            ->where('e.KRITERCODE_2', $request->KIRTER2 ?? '')
-            ->where('e.KRITERCODE_3', $request->KIRTER3 ?? '')
-            ->get();
+        $query = DB::table($firma.'QVAL10E as e')
+        ->leftJoin($firma.'QVAL10T as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
+        ->where('e.KRITERCODE_1', explode('|||', $request->KOD)[0]);
+    
+        if (!empty($request->KIRTER2)) {
+            $query->where('e.KRITERCODE_2', $request->KIRTER2);
+        }
+        
+        if (!empty($request->KIRTER3)) {
+            $query->where('e.KRITERCODE_3', $request->KIRTER3);
+        }
+        
+        return $query->get();
+    
     }
 }

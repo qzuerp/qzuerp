@@ -234,18 +234,12 @@
 
 										<div class="nav-tabs-custom">
 											<ul class="nav nav-tabs">
-												<li class="nav-item" id="irsaliyeTab"><a href="#irsaliye" class="nav-link"
-														data-bs-toggle="tab"><i class="fa fa-file-text"
-															style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
-												<li class=""><a href="#siparis" id="siparisTab" class="nav-link"
-														data-bs-toggle="tab"><i class="fa fa-filter"
-															style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
-												<li class=""><a href="#liste" class="nav-link"
-														data-bs-toggle="tab">Liste</a></li>
-												<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar"
-														id="baglantiliDokumanlarTabButton" class="nav-link"
-														data-bs-toggle="tab"><i style="color: orange"
-															class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+												<li class="nav-item" id="irsaliyeTab"><a href="#irsaliye" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
+															
+												<li class="nav-item {{ in_array('SAIF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
+												<li class="nav-item"><a href="#siparis" id="siparisTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
+												<li class="nav-item"><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+												<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 											</ul>
 
 											<div class="tab-content">
@@ -253,11 +247,8 @@
 												<div class="active tab-pane" id="irsaliye">
 
 													<div class="col my-2">
-														<button type="button" class="btn btn-default delete-row"
-															id="deleteRow"><i class="fa fa-minus"
-																style="color: red"></i>Seçili Satırları Sil</button>
+														<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
 													</div>
-
 
 													<table class="table table-bordered text-center" id="veriTable"
 														style="overflow:visible;border-radius:10px">
@@ -272,8 +263,6 @@
 																<th>Lot No</th>
 																<th>Seri No</th>
 																<th>İşlem Mik.</th>
-																<th>Fiyat</th>
-																<th style="min-width: 120px;">Para Birimi</th>
 																<th>İşlem Br.</th>
 																<th>Not</th>
 																<th style="min-width: 120px;">MPS Kodu</th>
@@ -361,28 +350,6 @@
 																		id="SF_MIKTAR_FILL" data-bs-toggle="tooltip"
 																		data-bs-placement="top" data-bs-title="SF_MIKTAR"
 																		class="form-control number SF_MIKTAR">
-																</td>
-																<td style="min-width: 150px">
-																	<input tmaxlength="28" style="color: red" type="number"
-																		data-name="FIYAT" name="FIYAT" id="FIYAT_SHOW"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="FIYAT"
-																		class="form-control number FIYAT">
-																</td>
-																<td>
-																	<select name="" id="FIYAT_PB" data-bs-toggle="tooltip"
-																		data-bs-placement="top" data-bs-title="FIYAT_PB"
-																		class="form-control js-example-basic-single FIYAT_PB"
-																		data-name="FIYAT_PB"
-																		style="width: 100%; border-radius: 5px;">
-																		<option value="">Seç</option>
-																		@php
-																			$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-																			foreach ($kur_veri as $key => $veri) {
-																				echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-																			}
-																		@endphp
-																	</select>
 																</td>
 																<td style="min-width: 150px">
 																	<input maxlength="6 " style="color: red" type="text"
@@ -541,25 +508,6 @@
 																	<td><input type="number" class="form-control number"
 																			name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
 																	</td>
-																	<td><input type="number" class="form-control number"
-																			name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-																	<td>
-																		<select name="FIYAT_PB[]" id="FIYAT_PB"
-																			class="form-control js-example-basic-single select2 "
-																			style="width: 100%; border-radius: 5px;">
-																			<option value=" ">Seç</option>
-																			@php
-																				$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-																				foreach ($kur_veri as $key => $value) {
-																					if ($value->KOD == @$veri->FIYAT_PB) {
-																						echo "<option value='" . $value->KOD . "' selected>" . $value->KOD . " - " . $value->AD . "</option>";
-																					} else {
-																						echo "<option value='" . $value->KOD . "'>" . $value->KOD . " - " . $value->AD . "</option>";
-																					}
-																				}
-																			@endphp
-																		</select>
-																	</td>
 																	<td><input type="text" class="form-control"
 																			name="SF_SF_UNIT_SHOW_T"
 																			value="{{ $veri->SF_SF_UNIT }}" disabled><input
@@ -627,7 +575,75 @@
 														</tbody>
 													</table>
 												</div>
+												@if(in_array('SAIF',$kullanici_read_yetkileri))
+													<div id="fiyatlar" style="display:none;" class="tab_pane">
+														<table class="table table-bordered text-center" id="fiyat_table"
+															style="overflow:visible;border-radius:10px">
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th style="display:none;">Sıra</th>
+																	<th style="min-width:220px;">Stok Kodu</th>
+																	<th>Stok Adı</th>
+																	<th>İşlem Mik.</th>
+																	<th>Fiyat</th>
+																	<th style="min-width: 120px;">Para Birimi</th>
+																	<th>İşlem Br.</th>
+																	<th>Not</th>
+																	<th>#</th>
+																</tr>
+															</thead>
 
+															<tbody>
+																@foreach ($t_kart_veri as $key => $veri)
+																	<tr>
+																		<!-- <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
+																		<td>
+																			@include('components.detayBtn', ['KOD' => $veri->KOD])
+																		</td>
+																		<td><input type="text" class="form-control"
+																				name="KOD_SHOW_T" value="{{ $veri->KOD }}"
+																				disabled><input type="hidden" class="form-control"
+																				value="{{ $veri->KOD }}"></td>
+																		<td><input type="text" class="form-control"
+																				name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}"
+																				disabled><input type="hidden" class="form-control"
+																				value="{{ $veri->STOK_ADI }}">
+																		</td>
+																		<td><input type="number" class="form-control number"
+																				readonly value="{{ $veri->SF_MIKTAR }}">
+																		</td>
+																		<td><input type="number" class="form-control number"
+																				name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
+																		<td>
+																			<select name="FIYAT_PB[]" id="FIYAT_PB"
+																				class="form-control js-example-basic-single select2 "
+																				style="width: 100%; border-radius: 5px;">
+																				<option value=" ">Seç</option>
+																				@php
+																					$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+																					foreach ($kur_veri as $key => $value) {
+																						if ($value->KOD == @$veri->FIYAT_PB) {
+																							echo "<option value='" . $value->KOD . "' selected>" . $value->KOD . " - " . $value->AD . "</option>";
+																						} else {
+																							echo "<option value='" . $value->KOD . "'>" . $value->KOD . " - " . $value->AD . "</option>";
+																						}
+																					}
+																				@endphp
+																			</select>
+																		</td>
+																		<td><input type="text" class="form-control"
+																				name="SF_SF_UNIT_SHOW_T"
+																				value="{{ $veri->SF_SF_UNIT }}" disabled>
+																		</td>
+																		<td><input type="text" class="form-control" readonly
+																				value="{{ $veri->NOT1 }}"></td>
+																		</tr>
+																@endforeach
+															</tbody>
+														</table>
+													</div>
+												@endif
 												<div class="tab-pane" id="siparis">
 													<div class="row mb-2">
 														<div class="col-md-4">

@@ -513,6 +513,18 @@
                                           echo " checked" @endphp></td>
                                     </tr>
                                     <tr>
+                                      <td>Satın Alma İrsaliyesi Fiyatlar</td>
+                                      <td><input type="checkbox" class="yetki_read" id="satinalmairsaliyesi_read"
+                                          name="yetki_read[]" value="SAIF" @php if (in_array('SAIF', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="satinalmairsaliyesi_write"
+                                          name="yetki_write[]" value="SAIF" @php if (in_array('SAIF', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="satinalmairsaliyesi_delete"
+                                          name="yetki_delete[]" value="SAIF" @php if (in_array('SAIF', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
+                                    <tr>
                                       <td>Satın Alma Siparişi</td>
                                       <td><input type="checkbox" class="yetki_read" id="satinalmasiparisi_read"
                                           name="yetki_read[]" value="SATINALMSIP" @php if (in_array('SATINALMSIP', $kullanici_read_yetkileri))

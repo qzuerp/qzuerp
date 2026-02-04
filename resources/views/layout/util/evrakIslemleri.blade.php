@@ -121,11 +121,6 @@
   .evrak-btn:hover::after {
     opacity: 1;
   }
-  
-  /* Hidden elements için display kontrolü */
-  [style*="display: none"] {
-    display: none !important;
-  }
 </style>
 
 <div class="evrak-toolbar">

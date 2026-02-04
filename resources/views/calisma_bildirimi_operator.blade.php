@@ -243,12 +243,11 @@
                     </div>
 
                     <div class="col-md-2 col-sm-4 col-xs-6">
-                      <button type="button" class="btn btn-primary sablonGetirBtn" data-kod="{{ @$kart_veri->STOK_CODE }}" data-bs-toggle="modal" data-bs-target="#modal_gkk" type="button">
-                        Prosess Kalite Kontrol
-                      </button>                    
+                      <button type="button" class="btn btn-primary sablonGetirBtn mt-4" data-kod="{{ @$kart_veri->STOK_CODE }}" data-bs-toggle="modal" data-bs-target="#modal_gkk" type="button">
+                          <i class="fa-solid fa-clipboard-check" style="color: green;"></i>
+                      </button>
                     </div>
                     
-
                     <div>
                       @php
                         $surecB = DB::table($ekranTableT)
@@ -1008,7 +1007,7 @@
 				aria-labelledby="modal_gkk">
 				<div class="modal-dialog modal-xl">
 					<div class="modal-content">
-						<form action="stok29_kalite_kontrolu" method="post">
+						<form action="sfdc31_kalite_kontrolu" method="post">
 							@csrf
 							<div class="modal-header">
 								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check'
@@ -1027,13 +1026,13 @@
 													id="ISLEM_KODU" name="ISLEM_KODU"></div>
 											<div><strong>Adı</strong> <input type='text' readonly class="form-control"
 													id="ISLEM_ADI" name="ISLEM_ADI"></div>
-											<div><strong>Lot</strong> <input type='text' readonly class="form-control"
+											<!-- <div><strong>Lot</strong> <input type='text' readonly class="form-control"
 													id="ISLEM_LOTU" name="ISLEM_LOTU"></div>
 											<div><strong>Seri</strong> <input type='text' readonly class="form-control"
 													id="ISLEM_SERI" name="ISLEM_SERI"></div>
 											<div><strong>Miktar</strong> <input type='text' readonly class="form-control"
 													id="ISLEM_MIKTARI" name="ISLEM_MIKTARI"></div>
-											<input type="hidden" id='TEDARIKCI' name="TEDARIKCI">
+											<input type="hidden" id='TEDARIKCI' name="TEDARIKCI"> -->
 										</div>
 									</div>
 								</div>
@@ -3006,10 +3005,10 @@
 
           $('#ISLEM_KODU').val(KOD);
           $('#ISLEM_ADI').val(adValues[currentIndex]);
-          $('#ISLEM_LOTU').val(lotValues[currentIndex]);
-          $('#ISLEM_SERI').val(seriValues[currentIndex]);
-          $('#ISLEM_MIKTARI').val(miktarValues[currentIndex]);
-          $('#TEDARIKCI').val(KIRTER3);
+          // $('#ISLEM_LOTU').val(lotValues[currentIndex]);
+          // $('#ISLEM_SERI').val(seriValues[currentIndex]);
+          // $('#ISLEM_MIKTARI').val(miktarValues[currentIndex]);
+          // $('#TEDARIKCI').val(KIRTER3);
 
           $.ajax({
             url: '/sablonGetir',
@@ -3045,8 +3044,6 @@
                 htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
                 htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
 
-
-
                 htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
                 htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
                 htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
@@ -3056,7 +3053,7 @@
                 htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
                 htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
                 htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
-                htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ $kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM[${rowIndex}]" value="${trnumValues[rowIndex] ?? ''}">`;
+                htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM" value="{{@$kart_veri->JOBNO ?? ''}}">`;
 
                 let durum = veri.DURUM ?? '';
                 htmlCode += `<td>

@@ -304,6 +304,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('surec_kontrolu', [calisma_bildirimi_controller::class, 'surec_kontrolu']);
     Route::post('sfdc31_e_islemler', [calisma_bildirimi_controller::class, 'islemler']);
     Route::post('sfdc31_getMPSToEvrak', [calisma_bildirimi_controller::class, 'getMPSToEvrak']);
+    Route::post('sfdc31_kalite_kontrolu', [calisma_bildirimi_controller::class, 'kalite_kontrolu']);
 
     /*
     |--------------------------------------------------------------------------
@@ -538,4 +539,14 @@ Route::group(['middleware' => ['auth']], function() {
     */
     Route::get('/periyodikBakim', [srvbs0_controller::class, 'index']);
     Route::post('/srvbs0_islemler', [srvbs0_controller::class, 'islemler']);
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Çalışma Takvimi
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/calismaTakvimi', function(){ return view('calisma_takvimi'); });
+    Route::post('/calisma-takvimi/kaydet', [CalismaTakvimiController::class, 'kaydet'])->name('calismaTakvimi.kaydet');
+
 });

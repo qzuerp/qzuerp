@@ -1369,7 +1369,7 @@
 
 												<div class="tab-pane" id="bagliDokumanlar">
 													@php
-														$mamul = $kart_veri->MAMULSTOKKODU;
+														$mamul = @$kart_veri->MAMULSTOKKODU;
 														$dosyalar = DB::table($database.'dosyalar00')->where('EVRAKNO', $mamul)->get();
 													@endphp
 
