@@ -575,75 +575,73 @@
 														</tbody>
 													</table>
 												</div>
-												@if(in_array('SAIF',$kullanici_read_yetkileri))
-													<div id="fiyatlar" style="display:none;" class="tab_pane">
-														<table class="table table-bordered text-center" id="fiyat_table"
-															style="overflow:visible;border-radius:10px">
-															<thead>
-																<tr>
-																	<th>#</th>
-																	<th style="display:none;">Sıra</th>
-																	<th style="min-width:220px;">Stok Kodu</th>
-																	<th>Stok Adı</th>
-																	<th>İşlem Mik.</th>
-																	<th>Fiyat</th>
-																	<th style="min-width: 120px;">Para Birimi</th>
-																	<th>İşlem Br.</th>
-																	<th>Not</th>
-																	<th>#</th>
-																</tr>
-															</thead>
+												<div id="fiyatlar" style="display:none;" class="tab_pane">
+													<table class="table table-bordered text-center" id="fiyat_table"
+														style="overflow:visible;border-radius:10px">
+														<thead>
+															<tr>
+																<th>#</th>
+																<th style="display:none;">Sıra</th>
+																<th style="min-width:220px;">Stok Kodu</th>
+																<th>Stok Adı</th>
+																<th>İşlem Mik.</th>
+																<th>Fiyat</th>
+																<th style="min-width: 120px;">Para Birimi</th>
+																<th>İşlem Br.</th>
+																<th>Not</th>
+																<th>#</th>
+															</tr>
+														</thead>
 
-															<tbody>
-																@foreach ($t_kart_veri as $key => $veri)
-																	<tr>
-																		<!-- <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
-																		<td>
-																			@include('components.detayBtn', ['KOD' => $veri->KOD])
-																		</td>
-																		<td><input type="text" class="form-control"
-																				name="KOD_SHOW_T" value="{{ $veri->KOD }}"
-																				disabled><input type="hidden" class="form-control"
-																				value="{{ $veri->KOD }}"></td>
-																		<td><input type="text" class="form-control"
-																				name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}"
-																				disabled><input type="hidden" class="form-control"
-																				value="{{ $veri->STOK_ADI }}">
-																		</td>
-																		<td><input type="number" class="form-control number"
-																				readonly value="{{ $veri->SF_MIKTAR }}">
-																		</td>
-																		<td><input type="number" class="form-control number"
-																				name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-																		<td>
-																			<select name="FIYAT_PB[]" id="FIYAT_PB"
-																				class="form-control js-example-basic-single select2 "
-																				style="width: 100%; border-radius: 5px;">
-																				<option value=" ">Seç</option>
-																				@php
-																					$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-																					foreach ($kur_veri as $key => $value) {
-																						if ($value->KOD == @$veri->FIYAT_PB) {
-																							echo "<option value='" . $value->KOD . "' selected>" . $value->KOD . " - " . $value->AD . "</option>";
-																						} else {
-																							echo "<option value='" . $value->KOD . "'>" . $value->KOD . " - " . $value->AD . "</option>";
-																						}
+														<tbody>
+															@foreach ($t_kart_veri as $key => $veri)
+																<tr>
+																	<!-- <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td> -->
+																	<td>
+																		@include('components.detayBtn', ['KOD' => $veri->KOD])
+																	</td>
+																	<td><input type="text" class="form-control"
+																			name="KOD_SHOW_T" value="{{ $veri->KOD }}"
+																			disabled><input type="hidden" class="form-control"
+																			value="{{ $veri->KOD }}"></td>
+																	<td><input type="text" class="form-control"
+																			name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}"
+																			disabled><input type="hidden" class="form-control"
+																			value="{{ $veri->STOK_ADI }}">
+																	</td>
+																	<td><input type="number" class="form-control number"
+																			readonly value="{{ $veri->SF_MIKTAR }}">
+																	</td>
+																	<td><input type="number" class="form-control number"
+																			name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
+																	<td>
+																		<select name="FIYAT_PB[]" id="FIYAT_PB"
+																			class="form-control js-example-basic-single select2 "
+																			style="width: 100%; border-radius: 5px;">
+																			<option value=" ">Seç</option>
+																			@php
+																				$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+																				foreach ($kur_veri as $key => $value) {
+																					if ($value->KOD == @$veri->FIYAT_PB) {
+																						echo "<option value='" . $value->KOD . "' selected>" . $value->KOD . " - " . $value->AD . "</option>";
+																					} else {
+																						echo "<option value='" . $value->KOD . "'>" . $value->KOD . " - " . $value->AD . "</option>";
 																					}
-																				@endphp
-																			</select>
-																		</td>
-																		<td><input type="text" class="form-control"
-																				name="SF_SF_UNIT_SHOW_T"
-																				value="{{ $veri->SF_SF_UNIT }}" disabled>
-																		</td>
-																		<td><input type="text" class="form-control" readonly
-																				value="{{ $veri->NOT1 }}"></td>
-																		</tr>
-																@endforeach
-															</tbody>
-														</table>
-													</div>
-												@endif
+																				}
+																			@endphp
+																		</select>
+																	</td>
+																	<td><input type="text" class="form-control"
+																			name="SF_SF_UNIT_SHOW_T"
+																			value="{{ $veri->SF_SF_UNIT }}" disabled>
+																	</td>
+																	<td><input type="text" class="form-control" readonly
+																			value="{{ $veri->NOT1 }}"></td>
+																	</tr>
+															@endforeach
+														</tbody>
+													</table>
+												</div>
 												<div class="tab-pane" id="siparis">
 													<div class="row mb-2">
 														<div class="col-md-4">
@@ -1538,8 +1536,8 @@
 				htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + satirEkleInputs.LOTNUMBER_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='" + satirEkleInputs.SERINO_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='SF_MIKTAR[]' value='" + satirEkleInputs.SF_MIKTAR_FILL + "'></td> ";
-				htmlCode += " <td><input type='text' class='form-control number' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_SHOW + "'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB + "' readonly></td> ";
+				// htmlCode += " <td><input type='text' class='form-control number' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_SHOW + "'></td> ";
+				// htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='" + satirEkleInputs.FIYAT_PB + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + satirEkleInputs.SF_SF_UNIT_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='NOT1[]'  value='" + satirEkleInputs.NOT1_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='MPS_KODU[]' readonly value='" + satirEkleInputs.MPS_KODU + "'></td> ";

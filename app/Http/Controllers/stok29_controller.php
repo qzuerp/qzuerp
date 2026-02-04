@@ -199,8 +199,8 @@ class stok29_controller extends Controller
             'TRNUM' => $TRNUM[$i],
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
-            // 'LOTNUMBER' => $LOTNUMBER[$i],
-            // 'SERINO' => $SERINO[$i],
+            'LOTNUMBER' => $LOTNUMBER[$i],
+            'SERINO' => $SERINO[$i],
             'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'MPS_KODU' => $MPS_KODU[$i],
@@ -220,8 +220,8 @@ class stok29_controller extends Controller
             'SIPNO' => $SIPNO[$i],
             'SIPARTNO' => $SIPARTNO[$i],
             'created_at' => date('Y-m-d H:i:s'),
-            'FIYAT' => $FIYAT[$i],
-            'FIYAT_PB' => $FIYAT_PB[$i],
+            'FIYAT' => $FIYAT[$i] ?? 0,
+            'FIYAT_PB' => $FIYAT_PB[$i] ?? 0,
           ]);
 
           if (!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
@@ -353,10 +353,10 @@ class stok29_controller extends Controller
             'NUM4' => $NUM4[$i],
             'NOT1' => $NOT1[$i],
             'SIPNO' => $SIPNO[$i],
-            'FIYAT' => $FIYAT[$i],
+            'FIYAT' => $FIYAT[$i] ?? 0,
             'SIPARTNO' => $SIPARTNO[$i],
             'created_at' => date('Y-m-d H:i:s'),
-            'FIYAT_PB' => $FIYAT_PB[$i]
+            'FIYAT_PB' => $FIYAT_PB[$i] ?? 0
           ]);
 
           if (!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
