@@ -276,7 +276,7 @@
             margin-right: 8px;
             margin-bottom: 8px;
         }
-    </style>
+</style>
     <div class="content-wrapper">
         @include('layout.util.evrakContentHeader')
 		@include('layout.util.logModal', ['EVRAKTYPE' => 'TAKVIM0', 'EVRAKNO' => @$kart_veri->EVRAKNO])
@@ -327,6 +327,16 @@
                 <div class="tab-pane fade show active" id="monday" role="tabpanel">
                     <div class="work-mode-toggle">
                         <label>Çalışma Durumu</label>
+                        <div class="row mb-1">
+                            <div class="col-6">
+                                <label for="">EVRAKNO</label>
+                                <input type="text" class="form-control" id="EVRAKNO">
+                            </div>
+                            <div class="col-6">
+                                <label for="">AÇIKLAMA</label>
+                                <input type="text" class="form-control" id="ACIKLAMA">
+                            </div>
+                        </div>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="monday-mode" id="monday-working" value="working" checked>
                             <label class="btn btn-outline-success" for="monday-working">
@@ -816,6 +826,15 @@
                 'saturday': 'Cumartesi',
                 'sunday': 'Pazar'
             };
+            const dayDbFields = {
+                'monday': 'D01',
+                'tuesday': 'D02',
+                'wednesday': 'D03',
+                'thursday': 'D04',
+                'friday': 'D05',
+                'saturday': 'D06',
+                'sunday': 'D07'
+            };
 
             // Her gün için event listener'ları ekle
             days.forEach(function(day) {
@@ -913,23 +932,19 @@
             }
 
             window.saveCalendar = function() {
-                const calendarData = {
-                    days: {}
-                };
+                // Veritabanı kolonlarına göre veri hazırla
+                const calendarData = {};
 
-                days.forEach(function(day) {
+                days.forEach(function(day, index) {
                     const mode = $(`input[name="${day}-mode"]:checked`).val();
                     const start = $(`#${day}-start`).val();
                     const end = $(`#${day}-end`).val();
+                    const dbField = dayDbFields[day]; // D01, D02, ... D07
 
-                    calendarData.days[day] = {
-                        mode: mode,
-                        start: start,
-                        end: end,
-                        binaryString: generateBinaryString(start, end, mode),
-                        dayName: dayNames[day]
-                    };
+                    calendarData[dbField] = generateBinaryString(start, end, mode);
                 });
+
+                console.log('Veritabanına gönderilecek veri:', calendarData);
 
                 // Backend'e gönder
                 $.ajax({
@@ -937,7 +952,15 @@
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        takvim_data: JSON.stringify(calendarData)
+                        EVRAKNO: $('#EVRAKNO').val(),
+                        ACIKLAMA: $('#ACIKLAMA').val(),
+                        D01: calendarData.D01,
+                        D02: calendarData.D02,
+                        D03: calendarData.D03,
+                        D04: calendarData.D04,
+                        D05: calendarData.D05,
+                        D06: calendarData.D06,
+                        D07: calendarData.D07
                     },
                     beforeSend: function() {
                         Swal.fire({
@@ -1053,26 +1076,64 @@
             @endif
 
             function loadExistingData() {
-                // Backend'den gelen verileri yükle
+                // Backend'den gelen binary string'leri parse et
                 const existingData = @json($kart_veri ?? null);
                 
-                if (existingData && existingData.takvim_data) {
-                    const takvimData = typeof existingData.takvim_data === 'string' 
-                        ? JSON.parse(existingData.takvim_data) 
-                        : existingData.takvim_data;
-                    
-                    if (takvimData.days) {
-                        days.forEach(function(day) {
-                            const dayData = takvimData.days[day];
-                            if (dayData) {
-                                $(`#${day}-${dayData.mode}`).prop('checked', true).trigger('change');
-                                $(`#${day}-start`).val(dayData.start);
-                                $(`#${day}-end`).val(dayData.end);
-                                updateVisualTimeline(day);
+                if (existingData) {
+                    days.forEach(function(day, index) {
+                        const dbField = dayDbFields[day];
+                        const binaryString = existingData[dbField];
+                        
+                        if (binaryString) {
+                            // Binary string'den mode, start ve end'i çıkar
+                            const parsedData = parseBinaryString(binaryString);
+                            
+                            $(`#${day}-${parsedData.mode}`).prop('checked', true).trigger('change');
+                            
+                            if (parsedData.mode === 'working') {
+                                $(`#${day}-start`).val(parsedData.start);
+                                $(`#${day}-end`).val(parsedData.end);
                             }
-                        });
-                    }
+                            
+                            updateVisualTimeline(day);
+                        }
+                    });
                 }
+            }
+
+            function parseBinaryString(binaryString) {
+                // Tüm 0'lar ise tatil
+                if (binaryString === '0'.repeat(96)) {
+                    return { mode: 'off', start: '08:00', end: '18:00' };
+                }
+                
+                // Tüm 1'ler ise 24 saat
+                if (binaryString === '1'.repeat(96)) {
+                    return { mode: 'full', start: '00:00', end: '24:00' };
+                }
+                
+                // İlk 1'i bul (başlangıç)
+                const startSlot = binaryString.indexOf('1');
+                // Son 1'i bul (bitiş)
+                const endSlot = binaryString.lastIndexOf('1') + 1;
+                
+                if (startSlot === -1) {
+                    return { mode: 'off', start: '08:00', end: '18:00' };
+                }
+                
+                // Slot'tan saate çevir
+                const startMinutes = startSlot * 15;
+                const endMinutes = endSlot * 15;
+                
+                const startHour = Math.floor(startMinutes / 60);
+                const startMin = startMinutes % 60;
+                const endHour = Math.floor(endMinutes / 60);
+                const endMin = endMinutes % 60;
+                
+                const start = `${String(startHour).padStart(2, '0')}:${String(startMin).padStart(2, '0')}`;
+                const end = `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`;
+                
+                return { mode: 'working', start: start, end: end };
             }
         });
     </script>

@@ -60,6 +60,7 @@ use App\Http\Controllers\takip_controller;
 use App\Http\Controllers\stok_gecmisi_controller;
 use App\Http\Controllers\parametreler;
 use App\Http\Controllers\srvbs0_controller;
+use App\Http\Controllers\takvim0_controller;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -547,6 +548,6 @@ Route::group(['middleware' => ['auth']], function() {
     |--------------------------------------------------------------------------
     */
     Route::get('/calismaTakvimi', function(){ return view('calisma_takvimi'); });
-    Route::post('/calisma-takvimi/kaydet', [CalismaTakvimiController::class, 'kaydet'])->name('calismaTakvimi.kaydet');
+    Route::post('/calisma-takvimi/kaydet', [takvim0_controller::class, 'kaydet'])->name('calismaTakvimi.kaydet');
 
 });

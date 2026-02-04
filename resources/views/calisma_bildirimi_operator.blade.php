@@ -241,9 +241,8 @@
                         </span>
                       </div>                    
                     </div>
-
-                    <div class="col-md-2 col-sm-4 col-xs-6">
-                      <button type="button" class="btn btn-primary sablonGetirBtn mt-4" data-kod="{{ @$kart_veri->STOK_CODE }}" data-bs-toggle="modal" data-bs-target="#modal_gkk" type="button">
+                    <div class="col-md-2 col-sm-4 col-xs-6 d-none">
+                      <button type="button" class="btn btn-primary sablonGetirBtn" style="margin-top:28px;" data-kod="{{ @$kart_veri->STOK_CODE }}" data-bs-toggle="modal" data-bs-target="#modal_gkk" type="button">
                           <i class="fa-solid fa-clipboard-check" style="color: green;"></i>
                       </button>
                     </div>
