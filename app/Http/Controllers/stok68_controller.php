@@ -751,7 +751,7 @@ class stok68_controller extends Controller
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-G')->where('TRNUM',$deleteTRNUM)->delete();
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK68T-C')->where('TRNUM',$deleteTRNUM)->delete();
 
-          if($JOBNO[$i])
+          if(isset($JOBNO[$i]))
           {
             DB::table($firma.'mmps10t')
             ->where('JOBNO', $JOBNO[$i])

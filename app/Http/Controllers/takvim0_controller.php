@@ -15,11 +15,11 @@ class takvim0_controller extends Controller
             $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
             $database = trim($kullanici_veri->firma) . '.dbo.';
             
-            dd($request->all());
+            // dd($request->all());
             
-            DB::table($database . 'takvim0')->insert(
+            DB::table($database . 'TAKVM0E')->updateOrInsert(
+                ['EVRAKNO' => $request->EVRAKNO], // şart
                 [
-                    'EVRAKNO' => $request->EVRAKNNO,
                     'ACIKLAMA' => $request->ACIKLAMA,
                     'D01' => $request->D01,
                     'D02' => $request->D02,

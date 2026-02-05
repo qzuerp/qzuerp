@@ -20,17 +20,23 @@
 	$kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
 	// $evrakno = null;
+    if (isset($_GET['ID'])) {
+        $sonID = $_GET['ID'];
+    } else {
+        $lastRow = DB::table($database . $ekranTableE)
+            ->orderBy('ID', 'desc')
+            ->first();
 
-	// if (isset($_GET['evrakno'])) {
-	// 	$evrakno = $_GET['evrakno'];
-	// }
+        $sonID = $lastRow ? $lastRow->EVRAKNO : null;
+    }
 
-	// if (isset($_GET['ID'])) {
-	// 	$sonID = $_GET['ID'];
-	// } else {
-	// 	$sonID = DB::table($database . $ekranTableE)->min('id');
-	// }
-	// $kart_veri = DB::table($database . $ekranTableE)->where('id', $sonID)->first();
+    $kart_veri = null;
+    if ($sonID) {
+        $kart_veri = DB::table($database . $ekranTableE)
+            ->where('EVRAKNO', $sonID)
+            ->first();
+    }
+
 
 @endphp
 @section('content')
@@ -276,6 +282,77 @@
             margin-right: 8px;
             margin-bottom: 8px;
         }
+        .evrak-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+        }
+        
+        .evrak-btn:hover {
+            background: rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+        }
+        
+        .evrak-btn:active {
+            transform: translateY(0);
+        }
+        
+        .evrak-btn i {
+            font-size: 20px;
+        }
+        
+        .evrak-btn.nav-btn i {
+            color: #0d6efd;
+        }
+        
+        .evrak-btn.save-btn i {
+            color: #198754;
+        }
+        
+        .evrak-btn.cancel-btn i {
+            color: #fd7e14;
+        }
+        
+        .evrak-btn.new-btn i {
+            color: #6f42c1;
+        }
+        
+        .evrak-btn.delete-btn i {
+            color: #dc3545;
+        }
+        
+        .evrak-btn.info-btn i {
+            color: #0dcaf0;
+        }
+        
+        .evrak-btn.log-btn i {
+            color: #6c757d;
+        }
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 12px;
+            border-right: 1px solid #dee2e6;
+        }
+        
+        .action-group:first-child {
+            padding-left: 0;
+        }
+        
+        .action-group:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
 </style>
     <div class="content-wrapper">
         @include('layout.util.evrakContentHeader')
@@ -319,24 +396,66 @@
                         Pazar
                     </button>
                 </li>
+                <li class="nav-item ms-auto d-flex justify-content-center align-items-center gap-3" role="presentation">
+                    <div class="action-group">
+                        <a data-evrak-kontrol 
+                            href="@php if (isset($ilkEvrak)) { echo $ekranLink.'?ID='.$ilkEvrak; } else { echo '#'; } @endphp" 
+                            class="evrak-btn nav-btn" 
+                            title="İlk Kart">
+                            <i class="fa fa-angle-double-left"></i>
+                        </a>
+                        
+                        <a data-evrak-kontrol 
+                            href="@php if (isset($oncekiEvrak)) { echo $ekranLink.'?ID='.$oncekiEvrak; } else { echo '#'; } @endphp" 
+                            class="evrak-btn nav-btn" 
+                            title="Önceki Kart">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        
+                        <a data-evrak-kontrol 
+                            href="@php if (isset($sonrakiEvrak)) { echo $ekranLink.'?ID='.$sonrakiEvrak; } else { echo '#'; } @endphp" 
+                            class="evrak-btn nav-btn" 
+                            title="Sonraki Kart">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                        
+                        <a data-evrak-kontrol 
+                            href="@php if (isset($sonEvrak)) { echo $ekranLink.'?ID='.$sonEvrak; } else { echo '#'; } @endphp" 
+                            class="evrak-btn nav-btn" 
+                            title="Son Kart">
+                            <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                    <div class="">
+                        <button class="evrak-btn new-btn">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                        </button>
+                        <button class="evrak-btn save-btn" style="color: #198754;" onclick="saveCalendar()">
+                            <i class="fa fa-save"></i>
+                        </button>
+                        <button class="evrak-btn delete-btn" style="color: #198754;" >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </li>
             </ul>
 
+            <div class="row mb-1">
+                <div class="col-6">
+                    <label for="">EVRAKNO</label>
+                    <input type="text" class="form-control" id="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
+                </div>
+                <div class="col-6">
+                    <label for="">AÇIKLAMA</label>
+                    <input type="text" class="form-control" id="ACIKLAMA" value="{{ @$kart_veri->ACIKLAMA }}">
+                </div>
+            </div>
             <!-- Tab İçerikleri -->
             <div class="tab-content" id="dayTabsContent">
                 <!-- Pazartesi -->
                 <div class="tab-pane fade show active" id="monday" role="tabpanel">
                     <div class="work-mode-toggle">
                         <label>Çalışma Durumu</label>
-                        <div class="row mb-1">
-                            <div class="col-6">
-                                <label for="">EVRAKNO</label>
-                                <input type="text" class="form-control" id="EVRAKNO">
-                            </div>
-                            <div class="col-6">
-                                <label for="">AÇIKLAMA</label>
-                                <input type="text" class="form-control" id="ACIKLAMA">
-                            </div>
-                        </div>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="monday-mode" id="monday-working" value="working" checked>
                             <label class="btn btn-outline-success" for="monday-working">
@@ -804,12 +923,6 @@
                         <i class="bi bi-arrow-repeat"></i> Tüm Günlere Uygula
                     </button>
                 </div>
-                <div>
-                    <button class="btn btn-outline-secondary me-2">İptal</button>
-                    <button class="btn btn-primary" onclick="saveCalendar()">
-                        <i class="bi bi-check-lg"></i> Kaydet
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -836,35 +949,25 @@
                 'sunday': 'D07'
             };
 
-            // Her gün için event listener'ları ekle
-            days.forEach(function(day) {
-                // Mode değişikliği
-                $(`input[name="${day}-mode"]`).on('change', function() {
-                    updateDayMode(day, $(this).val());
-                });
-
-                // Saat değişikliği
-                $(`#${day}-start, #${day}-end`).on('change', function() {
-                    updateVisualTimeline(day);
-                });
-            });
-
             function updateDayMode(day, mode) {
                 const $timeArea = $(`#${day}-time-area`);
                 
                 if (mode === 'off') {
                     $timeArea.addClass('disabled');
-                    updateVisualTimeline(day, true);
+                    updateVisualTimeline(day, true, false);
                 } else if (mode === 'full') {
                     $timeArea.addClass('disabled');
                     updateVisualTimeline(day, false, true);
                 } else {
                     $timeArea.removeClass('disabled');
-                    updateVisualTimeline(day);
+                    updateVisualTimeline(day, false, false);
                 }
             }
 
-            function updateVisualTimeline(day, isOff = false, isFull = false) {
+            function updateVisualTimeline(day, isOff, isFull) {
+                isOff = isOff || false;
+                isFull = isFull || false;
+                
                 const $visual = $(`#${day}-visual`);
                 const startValue = $(`#${day}-start`).val();
                 const endValue = $(`#${day}-end`).val();
@@ -887,8 +990,13 @@
 
                 if (!startValue || !endValue) return;
 
-                const [startHour, startMin] = startValue.split(':').map(Number);
-                const [endHour, endMin] = endValue.split(':').map(Number);
+                const startParts = startValue.split(':');
+                const endParts = endValue.split(':');
+                
+                const startHour = parseInt(startParts[0]);
+                const startMin = parseInt(startParts[1]);
+                const endHour = parseInt(endParts[0]);
+                const endMin = parseInt(endParts[1]);
 
                 const startMinutes = startHour * 60 + startMin;
                 const endMinutes = endHour * 60 + endMin;
@@ -899,13 +1007,13 @@
                 $visual.css({
                     'left': leftPercent + '%',
                     'width': widthPercent + '%'
-                }).text(`${startValue} - ${endValue}`);
+                }).text(startValue + ' - ' + endValue);
             }
 
             window.setTime = function(day, start, end) {
                 $(`#${day}-start`).val(start);
                 $(`#${day}-end`).val(end);
-                updateVisualTimeline(day);
+                updateVisualTimeline(day, false, false);
             };
 
             function generateBinaryString(start, end, mode) {
@@ -917,8 +1025,13 @@
                     return '1'.repeat(96);
                 }
 
-                const [startHour, startMin] = start.split(':').map(Number);
-                const [endHour, endMin] = end.split(':').map(Number);
+                const startParts = start.split(':');
+                const endParts = end.split(':');
+                
+                const startHour = parseInt(startParts[0]);
+                const startMin = parseInt(startParts[1]);
+                const endHour = parseInt(endParts[0]);
+                const endMin = parseInt(endParts[1]);
 
                 const startSlot = Math.floor((startHour * 60 + startMin) / 15);
                 const endSlot = Math.floor((endHour * 60 + endMin) / 15);
@@ -935,11 +1048,11 @@
                 // Veritabanı kolonlarına göre veri hazırla
                 const calendarData = {};
 
-                days.forEach(function(day, index) {
+                days.forEach(function(day) {
                     const mode = $(`input[name="${day}-mode"]:checked`).val();
                     const start = $(`#${day}-start`).val();
                     const end = $(`#${day}-end`).val();
-                    const dbField = dayDbFields[day]; // D01, D02, ... D07
+                    const dbField = dayDbFields[day];
 
                     calendarData[dbField] = generateBinaryString(start, end, mode);
                 });
@@ -1016,12 +1129,12 @@
                 $(`#${activeTab}-${mode}`).prop('checked', true).trigger('change');
                 $(`#${activeTab}-start`).val(start);
                 $(`#${activeTab}-end`).val(end);
-                updateVisualTimeline(activeTab);
+                updateVisualTimeline(activeTab, false, false);
 
                 Swal.fire({
                     icon: 'success',
                     title: 'Başarılı',
-                    text: `${dayNames[previousDay]} günündeki ayarlar kopyalandı.`,
+                    text: dayNames[previousDay] + ' günündeki ayarlar kopyalandı.',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -1049,7 +1162,7 @@
                                 $(`#${day}-${mode}`).prop('checked', true).trigger('change');
                                 $(`#${day}-start`).val(start);
                                 $(`#${day}-end`).val(end);
-                                updateVisualTimeline(day);
+                                updateVisualTimeline(day, false, false);
                             }
                         });
                         
@@ -1063,43 +1176,6 @@
                     }
                 });
             };
-
-            // Sayfa yüklendiğinde tüm görselleri güncelle
-            days.forEach(function(day) {
-                const mode = $(`input[name="${day}-mode"]:checked`).val();
-                updateDayMode(day, mode);
-            });
-
-            // Mevcut verileri yükle (eğer düzenleme modundaysa)
-            @if(isset($kart_veri))
-                loadExistingData();
-            @endif
-
-            function loadExistingData() {
-                // Backend'den gelen binary string'leri parse et
-                const existingData = @json($kart_veri ?? null);
-                
-                if (existingData) {
-                    days.forEach(function(day, index) {
-                        const dbField = dayDbFields[day];
-                        const binaryString = existingData[dbField];
-                        
-                        if (binaryString) {
-                            // Binary string'den mode, start ve end'i çıkar
-                            const parsedData = parseBinaryString(binaryString);
-                            
-                            $(`#${day}-${parsedData.mode}`).prop('checked', true).trigger('change');
-                            
-                            if (parsedData.mode === 'working') {
-                                $(`#${day}-start`).val(parsedData.start);
-                                $(`#${day}-end`).val(parsedData.end);
-                            }
-                            
-                            updateVisualTimeline(day);
-                        }
-                    });
-                }
-            }
 
             function parseBinaryString(binaryString) {
                 // Tüm 0'lar ise tatil
@@ -1130,11 +1206,73 @@
                 const endHour = Math.floor(endMinutes / 60);
                 const endMin = endMinutes % 60;
                 
-                const start = `${String(startHour).padStart(2, '0')}:${String(startMin).padStart(2, '0')}`;
-                const end = `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`;
+                const start = String(startHour).padStart(2, '0') + ':' + String(startMin).padStart(2, '0');
+                const end = String(endHour).padStart(2, '0') + ':' + String(endMin).padStart(2, '0');
                 
                 return { mode: 'working', start: start, end: end };
             }
+
+            function loadExistingData() {
+                // Backend'den gelen binary string'leri parse et
+                const existingData = {
+                    D01: '{{ $kart_veri->D01 ?? "" }}',
+                    D02: '{{ $kart_veri->D02 ?? "" }}',
+                    D03: '{{ $kart_veri->D03 ?? "" }}',
+                    D04: '{{ $kart_veri->D04 ?? "" }}',
+                    D05: '{{ $kart_veri->D05 ?? "" }}',
+                    D06: '{{ $kart_veri->D06 ?? "" }}',
+                    D07: '{{ $kart_veri->D07 ?? "" }}'
+                };
+                
+                console.log('Yüklenen veri:', existingData);
+                
+                days.forEach(function(day) {
+                    const dbField = dayDbFields[day];
+                    const binaryString = existingData[dbField];
+                    
+                    console.log(day + ' için binary:', binaryString);
+                    
+                    if (binaryString && binaryString.length === 96) {
+                        // Binary string'den mode, start ve end'i çıkar
+                        const parsedData = parseBinaryString(binaryString);
+                        
+                        console.log(day + ' parsed data:', parsedData);
+                        
+                        $(`#${day}-${parsedData.mode}`).prop('checked', true);
+                        
+                        if (parsedData.mode === 'working') {
+                            $(`#${day}-start`).val(parsedData.start);
+                            $(`#${day}-end`).val(parsedData.end);
+                        }
+                        
+                        updateDayMode(day, parsedData.mode);
+                    }
+                });
+            }
+
+            // Her gün için event listener'ları ekle
+            days.forEach(function(day) {
+                // Mode değişikliği
+                $(`input[name="${day}-mode"]`).on('change', function() {
+                    updateDayMode(day, $(this).val());
+                });
+
+                // Saat değişikliği
+                $(`#${day}-start, #${day}-end`).on('change', function() {
+                    updateVisualTimeline(day, false, false);
+                });
+            });
+
+            // Sayfa yüklendiğinde tüm görselleri güncelle
+            days.forEach(function(day) {
+                const mode = $(`input[name="${day}-mode"]:checked`).val();
+                updateDayMode(day, mode);
+            });
+
+            // Mevcut verileri yükle (eğer düzenleme modundaysa)
+            @if(isset($kart_veri) && $kart_veri)
+                loadExistingData();
+            @endif
         });
     </script>
 @endsection

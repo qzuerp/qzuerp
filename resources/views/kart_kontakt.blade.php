@@ -1179,20 +1179,22 @@
 
            </script>
 
-					 <script>
+			<script>
+				$($document).ready(function () {
+					cariBilgileriGetir($('#SIRKET_CH_KODU_SHOW').val());
+				});
+				function cariBilgileriGetir(veri) {
 
-					 function cariBilgileriGetir(veri) {
+				const veriler = veri.split("|||");
 
-					  const veriler = veri.split("|||");
+					$('#SIRKET_CH_KODU').val(veriler[0]);
+					$('#SIRKET_ADI').val(veriler[1]);
+					$('#TELEFONNO_1').val(veriler[2]);
+					$('#FAXNO').val(veriler[3]);
 
-					 	$('#SIRKET_CH_KODU').val(veriler[0]);
-					  $('#SIRKET_ADI').val(veriler[1]);
-					 	$('#TELEFONNO_1').val(veriler[2]);
-						$('#FAXNO').val(veriler[3]);
+				}
 
-					 }
-
-					 </script>
+			</script>
 
 @endsection
 

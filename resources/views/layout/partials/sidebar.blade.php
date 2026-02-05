@@ -241,6 +241,9 @@
         @if (in_array('KLBRSYNKARTI', $kullanici_read_yetkileri))
           <li><li><a href="kart_kalibrasyon"><i class='bx bx-ruler'></i>Bakım ve Kalibrasyon Kartı</a></li>
         @endif
+        @if (in_array('PRYBKM', $kullanici_read_yetkileri))
+          <li><li><a href="periyodikBakim"><i class='bx bx-ruler'></i>Periyodik Bakım</a></li>
+        @endif
       </ul>
     </li>
 
