@@ -87,6 +87,7 @@ class stok60_controller extends Controller
     $TRNUM = $request->TRNUM;
     $FIYAT = $request->FIYAT;
     $FIYAT_PB = $request->FIYAT_PB;
+    $IRSALIYE_NO = $request->IRSALIYE_NO;
     
     if ($KOD == null) 
     {
@@ -167,6 +168,7 @@ class stok60_controller extends Controller
           'CARIHESAPCODE' => $CARIHESAPCODE,
           'AK' => $AK,
           'LAST_TRNUM' => $LAST_TRNUM,
+          'IRSALIYE_NO' => $IRSALIYE_NO,
           'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -345,6 +347,7 @@ class stok60_controller extends Controller
           'CARIHESAPCODE' => $CARIHESAPCODE,
           'AK' => $AK,
           'LAST_TRNUM' => $LAST_TRNUM,
+          'IRSALIYE_NO' => $IRSALIYE_NO,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
 

@@ -111,8 +111,8 @@
 
                   <div class="row ">
                     <div class="col-md-2 col-sm-3 col-xs-6">
-                      <label>Fiş No</label>
-                      <input type="text" class="form-control EVRAKNO" maxlength="24" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW"  value="{{ @$kart_veri->EVRAKNO }}" disabled>
+                      <label>İrsaliye No</label>
+                      <input type="text" class="form-control" name="IRSALIYE_NO" id="IRSALIYE_NO" value="{{ @$kart_veri->IRSALIYE_NO }}">
                       <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
                     </div>
 
