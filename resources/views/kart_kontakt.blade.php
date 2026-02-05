@@ -1180,7 +1180,7 @@
            </script>
 
 			<script>
-				$($document).ready(function () {
+				$(document).ready(function () {
 					cariBilgileriGetir($('#SIRKET_CH_KODU_SHOW').val());
 				});
 				function cariBilgileriGetir(veri) {
