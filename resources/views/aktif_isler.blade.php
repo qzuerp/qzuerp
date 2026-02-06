@@ -24,7 +24,7 @@
         'S31T.*',
         'D00.DOSYA',
         'M10T.R_TMYMAMULMIKTAR',
-        'M10T.R_MIKTART',
+        'M10T.R_YMAMULMIKTAR',
     )
     ->get();
 
@@ -253,7 +253,7 @@
             <div class="text-gray-500 text-xs font-semibold uppercase">Job No</div>
             <div class="{{ $statusColor }} text-base font-bold mb-1">{{ $is->JOBNO }} - {{ $is->OPERASYON }}</div>
             <div class="text-gray-500 text-xs font-semibold  uppercase">Planlanan / Gerçekleşen Miktar</div>
-            <div class="{{ $statusColor }} text-base font-bold">{{ floor($is->R_MIKTART) }} - {{ floor($is->R_TMYMAMULMIKTAR) }}</div>
+            <div class="{{ $statusColor }} text-base font-bold">{{ floor($is->R_YMAMULMIKTAR) }} - {{ floor($is->R_TMYMAMULMIKTAR) }}</div>
           </div>
         </div>
 
