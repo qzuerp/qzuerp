@@ -70,6 +70,7 @@ class pers00_opt_controller extends Controller
     $GK_7 = $request->input('GK_7');
     $GK_8 = $request->input('GK_8');
     $GK_9 = $request->input('GK_9');
+    $GK_10 = $request->input('GK_10');
     $GK_11 = $request->input('GK_11');
     $GK_12 = $request->input('GK_12');
     $GK_13 = $request->input('GK_13');
