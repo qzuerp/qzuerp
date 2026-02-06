@@ -1875,7 +1875,7 @@
 
                       <div class="tab-pane" id="grupkodu">
                         <div class="row">
-                          @for($i = 1; $i <= 15; $i++)
+                          @for($i = 1; $i <= 20; $i++)
                             <div class="col-md-2 col-xs-4 col-sm-4">
                               @php
                                 $variable = 'GK' . $i . '_veri';
