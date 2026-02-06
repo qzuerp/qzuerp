@@ -9,6 +9,8 @@
     ->leftJoin($firma.'sfdc31t as S31T', 'S31E.EVRAKNO', '=', 'S31T.EVRAKNO')
     ->leftJoin($firma.'stok00 as S00', 'S31E.STOK_CODE', '=', 'S00.KOD')
     ->leftJoin($firma.'mmps10t as M10T', 'S31E.JOBNO', '=', 'M10T.JOBNO')
+    ->leftJoin($firma.'mmps10e as M10E', 'M10E.EVRAKNO', '=', 'M10T.EVRAKNO')
+    ->leftJoin($firma.'stok40e as S40E', 'M10E.SIPNO', '=', 'S40E.EVRAKNO')
     ->leftJoin($firma.'dosyalar00 as D00', function ($join) {
     $join->on('D00.EVRAKNO', '=', 'S00.KOD')
          ->where('D00.EVRAKTYPE', 'STOK00')
@@ -25,6 +27,7 @@
         'D00.DOSYA',
         'M10T.R_TMYMAMULMIKTAR',
         'M10T.R_YMAMULMIKTAR',
+        'S40E.CHSIPNO'
     )
     ->get();
 
@@ -254,6 +257,8 @@
             <div class="{{ $statusColor }} text-base font-bold mb-1">{{ $is->JOBNO }} - {{ $is->OPERASYON }}</div>
             <div class="text-gray-500 text-xs font-semibold  uppercase">Planlanan / Gerçekleşen Miktar</div>
             <div class="{{ $statusColor }} text-base font-bold">{{ floor($is->R_YMAMULMIKTAR) }} - {{ floor($is->R_TMYMAMULMIKTAR) }}</div>
+            <div class="text-gray-500 text-xs font-semibold  uppercase">Sipariş</div>
+            <div class="{{ $statusColor }} text-base font-bold">{{ $is->CHSIPNO }}</div>
           </div>
         </div>
 
