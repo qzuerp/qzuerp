@@ -14,23 +14,6 @@
             --modal-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: var(--primary-dark);
-        }
-
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -39,7 +22,7 @@
             height: 100%;
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(4px);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 99999999999;
@@ -510,13 +493,6 @@
             font-size: 18px;
         }
     </style>
-
-    <!-- Demo arka plan içeriği -->
-    <div class="demo-content">
-        <h1>ERP Sistemi</h1>
-        <p>Ana sayfa içeriği burada görünecek</p>
-    </div>
-
     <!-- Zorunlu Modal -->
     <div class="modal-overlay" id="checklistModal">
         <div class="modal-container">
@@ -528,7 +504,8 @@
                 <H5 class="modal-title">Devam etmeden önce lütfen aşağıdaki kontrolleri tamamlayın</H5>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body" id="checkBody">
+
                 <!-- Soru 1 -->
                 <div class="checklist-item" data-question="1">
                     <div class="question-header">
@@ -557,94 +534,6 @@
                         <textarea class="explanation-input" placeholder="Açıklama giriniz (opsiyonel)..."></textarea>
                     </div>
                 </div>
-
-                <!-- Soru 2 -->
-                <div class="checklist-item" data-question="2">
-                    <div class="question-header">
-                        <div class="question-number">02</div>
-                        <div class="question-text">Saat aralıkları doğru mu?</div>
-                    </div>
-                    <div class="answer-options">
-                        <div class="radio-option yes">
-                            <input type="radio" name="saat" value="EVET" id="saat-yes">
-                            <label for="saat-yes" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Evet</span>
-                            </label>
-                        </div>
-                        <div class="radio-option no">
-                            <input type="radio" name="saat" value="HAYIR" id="saat-no">
-                            <label for="saat-no" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Hayır</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="warning-message">
-                        <div class="warning-title">⚠ Dikkat Gerekli</div>
-                        <div class="warning-text">Saat aralıklarında hata tespit edilmiş. Lütfen düzeltme yapın veya açıklama ekleyin.</div>
-                        <textarea class="explanation-input" placeholder="Açıklama giriniz (opsiyonel)..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Soru 3 -->
-                <div class="checklist-item" data-question="3">
-                    <div class="question-header">
-                        <div class="question-number">03</div>
-                        <div class="question-text">Tatil / Çalışma günleri kontrol edildi mi?</div>
-                    </div>
-                    <div class="answer-options">
-                        <div class="radio-option yes">
-                            <input type="radio" name="tatil" value="EVET" id="tatil-yes">
-                            <label for="tatil-yes" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Evet</span>
-                            </label>
-                        </div>
-                        <div class="radio-option no">
-                            <input type="radio" name="tatil" value="HAYIR" id="tatil-no">
-                            <label for="tatil-no" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Hayır</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="warning-message">
-                        <div class="warning-title">⚠ Dikkat Gerekli</div>
-                        <div class="warning-text">Tatil ve çalışma günleri henüz kontrol edilmemiş. Lütfen kontrol edin.</div>
-                        <textarea class="explanation-input" placeholder="Açıklama giriniz (opsiyonel)..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Soru 4 -->
-                <div class="checklist-item" data-question="4">
-                    <div class="question-header">
-                        <div class="question-number">04</div>
-                        <div class="question-text">Ücret hesaplamaları onaylandı mı?</div>
-                    </div>
-                    <div class="answer-options">
-                        <div class="radio-option yes">
-                            <input type="radio" name="ucret" value="EVET" id="ucret-yes">
-                            <label for="ucret-yes" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Evet</span>
-                            </label>
-                        </div>
-                        <div class="radio-option no">
-                            <input type="radio" name="ucret" value="HAYIR" id="ucret-no">
-                            <label for="ucret-no" class="radio-label">
-                                <span class="radio-icon"></span>
-                                <span>Hayır</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="warning-message">
-                        <div class="warning-title">⚠ Dikkat Gerekli</div>
-                        <div class="warning-text">Ücret hesaplamaları onaylanmadan işlem tamamlanamaz.</div>
-                        <textarea class="explanation-input" placeholder="Açıklama giriniz (zorunlu)..." required></textarea>
-                    </div>
-                </div>
-                
             </div>
 
             <div class="modal-footer">
@@ -757,8 +646,7 @@
                 modal.style.animation = 'fadeOut 0.3s ease-out';
                 setTimeout(() => {
                     modal.style.display = 'none';
-                    // Burada gerçek form submit veya AJAX çağrısı yapılabilir
-                    alert('Kontrol listesi başarıyla tamamlandı!\n\nVeriler konsola yazdırıldı.');
+                    mesaj('Teşekkürler','success');
                 }, 300);
             }
         });

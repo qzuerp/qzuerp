@@ -3563,7 +3563,6 @@
     </script>
   </div>
   
-  @include('components.calismaListesiKontrolListesi')
 @endsection
 <style>
   .selected-row td:first-child {

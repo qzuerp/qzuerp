@@ -538,7 +538,7 @@ Route::group(['middleware' => ['auth']], function() {
     | Periyodik Bakım
     |--------------------------------------------------------------------------
     */
-    Route::get('/periyodikBakim', [srvbs0_controller::class, 'index']);
+    Route::get('/periyodikBakim', [srvbs0_controller::class, 'index'])->name('periyodikBakim');
     Route::post('/srvbs0_islemler', [srvbs0_controller::class, 'islemler']);
 
     

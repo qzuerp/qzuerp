@@ -21,7 +21,6 @@
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-  $t_kart_veri = DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
 
   $evrakno = null;
 
@@ -37,7 +36,8 @@
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
   $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
-  // dd($t_kart_veri);
+  $t_kart_veri = DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
+//   dd($t_kart_veri);
 
   if (isset($kart_veri)) {
 
@@ -88,6 +88,7 @@
                                             @endphp
                                         </select>
                                         <input type='hidden' value='{{ @$kart_veri->id }}' name='ID_TO_REDIRECT' id='ID_TO_REDIRECT'>
+                                        <input type='hidden' value='{{ @$kart_veri->EVRAKNO }}' name='EVRAKNO' id='EVRAKNO'>
                                     </div>
                                     <div class="col-md-2 col-xs-2">
                                         <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz"><i class="fa fa-filter" style="color: white;"></i></a>
@@ -186,7 +187,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label>Aralık (Gün)</label>
-                                                            <input type="number" class="form-control" name="INTERVAL_DAILY" value="{{ @$kart_veri->INTERVAL_DAILY ?? 1 }}" min="1">
+                                                            <input type="number" class="form-control" name="INTERVAL_DAILY" value="{{ @$kart_veri->INTERVAL_VALUE ?? 1 }}" min="1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -197,7 +198,7 @@
                                                     <div class="row mb-3">
                                                         <div class="col-md-4">
                                                             <label>Aralık (Hafta)</label>
-                                                            <input type="number" class="form-control" name="INTERVAL_WEEKLY" value="{{ @$kart_veri->INTERVAL_WEEKLY ?? 1 }}" min="1">
+                                                            <input type="number" class="form-control" name="INTERVAL_WEEKLY" value="{{ @$kart_veri->INTERVAL_VALUE ?? 1 }}" min="1">
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -246,7 +247,7 @@
                                                     <div class="row mb-3">
                                                         <div class="col-md-4">
                                                             <label>Aralık (Ay)</label>
-                                                            <input type="number" class="form-control" name="INTERVAL_MONTHLY" value="{{ @$kart_veri->INTERVAL_MONTHLY ?? 1 }}" min="1">
+                                                            <input type="number" class="form-control" name="INTERVAL_MONTHLY" value="{{ @$kart_veri->INTERVAL_VALUE ?? 1 }}" min="1">
                                                         </div>
                                                     </div>
                                                     

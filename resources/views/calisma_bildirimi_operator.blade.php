@@ -2249,7 +2249,9 @@
 
       $('#X_T_ISMERKEZI').on('change',function(){
         if($(this).val() == null || $(this).val() == '')
+        {
           return;
+        }
           $.get({
             url:'/surec_kontrolu',
             data:{KOD:this.value},
@@ -2258,22 +2260,39 @@
               if(res && res.ID)
               {
                 Swal.fire({
-                title: "Açık Süreç Bulundu",
-                text: res['EVRAKNO'] + " numaralı evrakta açık süreç bulundu",
-                icon: "warning",
-                allowOutsideClick: true,
-                allowEscapeKey: true,
-                showConfirmButton: true,
-                showCancelButton: true,
-                confirmButtonText: '<a href="/calisma_bildirimi_oprt?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
-                cancelButtonText: "İptal",
-              }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.cancel) {
-                  $('#X_T_ISMERKEZI').val('').trigger('change');
-                }
-              });
-
+                  title: "Açık Süreç Bulundu",
+                  text: res['EVRAKNO'] + " numaralı evrakta açık süreç bulundu",
+                  icon: "warning",
+                  allowOutsideClick: true,
+                  allowEscapeKey: true,
+                  showConfirmButton: true,
+                  showCancelButton: true,
+                  confirmButtonText: '<a href="/calisma_bildirimi_oprt?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
+                  cancelButtonText: "İptal",
+                }).then((result) => {
+                  if (result.dismiss === Swal.DismissReason.cancel) {
+                    $('#X_T_ISMERKEZI').val('').trigger('change');
+                  }
+                });
               }
+              else
+              {
+                $.ajax({
+                  type:'POST',
+                  url:'/soruları_getir',
+                  data:{KOD:this.value},
+                  success:function(res)
+                  {
+                    if(res && res.length > 0)
+                    {
+
+                      $('#checkBody').html(questions);
+                    }
+                  }
+                });
+                $('.modal-overlay').fadeIn(200).css('display','flex');
+              }
+
             }
           })
       });
@@ -3085,6 +3104,8 @@
       });
     </script>
   </div>
+  
+  @include('components.calismaListesiKontrolListesi')
 @endsection
 <style>
   .selected-row td:first-child {
