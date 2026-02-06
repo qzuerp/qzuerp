@@ -333,114 +333,114 @@
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Norm</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="NORM" id="NORM" value="{{ @$kart_veri->NORM }}">
+														<input type="text" class="form-control input-sm" name="NORM" id="NORM" value="{{ @$kart_veri->NORM }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Müşteri/Üretici Kodu</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="SUPPLIERCODE" id="SUPPLIERCODE" value="{{ @$kart_veri->SUPPLIERCODE }}">
+														<input type="text" class="form-control input-sm" name="SUPPLIERCODE" id="SUPPLIERCODE" value="{{ @$kart_veri->SUPPLIERCODE }}">
 													</div>
 												</div>
 
 												<div class="row ">
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 1</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L1" id="L1" value="{{ @$kart_veri->L1 }}">
+														<input type="text" class="form-control input-sm" name="L1" id="L1" value="{{ @$kart_veri->L1 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 2</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L2" id="L2" value="{{ @$kart_veri->L2 }}">
+														<input type="text" class="form-control input-sm" name="L2" id="L2" value="{{ @$kart_veri->L2 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>ölçüm 3 </label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L3" id="L3" value="{{ @$kart_veri->L3 }}">
+														<input type="text" class="form-control input-sm" name="L3" id="L3" value="{{ @$kart_veri->L3 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 4</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L4" id="L4" value="{{ @$kart_veri->L4 }}">
+														<input type="text" class="form-control input-sm" name="L4" id="L4" value="{{ @$kart_veri->L4 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 5</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L5" id="L5" value="{{ @$kart_veri->L5 }}">
+														<input type="text" class="form-control input-sm" name="L5" id="L5" value="{{ @$kart_veri->L5 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 6</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L6" id="L6" value="{{ @$kart_veri->L6 }}">
+														<input type="text" class="form-control input-sm" name="L6" id="L6" value="{{ @$kart_veri->L6 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 7</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L7" id="L7" value="{{ @$kart_veri->L7 }}">
+														<input type="text" class="form-control input-sm" name="L7" id="L7" value="{{ @$kart_veri->L7 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 8</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L8" id="L8" value="{{ @$kart_veri->L8 }}">
+														<input type="text" class="form-control input-sm" name="L8" id="L8" value="{{ @$kart_veri->L8 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 9</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L9" id="L9" value="{{ @$kart_veri->L9 }}">
+														<input type="text" class="form-control input-sm" name="L9" id="L9" value="{{ @$kart_veri->L9 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 10</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L10" id="L10" value="{{ @$kart_veri->L10 }}">
+														<input type="text" class="form-control input-sm" name="L10" id="L10" value="{{ @$kart_veri->L10 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 11</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L11" id="L11" value="{{ @$kart_veri->L11 }}">
+														<input type="text" class="form-control input-sm" name="L11" id="L11" value="{{ @$kart_veri->L11 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 12</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L12" id="L12" value="{{ @$kart_veri->L12 }}">
+														<input type="text" class="form-control input-sm" name="L12" id="L12" value="{{ @$kart_veri->L12 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 13</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L13" id="L13" value="{{ @$kart_veri->L13 }}">
+														<input type="text" class="form-control input-sm" name="L13" id="L13" value="{{ @$kart_veri->L13 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 14</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L14" id="L14" value="{{ @$kart_veri->L14 }}">
+														<input type="text" class="form-control input-sm" name="L14" id="L14" value="{{ @$kart_veri->L14 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 15</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L15" id="L15" value="{{ @$kart_veri->L15 }}">
+														<input type="text" class="form-control input-sm" name="L15" id="L15" value="{{ @$kart_veri->L15 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 16</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L16" id="L16" value="{{ @$kart_veri->L16 }}">
+														<input type="text" class="form-control input-sm" name="L16" id="L16" value="{{ @$kart_veri->L16 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 17</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L17" id="L17" value="{{ @$kart_veri->L17 }}">
+														<input type="text" class="form-control input-sm" name="L17" id="L17" value="{{ @$kart_veri->L17 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 18</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L18" id="L18" value="{{ @$kart_veri->L18 }}">
+														<input type="text" class="form-control input-sm" name="L18" id="L18" value="{{ @$kart_veri->L18 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 19</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L19" id="L19" value="{{ @$kart_veri->L19 }}">
+														<input type="text" class="form-control input-sm" name="L19" id="L19" value="{{ @$kart_veri->L19 }}">
 													</div>
 
 													<div class="col-md-2 col-xs-6  col-sm-4">
 														<label>Ölçüm 20</label>
-														<input type="text" class="form-control input-sm" maxlength="20" name="L20" id="L20" value="{{ @$kart_veri->L20 }}">
+														<input type="text" class="form-control input-sm" name="L20" id="L20" value="{{ @$kart_veri->L20 }}">
 													</div>
 												</div>
 											</div>
