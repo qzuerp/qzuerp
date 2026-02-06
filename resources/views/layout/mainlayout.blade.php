@@ -416,6 +416,7 @@
           altInput: !isTime,
           altFormat: "d.m.Y",
           time_24hr: true,
+          minuteIncrement: 15,
           locale: "tr",
           onReady: function(selectedDates, dateStr, instance) {
             const orig = instance.input || instance._input || instance.element;

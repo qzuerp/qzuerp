@@ -45,6 +45,9 @@
 	$GK10_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK10')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
 	$GK11_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK11')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
 	$GK12_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK12')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK13_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK13')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK14_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK14')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
+	$GK15_veri = DB::table($database.'gecoust as GCST')->leftJoin($database.'gecouse as GCSE','GCST.EVRAKNO','=','GCSE.EVRAKNO')->where('GCST.EVRAKNO','PERSGK15')->get(['GCST.*', 'GCSE.AD as LABEL_AD']);
 
   if (isset($kart_veri)) {
 
@@ -1872,7 +1875,7 @@
 
                       <div class="tab-pane" id="grupkodu">
                         <div class="row">
-                          @for($i = 1; $i <= 12; $i++)
+                          @for($i = 1; $i <= 15; $i++)
                             <div class="col-md-2 col-xs-4 col-sm-4">
                               @php
                                 $variable = 'GK' . $i . '_veri';

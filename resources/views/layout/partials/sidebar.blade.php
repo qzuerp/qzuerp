@@ -285,6 +285,9 @@
         @if (in_array('DVZKUR', $kullanici_read_yetkileri))
           <li><a href="doviz_kuru"><i class='bx bx-money'></i>Günlük Döviz Kuru</a></li>
         @endif
+        @if (in_array('CLSMTKVM', $kullanici_read_yetkileri))
+          <li><a href="calismaTakvimi"><i class='bx bx-list-check'></i>Çalışma Takvimi</a></li>
+        @endif
         @if (in_array('musteri_form', $kullanici_read_yetkileri))
           <li><a href="musteri_form"><i class="fa-solid fa-file"></i>Müşteri Formu</a></li>
         @endif

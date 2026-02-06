@@ -103,7 +103,7 @@ class gecous_controller extends Controller
     break;
 
     case 'kart_duzenle':
-FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'W');
+    FunctionHelpers::Logla('GECOUSE',$EVRAKNO,'W');
 
     DB::table($firma.'gecouse')->where('EVRAKNO',$EVRAKNO)->update([
       'EVRAKNO' => $EVRAKNO,

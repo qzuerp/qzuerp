@@ -301,7 +301,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					{ 
 						"data": "MIKTAR", 
 						"render": function(data) { 
-							return '<b style="color:blue">' + (data || '0') + '</b>'; 
+							return '<b style="color:blue">' + (parseFloat(data).toFixed(2) || '0') + '</b>'; 
 						} 
 					},
 					{ 
@@ -409,7 +409,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					d.STOK_ADI ?? '',
 					d.NAME2 ?? '',
 					d.REVNO ?? '',
-					d.MIKTAR.toFixed(2) ?? '',
+					d.MIKTAR ?? '',
 					d.SF_SF_UNIT ?? '',
 					d.LOTNUMBER ?? '',
 					d.SERINO ?? '',

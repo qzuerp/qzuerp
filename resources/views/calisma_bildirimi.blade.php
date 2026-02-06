@@ -1889,6 +1889,7 @@
           </div>
         </div>
       {{-- Seri no finish --}}
+
     </section>
 
     <!-- Tezgah Planı Seçmek İçin Modal -->
@@ -3561,6 +3562,8 @@
       });
     </script>
   </div>
+  
+  @include('components.calismaListesiKontrolListesi')
 @endsection
 <style>
   .selected-row td:first-child {

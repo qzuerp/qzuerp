@@ -547,7 +547,8 @@ Route::group(['middleware' => ['auth']], function() {
     | Çalışma Takvimi
     |--------------------------------------------------------------------------
     */
-    Route::get('/calismaTakvimi', function(){ return view('calisma_takvimi'); });
+    Route::get('/calismaTakvimi', function(){ return view('calisma_takvimi'); })->name('calismaTakvimi');
     Route::post('/calisma-takvimi/kaydet', [takvim0_controller::class, 'kaydet'])->name('calismaTakvimi.kaydet');
+    Route::post('/calisma-takvimi/sil', [takvim0_controller::class, 'sil'])->name('calismaTakvimi.sil');
 
 });

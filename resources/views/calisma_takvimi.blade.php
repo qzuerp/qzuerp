@@ -13,7 +13,7 @@
 	$ekranLink = "calismaTakvimi";
 	$ekranTableE = "TAKVM0E";
 	$ekranTableT = "TAKVM0T";
-	$ekranKayitSatirKontrol = "false";
+    $ekranKayitSatirKontrol = "true";
 
 	$kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
 	$kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
@@ -37,7 +37,14 @@
             ->first();
     }
 
-
+    $t_veri = DB::table($database . $ekranTableT)->where('EVRAKNO',$sonID)->get();
+    
+    if (isset($kart_veri)) {
+        $ilkEvrak=DB::table($ekranTableE)->orderBy('ID','asc')->value('EVRAKNO');
+        $sonEvrak=DB::table($ekranTableE)->orderBy('ID','desc')->value('EVRAKNO');
+        $sonrakiEvrak=DB::table($ekranTableE)->where('ID', '>', $kart_veri->ID)->min('EVRAKNO');
+        $oncekiEvrak=DB::table($ekranTableE)->where('ID', '<', $kart_veri->ID)->max('EVRAKNO');
+    }
 @endphp
 @section('content')
 <style>
@@ -63,7 +70,7 @@
         }
 
         .page-header {
-            padding: 24px 30px;
+            padding: 12px 15px;
             border-bottom: 2px solid var(--border-color);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 8px 8px 0 0;
@@ -83,18 +90,18 @@
         }
 
         .content-area {
-            padding: 30px;
+            padding: 15px;
         }
 
         .nav-tabs {
             border-bottom: 2px solid var(--border-color);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .nav-tabs .nav-link {
             color: #6c757d;
             border: none;
-            padding: 12px 20px;
+            padding: 6px 10px;
             font-weight: 500;
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
@@ -115,39 +122,39 @@
 
         .work-mode-toggle {
             background: var(--light-bg);
-            padding: 20px;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 25px;
+            margin-bottom: 17.5px;
             border: 1px solid var(--border-color);
         }
 
         .work-mode-toggle label {
             font-weight: 600;
             color: #495057;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             display: block;
             font-size: 0.95rem;
         }
 
         .btn-group-toggle .btn {
-            padding: 10px 24px;
+            padding: 5px 12px;
             font-weight: 500;
             transition: all 0.2s ease;
         }
 
-        .btn-check:checked + .btn-outline-success {
+        .btn-check:checked + .btn-success {
             background-color: var(--success-color);
             border-color: var(--success-color);
         }
 
-        .btn-check:checked + .btn-outline-danger {
+        .btn-check:checked + .btn-danger {
             background-color: var(--danger-color);
             border-color: var(--danger-color);
         }
 
         .time-selection-area {
             background: white;
-            padding: 25px;
+            padding: 12.5px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
         }
@@ -162,7 +169,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .time-input-wrapper {
@@ -173,7 +180,7 @@
             display: block;
             font-weight: 600;
             color: #495057;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             font-size: 0.9rem;
         }
 
@@ -183,8 +190,8 @@
         }
 
         .visual-timeline {
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 12.5px;
+            padding: 10px;
             background: linear-gradient(to bottom, #f8f9fa 0%, #fff 100%);
             border-radius: 8px;
             border: 1px solid var(--border-color);
@@ -194,7 +201,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             color: #495057;
-            margin-bottom: 15px;
+            margin-bottom: 7.5px;
         }
 
         .timeline-bar {
@@ -221,27 +228,25 @@
         .timeline-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
+            margin-top: 4px;
             font-size: 0.75rem;
             color: #6c757d;
         }
 
         .action-buttons {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid var(--border-color);
+            margin: 5px 0px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .btn-primary {
-            padding: 10px 30px;
+            padding: 5px 15px;
             font-weight: 600;
         }
 
         .status-badge {
-            padding: 6px 12px;
+            padding: 3px 6px;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 500;
@@ -260,27 +265,27 @@
         .info-text {
             color: #6c757d;
             font-size: 0.85rem;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .quick-presets {
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 7.5px;
+            padding-top: 7.5px;
             border-top: 1px dashed var(--border-color);
         }
 
         .quick-presets small {
             color: #6c757d;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-weight: 500;
         }
 
         .preset-btn {
             font-size: 0.8rem;
-            padding: 4px 12px;
-            margin-right: 8px;
-            margin-bottom: 8px;
+            padding: 2px 6px;
+            margin-right: 4px;
+            margin-bottom: 4px;
         }
         .evrak-btn {
             display: inline-flex;
@@ -341,7 +346,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            padding: 0 12px;
+            padding: 0 6px;
             border-right: 1px solid #dee2e6;
         }
         
@@ -357,7 +362,11 @@
     <div class="content-wrapper">
         @include('layout.util.evrakContentHeader')
 		@include('layout.util.logModal', ['EVRAKTYPE' => 'TAKVIM0', 'EVRAKNO' => @$kart_veri->EVRAKNO])
-
+        @if($ekranKayitSatirKontrol == "true")
+            <input type="hidden" name="LAST_TRNUM" id="LAST_TRNUM" value="@php if(isset($kart_veri->LAST_TRNUM)) { echo @$kart_veri->LAST_TRNUM; } else { echo '000000'; } @endphp">
+            <input type="hidden" name="LAST_TRNUM2" id="LAST_TRNUM2" value="@php if(isset($kart_veri->LAST_TRNUM2)) { echo @$kart_veri->LAST_TRNUM2; } else { echo '000000'; } @endphp">
+            <input type="hidden" name="LAST_TRNUM3" id="LAST_TRNUM3" value="@php if(isset($kart_veri->LAST_TRNUM3)) { echo @$kart_veri->LAST_TRNUM3; } else { echo '000000'; } @endphp">
+        @endif
         <div class="content">
             <!-- Gün Sekmeleri -->
             <ul class="nav nav-tabs" id="dayTabs" role="tablist">
@@ -398,49 +407,53 @@
                 </li>
                 <li class="nav-item ms-auto d-flex justify-content-center align-items-center gap-3" role="presentation">
                     <div class="action-group">
-                        <a data-evrak-kontrol 
+                        <a  
                             href="@php if (isset($ilkEvrak)) { echo $ekranLink.'?ID='.$ilkEvrak; } else { echo '#'; } @endphp" 
                             class="evrak-btn nav-btn" 
                             title="İlk Kart">
                             <i class="fa fa-angle-double-left"></i>
                         </a>
                         
-                        <a data-evrak-kontrol 
+                        <a  
                             href="@php if (isset($oncekiEvrak)) { echo $ekranLink.'?ID='.$oncekiEvrak; } else { echo '#'; } @endphp" 
                             class="evrak-btn nav-btn" 
                             title="Önceki Kart">
                             <i class="fa fa-angle-left"></i>
                         </a>
                         
-                        <a data-evrak-kontrol 
+                        <a  
                             href="@php if (isset($sonrakiEvrak)) { echo $ekranLink.'?ID='.$sonrakiEvrak; } else { echo '#'; } @endphp" 
                             class="evrak-btn nav-btn" 
                             title="Sonraki Kart">
                             <i class="fa fa-angle-right"></i>
                         </a>
                         
-                        <a data-evrak-kontrol 
+                        <a  
                             href="@php if (isset($sonEvrak)) { echo $ekranLink.'?ID='.$sonEvrak; } else { echo '#'; } @endphp" 
                             class="evrak-btn nav-btn" 
                             title="Son Kart">
                             <i class="fa fa-angle-double-right"></i>
                         </a>
                     </div>
-                    <div class="">
+                    <div class="d-flex">
                         <button class="evrak-btn new-btn">
                             <i class="fa-solid fa-file-circle-plus"></i>
                         </button>
                         <button class="evrak-btn save-btn" style="color: #198754;" onclick="saveCalendar()">
                             <i class="fa fa-save"></i>
                         </button>
-                        <button class="evrak-btn delete-btn" style="color: #198754;" >
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <form action="{{ route('calismaTakvimi.sil')  }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
+                            <button class="evrak-btn delete-btn" style="color: #198754;" >
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </li>
             </ul>
 
-            <div class="row mb-1">
+            <div class="row mb-1" id="verilerForm">
                 <div class="col-6">
                     <label for="">EVRAKNO</label>
                     <input type="text" class="form-control" id="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
@@ -450,6 +463,19 @@
                     <input type="text" class="form-control" id="ACIKLAMA" value="{{ @$kart_veri->ACIKLAMA }}">
                 </div>
             </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div>
+                    <button class="btn btn-secondary" onclick="copyFromPrevious()">
+                        <i class="bi bi-clipboard"></i> Önceki Günden Kopyala
+                    </button>
+                    <button class="btn btn-secondary ms-2" onclick="applyToAllDays()">
+                        <i class="bi bi-arrow-repeat"></i> Tüm Günlere Uygula
+                    </button>
+                </div>
+            </div>
+
             <!-- Tab İçerikleri -->
             <div class="tab-content" id="dayTabsContent">
                 <!-- Pazartesi -->
@@ -458,17 +484,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="monday-mode" id="monday-working" value="working" checked>
-                            <label class="btn btn-outline-success" for="monday-working">
+                            <label class="btn btn-success" for="monday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="monday-mode" id="monday-full" value="full">
-                            <label class="btn btn-outline-success" for="monday-full">
+                            <label class="btn btn-success" for="monday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="monday-mode" id="monday-off" value="off">
-                            <label class="btn btn-outline-danger" for="monday-off">
+                            <label class="btn btn-danger" for="monday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -495,9 +521,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('monday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('monday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('monday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('monday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('monday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('monday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -524,17 +550,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="tuesday-mode" id="tuesday-working" value="working" checked>
-                            <label class="btn btn-outline-success" for="tuesday-working">
+                            <label class="btn btn-success" for="tuesday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="tuesday-mode" id="tuesday-full" value="full">
-                            <label class="btn btn-outline-success" for="tuesday-full">
+                            <label class="btn btn-success" for="tuesday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="tuesday-mode" id="tuesday-off" value="off">
-                            <label class="btn btn-outline-danger" for="tuesday-off">
+                            <label class="btn btn-danger" for="tuesday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -561,9 +587,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('tuesday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('tuesday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('tuesday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('tuesday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('tuesday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('tuesday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -590,17 +616,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="wednesday-mode" id="wednesday-working" value="working" checked>
-                            <label class="btn btn-outline-success" for="wednesday-working">
+                            <label class="btn btn-success" for="wednesday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="wednesday-mode" id="wednesday-full" value="full">
-                            <label class="btn btn-outline-success" for="wednesday-full">
+                            <label class="btn btn-success" for="wednesday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="wednesday-mode" id="wednesday-off" value="off">
-                            <label class="btn btn-outline-danger" for="wednesday-off">
+                            <label class="btn btn-danger" for="wednesday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -627,9 +653,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('wednesday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('wednesday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('wednesday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('wednesday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('wednesday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('wednesday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -656,17 +682,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="thursday-mode" id="thursday-working" value="working" checked>
-                            <label class="btn btn-outline-success" for="thursday-working">
+                            <label class="btn btn-success" for="thursday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="thursday-mode" id="thursday-full" value="full">
-                            <label class="btn btn-outline-success" for="thursday-full">
+                            <label class="btn btn-success" for="thursday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="thursday-mode" id="thursday-off" value="off">
-                            <label class="btn btn-outline-danger" for="thursday-off">
+                            <label class="btn btn-danger" for="thursday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -693,9 +719,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('thursday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('thursday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('thursday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('thursday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('thursday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('thursday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -722,17 +748,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="friday-mode" id="friday-working" value="working" checked>
-                            <label class="btn btn-outline-success" for="friday-working">
+                            <label class="btn btn-success" for="friday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="friday-mode" id="friday-full" value="full">
-                            <label class="btn btn-outline-success" for="friday-full">
+                            <label class="btn btn-success" for="friday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="friday-mode" id="friday-off" value="off">
-                            <label class="btn btn-outline-danger" for="friday-off">
+                            <label class="btn btn-danger" for="friday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -759,9 +785,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('friday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('friday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('friday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('friday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('friday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('friday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -788,17 +814,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="saturday-mode" id="saturday-working" value="working">
-                            <label class="btn btn-outline-success" for="saturday-working">
+                            <label class="btn btn-success" for="saturday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="saturday-mode" id="saturday-full" value="full">
-                            <label class="btn btn-outline-success" for="saturday-full">
+                            <label class="btn btn-success" for="saturday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="saturday-mode" id="saturday-off" value="off" checked>
-                            <label class="btn btn-outline-danger" for="saturday-off">
+                            <label class="btn btn-danger" for="saturday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -825,9 +851,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('saturday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('saturday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('saturday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('saturday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('saturday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('saturday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -853,17 +879,17 @@
                         <label>Çalışma Durumu</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="sunday-mode" id="sunday-working" value="working">
-                            <label class="btn btn-outline-success" for="sunday-working">
+                            <label class="btn btn-success" for="sunday-working">
                                 <i class="bi bi-check-circle"></i> Çalışma Günü
                             </label>
                             
                             <input type="radio" class="btn-check" name="sunday-mode" id="sunday-full" value="full">
-                            <label class="btn btn-outline-success" for="sunday-full">
+                            <label class="btn btn-success" for="sunday-full">
                                 <i class="bi bi-clock"></i> 24 Saat Çalışıyor
                             </label>
                             
                             <input type="radio" class="btn-check" name="sunday-mode" id="sunday-off" value="off" checked>
-                            <label class="btn btn-outline-danger" for="sunday-off">
+                            <label class="btn btn-danger" for="sunday-off">
                                 <i class="bi bi-x-circle"></i> Tatil
                             </label>
                         </div>
@@ -890,9 +916,9 @@
 
                         <div class="quick-presets">
                             <small>Hızlı Seçenekler:</small>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('sunday', '08:00', '17:00')">08:00 - 17:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('sunday', '09:00', '18:00')">09:00 - 18:00</button>
-                            <button class="btn btn-sm btn-outline-secondary preset-btn" onclick="setTime('sunday', '08:30', '17:30')">08:30 - 17:30</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('sunday', '08:00', '17:00')">08:00 - 17:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('sunday', '09:00', '18:00')">09:00 - 18:00</button>
+                            <button class="btn btn-sm btn-secondary preset-btn" onclick="setTime('sunday', '08:30', '17:30')">08:30 - 17:30</button>
                         </div>
 
                         <div class="visual-timeline">
@@ -912,18 +938,78 @@
                     </div>
                 </div>
             </div>
+            <form id="takvimForm">
+                <table class="table table-bordered text-center mt-2" id="veriTable">
 
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <div>
-                    <button class="btn btn-outline-secondary" onclick="copyFromPrevious()">
-                        <i class="bi bi-clipboard"></i> Önceki Günden Kopyala
-                    </button>
-                    <button class="btn btn-outline-secondary ms-2" onclick="applyToAllDays()">
-                        <i class="bi bi-arrow-repeat"></i> Tüm Günlere Uygula
-                    </button>
-                </div>
-            </div>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Başlangıç Saati</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Bitiş Saati</th>
+                            <th>Çalışma / Tatil</th>
+                            <th>Açıklama</th>
+                        </tr>
+
+                        <tr class="satirEkle" style="background-color:#3c8dbc">
+                            <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+                            <td><input type='date' class='form-control' id='B_GUN' ></td>
+                            <td><input type='time' class='form-control' id='B_SAAT'></td>
+                            <td><input type='date' class='form-control' id='E_GUN' ></td>
+                            <td><input type='time' class='form-control' id='E_SAAT'></td>
+                            <td>
+                                <select class='form-control select2' id='IS1_TATIL2'>
+                                    <option value='IS'>Çalışma</option>
+                                    <option value='TATIL'>Tatil</option>
+                                </select>
+                            </td>
+                        <td><input type='text' class='form-control' id='ACIKLAMA'></td>
+                    </thead>
+
+                    <tbody>
+                        @foreach($t_veri as $veri)
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-default delete-row">
+                                        <i class="fa fa-minus" style="color:red"></i>
+                                    </button>
+                                    <input type="hidden" name="TRNUM[]" value="{{ $veri->TRNUM }}">
+                                </td>
+
+                                <td>
+                                    <input type="date" class="form-control" name="B_GUN[]" value="{{ $veri->B_GUN }}">
+                                </td>
+
+                                <td>
+                                    <input type="time" class="form-control" name="B_SAAT[]" value="{{ substr($veri->B_SAAT, 0, 5) }}">
+                                </td>
+
+                                <td>
+                                    <input type="date" class="form-control" name="E_GUN[]" value="{{ $veri->E_GUN }}">
+                                </td>
+
+                                <td>
+                                    <input type="time" class="form-control" name="E_SAAT[]" value="{{ substr($veri->E_SAAT, 0, 5) }}">
+                                </td>
+
+                                <td>
+                                    <select class="form-control" name="IS1_TATIL2[]">
+                                        <option value="IS" {{ $veri->IS1_TATIL2 == 'IS' ? 'selected' : '' }}>Çalışma</option>
+                                        <option value="TATIL" {{ $veri->IS1_TATIL2 == 'TATIL' ? 'selected' : '' }}>Tatil</option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="ACIKLAMA[]" value="{{ $veri->ACIKLAMA }}">
+                                </td>
+                            </tr>
+
+                        @endforeach
+                    </tbody>
+
+                </table>
+            </form>
         </div>
     </div>
 
@@ -1057,24 +1143,25 @@
                     calendarData[dbField] = generateBinaryString(start, end, mode);
                 });
 
-                console.log('Veritabanına gönderilecek veri:', calendarData);
+                let formData = new FormData($('#takvimForm')[0]);
 
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('EVRAKNO', $('#EVRAKNO').val());
+                formData.append('ACIKLAMA_GENEL', $('#ACIKLAMA').val());
+                formData.append('D01', calendarData.D01);
+                formData.append('D02', calendarData.D02);
+                formData.append('D03', calendarData.D03);
+                formData.append('D04', calendarData.D04);
+                formData.append('D05', calendarData.D05);
+                formData.append('D06', calendarData.D06);
+                formData.append('D07', calendarData.D07);
                 // Backend'e gönder
                 $.ajax({
                     url: '{{ route("calismaTakvimi.kaydet") }}',
                     type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        EVRAKNO: $('#EVRAKNO').val(),
-                        ACIKLAMA: $('#ACIKLAMA').val(),
-                        D01: calendarData.D01,
-                        D02: calendarData.D02,
-                        D03: calendarData.D03,
-                        D04: calendarData.D04,
-                        D05: calendarData.D05,
-                        D06: calendarData.D06,
-                        D07: calendarData.D07
-                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     beforeSend: function() {
                         Swal.fire({
                             title: 'Kaydediliyor...',
@@ -1086,14 +1173,26 @@
                         });
                     },
                     success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Başarılı!',
-                            text: 'Çalışma takvimi başarıyla kaydedildi.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        console.log('Kayıt Sonucu:', response);
+                    console.log(response)
+                        if(response.success = true)
+                        {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                text: 'Çalışma takvimi başarıyla kaydedildi.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata!',
+                                text: response.message,
+                                confirmButtonText: 'Tamam'
+                            });
+                        }
                     },
                     error: function(xhr, status, error) {
                         Swal.fire({
@@ -1224,8 +1323,6 @@
                     D07: '{{ $kart_veri->D07 ?? "" }}'
                 };
                 
-                console.log('Yüklenen veri:', existingData);
-                
                 days.forEach(function(day) {
                     const dbField = dayDbFields[day];
                     const binaryString = existingData[dbField];
@@ -1273,6 +1370,78 @@
             @if(isset($kart_veri) && $kart_veri)
                 loadExistingData();
             @endif
+
+            $("#addRow").on('click', function () {
+
+                var TRNUM_FILL = getTRNUM();
+
+                var satirEkleInputs = getInputs('satirEkle');
+                var htmlCode = "";
+                htmlCode += "<tr>";
+                htmlCode += "<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td>";
+                htmlCode += "<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>";
+                htmlCode += "<td><input type='date' class='form-control' name='B_GUN[]' value='" + satirEkleInputs.B_GUN + "'></td>";
+                htmlCode += "<td><input type='time' class='form-control' name='B_SAAT[]' value='" + satirEkleInputs.B_SAAT + "'></td>";
+                htmlCode += "<td><input type='date' class='form-control' name='E_GUN[]' value='" + satirEkleInputs.E_GUN + "'></td>";
+                htmlCode += "<td><input type='time' class='form-control' name='E_SAAT[]' value='" + satirEkleInputs.E_SAAT + "'></td>";
+                htmlCode += "<td>"
+                htmlCode += "<select class='form-control' name='IS1_TATIL2[]'>";
+                htmlCode += "<option value='IS' " + (satirEkleInputs.IS1_TATIL2 === 'IS' ? 'selected' : '') + ">Çalışma</option>";
+                htmlCode += "<option value='TATIL' " + (satirEkleInputs.IS1_TATIL2 === 'TATIL' ? 'selected' : '') + ">Tatil</option>";
+                htmlCode += "</select>";
+                htmlCode += "</td>";
+                htmlCode += "<td><input type='text' class='form-control' name='ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA + "'></td>";
+                htmlCode += "</tr>";
+
+                if (satirEkleInputs.B_GUN == null || satirEkleInputs.B_GUN == " " || satirEkleInputs.B_GUN == "" || satirEkleInputs.B_SAAT == null || satirEkleInputs.B_SAAT == "" || satirEkleInputs.B_SAAT == " " || satirEkleInputs.E_GUN == null || satirEkleInputs.E_GUN == "" || satirEkleInputs.E_GUN == " " || satirEkleInputs.E_SAAT == null || satirEkleInputs.E_SAAT == "" || satirEkleInputs.E_SAAT == " ") {
+                    eksikAlanHataAlert2();
+                }
+                else {
+                    $("#veriTable > tbody").append(htmlCode);
+                    updateLastTRNUM(TRNUM_FILL);
+                    emptyInputs('satirEkle');
+                }
+            });
+
+            $('.new-btn').on('click', function() {
+                $('#veriTable tbody').empty();
+                $('#baglantiliDokumanlarTable tbody').empty();
+
+                $('.nav-tabs-custom input[type="text"]').val('');
+                $('.nav-tabs-custom input[type="number"]').val('');
+                $('#REVTAR').val('');
+                $('select:not(#evrakSec)').val('').trigger('change');
+                $('select:not(#evrakSec)').val(' ').trigger('change');
+
+
+                $(':input', '#verilerForm')
+                    .not(':button, :submit, :reset, :hidden, :checkbox, :radio')
+                    .val('')
+                    .prop('checked', false)
+                    .prop('selected', false);
+
+                $(':input', '#verilerForm').prop('checked', false)
+            });
+            $(document).on('click', '.delete-btn', function (e) {
+                e.preventDefault();
+
+                let form = $(this).closest('form');
+
+                Swal.fire({
+                    title: 'Emin misin?',
+                    text: 'Bu işlem geri alınamaz!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Hayır'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 @endsection
