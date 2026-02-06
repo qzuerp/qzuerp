@@ -141,7 +141,7 @@
                                             @php
                                                 $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
                                                 foreach ($imlt00_evraklar as $key => $veri) {
-                                                    if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) {
+                                                    if (@$kart_veri->TEZGAH == $veri->KOD) {
                                                         echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
                                                     } else {
                                                         echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";

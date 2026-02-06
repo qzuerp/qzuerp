@@ -133,4 +133,17 @@ class srvbs0_controller extends Controller
                 break;
         }
     }
+
+    public function sorulari_getir(Request $request)
+    {
+        if(Auth::check()) {
+        $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        $veri = DB::table($firma.'srvbs0')->where('TEZGAH', $request->KOD)
+        ->leftJoin($firma.'srvbs0t','srvbs0.EVRAKNO','=','srvbs0t.EVRAKNO')
+        ->get(['srvbs0.*','srvbs0t.*']);
+
+        return $veri;
+    }
 }

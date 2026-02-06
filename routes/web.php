@@ -540,6 +540,7 @@ Route::group(['middleware' => ['auth']], function() {
     */
     Route::get('/periyodikBakim', [srvbs0_controller::class, 'index'])->name('periyodikBakim');
     Route::post('/srvbs0_islemler', [srvbs0_controller::class, 'islemler']);
+    Route::post('/get_questions', [srvbs0_controller::class, 'sorulari_getir']);
 
     
     /*

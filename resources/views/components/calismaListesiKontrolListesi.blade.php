@@ -25,7 +25,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 99999999999;
+            z-index: 9998;
             padding: 20px;
             animation: fadeIn 0.3s ease-out;
         }
@@ -552,112 +552,382 @@
     </div>
 
     <script>
-        // Modal kontrolü
-        const modal = document.getElementById('checklistModal');
-        const submitButton = document.getElementById('submitButton');
-        const progressFill = document.querySelector('.progress-fill');
-        const progressCount = document.querySelector('.progress-count');
-        const totalQuestions = document.querySelectorAll('.checklist-item').length;
-        
-        // ESC tuşunu devre dışı bırak
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-            }
-        });
+        (function($) {
+            'use strict';
 
-        // Modal dışına tıklamayı engelle
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                e.preventDefault();
-                // Hafif sallama animasyonu eklenebilir
-                const container = document.querySelector('.modal-container');
-                container.style.animation = 'none';
-                setTimeout(() => {
-                    container.style.animation = 'slideUp 0.4s ease-out';
-                }, 10);
-            }
-        });
+            // ============================================
+            // CONFIGURATION
+            // ============================================
 
-        // Radio button değişikliklerini dinle
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const checklistItem = e.target.closest('.checklist-item');
-                const warningMessage = checklistItem.querySelector('.warning-message');
-                const name = e.target.name;
+            const CONFIG = {
+                selectors: {
+                    modal: '#checklistModal',
+                    submitButton: '#submitButton',
+                    progressFill: '.progress-fill',
+                    progressCount: '.progress-count',
+                    modalBody: '.modal-body',
+                    modalContainer: '.modal-container',
+                    checklistItem: '.checklist-item',
+                    warningMessage: '.warning-message',
+                    radioInput: 'input[type="radio"]',
+                    textareaInput: 'textarea.explanation-input'
+                },
+                animations: {
+                    fadeOut: 'fadeOut 0.3s ease-out',
+                    shake: 'shake 0.5s ease-in-out',
+                    fadeIn: 'fadeIn 0.3s ease-out'
+                }
+            };
+
+            // ============================================
+            // STATE MANAGEMENT
+            // ============================================
+
+            const state = {
+                answeredCount: 0,
+                answers: {},
+                explanations: {}
+            };
+
+            // ============================================
+            // CACHE DOM ELEMENTS
+            // ============================================
+
+            const $modal = $(CONFIG.selectors.modal);
+            const $submitButton = $(CONFIG.selectors.submitButton);
+            const $progressFill = $(CONFIG.selectors.progressFill);
+            const $progressCount = $(CONFIG.selectors.progressCount);
+            const $modalBody = $(CONFIG.selectors.modalBody);
+            const $modalContainer = $(CONFIG.selectors.modalContainer);
+            const totalQuestions = $(CONFIG.selectors.checklistItem).length;
+
+            // ============================================
+            // CORE FUNCTIONS
+            // ============================================
+
+            /**
+            * İlerleme durumunu güncelle
+            */
+            function updateProgress() {
+                const progress = (state.answeredCount / totalQuestions) * 100;
                 
-                // Tüm aynı gruptaki seçeneklerin parent'larından class'ları kaldır
-                checklistItem.classList.remove('answered-yes', 'answered-no');
+                $progressFill.css('width', progress + '%');
+                $progressCount.text(`${state.answeredCount}/${totalQuestions}`);
                 
-                // Yeni seçime göre class ekle
-                if (e.target.value === 'EVET') {
-                    checklistItem.classList.add('answered-yes');
-                    warningMessage.classList.remove('show');
+                // Tüm sorular cevaplanmışsa butonu aktif et
+                if (state.answeredCount === totalQuestions) {
+                    $submitButton
+                        .prop('disabled', false)
+                        .addClass('active');
                 } else {
-                    checklistItem.classList.add('answered-no');
-                    warningMessage.classList.add('show');
+                    $submitButton
+                        .prop('disabled', true)
+                        .removeClass('active');
+                }
+            }
+
+            /**
+            * Modal shake animasyonu
+            */
+            function shakeModal() {
+                $modalContainer
+                    .css('animation', CONFIG.animations.shake)
+                    .one('animationend', function() {
+                        $(this).css('animation', '');
+                    });
+            }
+
+            /**
+            * Radio button değişikliğini işle
+            * @param {jQuery} $radio - Radio button jQuery objesi
+            */
+            function handleRadioChange($radio) {
+                const $checklistItem = $radio.closest(CONFIG.selectors.checklistItem);
+                const $warningMessage = $checklistItem.find(CONFIG.selectors.warningMessage);
+                const questionName = $radio.attr('name');
+                const questionValue = $radio.val();
+                
+                // State'i güncelle
+                const wasAnswered = state.answers.hasOwnProperty(questionName);
+                state.answers[questionName] = questionValue;
+                
+                if (!wasAnswered) {
+                    state.answeredCount++;
+                }
+                
+                // Visual feedback
+                $checklistItem.removeClass('answered-yes answered-no');
+                
+                if (questionValue === 'EVET') {
+                    $checklistItem.addClass('answered-yes');
+                    $warningMessage.removeClass('show');
+                    
+                    // EVET seçilirse açıklamayı state'den kaldır
+                    const questionNum = $checklistItem.data('question');
+                    delete state.explanations[`question_${questionNum}`];
+                } else {
+                    $checklistItem.addClass('answered-no');
+                    $warningMessage.addClass('show');
                 }
                 
                 updateProgress();
-            });
-        });
-
-        // İlerleme durumunu güncelle
-        function updateProgress() {
-            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
-            const progress = (answeredQuestions / totalQuestions) * 100;
-            
-            progressFill.style.width = `${progress}%`;
-            progressCount.textContent = `${answeredQuestions}/${totalQuestions}`;
-            
-            // Tüm sorular cevaplanmışsa butonu aktif et
-            if (answeredQuestions === totalQuestions) {
-                submitButton.disabled = false;
-                submitButton.classList.add('active');
-            } else {
-                submitButton.disabled = true;
-                submitButton.classList.remove('active');
             }
-        }
 
-        // Form gönderimi
-        submitButton.addEventListener('click', () => {
-            if (submitButton.classList.contains('active')) {
-                // Seçimleri topla
-                const formData = {};
-                document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                    formData[radio.name] = radio.value;
-                });
+            /**
+            * Textarea değişikliğini işle
+            * @param {jQuery} $textarea - Textarea jQuery objesi
+            */
+            function handleTextareaInput($textarea) {
+                const $questionItem = $textarea.closest(CONFIG.selectors.checklistItem);
+                const questionNum = $questionItem.data('question');
+                const value = $textarea.val().trim();
                 
-                // Açıklamaları topla (varsa)
-                const explanations = {};
-                document.querySelectorAll('.warning-message.show textarea').forEach(textarea => {
-                    const questionItem = textarea.closest('.checklist-item');
-                    const questionNum = questionItem.dataset.question;
-                    if (textarea.value.trim()) {
-                        explanations[`question_${questionNum}`] = textarea.value.trim();
+                if (value) {
+                    state.explanations[`question_${questionNum}`] = value;
+                } else {
+                    delete state.explanations[`question_${questionNum}`];
+                }
+            }
+
+            /**
+            * Form submit işlemi
+            */
+            function handleSubmit() {
+                if (!$submitButton.hasClass('active')) {
+                    return;
+                }
+
+                console.log('Form Data:', state.answers);
+                console.log('Explanations:', state.explanations);
+                
+                // Modal'ı kapat
+                $modal.css('animation', CONFIG.animations.fadeOut);
+                
+                setTimeout(function() {
+                    $modal.hide();
+                    
+                    // Eğer mesaj fonksiyonu varsa kullan (SweetAlert, Toastr vs.)
+                    if (typeof mesaj === 'function') {
+                        mesaj('Teşekkürler', 'success');
+                    } else if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı',
+                            text: 'Kontrol listesi tamamlandı'
+                        });
+                    } else {
+                        console.log('✓ Kontrol listesi başarıyla tamamlandı');
                     }
-                });
-                
-                console.log('Form Data:', formData);
-                console.log('Explanations:', explanations);
-                
-                // Modal'ı kapat ve form gönder
-                modal.style.animation = 'fadeOut 0.3s ease-out';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    mesaj('Teşekkürler','success');
+                    
+                    // AJAX ile veri gönderimi (opsiyonel)
+                    submitToServer();
+                    
                 }, 300);
             }
-        });
 
-        // Fade out animasyonu
-        // const style = document.createElement('style');
-        // style.textContent = `
-        //     @keyframes fadeOut {
-        //         from { opacity: 1; }
-        //         to { opacity: 0; }
-        //     }
-        // `;
-        // document.head.appendChild(style);
+            /**
+            * Server'a veri gönder (AJAX)
+            */
+            function submitToServer() {
+                // AJAX endpoint'i varsa kullan
+                const ajaxEndpoint = $modal.data('ajax-url') || 'submit-checklist.php';
+                
+                $.ajax({
+                    url: ajaxEndpoint,
+                    method: 'POST',
+                    data: {
+                        checklist: state.answers,
+                        explanations: state.explanations,
+                        timestamp: new Date().toISOString()
+                    },
+                    beforeSend: function() {
+                        console.log('📤 Veri gönderiliyor...');
+                    },
+                    success: function(response) {
+                        console.log('✓ Başarılı:', response);
+                        
+                        // Başarılı callback varsa çağır
+                        if (typeof window.onChecklistSuccess === 'function') {
+                            window.onChecklistSuccess(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('✗ Hata:', error);
+                        
+                        // Hata callback varsa çağır
+                        if (typeof window.onChecklistError === 'function') {
+                            window.onChecklistError(error);
+                        }
+                    }
+                });
+            }
+
+            // ============================================
+            // EVENT DELEGATION - jQuery ile temiz kod
+            // ============================================
+
+            /**
+            * Radio button değişikliği (EVENT DELEGATION)
+            */
+            $modalBody.on('change', CONFIG.selectors.radioInput, function() {
+                handleRadioChange($(this));
+            });
+
+            /**
+            * Textarea input (EVENT DELEGATION)
+            */
+            $modalBody.on('input', CONFIG.selectors.textareaInput, function() {
+                handleTextareaInput($(this));
+            });
+
+            /**
+            * Submit button click
+            */
+            $submitButton.on('click', handleSubmit);
+
+            /**
+            * Modal overlay click (dışına tıklama)
+            */
+            $modal.on('click', function(e) {
+                if ($(e.target).is(CONFIG.selectors.modal)) {
+                    e.preventDefault();
+                    shakeModal();
+                }
+            });
+
+            /**
+            * Keyboard eventleri
+            */
+            $(document).on('keydown', function(e) {
+                // Modal görünür değilse çık
+                if (!$modal.is(':visible')) return;
+
+                // ESC tuşunu engelle
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    shakeModal();
+                }
+                
+                // Enter tuşu ile submit (textarea'da değilse)
+                if (e.key === 'Enter' && 
+                    $submitButton.hasClass('active') && 
+                    !$(e.target).is('textarea')) {
+                    e.preventDefault();
+                    handleSubmit();
+                }
+            });
+
+            // ============================================
+            // PUBLIC API - Window objesine ekle
+            // ============================================
+
+            window.ChecklistModal = {
+                /**
+                * Mevcut state'i al
+                * @returns {Object} State objesi
+                */
+                getState: function() {
+                    return $.extend(true, {}, state);
+                },
+
+                /**
+                * Formu sıfırla
+                */
+                reset: function() {
+                    state.answeredCount = 0;
+                    state.answers = {};
+                    state.explanations = {};
+                    
+                    $(CONFIG.selectors.radioInput + ':checked').prop('checked', false);
+                    $(CONFIG.selectors.checklistItem).removeClass('answered-yes answered-no');
+                    $(CONFIG.selectors.warningMessage).removeClass('show');
+                    $('textarea').val('');
+                    
+                    updateProgress();
+                    
+                    console.log('✓ Form sıfırlandı');
+                },
+
+                /**
+                * Modalı göster
+                */
+                show: function() {
+                    $modal.show().css('animation', CONFIG.animations.fadeIn);
+                    console.log('✓ Modal gösterildi');
+                },
+
+                /**
+                * Modalı kapat
+                */
+                hide: function() {
+                    handleSubmit();
+                },
+
+                /**
+                * Belirli bir sorunun cevabını al
+                * @param {string} questionName - Soru adı (name attribute)
+                * @returns {string|null} Cevap
+                */
+                getAnswer: function(questionName) {
+                    return state.answers[questionName] || null;
+                },
+
+                /**
+                * Tüm cevapları al (PHP'ye göndermek için)
+                * @returns {Object} Form data
+                */
+                getFormData: function() {
+                    return {
+                        answers: state.answers,
+                        explanations: state.explanations,
+                        completed: state.answeredCount === totalQuestions,
+                        totalQuestions: totalQuestions,
+                        answeredCount: state.answeredCount
+                    };
+                },
+
+                /**
+                * Belirli bir soruyu programatik olarak cevapla
+                * @param {string} questionName - Soru adı
+                * @param {string} value - EVET veya HAYIR
+                */
+                setAnswer: function(questionName, value) {
+                    const $radio = $(`input[name="${questionName}"][value="${value}"]`);
+                    if ($radio.length) {
+                        $radio.prop('checked', true).trigger('change');
+                    }
+                },
+
+                /**
+                * Validation kontrolü
+                * @returns {boolean} Tüm sorular cevaplanmış mı?
+                */
+                isComplete: function() {
+                    return state.answeredCount === totalQuestions;
+                },
+
+                /**
+                * Debug bilgisi göster
+                */
+                debug: function() {
+                    console.log('=== CHECKLIST DEBUG ===');
+                    console.log('Total Questions:', totalQuestions);
+                    console.log('Answered:', state.answeredCount);
+                    console.log('Answers:', state.answers);
+                    console.log('Explanations:', state.explanations);
+                    console.log('Complete:', this.isComplete());
+                    console.log('=======================');
+                }
+            };
+
+            // ============================================
+            // INITIALIZATION
+            // ============================================
+
+            $(document).ready(function() {
+                console.log('✓ Checklist Modal hazır');
+                console.log('API Methods:', Object.keys(window.ChecklistModal).join(', '));
+            });
+
+        })(jQuery);
     </script>

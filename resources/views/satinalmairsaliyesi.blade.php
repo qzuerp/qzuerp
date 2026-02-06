@@ -330,7 +330,7 @@
 																		class="form-control">
 																</td>
 																<td style="min-width: 150px">
-																	<input maxlength="12" style="color: red"
+																	<input style="color: red"
 																		data-name="LOTNUMBER" type="text"
 																		name="LOTNUMBER_FILL" id="LOTNUMBER_FILL"
 																		data-bs-toggle="tooltip" data-bs-placement="top"

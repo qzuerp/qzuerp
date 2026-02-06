@@ -2279,16 +2279,47 @@
               {
                 $.ajax({
                   type:'POST',
-                  url:'/soruları_getir',
-                  data:{KOD:this.value},
-                  success:function(res)
-                  {
-                    if(res && res.length > 0)
-                    {
+                  url:'/get_questions',
+                  data:{KOD : $('#X_T_ISMERKEZI').val()},
+                  success: function (res) {
+                    if (res && res.length > 0) {
 
-                      $('#checkBody').html(questions);
+                      let questions = '';
+
+                      res.forEach((element, index) => {
+                        questions += `
+                          <div class="checklist-item" data-question="${index + 1}">
+                            <div class="question-header">
+                              <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
+                              <div class="question-text">${element.SORU}</div>
+                            </div>
+
+                            <div class="answer-options">
+                              <label class="radio-option yes">
+                                <input type="radio" name="cevap_${index}" value="EVET">
+                                <span class="radio-icon"></span>
+                                <span>Evet</span>
+                              </label>
+
+                              <label class="radio-option no">
+                                <input type="radio" name="cevap_${index}" value="HAYIR">
+                                <span class="radio-icon"></span>
+                                <span>Hayır</span>
+                              </label>
+                            </div>
+
+                            <div class="warning-message">
+                              <div class="warning-title">⚠ Dikkat</div>
+                              <textarea class="explanation-input" placeholder="Açıklama (opsiyonel)"></textarea>
+                            </div>
+                          </div>
+                        `;
+                      });
+
+                      $('#checkBody').append(questions);
                     }
                   }
+
                 });
                 $('.modal-overlay').fadeIn(200).css('display','flex');
               }
