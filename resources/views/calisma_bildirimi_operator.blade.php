@@ -2283,7 +2283,6 @@
                   data:{KOD : $('#X_T_ISMERKEZI').val()},
                   success: function (res) {
                     if (res && res.length > 0) {
-
                       let questions = '';
 
                       res.forEach((element, index) => {
@@ -2296,15 +2295,19 @@
 
                             <div class="answer-options">
                               <label class="radio-option yes">
-                                <input type="radio" name="cevap_${index}" value="EVET">
-                                <span class="radio-icon"></span>
-                                <span>Evet</span>
+                                <input id="yes_${index}" type="radio" name="cevap_${index}" value="EVET">
+                                <label for="yes_${index}" class="radio-label">
+                                  <span class="radio-icon"></span>
+                                  <span>Hayır</span>
+                                </label>
                               </label>
 
                               <label class="radio-option no">
-                                <input type="radio" name="cevap_${index}" value="HAYIR">
-                                <span class="radio-icon"></span>
-                                <span>Hayır</span>
+                                <input id="no_${index}" type="radio" name="cevap_${index}" value="HAYIR">
+                                <label for="no_${index}" class="radio-label">
+                                  <span class="radio-icon"></span>
+                                  <span>Hayır</span>
+                                </label>
                               </label>
                             </div>
 
@@ -2316,7 +2319,26 @@
                         `;
                       });
                       
-                      $('#checkBody').append(questions);
+                      $('#checkBody').html(questions);
+                      window.totalQuestions = res.length;
+                      $('.progress-count').text('0/' + window.totalQuestions);
+                    }
+                    else
+                    {
+                      $('#checkBody').html(`
+                        <div class="text-center p-4">
+                            <div class="mb-3">
+                                <i class="fa fa-info-circle text-secondary" style="font-size: 48px;"></i>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">Sorular Bulunamadı</h5>
+
+                            <p class="text-muted mb-0">
+                                Bu işlem için tanımlı herhangi bir kontrol sorusu yok.
+                            </p>
+                        </div>
+                      `);
+                      $('#submitButton').prop('disabled', false).addClass('active');
                     }
                   }
 

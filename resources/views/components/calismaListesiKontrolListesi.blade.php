@@ -507,7 +507,7 @@
             <div class="modal-body" id="checkBody">
 
                 <!-- Soru 1 -->
-                <div class="checklist-item" data-question="1">
+                <!-- <div class="checklist-item" data-question="1">
                     <div class="question-header">
                         <div class="question-number">01</div>
                         <div class="question-text">Evrak bilgileri kontrol edildi mi?</div>
@@ -533,12 +533,12 @@
                         <div class="warning-text">Evrak bilgileri kontrol edilmeden devam edilemez. Lütfen evrakları kontrol edip işaretleyin.</div>
                         <textarea class="explanation-input" placeholder="Açıklama giriniz (opsiyonel)..."></textarea>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="modal-footer">
                 <div class="progress-indicator">
-                    <span class="progress-count">0/4</span>
+                    <span class="progress-count">0/0</span>
                     <div class="progress-bar">
                         <div class="progress-fill"></div>
                     </div>
@@ -552,15 +552,10 @@
     </div>
 
     <script>
-        /**
-         * Checklist Modal - Basit jQuery Event Delegation
-         * Herkesin anlayabileceği temiz kod
-        */
-
         $(document).ready(function() {
             
             // Değişkenler
-            var totalQuestions = $('.checklist-item').length;
+            window.totalQuestions = $('.checklist-item').length;
             var answeredCount = 0;
             
             // ESC tuşunu devre dışı bırak
