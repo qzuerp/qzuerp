@@ -58,8 +58,8 @@
         S00.NAME2 AS STOK_ADI2,
         S00.id,
         S00.REVNO,
-        MAX(S63T.TERMIN_TAR) AS TERMIN_TAR,
-        MAX(S63E.TARIH) AS TARIH,
+        S63T.TERMIN_TAR,
+        S63E.TARIH,
         D00.DOSYA
     ')
     ->groupBy(
@@ -74,6 +74,8 @@
         'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
         'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
         'S00.NAME2','S00.id','S00.REVNO',
+        'S63T.TERMIN_TAR',
+        'S63E.TARIH',
         'D00.DOSYA'
     )
     ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
