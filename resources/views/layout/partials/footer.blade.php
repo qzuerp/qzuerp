@@ -183,20 +183,24 @@
 </script>
 @if (session('error_swal'))
   <script>
-    let errors = @json(session('error_swal'));
+  $(function() {   // ya da $(document).ready(function() {
+      let errors = @json(session('error_swal') ?? []);
 
-    let html = "<ul style='text-align:left'>";
-    errors.forEach(e => {
-      html += `<li><b>${e.tip}:</b> ${e.evraklar}</li>`;
-    });
-    html += "</ul>";
+      if (errors && errors.length > 0) {
+          let html = "<ul style='text-align:left; margin: 0; padding-left: 20px;'>";
+          errors.forEach(e => {
+              html += `<li><b>${e.tip || 'Hata'}:</b> ${e.evraklar || 'bilgi yok'}</li>`;
+          });
+          html += "</ul>";
 
-    Swal.fire({
-      icon: 'warning',
-      title: "Bu kod silinemez!",
-      html: html,
-      confirmButtonText: "Tamam"
-    });
+          Swal.fire({
+              icon: 'warning',
+              title: "Bu kod silinemez!",
+              html: html,
+              confirmButtonText: "Tamam",
+          });
+      }
+  });
   </script>
 @endif
 

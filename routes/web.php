@@ -43,6 +43,7 @@ use App\Http\Controllers\DovizKuruController;
 use App\Http\Controllers\Etiket_Karti_controller;
 use App\Http\Controllers\Maliyet;
 use App\Http\Controllers\Teklif_fiyat_analiz;
+use App\Http\Controllers\Teklif_fiyat_analizV2;
 use App\Http\Controllers\qval10_controller;
 use App\Http\Controllers\qval02_controller;
 use App\Http\Controllers\fkk_controller;
@@ -454,6 +455,21 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/recetedenHesapla', [Teklif_fiyat_analiz::class, 'recetedenHesapla'])->name('recetedenHesapla');
     Route::post('/evrakNoGetir', [Teklif_fiyat_analiz::class, 'evrakNoGetir'])->name('evrakNoGetir');
     Route::post('/satir_fiyat_hesapla', [Teklif_fiyat_analiz::class, 'satir_fiyat_hesapla']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Teklif Fiyat analiz V2
+    |--------------------------------------------------------------------------
+    */
+    Route::get('V2/teklif_fiyat_analiz', [Teklif_fiyat_analizV2::class, 'index']);
+    Route::post('V2/maliyetlendire_islemler', [Teklif_fiyat_analizV2::class, 'islemler'])->name('maliyetlendire_islemlerV2');
+    Route::post('V2/maliyetlendire_createKaynakKodSelect', [Teklif_fiyat_analizV2::class, 'createKaynakKodSelect']);
+    Route::post('V2/maliyet_hesapla', [Teklif_fiyat_analizV2::class, 'maliyet_hesapla'])->name('maliyet_hesaplaV2');
+    Route::post('V2/doviz_kur_getir', [Teklif_fiyat_analizV2::class, 'doviz_kur_getir'])->name('doviz_kur_getirV2');
+    Route::post('V2/recetedenHesapla', [Teklif_fiyat_analizV2::class, 'recetedenHesapla'])->name('recetedenHesaplaV2');
+    Route::post('V2/evrakNoGetir', [Teklif_fiyat_analizV2::class, 'evrakNoGetir'])->name('evrakNoGetirV2');
+    Route::post('V2/satir_fiyat_hesapla', [Teklif_fiyat_analizV2::class, 'satir_fiyat_hesapla']);
+    Route::post('/excel-upload', [Teklif_fiyat_analizV2::class, 'upload']);
 
     /*
     |--------------------------------------------------------------------------

@@ -2277,73 +2277,73 @@
               }
               else
               {
-                $.ajax({
-                  type:'POST',
-                  url:'/get_questions',
-                  data:{KOD : $('#X_T_ISMERKEZI').val()},
-                  success: function (res) {
-                    if (res && res.length > 0) {
-                      let questions = '';
+                // $.ajax({
+                //   type:'POST',
+                //   url:'/get_questions',
+                //   data:{KOD : $('#X_T_ISMERKEZI').val()},
+                //   success: function (res) {
+                //     if (res && res.length > 0) {
+                //       let questions = '';
 
-                      res.forEach((element, index) => {
-                        questions += `
-                          <div class="checklist-item" data-question="${index + 1}">
-                            <div class="question-header">
-                              <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
-                              <div class="question-text">${element.SORU}</div>
-                            </div>
+                //       res.forEach((element, index) => {
+                //         questions += `
+                //           <div class="checklist-item" data-question="${index + 1}">
+                //             <div class="question-header">
+                //               <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
+                //               <div class="question-text">${element.SORU}</div>
+                //             </div>
 
-                            <div class="answer-options">
-                              <label class="radio-option yes">
-                                <input id="yes_${index}" type="radio" name="cevap_${index}" value="EVET">
-                                <label for="yes_${index}" class="radio-label">
-                                  <span class="radio-icon"></span>
-                                  <span>Hayır</span>
-                                </label>
-                              </label>
+                //             <div class="answer-options">
+                //               <label class="radio-option yes">
+                //                 <input id="yes_${index}" type="radio" name="cevap_${index}" value="EVET">
+                //                 <label for="yes_${index}" class="radio-label">
+                //                   <span class="radio-icon"></span>
+                //                   <span>Hayır</span>
+                //                 </label>
+                //               </label>
 
-                              <label class="radio-option no">
-                                <input id="no_${index}" type="radio" name="cevap_${index}" value="HAYIR">
-                                <label for="no_${index}" class="radio-label">
-                                  <span class="radio-icon"></span>
-                                  <span>Hayır</span>
-                                </label>
-                              </label>
-                            </div>
+                //               <label class="radio-option no">
+                //                 <input id="no_${index}" type="radio" name="cevap_${index}" value="HAYIR">
+                //                 <label for="no_${index}" class="radio-label">
+                //                   <span class="radio-icon"></span>
+                //                   <span>Hayır</span>
+                //                 </label>
+                //               </label>
+                //             </div>
 
-                            <div class="warning-message">
-                              <div class="warning-title">⚠ Dikkat</div>
-                              <textarea class="explanation-input" placeholder="Açıklama (opsiyonel)"></textarea>
-                            </div>
-                          </div>
-                        `;
-                      });
+                //             <div class="warning-message">
+                //               <div class="warning-title">⚠ Dikkat</div>
+                //               <textarea class="explanation-input" placeholder="Açıklama (opsiyonel)"></textarea>
+                //             </div>
+                //           </div>
+                //         `;
+                //       });
                       
-                      $('#checkBody').html(questions);
-                      window.totalQuestions = res.length;
-                      $('.progress-count').text('0/' + window.totalQuestions);
-                    }
-                    else
-                    {
-                      $('#checkBody').html(`
-                        <div class="text-center p-4">
-                            <div class="mb-3">
-                                <i class="fa fa-info-circle text-secondary" style="font-size: 48px;"></i>
-                            </div>
+                //       $('#checkBody').html(questions);
+                //       window.totalQuestions = res.length;
+                //       $('.progress-count').text('0/' + window.totalQuestions);
+                //     }
+                //     else
+                //     {
+                //       $('#checkBody').html(`
+                //         <div class="text-center p-4">
+                //             <div class="mb-3">
+                //                 <i class="fa fa-info-circle text-secondary" style="font-size: 48px;"></i>
+                //             </div>
 
-                            <h5 class="fw-bold mb-2">Sorular Bulunamadı</h5>
+                //             <h5 class="fw-bold mb-2">Sorular Bulunamadı</h5>
 
-                            <p class="text-muted mb-0">
-                                Bu işlem için tanımlı herhangi bir kontrol sorusu yok.
-                            </p>
-                        </div>
-                      `);
-                      $('#submitButton').prop('disabled', false).addClass('active');
-                    }
-                  }
+                //             <p class="text-muted mb-0">
+                //                 Bu işlem için tanımlı herhangi bir kontrol sorusu yok.
+                //             </p>
+                //         </div>
+                //       `);
+                //       $('#submitButton').prop('disabled', false).addClass('active');
+                //     }
+                //   }
 
-                });
-                $('.modal-overlay').fadeIn(200).css('display','flex');
+                // });
+                // $('.modal-overlay').fadeIn(200).css('display','flex');
               }
 
             }
