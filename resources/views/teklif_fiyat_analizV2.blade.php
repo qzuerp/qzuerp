@@ -188,6 +188,83 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div class="modal fade bd-example-modal-lg" id="satir_detay" tabindex="-1" role="dialog" aria-labelledby="satir_detay">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fa-solid fa-info"></i> Satır detayı</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<!-- Genel Bilgiler -->
+						<div class="col-4">
+							<label for="StokKodu">Stok Kodu</label>
+							<input type="text" id="StokKodu" class="form-control" readonly>
+						</div>
+						<div class="col-4">
+							<label for="StokAdi">Stok Adı</label>
+							<input type="text" id="StokAdi" class="form-control" readonly>
+						</div>
+						<div class="col-4">
+							<label for="SF_MIKTAR">İşlem Miktarı</label>
+							<input type="number" id="SF_MIKTAR" class="form-control">
+						</div>
+						<div class="col-4">
+							<label for="SF_IUNIT">İşlem Birimi</label>
+							<input type="number" id="SF_IUNIT" class="form-control" readonly>
+						</div>
+						<div class="col-4">
+							<label for="FIYAT">Fiyat</label>
+							<input type="number" id="FIYAT" class="form-control" readonly>
+						</div>
+						<div class="col-4">
+							<label for="TUTAR">Tutar</label>
+							<input type="number" id="TUTAR" class="form-control">
+						</div>
+						<!-- Genel Bilgiler -->
+
+						<!-- Hammade Bilgileri -->
+						<div class="col-6">
+							<label for="HammaddeKodu">Hammadde Kodu</label>
+							<select class="form-control select2 STOK_KODU_SHOW"
+								id="HammadeKodu"
+								data-modal="satir_detay"
+								style=" height: 30px; width:100%;">
+								<option value=" ">Seç</option>
+							</select>
+						</div>
+						<div class="col-6">
+							<label for="HammaddeKodu">Hammadde Kodu</label>
+							<select class="form-control select2 STOK_KODU_SHOW"
+								id="HammadeKodu"
+								data-modal="satir_detay"
+								style=" height: 30px; width:100%;">
+								<option value=" ">Seç</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="en">En</label>
+							<input type="number" id="en" class="form-control">
+						</div>
+						<div class="col-4">
+							<label for="boy">Boy</label>
+							<input type="number" id="boy" class="form-control">
+						</div>
+						<div class="col-4">
+							<label for="kalinlik">Kalınlık</label>
+							<input type="number" id="kalinlik" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" data-bs-dismiss="modal"
+						style="margin-top: 15px;">Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<div class="content-wrapper">
 		<section class="content">
@@ -382,11 +459,11 @@
 																</td>
 																<td>
 																	<div class="d-flex  " style="display: flex;">
-																		<select class="form-control select2 txt-radius KOD"
+																		<select class="STOK_KODU_SHOW form-control select2 txt-radius KOD"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="KOD" data-name="KOD"
 																			onchange="stokAdiGetir3(this.value)"
-																			name="STOK_KODU_SHOW" id="STOK_KODU_SHOW"
+																			id="STOK_KODU_SHOW"
 																			style=" height: 30px; width:100%;">
 																			<option value=" ">Seç</option>
 																		</select>
@@ -459,8 +536,8 @@
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
 																	value="{{$kart_veri->TEKLIF_TUTAR}}">
 																<td>
-																	<button type='button' class='btn btn-default' data-bs-toggle="modal" onclick='receteden_hesapla("{{$veri->KOD}}","{{$veri->SF_MIKTAR}}","{{$veri->TRNUM}}",this)'
-																	data-bs-target="#modal_maliyetListesi"><i
+																	<button type='button' class='btn btn-default' data-bs-toggle="modal"
+																	data-bs-target="#satir_detay"><i
 																			class='fa fa-plus'></i></button>
 																</td>
 																<td><input type="text" name="KOD[]" value="{{$veri->KOD}}"
@@ -970,8 +1047,28 @@
 
 
 
-			$('#STOK_KODU_SHOW').select2({
+			$('.STOK_KODU_SHOW').select2({
 				placeholder: 'Stok kodu seç...',
+				ajax: {
+					url: '/stok-kodu-custom-select',
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						return {
+							q: params.term
+						};
+					},
+					processResults: function (data) {
+						return {
+							results: data.results
+						};
+					},
+					cache: true
+				}
+			});
+			$('#HammadeKodu').select2({
+				placeholder: 'Stok kodu seç...',
+				dropdownParent: $('#satir_detay'),
 				ajax: {
 					url: '/stok-kodu-custom-select',
 					dataType: 'json',

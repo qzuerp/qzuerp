@@ -1355,8 +1355,8 @@
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK01[]' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK02[]' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' readonly value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+satirEkleInputs.PK_NO_FILL ?? 1+"' style='color:blue;'></td>";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+satirEkleInputs.YARI_MAMUL_MIKTARI_FILL ?? 1+"' style='color:blue;'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+(satirEkleInputs.PK_NO_FILL ?? 1) +"' style='color:blue;'></td>";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+(satirEkleInputs.YARI_MAMUL_MIKTARI_FILL ?? 1) +"' style='color:blue;'></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_1_SHOW_T' value='"+satirEkleInputs.KALIPKODU_1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_1[]' value='"+satirEkleInputs.KALIPKODU_1_FILL+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_2_SHOW_T' value='"+satirEkleInputs.KALIPKODU_2_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_2[]' value='"+satirEkleInputs.KALIPKODU_2_FILL+"'></td> ";
