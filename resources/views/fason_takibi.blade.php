@@ -20,8 +20,8 @@
 
 //   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
   
-  $tumEvraklar = DB::table($database.'gdef00 as G00')
-    ->leftJoin($database.'stok10a as S10A', 'S10A.AMBCODE', '=', 'G00.KOD')
+  $tumEvraklar = DB::table($database.'stok10a as S10A')
+    ->leftJoin($database.'gdef00 as G00', 'S10A.AMBCODE', '=', 'G00.KOD')
     ->join($database.'stok00 as S00', 'S00.KOD', '=', 'S10A.KOD') // INNER JOIN
     ->leftJoin($database.'stok63t as S63T', function ($join) {
         $join->on('S63T.KOD', '=', 'S10A.KOD')
