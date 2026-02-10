@@ -318,10 +318,10 @@
 																	</td>
 																	
 																	<td>
-																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPS" data-name="BOMREC_YMAMULPS" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="0">
+																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPS" data-name="BOMREC_YMAMULPS" maxlength="255" style="color: red" name="PK_NO_FILL" id="PK_NO_FILL" value="1">
 																	</td>
 																	<td>
-																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPM" data-name="BOMREC_YMAMULPM" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="0">
+																		<input type="number" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_YMAMULPM" data-name="BOMREC_YMAMULPM" maxlength="255" style="color: red" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="1">
 																	</td>
 																	
 																	

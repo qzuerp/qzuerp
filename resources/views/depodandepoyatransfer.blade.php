@@ -861,6 +861,7 @@
             </div>
           </div>
         </div>
+
         <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -987,7 +988,6 @@
           </div>
         </div>
           
-
         {{-- Seri no start --}}
           <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
             <div class="modal-dialog modal-lg">
@@ -1063,6 +1063,61 @@
             </div>
           </div>
         {{-- Seri no finish --}}
+
+        <div class="modal fade bd-example-modal-lg" id="modal_mpsSuz" tabindex="-1" role="dialog" aria-labelledby="modal_mpsSuz"  >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;MPS Seç</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <!-- table-striped -->
+                  <table id="popupInfo" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+                    <thead>
+                      <tr class="bg-primary">
+                        <th>Evrak No</th>
+                        <th>Mamul Kodu</th>
+                        <th>Mamul Adı</th>
+                      </tr>
+                    </thead>
+
+                    <tfoot>
+                      <tr class="bg-info">
+                        <th>Evrak No</th>
+                        <th>Mamul Kodu</th>
+                        <th>Mamul Adı</th>
+                      </tr>
+                    </tfoot>
+
+                    <tbody>
+
+                      @php
+
+                        $evraklar=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
+
+                        foreach ($evraklar as $key => $suzVeri) {
+                            echo "<tr>";
+                              echo "<td>".$suzVeri->EVRAKNO."</td>";
+                              echo "<td>".$suzVeri->MAMULSTOKKODU."</td>";
+                              echo "<td>".$suzVeri->MAMULSTOKADI."</td>";
+                            echo "</tr>";
+                        }
+
+                      @endphp
+
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
     <!-- <script>
@@ -1098,6 +1153,12 @@
 
       <script>
         $(document).ready(function() {
+          $(document).on('click', '#popupInfo tbody tr', function() {
+            var EVRAKNO = $(this).find('td:eq(0)').text().trim();
+            
+            $('#MPS_NO_FILL').val(EVRAKNO);
+            $('#modal_mpsSuz').modal('hide');
+          });
           getLocation1();
           getNewLocation1();
           $('#seriNoSec tbody').on('click', 'tr', function () {
