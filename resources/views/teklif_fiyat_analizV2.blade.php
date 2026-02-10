@@ -190,77 +190,105 @@
 	</div>
 
 
-	<div class="modal fade bd-example-modal-lg" id="satir_detay" tabindex="-1" role="dialog" aria-labelledby="satir_detay">
+	<div class="modal fade" id="satir_detay" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title"><i class="fa-solid fa-info"></i> Satır detayı</h4>
+				<div class="modal-header py-2">
+					<h5 class="modal-title mb-0"><i class="fa-solid fa-info"></i> Satır Detayı</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-				<div class="modal-body">
-					<div class="row">
-						<!-- Genel Bilgiler -->
-						<div class="col-4">
-							<label for="StokKodu">Stok Kodu</label>
-							<input type="text" id="StokKodu" class="form-control" readonly>
+				<div class="modal-body p-2">
+					<ul class="nav nav-tabs nav-tabs-sm mb-2" role="tablist">
+						<li class="nav-item">
+							<button class="nav-link active py-1 px-3" data-bs-toggle="tab" data-bs-target="#genel">Genel</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link py-1 px-3" data-bs-toggle="tab" data-bs-target="#hammadde">Hammadde</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link py-1 px-3" data-bs-toggle="tab" data-bs-target="#operasyon">Operasyon</button>
+						</li>
+					</ul>
+					
+					<div class="tab-content overflow-hidden p-3">
+						<!-- GENEL -->
+						<div class="tab-pane fade show active" id="genel">
+							<div class="row g-2">
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">Stok Kodu</label>
+									<input type="text" id="StokKodu" class="form-control form-control-sm" readonly>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">Stok Adı</label>
+									<input type="text" id="StokAdi" class="form-control form-control-sm" readonly>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">İşlem Miktarı</label>
+									<input type="number" id="SF_MIKTAR" class="form-control form-control-sm">
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">İşlem Birimi</label>
+									<input type="text" id="SF_IUNIT" class="form-control form-control-sm" readonly>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">Fiyat</label>
+									<input type="number" id="FIYAT" class="form-control form-control-sm" readonly>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<label class="form-label-sm mb-0">Tutar</label>
+									<input type="number" id="TUTAR" class="form-control form-control-sm">
+								</div>
+							</div>
 						</div>
-						<div class="col-4">
-							<label for="StokAdi">Stok Adı</label>
-							<input type="text" id="StokAdi" class="form-control" readonly>
-						</div>
-						<div class="col-4">
-							<label for="SF_MIKTAR">İşlem Miktarı</label>
-							<input type="number" id="SF_MIKTAR" class="form-control">
-						</div>
-						<div class="col-4">
-							<label for="SF_IUNIT">İşlem Birimi</label>
-							<input type="number" id="SF_IUNIT" class="form-control" readonly>
-						</div>
-						<div class="col-4">
-							<label for="FIYAT">Fiyat</label>
-							<input type="number" id="FIYAT" class="form-control" readonly>
-						</div>
-						<div class="col-4">
-							<label for="TUTAR">Tutar</label>
-							<input type="number" id="TUTAR" class="form-control">
-						</div>
-						<!-- Genel Bilgiler -->
 
-						<!-- Hammade Bilgileri -->
-						<div class="col-6">
-							<label for="HammaddeKodu">Hammadde Kodu</label>
-							<select class="form-control select2 STOK_KODU_SHOW"
-								id="HammadeKodu"
-								data-modal="satir_detay"
-								style=" height: 30px; width:100%;">
-								<option value=" ">Seç</option>
-							</select>
+						<!-- HAMMADDE -->
+						<div class="tab-pane fade" id="hammadde">
+							<div class="row g-2">
+								<div class="col-md-6">
+									<label class="form-label-sm mb-0">Hammadde Kodu</label>
+									<select class="form-select form-select-sm select2 STOK_KODU_SHOW" 
+										id="HammadeKodu" 
+										data-modal="satir_detay">
+										<option value="">Seç</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label-sm mb-0">Hammadde Adı</label>
+									<input type="text" id="HammaddeAdi" class="form-control form-control-sm" readonly>
+								</div>
+								<div class="col-md-4 col-6">
+									<label class="form-label-sm mb-0">En</label>
+									<input type="number" id="en" class="form-control form-control-sm">
+								</div>
+								<div class="col-md-4 col-6">
+									<label class="form-label-sm mb-0">Boy</label>
+									<input type="number" id="boy" class="form-control form-control-sm">
+								</div>
+								<div class="col-md-4 col-6">
+									<label class="form-label-sm mb-0">Kalınlık</label>
+									<input type="number" id="kalinlik" class="form-control form-control-sm">
+								</div>
+								<div class="col-md-4 col-6">
+									<label class="form-label-sm mb-0">Boy 2</label>
+									<input type="number" id="boy2" class="form-control form-control-sm">
+								</div>
+								<div class="col-md-4 col-6">
+									<label class="form-label-sm mb-0">Çap</label>
+									<input type="number" id="cap" class="form-control form-control-sm">
+								</div>
+							</div>
 						</div>
-						<div class="col-6">
-							<label for="HammaddeKodu">Hammadde Kodu</label>
-							<select class="form-control select2 STOK_KODU_SHOW"
-								id="HammadeKodu"
-								data-modal="satir_detay"
-								style=" height: 30px; width:100%;">
-								<option value=" ">Seç</option>
-							</select>
-						</div>
-						<div class="col-4">
-							<label for="en">En</label>
-							<input type="number" id="en" class="form-control">
-						</div>
-						<div class="col-4">
-							<label for="boy">Boy</label>
-							<input type="number" id="boy" class="form-control">
-						</div>
-						<div class="col-4">
-							<label for="kalinlik">Kalınlık</label>
-							<input type="number" id="kalinlik" class="form-control">
+
+						<!-- OPERASYON -->
+						<div class="tab-pane fade" id="operasyon">
+							<div class="row g-2" id="prosesAlan"></div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-bs-dismiss="modal"
-						style="margin-top: 15px;">Kapat</button>
+				<div class="modal-footer py-2">
+					<button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">
+						<i class="fa-solid fa-times"></i> Kapat
+					</button>
 				</div>
 			</div>
 		</div>
@@ -536,7 +564,7 @@
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
 																	value="{{$kart_veri->TEKLIF_TUTAR}}">
 																<td>
-																	<button type='button' class='btn btn-default' data-bs-toggle="modal"
+																	<button type='button' class='btn btn-default satir_detay' data-bs-toggle="modal"
 																	data-bs-target="#satir_detay"><i
 																			class='fa fa-plus'></i></button>
 																</td>
@@ -1001,6 +1029,34 @@
 		var aktifSatir = null;
 
 		$(document).ready(function () {
+			const prosesler = [
+				'KAPLAMA','ISIL ISLEM','TAHRIBATSIZ MUAYENE','ULTRASONIK MUAYENE',
+				'AYAR','TORNA 2 EKSEN','TORNA C EKSEN',
+				'FREZE 3-4 EKSEN','FREZE 3+2 EKSEN','FREZE DMU 50',
+				'FREZE DMX80','FREZE DMU 95',
+				'SOKTAK','KONTROL','TESVIYE','MARKALAMA',
+				'PAKET','MASTAR','TASLAMA','OZEL TAKIM','DIGER'
+			];
+			let html = '';
+
+			prosesler.forEach(p => {
+			const key = p.replaceAll(' ', '_');
+
+			html += `
+				<div class="col-4 mb-2">
+				<label>${p}</label>
+				<input 
+					type="number"
+					class="form-control proses-input"
+					id="PROSES[${key}]"
+					value="0">
+				</div>
+			`;
+			});
+
+			$('#prosesAlan').html(html);
+
+
 			$('#uygula').on('click', function () {
 
 				const OR_TRNUM = $('#OR_TRNUM').val();

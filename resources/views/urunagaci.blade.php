@@ -166,10 +166,20 @@
 							</div>
 
 							<div class="row mt-3">
-								<div class="row">
+								<div class="col-11">
 									<label>Açıklama</label>
 									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" data-name="ACIKLAMA" class="form-control mg-left" data-max 
 										name="ACIKLAMA_E" id="ACIKLAMA_E" value="{{ @$kart_veri->ACIKLAMA }}">
+								</div>
+								<div class="col-md-1" style="text-align: right;">
+									@php 
+										$img = DB::table($database.'dosyalar00')
+										->where('EVRAKNO',@$kart_veri->MAMULCODE)
+										->where('EVRAKTYPE','STOK00')
+										->where('DOSYATURU','GORSEL')
+										->first();
+									@endphp
+									<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
 								</div>
 							</div>
 						</div>
