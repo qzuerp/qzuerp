@@ -116,7 +116,7 @@ class main_controller extends Controller
               s10.KOD,
               s10.STOK_ADI,
               SUM(s10.SF_MIKTAR) AS MIKTAR,
-              s10.SF_SF_UNIT,
+              s0.IUNIT AS SF_SF_UNIT,
               s10.LOTNUMBER,
               s10.SERINO,
               s10.AMBCODE,
@@ -138,7 +138,7 @@ class main_controller extends Controller
               s0.REVNO
           ')
           ->groupBy(
-              's10.KOD','s10.STOK_ADI','s10.SF_SF_UNIT','s10.LOTNUMBER',
+              's10.KOD','s10.STOK_ADI','s0.IUNIT','s10.LOTNUMBER',
               's10.SERINO','s10.AMBCODE','g.AD',
               's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
               's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
