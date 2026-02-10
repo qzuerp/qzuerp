@@ -29,6 +29,7 @@
         'M10T.R_YMAMULMIKTAR',
         'S40E.CHSIPNO'
     )
+    ->orderBy('I00.AD', 'asc')
     ->get();
 
 @endphp

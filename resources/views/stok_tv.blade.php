@@ -270,7 +270,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					"dataSrc": "data",
 					"error": function(xhr, error, thrown) {
 						console.error('Veri yükleme hatası:', error);
-						alert('Veriler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+						// alert('Veriler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
 					}
 				},
 				"columns": [

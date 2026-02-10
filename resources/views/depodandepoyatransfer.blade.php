@@ -766,7 +766,13 @@
                     <label for="stok_adi">Stok Adı</label>
                     <input type="text" class="form-control" id="stok_adi" readonly>
                   </div>
-
+                  <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
+                  <span class="d-flex -btn">
+                    <button class="btn btn-radius btn-primary"  data-bs-toggle="modal"  data-bs-target="#modal_mpsSuz" type="button">
+                      <span class="fa-solid fa-magnifying-glass">
+                      </span>
+                    </button>
+                  </span>
                   <div class="col-3 mb-1">
                     <label for="stok_adi">Lokasyon 1</label>
                     <input type="text" class="form-control" id="lok-1" readonly>

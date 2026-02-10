@@ -331,7 +331,6 @@
     else {
       $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
     }
-
   });
 
   $('#evrakSuzTable2 tfoot th').each(function () {

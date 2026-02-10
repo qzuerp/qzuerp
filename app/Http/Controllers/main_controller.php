@@ -199,4 +199,86 @@ class main_controller extends Controller
 
       return response()->json(['data' => $data]);
   }
+
+  public function getStokHareketleriData(Request $request)
+  {
+      $user = Auth::user();
+      $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+      $database = trim($kullanici_veri->firma) . ".dbo.";
+
+      $query = DB::table($database . 'stok10a as s10')
+          ->leftJoin($database . 'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+          ->leftJoin($database . 'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+          ->leftJoin($database . 'table00 as t0', 't0.tablo', '=', 's10.EVRAKTIPI')
+          ->select(
+              's10.*',
+              's0.NAME2',
+              's0.id as STOK_ID',
+              'g.AD as DEPO_ADI',
+              't0.BLADE AS EKRAN_ADI',
+              't0.baslik AS BASLIK'
+          );
+
+      $totalData = $query->count();
+      
+      if ($request->has('search') && !empty($request->search['value'])) {
+          $search = $request->search['value'];
+          $query->where(function($q) use ($search) {
+              $q->where('s10.KOD', 'like', "%{$search}%")
+                ->orWhere('s10.STOK_ADI', 'like', "%{$search}%")
+                ->orWhere('s10.EVRAKNO', 'like', "%{$search}%");
+          });
+      }
+
+      $totalFiltered = $query->count();
+
+      if ($request->has('order')) {
+          $orderColumn = $request->order[0]['column'];
+          $orderDir = $request->order[0]['dir'];
+          $query->orderBy('s10.created_at', $orderDir);
+      } else {
+          $query->orderBy('s10.created_at', 'desc');
+      }
+
+      $start = $request->start ?? 0;
+      $length = $request->length ?? 10;
+      $evraklar = $query->skip($start)->take($length)->get();
+
+      $data = [];
+      foreach ($evraklar as $suzVeri) {
+          $data[] = [
+              'created_at' => $suzVeri->created_at,
+              'KOD' => $suzVeri->KOD,
+              'STOK_ADI' => $suzVeri->STOK_ADI,
+              'NAME2' => $suzVeri->NAME2,
+              'SF_MIKTAR' => $suzVeri->SF_MIKTAR,
+              'SF_SF_UNIT' => $suzVeri->SF_SF_UNIT,
+              'BASLIK' => $suzVeri->BASLIK,
+              'EVRAKNO' => $suzVeri->EVRAKNO,
+              'LOTNUMBER' => $suzVeri->LOTNUMBER,
+              'SERINO' => $suzVeri->SERINO,
+              'AMBCODE' => $suzVeri->AMBCODE . ' - ' . $suzVeri->DEPO_ADI,
+              'TEXT1' => $suzVeri->TEXT1,
+              'TEXT2' => $suzVeri->TEXT2,
+              'TEXT3' => $suzVeri->TEXT3,
+              'TEXT4' => $suzVeri->TEXT4,
+              'NUM1' => $suzVeri->NUM1,
+              'NUM2' => $suzVeri->NUM2,
+              'NUM3' => $suzVeri->NUM3,
+              'NUM4' => $suzVeri->NUM4,
+              'LOCATION1' => $suzVeri->LOCATION1,
+              'LOCATION2' => $suzVeri->LOCATION2,
+              'LOCATION3' => $suzVeri->LOCATION3,
+              'LOCATION4' => $suzVeri->LOCATION4,
+              'action' => '<a class="btn btn-info" href="' . trim($suzVeri->EKRAN_ADI) . '?ID=' . $suzVeri->EVRAKNO . '" target="_blank"><i class="fa fa-chevron-circle-right" style="color: white"></i></a>'
+          ];
+      }
+
+      return response()->json([
+          'draw' => intval($request->draw),
+          'recordsTotal' => $totalData,
+          'recordsFiltered' => $totalFiltered,
+          'data' => $data
+      ]);
+  }
 }
