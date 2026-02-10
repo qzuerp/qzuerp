@@ -175,7 +175,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('stok_harketleri', [main_controller::class, 'stok_harketleri'])->name('stok_harketleri');
     Route::get('/stok-tv-data', [main_controller::class, 'stokTvData'])->name('stok_tv_data');
     Route::get('/stok-hareketleri/data', action: [main_controller::class, 'getStokHareketleriData'])->name('stok_hareketleri.data');
-    Route::get('/stok-hareketleri/export', [main_controller::class, 'exportAll'])->name('stok_hareketleri.export');
 
 
 
