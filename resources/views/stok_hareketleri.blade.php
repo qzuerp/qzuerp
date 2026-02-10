@@ -106,6 +106,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 							<table id="table" class="table table-hover text-center" data-page-length="10">
 								<thead>
 									<tr class="bg-primary">
+										<th style="min-width: 100px">Oluşturma Tarihi</th>
 										<th style="min-width: 150px">Kod</th>
 										<th style="min-width: 200px">Ad</th>
 										<th style="min-width: 200px">Ad 2</th>
@@ -115,6 +116,8 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th style="min-width: 100px">Lot</th>
 										<th style="min-width: 100px">Seri No</th>
 										<th style="min-width: 100px">Depo</th>
+										<th style="min-width: 100px">Evrak Tipi</th>
+										<th style="min-width: 100px">Evrak No</th>
 										<th style="min-width: 100px">Varyant Text 1</th>
 										<th style="min-width: 100px">Varyant Text 2</th>
 										<th style="min-width: 100px">Varyant Text 3</th>
@@ -133,6 +136,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 								</thead>
 								<tfoot>
 									<tr class="bg-info">
+										<th>Oluşturma Tarihi</th>
 										<th>Kod</th>
 										<th>Ad</th>
 										<th>Ad 2</th>
@@ -142,6 +146,8 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th>Lot</th>
 										<th>Seri No</th>
 										<th>Depo</th>
+										<th>Evrak Tipi</th>
+										<th>Evrak No</th>
 										<th>Varyant Text 1</th>
 										<th>Varyant Text 2</th>
 										<th>Varyant Text 3</th>
@@ -190,8 +196,8 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			}
 		});
 
-		// Debounce fonksiyonu - arama için
-		function debounce(func, wait) {
+		// debounce2 fonksiyonu - arama için
+		function debounce2(func, wait) {
 			return function executedFunction(...args) {
 				const later = () => {
 					clearTimeout(searchDebounceTimer);
@@ -274,6 +280,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					}
 				},
 				"columns": [
+					{ "data": "created_at", "defaultContent": "" },
 					{ 
 						"data": "KOD", 
 						"render": function(data) { 
@@ -318,6 +325,8 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 							return (data.AMBCODE || '') + (data.DEPO_ADI ? ' - ' + data.DEPO_ADI : ''); 
 						}
 					},
+					{ "data": "EVRAKTIPI", "defaultContent": "" },
+					{ "data": "EVRAKNO", "defaultContent": "" },
 					{ "data": "TEXT1", "defaultContent": "" },
 					{ "data": "TEXT2", "defaultContent": "" },
 					{ "data": "TEXT3", "defaultContent": "" },
@@ -355,12 +364,12 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 				"initComplete": function () {
 					updateLastRefreshTime();
 					
-					// Kolon bazlı arama - DEBOUNCE İLE
+					// Kolon bazlı arama - debounce2 İLE
 					this.api().columns().every(function () {
 						var that = this;
 						
-						// Debounce'lu arama fonksiyonu
-						const debouncedSearch = debounce(function(value) {
+						// debounce2'lu arama fonksiyonu
+						const debouncedSearch = debounce2(function(value) {
 							if (that.search() !== value) {
 								that.search(value).draw();
 								// Arama sonrası verileri yenile (3 saniye sonra)
