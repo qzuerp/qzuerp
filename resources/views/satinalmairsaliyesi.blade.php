@@ -1033,6 +1033,7 @@
 											<th>Cari</th>
 											<th>Depo</th>
 											<th>Tarih</th>
+											<th>İrsaliye No</th>
 											<th>#</th>
 										</tr>
 									</thead>
@@ -1047,6 +1048,7 @@
 											<th>Cari</th>
 											<th>Depo</th>
 											<th>Tarih</th>
+											<th>İrsaliye No</th>
 											<th>#</th>
 										</tr>
 									</tfoot>
@@ -1067,6 +1069,7 @@
 												echo "<td>" . $suzVeri->CARIHESAPCODE . "</td>";
 												echo "<td>" . $suzVeri->AMBCODE . "</td>";
 												echo "<td>" . $suzVeri->TARIH . "</td>";
+												echo "<td>" . $suzVeri->IRSALIYENO . "</td>";
 
 
 												echo "<td>" . "<a class='btn btn-info' href='satinalmairsaliyesi?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";

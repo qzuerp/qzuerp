@@ -292,7 +292,7 @@
 											</td>
 											<td>
 												<div class="d-flex" data-modal="modal_maliyetListesi" style="display: flex;">
-													<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir4(this.value)" id="KOD">
+													<select class="form-control select2 js-example-basic-single req" data-modal="satir_detay" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir4(this.value)" id="KOD">
 														<option value=" ">Seç</option>
 													</select>
 													<input type="hidden" id="STOK_KOD2">
