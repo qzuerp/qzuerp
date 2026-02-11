@@ -203,9 +203,6 @@
 							<button class="nav-link active py-1 px-3" data-bs-toggle="tab" data-bs-target="#genel">Genel</button>
 						</li>
 						<li class="nav-item">
-							<button class="nav-link py-1 px-3" data-bs-toggle="tab" data-bs-target="#hammadde">Hammadde</button>
-						</li>
-						<li class="nav-item">
 							<button class="nav-link py-1 px-3" data-bs-toggle="tab" data-bs-target="#operasyon">Operasyon</button>
 						</li>
 					</ul>
@@ -290,6 +287,7 @@
 													<option value="H">H - Hammadde</option>
 													<option value="I">I - Tezgah / İş Merk</option>
 													<option value="Y">Y - Yan Ürün</option>
+													<option value="D">D - Diğer</option>
 												</select>
 											</td>
 											<td>
@@ -951,7 +949,7 @@
 				</div>
 			</div>
 
-			<div class="modal fade bd-example-modal-lg" id="modal_maliyetListesi" tabindex="-1" role="dialog"
+			<!-- <div class="modal fade bd-example-modal-lg" id="modal_maliyetListesi" tabindex="-1" role="dialog"
 				aria-labelledby="modal_maliyetListesi">
 				<div class="modal-dialog modal-xl">
 					<div class="modal-content">
@@ -1070,7 +1068,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</section>
 	</div>
 
@@ -1096,33 +1094,6 @@
 		var aktifSatir = null;
 
 		$(document).ready(function () {
-			const prosesler = [
-				'KAPLAMA','ISIL ISLEM','TAHRIBATSIZ MUAYENE','ULTRASONIK MUAYENE',
-				'AYAR','TORNA 2 EKSEN','TORNA C EKSEN',
-				'FREZE 3-4 EKSEN','FREZE 3+2 EKSEN','FREZE DMU 50',
-				'FREZE DMX80','FREZE DMU 95',
-				'SOKTAK','KONTROL','TESVIYE','MARKALAMA',
-				'PAKET','MASTAR','TASLAMA','OZEL TAKIM','DIGER'
-			];
-			let html = '';
-
-			prosesler.forEach(p => {
-			const key = p.replaceAll(' ', '_');
-
-			html += `
-				<div class="col-4 mb-2">
-				<label>${p}</label>
-				<input 
-					type="number"
-					class="form-control proses-input"
-					id="PROSES[${key}]"
-					value="0">
-				</div>
-			`;
-			});
-
-			$('#prosesAlan').html(html);
-
 			$(document).on('click','.satir_detay', function () {
 				aktifSatir = $(this).closest('tr');
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());

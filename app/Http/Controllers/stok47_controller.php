@@ -553,7 +553,10 @@ class stok47_controller extends Controller
           DB::table($firma . 'stok47t')->where('KOD',  $T_STOK_KODU[$i])->update([
             'AK' => 'K'
           ]);
+          $CTRNUM = str_pad($i + 1,6,'0',STR_PAD_LEFT);
           DB::table($firma . 'stok46t')->insert([
+            'TRNUM' => $CTRNUM,
+            'ARTNO' => $SIPEVRAKNO.$CTRNUM,
             'EVRAKNO' => $SIPEVRAKNO,
             'KOD' => $T_STOK_KODU[$i],
             'STOK_ADI' => $STOK->AD,
@@ -562,7 +565,7 @@ class stok47_controller extends Controller
             'FIYAT_PB' => $FIYAT_PB[$i],
             'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
             'SF_SF_UNIT' => $STOK->IUNIT,
-            'ARTNO' => $request->TI_ARTNO[$i],
+            // 'ARTNO' => $request->TI_ARTNO[$i],
             'TALEP_EVRAKNO' => $EVRAKNO,
             'LOTNUMBER' => $TI_LOTNUMBER[$i],
             'NOT1' => $TI_NOT1[$i]
@@ -571,7 +574,7 @@ class stok47_controller extends Controller
 
           DB::table($firma.'notifications')->insert([
             'title' => 'Talebin Siparişe Dönüştürüldü',
-            'message' => $KOD[$i].' için sipariş oluşturuldu.',
+            'message' => $T_STOK_KODU[$i].' için sipariş oluşturuldu.',
             'target_user_id' => $hesap_id,
             'url' => 'satinalmasiparisi?ID='.$EVRAKID
           ]);
