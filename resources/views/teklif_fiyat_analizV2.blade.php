@@ -262,7 +262,7 @@
 												Tutar</th>
 											<th style="min-width:170px; font-size: 13px !important;">
 												Para Birimi</th>
-											<th style="min-width:120px; font-size: 13px !important;">Net
+											<!-- <th style="min-width:120px; font-size: 13px !important;">Net
 												Ağırlık</th>
 											<th style="min-width:120px; font-size: 13px !important;">
 												Bürüt Ağırlık</th>
@@ -275,7 +275,7 @@
 											<th style="min-width:120px; font-size: 13px !important;">
 												Stok miktarı</th>
 											<th style="min-width:120px; font-size: 13px !important;">
-												Stok temel birim</th>
+												Stok temel birim</th> -->
 										</tr>
 										<tr class="satirEkle3" style="background-color:#3c8dbc">
 											<td>
@@ -316,7 +316,7 @@
 											<td>
 												<input type="text" name="" id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICEUNIT" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
 											</td>
-											<td>
+											<!-- <td>
 												<input type="number" name="NETAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
 											</td>
 											<td>
@@ -336,7 +336,7 @@
 											</td>
 											<td>
 												<input type="text" name="STOKTEMELBIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD_STOK00_IUNIT" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
-											</td>
+											</td> -->
 										</tr>
 									</thead>
 									<tbody>
@@ -351,7 +351,7 @@
 					<button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">
 						<i class="fa-solid fa-times"></i> Kapat
 					</button>
-					<button type="button" class="btn btn-succcess" id="saveRow" data-bs-dismiss="modal">
+					<button type="button" class="btn btn-succcess" id="uygula" data-bs-dismiss="modal">
 						<i class="fa-solid fa-save"></i> Güncelle
 					</button>
 				</div>
@@ -366,7 +366,7 @@
 				@include('layout.util.logModal', ['EVRAKTYPE' => 'TEKL20', 'EVRAKNO' => @$kart_veri->EVRAKNO])
 			</div>
 
-			<form action="{{ route('maliyetlendire_islemlerV2') }}" method="post" id="verilerForm">
+			<form action="{{ route('V2_maliyetlendire_islemler') }}" method="post" id="verilerForm">
 				@csrf
 				<div class="row">
 					<div class="col-12">
@@ -629,7 +629,7 @@
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
 																	value="{{$kart_veri->TEKLIF_TUTAR}}">
 																<td>
-																	<button type='button' class='btn btn-default satir_detay' data-bs-toggle="modal"
+																	<button type='button' class='btn btn-default satir_detay' data-trnum="{{ $veri->TRNUM }}" data-bs-toggle="modal"
 																	data-bs-target="#satir_detay"><i
 																			class='fa fa-plus'></i></button>
 																</td>
@@ -1076,7 +1076,6 @@
 	<script>
 		function stokAdiGetir3(veri) {
 			const veriler = veri.split("|||");
-			console.log(veriler);
 			//$('#STOK_KODU_SHOW').val(veriler[0]);
 			$('#STOK_KOD').val(veriler[0]);
 			$('#KODADI').val(veriler[1]);
@@ -1096,6 +1095,7 @@
 		$(document).ready(function () {
 			$(document).on('click','.satir_detay', function () {
 				aktifSatir = $(this).closest('tr');
+				$('#OR_TRNUM').val($(this).data('trnum'));
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
@@ -1104,19 +1104,16 @@
 				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
 			});
 
-			$('#saveRow').on('click', function () {
+			$('#uygula').on('click', function () {
+				const OR_TRNUM = $('#OR_TRNUM').val();
+				if (!OR_TRNUM) return;
+				
 				aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 				aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
 				aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val($('#SF_MIKTAR').val());
 				aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 				aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
 				aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
-			})
-
-			$('#uygula').on('click', function () {
-
-				const OR_TRNUM = $('#OR_TRNUM').val();
-				if (!OR_TRNUM) return;
 
 				const fragment = $(document.createDocumentFragment());
 
@@ -1242,7 +1239,7 @@
 			if (!kurCache.has(key)) {
 				const response = await $.ajax({
 					type: 'POST',
-					url: "{{ route('doviz_kur_getir') }}",
+					url: "{{ route('V2_doviz_kur_getir') }}",
 					data: {
 						"_token": "{{ csrf_token() }}",
 						tarih,
@@ -1260,7 +1257,7 @@
 
 				const evraknoResponse = await $.ajax({
 					type: 'POST',
-					url: "{{ route('evrakNoGetir') }}",
+					url: "{{ route('V2_evrakNoGetir') }}",
 					data: {
 						"_token": "{{ csrf_token() }}",
 						"KOD": esasKod,
@@ -1277,7 +1274,7 @@
 
 				const maliyetResponse = await $.ajax({
 					type: 'POST',
-					url: "{{ route('maliyet_hesapla') }}",
+					url: "{{ route('V2_maliyet_hesapla') }}",
 					data: {
 						"_token": "{{ csrf_token() }}",
 						"TARIH": evraknoResponse.veri.VALIDAFTERTARIH,
@@ -1467,7 +1464,7 @@
 
 			try {
 				const response = await $.ajax({
-					url: "{{ route('recetedenHesapla') }}",
+					url: "{{ route('V2_recetedenHesapla') }}",
 					type: 'POST',
 					data: {
 						kod: kodParcalari[0],
@@ -1619,7 +1616,7 @@
 				var OR_TRNUM = $('#OR_TRNUM').val();
 				var htmlCode = " ";
 				$.ajax({
-					url: 'satir_fiyat_hesapla',
+					url: 'V2_satir_fiyat_hesapla',
 					type: 'POST',
 					data:{
 						KOD: satirEkleInputs.STOK_KOD2,
@@ -1629,7 +1626,7 @@
 					},
 					success: function(response) {
 						satirEkleInputs.FIYAT = response;
-
+						// console.log(response);
 						htmlCode += " <tr> ";
 
 						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM3[]' value='"+TRNUM_FILL+"'></td> ";
@@ -1642,15 +1639,15 @@
 						htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI2[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
 						htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI2[]' value='"+satirEkleInputs.ISLEM_BIRIMI2+"' readonly></td> ";
 						htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT2[]' value='"+parseFloat(satirEkleInputs.FIYAT).toFixed(2)+"' ></td> ";
-						htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR2[]' value='"+parseFloat(satirEkleInputs.FIYAT).toFixed(2) * satirEkleInputs.ISLEM_MIKTARI+"' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR2[]' value='"+parseFloat(satirEkleInputs.FIYAT).toFixed(2) * satirEkleInputs.ISLEM_MIKTARI+"'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI2[]' value='"+satirEkleInputs.PARA_BIRIMI+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK2[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK2[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='HACIM2[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK2[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='AUTO2[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR2[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM2[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK2[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK2[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='HACIM2[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK2[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='AUTO2[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR2[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
+						// htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM2[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
 
 
 						htmlCode += " </tr> ";
@@ -1661,7 +1658,6 @@
 						else {
 							$("#maliyetListesi > tbody").append(htmlCode);
 							updateLastTRNUM(TRNUM_FILL);
-
 							emptyInputs('satirEkle3');
 						}
 					}
@@ -1844,7 +1840,7 @@
 
 			try {
 				$.ajax({
-					url: '/maliyetlendire_createKaynakKodSelect',
+					url: '/V2_maliyetlendire_createKaynakKodSelect',
 					data: {
 						'islem': KAYNAK_TIPI,
 						'firma': firma,
@@ -1873,7 +1869,7 @@
 							.rows.add(rows)
 							.draw(false);
 
-						const modal = $('#modal_maliyetListesi');
+						const modal = $('#satir_detay');
 						const kodSelect = modal.find('#KOD');
 
 						// 🔥 ESKİ SELECT2’Yİ YOK ET

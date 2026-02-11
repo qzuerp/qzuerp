@@ -54,6 +54,7 @@
 
   }
 
+  $MPS_EVRAKLAR=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
 @endphp
 
 @section('content')
@@ -766,13 +767,33 @@
                     <label for="stok_adi">Stok Adı</label>
                     <input type="text" class="form-control" id="stok_adi" readonly>
                   </div>
-                  <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
-                  <span class="d-flex -btn">
-                    <button class="btn btn-radius btn-primary"  data-bs-toggle="modal"  data-bs-target="#modal_mpsSuz" type="button">
-                      <span class="fa-solid fa-magnifying-glass">
-                      </span>
-                    </button>
-                  </span>
+                  <div class="col-12 ">
+                    <label for="stok_adi">MPS Kodu</label>
+                    <select class="form-control select2 js-example-basic-single" data-modal="hizli_islem" style=" height: 30PX"  name="MPS_FILL" id="MPS_FILL3">
+                      @foreach($MPS_EVRAKLAR as $evrak)
+                        <option value="{{$evrak->EVRAKNO}}">{{$evrak->EVRAKNO}} - {{$evrak->MAMULSTOKKODU}} - {{ $evrak->MAMULSTOKADI }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="stok_adi">Teslim alan kişi</label>
+                    <select class="form-control select2 js-example-basic-single TESLIM_ALAN" style="width: 100%;" data-modal="hizli_islem" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TESLIM_ALAN" id="TESLIM_ALAN_FILL3">
+                      <option value="" selected></option>
+                      @php
+                        $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+
+                        foreach ($pers00_evraklar as $key => $veri) {
+
+                          if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
+                            echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                          }
+                          else {
+                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                          }
+                        }
+                      @endphp
+                    </select>
+                  </div>
                   <div class="col-3 mb-1">
                     <label for="stok_adi">Lokasyon 1</label>
                     <input type="text" class="form-control" id="lok-1" readonly>
@@ -1101,9 +1122,8 @@
 
                       @php
 
-                        $evraklar=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
 
-                        foreach ($evraklar as $key => $suzVeri) {
+                        foreach ($MPS_EVRAKLAR as $key => $suzVeri) {
                             echo "<tr>";
                               echo "<td>".$suzVeri->EVRAKNO."</td>";
                               echo "<td>".$suzVeri->MAMULSTOKKODU."</td>";
@@ -1781,6 +1801,8 @@
           var vrb22 = $('#LOCATION_NEW4_FILL2').val();
 
           var MIKTAR = $('#islem_miktari').val(); 
+          var MPS = $('#MPS_FILL3').val(); 
+          var KISI = $('#TESLIM_ALAN_FILL3').val(); 
 
           $.ajax({
             url:'/sevkirsaliyesi_stokAdiGetir',
@@ -1817,6 +1839,9 @@
               htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW3_SHOW_T' value='"+vrb21+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW3[]' value='"+vrb21+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='LOCATION_NEW4_SHOW_T' value='"+vrb22+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION_NEW4[]' value='"+vrb22+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value=''></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='TESLIM_ALAN[]' value='"+KISI+"'></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='TEZGAH[]' value=''></td> ";
+              htmlCode += " <td><input type='text' class='form-control' name='MPS_NO[]' value='"+MPS+"'></td> ";
               htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+vrb11+"'></td> ";
               htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+vrb12+"'></td> ";
               htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+vrb13+"'></td> ";

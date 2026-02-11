@@ -199,7 +199,7 @@ class teklif_fiyat_analizV2 extends Controller
                     }
                 }
 
-                return redirect('V2/teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Kart oluşturuldu');
+                return redirect('V2_teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Kart oluşturuldu');
                 break;
 
             case 'kart_duzenle':
@@ -292,6 +292,10 @@ class teklif_fiyat_analizV2 extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS as $deleteTRNUM) {
+                    DB::table($firma.'tekl20tı')
+                    ->where('EVRAKNO', $EVRAKNO)
+                    ->where('TRNUM', $deleteTRNUM)
+                    ->delete();
                     DB::table($firma.'tekl20t')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
@@ -444,7 +448,7 @@ class teklif_fiyat_analizV2 extends Controller
                 }
 
                 $veri = DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->first();
-                return redirect('V2/teklif_fiyat_analiz?ID='.$request->ID_TO_REDIRECT)->with('success', 'Düzenleme işlemi başarılı');
+                return redirect('V2_teklif_fiyat_analiz?ID='.$request->ID_TO_REDIRECT)->with('success', 'Düzenleme işlemi başarılı');
                 break;
 
             case 'kart_sil':
@@ -452,7 +456,7 @@ class teklif_fiyat_analizV2 extends Controller
                 DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->delete();
                 DB::table($firma.'tekl20tı')->where('EVRAKNO', $EVRAKNO)->delete();
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
-                return redirect('V2/teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
+                return redirect('V2_teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
             case 'yazdir':
                 $data = [
@@ -666,7 +670,6 @@ class teklif_fiyat_analizV2 extends Controller
             return $FIYAT;
         } catch (\Throwable $th) {
             $FIYAT = 0;
-            print_r($th);
         }
 
     }

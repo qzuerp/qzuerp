@@ -465,12 +465,12 @@ Route::group(['middleware' => ['auth']], function() {
     |--------------------------------------------------------------------------
     */
     Route::get('V2_teklif_fiyat_analiz', [Teklif_fiyat_analizV2::class, 'index']);
-    Route::post('V2_maliyetlendire_islemler', [Teklif_fiyat_analizV2::class, 'islemler'])->name('maliyetlendire_islemlerV2');
+    Route::post('V2_maliyetlendire_islemler', [Teklif_fiyat_analizV2::class, 'islemler'])->name('V2_maliyetlendire_islemler');
     Route::post('V2_maliyetlendire_createKaynakKodSelect', [Teklif_fiyat_analizV2::class, 'createKaynakKodSelect']);
-    Route::post('V2_maliyet_hesapla', [Teklif_fiyat_analizV2::class, 'maliyet_hesapla'])->name('maliyet_hesaplaV2');
-    Route::post('V2_doviz_kur_getir', [Teklif_fiyat_analizV2::class, 'doviz_kur_getir'])->name('doviz_kur_getirV2');
-    Route::post('V2_recetedenHesapla', [Teklif_fiyat_analizV2::class, 'recetedenHesapla'])->name('recetedenHesaplaV2');
-    Route::post('V2_evrakNoGetir', [Teklif_fiyat_analizV2::class, 'evrakNoGetir'])->name('evrakNoGetirV2');
+    Route::post('V2_maliyet_hesapla', [Teklif_fiyat_analizV2::class, 'maliyet_hesapla'])->name('V2_maliyet_hesapla');
+    Route::post('V2_doviz_kur_getir', [Teklif_fiyat_analizV2::class, 'doviz_kur_getir'])->name('V2_doviz_kur_getir');
+    Route::post('V2_recetedenHesapla', [Teklif_fiyat_analizV2::class, 'recetedenHesapla'])->name('V2_recetedenHesapla');
+    Route::post('V2_evrakNoGetir', [Teklif_fiyat_analizV2::class, 'evrakNoGetir'])->name('V2_evrakNoGetir');
     Route::post('V2_satir_fiyat_hesapla', [Teklif_fiyat_analizV2::class, 'satir_fiyat_hesapla']);
     Route::post('/excel-upload', [Teklif_fiyat_analizV2::class, 'upload']);
 
