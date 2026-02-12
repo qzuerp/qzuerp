@@ -7,8 +7,14 @@ $(function () {
   $('select[data-modal]').each(function () {
     const modalId = $(this).data('modal');
     $(this).select2({
-      dropdownParent: $('#' + modalId)
+      dropdownParent: $('#' + modalId),
+      dropdownPosition: 'below',
+      width: '100%'
     });
+
+    $('#' + modalId).on('scroll', function () {
+      $(this).select2('close');
+  });
   });
 
 });

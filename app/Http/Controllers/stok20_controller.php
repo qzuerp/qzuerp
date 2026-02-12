@@ -125,6 +125,7 @@ class stok20_controller extends Controller
 
         DB::table($firma.'stok20e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok20t')->where('EVRAKNO',$EVRAKNO)->delete();
+        DB::table($firma.'stok20tı')->where('EVRAKNO',$EVRAKNO)->delete();
 
         DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK20T')->delete();
 

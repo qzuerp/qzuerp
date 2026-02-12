@@ -200,7 +200,8 @@ if (isset($kart_veri)) {
                         <!-- <th>Süre (dk)</th> -->
                         <th>Geçerlilik Tar.</th>
                         <th>Not</th>
-                        <th>Varyant Text 1</th>
+                        <th>Malzeme Cinsi</th>
+                        <th>Yoğunluk</th>
                         <th>Varyant Text 2</th>
                         <th>Varyant Text 3</th>
                         <th>Varyant Text 4</th>
@@ -274,6 +275,17 @@ if (isset($kart_veri)) {
                           <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" name="NOT1_FILL" id="NOT1_FILL" class="NOT1 form-control">
                         </td>
                         <td style="min-width: 150px">
+                        <select class="select2" id="GK_1_FILL">
+                          @php
+                            $MLZM = DB::table($database.'gecoust')->where('EVRAKNO','STKGK7')->get();
+                          @endphp
+										      <option value="">Seç</option>
+                          @foreach($MLZM as $MLZM_VERI)
+                            <option value="{{ $MLZM_VERI->KOD }}">{{ $MLZM_VERI->KOD }}</option>
+                          @endforeach
+                        </select>
+                        </td>
+                        <td style="min-width: 150px">
                           <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL" class="TEXT1 form-control">
                         </td>
                         <td style="min-width: 150px">
@@ -314,6 +326,7 @@ if (isset($kart_veri)) {
                         <td><input type="text" class="form-control PRICE2" name="SF_BAKIYE[]" value="{{ $veri->PRICE2 }}"></td>
                         <td><input type="date" class="form-control GECERLILIK_TAR" name="TERMIN_TAR[]" value="{{ $veri->GECERLILIK_TAR }}"></td>
                         <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
+                        <td><input type="text" class="form-control GK_1" name="GK_1[]" readonly value="{{ $veri->GK_1 }}"></td>
                         <td><input type="text" class="form-control TEXT1" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
                         <td><input type="text" class="form-control TEXT2" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
                         <td><input type="text" class="form-control TEXT3" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -636,6 +649,7 @@ $(document).ready(function() {
     htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE[]' value='"+satirEkleInputs.SF_BAKIYE_SHOW+"' readonly></td> ";
     htmlCode += " <td><input type='date' class='form-control' name='TERMIN_TAR[]' value='"+satirEkleInputs.TERMIN_TAR_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='"+satirEkleInputs.NOT1_FILL+"'></td> ";
+		htmlCode += " <td><input type='text' class='form-control' name='GK_1[]' readonly value='"+satirEkleInputs.GK_1_FILL+"'></td> ";
 		htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
 		htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
 		htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";

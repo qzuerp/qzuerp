@@ -18,7 +18,7 @@
 		$ekran = "teklif_fiyat_analiz";
 		$ekranRumuz = "TEKL21";
 		$ekranAdi = "Teklif Fiyat Analizi (Maliyetlendirme)";
-		$ekranLink = "teklif_fiyat_analizV2";
+		$ekranLink = "V2_teklif_fiyat_analiz";
 
 		$ekranTableE = $database . "tekl20e";
 		$ekranTableT = $database . "tekl20t";
@@ -70,11 +70,240 @@
 			font-weight: bold;
 			pointer-events: none;
 		}
+
 		#drag-overlay .text i{
 			font-size: 64px;
 			transform:rotate(-15deg);
 		}
 
+		/* Operasyon Kartları - Kompakt */
+		.operation-card {
+			position: relative;
+			width: 100%;
+		}
+
+		.checkbox-input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.operation-label {
+			display: flex;
+			align-items: center;
+			padding: 0.5rem 0.65rem;
+			border: 1.5px solid #e0e0e0;
+			border-radius: 0.375rem;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			background: #fff;
+			gap: 0.5rem;
+		}
+
+		.operation-label:hover {
+			border-color: #0d6efd;
+			box-shadow: 0 1px 4px rgba(13, 110, 253, 0.15);
+		}
+
+		.checkbox-input:checked + .operation-label {
+			border-color: #0d6efd;
+			background: #e3f2fd;
+		}
+
+		.operation-icon {
+			flex-shrink: 0;
+			width: 32px;
+			height: 32px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #f8f9fa;
+			border-radius: 0.25rem;
+			color: #6c757d;
+			transition: all 0.2s;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-icon {
+			background: #0d6efd;
+			color: white;
+		}
+
+		.operation-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 0.05rem;
+			min-width: 0;
+		}
+
+		.operation-name {
+			font-weight: 600;
+			color: #212529;
+			font-size: 0.813rem;
+			line-height: 1.2;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.operation-code {
+			font-size: 0.688rem;
+			color: #6c757d;
+			line-height: 1.1;
+		}
+
+		.operation-check {
+			flex-shrink: 0;
+			width: 20px;
+			height: 20px;
+			border: 2px solid #dee2e6;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.2s;
+		}
+
+		.operation-check i {
+			font-size: 0.688rem;
+			opacity: 0;
+			transition: opacity 0.2s;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-check {
+			background: #0d6efd;
+			border-color: #0d6efd;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-check i {
+			color: white;
+			opacity: 1;
+		}
+
+		/* Operasyon Detay Kartları - Kompakt */
+		.operation-detail-card {
+			border: 1px solid #e5e5e5;
+			border-radius: 0.375rem;
+			overflow: hidden;
+			height: 100%;
+			background: #fff;
+		}
+
+		.operation-detail-card .card-header {
+			background: #f8f9fa;
+			color: #495057;
+			padding: 0.5rem 0.75rem;
+			font-size: 0.813rem;
+			font-weight: 600;
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		.operation-detail-card .card-body {
+			padding: 0.75rem;
+			background: #fff;
+		}
+
+		.form-label-sm {
+			font-size: 0.75rem;
+			font-weight: 500;
+			color: #495057;
+			margin-bottom: 0.25rem;
+		}
+
+		/* Form Elemanları - Kompakt */
+		.operation-detail-card .form-control-sm {
+			font-size: 0.813rem;
+			padding: 0.375rem 0.5rem;
+			height: calc(1.5em + 0.75rem + 2px);
+		}
+
+		.operation-detail-card .mb-2 {
+			margin-bottom: 0.5rem !important;
+		}
+
+		.operation-detail-card .mb-2:last-child {
+			margin-bottom: 0 !important;
+		}
+
+		#operasyon .form-label {
+			font-size: 0.813rem;
+			margin-bottom: 0.25rem;
+			font-weight: 500;
+		}
+
+		#operasyon .form-control {
+			font-size: 0.875rem;
+			padding: 0.5rem 0.75rem;
+		}
+
+		/* Genel Form İyileştirmeleri */
+		.form-control:focus {
+			border-color: #0d6efd;
+			box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+		}
+
+		.input-group-text {
+			background-color: #f8f9fa;
+			border-color: #dee2e6;
+			color: #6c757d;
+			font-size: 0.875rem;
+			padding: 0.5rem 0.75rem;
+		}
+
+		/* Butonlar - Kompakt */
+		.btn-sm {
+			padding: 0.375rem 0.75rem;
+			font-size: 0.813rem;
+		}
+
+		.modal-footer .btn {
+			padding: 0.5rem 1rem;
+			font-size: 0.875rem;
+		}
+
+		/* Hız İyileştirmeleri */
+		* {
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		.operation-label,
+		.operation-check,
+		.operation-icon,
+		.checkbox-input:checked + .operation-label {
+			will-change: transform;
+		}
+
+		/* Responsive - Kompakt */
+		@media (max-width: 768px) {
+			.operation-label {
+				padding: 0.45rem 0.6rem;
+			}
+			
+			.operation-name {
+				font-size: 0.75rem;
+			}
+			
+			.operation-icon {
+				width: 28px;
+				height: 28px;
+			}
+			
+			.tab-content {
+				padding: 0.75rem 1rem !important;
+			}
+		}
+
+		/* Klavye Navigasyonu İçin */
+		.checkbox-input:focus + .operation-label {
+			outline: 2px solid #0d6efd;
+			outline-offset: 2px;
+		}
+
+		/* Input'lara TAB ile hızlı geçiş */
+		.form-control {
+			transition: border-color 0.15s ease-in-out;
+		}
 	</style>
 
 	<div id="drag-overlay">
@@ -193,166 +422,288 @@
 	<div class="modal fade" id="satir_detay" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
-				<div class="modal-header py-2">
-					<h5 class="modal-title mb-0"><i class="fa-solid fa-info"></i> Satır Detayı</h5>
+				<div class="modal-header py-2 bg-light">
+					<h5 class="modal-title mb-0">
+						<i class="fa-solid fa-info-circle text-primary"></i> Satır Detayı
+					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-				<div class="modal-body p-2">
-					<ul class="nav nav-tabs nav-tabs-sm mb-2" role="tablist">
+				<div class="modal-body p-0">
+					<input type="hidden" id="OR_TRNUM">
+					<ul class="nav nav-tabs nav-tabs-custom px-3 pt-2 bg-light" role="tablist">
 						<li class="nav-item">
-							<button class="nav-link active py-1 px-3" data-bs-toggle="tab" data-bs-target="#genel">Genel</button>
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#genel">
+								<i class="fa-solid fa-file-lines me-1"></i> Genel
+							</button>
 						</li>
 						<li class="nav-item">
-							<button class="nav-link py-1 px-3" data-bs-toggle="tab" data-bs-target="#operasyon">Operasyon</button>
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#operasyonSec">
+								<i class="fa-solid fa-list-check me-1"></i> Operasyon Seç
+							</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#operasyon">
+								<i class="fa-solid fa-cogs me-1"></i> Operasyon Detay
+							</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#mastar">
+								<i class="fa-solid fa-cogs me-1"></i> Mastar
+							</button>
 						</li>
 					</ul>
 					
-					<div class="tab-content overflow-hidden p-3">
+					<div class="tab-content overflow-hidden p-4">
 						<!-- GENEL -->
 						<div class="tab-pane fade show active" id="genel">
-							<div class="row g-2">
+							<div class="row g-3">
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">Stok Kodu</label>
-									<input type="text" id="StokKodu" class="form-control form-control-sm" readonly>
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-barcode text-muted me-1"></i> Stok Kodu
+									</label>
+									<input type="text" id="StokKodu" class="form-control" placeholder="Stok kodunu giriniz">
 								</div>
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">Stok Adı</label>
-									<input type="text" id="StokAdi" class="form-control form-control-sm" readonly>
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-tag text-muted me-1"></i> Stok Adı
+									</label>
+									<input type="text" id="StokAdi" class="form-control" placeholder="Stok adını giriniz">
 								</div>
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">İşlem Miktarı</label>
-									<input type="number" id="SF_MIKTAR" class="form-control form-control-sm">
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-calculator text-muted me-1"></i> İşlem Miktarı
+									</label>
+									<input type="number" id="SF_MIKTAR" class="form-control" placeholder="0.00">
 								</div>
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">İşlem Birimi</label>
-									<input type="text" id="SF_IUNIT" class="form-control form-control-sm" readonly>
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-weight text-muted me-1"></i> İşlem Birimi
+									</label>
+									<input type="text" id="SF_IUNIT" class="form-control" placeholder="Birim giriniz">
 								</div>
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">Fiyat</label>
-									<input type="number" id="FIYAT" class="form-control form-control-sm" readonly>
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-money-bill text-muted me-1"></i> Fiyat
+									</label>
+									<div class="input-group">
+										<input type="number" id="FIYAT" class="form-control HESAPLANAN_FIYAT" placeholder="0.00">
+										<span class="input-group-text">₺</span>
+									</div>
 								</div>
 								<div class="col-md-4 col-sm-6">
-									<label class="form-label-sm mb-0">Tutar</label>
-									<input type="number" id="TUTAR" class="form-control form-control-sm">
+									<label class="form-label fw-semibold mb-1">
+										<i class="fa-solid fa-coins text-muted me-1"></i> Tutar
+									</label>
+									<div class="input-group">
+										<input type="number" id="TUTAR" class="HESAPLANAN_TUTAR form-control" placeholder="0.00">
+										<span class="input-group-text">₺</span>
+									</div>
 								</div>
 							</div>
 						</div>
-
+						
+						<!-- Operasyon Seç -->
+						<div class="tab-pane fade" id="operasyonSec">
+							<div class="mb-3">
+								<div class="d-flex justify-content-between align-items-center mb-1">
+									<h6 class="mb-0">
+										<i class="fa-solid fa-list-check text-primary me-2"></i>
+										Operasyon Seçimi
+									</h6>
+									<div>
+										<button type="button" class="btn btn-sm btn-primary me-2" id="selectAll">
+											<i class="fa-solid fa-check-double"></i> Tümünü Seç
+										</button>
+										<button type="button" class="btn btn-sm btn-secondary" id="deselectAll">
+											<i class="fa-solid fa-xmark"></i> Tümünü Kaldır
+										</button>
+									</div>
+								</div>
+								<hr class="mt-1 mb-1">
+							</div>
+							
+							<div class="row g-3">
+								@php
+									$OPERASON_VERILERI = DB::table($database.'gecoust')->where('EVRAKNO','TEZGAHGK6')->get();
+								@endphp
+								@foreach($OPERASON_VERILERI as $OPERASYON)
+									<div class="col-lg-2 col-md-3 col-sm-5">
+										<div class="operation-card">
+											<input type="checkbox" id="{{ $OPERASYON->KOD }}" name="OPRS[]" class="d-none checkbox-input OPRS" value="{{ $OPERASYON->KOD }}">
+											<label class="operation-label" for="{{ $OPERASYON->KOD }}">
+												<!-- <div class="operation-icon">
+													<i class="fa-solid fa-gear"></i>
+												</div> -->
+												<div class="operation-content">
+													<span class="operation-name">{{ $OPERASYON->AD }}</span>
+													<span class="operation-code">{{ $OPERASYON->KOD }}</span>
+												</div>
+												<div class="operation-check">
+													<i class="fa-solid fa-check"></i>
+												</div>
+											</label>
+										</div>
+									</div>
+								@endforeach
+							</div>
+						</div>
+						
 						<!-- OPERASYON -->
 						<div class="tab-pane fade" id="operasyon">
-							<div class="row" style="overflow: auto">
-								<input type="hidden" id="OR_TRNUM"/>
-								<table class="table table-bordered text-center" id="maliyetListesi">
-									<thead>
-										<tr>
-											<th style="">#</th>
-											<th style="min-width:280px; font-size: 13px !important;">
-												Kaynak Tipi</th>
-											<th style="min-width:280px; font-size: 13px !important;">
-												Stok Kodu</th>
-											<th style="min-width:200px; font-size: 13px !important;">
-												Stok adı</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												İşlem miktarı</th>
-											<th style="min-width:100px; font-size: 13px !important;">
-												İşlem Birimi</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Fiyat</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Tutar</th>
-											<th style="min-width:170px; font-size: 13px !important;">
-												Para Birimi</th>
-											<!-- <th style="min-width:120px; font-size: 13px !important;">Net
-												Ağırlık</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Bürüt Ağırlık</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Hacim</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Ambalaj Ağırlığı</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Auto</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Stok miktarı</th>
-											<th style="min-width:120px; font-size: 13px !important;">
-												Stok temel birim</th> -->
-										</tr>
-										<tr class="satirEkle3" style="background-color:#3c8dbc">
-											<td>
-												<button type="button" class="btn btn-default" id="addRow3"><i class="fa fa-plus" style="color: blue"></i></button>
-											</td>
-											<td>
-												<select  class="form-control req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
-													<option value=" ">Seç</option>
-													<option value="H">H - Hammadde</option>
-													<option value="I">I - Tezgah / İş Merk</option>
-													<option value="Y">Y - Yan Ürün</option>
-													<option value="D">D - Diğer</option>
-												</select>
-											</td>
-											<td>
-												<div class="d-flex" data-modal="modal_maliyetListesi" style="display: flex;">
-													<select class="form-control select2 js-example-basic-single req" data-modal="satir_detay" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir4(this.value)" id="KOD">
-														<option value=" ">Seç</option>
-													</select>
-													<input type="hidden" id="STOK_KOD2">
+							<div class="row mb-2">
+								<div class="col-3">
+									<label class="form-label fw-bold">Malzeme Cinsi</label>
+									<select class="select2" id="MALZEME_CINSI" data-modal="satir_detay">
+										@php
+											$MLZM = DB::table($database.'gecoust')->where('EVRAKNO','STKGK7')->get();
+										@endphp
+										<option value="">Seç</option>
+										@foreach($MLZM as $MLZM_VERI)
+											<option value="{{ $MLZM_VERI->KOD }}">{{ $MLZM_VERI->KOD }}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-3">
+									<label class="form-label fw-bold">Yoğunluk</label>
+									<input type="number" id="MALZEME_YOGUNLUK" class="form-control" readonly>
+								</div>
+								<div class="col-3">
+									<label class="form-label fw-bold">Malzeme Birim Fiyatı</label>
+									<input type="number" id="MALZEME_FIYATI" class="form-control" placeholder="0.00">
+								</div>
+								<div class="col-3">
+									<label class="form-label fw-bold">Malzeme Tutur</label>
+									<input type="number" id="MALZEME_TUTARI" class="form-control TOPLANICAK" placeholder="0.00">
+								</div>
+								<div class="col-6">
+									<label class="form-label fw-bold">En Boy Kalınlık / Çap Boy</label>
+									<input type="text" id="OLCU1" class="form-control" placeholder="EnxBoyxKalınlık Veya ÇapxBoy">
+								</div>
+								<div class="col-6">
+									<label class="form-label fw-bold">Ağırlık</label>
+									<input type="text" id="AGIRLIK" class="form-control" placeholder="0.00">
+								</div>
+							</div>
+							
+							<div class="row g-2">
+								@php
+									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
+
+									$BOPERASON_VERILERI = DB::select(
+										"SELECT 
+											I00.GK_6 AS KOD,
+											S10T.TUTAR,
+											S10T.PARABIRIMI,
+											I00.KOD AS TEZGAH,
+											(S10T.TUTAR * EXT.KURS_1) AS TL_TUTAR,
+											EXT.KURS_1,
+											(S10T.TUTAR * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
+											I00.GK_1
+										FROM {$database}imlt00 AS I00
+										LEFT JOIN {$database}stdm10t AS S10T 
+											ON S10T.KOD = I00.KOD
+										LEFT JOIN {$database}excratt AS EXT
+											ON EXT.EVRAKNOTARIH = ?
+											AND EXT.CODEFROM = S10T.PARABIRIMI
+										LEFT JOIN {$database}excratt AS EXT2
+											ON EXT2.EVRAKNOTARIH = ?
+											AND EXT2.CODEFROM = ?
+										WHERE I00.GK_6 IS NOT NULL
+										AND I00.GK_6 <> ''",
+										[$tarih, $tarih, @$kart_veri->PARATEKLIF_FIYAT_PB]
+									);
+								@endphp
+								@foreach($BOPERASON_VERILERI as $OPERASYON)
+									<div class="col-3 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
+										<div class="operation-detail-card">
+											<div class="card-header">
+												<i class="fa-solid fa-gear me-2"></i>
+												<strong>{{ $OPERASYON->KOD }}</strong>
+											</div>
+											<div class="card-body">
+												@if($OPERASYON->GK_1 != 'FSN')
+												<div class="mb-2">
+													<label class="form-label-sm fw-bold">Birim</label>
+													<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
 												</div>
-											</td>
-											<td>
-												<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_AD1" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI2" readonly>
-											</td>
-											<td>
-												<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control req number" value="">
-											</td>
-											<td>
-												<input type="text" name="" id="ISLEM_BIRIMI2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi" class="form-control" value="" readonly>
-											</td>
-											<td>
-												<input type="number" name="" id="FIYAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="form-control" value="">
-											</td>
-											<td> 
-												<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="">
-											</td>
-											<td>
-												<input type="text" name="" id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICEUNIT" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
-											</td>
-											<!-- <td>
-												<input type="number" name="NETAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
-											</td>
-											<td>
-												<input type="number" name="BRUTAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
-											</td>
-											<td>
-												<input type="number" name="HACIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HACIM" id="HACIM" class="form-control" value="">
-											</td>
-											<td>
-												<input type="number" name="AMBALAJAGIRLIK"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBALAJ_AGIRLIGI" id="AMBALAJAGIRLIK" class="form-control" value="">
-											</td>
-											<td>
-												<input type="checkbox" name="AUTO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_AUTOCALC" id="AUTO" class="form-control" value="">
-											</td>
-											<td>
-												<input type="number" name="STOKMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_STOK_MIKTAR" id="STOKMIKTAR" class="form-control" value="">
-											</td>
-											<td>
-												<input type="text" name="STOKTEMELBIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD_STOK00_IUNIT" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
-											</td> -->
-										</tr>
-									</thead>
-									<tbody>
-										
-									</tbody>
-								</table>
+												<div class="mb-2">
+													<label class="form-label-sm fw-bold">Birim Fiyat</label>
+													<input type="number" class="form-control form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+												</div>
+												@endif
+												<div>
+													<label class="form-label-sm fw-bold">Tutar</label>
+													<input type="number" class="form-control form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
+												</div>
+											</div>
+										</div>
+									</div>
+								@endforeach
+								<div class="col-3" style="display:block;">
+									<div class="operation-detail-card">
+										<div class="card-header">
+											<i class="fa-solid fa-gear me-2"></i>
+											<strong>Diğer</strong>
+										</div>
+										<div class="card-body">
+											<div>
+												<label class="form-label-sm fw-bold">Tutar</label>
+												<input type="number" class="form-control form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-4">
+									<label>Hesaplanan Tutar</label>
+									<input type="number" class="form-control HESAPLANAN_TUTAR" readonly placeholder="0.00">
+								</div>
+
+								<div class="col-4">
+									<label>Teklif Tutar</label>
+									<input type="number" class="form-control MANUEL_TUTAR" placeholder="0.00">
+								</div>
+
+								<div class="col-4">
+									<label>Müşteri ile anlaşılan Tutar</label>
+									<input type="number" class="form-control ANLASILAN_TUTAR" placeholder="0.00">
+								</div>
+
+							</div>
+						</div>
+						<div id="mastar" class="tab-pane fade">
+							<div class="row">
+								<!-- Sol Kolon -->
+								<div class="col-md-6">
+									<label class="form-label fw-bold">Mastar Seç</label>
+									<select id="mastarSelect" class="select2" data-modal="satir_detay">
+										<option value="">Seçim Yap</option>
+										@php
+											$MASTARLAR = DB::table($database.'stok00')->where('GK_1','06')->get();
+										@endphp
+										@foreach($MASTARLAR as $MASTAR)
+											<option value="{{ $MASTAR->KOD }}">{{ $MASTAR->AD }}</option>
+										@endforeach
+									</select>
+								</div>
+
+								<!-- Sağ Kolon -->
+								<div class="col-md-6">
+									<label class="form-label fw-bold">Mastar Durumu / Fiyatı</label>
+									<input type="text" id="mastarD" class="form-control" placeholder="Mastar Adı" readonly>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer py-2">
-					<button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">
-						<i class="fa-solid fa-times"></i> Kapat
+				<div class="modal-footer py-2 bg-light">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						<i class="fa-solid fa-times me-1"></i> Kapat
 					</button>
-					<button type="button" class="btn btn-succcess" id="uygula" data-bs-dismiss="modal">
-						<i class="fa-solid fa-save"></i> Güncelle
+					<button type="button" class="btn btn-success" id="uygula" data-bs-dismiss="modal">
+						<i class="fa-solid fa-save me-1"></i> Güncelle
 					</button>
 				</div>
 			</div>
@@ -518,8 +869,8 @@
 										<div class="nav-tabs-custom">
 											<ul class="nav nav-tabs">
 												<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
-												<li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a>
-												<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Maliyet Detayı</a>
+												<!-- <li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a> -->
+												<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a>
 												</li>
 											</ul>
 
@@ -627,7 +978,7 @@
 																<input type="hidden" name="TRNUM[]"
 																	value="{{$veri->TRNUM}}">
 																<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR"
-																	value="{{$kart_veri->TEKLIF_TUTAR}}">
+																	value="{{@$kart_veri->TEKLIF_TUTAR}}">
 																<td>
 																	<button type='button' class='btn btn-default satir_detay' data-trnum="{{ $veri->TRNUM }}" data-bs-toggle="modal"
 																	data-bs-target="#satir_detay"><i
@@ -1090,23 +1441,160 @@
 			$('#ISLEM_BIRIMI2').val(veriler[2]);
 		}
 
-		var aktifSatir = null;
+		$('.satir_detay').on('click',function(){
+			aktifSatir = $(this).closest('tr');
+			$('#OR_TRNUM').val($(this).data('trnum'));
+			$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
+			$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
+			$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
+			$('#SF_IUNIT').val(aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val());
+			$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
+			$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
 
+			$.ajax({
+				url:'operasyon/get',
+				type:'post',
+				data:{
+					TRNUM:$(this).data('trnum'),
+					EVRAKNO:'{{ @$kart_veri->EVRAKNO }}',
+					_token:'{{ csrf_token() }}',
+				},
+				success: function(res){
+					$('.OPRS').prop('checked', false);
+					$('.COPRS').toggle(false);
+					res.data.forEach((row) => {
+						$(`#${row.OPERASYON}`).prop('checked', true);
+						$(`#C${row.OPERASYON}`).toggle(true);
+					});
+				}
+			});
+		});
+
+		$(document).on('input', '.TIME, .PRICE', function() {
+			var total = parseFloat($(this).closest('.operation-detail-card').find('.TIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PRICE').val());
+			$(this).closest('.operation-detail-card').find('.TOTAL').val(total.toFixed(2));
+		});
+
+		var aktifSatir = null;
+		
 		$(document).ready(function () {
-			$(document).on('click','.satir_detay', function () {
-				aktifSatir = $(this).closest('tr');
-				$('#OR_TRNUM').val($(this).data('trnum'));
-				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
-				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
-				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
-				$('#SF_IUNIT').val(aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val());
-				$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
-				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
+			$(document).on('change', '.OPRS', function () {
+				var targetId = "C" + this.id;
+				$("#" + targetId).toggle(this.checked);
 			});
 
+			document.getElementById('selectAll')?.addEventListener('click', function() {
+				document.querySelectorAll('.OPRS').forEach(cb => cb.checked = true);
+				updateOperationTabs();
+			});
+			
+			document.getElementById('deselectAll')?.addEventListener('click', function() {
+				document.querySelectorAll('.OPRS').forEach(cb => cb.checked = false);
+				updateOperationTabs();
+			});
+			function updateOperationTabs() {
+				document.querySelectorAll('.OPRS').forEach(checkbox => {
+					const targetDiv = document.getElementById('C' + checkbox.value);
+					if (targetDiv) {
+						targetDiv.style.display = checkbox.checked ? 'block' : 'none';
+					}
+				});
+			}
+
+			$('#MALZEME_CINSI').on('change',function(){
+				$.ajax({
+					url:'malzeme/get',
+					type:'post',
+					data:{KOD:$(this).val(),_token:'{{ csrf_token() }}'},
+					success: function(res){
+						$('#MALZEME_YOGUNLUK').val(res.TEXT1);
+						$('#MALZEME_FIYATI').val(res.PRICE);
+					}
+				});
+			});
+			$('#mastarSelect').on('change',function(){
+				$.ajax({
+					url:'mastar/get',
+					type:'post',
+					data:{
+						KOD:$(this).val(),
+						_token:'{{ csrf_token() }}',
+						SF_MIKTAR:$('#SF_MIKTAR').val()
+					},
+					success: function(res){
+						$('#mastarD').val(res);
+					}
+				});
+			});
+			$(document).on("change", ".TOPLANICAK", function () {
+
+				let toplam = 0;
+
+				$(".TOPLANICAK").each(function () {
+					let val = parseFloat($(this).val().replace(",", "."));
+					if (!isNaN(val)) {
+						toplam += val;
+					}
+				});
+
+				$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2));
+				$('.HESAPLANAN_FIYAT').val((toplam.toFixed(2) / $('#SF_MIKTAR').val()).toFixed(2));
+
+			});
+
+			function agirlikHesapla(olcu) {
+				const yogunluk = parseFloat($('#MALZEME_YOGUNLUK').val()) || 0;
+				const parcalar = olcu.toLowerCase().replace(/\s/g, '').split('x');
+
+				if (parcalar.length === 2) {
+					const cap = parseFloat(parcalar[0]);
+					const boy = parseFloat(parcalar[1]);
+
+					if (Number.isFinite(cap) && Number.isFinite(boy)) {
+						const hacim = Math.PI * Math.pow(cap, 2) / 4 * boy;
+						return ((hacim * yogunluk) / 1000000).toFixed(3);
+					}
+				}
+
+				if (parcalar.length === 3) {
+					const en = parseFloat(parcalar[0]);
+					const boy = parseFloat(parcalar[1]);
+					const kalinlik = parseFloat(parcalar[2]);
+
+					if (Number.isFinite(en) && Number.isFinite(boy) && Number.isFinite(kalinlik)) {
+						const hacim = en * boy * kalinlik;
+						return ((hacim * yogunluk) / 1000000).toFixed(3);
+					}
+				}
+
+				return "";
+			}
+			document.getElementById("OLCU1").addEventListener("input", function () {
+				const sonuc = agirlikHesapla(this.value);
+				$('#AGIRLIK').val(sonuc);
+
+				var fiyat = sonuc * $('#MALZEME_FIYATI').val();
+				$('#MALZEME_TUTARI').val(fiyat.toFixed(2));
+			});
 			$('#uygula').on('click', function () {
 				const OR_TRNUM = $('#OR_TRNUM').val();
 				if (!OR_TRNUM) return;
+
+				$.ajax({
+					url: "operasyon/kaydet",
+					type:'post',
+					data:{
+						OR_TRNUM:OR_TRNUM,
+						EVRAKNO: "{{ @$kart_veri->EVRAKNO }}",
+						_token:'{{ csrf_token() }}',
+						OPRS: $('.OPRS:checked').map(function () {
+							return this.value;
+						}).get()
+					},
+					success: function (response) {
+						console.log(response);
+					}
+				});
 				
 				aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 				aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
@@ -1115,43 +1603,45 @@
 				aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
 				aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
 
-				const fragment = $(document.createDocumentFragment());
 
-				let toplamTutar = 0;
-				let toplamFiyat = 0;
-				$('#maliyetListesi tbody tr').each(function () {
 
-					const fiyat = parseFloat($(this).find("input[name='FIYAT2[]']").val()) || 0;
-					const tutar = parseFloat($(this).find("input[name='TUTAR2[]']").val()) || 0;
+				// const fragment = $(document.createDocumentFragment());
 
-					toplamFiyat += fiyat;
-					toplamTutar += tutar;
+				// let toplamTutar = 0;
+				// let toplamFiyat = 0;
+				// $('#maliyetListesi tbody tr').each(function () {
 
-					$('#TOPLAM_TUTAR').val(toplamTutar.toFixed(2));
-					const kaynakTr = $(this);
+				// 	const fiyat = parseFloat($(this).find("input[name='FIYAT2[]']").val()) || 0;
+				// 	const tutar = parseFloat($(this).find("input[name='TUTAR2[]']").val()) || 0;
 
-					$('#maliyetDetayTable tbody tr').each(function () {
-						const tr = $(this);
-						const val = tr.find('input[name="OR_TRNUM[]"]').val();
+				// 	toplamFiyat += fiyat;
+				// 	toplamTutar += tutar;
 
-						if (val === OR_TRNUM) {
-							tr.remove();
-						}
-					});
+				// 	$('#TOPLAM_TUTAR').val(toplamTutar.toFixed(2));
+				// 	const kaynakTr = $(this);
 
-					const yeniSatir = $('<tr></tr>');
+				// 	$('#maliyetDetayTable tbody tr').each(function () {
+				// 		const tr = $(this);
+				// 		const val = tr.find('input[name="OR_TRNUM[]"]').val();
 
-					kaynakTr.find('td').not(':eq(2)').each(function () {
-						yeniSatir.append($(this).clone());
-					});
-					fragment.append(yeniSatir);
-				});
+				// 		if (val === OR_TRNUM) {
+				// 			tr.remove();
+				// 		}
+				// 	});
 
-				$(aktifSatir).find("input[name='FIYAT[]']").val((toplamTutar / $(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()).toFixed(2));
-				let islemMiktari = parseFloat($(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()) || 0;
-				$(aktifSatir).find("input[name='TUTAR[]']").val((toplamTutar).toFixed(2));
+				// 	const yeniSatir = $('<tr></tr>');
 
-				$('#maliyetDetayTable tbody').append(fragment);
+				// 	kaynakTr.find('td').not(':eq(2)').each(function () {
+				// 		yeniSatir.append($(this).clone());
+				// 	});
+				// 	fragment.append(yeniSatir);
+				// });
+
+				// $(aktifSatir).find("input[name='FIYAT[]']").val((toplamTutar / $(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()).toFixed(2));
+				// let islemMiktari = parseFloat($(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()) || 0;
+				// $(aktifSatir).find("input[name='TUTAR[]']").val((toplamTutar).toFixed(2));
+
+				// $('#maliyetDetayTable tbody').append(fragment);
 			});
 
 
@@ -2065,7 +2555,7 @@
 						},
 						willClose: () => {
 							clearInterval(timerInterval);
-							location.reload();
+							location.href = '/V2_teklif_fiyat_analiz?ID='+res.ID 
 						}
 					});
 

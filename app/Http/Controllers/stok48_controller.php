@@ -60,6 +60,7 @@ class stok48_controller extends Controller
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->input('TRNUM');
     $SF_BAKIYE = $request->input('SF_BAKIYE');
+    $GK_1 = $request->input('GK_1');
 
     // SF_BAKIYE
 
@@ -74,7 +75,7 @@ class stok48_controller extends Controller
     switch($islem_turu) {
 
     case 'kart_sil':
-FunctionHelpers::Logla('STOK48',$EVRAKNO,'D',$TARIH);
+      FunctionHelpers::Logla('STOK48',$EVRAKNO,'D',$TARIH);
 
       DB::table($firma.'stok48e')->where('EVRAKNO',$EVRAKNO)->delete();
       DB::table($firma.'stok48t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -134,6 +135,7 @@ FunctionHelpers::Logla('STOK48',$EVRAKNO,'D',$TARIH);
         'NUM3' => $NUM3[$i],
         'NUM4' => $NUM4[$i],
         'NOT1' => $NOT1[$i],
+        'GK_1' => $GK_1[$i],
         'GECERLILIK_TAR' => $TERMIN_TAR[$i],
         'created_at' => date('Y-m-d H:i:s'),
       ]);
@@ -148,7 +150,7 @@ FunctionHelpers::Logla('STOK48',$EVRAKNO,'D',$TARIH);
     // break;
 
     case 'kart_duzenle':
-FunctionHelpers::Logla('STOK48',$EVRAKNO,'W',$TARIH);
+    FunctionHelpers::Logla('STOK48',$EVRAKNO,'W',$TARIH);
 
     DB::table($firma.'stok48e')->where('EVRAKNO',$EVRAKNO)->update([
       'TARIH' => $TARIH,
@@ -204,6 +206,7 @@ FunctionHelpers::Logla('STOK48',$EVRAKNO,'W',$TARIH);
           'NUM3' => $NUM3[$i],
           'NUM4' => $NUM4[$i],
           'NOT1' => $NOT1[$i],
+          'GK_1' => $GK_1[$i],
           'GECERLILIK_TAR' => $TERMIN_TAR[$i],
           'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -230,6 +233,7 @@ FunctionHelpers::Logla('STOK48',$EVRAKNO,'W',$TARIH);
           'NUM3' => $NUM3[$i],
           'NUM4' => $NUM4[$i],
           'NOT1' => $NOT1[$i],
+          'GK_1' => $GK_1[$i],
           'GECERLILIK_TAR' => $TERMIN_TAR[$i],
           'updated_at' => date('Y-m-d H:i:s'),
         ]);

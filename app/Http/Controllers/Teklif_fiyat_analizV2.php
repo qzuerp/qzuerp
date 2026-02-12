@@ -40,20 +40,23 @@ class teklif_fiyat_analizV2 extends Controller
         unset($rows[0]);
     
         $insertData = [];
-        $MAXTRNUM = DB::table($firma.'tekl20t')->where('EVRAKNO',$request->EVRAKNO)->max('TRNUM');
-        foreach ($rows as $row) {
-            if (empty($row[0])) continue; // boş satır çöp
-            $MAXTRNUM++;
+        $EVRAKNO = DB::table($firma.'tekl20e')->max('EVRAKNO');
+        $redirect = DB::table($firma.''.'tekl20e')->insertGetId([
+            'EVRAKNO' => $EVRAKNO,
+            'TARIH' => date('Y-m-d')
+        ]);
+        foreach ($rows as $index => $row) {
+            if (empty($row[0])) continue;
             $insertData[] = [
                 'KAYNAKTYPE' => 'M',
                 'KOD' => $row[0],
                 'STOK_AD1' => $row[1] ?? null,
                 'SF_MIKTAR' => $row[2],
-                'FIYAT' => $row[3] ?? null,
-                'PRICEUNIT' => $row[4] ?? null,
-                'EVRAKNO' => $request->EVRAKNO,
-                'TRNUM' => $MAXTRNUM,
-                'TUTAR' => ($row[2] * $row[3]) ?? null
+                // 'FIYAT' => $row[3] ?? null,
+                // 'PRICEUNIT' => $row[4] ?? null,
+                'EVRAKNO' => $EVRAKNO,
+                'TRNUM' => str_pad($index + 1,6,'0',STR_PAD_LEFT),
+                // 'TUTAR' => ($row[2] * $row[3]) ?? null
             ];
         }
     
@@ -63,7 +66,8 @@ class teklif_fiyat_analizV2 extends Controller
     
         return response()->json([
             'status' => 'ok',
-            'count' => count($insertData)
+            'count' => count($insertData),
+            'ID' => $redirect
         ]);
     }
     public function islemler(Request $request)
@@ -294,7 +298,7 @@ class teklif_fiyat_analizV2 extends Controller
                 foreach ($deleteTRNUMS as $deleteTRNUM) {
                     DB::table($firma.'tekl20tı')
                     ->where('EVRAKNO', $EVRAKNO)
-                    ->where('TRNUM', $deleteTRNUM)
+                    ->where('OR_TRNUM', $deleteTRNUM)
                     ->delete();
                     DB::table($firma.'tekl20t')
                         ->where('EVRAKNO', $EVRAKNO)
@@ -454,7 +458,9 @@ class teklif_fiyat_analizV2 extends Controller
             case 'kart_sil':
                 FunctionHelpers::Logla('TEKL20',$EVRAKNO,'D',$TARIH);
                 DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->delete();
+                DB::table($firma.'tekl20t')->where('EVRAKNO', $EVRAKNO)->delete();
                 DB::table($firma.'tekl20tı')->where('EVRAKNO', $EVRAKNO)->delete();
+                DB::table($firma.'tekl20tr')->where('EVRAKNO', $EVRAKNO)->delete();
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
                 return redirect('V2_teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
@@ -720,7 +726,6 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
-    
     public function recetedenHesapla(Request $request)
     {
         $kod = $request->input('kod');
@@ -758,7 +763,6 @@ class teklif_fiyat_analizV2 extends Controller
         $results = DB::select($sql, [$kod]);
         return response()->json($results);
     }
-    
     public function evrakNoGetir(Request $request)
     {
         $user = Auth::user();
@@ -776,5 +780,84 @@ class teklif_fiyat_analizV2 extends Controller
             'success' => true,
             'veri' => $evrakNo
         ]);
+    }
+    public function oprt_save(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma).'.dbo.';
+
+        $OPRS = $request->OPRS ?? [];
+        DB::table($firma.'tekl20o')->where('EVRAKNO', $request->EVRAKNO)->where('OR_TRNUM', $request->OR_TRNUM)->delete();
+        foreach ($OPRS as $operasyon) {
+            DB::table($firma.'tekl20o')->insert([
+                'EVRAKNO'   => $request->EVRAKNO,
+                'OR_TRNUM'  => $request->OR_TRNUM,
+                'OPERASYON' => $operasyon,
+            ]);
+        }
+    }
+    public function oprt_get(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma).'.dbo.';
+        $evrakno = $request->input('EVRAKNO');
+        $results = DB::table($firma.'tekl20o')
+        ->where('EVRAKNO', $evrakno)
+        ->where('OR_TRNUM', $request->TRNUM)
+        ->get(['OPERASYON']);
+        return response()->json([
+            'data' => $results
+        ]);
+        
+    }
+    public function malzeme_get(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma).'.dbo.';
+        
+        return DB::table($firma.'stok48t')->where('GK_1',$request->KOD)->first();
+    }
+    public function master_get(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma).'.dbo.';
+        $tarih = date('Y-m-d');
+
+        $sorgu = DB::table($firma.'stok10a as s10')
+          ->leftJoin($firma.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+          ->selectRaw('
+              s10.KOD,
+              SUM(s10.SF_MIKTAR) AS MIKTAR
+          ')
+          ->groupBy(
+              's10.KOD'
+          )
+          ->where('s10.KOD', $request->KOD)
+          ->first();
+
+        if(isset($sorgu->MIKTAR) && $sorgu->MIKTAR > 0)
+        {
+            return 'Stokta var';
+        }
+        else
+        {
+            $vrb1 = DB::table($firma.'stok48t')
+            ->where('KOD', $request->KOD)
+            ->first();
+
+            if($vrb1)
+            {
+                $vrb2 = DB::table($firma.'excratt')
+                ->where('CODEFROM',  $vrb1->PRICE_UNIT)
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->orderBy('EVRAKNOTARIH', 'desc')
+                ->first();
+        
+                return ($vrb1->PRICE * $vrb2->KURS_1) / $request->SF_MIKTAR;
+            }
+            else{
+                return 'Fiyat Bilgisi Bulunamadı';
+            }
+        }
     }
 }

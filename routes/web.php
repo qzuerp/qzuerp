@@ -473,6 +473,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('V2_evrakNoGetir', [Teklif_fiyat_analizV2::class, 'evrakNoGetir'])->name('V2_evrakNoGetir');
     Route::post('V2_satir_fiyat_hesapla', [Teklif_fiyat_analizV2::class, 'satir_fiyat_hesapla']);
     Route::post('/excel-upload', [Teklif_fiyat_analizV2::class, 'upload']);
+    Route::post('/operasyon/kaydet', [Teklif_fiyat_analizV2::class, 'oprt_save']);
+    Route::post('/operasyon/get', [Teklif_fiyat_analizV2::class, 'oprt_get']);
+    Route::post('/malzeme/get', [Teklif_fiyat_analizV2::class, 'malzeme_get']);
+    Route::post('/mastar/get', [Teklif_fiyat_analizV2::class, 'master_get']);
 
     /*
     |--------------------------------------------------------------------------
