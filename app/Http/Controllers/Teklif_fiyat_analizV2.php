@@ -70,7 +70,7 @@ class teklif_fiyat_analizV2 extends Controller
         }
     
         if (!empty($insertData)) {
-            DB::table('tekl20t')->insert($insertData);
+            DB::table($firma.'tekl20t')->insert($insertData);
         }
     
         return response()->json([
