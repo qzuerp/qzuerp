@@ -601,26 +601,29 @@
 									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
 
 									$BOPERASON_VERILERI = DB::select(
-										"select I00.GK_6 AS KOD,
-														S10E.MALIYETT,
-														S10E.PARA_BIRIMI,
-														I00.KOD AS TEZGAH,
-														(S10E.MALIYETT * EXT.KURS_1) AS TL_TUTAR,
-														EXT.KURS_1,
-														(S10E.MALIYETT * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
-														I00.GK_1 from imlt00 AS I00
-												LEFT JOIN stdm10e AS S10E 
+										"SELECT 
+													I00.GK_6 AS KOD,
+													S10E.MALIYETT,
+													S10E.PARA_BIRIMI,
+													I00.KOD AS TEZGAH,
+													(S10E.MALIYETT * EXT.KURS_1) AS TL_TUTAR,
+													EXT.KURS_1,
+													(S10E.MALIYETT * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
+													I00.GK_1
+												FROM {$database}imlt00 AS I00
+
+												LEFT JOIN {$database}stdm10e AS S10E
 													ON S10E.TEZGAH_KODU = I00.KOD
-													
-												LEFT JOIN excratt AS EXT
+
+												LEFT JOIN {$database}excratt AS EXT
 													ON EXT.EVRAKNOTARIH = ?
 													AND EXT.CODEFROM = S10E.PARA_BIRIMI
-													
-												LEFT JOIN excratt AS EXT2
+
+												LEFT JOIN {$database}excratt AS EXT2
 													ON EXT2.EVRAKNOTARIH = ?
 													AND EXT2.CODEFROM = ?
-												WHERE 1=1
-												AND GK_6 <> ''",
+
+												WHERE I00.GK_6 <> ''",
 										[$tarih, $tarih, @$kart_veri->TEKLIF_FIYAT_PB]
 									);
 									
