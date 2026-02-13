@@ -35,17 +35,47 @@ class Maliyet extends Controller
         $MIKTAR = $request->input('BAZ_MIKTAR', []);
         $UNIT = $request->input('BIRIM', []);
         $UNSUR_ACIKLAMA = $request->input('ACIKLAMA', []);
+        $PARA_BIRIMI = $request->input('PARA_BIRIMIE');
 
         switch ($kart_islemleri) {
             case 'kart_olustur':
                 $son_evrak = DB::table($firma.'stdm10e')->max('EVRAKNO');
                 $EVRAKNO = $son_evrak === null ? 1 : $son_evrak + 1;
                 FunctionHelpers::Logla('STMD10',$EVRAKNO,'C');
+                
+                $maxIndex = null;
+                $maxTarih = null;
+
+                foreach ($VALIDAFTERTARIH as $i => $tarih) {
+
+                    $ts = strtotime($tarih);
+
+                    if ($maxTarih === null || $ts > $maxTarih) {
+                        $maxTarih = $ts;
+                        $maxIndex = $i;
+                    }
+                }
+
+                $tarih = date('Y/m/d', strtotime(@$maxTarih));
+
+                $KUR = DB::table($firma.'excratt')
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->where('CODEFROM', $PARA_BIRIMI)
+                ->orderBy('EVRAKNOTARIH','desc')
+                ->first();
+                
+                $KUR2 = DB::table($firma.'excratt')
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->where('CODEFROM', $PARABIRIMI[$maxIndex])
+                ->orderBy('EVRAKNOTARIH','desc')
+                ->first();
 
                 DB::table($firma.'stdm10e')->insert([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
+                    'MALIYETT' => round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
+                    'PARA_BIRIMI' => $PARA_BIRIMI,
                     // 'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
@@ -77,12 +107,39 @@ class Maliyet extends Controller
 
             case 'kart_duzenle':
                 FunctionHelpers::Logla('STMD10',$EVRAKNO,'W');
+                $maxIndex = null;
+                $maxTarih = null;
+
+                foreach ($VALIDAFTERTARIH as $i => $tarih) {
+
+                    $ts = strtotime($tarih);
+
+                    if ($maxTarih === null || $ts > $maxTarih) {
+                        $maxTarih = $ts;
+                        $maxIndex = $i;
+                    }
+                }
+                
+                $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
+                // dd($tarih,$maxTarih);
+                $KUR = DB::table($firma.'excratt')
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->where('CODEFROM', $PARA_BIRIMI)
+                ->orderBy('EVRAKNOTARIH','desc')
+                ->first();
+
+                $KUR2 = DB::table($firma.'excratt')
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->where('CODEFROM', $PARABIRIMI[$maxIndex])
+                ->orderBy('EVRAKNOTARIH','desc')
+                ->first();
                 // E tablosunu güncelle
                 DB::table($firma.'stdm10e')->where('EVRAKNO', $EVRAKNO)->update([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
-                    // 'KAYNAK_TYPE' => $KAYNAK_TYPE
+                    'MALIYETT' => round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
+                    'PARA_BIRIMI' => $PARA_BIRIMI
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır

@@ -233,7 +233,8 @@
 
 		#operasyon .form-control {
 			font-size: 0.875rem;
-			padding: 0.5rem 0.75rem;
+			padding: 2px;
+			/* text-align: right; */
 		}
 
 		/* Genel Form İyileştirmeleri */
@@ -246,8 +247,8 @@
 			background-color: #f8f9fa;
 			border-color: #dee2e6;
 			color: #6c757d;
-			font-size: 0.875rem;
-			padding: 0.5rem 0.75rem;
+			font-size: 8px;
+			padding: 0.1rem 0.1rem;
 		}
 
 		/* Butonlar - Kompakt */
@@ -303,6 +304,7 @@
 		/* Input'lara TAB ile hızlı geçiş */
 		.form-control {
 			transition: border-color 0.15s ease-in-out;
+			/* padding:0px; */
 		}
 	</style>
 
@@ -499,6 +501,15 @@
 										<span class="input-group-text">₺</span>
 									</div>
 								</div>
+								<div class="col-4">
+									<label>Teklif Tutar</label>
+									<input type="number" class="form-control MANUEL_TUTAR" placeholder="0.00">
+								</div>
+
+								<div class="col-4">
+									<label>Müşteri ile anlaşılan Tutar</label>
+									<input type="number" class="form-control ANLASILAN_TUTAR" placeholder="0.00">
+								</div>
 							</div>
 						</div>
 						
@@ -572,7 +583,7 @@
 									<input type="number" id="MALZEME_FIYATI" class="form-control" placeholder="0.00">
 								</div>
 								<div class="col-3">
-									<label class="form-label fw-bold">Malzeme Tutur</label>
+									<label class="form-label fw-bold">Malzeme Tutar</label>
 									<input type="number" id="MALZEME_TUTARI" class="form-control TOPLANICAK" placeholder="0.00">
 								</div>
 								<div class="col-6">
@@ -590,56 +601,71 @@
 									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
 
 									$BOPERASON_VERILERI = DB::select(
-										"SELECT 
-											I00.GK_6 AS KOD,
-											S10T.TUTAR,
-											S10T.PARABIRIMI,
-											I00.KOD AS TEZGAH,
-											(S10T.TUTAR * EXT.KURS_1) AS TL_TUTAR,
-											EXT.KURS_1,
-											(S10T.TUTAR * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
-											I00.GK_1
-										FROM {$database}imlt00 AS I00
-										LEFT JOIN {$database}stdm10t AS S10T 
-											ON S10T.KOD = I00.KOD
-										LEFT JOIN {$database}excratt AS EXT
-											ON EXT.EVRAKNOTARIH = ?
-											AND EXT.CODEFROM = S10T.PARABIRIMI
-										LEFT JOIN {$database}excratt AS EXT2
-											ON EXT2.EVRAKNOTARIH = ?
-											AND EXT2.CODEFROM = ?
-										WHERE I00.GK_6 IS NOT NULL
-										AND I00.GK_6 <> ''",
-										[$tarih, $tarih, @$kart_veri->PARATEKLIF_FIYAT_PB]
+										"select I00.GK_6 AS KOD,
+														S10E.MALIYETT,
+														S10E.PARA_BIRIMI,
+														I00.KOD AS TEZGAH,
+														(S10E.MALIYETT * EXT.KURS_1) AS TL_TUTAR,
+														EXT.KURS_1,
+														(S10E.MALIYETT * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
+														I00.GK_1 from imlt00 AS I00
+												LEFT JOIN stdm10e AS S10E 
+													ON S10E.TEZGAH_KODU = I00.KOD
+													
+												LEFT JOIN excratt AS EXT
+													ON EXT.EVRAKNOTARIH = ?
+													AND EXT.CODEFROM = S10E.PARA_BIRIMI
+													
+												LEFT JOIN excratt AS EXT2
+													ON EXT2.EVRAKNOTARIH = ?
+													AND EXT2.CODEFROM = ?
+												WHERE 1=1
+												AND GK_6 <> ''",
+										[$tarih, $tarih, @$kart_veri->TEKLIF_FIYAT_PB]
 									);
+									
 								@endphp
 								@foreach($BOPERASON_VERILERI as $OPERASYON)
-									<div class="col-3 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
+									<div class="col-2 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
 										<div class="operation-detail-card">
 											<div class="card-header">
-												<i class="fa-solid fa-gear me-2"></i>
+												<!-- <i class="fa-solid fa-gear me-2"></i> -->
 												<strong>{{ $OPERASYON->KOD }}</strong>
 											</div>
 											<div class="card-body">
 												@if($OPERASYON->GK_1 != 'FSN')
 												<div class="mb-2">
-													<label class="form-label-sm fw-bold">Birim</label>
+													<label class="form-label-sm fw-bold">Birim / Miktar / Süre</label>
 													<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
 												</div>
 												<div class="mb-2">
 													<label class="form-label-sm fw-bold">Birim Fiyat</label>
-													<input type="number" class="form-control form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+													<div class="d-flex gap-1">
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm" value="{{ round($OPERASYON->MALIYETT,2) }}">
+															<span class="input-group-text">{{ $OPERASYON->PARA_BIRIMI }}</span>
+														</div>
+														
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+														</div>
+													</div>
 												</div>
 												@endif
-												<div>
+												<div >
 													<label class="form-label-sm fw-bold">Tutar</label>
-													<input type="number" class="form-control form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
+													<div class="d-flex gap-1">
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
+															<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								@endforeach
-								<div class="col-3" style="display:block;">
+								<div class="col-2" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header">
 											<i class="fa-solid fa-gear me-2"></i>
@@ -653,24 +679,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-4">
-									<label>Hesaplanan Tutar</label>
-									<input type="number" class="form-control HESAPLANAN_TUTAR" readonly placeholder="0.00">
-								</div>
-
-								<div class="col-4">
-									<label>Teklif Tutar</label>
-									<input type="number" class="form-control MANUEL_TUTAR" placeholder="0.00">
-								</div>
-
-								<div class="col-4">
-									<label>Müşteri ile anlaşılan Tutar</label>
-									<input type="number" class="form-control ANLASILAN_TUTAR" placeholder="0.00">
-								</div>
-
 							</div>
 						</div>
 						<div id="mastar" class="tab-pane fade">
@@ -692,19 +700,22 @@
 								<!-- Sağ Kolon -->
 								<div class="col-md-6">
 									<label class="form-label fw-bold">Mastar Durumu / Fiyatı</label>
-									<input type="text" id="mastarD" class="form-control" placeholder="Mastar Adı" readonly>
+									<input type="text" id="mastarD" class="form-control TOPLANICAK" placeholder="Mastar Adı">
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer py-2 bg-light">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-						<i class="fa-solid fa-times me-1"></i> Kapat
-					</button>
-					<button type="button" class="btn btn-success" id="uygula" data-bs-dismiss="modal">
-						<i class="fa-solid fa-save me-1"></i> Güncelle
-					</button>
+				<div class="modal-footer py-2 bg-light" style="justify-content: space-between !important;">
+					<label id="TOPLANICAK_LABEL" class="text-danger form-label-sm fw-bold"></label>
+					<div>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+							<i class="fa-solid fa-times me-1"></i> Kapat
+						</button>
+						<button type="button" class="btn btn-success" id="uygula" data-bs-dismiss="modal">
+							<i class="fa-solid fa-save me-1"></i> Güncelle
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -843,17 +854,29 @@
 								</div>
 
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-3">
 										<label for="not_1">Not 1</label>
 										<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 											data-bs-title="NOTES_1" name="NOT_1" id="NOT_1" class="form-control"
 											placeholder="Not 1" value="{{ @$kart_veri->NOTES_1 }}">
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-3">
 										<label for="not_2">Not 2</label>
 										<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 											data-bs-title="NOTES_2" name="NOT_2" id="NOT_2" class="form-control"
 											placeholder="Not 2" value="{{ @$kart_veri->NOTES_2 }}">
+									</div>
+									<div class="col-md-3">
+										<label for="mtn">Müşteri Teklif No</label>
+										<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="MUSTERI_TEKLIF_NO" name="MUSTERI_TEKLIF_NO" id="MUSTERI_TEKLIF_NO" class="form-control"
+											placeholder="Müşteri Teklif No" value="{{ @$kart_veri->MUSTERI_TEKLIF_NO }}">
+									</div>
+									<div class="col-md-3">
+										<label for="mtn">Müşteri Teklif Tarihi</label>
+										<input type="date" data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="MUSTERI_TEKLIF_TARIHI" name="MUSTERI_TEKLIF_TARIHI" id="MUSTERI_TEKLIF_TARIHI" class="form-control"
+											placeholder="Müşteri Teklif Tarihi" value="{{ @$kart_veri->MUSTERI_TEKLIF_TARIHI }}">
 									</div>
 								</div>
 							</div>
@@ -1505,7 +1528,12 @@
 				$.ajax({
 					url:'malzeme/get',
 					type:'post',
-					data:{KOD:$(this).val(),_token:'{{ csrf_token() }}'},
+					data:{
+						KOD:$(this).val()
+						,_token:'{{ csrf_token() }}',
+						TEKLIF_BIRIMI:'{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
+						TARIH:'{{ @$kart_veri->TARIH }}'
+					},
 					success: function(res){
 						$('#MALZEME_YOGUNLUK').val(res.TEXT1);
 						$('#MALZEME_FIYATI').val(res.PRICE);
@@ -1519,14 +1547,18 @@
 					data:{
 						KOD:$(this).val(),
 						_token:'{{ csrf_token() }}',
-						SF_MIKTAR:$('#SF_MIKTAR').val()
+						SF_MIKTAR:$('#SF_MIKTAR').val(),
+						TEKLIF_BIRIMI: '{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
+						TARIH:'{{ @$kart_veri->TARIH }}'
 					},
 					success: function(res){
 						$('#mastarD').val(res);
+						hesapla();
 					}
 				});
 			});
-			$(document).on("change", ".TOPLANICAK", function () {
+
+			function hesapla() {
 
 				let toplam = 0;
 
@@ -1538,8 +1570,17 @@
 				});
 
 				$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2));
-				$('.HESAPLANAN_FIYAT').val((toplam.toFixed(2) / $('#SF_MIKTAR').val()).toFixed(2));
 
+				let miktar = parseFloat($('#SF_MIKTAR').val());
+				if (!isNaN(miktar) && miktar !== 0) {
+					$('.HESAPLANAN_FIYAT').val((toplam / miktar).toFixed(2));
+				}
+				$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+toplam.toFixed(2)+ ' '+$('#teklif').val());
+			}
+
+			
+			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE", function () {
+				hesapla();
 			});
 
 			function agirlikHesapla(olcu) {
@@ -1575,6 +1616,7 @@
 
 				var fiyat = sonuc * $('#MALZEME_FIYATI').val();
 				$('#MALZEME_TUTARI').val(fiyat.toFixed(2));
+				hesapla();
 			});
 			$('#uygula').on('click', function () {
 				const OR_TRNUM = $('#OR_TRNUM').val();
@@ -1602,46 +1644,6 @@
 				aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 				aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
 				aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
-
-
-
-				// const fragment = $(document.createDocumentFragment());
-
-				// let toplamTutar = 0;
-				// let toplamFiyat = 0;
-				// $('#maliyetListesi tbody tr').each(function () {
-
-				// 	const fiyat = parseFloat($(this).find("input[name='FIYAT2[]']").val()) || 0;
-				// 	const tutar = parseFloat($(this).find("input[name='TUTAR2[]']").val()) || 0;
-
-				// 	toplamFiyat += fiyat;
-				// 	toplamTutar += tutar;
-
-				// 	$('#TOPLAM_TUTAR').val(toplamTutar.toFixed(2));
-				// 	const kaynakTr = $(this);
-
-				// 	$('#maliyetDetayTable tbody tr').each(function () {
-				// 		const tr = $(this);
-				// 		const val = tr.find('input[name="OR_TRNUM[]"]').val();
-
-				// 		if (val === OR_TRNUM) {
-				// 			tr.remove();
-				// 		}
-				// 	});
-
-				// 	const yeniSatir = $('<tr></tr>');
-
-				// 	kaynakTr.find('td').not(':eq(2)').each(function () {
-				// 		yeniSatir.append($(this).clone());
-				// 	});
-				// 	fragment.append(yeniSatir);
-				// });
-
-				// $(aktifSatir).find("input[name='FIYAT[]']").val((toplamTutar / $(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()).toFixed(2));
-				// let islemMiktari = parseFloat($(aktifSatir).find("input[name='ISLEM_MIKTARI[]']").val()) || 0;
-				// $(aktifSatir).find("input[name='TUTAR[]']").val((toplamTutar).toFixed(2));
-
-				// $('#maliyetDetayTable tbody').append(fragment);
 			});
 
 

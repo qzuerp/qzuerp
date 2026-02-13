@@ -146,7 +146,7 @@
 
                             <!-- Kart bölümü -->
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label">Endeks</label>
                                         <select class="form-control js-example-basic-single ENDEKS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ENDEKS" name="ENDEKS">
@@ -157,7 +157,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Kaynak</label>
                                         <select class="form-control select2 js-example-basic-single KAYNAK_TYPE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAK_TYPE" onchange="getKaynakCodeSelect()" name="KAYNAK_TYPE" id="BOMREC_INPUTTYPE_SHOW">
@@ -168,7 +168,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label">Tezgah/Hammadde Kodu</label>
                                         <select class="form-control select2 js-example-basic-single TEZGAH_KODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH_KODU" name="" id="BOMREC_KAYNAKCODE_SHOW">
@@ -176,6 +176,23 @@
                                         </select>
                                         <input type="hidden" name="TEZGAH_KODU" id="tezgah_hammadde_kodu" value="{{@$kart_veri->TEZGAH_KODU}}">
                                     </div>
+                                </div>
+                                <div class="col-2">
+                                    <label>Maliyet Tutarı</label>
+                                    <input type="text" class="form-control" readonly value="{{ @$kart_veri->MALIYETT }}">
+                                </div>
+                                <div class="col-2">
+                                    <label>Para Birimi</label>
+                                    <select name="PARA_BIRIMIE" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARA_BIRIMI" class="form-control js-example-basic-single">
+                                        <option value="">Seç</option>
+                                        @php
+                                            $kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+                                            foreach ($kur_veri as $veri) {
+                                                $selected = ($veri->KOD == @$kart_veri->PARA_BIRIMI) ? 'selected' : '';
+                                                echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
+                                            }
+                                        @endphp
+                                    </select>
                                 </div>
                             </div>
                         </div>

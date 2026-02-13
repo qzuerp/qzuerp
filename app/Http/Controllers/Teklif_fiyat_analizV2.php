@@ -41,9 +41,17 @@ class teklif_fiyat_analizV2 extends Controller
     
         $insertData = [];
         $EVRAKNO = DB::table($firma.'tekl20e')->max('EVRAKNO');
+        if(!isset($EVRAKNO))
+        {
+            $EVRAKNO = 1;
+        }
+        else{
+            $EVRAKNO++;
+        }
         $redirect = DB::table($firma.''.'tekl20e')->insertGetId([
             'EVRAKNO' => $EVRAKNO,
-            'TARIH' => date('Y-m-d')
+            'TARIH' => date('Y-m-d'),
+            'TEKLIF_FIYAT_PB' => 'USD'
         ]);
         foreach ($rows as $index => $row) {
             if (empty($row[0])) continue;
@@ -55,6 +63,7 @@ class teklif_fiyat_analizV2 extends Controller
                 // 'FIYAT' => $row[3] ?? null,
                 // 'PRICEUNIT' => $row[4] ?? null,
                 'EVRAKNO' => $EVRAKNO,
+                'PRICEUNIT' => 'USD',
                 'TRNUM' => str_pad($index + 1,6,'0',STR_PAD_LEFT),
                 // 'TUTAR' => ($row[2] * $row[3]) ?? null
             ];
@@ -67,7 +76,7 @@ class teklif_fiyat_analizV2 extends Controller
         return response()->json([
             'status' => 'ok',
             'count' => count($insertData),
-            'ID' => $redirect
+            'ID' => $EVRAKNO
         ]);
     }
     public function islemler(Request $request)
@@ -154,6 +163,8 @@ class teklif_fiyat_analizV2 extends Controller
         // $AUTO = isset($request->AUTO) ? $request->AUTO : ' ';
         $STOKMIKTAR2 = isset($request->STOKMIKTAR2) ? $request->STOKMIKTAR2 : ' ';
         $STOKTEMELBIRIM2 = isset($request->STOKTEMELBIRIM2) ? $request->STOKTEMELBIRIM2 : ' ';
+        $MUSTERI_TEKLIF_NO = isset($request->MUSTERI_TEKLIF_NO) ? $request->MUSTERI_TEKLIF_NO : ' ';
+        $MUSTERI_TEKLIF_TARIHI = isset($request->MUSTERI_TEKLIF_TARIHI) ? $request->MUSTERI_TEKLIF_TARIHI : ' ';
 
         switch ($kart_islemleri) {
             case 'kart_olustur':
@@ -171,7 +182,9 @@ class teklif_fiyat_analizV2 extends Controller
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
                     'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
                     'ENDEKS' => $ENDEKS,
-                    '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI
+                    '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
+                    'MUSTERI_TEKLIF_TARIHI' => $MUSTERI_TEKLIF_TARIHI,
+                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO
                 ]);
 
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
@@ -218,7 +231,9 @@ class teklif_fiyat_analizV2 extends Controller
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
                     'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
                     'ENDEKS' => $ENDEKS,
-                    'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI
+                    'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
+                    'MUSTERI_TEKLIF_TARIHI' => $MUSTERI_TEKLIF_TARIHI,
+                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -814,14 +829,29 @@ class teklif_fiyat_analizV2 extends Controller
     {
         $user = Auth::user();
         $firma = trim($user->firma).'.dbo.';
-        
-        return DB::table($firma.'stok48t')->where('GK_1',$request->KOD)->first();
+        $tarih = date('Y/m/d', strtotime(@$request->TARIH));
+        $vrb1 = DB::table($firma.'stok48t')->where('GK_1',$request->KOD)->first();
+
+        $KUR1 = DB::table($firma.'excratt')
+        ->where('CODEFROM',  $vrb1->PRICE_UNIT)
+        ->where('EVRAKNOTARIH','<=', $tarih)
+        ->orderBy('EVRAKNOTARIH', 'desc');
+        dd( $KUR1->toSql(), $KUR1->getBindings());
+        $KUR2 = DB::table($firma.'excratt')
+        ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
+        ->where('EVRAKNOTARIH','<=', $tarih)
+        ->orderBy('EVRAKNOTARIH', 'desc')
+        ->first();
+
+        $fiyat = round(($vrb1->PRICE * $KUR1->KURS_1) / $KUR2->KURS_1,2);
+
+        return ['PRICE' => $fiyat,'TEXT1' => $vrb1->TEXT1];
     }
     public function master_get(Request $request)
     {
         $user = Auth::user();
         $firma = trim($user->firma).'.dbo.';
-        $tarih = date('Y-m-d');
+        $tarih = date('Y/m/d', strtotime(@$request->TARIH));
 
         $sorgu = DB::table($firma.'stok10a as s10')
           ->leftJoin($firma.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
@@ -847,13 +877,19 @@ class teklif_fiyat_analizV2 extends Controller
 
             if($vrb1)
             {
-                $vrb2 = DB::table($firma.'excratt')
+                $KUR1 = DB::table($firma.'excratt')
                 ->where('CODEFROM',  $vrb1->PRICE_UNIT)
                 ->where('EVRAKNOTARIH','<=', $tarih)
                 ->orderBy('EVRAKNOTARIH', 'desc')
                 ->first();
+
+                $KUR2 = DB::table($firma.'excratt')
+                ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
+                ->where('EVRAKNOTARIH','<=', $tarih)
+                ->orderBy('EVRAKNOTARIH', 'desc')
+                ->first();
         
-                return ($vrb1->PRICE * $vrb2->KURS_1) / $request->SF_MIKTAR;
+                return round((($vrb1->PRICE * $KUR1->KURS_1) / $KUR2->KURS_1) / $request->SF_MIKTAR,2);
             }
             else{
                 return 'Fiyat Bilgisi Bulunamadı';
