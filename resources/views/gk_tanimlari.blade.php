@@ -148,10 +148,7 @@
                       <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus"
                           style="color: red"></i> Seçilenleri Sil</button>
                     </div>
-
-
                     <table class="table table-bordered text-center" id="veriTable">
-
                       <thead>
                         <tr>
                           <th>#</th>
@@ -162,18 +159,14 @@
                         </tr>
 
                         <tr class="satirEkle" style="background-color:#3c8dbc">
-
-                          <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus"
-                                style="color: blue"></i></button></td>
-                          <td style="display:none;">
+                          <td>
+                            <button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
                           </td>
                           <td style="min-width: 150px;">
-                            <input data-max style="color: red" type="text" name="KOD_FILL" id="KOD_FILL"
-                              class=" form-control">
+                            <input data-max style="color: red" type="text" name="KOD_FILL" id="KOD_FILL" class=" form-control">
                           </td>
                           <td style="min-width: 150px">
-                            <input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL"
-                              class=" form-control">
+                            <input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL" class=" form-control">
                           </td>
                           <td></td>
                         </tr>
@@ -183,21 +176,27 @@
                       <tbody>
                         @foreach ($t_kart_veri as $key => $veri)
                           <tr>
-                            <td><input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7"
-                                name="D7[]" value=""></td>
-                            <td style="display: none;"><input type="hidden" class="form-control" maxlength="6"
-                                name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-                            <td><input type="text" class="form-control " name="KOD[]" value="{{ $veri->KOD }}">
+                            <td>
+                              <input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value="">
                             </td>
-                            <td><input type="text" class="form-control " name="AD[]" value="{{ $veri->AD }}"></td>
-                            <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i
-                                  class="fa fa-minus" style="color: red"></i></button></td>
+                            <td style="display: none;">
+                              <input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control " name="KOD[]" value="{{ $veri->KOD }}">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control " name="AD[]" value="{{ $veri->AD }}">
+                            </td>
+                            <td>
+                              <button type="button" class="btn btn-default delete-row" id="deleteSingleRow">
+                                <i class="fa fa-minus" style="color: red"></i>
+                              </button>
+                            </td>
                           </tr>
                         @endforeach
                       </tbody>
-
                     </table>
-
                   </div>
                 </div>
 

@@ -637,20 +637,27 @@
 											</div>
 											<div class="card-body">
 												@if($OPERASYON->GK_1 != 'FSN')
-												<div class="mb-2">
-													<label class="form-label-sm fw-bold">Birim / Miktar / Süre</label>
-													<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
+												<div class="mb-2 d-flex gap-1">
+													<div>
+														<label class="form-label-sm fw-bold">Birim</label>
+														<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
+													</div>
+													
+													<div>
+														<label class="form-label-sm fw-bold">Birim Fiyat</label>
+														<input type="number" class="form-control text-end form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+													</div>
 												</div>
 												<div class="mb-2">
-													<label class="form-label-sm fw-bold">Birim Fiyat</label>
 													<div class="d-flex gap-1">
-														<div class="input-group">
-															<input type="number" class="form-control text-end form-control-sm" value="{{ round($OPERASYON->MALIYETT,2) }}">
-															<span class="input-group-text">{{ $OPERASYON->PARA_BIRIMI }}</span>
+														<div>
+															<label class="form-label-sm fw-bold">Birim</label>
+															<input type="number" class="form-control form-control-sm PTIME" placeholder="0.00">
 														</div>
 														
-														<div class="input-group">
-															<input type="number" class="form-control text-end form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+														<div>
+															<label class="form-label-sm fw-bold">Birim Fiyat</label>
+															<input type="number" class="form-control text-end form-control-sm PPRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
 														</div>
 													</div>
 												</div>
@@ -704,6 +711,59 @@
 								<div class="col-md-6">
 									<label class="form-label fw-bold">Mastar Durumu / Fiyatı</label>
 									<input type="text" id="mastarD" class="form-control TOPLANICAK" placeholder="Mastar Adı">
+								</div>
+
+								<div class="col-12">
+									<table class="table table-bordered text-center" id="veriTable">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th style="display:none;">Sıra</th>
+												<th>Açıklama</th>
+												<th>Fiyat</th>
+												<th>Para Birimi</th>
+												<th style="text-align:right;">#</th>
+											</tr>
+
+											<tr class="satirEkle" style="background-color:#3c8dbc">
+												<td>
+													<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+												</td>
+												<td style="min-width: 150px;">
+													<input data-max style="color: red" type="text" name="KOD_FILL" id="KOD_FILL" class=" form-control">
+												</td>
+												<td style="min-width: 150px">
+													<input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL" class=" form-control">
+												</td>
+												<td></td>
+											</tr>
+
+										</thead>
+
+										<tbody>
+											@foreach ($t_kart_veri as $key => $veri)
+												<tr>
+													<td>
+														<input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value="">
+													</td>
+													<td style="display: none;">
+														<input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}">
+													</td>
+													<td>
+														<input type="text" class="form-control " name="KOD[]" value="{{ $veri->KOD }}">
+													</td>
+													<td>
+														<input type="text" class="form-control " name="AD[]" value="{{ $veri->AD }}">
+													</td>
+													<td>
+														<button type="button" class="btn btn-default delete-row" id="deleteSingleRow">
+															<i class="fa fa-minus" style="color: red"></i>
+														</button>
+													</td>
+												</tr>
+											@endforeach
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -1496,8 +1556,8 @@
 			});
 		});
 
-		$(document).on('input', '.TIME, .PRICE', function() {
-			var total = parseFloat($(this).closest('.operation-detail-card').find('.TIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PRICE').val());
+		$(document).on('input', '.TIME, .PRICE, .PTIME, .PPRICE', function() {
+			var total = (parseFloat($(this).closest('.operation-detail-card').find('.TIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PRICE').val())) + (parseFloat($(this).closest('.operation-detail-card').find('.PTIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PPRICE').val()));
 			$(this).closest('.operation-detail-card').find('.TOTAL').val(total.toFixed(2));
 		});
 
@@ -1582,7 +1642,7 @@
 			}
 
 			
-			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE", function () {
+			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME, .PPRICE", function () {
 				hesapla();
 			});
 
@@ -2575,7 +2635,5 @@
 				}
 			});
 		}
-
-
 	</script>
 @endsection

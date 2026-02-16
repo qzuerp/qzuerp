@@ -20,66 +20,26 @@
 
 //   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
   
-  $tumEvraklar = DB::table($database.'stok10a as S10A')
-    ->leftJoin($database.'gdef00 as G00', 'S10A.AMBCODE', '=', 'G00.KOD')
-    ->join($database.'stok00 as S00', 'S00.KOD', '=', 'S10A.KOD') // INNER JOIN
-    ->leftJoin($database.'stok63t as S63T', function ($join) {
-        $join->on('S63T.KOD', '=', 'S10A.KOD')
-             ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
-    })
-    ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
-    ->leftJoin($database.'dosyalar00 as D00', function ($join) {
-    $join->on('D00.EVRAKNO', '=', 'S10A.KOD')
-         ->where('D00.EVRAKTYPE', 'STOK00')
-         ->where('D00.DOSYATURU', 'GORSEL');
-    })
-    ->where('G00.GK_2', 'FSN_G2')
-    ->selectRaw('
-        S10A.KOD,
-        S10A.STOK_ADI,
-        SUM(S10A.SF_MIKTAR) AS SF_MIKTAR,
-        S10A.SF_SF_UNIT AS SF_UNIT,
-        S10A.LOTNUMBER,
-        S10A.SERINO,
-        S10A.AMBCODE,
-        G00.AD AS DEPO_ADI,
-        S10A.TEXT1,
-        S10A.TEXT2,
-        S10A.TEXT3,
-        S10A.TEXT4,
-        S10A.NUM1,
-        S10A.NUM2,
-        S10A.NUM3,
-        S10A.NUM4,
-        S10A.LOCATION1,
-        S10A.LOCATION2,
-        S10A.LOCATION3,
-        S10A.LOCATION4,
-        S00.NAME2 AS STOK_ADI2,
-        S00.id,
-        S00.REVNO,
-        S63T.TERMIN_TAR,
-        S63E.TARIH,
-        D00.DOSYA
-    ')
-    ->groupBy(
-        'S10A.KOD',
-        'S10A.LOTNUMBER',
-        'S10A.STOK_ADI',
-        'S10A.SF_SF_UNIT',
-        'S10A.SERINO',
-        'S10A.AMBCODE',
-        'G00.AD',
-        'S10A.TEXT1','S10A.TEXT2','S10A.TEXT3','S10A.TEXT4',
-        'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
-        'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
-        'S00.NAME2','S00.id','S00.REVNO',
-        'S63T.TERMIN_TAR',
-        'S63E.TARIH',
-        'D00.DOSYA'
-    )
-    ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
-    ->get();
+  $tumEvraklar = DB::select("
+    select 
+    D00.DOSYA,
+    S01.AMBCODE AS DEPO_ADI,S63T.created_at AS TARIH,S63T.TERMIN_TAR, GDF.GK_2,S01.MIKTAR SF_MIKTAR, S01.KOD, S00.AD S_AD,S00.NAME2 STOK_ADI2,S00.REVNO, S01.SF_SF_UNIT, S63T.EVRAKNO, S63T_MAX.EVRAKNO IRSALIYE,
+    S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4, S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4, S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
+    S01.LOTNUMBER, S01.SERINO
+    from vw_stok01 S01
+    Left Join STOK00 S00 ON S00.KOD = S01.KOD 
+    Left Join GDEF00 GDF ON GDF.KOD = S01.KOD 
+    Left Join (
+                Select KOD, created_at, MAX(EVRAKNO) AS EVRAKNO
+                From stok63t
+                Group By KOD, created_at, EVRAKNO
+            ) S63T_MAX
+            ON S01.KOD = S63T_MAX.KOD
+    Left Join stok63t S63T ON S63T.KOD = S63T_MAX.KOD AND S63T.EVRAKNO = S63T_MAX.EVRAKNO
+    left join dosyalar00 D00 ON D00.EVRAKNO = S01.KOD AND D00.EVRAKTYPE = 'STOK00' AND D00.DOSYATURU = 'GORSEL'
+    Where 1=1
+    And GDF.GK_2 is null
+  ");
 
 @endphp
 
@@ -189,7 +149,7 @@
                         <div class="table-header-wrapper d-flex justify-content-between align-items-center">
                             <div>
                                 <h4 class="mb-1"><i class="fas fa-boxes mr-2"></i>Fason Takibi Listesi</h4>
-                                <p class="mb-0 opacity-75">Toplam {{ $tumEvraklar->count() }} kayıt</p>
+                                <p class="mb-0 opacity-75">Toplam kayıt</p>
                             </div>
                             <button class="export-btn" onclick="exportToExcel()">
                                 <i class="fas fa-file-excel"></i>Excel'e Aktar
@@ -259,13 +219,13 @@
                                         <tr>
                                             <td><img src="{{ isset($item->DOSYA) ? asset('dosyalar/'.$item->DOSYA) : '' }}" alt="" class="kart-img" width="100"></td>
                                             <td>{{ $item->KOD }}</td>
-                                            <td>{{ $item->STOK_ADI }}</td>
+                                            <td>{{ $item->S_AD }}</td>
                                             <td>{{ $item->STOK_ADI2 }}</td>
                                             <td>{{ $item->REVNO }}</td>
                                             <td>{{ number_format($item->SF_MIKTAR, 2, ',', '.') }}</td>
                                             <td>{{ $item->TARIH }}</td>
                                             <td>{{ $item->TERMIN_TAR }}</td>
-                                            <td>{{ $item->SF_UNIT }}</td>
+                                            <td>{{ $item->SF_SF_UNIT }}</td>
                                             <td>{{ $item->LOTNUMBER }}</td>
                                             <td>{{ $item->SERINO }}</td>
                                             <td>{{ $item->DEPO_ADI }}</td>
