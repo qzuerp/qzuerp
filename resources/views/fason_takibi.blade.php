@@ -18,28 +18,45 @@
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-//   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
-  
-  $tumEvraklar = DB::select("
-    select 
-    D00.DOSYA,
-    S01.AMBCODE AS DEPO_ADI,S63T.created_at AS TARIH,S63T.TERMIN_TAR, GDF.GK_2,S01.MIKTAR SF_MIKTAR, S01.KOD, S00.AD S_AD,S00.NAME2 STOK_ADI2,S00.REVNO, S01.SF_SF_UNIT, S63T.EVRAKNO, S63T_MAX.EVRAKNO IRSALIYE,
-    S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4, S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4, S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
-    S01.LOTNUMBER, S01.SERINO
-    from vw_stok01 S01
-    Left Join STOK00 S00 ON S00.KOD = S01.KOD 
-    Left Join GDEF00 GDF ON GDF.KOD = S01.KOD 
-    Left Join (
-                Select KOD, created_at, MAX(EVRAKNO) AS EVRAKNO
-                From stok63t
-                Group By KOD, created_at, EVRAKNO
-            ) S63T_MAX
-            ON S01.KOD = S63T_MAX.KOD
-    Left Join stok63t S63T ON S63T.KOD = S63T_MAX.KOD AND S63T.EVRAKNO = S63T_MAX.EVRAKNO
-    left join dosyalar00 D00 ON D00.EVRAKNO = S01.KOD AND D00.EVRAKTYPE = 'STOK00' AND D00.DOSYATURU = 'GORSEL'
-    Where 1=1
-    And GDF.GK_2 is null
-  ");
+
+    $tumEvraklar = DB::select("
+        select 
+        D00.DOSYA,
+        S01.AMBCODE AS DEPO_ADI,
+        S63T.created_at AS TARIH,
+        S63T.TERMIN_TAR,
+        GDF.GK_2,
+        S01.MIKTAR SF_MIKTAR,
+        S01.KOD,
+        S00.AD S_AD,
+        S00.NAME2 STOK_ADI2,
+        S00.REVNO,
+        S01.SF_SF_UNIT,
+        S63T.EVRAKNO,
+        S63T_MAX.EVRAKNO IRSALIYE,
+        S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4,
+        S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4,
+        S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
+        S01.LOTNUMBER, S01.SERINO
+        from {$database}vw_stok01 S01
+        Left Join {$database}STOK00 S00 ON S00.KOD = S01.KOD 
+        Left Join {$database}GDEF00 GDF ON GDF.KOD = S01.KOD 
+        Left Join (
+            Select KOD, created_at, MAX(EVRAKNO) AS EVRAKNO
+            From {$database}stok63t
+            Group By KOD, created_at, EVRAKNO
+        ) S63T_MAX ON S01.KOD = S63T_MAX.KOD
+        Left Join {$database}stok63t S63T 
+            ON S63T.KOD = S63T_MAX.KOD 
+            AND S63T.EVRAKNO = S63T_MAX.EVRAKNO
+        left join {$database}dosyalar00 D00 
+            ON D00.EVRAKNO = S01.KOD 
+            AND D00.EVRAKTYPE = 'STOK00' 
+            AND D00.DOSYATURU = 'GORSEL'
+        Where 1=1
+        And GDF.GK_2 is null
+    ");
+
 
 @endphp
 
