@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use Carbon\Carbon;
+use App\Exports\MaliyetlerExport;
 
 class teklif_fiyat_analizV2 extends Controller
 {
@@ -800,6 +800,13 @@ class teklif_fiyat_analizV2 extends Controller
             'veri' => $evrakNo
         ]);
     }
+
+    public function excel_export_maliyetler(Request $request)
+    {
+        $evrakno = $request->input('EVRAKNO');
+        return Excel::download(new MaliyetlerExport($evrakno), 'maliyetler_' . $evrakno . '.xlsx');
+    }
+    
     public function oprt_save(Request $request)
     {
         $user = Auth::user();

@@ -957,6 +957,8 @@
 											placeholder="Müşteri Teklif Tarihi" value="{{ @$kart_veri->MUSTERI_TEKLIF_TARIHI }}">
 									</div>
 								</div>
+
+								
 							</div>
 						</div>
 					</div>
@@ -977,6 +979,11 @@
 
 											<div class="tab-content">
 												<div class="active tab-pane" id="tab_1">
+													<div class="d-flex justify-content-end mb-2">
+														<a href="{{ route('V2_excel_export_maliyetler', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
+															<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
+														</a>
+													</div>
 													<table class="table table-bordered text-center" id="veriTable">
 														<thead>
 															<tr>
