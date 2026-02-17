@@ -165,6 +165,8 @@ class teklif_fiyat_analizV2 extends Controller
         $STOKTEMELBIRIM2 = isset($request->STOKTEMELBIRIM2) ? $request->STOKTEMELBIRIM2 : ' ';
         $MUSTERI_TEKLIF_NO = isset($request->MUSTERI_TEKLIF_NO) ? $request->MUSTERI_TEKLIF_NO : ' ';
         $MUSTERI_TEKLIF_TARIHI = isset($request->MUSTERI_TEKLIF_TARIHI) ? $request->MUSTERI_TEKLIF_TARIHI : ' ';
+        $STATUS = isset($request->STATUS) ? $request->STATUS : ' ';
+        $TEKLIF_ONAYI = isset($request->TEKLIF_ONAYI) ? 1 : 0;
 
         switch ($kart_islemleri) {
             case 'kart_olustur':
@@ -184,7 +186,9 @@ class teklif_fiyat_analizV2 extends Controller
                     'ENDEKS' => $ENDEKS,
                     '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
                     'MUSTERI_TEKLIF_TARIHI' => $MUSTERI_TEKLIF_TARIHI,
-                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO
+                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
+                    'STATUS' => $STATUS,
+                    'TEKLIF_ONAYI' => $TEKLIF_ONAYI
                 ]);
 
                 $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
@@ -233,7 +237,9 @@ class teklif_fiyat_analizV2 extends Controller
                     'ENDEKS' => $ENDEKS,
                     'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
                     'MUSTERI_TEKLIF_TARIHI' => $MUSTERI_TEKLIF_TARIHI,
-                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO
+                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
+                    'STATUS' => $STATUS,
+                    'TEKLIF_ONAYI' => $TEKLIF_ONAYI
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -502,7 +508,6 @@ class teklif_fiyat_analizV2 extends Controller
                 return view('yazdirilicak_formlar.teklif_formu', compact('data'));
         }
     }
-
     public function createKaynakKodSelect(Request $request)
     {
         $islem = $request->input('islem');
@@ -609,7 +614,6 @@ class teklif_fiyat_analizV2 extends Controller
             break;
         }
     }
-
     public function maliyet_hesapla(Request $request)
     {
         try {
@@ -832,18 +836,32 @@ class teklif_fiyat_analizV2 extends Controller
         $tarih = date('Y/m/d', strtotime(@$request->TARIH));
         $vrb1 = DB::table($firma.'stok48t')->where('GK_1',$request->KOD)->first();
 
-        $KUR1 = DB::table($firma.'excratt')
-        ->where('CODEFROM',  $vrb1->PRICE_UNIT)
-        ->where('EVRAKNOTARIH','<=', $tarih)
-        ->orderBy('EVRAKNOTARIH', 'desc');
-        dd( $KUR1->toSql(), $KUR1->getBindings());
-        $KUR2 = DB::table($firma.'excratt')
-        ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
-        ->where('EVRAKNOTARIH','<=', $tarih)
-        ->orderBy('EVRAKNOTARIH', 'desc')
-        ->first();
+        if($vrb1->PRICE_UNIT == 'TL')
+        {
+            $KUR1 = 1;
+        }
+        else{
+            $KUR1 = DB::table($firma.'excratt')
+            ->where('CODEFROM',  $vrb1->PRICE_UNIT)
+            ->where('EVRAKNOTARIH','<=', $tarih)
+            ->orderBy('EVRAKNOTARIH', 'desc')
+            ->value('KURS_1');
+        }
 
-        $fiyat = round(($vrb1->PRICE * $KUR1->KURS_1) / $KUR2->KURS_1,2);
+        if($request->TEKLIF_BIRIMI == 'TL')
+        {
+            $KUR2 = 1;
+        }
+        else
+        {
+            $KUR2 = DB::table($firma.'excratt')
+            ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
+            ->where('EVRAKNOTARIH','<=', $tarih)
+            ->orderBy('EVRAKNOTARIH', 'desc')
+            ->value('KURS_1');
+        }
+
+        $fiyat = round(($vrb1->PRICE * $KUR1) / $KUR2,2);
 
         return ['PRICE' => $fiyat,'TEXT1' => $vrb1->TEXT1];
     }
@@ -877,23 +895,69 @@ class teklif_fiyat_analizV2 extends Controller
 
             if($vrb1)
             {
-                $KUR1 = DB::table($firma.'excratt')
-                ->where('CODEFROM',  $vrb1->PRICE_UNIT)
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->orderBy('EVRAKNOTARIH', 'desc')
-                ->first();
+                if($vrb1->PRICE_UNIT == 'TL')
+                {
+                    $KUR1 = 1;
+                }
+                else{
+                    $KUR1 = DB::table($firma.'excratt')
+                    ->where('CODEFROM',  $vrb1->PRICE_UNIT)
+                    ->where('EVRAKNOTARIH','<=', $tarih)
+                    ->orderBy('EVRAKNOTARIH', 'desc')
+                    ->value('KURS_1');
+                }
 
-                $KUR2 = DB::table($firma.'excratt')
-                ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->orderBy('EVRAKNOTARIH', 'desc')
-                ->first();
+                if($request->TEKLIF_BIRIMI == 'TL')
+                {
+                    $KUR2 = 1;
+                }
+                else
+                {
+                    $KUR2 = DB::table($firma.'excratt')
+                    ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
+                    ->where('EVRAKNOTARIH','<=', $tarih)
+                    ->orderBy('EVRAKNOTARIH', 'desc')
+                    ->value('KURS_1');
+                }
         
-                return round((($vrb1->PRICE * $KUR1->KURS_1) / $KUR2->KURS_1) / $request->SF_MIKTAR,2);
+                return round((($vrb1->PRICE * $KUR1) / $KUR2) / $request->SF_MIKTAR,2);
             }
             else{
                 return 'Fiyat Bilgisi Bulunamadı';
             }
         }
+    }
+    public function digerFiyatHesapla(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma).'.dbo.';
+        $tarih = date('Y/m/d', strtotime(@$request->TARIH));
+
+        if($request->SATIR_TEKLIF == 'TL')
+        {
+            $KUR1 = 1;
+        }
+        else{
+            $KUR1 = DB::table($firma.'excratt')
+            ->where('CODEFROM',  $request->SATIR_TEKLIF)
+            ->where('EVRAKNOTARIH','<=', $tarih)
+            ->orderBy('EVRAKNOTARIH', 'desc')
+            ->value('KURS_1');
+        }
+
+        if($request->TEKLIF_BIRIMI == 'TL')
+        {
+            $KUR2 = 1;
+        }
+        else
+        {
+            $KUR2 = DB::table($firma.'excratt')
+            ->where('CODEFROM',  $request->TEKLIF_BIRIMI)
+            ->where('EVRAKNOTARIH','<=', $tarih)
+            ->orderBy('EVRAKNOTARIH', 'desc')
+            ->value('KURS_1');
+        }
+        
+        return round((($request->FIYAT * $KUR1) / $KUR2),2);
     }
 }

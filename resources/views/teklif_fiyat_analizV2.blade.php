@@ -450,7 +450,7 @@
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#mastar">
-								<i class="fa-solid fa-cogs me-1"></i> Mastar
+								<i class="fa-solid fa-cogs me-1"></i> Mastar / Diğer
 							</button>
 						</li>
 					</ul>
@@ -631,33 +631,39 @@
 								@foreach($BOPERASON_VERILERI as $OPERASYON)
 									<div class="col-2 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
 										<div class="operation-detail-card">
-											<div class="card-header">
-												<!-- <i class="fa-solid fa-gear me-2"></i> -->
-												<strong>{{ $OPERASYON->KOD }}</strong>
+											<div class="card-header d-flex justify-content-between align-items-center ">
+												<strong class="OPERASYON_KOD">{{ $OPERASYON->KOD }}</strong>
+												<button style="border:none;outline:none;background:transparant;"><i class="fa-solid fa-plus clone"></i></button>
 											</div>
 											<div class="card-body">
 												@if($OPERASYON->GK_1 != 'FSN')
-												<div class="mb-2 d-flex gap-1">
-													<div>
-														<label class="form-label-sm fw-bold">Birim</label>
-														<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
-													</div>
-													
-													<div>
-														<label class="form-label-sm fw-bold">Birim Fiyat</label>
+												<div>
+													<label class="form-label-sm fw-bold">Birim Fiyat</label>
+													<div class="input-group">
 														<input type="number" class="form-control text-end form-control-sm PRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+														<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
 													</div>
 												</div>
 												<div class="mb-2">
+													<label class="form-label-sm fw-bold">Ayar</label>
 													<div class="d-flex gap-1">
-														<div>
-															<label class="form-label-sm fw-bold">Birim</label>
+														<input type="number" class="form-control form-control-sm TIME" placeholder="0.00">
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm AYAR_TUTAR" placeholder="0.00">
+															<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
+														</div>
+													</div>
+												</div>
+												<div class="mb-2">
+													<label class="form-label-sm fw-bold">İşleme</label>
+													<div class="d-flex gap-1">
+														<div class="input-group">
 															<input type="number" class="form-control form-control-sm PTIME" placeholder="0.00">
 														</div>
 														
-														<div>
-															<label class="form-label-sm fw-bold">Birim Fiyat</label>
-															<input type="number" class="form-control text-end form-control-sm PPRICE" value="{{ round($OPERASYON->TEKLIF_FIYAT,2) }}" placeholder="0.00">
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm PTIME ISLEM_TUTAR" placeholder="0.00">
+															<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
 														</div>
 													</div>
 												</div>
@@ -684,7 +690,7 @@
 										<div class="card-body">
 											<div>
 												<label class="form-label-sm fw-bold">Tutar</label>
-												<input type="number" class="form-control form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
+												<input type="number" id="DIGER" class="form-control form-control-sm TOTAL TOPLANICAK" placeholder="0.00">
 											</div>
 										</div>
 									</div>
@@ -713,8 +719,8 @@
 									<input type="text" id="mastarD" class="form-control TOPLANICAK" placeholder="Mastar Adı">
 								</div>
 
-								<div class="col-12">
-									<table class="table table-bordered text-center" id="veriTable">
+								<div class="col-12 mt-2">
+									<table class="table table-bordered text-center" id="masrafTable">
 										<thead>
 											<tr>
 												<th>#</th>
@@ -722,18 +728,34 @@
 												<th>Açıklama</th>
 												<th>Fiyat</th>
 												<th>Para Birimi</th>
+												<th>Teklif Tutarı</th>
 												<th style="text-align:right;">#</th>
 											</tr>
 
-											<tr class="satirEkle" style="background-color:#3c8dbc">
+											<tr class="satirEkle2" style="background-color:#3c8dbc">
 												<td>
-													<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
+													<button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button>
 												</td>
 												<td style="min-width: 150px;">
-													<input data-max style="color: red" type="text" name="KOD_FILL" id="KOD_FILL" class=" form-control">
+													<input data-max style="color: red" type="text" name="ACIKLAMA_FILL" id="ACIKLAMA_FILL" class=" form-control">
 												</td>
-												<td style="min-width: 150px">
-													<input maxlength="255" style="color: red" type="text" name="AD_FILL" id="AD_FILL" class=" form-control">
+												<td style="min-width: 150px;">
+													<input data-max style="color: red" type="number" name="FIYAT_FILL" id="FIYAT_FILL" class=" form-control">
+												</td>
+												<td style="min-width: 150px;">
+													<select id="TEKLIF_PB_FILL" data-modal="satir_detay" class="form-control js-example-basic-single">
+														<option value="">Seç</option>
+														@php
+															$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+															foreach ($kur_veri as $veri) {
+																$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
+																echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
+															}
+														@endphp
+													</select>
+												</td>
+												<td style="min-width: 150px;">
+													<input data-max style="color: red" type="text"  id="TEKLIF_FILL" readonly class="form-control">
 												</td>
 												<td></td>
 											</tr>
@@ -741,27 +763,7 @@
 										</thead>
 
 										<tbody>
-											@foreach ($t_kart_veri as $key => $veri)
-												<tr>
-													<td>
-														<input type="checkbox" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value="">
-													</td>
-													<td style="display: none;">
-														<input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}">
-													</td>
-													<td>
-														<input type="text" class="form-control " name="KOD[]" value="{{ $veri->KOD }}">
-													</td>
-													<td>
-														<input type="text" class="form-control " name="AD[]" value="{{ $veri->AD }}">
-													</td>
-													<td>
-														<button type="button" class="btn btn-default delete-row" id="deleteSingleRow">
-															<i class="fa fa-minus" style="color: red"></i>
-														</button>
-													</td>
-												</tr>
-											@endforeach
+											
 										</tbody>
 									</table>
 								</div>
@@ -828,7 +830,7 @@
 								</div>
 
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label>Endeks</label>
 										<select class="form-control js-example-basic-single" data-bs-toggle="tooltip"
 											data-bs-placement="top" data-bs-title="ENDEKS" name="ENDEKS" id="ENDEX">
@@ -854,7 +856,7 @@
 											data-bs-placement="top" data-bs-title="GECERLILIK_TARIHI" class="form-control"
 											value="{{ @$kart_veri->GECERLILIK_TARIHI }}">
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label for="teklif">Teklif Birimi</label>
 										<select name="TEKLIF" id="teklif" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEKLIF_FIYAT_PB" class="form-control js-example-basic-single">
 											<option value="">Seç</option>
@@ -867,10 +869,14 @@
 											@endphp
 										</select>
 									</div>
+									<div class="col-md-2" style="flex-direction: column; display: flex;">
+										<label for="TEKLIF_ONAYI">Teklif Onayı</label>
+										<input type="checkbox" name="TEKLIF_ONAYI" id="TEKLIF_ONAYI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEKLIF_ONAYI" {{ @$kart_veri->TEKLIF_ONAYI == 1 ? 'checked' : '' }} value="1">
+									</div>
 								</div>
 
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label for="musteri">Müşteri</label>
 										<select name="MUSTERI" id="musteri" data-bs-toggle="tooltip" data-bs-placement="top"
 											data-bs-title="BASE_DF_CARIHESAP" class="form-control js-example-basic-single">
@@ -888,32 +894,41 @@
 										@php
 											$musteri = explode('|', @$kart_veri->BASE_DF_CARIHESAP);
 										@endphp
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label for="UNVAN_1">Ünvan 1</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="UNVAN_1" name="UNVAN_1" id="UNVAN_1" class="form-control"
 												placeholder="Ünvan 1" value="{{ $musteri[0] ?? '' }}">
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label for="UNVAN_2">Ünvan 2</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="UNVAN_2" name="UNVAN_2" id="UNVAN_2" class="form-control"
 												placeholder="Ünvan 2" value="{{ $musteri[1] ?? '' }}">
 										</div>
 									@else
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label for="UNVAN_1">Ünvan 1</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="UNVAN_1" name="UNVAN_1" id="UNVAN_1" class="form-control"
 												disabled>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label for="UNVAN_2">Ünvan 2</label>
 											<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 												data-bs-title="UNVAN_2" name="UNVAN_2" id="UNVAN_2" class="form-control"
 												disabled>
 										</div>
 									@endif
+									<div class="col-md-3">
+										<label for="DURUM">Durum</label>
+										<select name="STATUS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="DURUM" id="DURUM" class="form-control js-example-basic-single">
+											<option value="">Seç</option>
+											<option {{ @$kart_veri->STATUS == "MUSTERIYE_GONDERILDI" ? "selected" : "" }} value="MUSTERIYE_GONDERILDI">Müşteriye Gönderildi</option>
+											<option {{ @$kart_veri->STATUS == "REVIZYON_YAPILDI" ? "selected" : "" }} value="REVIZYON_YAPILDI">Revizyon Yapıldı</option>
+											<option {{ @$kart_veri->STATUS == "SIPARIS_GELDI" ? "selected" : "" }} value="SIPARIS_GELDI">Sipariş Geldi</option>
+										</select>
+									</div>
 								</div>
 
 								<div class="row">
@@ -1101,138 +1116,6 @@
 																</td>
 															</tr>
 															@php
-																	}
-																}
-															@endphp
-														</tbody>
-													</table>
-												</div>
-
-												<div class="tab-pane" id="tab_2">
-													<table class="table table-bordered text-center" id="masrafTable">
-														<thead>
-															<tr>
-																<th>#</th>
-																<th style="min-width:150px; font-size: 13px !important;">
-																	Masraf
-																	Türü</th>
-																<th style="min-width:280px; font-size: 13px !important;">
-																	Masraf
-																	Açıklaması</th>
-																<th style="min-width:200px; font-size: 13px !important;">
-																	Masraf
-																	Katsayı Türü</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Masraf
-																	Katsayı Türü Açıklaması</th>
-																<th style="min-width:100px; font-size: 13px !important;">
-																	Masraf
-																	Katsayısı (%)</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Tutar
-																</th>
-															</tr>
-															<tr class="satirEkle2" style="background-color:#3c8dbc">
-																<td>
-																	<button type="button" class="btn btn-default"
-																		id="addRow2"><i class="fa fa-plus"
-																			style="color: blue"></i></button>
-																</td>
-																<td>
-																	<select class="select2 w-100 form-control"
-																		onchange="masraf_aciklamasi(this)"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="MASRAF_TURU" id="MASRAF_TURU">
-																		<option value=" ">Seç</option>
-																		@php
-																			$masraf_turlari = DB::table($database . 'gecoust')->where('EVRAKNO', 'MASRAF_TURU')->get();
-																			foreach ($masraf_turlari as $key => $masraf_turu) {
-																				echo "<option value='" . $masraf_turu->KOD . "'>" . $masraf_turu->KOD . " - " . $masraf_turu->AD . "</option>";
-																			}
-																		@endphp
-																	</select>
-																</td>
-																<td>
-																	<input type="text" class="form-control"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="MASRAF_ACIKLAMASI"
-																		data-isim="Kod Adı" maxlength="255"
-																		style="color: red" name="" id="MASRAF_ACIKLAMASI"
-																		readonly>
-																</td>
-																<td>
-																	<select
-																		class="form-control select2 js-example-basic-single req"
-																		onchange="katsayi_aciklamasi(this)"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="KATSAYI_TURU"
-																		style="width:100% !important;"
-																		data-isim="Kaynak Tipi" name="" id="KATSAYI_TURU">
-																		<option value=" ">Seç</option>
-																		@php
-																			$katsayi_turlari = DB::table($database . 'gecoust')->where('EVRAKNO', 'KATSAYI_TURU')->get();
-																			foreach ($katsayi_turlari as $key => $katsayi_turu) {
-																				echo "<option value='" . $katsayi_turu->KOD . "'>" . $katsayi_turu->KOD . " - " . $katsayi_turu->AD . "</option>";
-																			}
-																		@endphp
-																	</select>
-																</td>
-																<td>
-																	<input type="text" name="" id="KATSAYI_ACIKLAMASI"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="KATSAYI_ACIKLAMASI"
-																		data-isim="İşlem Birimi" class="form-control"
-																		value="" readonly>
-																</td>
-																<td>
-																	<input type="number" name="" id="KATSAYI"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="KATSAYI" class="form-control"
-																		value="">
-																</td>
-																<td>
-																	<input type="number" name="" id="MASRAF_TUTARI"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="TUTAR" class="form-control" value="">
-																</td>
-															</tr>
-														</thead>
-														<tbody>
-															@php
-																$veri2 = DB::table($ekranTableTR)->where('EVRAKNO', @$evrakno)->orderBy('TRNUM', 'ASC')->get();
-																if (!$veri2->isEmpty()) {
-																	foreach ($veri2 as $key => $veri) {
-																		@endphp
-																		<tr>
-																			<input type="hidden" name="TRNUM2[]"
-																				value="{{$veri->TRNUM}}">
-																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR" value="{{$kart_veri->TEKLIF_TUTAR}}">
-
-																			<td><button type='button' id='deleteSingleRow'
-																					class='btn btn-default delete-row'><i
-																						class='fa fa-minus'
-																						style='color: red'></i></button>
-																			</td>
-																			<td><input type="text" name="MASRAF_TURU[]"
-																					value="{{$veri->MASRAF_TURU}}" class="form-control"
-																					readonly></td>
-																			<td><input type="text" name="MASRAF_ACIKLAMASI[]"
-																					value="{{$veri->MASRAF_ACIKLAMASI}}"
-																					class="form-control" readonly></td>
-																			<td><input type="text" name="KATSAYI_TURU[]"
-																					value="{{$veri->KATSAYI_TURU}}" class="form-control"
-																					readonly></td>
-																			<td><input type="text" name="KATSAYI_ACIKLAMASI[]"
-																					value="{{$veri->KATSAYI_ACIKLAMASI}}"
-																					class="form-control number"></td>
-																			<td><input type="text" name="KATSAYI[]"
-																					value="{{$veri->KATSAYI}}" class="form-control"
-																					readonly></td>
-																			<td><input type="text" name="MASRAF_TUTARI[]"
-																					value="{{$veri->MASRAF_TUTARI}}"
-																					class="form-control number" readonly></td>
-																		</tr>
-																		@php
 																	}
 																}
 															@endphp
@@ -1556,9 +1439,25 @@
 			});
 		});
 
-		$(document).on('input', '.TIME, .PRICE, .PTIME, .PPRICE', function() {
-			var total = (parseFloat($(this).closest('.operation-detail-card').find('.TIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PRICE').val())) + (parseFloat($(this).closest('.operation-detail-card').find('.PTIME').val()) * parseFloat($(this).closest('.operation-detail-card').find('.PPRICE').val()));
-			$(this).closest('.operation-detail-card').find('.TOTAL').val(total.toFixed(2));
+		$(document).on('input', '.TIME, .PRICE, .PTIME', function() {
+			var card = $(this).closest('.operation-detail-card');
+
+			var TIME  = parseFloat(card.find('.TIME').val())  || 0;
+			var PTIME = parseFloat(card.find('.PTIME').val()) || 0;
+			var PRICE = parseFloat(card.find('.PRICE').val()) || 0;
+			var QTY   = parseFloat($('#SF_MIKTAR').val()) || 1;
+
+			var ayar  = (TIME * PRICE) / QTY;
+			var islem = PTIME * (PRICE / 60);
+			var total = ayar + islem;
+
+			// yeni alanlara yaz
+			card.find('.AYAR_TUTAR').val(ayar.toFixed(2));
+			card.find('.ISLEM_TUTAR').val(islem.toFixed(2));
+
+			// eski total alanı aynı
+			card.find('.TOTAL').val(total.toFixed(2));
+
 		});
 
 		var aktifSatir = null;
@@ -1632,17 +1531,17 @@
 					}
 				});
 
-				$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2));
 
 				let miktar = parseFloat($('#SF_MIKTAR').val());
+				$('.HESAPLANAN_FIYAT').val((toplam).toFixed(2));
 				if (!isNaN(miktar) && miktar !== 0) {
-					$('.HESAPLANAN_FIYAT').val((toplam / miktar).toFixed(2));
+					$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2) * miktar);
 				}
 				$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+toplam.toFixed(2)+ ' '+$('#teklif').val());
 			}
 
 			
-			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME, .PPRICE", function () {
+			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME", function () {
 				hesapla();
 			});
 
@@ -1707,9 +1606,76 @@
 				aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 				aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
 				aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
+				operasyonlariTabloyaBas();
 			});
 
+			$(document).on("click",".operation-detail-card .clone",function(){
+				let col = $(this).closest(".COPRS");
+				let clone = col.clone(true);
+				let newId = "C" + Date.now();
+				clone.attr("id", newId);
+				col.after(clone);
+				hesapla();
+			});
 
+			function operasyonlariTabloyaBas(){
+
+				let OR_TRNUM = $('#OR_TRNUM').val();
+				let HKOD = $('#MALZEME_CINSI').val();
+				let SF_IUNIT = $('#SF_IUNIT').val() || 0;
+				let StokAdi  = $('#StokAdi').val() || 0;
+				let SF_MIKTAR = $('#SF_MIKTAR').val() || 0;
+				let TUTAR = $('#MALZEME_TUTARI').val();
+				let TEKLIF_PB = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
+
+				let HTRNUM = getTRNUM();
+				let htr = `
+					<tr>
+						<input type="hidden" name="TRNUM3[]" value="${HTRNUM}">
+						<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
+						<td><input type="text" name="KAYNAKTYPE2[]" value="H" class="form-control" readonly></td> 
+						<td><input type="text" name="KOD2[]" value="${HKOD}" class="form-control" readonly></td> 
+						<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
+						<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
+						<td class="text-end"><input type="text" name="FIYAT2[]" value="${TUTAR}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="TUTAR2[]" value="${(TUTAR * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>
+						<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
+					</tr>`;
+
+				$('#maliyetDetayTable tbody').append(htr);
+
+				$('.operation-detail-card').not(':last').each(function(){
+
+					let kart = $(this);
+					let kod   = kart.find('.OPERASYON_KOD').text();
+					let total = kart.find('.TOTAL').val() || 0;
+
+					if(total == 0) return;
+					let TRNUM = getTRNUM();
+					
+					let tr = `
+					<tr>
+						<input type="hidden" name="TRNUM3[]" value="${TRNUM}">
+						<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
+						<td><input type="text" name="KAYNAKTYPE2[]" value="I" class="form-control" readonly></td> 
+						<td><input type="text" name="KOD2[]" value="${kod}" class="form-control" readonly></td> 
+						<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
+						<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
+						<td class="text-end"><input type="text" name="FIYAT2[]" value="${total}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="TUTAR2[]" value="${(total * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>
+						<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
+					</tr>`;
+
+					$('#maliyetDetayTable tbody').append(tr);
+
+				});
+			}
+
+			$('.delete-row').on('click',function(){
+				hesapla();
+			});
 
 			$('.STOK_KODU_SHOW').select2({
 				placeholder: 'Stok kodu seç...',
@@ -2137,32 +2103,56 @@
 				var TRNUM_FILL = getTRNUM();
 				var htmlCode = " ";
 
+				$.ajax({
+					url:'/digerFiyatHesapla',
+					type:'post',
+					data:{
+						'SATIR_TEKLIF': satirEkleInputs.TEKLIF_PB_FILL,
+						'TEKLIF_BIRIMI':'{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
+						'FIYAT': satirEkleInputs.FIYAT_FILL,
+						'TARIH':'{{ @$kart_veri->TARIH }}'
+					},
+					beforeSend:function(){
+						Swal.fire({
+							title: 'Yükleniyor...',
+							text: 'Lütfen bekleyiniz',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+							showConfirmButton: false,
+							didOpen: () => {
+								Swal.showLoading();
+							}
+						});
+					},
+					success:function (res) {
+						Swal.close();
+						satirEkleInputs.TEKLIF_FILL = res;
+						htmlCode += " <tr> ";
 
-				htmlCode += " <tr> ";
-
-				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='" + TRNUM_FILL + "'></td> ";
-				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='MASRAF_TURU[]' value='" + satirEkleInputs.MASRAF_TURU + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='MASRAF_ACIKLAMASI[]' value='" + satirEkleInputs.MASRAF_ACIKLAMASI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KATSAYI_TURU[]' value='" + satirEkleInputs.KATSAYI_TURU + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KATSAYI_ACIKLAMASI[]' value='" + satirEkleInputs.KATSAYI_ACIKLAMASI + "'></td>";
-				htmlCode += " <td><input type='text' class='form-control' name='KATSAYI[]' value='" + satirEkleInputs.KATSAYI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='MASRAF_TUTARI[]' value='" + satirEkleInputs.MASRAF_TUTARI + "' ></td> ";
+						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='" + TRNUM_FILL + "'></td> ";
+						// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+						htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
 
 
-				htmlCode += " </tr> ";
+						htmlCode += " </tr> ";
 
-				if (!satirEkleInputs.MASRAF_TURU || !satirEkleInputs.KATSAYI_TURU || !satirEkleInputs.KATSAYI) {
-					eksikAlanHataAlert2();
-				}
-				else {
-					$("#masrafTable > tbody").append(htmlCode);
-					updateLastTRNUM(TRNUM_FILL);
+						if (!satirEkleInputs.ACIKLAMA_FILL || !satirEkleInputs.FIYAT_FILL || !satirEkleInputs.TEKLIF_PB_FILL) {
+							eksikAlanHataAlert2();
+						}
+						else {
+							$("#masrafTable > tbody").append(htmlCode);
+							updateLastTRNUM(TRNUM_FILL);
 
-					emptyInputs('satirEkle2');
-				}
-
+							emptyInputs('satirEkle2');
+							$('#DIGER').val(parseFloat($('#DIGER').val()) + parseFloat(res));
+							hesapla();
+						}
+					}
+				});
 			});
 
 			$("#addRow3").on('click', function() {
