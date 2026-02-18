@@ -719,13 +719,14 @@
 												<div>
 													<label class="form-label-sm fw-bold">Tutar</label>
 													<div class="d-flex gap-1">
-														<div class="input-group">
-															<input type="number" id="kurtutar" class="form-control text-end form-control-sm" placeholder="0.00">
-															<select id="kurtip" class="fason-select form-select p-1" style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 55px;">
+														<div class="input-group satir-grubu">
+															<input type="number" class="tutar-input form-control text-end form-control-sm" placeholder="0.00">
+															<select  class="birim-select form-select p-1" style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
+																<option selected>Seç</option>
 																@php
 																	foreach ($kur_veri as $veri) {
 																		$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
-																		echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
+																		echo "<option value='{$veri->KOD}'>{$veri->KOD} - {$veri->AD}</option>";
 																	}
 																@endphp
 															</select>
@@ -1544,6 +1545,17 @@
 
 		});
 
+		$(document).on('input change', '.tutar-input, .birim-select', function() {
+			const $satir = $(this).closest('.satir-grubu');
+			const tutar = parseFloat($satir.find('.tutar-input').val()) || 0;
+			const birim = $satir.find('.birim-select').val();
+			var kur1 = getCachedKur('{{ @$kart_veri->TARIH }}', '{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
+			var kur2 = getCachedKur('{{ @$kart_veri->TARIH }}', birim);
+			console.log(kur1, kur2);
+			// const total = tutar * birim;
+			// $satir.find('.total-input').val(total.toFixed(2));
+		});
+
 		var aktifSatir = null;
 		
 		$(document).ready(function () {
@@ -1835,14 +1847,11 @@
 			});
 		});
 
-		var toplam = 0;
-		var esasMiktar = <?= @$kart_veri->ESAS_MIKTAR ?? 1;?>;
-
 		const kurCache = new Map();
-		async function getCachedKur(tarih, parabirimi) {
+		function getCachedKur(tarih, parabirimi) {
 			const key = `${tarih}-${parabirimi}`;
 			if (!kurCache.has(key)) {
-				const response = await $.ajax({
+				const response = $.ajax({
 					type: 'POST',
 					url: "{{ route('V2_doviz_kur_getir') }}",
 					data: {

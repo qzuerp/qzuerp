@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MaliyetlerExport;
+use Carbon\Carbon;
 
 class teklif_fiyat_analizV2 extends Controller
 {
@@ -614,90 +615,7 @@ class teklif_fiyat_analizV2 extends Controller
             break;
         }
     }
-    public function maliyet_hesapla(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            $firma = trim($user->firma).'.dbo.';
-            $veri = DB::table($firma.'stdm10t')
-                ->where('VALIDAFTERTARIH', '=', $request->input('TARIH'))
-                ->where('ENDEKS', '=', $request->input('ENDEX'))
-                ->where('EVRAKNO', '=', $request->input('EVRAKNO'))
-            ->get();
 
-            if (!$veri) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Veri bulunamadı'
-                ]);
-            }
-
-            return response()->json([
-                'success' => true,
-                'veri' => $veri,
-                'evrakno' => $request->input('EVRAKNO'),
-                'tarih' => $request->input('TARIH'),
-                'endex' => $request->input('ENDEX')
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => "Kod bulunamadı"
-            ], 500);
-        }
-    }
-    public function satir_fiyat_hesapla(Request $request)
-    {
-        if(Auth::check()) {
-            $u = Auth::user();
-        }
-        $firma = trim($u->firma).'.dbo.';
-
-        $KOD = $request->KOD;
-        $PB = $request->PB;
-        $TARIH = $request->TARIH;
-        $ENDEX = $request->ENDEX;
-
-        $veri = DB::table($firma.'stdm10t')
-        ->where('kod', $KOD)
-        ->where('ENDEKS', '=', $ENDEX)
-        ->where('VALIDAFTERTARIH', '<=', $TARIH)
-        ->orderBy('VALIDAFTERTARIH', 'desc')
-        ->first();
-
-
-        // dd($veri);
-        $FIYAT = 0;
-        try {
-            if($veri->PARABIRIMI == $PB) {
-                $FIYAT = $veri->TUTAR;
-            }
-            else
-            {
-                $tarih = date('Y/m/d', strtotime($TARIH));
-
-                $kur1 = DB::table($firma.'excratt')
-                    ->where('CODEFROM',  $PB)
-                    ->where('EVRAKNOTARIH', $tarih)
-                    ->first();
-
-                $kur2 = DB::table($firma.'excratt')
-                    ->where('CODEFROM', $veri->PARABIRIMI)
-                    ->where('EVRAKNOTARIH', $tarih)
-                    ->first();
-
-                if (!$kur1 || !$kur2) {
-                    throw new Exception('Kur bulunamadı');
-                }
-
-                $FIYAT = $veri->TUTAR * ($kur1->KURS_1 / $kur2->KURS_1);
-            }
-            return $FIYAT;
-        } catch (\Throwable $th) {
-            $FIYAT = 0;
-        }
-
-    }
     public function doviz_kur_getir(Request $request)
     {
         try {
@@ -708,13 +626,13 @@ class teklif_fiyat_analizV2 extends Controller
     
             $istenenTarih = Carbon::createFromFormat('Y-m-d', $tarih)->startOfDay();
     
-            $veri = DB::table('EXCRATT')
+            $veri = DB::table($firma.'EXCRATT')
                 ->where('CODEFROM', $para_birimi)
                 ->where('EVRAKNOTARIH', $istenenTarih->format('Y/m/d'))
                 ->first();
     
             if (!$veri) {
-                $veri = DB::table('EXCRATT')
+                $veri = DB::table($firma.'EXCRATT')
                     ->where('CODEFROM', $para_birimi)
                     ->where('EVRAKNOTARIH', '<=', $istenenTarih->format('Y/m/d'))
                     ->orderBy('EVRAKNOTARIH', 'desc')
@@ -728,7 +646,6 @@ class teklif_fiyat_analizV2 extends Controller
                 ], 404);
             }
     
-            // Bulunan veriyi döndür
             return response()->json([
                 'success' => true,
                 'message' => $istenenTarih->format('Y-m-d') != Carbon::parse($veri->EVRAKNOTARIH)->format('Y-m-d')
@@ -745,62 +662,6 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
-    public function recetedenHesapla(Request $request)
-    {
-        $kod = $request->input('kod');
-        $MIKTAR = $request->miktar;
-        $user = Auth::user();
-        $database = trim($user->firma).'.dbo.';
-
-        $sql = "
-            SELECT
-                B01T.*,
-                (CASE WHEN B01T.SIRANO IS NULL THEN '  ' ELSE B01T.SIRANO END) AS R_SIRANO,
-                (CASE WHEN IM01.AD IS NULL THEN ' ' ELSE IM01.AD END) AS R_OPERASYON_IMLT01_AD,
-                (CASE WHEN B01T.BOMREC_OPERASYON IS NULL THEN ' ' ELSE B01T.BOMREC_OPERASYON END) AS OPERASYON,
-                (CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END) AS KAYNAK_AD,
-                B01T.ACIKLAMA AS KAYNAK_BIRIM,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS R_MIKTAR0,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK1 / B01E1.MAMUL_MIKTAR AS R_MIKTAR1,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK2 / B01E1.MAMUL_MIKTAR AS R_MIKTAR2,
-                (".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR)
-                + (CASE WHEN B01T.BOMREC_KAYNAK0 IS NULL THEN 0 ELSE
-                    ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR END ) AS R_MIKTART,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS TI_SF_MIKTAR,
-                S002.IUNIT AS TI_SF_SF_UNIT,
-                S00.AD AS MAMULSTOKADI,
-                B01E1.MAMUL_MIKTAR
-            FROM ".$database."STOK00 S00
-            LEFT JOIN ".$database."BOMU01E B01E1 ON B01E1.MAMULCODE = S00.KOD
-            LEFT JOIN ".$database."BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
-            LEFT JOIN ".$database."STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
-            LEFT JOIN ".$database."imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
-            LEFT JOIN ".$database."imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
-            WHERE S00.KOD = ?
-            AND B01T.EVRAKNO IS NOT NULL";
-
-        $results = DB::select($sql, [$kod]);
-        return response()->json($results);
-    }
-    public function evrakNoGetir(Request $request)
-    {
-        $user = Auth::user();
-        $firma = trim($user->firma).'.dbo.';
-        $kod = $request->input('KOD');
-
-        $evrakNo = $evrakNo = DB::table($firma.'stdm10t')
-        ->where('kod', $request->KOD)
-        ->where('ENDEKS', $request->ENDEX)
-        ->where('VALIDAFTERTARIH', '<=', $request->TARIH)
-        ->orderBy('VALIDAFTERTARIH', 'desc')
-        ->first();
-    
-        return response()->json([
-            'success' => true,
-            'veri' => $evrakNo
-        ]);
-    }
-
     public function excel_export_maliyetler(Request $request)
     {
         $evrakno = $request->input('EVRAKNO');

@@ -115,7 +115,7 @@
     /* ═══════════════════════════════
        Summary Cards
     ═══════════════════════════════ */
-    .main-container { max-width: 1800px; margin: 0 auto; padding: 24px; }
+    .main-container { width: 100%; margin: 0 auto; padding: 24px; }
 
     .summary-strip {
       display: grid;
