@@ -43,6 +43,7 @@
 			$sonrakiEvrak = DB::table($ekranTableE)->where('EVRAKNO', '>', $sonID)->min('EVRAKNO');
 			$oncekiEvrak = DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
 		}
+		$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
 	@endphp
 	<style>
 		#yazdir{
@@ -600,32 +601,70 @@
 								@php
 									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
 
-									$BOPERASON_VERILERI = DB::select(
-										"SELECT 
-													I00.GK_6 AS KOD,
-													S10E.MALIYETT,
-													S10E.PARA_BIRIMI,
-													I00.KOD AS TEZGAH,
-													(S10E.MALIYETT * EXT.KURS_1) AS TL_TUTAR,
-													EXT.KURS_1,
-													(S10E.MALIYETT * EXT.KURS_1) / EXT2.KURS_1 AS TEKLIF_FIYAT,
-													I00.GK_1
-												FROM {$database}imlt00 AS I00
+									$BOPERASON_VERILERI = DB::select("
+										SELECT 
+											I00.GK_6 AS KOD,
+											S10E.MALIYETT,
+											S10E.PARA_BIRIMI,
+											I00.KOD AS TEZGAH,
 
-												LEFT JOIN {$database}stdm10e AS S10E
-													ON S10E.TEZGAH_KODU = I00.KOD
+											/* -------- TL KARŞILIĞI -------- */
+											CASE 
+												WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+													THEN S10E.MALIYETT
+												ELSE
+													S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+											END AS TL_TUTAR,
 
-												LEFT JOIN {$database}excratt AS EXT
-													ON EXT.EVRAKNOTARIH = ?
-													AND EXT.CODEFROM = S10E.PARA_BIRIMI
+											EXT.KURS_1,
+											EXT2.KURS_1,
 
-												LEFT JOIN {$database}excratt AS EXT2
-													ON EXT2.EVRAKNOTARIH = ?
-													AND EXT2.CODEFROM = ?
+											/* -------- TEKLIF FIYAT -------- */
+											CASE 
+												WHEN ? = 'TL' THEN
+													CASE 
+														WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+															THEN S10E.MALIYETT
+														ELSE
+															S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+													END
+												ELSE
+													(
+														CASE 
+															WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+																THEN S10E.MALIYETT
+															ELSE
+																S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+														END
+													) / COALESCE(EXT2.KURS_1,1)
+											END AS TEKLIF_FIYAT,
 
-												WHERE I00.GK_6 <> ''",
-										[$tarih, $tarih, @$kart_veri->TEKLIF_FIYAT_PB]
-									);
+											I00.GK_1
+
+										FROM {$database}imlt00 AS I00
+
+										LEFT JOIN {$database}stdm10e AS S10E
+											ON S10E.TEZGAH_KODU = I00.KOD
+
+										/* maliyet döviz kuru */
+										LEFT JOIN {$database}excratt AS EXT
+											ON EXT.EVRAKNOTARIH = ?
+											AND EXT.CODEFROM = S10E.PARA_BIRIMI
+
+										/* teklif döviz kuru */
+										LEFT JOIN {$database}excratt AS EXT2
+											ON EXT2.EVRAKNOTARIH = ?
+											AND EXT2.CODEFROM = ?
+
+										WHERE I00.GK_6 <> ''
+										",
+										[
+										$kart_veri->TEKLIF_FIYAT_PB,
+										$tarih,
+										$tarih,
+										$kart_veri->TEKLIF_FIYAT_PB
+										]);
+
 									
 								@endphp
 								@foreach($BOPERASON_VERILERI as $OPERASYON)
@@ -667,8 +706,7 @@
 														</div>
 													</div>
 												</div>
-												@endif
-												<div >
+												<div>
 													<label class="form-label-sm fw-bold">Tutar</label>
 													<div class="d-flex gap-1">
 														<div class="input-group">
@@ -677,6 +715,25 @@
 														</div>
 													</div>
 												</div>
+												@else
+												<div>
+													<label class="form-label-sm fw-bold">Tutar</label>
+													<div class="d-flex gap-1">
+														<div class="input-group">
+															<input type="number" id="kurtutar" class="form-control text-end form-control-sm" placeholder="0.00">
+															<select id="kurtip" class="fason-select form-select p-1" style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 55px;">
+																@php
+																	foreach ($kur_veri as $veri) {
+																		$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
+																		echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
+																	}
+																@endphp
+															</select>
+														</div>
+													</div>
+												</div>
+												@endif
+												
 											</div>
 										</div>
 									</div>
@@ -861,7 +918,6 @@
 										<select name="TEKLIF" id="teklif" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEKLIF_FIYAT_PB" class="form-control js-example-basic-single">
 											<option value="">Seç</option>
 											@php
-												$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
 												foreach ($kur_veri as $veri) {
 													$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
 													echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} - {$veri->AD}</option>";
@@ -957,8 +1013,29 @@
 											placeholder="Müşteri Teklif Tarihi" value="{{ @$kart_veri->MUSTERI_TEKLIF_TARIHI }}">
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<label>Kişiler</label>
+										<select  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KISI" id="KISI" class="form-control js-example-basic-single">
+											<option value=" ">Seç</option>
+											
+										</select>
+										<input type="hidden" name="KISI">
+									</div>
 
-								
+									<div class="col-md-3">
+										<input type="text" class="form-control" value="">
+									</div>
+
+									<div class="col-md-3">
+
+									</div>
+
+									<div class="col-md-3">
+
+									</div>
+
+								</div>
 							</div>
 						</div>
 					</div>
@@ -995,7 +1072,7 @@
 																<th style="min-width:120px; font-size: 13px !important;">
 																	İşlem miktarı</th>
 																<th style="min-width:100px; font-size: 13px !important;">
-																	İşlem Birimi</th>
+																	Revizyon</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	Fiyat</th>
 																<th style="min-width:120px; font-size: 13px !important;">
@@ -1078,7 +1155,7 @@
 																	->leftJoin($database.'stok00 as s', 't.KOD', '=', 's.KOD')
 																	->where('EVRAKNO',@$kart_veri->EVRAKNO)
 																	->orderBy('TRNUM', 'ASC')
-																	->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')->get();
+																	->select('t.*')->get();
 																if (!$t_kart_veri->isEmpty()) {
 																	foreach ($t_kart_veri as $key => $veri) {
 															@endphp
@@ -1096,10 +1173,10 @@
 																		class="form-control" readonly></td>
 
 																<td><input type="text" name="KODADI[]"
-																		value="{{$veri->STOK_ADI}}" class="form-control"
+																		value="{{$veri->STOK_AD1}}" class="form-control"
 																		readonly></td>
 																<td><input type="text" name="ISLEM_MIKTARI[]"
-																		value="{{$veri->SF_MIKTAR}}"
+																		value="{{round($veri->SF_MIKTAR)}}"
 																		class="form-control number">
 																</td>
 																<td><input type="text" name="ISLEM_BIRIMI[]"
@@ -1107,10 +1184,10 @@
 																		readonly>
 																</td>
 																<td><input type="text" name="FIYAT[]"
-																		value="{{$veri->FIYAT}}"
+																		value="{{round($veri->FIYAT,2)}}"
 																		class="form-control number"></td>
 																<td><input type="text" name="TUTAR[]"
-																		value="{{$veri->TUTAR}}" class="form-control number"
+																		value="{{round($veri->TUTAR,2)}}" class="form-control number"
 																		readonly></td>
 																<td><input type="text" name="PARA_BIRIMI[]"
 																		value="{{$veri->PRICEUNIT}}" class="form-control"
@@ -1190,7 +1267,7 @@
 																		<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
 																		<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
 																		<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{$satir->SF_MIKTAR}}" class="form-control number"></td>
+																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
 																		<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
 																		<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
 																		<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
@@ -1778,606 +1855,6 @@
 			}
 			return kurCache.get(key);
 		}
-
-		async function maliyet_hesapla(kod, ad, tarih, endex, teklif) {
-			try {
-				var esasKod = kod;
-
-				const evraknoResponse = await $.ajax({
-					type: 'POST',
-					url: "{{ route('V2_evrakNoGetir') }}",
-					data: {
-						"_token": "{{ csrf_token() }}",
-						"KOD": esasKod,
-						"ENDEX": endex,
-						"TARIH": tarih
-					}
-				}).catch(err => {
-					throw new Error(`Kod bulunamadı: ${kod}`);
-				});
-
-				if (!evraknoResponse || !evraknoResponse.veri) {
-					throw new Error(`Kod bulunamadı: ${kod}`);
-				}
-
-				const maliyetResponse = await $.ajax({
-					type: 'POST',
-					url: "{{ route('V2_maliyet_hesapla') }}",
-					data: {
-						"_token": "{{ csrf_token() }}",
-						"TARIH": evraknoResponse.veri.VALIDAFTERTARIH,
-						"ENDEX": endex,
-						"EVRAKNO": evraknoResponse.veri.EVRAKNO
-					}
-				}).catch(err => {
-					throw new Error(`Kod bulunamadı: ${kod}`);
-				});
-
-				if (!maliyetResponse || !maliyetResponse.veri || maliyetResponse.veri.length === 0) {
-					throw new Error(`Kod bulunamadı: ${kod}`);
-				}
-
-				let toplamTL = 0;
-				let toplamMiktar = 0;
-
-				// Use the first valid date and currency from maliyetResponse
-				let islemTarihi = null;
-
-				for (const element of maliyetResponse.veri) {
-					if (!element || !element.TUTAR || !element.PARABIRIMI || !element.MIKTAR) {
-						console.warn("Eksik veri tespit edildi:", element);
-						continue;
-					}
-
-					// Set the transaction date and currency from the first valid record
-					if (!islemTarihi && element.VALIDAFTERTARIH) {
-						islemTarihi = element.VALIDAFTERTARIH;
-					}
-
-					let tlDegeri = 0;
-					if (element.PARABIRIMI !== "TL") {
-						try {
-							const kurResponse = await getCachedKur(element.VALIDAFTERTARIH, element.PARABIRIMI);
-							tlDegeri = kurResponse?.data?.KURS_1 ? (parseFloat(element.TUTAR) || 0) * kurResponse.data.KURS_1 : parseFloat(element.TUTAR) || 0;
-						} catch (kurError) {
-							console.warn(`Kur hesaplama hatası: ${element.PARABIRIMI}`, kurError);
-							tlDegeri = parseFloat(element.TUTAR) || 0;
-						}
-					} else {
-						tlDegeri = parseFloat(element.TUTAR) || 0;
-					}
-
-					toplamTL += tlDegeri;
-					toplamMiktar += parseFloat(element.MIKTAR) || 0;
-				}
-
-				if (toplamMiktar === 0) {
-					throw new Error(`Baz miktarı (MIKTAR) sıfır veya geçersiz: ${kod}`);
-				}
-
-				// Birim fiyat hesaplaması
-				const birimFiyat = toplamTL / toplamMiktar;
-
-				// Use teklif instead of input teklif parameter
-				if (teklif === "TL") {
-					return birimFiyat.toFixed(2);
-				} else {
-					try {
-						const teklifKurResponse = await getCachedKur(islemTarihi, teklif);
-						if (!teklifKurResponse || !teklifKurResponse.data || !teklifKurResponse.data.KURS_1) {
-							throw new Error(`Kur bilgisi bulunamadı: ${teklif}`);
-						}
-						return (birimFiyat / teklifKurResponse.data.KURS_1).toFixed(2);
-					} catch (teklifKurError) {
-						throw new Error(`Kur hesaplama hatası: ${teklif}`);
-					}
-				}
-			} catch (error) {
-				throw error;
-			}
-		}
-
-		async function fiyat_hesapla() {
-			if (!validateNumbers()) {
-				return;
-			}
-			var tarih = $("#TARIH").val();
-			var endex = $("#ENDEX").val();
-			var teklif = $("#teklif").val();
-
-			if (!tarih || !endex || !teklif) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'Hata!',
-					text: 'Tarih, Endex veya Teklif bilgisi eksik.',
-					confirmButtonText: 'Tamam'
-				});
-				return;
-			}
-
-			let loadingAlert = Swal.fire({
-				title: 'Fiyatlar Hesaplanıyor...',
-				text: 'Lütfen bekleyiniz',
-				allowOutsideClick: false,
-				allowEscapeKey: false,
-				showConfirmButton: false,
-				didOpen: () => { Swal.showLoading(); }
-			});
-
-			const rows = $("#maliyetListesi > tbody > tr");
-
-			try {
-				for (let i = 0; i < rows.length; i++) {
-
-					const row = rows[i];
-					const kod = $(row).find("input[name='KOD2[]']").val();
-					const ad = $(row).find("input[name='KODADI2[]']").val();
-					const mevcutFiyat = $(row).find("input[name='FIYAT2[]']").val();
-
-					let sonuc_fiyat;
-
-					try {
-						sonuc_fiyat = await maliyet_hesapla(kod, ad, tarih, endex, teklif);
-					} catch (error) {
-						if (mevcutFiyat) {
-							sonuc_fiyat = mevcutFiyat;
-						}
-						else {
-							console.error('Maliyet hesaplama hatası:', error);
-							sonuc_fiyat = null;
-						}
-					}
-
-					if (!sonuc_fiyat || isNaN(sonuc_fiyat)) {
-						loadingAlert.close(); // Loading'i kapat
-						Swal.fire({
-							icon: 'warning',
-							title: 'Hata!',
-							text: 'Fiyat Bilgisi Bulunamadı: ' + kod.split('|||')[0],
-							confirmButtonText: 'Tamam'
-						});
-						return; // İşlemi sonlandır
-					}
-
-					if (!isNaN(sonuc_fiyat)) {
-						$(row).find("input[name='FIYAT2[]']").val(sonuc_fiyat);
-						const islem_miktari = parseFloat($(row).find("input[name='ISLEM_MIKTARI2[]']").val()) || 0;
-						const tutar = (sonuc_fiyat * islem_miktari).toFixed(2);
-						$(row).find("input[name='TUTAR2[]']").val(tutar);
-					}
-				}
-			} catch (error) {
-				console.error('Genel hata:', error);
-			} finally {
-				loadingAlert.close(); // Loading'i kapat
-			}
-		}
-
-		async function receteden_hesapla(kod,islem_miktari,TRNUM,btn) {
-			$('#OR_TRNUM').val(TRNUM);
-			$("#veriTable tbody tr").each(function () {
-				let trnum = $(this).find('input[name="TRNUM[]"]').val();
-				updateLastTRNUM(trnum);
-			});
-			$("#maliyetListesi tbody").empty();
-			const tab = document.getElementById('evrakSec');
-
-
-			// Detaylı giriş kontrolü
-			if (!kod || kod.trim() === "") {
-				Swal.fire({
-					icon: 'warning',
-					title: 'Uyarı',
-					text: "Kod girilmedi.",
-					confirmButtonText: 'Tamam'
-				});
-				return;
-			}
-
-			const kodParcalari = kod.split('|||');
-			// const islem_miktari = $('#veriTable > tbody > tr:first-child').find("input[name='ISLEM_MIKTARI[]']").val();
-			const tarih = $("#TARIH").val();
-			const teklif = $("#teklif").val();
-
-			Swal.fire({
-				title: 'Hesaplanıyor...',
-				text: 'Lütfen bekleyiniz',
-				allowOutsideClick: false,
-				allowEscapeKey: false,
-				showConfirmButton: false,
-				didOpen: () => {
-					Swal.showLoading();
-				}
-			});
-
-			try {
-				const response = await $.ajax({
-					url: "{{ route('V2_recetedenHesapla') }}",
-					type: 'POST',
-					data: {
-						kod: kodParcalari[0],
-						miktar: islem_miktari,
-						_token: "{{ csrf_token() }}"
-					}
-				}).catch(err => {
-					console.error('Reçete Hesaplama Hatası:', err);
-					throw new Error('Reçete verileri alınamadı: ' + err.responseText);
-				});
-
-				// Detaylı veri kontrolü
-				if (!response || response.length === 0) {
-					throw new Error('Hesaplanacak reçete verisi bulunamadı');
-				}
-				esasMiktar = parseFloat(response[0].MAMUL_MIKTAR);
-				let htmlCode = '';
-
-				var OR_TRNUM = $('#OR_TRNUM').val();
-
-				response.forEach(table => {
-					htmlCode += `
-						<tr>
-							<td style='display: none;'><input type='hidden' maxlength='6' name='TRNUM3[]' value='${getTRNUM()}'> </td>
-							<td style='display: none;'><input type='hidden' maxlength='6' name='OR_TRNUM[]' value='${ OR_TRNUM }'> </td>
-							<td>#</td>
-							<td><input type='text' class='form-control' name='KAYNAKTYPE2[]' value='${table.BOMREC_INPUTTYPE || ''}' readonly></td>
-							<td><input type='text' class='form-control' name='KOD2[]' value='${table.BOMREC_KAYNAKCODE || ''}' readonly></td>
-							<td><input type='text' class='form-control' name='KODADI2[]' value='${table.KAYNAK_AD || ''}' readonly></td>
-							<td><input type='text' class='form-control number' name='ISLEM_MIKTARI2[]' value='${table.TI_SF_MIKTAR && table.MAMUL_MIKTAR ? (parseFloat(table.TI_SF_MIKTAR)) : 0}'></td>
-							<td><input type='text' class='form-control' name='ISLEM_BIRIMI2[]' value='${table.ACIKLAMA || ''}' readonly></td>
-							<td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT2[]' value='0'></td>
-							<td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR2[]' value='0' readonly></td>
-							<td><input type='text' class='form-control' name='PARA_BIRIMI2[]' value='${teklif}' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='' readonly></td>
-							<td><input type='text' class='form-control' name='' value='${table.ACIKLAMA || ''}' readonly></td>
-						</tr>
-					`;
-				});
-
-				$("#maliyetListesi > tbody").append(htmlCode);
-				Swal.close();
-				fiyat_hesapla();
-			} catch (error) {
-				console.error('Reçeteden Hesaplama Genel Hatası:', error);
-				Swal.fire({
-					icon: 'error',
-					title: 'Hata!',
-					text: error.message || 'Veri alınırken bir sorun oluştu.',
-					confirmButtonText: 'Tamam'
-				});
-			}
-		}
-
-		$(document).ready(function () {
-			$("#veriTable tbody tr").each(function () {
-				let trnum = $(this).find('input[name="TRNUM[]"]').val();
-				updateLastTRNUM(trnum);
-			});
-
-
-			// Satır ekleme
-			$("#addRow").on('click', function () {
-				var satirEkleInputs = getInputs('satirEkle');
-				var TRNUM_FILL = getTRNUM();
-				var htmlCode = " ";
-
-
-				htmlCode += " <tr> ";
-
-				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
-				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-				// htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='" + satirEkleInputs.KAYNAK_TIPI + "' readonly></td> ";
-				htmlCode += `
-					<button type="button"
-							class="btn btn-default"
-							data-bs-toggle="modal"
-							data-bs-target="#modal_maliyetListesi"
-							onclick="receteden_hesapla('${satirEkleInputs.STOK_KOD}','${satirEkleInputs.ISLEM_BIRIMI}','${satirEkleInputs.STOK_KOD}','${this}')">
-						<i class="fa fa-plus"></i>
-					</button>`;7
-				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";
-				htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='" + satirEkleInputs.ISLEM_BIRIMI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='" + satirEkleInputs.FIYAT + "' ></td> ";
-				htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='" + satirEkleInputs.TUTAR + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='" + satirEkleInputs.PARA_BIRIMI + "' readonly></td> ";
-				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-				
-
-				htmlCode += " </tr> ";
-
-				if (satirEkleInputs.KOD == " " || satirEkleInputs.ISLEM_MIKTARI == "" || !validateNumbers()) {
-					eksikAlanAlert();
-				}
-				else {
-					$("#veriTable > tbody").append(htmlCode);
-					updateLastTRNUM(TRNUM_FILL);
-
-					emptyInputs('satirEkle');
-					$("#PARA_BIRIMI").val($('#teklif').val());
-				}
-
-			});
-
-
-			$("#addRow2").on('click', function () {
-				var satirEkleInputs = getInputs('satirEkle2');
-				var TRNUM_FILL = getTRNUM();
-				var htmlCode = " ";
-
-				$.ajax({
-					url:'/digerFiyatHesapla',
-					type:'post',
-					data:{
-						'SATIR_TEKLIF': satirEkleInputs.TEKLIF_PB_FILL,
-						'TEKLIF_BIRIMI':'{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
-						'FIYAT': satirEkleInputs.FIYAT_FILL,
-						'TARIH':'{{ @$kart_veri->TARIH }}'
-					},
-					beforeSend:function(){
-						Swal.fire({
-							title: 'Yükleniyor...',
-							text: 'Lütfen bekleyiniz',
-							allowOutsideClick: false,
-							allowEscapeKey: false,
-							showConfirmButton: false,
-							didOpen: () => {
-								Swal.showLoading();
-							}
-						});
-					},
-					success:function (res) {
-						Swal.close();
-						satirEkleInputs.TEKLIF_FILL = res;
-						htmlCode += " <tr> ";
-
-						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='" + TRNUM_FILL + "'></td> ";
-						// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-						htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
-
-
-						htmlCode += " </tr> ";
-
-						if (!satirEkleInputs.ACIKLAMA_FILL || !satirEkleInputs.FIYAT_FILL || !satirEkleInputs.TEKLIF_PB_FILL) {
-							eksikAlanHataAlert2();
-						}
-						else {
-							$("#masrafTable > tbody").append(htmlCode);
-							updateLastTRNUM(TRNUM_FILL);
-
-							emptyInputs('satirEkle2');
-							$('#DIGER').val(parseFloat($('#DIGER').val()) + parseFloat(res));
-							hesapla();
-						}
-					}
-				});
-			});
-
-			$("#addRow3").on('click', function() {
-				var satirEkleInputs = getInputs('satirEkle3');
-				var TRNUM_FILL = getTRNUM();
-				var OR_TRNUM = $('#OR_TRNUM').val();
-				var htmlCode = " ";
-				$.ajax({
-					url: 'V2_satir_fiyat_hesapla',
-					type: 'POST',
-					data:{
-						KOD: satirEkleInputs.STOK_KOD2,
-						PB: $('#teklif').val(),
-						ENDEX: $('#ENDEX').val(),
-						TARIH:$('#TARIH').val(),
-					},
-					success: function(response) {
-						satirEkleInputs.FIYAT = response;
-						// console.log(response);
-						htmlCode += " <tr> ";
-
-						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM3[]' value='"+TRNUM_FILL+"'></td> ";
-						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='OR_TRNUM[]' value='"+OR_TRNUM+"'></td> ";
-						// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-						htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE2[]' value='"+satirEkleInputs.KAYNAK_TIPI+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='KOD2[]' value='"+satirEkleInputs.STOK_KOD2+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='KODADI2[]' value='"+satirEkleInputs.KODADI2+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI2[]' value='"+satirEkleInputs.ISLEM_MIKTARI+"'></td>";
-						htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI2[]' value='"+satirEkleInputs.ISLEM_BIRIMI2+"' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT2[]' value='"+parseFloat(satirEkleInputs.FIYAT).toFixed(2)+"' ></td> ";
-						htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR2[]' value='"+parseFloat(satirEkleInputs.FIYAT).toFixed(2) * satirEkleInputs.ISLEM_MIKTARI+"'></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI2[]' value='"+satirEkleInputs.PARA_BIRIMI+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='NETAGIRLIK2[]' value='"+satirEkleInputs.NETAGIRLIK+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='BRUTAGIRLIK2[]' value='"+satirEkleInputs.BRUTAGIRLIK+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='HACIM2[]' value='"+satirEkleInputs.HACIM+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='AMBALAJAGIRLIK2[]' value='"+satirEkleInputs.AMBALAJAGIRLIK+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='AUTO2[]' value='"+satirEkleInputs.AUTO+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='STOKMIKTAR2[]' value='"+satirEkleInputs.STOKMIKTAR+"' readonly></td> ";
-						// htmlCode += " <td><input type='text' class='form-control' name='STOKTEMELBIRIM2[]' value='"+satirEkleInputs.STOKTEMELBIRIM+"' readonly></td> ";
-
-
-						htmlCode += " </tr> ";
-
-						if (satirEkleInputs.KAYNAK_TIPI==null || satirEkleInputs.KOD==" " || satirEkleInputs.ISLEM_MIKTARI=="" || !validateNumbers()) {
-							eksikAlanAlert();
-						}
-						else {
-							$("#maliyetListesi > tbody").append(htmlCode);
-							updateLastTRNUM(TRNUM_FILL);
-							emptyInputs('satirEkle3');
-						}
-					}
-				});
-			});
-
-
-
-			// Satır silme
-			$(".delete-row").click(function () {
-				$("#addRow tbody").find('input[name="record"]').each(function () {
-					if ($(this).is(":checked")) {
-						$(this).parents("tr").remove();
-					}
-				});
-			});
-			// işlem birimini otomatik olarak ayarla
-			$('#KOD').change(function () {
-				if ($('#KOD').val() == ' ') return;
-				if ($('#KAYNAK_TIPI').val() == 'I') {
-					$('#ISLEM_BIRIMI').val('SAAT');
-				} else {
-					var BIRIM = $('#KOD').val().split('|||')[2];
-					$('#ISLEM_BIRIMI').val(BIRIM);
-					$('#STOKTEMELBIRIM').val(BIRIM);
-				}
-			});
-			$('#teklif').change(function () {
-				teklif = $(this).val();
-				$("#PARA_BIRIMI").val(teklif);
-				$("#veriTable tbody tr").each(function () {
-					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
-					$(this).find("input[name='FIYAT[]']").val('');
-					$(this).find("input[name='TUTAR[]']").val('');
-				});
-			});
-			$('#musteri').change(function () {
-				musteri = $(this).val();
-				if (musteri == ' ') {
-					$("#UNVAN_1").prop('disabled', false);
-					$("#UNVAN_2").prop('disabled', false);
-					return;
-				}
-				$("#UNVAN_1").val('');
-				$("#UNVAN_2").val('');
-				$("#UNVAN_1").prop('disabled', true);
-				$("#UNVAN_2").prop('disabled', true);
-
-			});
-		});
-
-
-		$(document).ready(function () {
-
-			function calculateOriginalValues() {
-				$("#veriTable tbody tr:gt(0)").each(function () {
-					const input = $(this).find("input[name='ISLEM_MIKTARI[]']");
-					const currentValue = parseFloat(input.val()) || 0;
-					const firstRowValue = parseFloat($("#veriTable tbody tr:first input[name='ISLEM_MIKTARI[]']").val()) || 1;
-
-					if (isNaN(firstRowValue) || firstRowValue === 0) {
-						console.error("İlk satırın değeri geçersiz veya sıfır.");
-						return;
-					}
-
-					const originalValue = (currentValue * parseFloat(esasMiktar)) / firstRowValue;
-
-					input.attr('data-original-value', originalValue);
-				});
-			}
-
-			function handleInputChange(event) {
-				const changedInput = $(event.target);
-				const currentRow = changedInput.closest('tr');
-				const isFirstRow = currentRow.index() === 0;
-
-				if (isFirstRow) {
-					const newIslemMiktari = parseFloat(changedInput.val()) || 0;
-					if (isNaN(newIslemMiktari) || newIslemMiktari === 0) {
-						return;
-					}
-					updateAllRows(newIslemMiktari);
-				}
-			}
-
-			// Tüm satırları güncelleyen fonksiyon
-			function updateAllRows(islemMiktari) {
-				$("#veriTable tbody tr:gt(0)").each(function () {
-					const input = $(this).find("input[name='ISLEM_MIKTARI[]']");
-					const originalValue = parseFloat(input.attr('data-original-value')) || 0;
-
-					// Yeni değeri hesapla: (orijinal_değer * işlem_miktarı) / esasMiktar
-					const newValue = (originalValue * islemMiktari) / parseFloat(esasMiktar);
-
-					// Yuvarlama yapmadan değeri ata
-					input.val(newValue);
-				});
-			}
-
-			// Input event listener'ları bağlama
-			function bindInputListeners() {
-				// Önce eski listener'ları temizle
-				$("#veriTable").off("input", "input[name='ISLEM_MIKTARI[]']");
-
-				// Yeni listener'ları ekle
-				$("#veriTable").on("input", "input[name='ISLEM_MIKTARI[]']", handleInputChange);
-
-				// Orijinal değerleri hesapla ve sakla
-				calculateOriginalValues();
-			}
-
-			// DOM değişikliklerini izleyen observer
-			const observer = new MutationObserver(function (mutations) {
-				mutations.forEach(function (mutation) {
-					if (mutation.addedNodes.length) {
-						bindInputListeners();
-					}
-				});
-			});
-
-			// Observer konfigürasyonu
-			const config = {
-				childList: true,
-				subtree: true
-			};
-
-			// Tabloyu izlemeye başla
-			const targetNode = document.querySelector("#veriTable tbody");
-			if (targetNode) {
-				observer.observe(targetNode, config);
-			}
-
-			// Sayfa ilk yüklendiğinde listener'ları bağla
-			bindInputListeners();
-
-
-			$("#verilerForm").on("submit", function (e) {
-				if (!validateNumbers()) {
-					e.preventDefault();
-					Swal.fire({
-						title: 'Hatalı var alan var!',
-						icon: 'warning',
-						confirmButtonText: 'Tamam'
-					});
-				}
-			});
-		});
-
-
-		function masraf_aciklamasi(select) {
-			const selectData = select.options[select.selectedIndex]
-				.text
-				.split(' - ')
-				.map(s => s.trim());
-
-			$('#MASRAF_ACIKLAMASI').val(selectData[1]);
-
-		}
-
-		function katsayi_aciklamasi(select) {
-			const selectData = select.options[select.selectedIndex]
-				.text
-				.split(' - ')
-				.map(s => s.trim());
-
-			$('#KATSAYI_ACIKLAMASI').val(selectData[1]);
-
-		}
 	</script>
 
 	<script>
@@ -2463,20 +1940,6 @@
 			emptyInputs('satirEkle');
 		}
 
-		var lastTRNUM = 0;
-
-		function getTRNUM() {
-			lastTRNUM++;
-			return String(lastTRNUM).padStart(3, '0');
-		}
-
-		function updateLastTRNUM(trnum) {
-			let num = parseInt(trnum);
-			if (!isNaN(num) && num > lastTRNUM) {
-				lastTRNUM = num;
-			}
-		}
-
 		function eksikAlanAlert() {
 			let missingFields = [];
 
@@ -2516,7 +1979,6 @@
 			});
 			return !hasError;
 		}
-
 
 		let dragCounter = 0;
 

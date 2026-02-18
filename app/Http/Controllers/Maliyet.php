@@ -76,7 +76,7 @@ class Maliyet extends Controller
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
                     'MALIYETT' => round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
                     'PARA_BIRIMI' => $PARA_BIRIMI,
-                    // 'KAYNAK_TYPE' => $KAYNAK_TYPE
+                    'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
                 $max_id = DB::table($firma.'stdm10e')->max('EVRAKNO');
@@ -138,8 +138,9 @@ class Maliyet extends Controller
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
-                    'MALIYETT' => round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
-                    'PARA_BIRIMI' => $PARA_BIRIMI
+                    'MALIYETT' => round(($TUTUAR[$maxIndex] * ($KUR2->KURS_1 ?? 1)) / ($KUR->KURS_1 ?? 1)),
+                    'PARA_BIRIMI' => $PARA_BIRIMI,
+                    'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır

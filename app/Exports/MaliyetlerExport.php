@@ -25,9 +25,9 @@ class MaliyetlerExport implements FromView
             ->where('EVRAKNO', $this->evrakno)
             ->first();
 
-        $firma = DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma)).value('FIRMA_ADI');
+        $firmaadi = DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->value('FIRMA_ADI');
 
-        $musteri = DB::table($firma.'cari00e')->where('KOD', $master->BASE_DF_CARIHESAP)->value('AD');
+        $musteri = DB::table($firma.'cari00')->where('KOD', $master->BASE_DF_CARIHESAP)->value('AD');
 
         $detaylar = DB::table($firma . 'tekl20t')
             ->select('KOD', 'STOK_AD1', 'SF_MIKTAR', 'SF_SF_UNIT', 'FIYAT', 'TUTAR', 'PRICEUNIT')
@@ -37,7 +37,7 @@ class MaliyetlerExport implements FromView
         return view('exports.maliyetler', [
             'master' => $master,
             'detaylar' => $detaylar,
-            'firma' => $firma,
+            'firma' => $firmaadi,
             'musteri' => $musteri
         ]);
     }
