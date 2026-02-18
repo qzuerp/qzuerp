@@ -716,10 +716,10 @@
 													</div>
 												</div>
 												@else
-												<div>
+												<div class="satir-grubu">
 													<label class="form-label-sm fw-bold">Tutar</label>
 													<div class="d-flex gap-1">
-														<div class="input-group satir-grubu">
+														<div class="input-group ">
 															<input type="number" class="tutar-input form-control text-end form-control-sm" placeholder="0.00">
 															<select  class="birim-select form-select p-1" style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
 																<option selected>Seç</option>
@@ -732,6 +732,8 @@
 															</select>
 														</div>
 													</div>
+													<label>Çevirilmiş Tutar</label>
+													<input type="number" class="form-control text-end form-control-sm RES_TOTAL TOPLANICAK" placeholder="0.00">
 												</div>
 												@endif
 												
@@ -1019,22 +1021,30 @@
 										<label>Kişiler</label>
 										<select  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KISI" id="KISI" class="form-control js-example-basic-single">
 											<option value=" ">Seç</option>
-											
+											@php 
+												$kontaklar = DB::table($database.'kontakt00')->get();
+											@endphp
+											@foreach($kontaklar as $kontak)
+												<option value="{{ $kontak->AD_SOYAD }}|||{{ $kontak->SIRKET_IS_TEL }}|||{{ $kontak->SIRKET_EMAIL_1 }}">{{ $kontak->AD_SOYAD }}</option>
+											@endforeach
 										</select>
-										<input type="hidden" name="KISI">
 									</div>
 
 									<div class="col-md-3">
-										<input type="text" class="form-control" value="">
+										<label>Adı Soyadı</label>
+										<input type="text" class="form-control" name="AD_SOYAD" value="{{ @$kart_veri->AD_SOYAD }}" id="AD_SOYAD">
 									</div>
 
 									<div class="col-md-3">
-
+										<label>Telefon No</label>
+										<input type="text" class="form-control" name="SIRKET_IS_TEL" value="{{ @$kart_veri->SIRKET_IS_TEL }}" id="SIRKET_IS_TEL">
 									</div>
 
 									<div class="col-md-3">
-
+										<label>E-Posta</label>
+										<input type="text" class="form-control" name="SIRKET_EMAIL_1" value="{{ @$kart_veri->SIRKET_EMAIL_1 }}" id="SIRKET_EMAIL_1">
 									</div>
+
 
 								</div>
 							</div>
@@ -1545,16 +1555,43 @@
 
 		});
 
-		$(document).on('input change', '.tutar-input, .birim-select', function() {
+		$(document).on('input change', '.tutar-input, .birim-select', async function() {
+
 			const $satir = $(this).closest('.satir-grubu');
 			const tutar = parseFloat($satir.find('.tutar-input').val()) || 0;
 			const birim = $satir.find('.birim-select').val();
-			var kur1 = getCachedKur('{{ @$kart_veri->TARIH }}', '{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
-			var kur2 = getCachedKur('{{ @$kart_veri->TARIH }}', birim);
-			console.log(kur1, kur2);
-			// const total = tutar * birim;
-			// $satir.find('.total-input').val(total.toFixed(2));
+
+			const kur1 = await getCachedKur('{{ @$kart_veri->TARIH }}','{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
+			const kur2 = await getCachedKur('{{ @$kart_veri->TARIH }}', birim);
+
+			const total =
+				(tutar * Number(kur2.data.KURS_1 || 1)) /
+				Number(kur1.data.KURS_1 || 1);
+
+			$satir.find('.RES_TOTAL').val(total.toFixed(2));
+			hesapla();
 		});
+
+
+		function hesapla() {
+
+			let toplam = 0;
+
+			$(".TOPLANICAK").each(function () {
+				let val = parseFloat($(this).val().replace(",", "."));
+				if (!isNaN(val)) {
+					toplam += val;
+				}
+			});
+
+
+			let miktar = parseFloat($('#SF_MIKTAR').val());
+			$('.HESAPLANAN_FIYAT').val((toplam).toFixed(2));
+			if (!isNaN(miktar) && miktar !== 0) {
+				$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2) * miktar);
+			}
+			$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+toplam.toFixed(2)+ ' '+$('#teklif').val());
+		}
 
 		var aktifSatir = null;
 		
@@ -1615,26 +1652,6 @@
 					}
 				});
 			});
-
-			function hesapla() {
-
-				let toplam = 0;
-
-				$(".TOPLANICAK").each(function () {
-					let val = parseFloat($(this).val().replace(",", "."));
-					if (!isNaN(val)) {
-						toplam += val;
-					}
-				});
-
-
-				let miktar = parseFloat($('#SF_MIKTAR').val());
-				$('.HESAPLANAN_FIYAT').val((toplam).toFixed(2));
-				if (!isNaN(miktar) && miktar !== 0) {
-					$('.HESAPLANAN_TUTAR').val(toplam.toFixed(2) * miktar);
-				}
-				$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+toplam.toFixed(2)+ ' '+$('#teklif').val());
-			}
 
 			
 			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME", function () {
@@ -2103,5 +2120,69 @@
 				}
 			});
 		}
+
+		$("#addRow2").on('click', function () {
+			var satirEkleInputs = getInputs('satirEkle2');
+			var TRNUM_FILL = getTRNUM();
+			var htmlCode = " ";
+
+			$.ajax({
+				url:'/digerFiyatHesapla',
+				type:'post',
+				data:{
+					'SATIR_TEKLIF': satirEkleInputs.TEKLIF_PB_FILL,
+					'TEKLIF_BIRIMI':'{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
+					'FIYAT': satirEkleInputs.FIYAT_FILL,
+					'TARIH':'{{ @$kart_veri->TARIH }}'
+				},
+				beforeSend:function(){
+					Swal.fire({
+						title: 'Yükleniyor...',
+						text: 'Lütfen bekleyiniz',
+						allowOutsideClick: false,
+						allowEscapeKey: false,
+						showConfirmButton: false,
+						didOpen: () => {
+							Swal.showLoading();
+						}
+					});
+				},
+				success:function (res) {
+					Swal.close();
+					satirEkleInputs.TEKLIF_FILL = res;
+					htmlCode += " <tr> ";
+
+					htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='" + TRNUM_FILL + "'></td> ";
+					// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+					htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+					htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
+					htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
+					htmlCode += " <td><input type='text' class='form-control' name='TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
+					htmlCode += " <td><input type='text' class='form-control' name='TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
+
+
+					htmlCode += " </tr> ";
+
+					if (!satirEkleInputs.ACIKLAMA_FILL || !satirEkleInputs.FIYAT_FILL || !satirEkleInputs.TEKLIF_PB_FILL) {
+						eksikAlanHataAlert2();
+					}
+					else {
+						$("#masrafTable > tbody").append(htmlCode);
+						updateLastTRNUM(TRNUM_FILL);
+
+						emptyInputs('satirEkle2');
+						$('#DIGER').val(parseFloat($('#DIGER').val() || 0) + parseFloat(res || 0));
+						hesapla();
+					}
+				}
+			});
+		});
+		$('#KISI').on('change',function () {
+			var kisi = $(this).val();
+			var kisi_array = kisi.split('|||');
+			$('#AD_SOYAD').val(kisi_array[0]);
+			$('#SIRKET_IS_TEL').val(kisi_array[1]);
+			$('#SIRKET_EMAIL_1').val(kisi_array[2]);
+		})
 	</script>
 @endsection
