@@ -253,7 +253,7 @@
     }
     .stock-img {
       width: 96px; height: 96px; border-radius: 10px;
-      object-fit: cover; border: 1px solid #e2e8f0;
+      object-fit: contain; border: 1px solid #e2e8f0;
       flex-shrink: 0; background: #f8fafc;
     }
     .stock-info { flex: 1; min-width: 0; }
