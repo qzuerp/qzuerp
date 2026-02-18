@@ -21,7 +21,7 @@
     ->whereNotNull('S31T.EVRAKNO')
     ->select(
         'S00.AD as STOK_AD',
-        'I00.AD as TEZGAH_AD',
+        'I00.KOD as TEZGAH_AD',
         'S31E.*',
         'S31T.*',
         'D00.DOSYA',
