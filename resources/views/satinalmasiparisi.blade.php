@@ -775,6 +775,7 @@
                       <th>Cari</th>
                       <th>Tarih</th>
                       <th>A/K</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -788,6 +789,7 @@
                       <th>Cari</th>
                       <th>Tarih</th>
                       <th>A/K</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -795,7 +797,7 @@
                   <tbody>
                     @php
 
-                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok46e.EVRAKNO', '=', 'stok46t.EVRAKNO')->orderBy('stok46t.id', 'ASC')->get(['stok46e.id', 'stok46e.EVRAKNO', 'stok46t.KOD', 'stok46t.LOTNUMBER', 'stok46t.SF_MIKTAR', 'stok46E.CARIHESAPCODE', 'stok46e.TARIH', 'stok46t.AK']);
+                      $evraklar = DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok46e.EVRAKNO', '=', 'stok46t.EVRAKNO')->orderBy('stok46t.id', 'ASC')->get(['stok46e.id', 'stok46e.EVRAKNO', 'stok46t.KOD', 'stok46t.LOTNUMBER', 'stok46t.SF_MIKTAR', 'stok46E.CARIHESAPCODE', 'stok46e.TARIH', 'stok46t.AK','stok46t.NOT1']);
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
@@ -806,6 +808,7 @@
                         echo "<td>" . $suzVeri->CARIHESAPCODE . "</td>";
                         echo "<td>" . $suzVeri->TARIH . "</td>";
                         echo "<td>" . $suzVeri->AK . "</td>";
+                        echo "<td>" . $suzVeri->NOT1 . "</td>";
 
 
                         echo "<td>" . "<a class='btn btn-info' href='satinalmasiparisi?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";

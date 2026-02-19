@@ -706,6 +706,20 @@
 														</div>
 													</div>
 												</div>
+
+												<div class="mb-2">
+													<label class="form-label-sm fw-bold">Sök-Tak</label>
+													<div class="d-flex gap-1">
+														<div class="input-group">
+															<input type="number" class="form-control form-control-sm STIME" placeholder="0.00">
+														</div>
+														
+														<div class="input-group">
+															<input type="number" class="form-control text-end form-control-sm STIME SOKTAK_TUTAR" placeholder="0.00">
+															<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
+														</div>
+													</div>
+												</div>
 												<div>
 													<label class="form-label-sm fw-bold">Tutar</label>
 													<div class="d-flex gap-1">
@@ -1522,21 +1536,24 @@
 			});
 		});
 
-		$(document).on('input', '.TIME, .PRICE, .PTIME', function() {
+		$(document).on('input', '.TIME, .PRICE, .PTIME, .STIME', function() {
 			var card = $(this).closest('.operation-detail-card');
 
 			var TIME  = parseFloat(card.find('.TIME').val())  || 0;
 			var PTIME = parseFloat(card.find('.PTIME').val()) || 0;
+			var STIME = parseFloat(card.find('.STIME').val()) || 0;
 			var PRICE = parseFloat(card.find('.PRICE').val()) || 0;
 			var QTY   = parseFloat($('#SF_MIKTAR').val()) || 1;
 
 			var ayar  = (TIME * PRICE) / QTY;
 			var islem = PTIME * (PRICE / 60);
-			var total = ayar + islem;
+			var s_islem = STIME * (PRICE / 60);
+			var total = ayar + islem + s_islem;
 
 			// yeni alanlara yaz
 			card.find('.AYAR_TUTAR').val(ayar.toFixed(2));
 			card.find('.ISLEM_TUTAR').val(islem.toFixed(2));
+			card.find('.SOKTAK_TUTAR').val(s_islem.toFixed(2));
 
 			// eski total alanı aynı
 			card.find('.TOTAL').val(total.toFixed(2));
@@ -1642,7 +1659,7 @@
 			});
 
 			
-			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME", function () {
+			$(document).on("input change", ".TOPLANICAK, .TIME, .PRICE, .PTIME, .STIME", function () {
 				hesapla();
 			});
 

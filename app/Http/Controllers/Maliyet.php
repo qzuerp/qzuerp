@@ -39,8 +39,19 @@ class Maliyet extends Controller
 
         switch ($kart_islemleri) {
             case 'kart_olustur':
-                $son_evrak = DB::table($firma.'stdm10e')->max('EVRAKNO');
-                $EVRAKNO = $son_evrak === null ? 1 : $son_evrak + 1;
+
+                $SON_EVRAK=DB::table($firma.'stdm10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+                $SON_ID= $SON_EVRAK->EVRAKNO;
+
+                $SON_ID = (int) $SON_ID;
+                if ($SON_ID == NULL) {
+                    $EVRAKNO = 1;
+                }
+                
+                else {
+                    $EVRAKNO = $SON_ID + 1;
+                }
+
                 FunctionHelpers::Logla('STMD10',$EVRAKNO,'C');
                 
                 $maxIndex = null;
@@ -58,23 +69,28 @@ class Maliyet extends Controller
 
                 $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
 
-                $KUR = DB::table($firma.'excratt')
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->where('CODEFROM', $PARA_BIRIMI)
-                ->orderBy('EVRAKNOTARIH','desc')
-                ->first();
-                
-                $KUR2 = DB::table($firma.'excratt')
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->where('CODEFROM', $PARABIRIMI[$maxIndex])
-                ->orderBy('EVRAKNOTARIH','desc')
-                ->first();
+                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL','TRY',''])
+                    ? (object)['KURS_1'=>1]
+                    : DB::table($firma.'excratt')
+                        ->where('EVRAKNOTARIH','<=',$tarih)
+                        ->where('CODEFROM',@$PARA_BIRIMI)
+                        ->orderBy('EVRAKNOTARIH','desc')
+                        ->first();
+
+                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL','TRY',''])
+                    ? (object)['KURS_1'=>1]
+                    : DB::table($firma.'excratt')
+                        ->where('EVRAKNOTARIH','<=',$tarih)
+                        ->where('CODEFROM',@$PARABIRIMI[$maxIndex])
+                        ->orderBy('EVRAKNOTARIH','desc')
+                        ->first();
+
 
                 DB::table($firma.'stdm10e')->insert([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
-                    'MALIYETT' => round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
+                    'MALIYETT' => @round(($TUTUAR[$maxIndex] * $KUR2->KURS_1) / $KUR->KURS_1),
                     'PARA_BIRIMI' => $PARA_BIRIMI,
                     'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
@@ -122,23 +138,27 @@ class Maliyet extends Controller
                 
                 $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
                 // dd($tarih,$maxTarih);
-                $KUR = DB::table($firma.'excratt')
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->where('CODEFROM', $PARA_BIRIMI)
-                ->orderBy('EVRAKNOTARIH','desc')
-                ->first();
+                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL','TRY',''])
+                    ? (object)['KURS_1'=>1]
+                    : DB::table($firma.'excratt')
+                        ->where('EVRAKNOTARIH','<=',$tarih)
+                        ->where('CODEFROM',@$PARA_BIRIMI)
+                        ->orderBy('EVRAKNOTARIH','desc')
+                        ->first();
 
-                $KUR2 = DB::table($firma.'excratt')
-                ->where('EVRAKNOTARIH','<=', $tarih)
-                ->where('CODEFROM', $PARABIRIMI[$maxIndex])
-                ->orderBy('EVRAKNOTARIH','desc')
-                ->first();
+                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL','TRY',''])
+                    ? (object)['KURS_1'=>1]
+                    : DB::table($firma.'excratt')
+                        ->where('EVRAKNOTARIH','<=',$tarih)
+                        ->where('CODEFROM',@$PARABIRIMI[$maxIndex])
+                        ->orderBy('EVRAKNOTARIH','desc')
+                        ->first();
                 // E tablosunu güncelle
                 DB::table($firma.'stdm10e')->where('EVRAKNO', $EVRAKNO)->update([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
-                    'MALIYETT' => round(($TUTUAR[$maxIndex] * ($KUR2->KURS_1 ?? 1)) / ($KUR->KURS_1 ?? 1)),
+                    'MALIYETT' => @round(($TUTUAR[$maxIndex] * ($KUR2->KURS_1 ?? 1)) / ($KUR->KURS_1 ?? 1)),
                     'PARA_BIRIMI' => $PARA_BIRIMI,
                     'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);

@@ -950,6 +950,7 @@
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -962,6 +963,7 @@
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -979,6 +981,7 @@
                         echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
                         echo "<td>" . $suzVeri->CARIHESAPCODE . "</td>";
                         echo "<td>" . $suzVeri->TARIH . "</td>";
+                        echo "<td>" . $suzVeri->NOT1 . "</td>";
 
 
                         echo "<td>" . "<a class='btn btn-info' href='satinalmaTalepleri?ID=" . $suzVeri->id . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
