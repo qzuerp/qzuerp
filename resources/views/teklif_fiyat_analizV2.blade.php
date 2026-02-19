@@ -1044,8 +1044,6 @@
 										<label>E-Posta</label>
 										<input type="text" class="form-control" name="SIRKET_EMAIL_1" value="{{ @$kart_veri->SIRKET_EMAIL_1 }}" id="SIRKET_EMAIL_1">
 									</div>
-
-
 								</div>
 							</div>
 						</div>
@@ -1086,6 +1084,8 @@
 																	Revizyon</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	Fiyat</th>
+																<th style="min-width:120px; font-size: 13px !important;">
+																	Dolar Fiyatı</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	Tutar</th>
 																<th style="min-width:170px; font-size: 13px !important;">
@@ -1197,6 +1197,9 @@
 																<td><input type="text" name="FIYAT[]"
 																		value="{{round($veri->FIYAT,2)}}"
 																		class="form-control number"></td>
+																<td><input type="text" name="DOLAR_FIYAT[]"
+																	value="{{ round($veri->FIYAT2,2) }}"
+																	class="form-control number"></td>
 																<td><input type="text" name="TUTAR[]"
 																		value="{{round($veri->TUTAR,2)}}" class="form-control number"
 																		readonly></td>
@@ -1693,7 +1696,7 @@
 				$('#MALZEME_TUTARI').val(fiyat.toFixed(2));
 				hesapla();
 			});
-			$('#uygula').on('click', function () {
+			$('#uygula').on('click', async function () {
 				const OR_TRNUM = $('#OR_TRNUM').val();
 				if (!OR_TRNUM) return;
 
@@ -1712,12 +1715,13 @@
 						console.log(response);
 					}
 				});
-				
+				var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
 				aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 				aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
 				aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val($('#SF_MIKTAR').val());
 				aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 				aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
+				aktifSatir.find('input[name="DOLAR_FIYAT[]"]').val(($('#FIYAT').val() / dolarKur.data.KURS_1).toFixed(2));
 				aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
 				operasyonlariTabloyaBas();
 			});

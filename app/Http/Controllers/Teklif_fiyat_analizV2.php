@@ -122,6 +122,7 @@ class teklif_fiyat_analizV2 extends Controller
         $ISLEM_MIKTARI = isset($request->ISLEM_MIKTARI) ? $request->ISLEM_MIKTARI : ' ';
         $ISLEM_BIRIMI = isset($request->ISLEM_BIRIMI) ? $request->ISLEM_BIRIMI : ' ';
         $FIYAT = isset($request->FIYAT) ? $request->FIYAT : [];
+        $DOLAR_FIYAT = isset($request->DOLAR_FIYAT) ? $request->DOLAR_FIYAT : [];
         $TUTAR = isset($request->TUTAR) ? $request->TUTAR : [];
         $PARA_BIRIMI = isset($request->PARA_BIRIMI) ? $request->PARA_BIRIMI : ' ';
         $NETAGIRLIK = isset($request->NETAGIRLIK) ? $request->NETAGIRLIK : ' ';
@@ -211,7 +212,8 @@ class teklif_fiyat_analizV2 extends Controller
                             'FIYAT' => $FIYAT[$i],
                             'TUTAR' => $TUTAR[$i],
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
-                            'TRNUM' => $TRNUM[$i]
+                            'TRNUM' => $TRNUM[$i],
+                            'FIYAT2' => $DOLAR_FIYAT[$i],
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -285,7 +287,8 @@ class teklif_fiyat_analizV2 extends Controller
                             'FIYAT' => $FIYAT[$i] ?? 0,
                             'TUTAR' => $TUTAR[$i] ?? 0,
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
-                            'TRNUM' => $TRNUM[$i]
+                            'TRNUM' => $TRNUM[$i],
+                            'FIYAT2' => $DOLAR_FIYAT[$i],
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -309,7 +312,8 @@ class teklif_fiyat_analizV2 extends Controller
                                 'FIYAT' => $FIYAT[$i] ?? 0,
                                 'TUTAR' => $TUTAR[$i] ?? 0,
                                 'PRICEUNIT' => $PARA_BIRIMI[$i],
-                                'TRNUM' => $TRNUM[$i]
+                                'TRNUM' => $TRNUM[$i],
+                                'FIYAT2' => $DOLAR_FIYAT[$i],
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
