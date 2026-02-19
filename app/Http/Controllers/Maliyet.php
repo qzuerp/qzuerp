@@ -56,7 +56,7 @@ class Maliyet extends Controller
                     }
                 }
 
-                $tarih = date('Y/m/d', strtotime(@$maxTarih));
+                $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
 
                 $KUR = DB::table($firma.'excratt')
                 ->where('EVRAKNOTARIH','<=', $tarih)
