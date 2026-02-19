@@ -25,7 +25,7 @@
 		$ekranTableTR = $database . "tekl20tr";
 		$ekranTableTI = $database . "tekl20tı";
 
-		$ekranKayitSatirKontrol = "false";
+		$ekranKayitSatirKontrol = "true";
 
 		if (isset($_GET['ID'])) {
 			$sonID = $_GET['ID'];
@@ -1233,28 +1233,18 @@
 																	Stok adı</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	İşlem miktarı</th>
+																<th style="min-width:120px; font-size: 13px !important;">
+																	Ayar</th>
+																<th style="min-width:120px; font-size: 13px !important;">
+																	İşeleme</th>
 																<th style="min-width:100px; font-size: 13px !important;">
-																	İşlem Birimi</th>
+																	Revizyon</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	Fiyat</th>
 																<th style="min-width:120px; font-size: 13px !important;">
 																	Tutar</th>
 																<th style="min-width:170px; font-size: 13px !important;">
 																	Para Birimi</th>
-																<th style="min-width:120px; font-size: 13px !important;">Net
-																	Ağırlık</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Bürüt Ağırlık</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Hacim</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Ambalaj Ağırlığı</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Auto</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Stok miktarı</th>
-																<th style="min-width:120px; font-size: 13px !important;">
-																	Stok temel birim</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1282,17 +1272,12 @@
 																		<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
 																		<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
 																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																		<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																		<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
 																		<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
 																		<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
 																		<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
 																		<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																		<td><input type="number" name="NETAGIRLIK2[]" value="{{$satir->NETAGIRLIK}}" class="form-control" readonly></td>
-																		<td><input type="number" name="BRUTAGIRLIK2[]" value="{{$satir->BRUTAGIRLIK}}" class="form-control" readonly></td>
-																		<td><input type="number" name="HACIM2[]" value="{{$satir->HACIM}}" class="form-control" readonly></td>
-																		<td><input type="number" name="AMBALAJAGIRLIK2[]" value="{{$satir->AMBALAJ_AGIRLIGI}}" class="form-control" readonly></td>
-																		<td><input type="checkbox" name="AUTO2[]" value="{{$satir->SF_AUTOCALC}}" class="form-control" readonly></td>
-																		<td><input type="number" name="STOKMIKTAR2[]" value="{{$satir->SF_STOK_MIKTAR}}" class="form-control" readonly></td>
-																		<td><input type="text" name="STOKTEMELBIRIM2[]" value="{{$satir->KOD_STOK00_IUNIT}}" class="form-control" readonly></td>
 																		<td>
 																			<button type='button' class='btn btn-default delete-row'>
 																				<i class='fa fa-minus' style='color: red'></i>
@@ -1305,9 +1290,9 @@
 																	
 																	<!-- Grup Toplamı (İsteğe Bağlı) -->
 																	<tr class="group-footer" style="background-color: #f9f9f9;">
-																		<td colspan="6" class="text-right"><strong>Grup Toplamı:</strong></td>
+																		<td colspan="8" class="text-right"><strong>Grup Toplamı:</strong></td>
 																		<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
-																		<td colspan="9"></td>
+																		<td colspan="7"></td>
 																	</tr>
 																	
 															@php
@@ -1738,6 +1723,12 @@
 			function operasyonlariTabloyaBas(){
 
 				let OR_TRNUM = $('#OR_TRNUM').val();
+
+				// Aynı OR_TRNUM'a sahip mevcut satırları sil
+				$('#maliyetDetayTable tbody tr').each(function(){
+					let val = $(this).find('input[name="OR_TRNUM[]"]').val();
+					if(val == OR_TRNUM) $(this).remove();
+				});
 				let HKOD = $('#MALZEME_CINSI').val();
 				let SF_IUNIT = $('#SF_IUNIT').val() || 0;
 				let StokAdi  = $('#StokAdi').val() || 0;
@@ -1754,6 +1745,8 @@
 						<td><input type="text" name="KOD2[]" value="${HKOD}" class="form-control" readonly></td> 
 						<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
 						<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="AYAR[]" value="" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="ISLEME[]" value="" class="form-control number"></td>
 						<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
 						<td class="text-end"><input type="text" name="FIYAT2[]" value="${TUTAR}" class="form-control number"></td>
 						<td class="text-end"><input type="text" name="TUTAR2[]" value="${(TUTAR * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>

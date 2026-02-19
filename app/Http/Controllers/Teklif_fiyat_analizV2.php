@@ -406,6 +406,8 @@ class teklif_fiyat_analizV2 extends Controller
                                 'PRICEUNIT' => $PARA_BIRIMI2[$i],
                                 'OR_TRNUM' => $OR_TRNUM[$i],
                                 'TRNUM' => $TRNUM3[$i],
+                                'AYAR' => $AYAR[$i],
+                                'ISLEME' => $ISLEME[$i],
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -428,7 +430,7 @@ class teklif_fiyat_analizV2 extends Controller
                 $currentTRNUMS2 = [];
                 $liveTRNUMS2 = [];
 
-                $currentTRNUMSObj2 = DB::table($firma . 'tekl20tı')
+                $currentTRNUMSObj2 = DB::table($firma . 'tekl20tr')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
