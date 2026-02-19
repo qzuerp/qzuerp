@@ -52,23 +52,13 @@ class main_controller extends Controller
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
-    $data = DB::table($firma.'stok10a')
-    ->selectRaw('KOD, STOK_ADI, LOTNUMBER, SERINO, SUM(SF_MIKTAR) AS MIKTAR, SF_SF_UNIT, AMBCODE, 
-                  NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
-                  LOCATION1, LOCATION2, LOCATION3, LOCATION4')
+    $data = DB::table($firma.'vw_stok01')
     ->where('AMBCODE', $DEPO)
     ->where('LOCATION1', $LOK1)
     ->where('LOCATION2', $LOK2)
     ->where('LOCATION3', $LOK3)
     ->where('LOCATION4', $LOK4)
-    ->groupBy(
-        'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE', 
-        'NUM1', 'NUM2', 'NUM3', 'NUM4', 
-        'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4', 
-        'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'
-    )
     ->get();
-
     
     return $data;
   }

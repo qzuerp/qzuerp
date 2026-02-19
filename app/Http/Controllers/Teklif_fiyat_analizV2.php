@@ -150,6 +150,8 @@ class teklif_fiyat_analizV2 extends Controller
         $KODADI2 = isset($request->KODADI2) ? $request->KODADI2 : ' ';
         $ACIKLAMA2 = isset($request->ACIKLAMA2) ? $request->ACIKLAMA2 : ' ';
         $ISLEM_MIKTARI2 = isset($request->ISLEM_MIKTARI2) ? $request->ISLEM_MIKTARI2 : ' ';
+        $AYAR = isset($request->AYAR) ? $request->AYAR : ' ';
+        $ISLEME = isset($request->ISLEME) ? $request->ISLEME : ' ';
         $ISLEM_BIRIMI2 = isset($request->ISLEM_BIRIMI2) ? $request->ISLEM_BIRIMI2 : ' ';
         $FIYAT2 = isset($request->FIYAT2) ? $request->FIYAT2 : [];
         $TUTAR2 = isset($request->TUTAR2) ? $request->TUTAR2 : [];
@@ -376,6 +378,8 @@ class teklif_fiyat_analizV2 extends Controller
                             'PRICEUNIT' => $PARA_BIRIMI2[$i],
                             'TRNUM' => $TRNUM3[$i],
                             'OR_TRNUM' => $OR_TRNUM[$i],
+                            'AYAR' => $AYAR[$i],
+                            'ISLEME' => $ISLEME[$i],
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],

@@ -1767,6 +1767,8 @@
 					let kart = $(this);
 					let kod   = kart.find('.OPERASYON_KOD').text();
 					let total = kart.find('.TOTAL').val() || 0;
+					let ayar = kart.find('.TIME').val() || 0;
+					let ISLEME = kart.find('.PTIME').val() || 0;
 
 					if(total == 0) return;
 					let TRNUM = getTRNUM();
@@ -1779,6 +1781,8 @@
 						<td><input type="text" name="KOD2[]" value="${kod}" class="form-control" readonly></td> 
 						<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
 						<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="AYAR[]" value="${ayar}" class="form-control number"></td>
+						<td class="text-end"><input type="text" name="ISLEME[]" value="${ISLEME}" class="form-control number"></td>
 						<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
 						<td class="text-end"><input type="text" name="FIYAT2[]" value="${total}" class="form-control number"></td>
 						<td class="text-end"><input type="text" name="TUTAR2[]" value="${(total * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>
