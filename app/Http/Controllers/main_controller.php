@@ -58,7 +58,7 @@ class main_controller extends Controller
     ->where('LOCATION2', $LOK2)
     ->where('LOCATION3', $LOK3)
     ->where('LOCATION4', $LOK4)
-    ->havingRaw('SUM(SF_MIKTAR) > 0')
+    ->where('MIKTAR','>',0)
     ->get();
     
     return $data;
