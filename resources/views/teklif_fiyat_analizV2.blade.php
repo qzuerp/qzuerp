@@ -599,7 +599,8 @@
 								</div>
 								<div class="col-6">
 									<label class="form-label fw-bold">Ağırlık</label>
-									<input type="text" id="AGIRLIK" class="form-control" placeholder="0.00">
+									<input type="text" id="AGIRLIK_SHOW" class="form-control" placeholder="0.00">
+									<input type="hidden" id="AGIRLIK" class="form-control" placeholder="0.00">
 								</div>
 							</div>
 
@@ -1831,7 +1832,7 @@
 
 						if (Number.isFinite(cap) && Number.isFinite(boy)) {
 							const hacim = Math.PI * Math.pow(cap / 2, 2) * boy;
-							return ((hacim / 1000000) * yogunluk).toFixed(3);
+							return ((hacim / 1000000) * yogunluk);
 						}
 					}
 
@@ -1842,7 +1843,7 @@
 
 						if (Number.isFinite(en) && Number.isFinite(boy) && Number.isFinite(kalinlik)) {
 							const hacim = en * boy * kalinlik; 
-							return ((hacim / 1000000) * yogunluk).toFixed(3); 
+							return ((hacim / 1000000) * yogunluk); 
 						}
 					}
 
@@ -1851,6 +1852,7 @@
 				document.getElementById("OLCU1").addEventListener("input", function () {
 					const sonuc = agirlikHesapla(this.value);
 					$('#AGIRLIK').val(sonuc);
+					$('#AGIRLIK_SHOW').val(sonuc.toFixed(3));
 
 					var fiyat = sonuc * $('#MALZEME_FIYATI').val();
 					$('#MALZEME_TUTARI').val(fiyat.toFixed(2));
