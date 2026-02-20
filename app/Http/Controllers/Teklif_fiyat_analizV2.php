@@ -51,7 +51,7 @@ class teklif_fiyat_analizV2 extends Controller
         $redirect = DB::table($firma . '' . 'tekl20e')->insertGetId([
             'EVRAKNO' => $EVRAKNO,
             'TARIH' => date('Y-m-d'),
-            'TEKLIF_FIYAT_PB' => 'USD'
+            'TEKLIF_FIYAT_PB' => 'TL'
         ]);
         foreach ($rows as $index => $row) {
             if (empty($row[0]))
@@ -61,12 +61,10 @@ class teklif_fiyat_analizV2 extends Controller
                 'KOD' => $row[0],
                 'STOK_AD1' => $row[1] ?? null,
                 'SF_MIKTAR' => $row[2],
-                // 'FIYAT' => $row[3] ?? null,
-                // 'PRICEUNIT' => $row[4] ?? null,
+                'SF_SF_UNIT' => $row[3],
                 'EVRAKNO' => $EVRAKNO,
-                'PRICEUNIT' => 'USD',
+                'PRICEUNIT' => 'TL',
                 'TRNUM' => str_pad($index + 1, 6, '0', STR_PAD_LEFT),
-                // 'TUTAR' => ($row[2] * $row[3]) ?? null
             ];
         }
 
