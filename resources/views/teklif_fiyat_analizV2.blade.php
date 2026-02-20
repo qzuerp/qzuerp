@@ -1821,6 +1821,7 @@
 				});
 
 				function agirlikHesapla(olcu) {
+
 					const yogunluk = parseFloat($('#MALZEME_YOGUNLUK').val()) || 0;
 					const parcalar = olcu.toLowerCase().replace(/\s/g, '').split('x');
 
@@ -1829,8 +1830,9 @@
 						const boy = parseFloat(parcalar[1]);
 
 						if (Number.isFinite(cap) && Number.isFinite(boy)) {
-							const hacim = Math.PI * Math.pow(cap, 2) / 4 * boy;
-							return ((hacim * yogunluk) / 1000000).toFixed(3);
+							// Silindir: π * r² * h  (r = cap/2)
+							const hacim = Math.PI * Math.pow(cap / 2, 2) * boy; // mm³
+							return ((hacim / 1000000) * yogunluk).toFixed(3);   // kg
 						}
 					}
 
@@ -1840,8 +1842,8 @@
 						const kalinlik = parseFloat(parcalar[2]);
 
 						if (Number.isFinite(en) && Number.isFinite(boy) && Number.isFinite(kalinlik)) {
-							const hacim = en * boy * kalinlik;
-							return ((hacim * yogunluk) / 1000000).toFixed(3);
+							const hacim = en * boy * kalinlik; // mm³
+							return ((hacim / 1000000) * yogunluk).toFixed(3); // kg
 						}
 					}
 
