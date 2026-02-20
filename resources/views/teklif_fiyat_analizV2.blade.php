@@ -1831,7 +1831,7 @@
 
 						if (Number.isFinite(cap) && Number.isFinite(boy)) {
 							const hacim = Math.PI * Math.pow(cap / 2, 2) * boy;
-							return ((hacim / 1000000) * yogunluk).toFixed(2);
+							return ((hacim / 1000000) * yogunluk).toFixed(3);
 						}
 					}
 
@@ -1842,7 +1842,7 @@
 
 						if (Number.isFinite(en) && Number.isFinite(boy) && Number.isFinite(kalinlik)) {
 							const hacim = en * boy * kalinlik; 
-							return ((hacim / 1000000) * yogunluk).toFixed(2); 
+							return ((hacim / 1000000) * yogunluk).toFixed(3); 
 						}
 					}
 
