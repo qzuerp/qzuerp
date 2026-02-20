@@ -1388,7 +1388,7 @@
 							data-bs-target="#modal_maliyetListesi"
 							onclick="receteden_hesapla('${satirEkleInputs.STOK_KOD}','${satirEkleInputs.ISLEM_BIRIMI}','${satirEkleInputs.STOK_KOD}','${this}')">
 						<i class="fa fa-plus"></i>
-					</button>`;7
+					</button>`;
 				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";

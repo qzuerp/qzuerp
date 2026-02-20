@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MaliyetlerExport;
+use App\Exports\MaliyetDetayExport;
 use Carbon\Carbon;
 
 class teklif_fiyat_analizV2 extends Controller
@@ -152,9 +153,13 @@ class teklif_fiyat_analizV2 extends Controller
         $ISLEM_MIKTARI2 = isset($request->ISLEM_MIKTARI2) ? $request->ISLEM_MIKTARI2 : ' ';
         $AYAR = isset($request->AYAR) ? $request->AYAR : ' ';
         $ISLEME = isset($request->ISLEME) ? $request->ISLEME : ' ';
+        $SOKTAK = isset($request->SOKTAK) ? $request->SOKTAK : ' ';
         $ISLEM_BIRIMI2 = isset($request->ISLEM_BIRIMI2) ? $request->ISLEM_BIRIMI2 : ' ';
         $FIYAT2 = isset($request->FIYAT2) ? $request->FIYAT2 : [];
+        $FIYAT_2 = isset($request->FIYAT_2) ? $request->FIYAT_2 : [];
         $TUTAR2 = isset($request->TUTAR2) ? $request->TUTAR2 : [];
+        $H_OLCU = isset($request->H_OLCU) ? $request->H_OLCU : ' ';
+        $NOTT = isset($request->NOTT) ? $request->NOTT : ' ';
         $PARA_BIRIMI2 = isset($request->PARA_BIRIMI2) ? $request->PARA_BIRIMI2 : ' ';
         $NETAGIRLIK2 = isset($request->NETAGIRLIK2) ? $request->NETAGIRLIK2 : ' ';
         $BRUTAGIRLIK2 = isset($request->BRUTAGIRLIK2) ? $request->BRUTAGIRLIK2 : ' ';
@@ -169,6 +174,7 @@ class teklif_fiyat_analizV2 extends Controller
         $AD_SOYAD = isset($request->AD_SOYAD) ? $request->AD_SOYAD : ' ';
         $SIRKET_IS_TEL = isset($request->SIRKET_IS_TEL) ? $request->SIRKET_IS_TEL : ' ';
         $SIRKET_EMAIL_1 = isset($request->SIRKET_EMAIL_1) ? $request->SIRKET_EMAIL_1 : ' ';
+        $TERMIN_TARIHI = isset($request->TERMIN_TARIHI) ? $request->TERMIN_TARIHI : ' ';
         $TEKLIF_ONAYI = isset($request->TEKLIF_ONAYI) ? 1 : 0;
 
         switch ($kart_islemleri) {
@@ -194,7 +200,8 @@ class teklif_fiyat_analizV2 extends Controller
                     'TEKLIF_ONAYI' => $TEKLIF_ONAYI,
                     'AD_SOYAD' => $AD_SOYAD,
                     'SIRKET_IS_TEL' => $SIRKET_IS_TEL,
-                    'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1
+                    'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 $max_id = DB::table($firma . 'tekl20e')->max('EVRAKNO');
@@ -216,6 +223,7 @@ class teklif_fiyat_analizV2 extends Controller
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
                             'TRNUM' => $TRNUM[$i],
                             'FIYAT2' => $DOLAR_FIYAT[$i],
+                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -249,7 +257,8 @@ class teklif_fiyat_analizV2 extends Controller
                     'TEKLIF_ONAYI' => $TEKLIF_ONAYI,
                     'AD_SOYAD' => $AD_SOYAD,
                     'SIRKET_IS_TEL' => $SIRKET_IS_TEL,
-                    'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1
+                    'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1,
+                    'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -272,7 +281,6 @@ class teklif_fiyat_analizV2 extends Controller
                 $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
                 $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
                 $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-
                 // Satırları güncelle veya yeni satır ekle
                 for ($i = 0; $i < count($TRNUM); $i++) {
                     $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
@@ -291,6 +299,7 @@ class teklif_fiyat_analizV2 extends Controller
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
                             'TRNUM' => $TRNUM[$i],
                             'FIYAT2' => $DOLAR_FIYAT[$i],
+                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -316,6 +325,7 @@ class teklif_fiyat_analizV2 extends Controller
                                 'PRICEUNIT' => $PARA_BIRIMI[$i],
                                 'TRNUM' => $TRNUM[$i],
                                 'FIYAT2' => $DOLAR_FIYAT[$i],
+                                'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -360,6 +370,7 @@ class teklif_fiyat_analizV2 extends Controller
                 $newTRNUMS3 = array_diff($liveTRNUMS3, $currentTRNUMS3);
                 $updateTRNUMS3 = array_intersect($currentTRNUMS3, $liveTRNUMS3);
 
+                // dd($currentTRNUMS3,$liveTRNUMS3,$deleteTRNUMS3,$newTRNUMS3,$updateTRNUMS3);
                 // Satırları güncelle veya yeni satır ekle
                 for ($i = 0; $i < count($TRNUM3); $i++) {
                     $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
@@ -380,6 +391,10 @@ class teklif_fiyat_analizV2 extends Controller
                             'OR_TRNUM' => $OR_TRNUM[$i],
                             'AYAR' => $AYAR[$i],
                             'ISLEME' => $ISLEME[$i],
+                            'SOKTAK' => $SOKTAK[$i],
+                            'FIYAT2' => $FIYAT_2[$i],
+                            'NOT' => $NOTT[$i],
+                            'OLCU' => $H_OLCU[$i] ??0,
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -408,6 +423,10 @@ class teklif_fiyat_analizV2 extends Controller
                                 'TRNUM' => $TRNUM3[$i],
                                 'AYAR' => $AYAR[$i],
                                 'ISLEME' => $ISLEME[$i],
+                                'SOKTAK' => $SOKTAK[$i],
+                                'FIYAT2' => $FIYAT_2[$i],
+                                'NOT' => $NOTT[$i],
+                                'OLCU' => $H_OLCU[$i] ??0,
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -520,6 +539,9 @@ class teklif_fiyat_analizV2 extends Controller
                     'FIYAT' => $FIYAT,
                     'TUTAR' => $TUTAR,
                     'PRICEUNIT' => $PARA_BIRIMI,
+                    'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
+                    'AD_SOYAD' => $AD_SOYAD,
+                    'SIRKET_IS_TEL' => $SIRKET_IS_TEL
                 ];
                 return view('yazdirilicak_formlar.teklif_formu', compact('data'));
         }
@@ -716,6 +738,12 @@ class teklif_fiyat_analizV2 extends Controller
     {
         $evrakno = $request->input('EVRAKNO');
         return Excel::download(new MaliyetlerExport($evrakno), 'maliyetler_' . $evrakno . '.xlsx');
+    }
+
+    public function excel_export_maliyetler_detay(Request $request)
+    {
+        $evrakno = $request->input('EVRAKNO');
+        return Excel::download(new MaliyetDetayExport($evrakno), 'maliyetler_detayi_' . $evrakno . '.xlsx');
     }
 
     public function oprt_save(Request $request)

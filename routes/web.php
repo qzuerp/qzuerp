@@ -479,6 +479,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/mastar/get', [Teklif_fiyat_analizV2::class, 'master_get']);
     Route::post('/digerFiyatHesapla', [Teklif_fiyat_analizV2::class, 'digerFiyatHesapla']);
     Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler'])->name('V2_excel_export_maliyetler');
+    Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler_detay', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler_detay'])->name('V2_excel_export_maliyetler_detay');
 
     /*
     |--------------------------------------------------------------------------

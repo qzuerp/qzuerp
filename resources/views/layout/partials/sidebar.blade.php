@@ -164,7 +164,7 @@
       <span class="tooltip">Teklif</span>
       <ul class="treeview-menu">
         @if (in_array('teklif_fiyat_analiz', $kullanici_read_yetkileri))
-          <li><a href="teklif_fiyat_analiz"><i class='bx bx-bar-chart-alt'></i>Teklif Fiyat Analiz</a></li>
+          <li><a href="V2_teklif_fiyat_analiz"><i class='bx bx-bar-chart-alt'></i>Teklif Fiyat Analiz</a></li>
         @endif
         @if (in_array('maliyet', $kullanici_read_yetkileri))
           <li><a href="maliyet"><i class='bx bx-calculator'></i>Maliyet Tanımı</a></li>

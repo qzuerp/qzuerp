@@ -30,7 +30,7 @@ class MaliyetlerExport implements FromView
         $musteri = DB::table($firma.'cari00')->where('KOD', $master->BASE_DF_CARIHESAP)->value('AD');
 
         $detaylar = DB::table($firma . 'tekl20t')
-            ->select('KOD', 'STOK_AD1', 'SF_MIKTAR', 'SF_SF_UNIT', 'FIYAT', 'TUTAR', 'PRICEUNIT','FIYAT2')
+            ->select('KOD', 'STOK_AD1', 'SF_MIKTAR', 'SF_SF_UNIT', 'FIYAT', 'TUTAR', 'PRICEUNIT','FIYAT2','TERMIN_TARIHI')
             ->where('EVRAKNO', $this->evrakno)
             ->get();
 
