@@ -613,7 +613,7 @@
 																			SELECT 
 																				I00.GK_6 AS KOD,
 																				S10E.MALIYETT,
-																				GCT.AD,
+																				GCT.AD as CNAME,
 																				S10E.PARA_BIRIMI,
 																				I00.KOD AS TEZGAH,
 
