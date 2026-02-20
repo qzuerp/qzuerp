@@ -149,7 +149,7 @@ class dosyalar00_controller extends Controller
 
         $msg = "{$insertCount} kayıt eklendi.";
         if (count($failed) > 0) {
-            $msg .= " Hatalar: ".count($failed);
+            $msg .= $failed;
             \Log::error('Import errors', $failed);
         }
 
