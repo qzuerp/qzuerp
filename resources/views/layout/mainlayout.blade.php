@@ -370,7 +370,6 @@
       // });
     });
 
-    // Decimal input handling
     $(document).ready(function() {
       $('input[type="number"]').attr('type', 'text').addClass('decimal');
     });

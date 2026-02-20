@@ -424,7 +424,7 @@
 
 
 	<div class="modal fade" id="satir_detay" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-xl modal-dialog-scrollable">
+		<div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header py-2 bg-light">
 					<h5 class="modal-title mb-0">
@@ -609,67 +609,66 @@
 									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
 
 									$BOPERASON_VERILERI = DB::select(
-										"
-																			SELECT 
-																				I00.GK_6 AS KOD,
-																				S10E.MALIYETT,
-																				GCT.AD as CNAME,
-																				S10E.PARA_BIRIMI,
-																				I00.KOD AS TEZGAH,
+										"SELECT 
+											I00.GK_6 AS KOD,
+											S10E.MALIYETT,
+											GCT.AD as CNAME,
+											S10E.PARA_BIRIMI,
+											I00.KOD AS TEZGAH,
 
-																				/* -------- TL KARŞILIĞI -------- */
-																				CASE 
-																					WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
-																						THEN S10E.MALIYETT
-																					ELSE
-																						S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
-																				END AS TL_TUTAR,
+											/* -------- TL KARŞILIĞI -------- */
+											CASE 
+												WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+													THEN S10E.MALIYETT
+												ELSE
+													S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+											END AS TL_TUTAR,
 
-																				EXT.KURS_1,
-																				EXT2.KURS_1,
+											EXT.KURS_1,
+											EXT2.KURS_1,
 
-																				/* -------- TEKLIF FIYAT -------- */
-																				CASE 
-																					WHEN ? = 'TL' THEN
-																						CASE 
-																							WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
-																								THEN S10E.MALIYETT
-																							ELSE
-																								S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
-																						END
-																					ELSE
-																						(
-																							CASE 
-																								WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
-																									THEN S10E.MALIYETT
-																								ELSE
-																									S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
-																							END
-																						) / COALESCE(EXT2.KURS_1,1)
-																				END AS TEKLIF_FIYAT,
+											/* -------- TEKLIF FIYAT -------- */
+											CASE 
+												WHEN ? = 'TL' THEN
+													CASE 
+														WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+															THEN S10E.MALIYETT
+														ELSE
+															S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+													END
+												ELSE
+													(
+														CASE 
+															WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
+																THEN S10E.MALIYETT
+															ELSE
+																S10E.MALIYETT * COALESCE(EXT.KURS_1,1)
+														END
+													) / COALESCE(EXT2.KURS_1,1)
+											END AS TEKLIF_FIYAT,
 
-																				I00.GK_1
+											I00.GK_1
 
-																			FROM {$database}imlt00 AS I00
+										FROM {$database}imlt00 AS I00
 
-																			LEFT JOIN {$database}stdm10e AS S10E
-																				ON S10E.TEZGAH_KODU = I00.KOD
+										LEFT JOIN {$database}stdm10e AS S10E
+											ON S10E.TEZGAH_KODU = I00.KOD
 
-																			/* maliyet döviz kuru */
-																			LEFT JOIN {$database}excratt AS EXT
-																				ON EXT.EVRAKNOTARIH = ?
-																				AND EXT.CODEFROM = S10E.PARA_BIRIMI
+										/* maliyet döviz kuru */
+										LEFT JOIN {$database}excratt AS EXT
+											ON EXT.EVRAKNOTARIH = ?
+											AND EXT.CODEFROM = S10E.PARA_BIRIMI
 
-																			/* teklif döviz kuru */
-																			LEFT JOIN {$database}excratt AS EXT2
-																				ON EXT2.EVRAKNOTARIH = ?
-																				AND EXT2.CODEFROM = ?
+										/* teklif döviz kuru */
+										LEFT JOIN {$database}excratt AS EXT2
+											ON EXT2.EVRAKNOTARIH = ?
+											AND EXT2.CODEFROM = ?
 
-																			LEFT JOIN {$database}gecoust GCT
-																				ON GCT.KOD = I00.GK_6
+										LEFT JOIN {$database}gecoust GCT
+											ON GCT.KOD = I00.GK_6
 
-																			WHERE I00.GK_6 <> ''
-																			",
+										WHERE I00.GK_6 <> ''
+										",
 										[
 											$kart_veri->TEKLIF_FIYAT_PB,
 											$tarih,
@@ -793,7 +792,7 @@
 										</div>
 									</div>
 								@endforeach
-								<div class="col-2" style="display:block;">
+								<div class="col-2" id="DIGER_KART" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header">
 											<i class="fa-solid fa-gear me-2"></i>
@@ -1236,14 +1235,14 @@
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="PRICEUNIT" data-isim="Para Birimi"
 																			class="form-control"
-																			value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
+																			value="" readonly>
 																	</td>
 																	<td>
-																		<input type="date" name="" id="TERMIN_TAR"
+																		<input type="number" name="" id="TERMIN_TAR"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="TERMIN_TAR" data-isim="Termin Tarihi"
 																			class="form-control"
-																			value="" readonly>
+																			value="">
 																	</td>
 																</tr>
 															</thead>
@@ -1294,9 +1293,8 @@
 																			value="{{$veri->PRICEUNIT}}" class="form-control"
 																			readonly>
 																	</td>
-																	<td><input type="date" name="TERMIN_TARIHI[]"
-																			value="{{$veri->TERMIN_TARIHI}}" class="form-control"
-																			readonly>
+																	<td><input type="number" name="TERMIN_TARIHI[]"
+																			value="{{$veri->TERMIN_TARIHI}}" class="form-control">
 																	</td>
 																	<td><button type='button' id='deleteSingleRow'
 																			class='btn btn-default delete-row'><i
@@ -1607,7 +1605,7 @@
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
-				$('#LABEL_SF_MIKTAR').html(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
+				$('#LABEL_SF_MIKTAR').html(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val() + ' Adet');
 				$('#SF_IUNIT').val(aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val());
 				$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
 				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
@@ -1851,6 +1849,27 @@
 
 					return "";
 				}
+				let secimSirasi = [];
+
+				$(document).on('change', '.OPRS', function () {
+					const kod = $(this).val();
+					const card = $('#C' + kod);
+					const container = $('.COPRS').first().parent();
+
+					if ($(this).is(':checked')) {
+						secimSirasi.push(kod);
+						card.show();
+					} else {
+						secimSirasi = secimSirasi.filter(k => k !== kod);
+						card.hide();
+					}
+
+					secimSirasi.forEach(function (k) {
+						container.append($('#C' + k));
+					});
+
+					container.append($('#DIGER').closest('.col-2'));
+				});
 				document.getElementById("OLCU1").addEventListener("input", function () {
 					const sonuc = agirlikHesapla(this.value);
 					$('#AGIRLIK').val(sonuc);
@@ -2416,6 +2435,14 @@
 				$('#AD_SOYAD').val(kisi_array[0]);
 				$('#SIRKET_IS_TEL').val(kisi_array[1]);
 				$('#SIRKET_EMAIL_1').val(kisi_array[2]);
-			})
+			});
+
+			$('#teklif').change(function () {
+				teklif = $(this).val();
+				// $("#PARA_BIRIMI").val(teklif);
+				$("#veriTable tbody tr").each(function () {
+					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
+				});
+			});
 		</script>
 @endsection

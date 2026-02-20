@@ -36,27 +36,34 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                 'T20t.KOD as TKOD',
                 'T20t.STOK_AD1 as TAD',
                 'T20t.SF_MIKTAR as TMIKTAR',
-                'T20t.SF_SF_UNIT as TBIRIM'
+                'T20t.SF_SF_UNIT as TBIRIM',
+                'T20t.FIYAT as TFIYAT',
+                'T20t.FIYAT2 as TFIYAT2',
+                'T20t.TUTAR as TTUTAR',
             ]);
 
         $sonuc = [];
 
         foreach ($rows as $r) {
+
             $key = $r->OR_TRNUM;
 
             if (!isset($sonuc[$key])) {
                 $sonuc[$key] = [
-                    'PARCA_KODU'     => $r->TKOD,
-                    'PARCA_ADI'      => $r->TAD,
-                    'MIKTAR'         => $r->TMIKTAR,
-                    'BIRIM'          => $r->TBIRIM,
+                    'PARCA KODU' => $r->TKOD,
+                    'PARCA ADI'  => $r->TAD,
+                    'MIKTAR'     => $r->TMIKTAR,
+                    'BIRIM'      => $r->TBIRIM,
+                    'FIYAT'      => $r->TFIYAT,
+                    'DOLAR FIYATI'=> $r->TFIYAT2,
+                    'TUTAR'      => $r->TTUTAR,
                 ];
             }
 
             if ($r->KAYNAKTYPE == 'H') {
                 $sonuc[$key]['MALZEME']       = $r->KOD;
-                $sonuc[$key]['OLCU']          = $r->OLCU;
-                $sonuc[$key]['MALZEME_FIYAT'] = $r->FIYAT;
+                $sonuc[$key]['ÖLÇÜ']          = $r->OLCU;
+                $sonuc[$key]['MALZEME FIYAT'] = $r->FIYAT;
             }
 
             if ($r->KAYNAKTYPE == 'I') {
@@ -72,8 +79,24 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
     {
         $sonuc = $this->getSonuc();
 
-        $this->kolonlar = collect($sonuc)
+        $kolonlar = collect($sonuc)
             ->flatMap(fn($r) => array_keys($r))
+            ->unique()
+            ->values();
+
+        // sabit başta kalacaklar
+        $bas = ['PARCA KODU','PARCA ADI','MIKTAR','BIRIM'];
+
+        // kesin sonda olacaklar
+        $son = ['FIYAT','DOLAR FIYAT','TUTAR'];
+
+        $orta = $kolonlar
+            ->reject(fn($k)=>in_array($k,$bas) || in_array($k,$son))
+            ->values();
+
+        $this->kolonlar = collect($bas)
+            ->concat($orta)
+            ->concat($son)
             ->unique()
             ->values()
             ->toArray();
@@ -85,17 +108,14 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
     {
         $sonuc = $this->getSonuc();
 
-        // kolonlar headings()'de set edildi, ama array() önce çağrılabilir
         if (empty($this->kolonlar)) {
-            $this->kolonlar = collect($sonuc)
-                ->flatMap(fn($r) => array_keys($r))
-                ->unique()
-                ->values()
-                ->toArray();
+            $this->headings();
         }
 
         return collect($sonuc)->map(function ($row) {
-            return collect($this->kolonlar)->map(fn($k) => $row[$k] ?? '')->toArray();
+            return collect($this->kolonlar)
+                ->map(fn($k) => $row[$k] ?? '')
+                ->toArray();
         })->toArray();
     }
 
@@ -105,7 +125,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
         $toplamSatir = $sheet->getHighestRow();
         $sonKolon    = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($toplamKolon);
 
-        // Tüm tabloya border
         $sheet->getStyle("A1:{$sonKolon}{$toplamSatir}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
@@ -116,7 +135,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
         ]);
 
         return [
-            // Başlık satırı: koyu arka plan, beyaz yazı, kalın
             1 => [
                 'font' => [
                     'bold'  => true,

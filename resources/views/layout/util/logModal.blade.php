@@ -1,5 +1,5 @@
 <div class="modal fade bd-example-modal-lg" id="log" tabindex="-1" role="dialog" aria-labelledby="log">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -48,7 +48,7 @@
 </div>
 
 <div class="modal fade bd-example-modal-lg" id="info" tabindex="-1" role="dialog" aria-labelledby="log">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
 
             <div class="modal-header">
