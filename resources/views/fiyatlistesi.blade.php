@@ -277,7 +277,7 @@ if (isset($kart_veri)) {
                         <td style="min-width: 150px">
                         <select class="select2" id="GK_1_FILL">
                           @php
-                            $MLZM = DB::table($database.'gecoust')->where('EVRAKNO','STKGK7')->get();
+                            $MLZM = DB::table($database.'gecoust')->where('EVRAKNO','STKGK13')->get();
                           @endphp
 										      <option value="">Seç</option>
                           @foreach($MLZM as $MLZM_VERI)

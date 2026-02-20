@@ -571,7 +571,7 @@
 									<label class="form-label fw-bold">Malzeme Cinsi</label>
 									<select class="select2" id="MALZEME_CINSI" data-modal="satir_detay">
 										@php
-											$MLZM = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKGK7')->get();
+											$MLZM = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKGK13')->get();
 										@endphp
 										<option value="">Seç</option>
 										@foreach($MLZM as $MLZM_VERI)
