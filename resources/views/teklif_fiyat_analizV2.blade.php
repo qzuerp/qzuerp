@@ -684,7 +684,7 @@
 									<div class="col-2 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
 										<div class="operation-detail-card">
 											<div class="card-header d-flex justify-content-between align-items-center ">
-												<strong class="OPERASYON_KOD">{{ $OPERASYON->AD }}</strong>
+												<strong class="OPERASYON_KOD">{{ $OPERASYON->CNAME }}</strong>
 												<button style="border:none;outline:none;background:transparant;"><i
 														class="fa-solid fa-plus clone"></i></button>
 											</div>
@@ -894,6 +894,7 @@
 				<div class="modal-footer py-2 bg-light" style="justify-content: space-between !important;">
 					<label id="TOPLANICAK_LABEL" class="text-danger form-label-sm fw-bold"></label>
 					<div>
+						<label id="LABEL_SF_MIKTAR" class="text-danger form-label-sm fw-bold"></label>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 							<i class="fa-solid fa-times me-1"></i> Kapat
 						</button>
@@ -1606,6 +1607,7 @@
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
+				$('#LABEL_SF_MIKTAR').html(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
 				$('#SF_IUNIT').val(aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val());
 				$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
 				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
