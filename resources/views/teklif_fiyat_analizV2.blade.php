@@ -1830,9 +1830,8 @@
 						const boy = parseFloat(parcalar[1]);
 
 						if (Number.isFinite(cap) && Number.isFinite(boy)) {
-							// Silindir: π * r² * h  (r = cap/2)
-							const hacim = Math.PI * Math.pow(cap / 2, 2) * boy; // mm³
-							return ((hacim / 1000000) * yogunluk).toFixed(3);   // kg
+							const hacim = Math.PI * Math.pow(cap / 2, 2) * boy;
+							return ((hacim / 10000000) * yogunluk).toFixed(3);
 						}
 					}
 
