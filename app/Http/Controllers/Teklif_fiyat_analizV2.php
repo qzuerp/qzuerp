@@ -746,10 +746,10 @@ class teklif_fiyat_analizV2 extends Controller
             $data .= "
                 <tr>
                     <td>
-                        $value->CODEFROM
+                        <input type='text' class='form-control' readonly value='$value->CODEFROM'>
                     </td>
                     <td>
-                        $value->KURS_1
+                        <input type='text' class='form-control' name='' value='$value->KURS_1'>
                     </td>
                 </tr>
             ";
