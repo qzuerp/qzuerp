@@ -174,6 +174,11 @@ class teklif_fiyat_analizV2 extends Controller
         $SIRKET_EMAIL_1 = isset($request->SIRKET_EMAIL_1) ? $request->SIRKET_EMAIL_1 : ' ';
         $TERMIN_TARIHI = isset($request->TERMIN_TARIHI) ? $request->TERMIN_TARIHI : ' ';
         $TEKLIF_ONAYI = isset($request->TEKLIF_ONAYI) ? 1 : 0;
+        
+        $KURTRNUM = isset($request->KURTRNUM) ? $request->KURTRNUM : ' ';
+        $CODEFROM = isset($request->CODEFROM) ? $request->CODEFROM : ' ';
+        $KURS_1 = isset($request->KURS_1) ? $request->KURS_1 : ' ';
+        $EVRAKNOTARIH = isset($request->EVRAKNOTARIH) ? $request->EVRAKNOTARIH : ' ';
 
         switch ($kart_islemleri) {
             case 'kart_olustur':
@@ -257,6 +262,16 @@ class teklif_fiyat_analizV2 extends Controller
                     'SIRKET_IS_TEL' => $SIRKET_IS_TEL,
                     'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1,
                     'LAST_TRNUM' => $request->LAST_TRNUM
+                ]);
+
+                DB::table($firma.'tekl20x')->where('EVRAKNO',$EVRAKNO)->delete();
+                for($i=0;$i < count($KURTRNUM);$i++)
+                DB::table($firma.'tekl20x')->insert([
+                   'EVRAKNO' => $EVRAKNO,
+                   'TRNUM' => $KURTRNUM[$i],
+                   'CODEFROM' => $CODEFROM[$i],
+                   'KURS_1' => $KURS_1[$i],
+                   'EVRAKNOTARIH' => $EVRAKNOTARIH[$i]
                 ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
@@ -680,7 +695,7 @@ class teklif_fiyat_analizV2 extends Controller
 
             /* ---------------- önce o günün kuru ---------------- */
 
-            $veri = DB::table($firma . 'EXCRATT')
+            $veri = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $para_birimi)
                 ->where('EVRAKNOTARIH', $tarihSQL)
                 ->first();
@@ -689,7 +704,7 @@ class teklif_fiyat_analizV2 extends Controller
 
             if (!$veri) {
 
-                $veri = DB::table($firma . 'EXCRATT')
+                $veri = DB::table($firma . 'tekl20x')
                     ->where('CODEFROM', $para_birimi)
                     ->where('EVRAKNOTARIH', '<=', $tarihSQL)
                     ->orderBy('EVRAKNOTARIH', 'desc')
@@ -746,10 +761,12 @@ class teklif_fiyat_analizV2 extends Controller
             $data .= "
                 <tr>
                     <td>
-                        <input type='text' class='form-control' readonly value='$value->CODEFROM'>
+                        <input type='text' class='form-control' readonly name='CODEFROM[]' value='$value->CODEFROM'>
+                        <input type='hidden' class='form-control' readonly name='KURTRNUM[]' value='$value->TRNUM'>
+                        <input type='hidden' class='form-control' readonly name='EVRAKNOTARIH[]' value='$value->EVRAKNOTARIH'>
                     </td>
                     <td>
-                        <input type='text' class='form-control' name='' value='$value->KURS_1'>
+                        <input type='text' class='form-control' name='KURS_1[]' value='$value->KURS_1'>
                     </td>
                 </tr>
             ";
@@ -811,7 +828,7 @@ class teklif_fiyat_analizV2 extends Controller
         if ($vrb1->PRICE_UNIT == 'TL') {
             $KUR1 = 1;
         } else {
-            $KUR1 = DB::table($firma . 'excratt')
+            $KUR1 = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $vrb1->PRICE_UNIT)
                 ->where('EVRAKNOTARIH', '<=', $tarih)
                 ->orderBy('EVRAKNOTARIH', 'desc')
@@ -821,7 +838,7 @@ class teklif_fiyat_analizV2 extends Controller
         if ($request->TEKLIF_BIRIMI == 'TL') {
             $KUR2 = 1;
         } else {
-            $KUR2 = DB::table($firma . 'excratt')
+            $KUR2 = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $request->TEKLIF_BIRIMI)
                 ->where('EVRAKNOTARIH', '<=', $tarih)
                 ->orderBy('EVRAKNOTARIH', 'desc')
@@ -861,7 +878,7 @@ class teklif_fiyat_analizV2 extends Controller
                 if ($vrb1->PRICE_UNIT == 'TL') {
                     $KUR1 = 1;
                 } else {
-                    $KUR1 = DB::table($firma . 'excratt')
+                    $KUR1 = DB::table($firma . 'tekl20x')
                         ->where('CODEFROM', $vrb1->PRICE_UNIT)
                         ->where('EVRAKNOTARIH', '<=', $tarih)
                         ->orderBy('EVRAKNOTARIH', 'desc')
@@ -871,7 +888,7 @@ class teklif_fiyat_analizV2 extends Controller
                 if ($request->TEKLIF_BIRIMI == 'TL') {
                     $KUR2 = 1;
                 } else {
-                    $KUR2 = DB::table($firma . 'excratt')
+                    $KUR2 = DB::table($firma . 'tekl20x')
                         ->where('CODEFROM', $request->TEKLIF_BIRIMI)
                         ->where('EVRAKNOTARIH', '<=', $tarih)
                         ->orderBy('EVRAKNOTARIH', 'desc')
@@ -893,7 +910,7 @@ class teklif_fiyat_analizV2 extends Controller
         if ($request->SATIR_TEKLIF == 'TL') {
             $KUR1 = 1;
         } else {
-            $KUR1 = DB::table($firma . 'excratt')
+            $KUR1 = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $request->SATIR_TEKLIF)
                 ->where('EVRAKNOTARIH', '<=', $tarih)
                 ->orderBy('EVRAKNOTARIH', 'desc')
@@ -903,7 +920,7 @@ class teklif_fiyat_analizV2 extends Controller
         if ($request->TEKLIF_BIRIMI == 'TL') {
             $KUR2 = 1;
         } else {
-            $KUR2 = DB::table($firma . 'excratt')
+            $KUR2 = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $request->TEKLIF_BIRIMI)
                 ->where('EVRAKNOTARIH', '<=', $tarih)
                 ->orderBy('EVRAKNOTARIH', 'desc')

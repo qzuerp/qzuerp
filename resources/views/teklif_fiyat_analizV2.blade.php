@@ -704,7 +704,7 @@
 											AND EXT2.CODEFROM = ?
 
 										LEFT JOIN {$database}gecoust GCT
-											ON GCT.KOD = I00.GK_6
+											ON GCT.KOD = I00.GK_6 AND GCT.EVRAKNO = 'TEZGAHGK6'
 
 										WHERE I00.GK_6 <> ''
 										",
@@ -930,9 +930,11 @@
 					</div>
 				</div>
 				<div class="modal-footer py-2 bg-light" style="justify-content: space-between !important;">
-					<label id="TOPLANICAK_LABEL" class="text-danger form-label-sm fw-bold"></label>
 					<div>
+						<label id="TOPLANICAK_LABEL" class="text-danger form-label-sm fw-bold"></label> |
 						<label id="LABEL_SF_MIKTAR" class="text-danger form-label-sm fw-bold"></label>
+					</div>
+					<div>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 							<i class="fa-solid fa-times me-1"></i> Kapat
 						</button>
@@ -1462,7 +1464,22 @@
 																<th>Kur</th>
 															</thead>
 															<tbody>
-																	
+																@php
+																$veri = DB::table($database.'tekl20x')
+																	->where('EVRAKNO', @$kart_veri->EVRAKNO)
+																	->get();
+																@endphp
+
+																@foreach ($veri as $item)
+																	<tr>
+																		<td>
+																			<input type="text" class="form-control" name="CODEFROM[]" value="{{ $item->CODEFROM }}" readonly>
+																			<input type="hidden" class="form-control" name="KURTRNUM[]" value="{{ $item->TRNUM }}" readonly>
+																			<input type="hidden" class="form-control" name="EVRAKNOTARIH[]" value="{{ $item->EVRAKNOTARIH }}" readonly>
+																		</td>
+																		<td><input type="text" class="form-control" name="KURS_1[]" value="{{ $item->KURS_1 }}"></td>
+																	</tr>
+																@endforeach
 															</tbody>
 														</table>
 													</div>
