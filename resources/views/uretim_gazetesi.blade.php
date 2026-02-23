@@ -152,7 +152,7 @@ SELECT
     M10E.SIPNO AS sip_no,
     M10E.SIPARTNO AS sip_art_no,
     S40T.SF_MIKTAR AS sip_miktar,
-    S40T.URETILEN_MIKTARI AS uretilen_miktar,
+    M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
     S40T.SF_BAKIYE AS sip_bakiye,
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
@@ -162,8 +162,9 @@ SELECT
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
     A2.gerceklesen_MIKTAR,
-     ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_SEVK,     
-  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_GELEN,
+    ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_DEPO, 
+         ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
+  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_GELEN,
   case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
 FROM MMPS10T AS M10T
 LEFT JOIN MMPS10E AS M10E ON M10E.EVRAKNO = M10T.EVRAKNO
@@ -179,8 +180,8 @@ LEFT JOIN agg_miktar AS A2
   ON A2.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
 {$whereSql1}
-AND M10E.ACIK_KAPALI IS NULL
-AND S40T.AK IS NULL
+AND (M10E.ACIK_KAPALI = 'A' OR M10E.ACIK_KAPALI = 'K' AND M10E.MAMULSTOKKODU LIKE '151%')
+AND (S40T.AK IS NULL OR S40T.EVRAKNO IS NULL)
 
 UNION ALL
 
@@ -203,14 +204,14 @@ SELECT
     NULL AS plan_miktar,
     NULL AS gerceklenen_SURE,
     NULL AS gerceklesen_MIKTAR,
-    NULL AS FASON_SEVK,NULL AS FASON_GELEN,NULL AS R_KAYNAKKODU ,D00.DOSYA
+    NULL AS FASON_DEPO,NULL AS FASON_SEVK,NULL AS FASON_GELEN,NULL AS R_KAYNAKKODU ,D00.DOSYA
 FROM STOK40T AS S40
 LEFT JOIN STOK40E  AS S40E2  ON S40E2.EVRAKNO = S40.EVRAKNO
 LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
 LEFT JOIN cari00   AS C002   ON C002.KOD = S40E2.CARIHESAPCODE
 LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40.KOD
 {$whereSql2}
-AND S40.AK IS NULL
+AND (S40.AK IS NULL OR S40.EVRAKNO IS NULL)
 UNION ALL 
 SELECT
     M10T.EVRAKNO AS mps_no,
@@ -221,7 +222,7 @@ SELECT
     M10E.SIPNO AS sip_no,
     M10E.SIPARTNO AS sip_art_no,
     S40T.SF_MIKTAR AS sip_miktar,
-    S40T.URETILEN_MIKTARI AS uretilen_miktar,
+    M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
     S40T.SF_BAKIYE AS sip_bakiye,
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
@@ -231,9 +232,10 @@ SELECT
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
     A2.gerceklesen_MIKTAR,
-     ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_SEVK,     
-  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(S40E.CHSIPNO)+'%' AND KOD LIKE '%'+trim(M10T.R_KAYNAKKODU)+'%' ) AS FASON_GELEN,
-  case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
+    ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_DEPO, 
+         ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
+  ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_GELEN,
+   case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
 FROM MMPS10T AS M10T
 LEFT JOIN MMPS10E AS M10E ON M10E.EVRAKNO = M10T.EVRAKNO
 LEFT JOIN STOK40T  AS S40T  ON S40T.ARTNO = M10E.SIPARTNO
@@ -248,8 +250,8 @@ LEFT JOIN agg_miktar AS A2
   ON A2.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
 {$whereSql3}
-AND M10E.ACIK_KAPALI IS NULL
-AND S40T.AK IS NULL
+AND (M10E.ACIK_KAPALI = 'A' OR M10E.ACIK_KAPALI = 'K' AND M10E.MAMULSTOKKODU LIKE '151%')
+AND (S40T.AK IS NULL OR S40T.EVRAKNO IS NULL)
 
 
 ORDER BY R_SIRANO ASC, termin ASC, mps_no DESC
@@ -288,6 +290,7 @@ foreach ($rows as $r) {
             'sip_miktar' => is_null($r['sip_miktar']) ? null : (float)$r['sip_miktar'],
             'uretilen_miktar' => is_null($r['uretilen_miktar']) ? null : (float)$r['uretilen_miktar'],
             'sip_bakiye' => is_null($r['sip_bakiye']) ? null : (float)$r['sip_bakiye'],
+            'fason_depo' => is_null($r['FASON_DEPO']) ? null : $r['FASON_DEPO'],
             'fason' => $r['FASON_SEVK'] .' / ' . $r['FASON_GELEN'],
             'DOSYA' => $r['DOSYA'] ,
             'ops' => []
@@ -871,6 +874,7 @@ usort($groups, function($a, $b) {
                         <th class="num">Sipariş Miktarı</th>
                         <th class="num">Üretilen Miktar</th>
                         <th class="num">Sipariş Bakiyesi</th>
+                        <th>Fason Depo</th>
                         <th>Fason</th>
                         <?php if (isset($ops)): foreach ($ops as $op): ?>
                             <th><?= htmlspecialchars($op) ?></th>
@@ -918,6 +922,7 @@ usort($groups, function($a, $b) {
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td><?= htmlspecialchars($g['fason_depo'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {
