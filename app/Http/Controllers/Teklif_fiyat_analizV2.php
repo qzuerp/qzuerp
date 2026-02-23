@@ -732,6 +732,34 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
+
+    public function getDovizKuru(Request $request)
+    {
+        $user = Auth::user();
+        $firma = trim($user->firma) . '.dbo.';
+        $tarih = date('Y/m/d', strtotime(@$request->tarih));
+        $veri = DB::table($firma.'excratt')->where('EVRAKNOTARIH', $tarih)->get();
+
+        $data = '';
+
+        foreach ($veri as $value) {
+            $data .= "
+                <tr>
+                    <td>
+                        $value->CODEFROM
+                    </td>
+                    <td>
+                        $value->KURS_1
+                    </td>
+                </tr>
+            ";
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
     public function excel_export_maliyetler(Request $request)
     {
         $evrakno = $request->input('EVRAKNO');

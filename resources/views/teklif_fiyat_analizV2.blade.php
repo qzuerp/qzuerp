@@ -422,6 +422,45 @@
 		</div>
 	</div>
 
+	<div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
+							style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" style="overflow: auto">
+						<table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
+							<thead>
+								<tr class="bg-primary">
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Birim</th>
+								</tr>
+							</thead>
+							<!-- <tfoot>
+								<tr class="bg-info">
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Birim</th>
+									<th>#</th>
+								</tr>
+							</tfoot> -->
+							<tbody>
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+						style="margin-top: 15px;">Vazgeç</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="modal fade" id="satir_detay" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
@@ -1130,8 +1169,8 @@
 												<ul class="nav nav-tabs">
 													<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
 													<!-- <li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a> -->
-													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a>
-													</li>
+													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a></li>
+													<li><a href="#tab_4" class="nav-link" data-bs-toggle="tab">Döviz Kurları</a></li>
 												</ul>
 
 												<div class="tab-content">
@@ -1350,17 +1389,17 @@
 																</tr>
 															</thead>
 															<tbody>
-															@php
-																$veri = DB::table($ekranTableTI)
-																	->where('EVRAKNO', @$evrakno)
-																	->orderBy('OR_TRNUM', 'ASC')
-																	->orderBy('TRNUM', 'ASC')
-																	->get()
-																	->groupBy('OR_TRNUM');
+																	@php
+																		$veri = DB::table($ekranTableTI)
+																			->where('EVRAKNO', @$evrakno)
+																			->orderBy('OR_TRNUM', 'ASC')
+																			->orderBy('TRNUM', 'ASC')
+																			->get()
+																			->groupBy('OR_TRNUM');
 
-																if (!$veri->isEmpty()) {
-																	foreach ($veri as $orTrnum => $grupVeri) {
-															@endphp
+																		if (!$veri->isEmpty()) {
+																			foreach ($veri as $orTrnum => $grupVeri) {
+																	@endphp
 
 																		@php
 																			foreach ($grupVeri as $key => $satir) {
@@ -1401,10 +1440,29 @@
 																			<td colspan="7"></td>
 																		</tr>
 
-																@php
+																		@php
 																		}
 																	}
-																@endphp
+																	@endphp
+															</tbody>
+														</table>
+													</div>
+													<div class="tab-pane" id="tab_4">
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<div class="form-group">
+																	<label for="DOVIZ_TARIHI">Tarih</label>
+																	<input type="date" name="DOVIZ_TARIHI" id="DOVIZ_TARIHI" class="form-control" value="{{ $kart_veri->TARIH }}">
+																</div>
+															</div>
+														</div>
+														<table class="table table-bordered text-center" id="dovizKurlari">
+															<thead>
+																<th>Para birimi</th>
+																<th>Kur</th>
+															</thead>
+															<tbody>
+																	
 															</tbody>
 														</table>
 													</div>
@@ -1417,46 +1475,6 @@
 						</div>
 					</div>
 				</form>
-				<div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal" tabindex="-1" role="dialog"
-					aria-labelledby="modal_popupSelectModal">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-										style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row" style="overflow: auto">
-									<table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
-										<thead>
-											<tr class="bg-primary">
-												<th>Kod</th>
-												<th>Ad</th>
-												<th>Birim</th>
-											</tr>
-										</thead>
-										<!-- <tfoot>
-															<tr class="bg-info">
-															  <th>Kod</th>
-															  <th>Ad</th>
-															  <th>Birim</th>
-															  <th>#</th>
-															</tr>
-														  </tfoot> -->
-										<tbody>
-
-
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-									style="margin-top: 15px;">Vazgeç</button>
-							</div>
-						</div>
-					</div>
-				</div>
 
 				<!-- <div class="modal fade bd-example-modal-lg" id="modal_maliyetListesi" tabindex="-1" role="dialog"
 					aria-labelledby="modal_maliyetListesi">
@@ -2442,6 +2460,22 @@
 				// $("#PARA_BIRIMI").val(teklif);
 				$("#veriTable tbody tr").each(function () {
 					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
+				});
+			});
+
+			$('#DOVIZ_TARIHI').change(function () {
+				var tarih = $(this).val();
+				$.ajax({
+					url: "{{ route('V2_getDovizKuru') }}",
+					type: "post",
+					data: { 
+						tarih: tarih,
+						_token: '{{ csrf_token() }}'
+					},
+					success: function (response) {
+						console.log(response);
+						$('#dovizKurlari tbody').html(response.data);
+					}
 				});
 			});
 		</script>
