@@ -148,7 +148,7 @@ if (isset($kart_veri)) {
         </div>
         <div class="modal-body">
           <div class="row">
-            <table id="evrakSuzTable" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+            <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
               <thead>
                 <tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
                   <th>İş Emri</th>
@@ -177,17 +177,19 @@ if (isset($kart_veri)) {
 
                 @php
 
-                $evraklar2=DB::table($ekranTableTI)
-                ->orderBy("id","desc")
+                $evraklar2=DB::table($ekranTableT)
                 ->get();
                               // dd($evraklar2);
                 foreach ($evraklar2 as $key => $suzVeri) {
                   @endphp
                   <tr>
+                    <td>{{$suzVeri->ISEMRINO}}</td>
                     <td>{{$suzVeri->KOD}}</td>
+                    <td>{{$suzVeri->STOK_ADI}}</td>
                     <td>{{$suzVeri->LOTNUMBER}}</td>
-                    <td>{{$suzVeri->STOK_MIKTARI}}</td>
-                    <td>{{$suzVeri->STOK_ISLEM_BIRIMI}}</td>
+                    <td>{{$suzVeri->SERINO}}</td>
+                    <td>{{$suzVeri->SF_MIKTAR}}</td>
+                    <td>{{$suzVeri->SF_SF_UNIT}}</td>
                     <td><a class='btn btn-info' href='{{$ekranLink.'?ID='.$suzVeri->EVRAKNO}}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
                   </tr>
                   @php
