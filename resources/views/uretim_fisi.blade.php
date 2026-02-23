@@ -895,7 +895,7 @@ if (isset($kart_veri)) {
                       <input type="text" class="form-control" name="TI_SERINO[]" value="{{ $veri->SERINO }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOT[]" value="{{ $veri->LOTNUMBER }}" readonly>
+                      <input type="text" class="form-control" name="TI_LOT[]" value="{{ $veri->LOTNUMBER }}">
                     </td>
                     <td>
                       <input type="text" class="form-control" name="TI_TEXT1[]" value="{{ $veri->TEXT1 }}" readonly>
@@ -1479,7 +1479,7 @@ if (isset($kart_veri)) {
                             <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' readonly value='${row.TI_SF_SF_UNIT ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_AMBCODE[]' readonly value='${row.AMBCODE ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_SERINO[]' readonly value='${row.SERINO ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOT[]' readonly value='${row.LOTNUMBER ?? ""}'></td>
+                            <td><input type='text' class='form-control' name='TI_LOT[]' value='${row.LOTNUMBER ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_TEXT1[]' readonly value='${row.TEXT1 ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_TEXT2[]' readonly value='${row.TEXT2 ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_TEXT3[]' readonly value='${row.TEXT3 ?? ""}'></td>
