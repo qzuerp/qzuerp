@@ -406,7 +406,7 @@ class stok47_controller extends Controller
 
           }
 
-          if (in_array($TI_TRNUM[$i], $updateTRNUMS2)) { //Guncellenecek satirlar
+          if (in_array($TI_TRNUM[$i], $updateTRNUMS2)) { // Guncellenecek satirlar
 
             DB::table($firma . 'stok47ti')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TI_TRNUM[$i])->update([
               'EVRAKNO' => $EVRAKNO,
