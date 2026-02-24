@@ -1056,6 +1056,18 @@
                                           value="PRYBKM" @php if (in_array('PRYBKM', $kullanici_delete_yetkileri))
                                           echo " checked" @endphp></td>
                                     </tr>
+                                    <tr>
+                                      <td>Api Paneli</td>
+                                      <td><input type="checkbox" class="yetki_read" id="API_read" name="yetki_read[]"
+                                          value="APIPANEL" @php if (in_array('APIPANEL', $kullanici_read_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_write" id="API_write" name="yetki_write[]"
+                                          value="APIPANEL" @php if (in_array('APIPANEL', $kullanici_write_yetkileri))
+                                          echo " checked" @endphp></td>
+                                      <td><input type="checkbox" class="yetki_delete" id="API_delete" name="yetki_delete[]"
+                                          value="APIPANEL" @php if (in_array('APIPANEL', $kullanici_delete_yetkileri))
+                                          echo " checked" @endphp></td>
+                                    </tr>
                                   </tbody>
                                 </table>
                               </div>

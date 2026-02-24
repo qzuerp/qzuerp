@@ -62,6 +62,7 @@ use App\Http\Controllers\stok_gecmisi_controller;
 use App\Http\Controllers\parametreler;
 use App\Http\Controllers\srvbs0_controller;
 use App\Http\Controllers\takvim0_controller;
+use App\Http\Controllers\api_controller;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -579,4 +580,39 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/calisma-takvimi/kaydet', [takvim0_controller::class, 'kaydet'])->name('calismaTakvimi.kaydet');
     Route::post('/calisma-takvimi/sil', [takvim0_controller::class, 'sil'])->name('calismaTakvimi.sil');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Api Paneli
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/api', [api_controller::class, 'index'])->name('api');
+    Route::post('/api_islemler', [api_controller::class, 'islemler'])->name('api_islemler');
+    // Route::get('/parasut-test', function(){
+
+    //     $tokenResponse = Http::asForm()->post(
+    //     'https://api.parasut.com/oauth/token',
+    //     [
+    //     'grant_type'=>'client_credentials',
+    //     'client_id'=>'_24I8-6R70MM4-q6rCU9regwuPxXxjHIpwsbZCwwxhc',
+    //     'client_secret'=>'I7KOVBtL7TpIcKlEmon8xVT7GZzG20ewumj7FCGFjUA'
+    //     ]);
+
+    //     return $tokenResponse->json();
+
+    // });
+    Route::get('/parasut-test', function(){
+
+        $token = Http::asForm()->post(
+        'https://api.parasut.com/oauth/token',
+        [
+        'grant_type'=>'client_credentials',
+        'client_id'=>'_24I8-6R70MM4-q6rCU9regwuPxXxjHIpwsbZCwwxhc',
+        'client_secret'=>'I7KOVBtL7TpIcKlEmon8xVT7GZzG20ewumj7FCGFjUA'
+        ])->json()['access_token'];
+
+        return Http::withToken($token)
+        ->get('https://api.parasut.com/v4/791329/me')
+        ->json();
+
+    });
 });

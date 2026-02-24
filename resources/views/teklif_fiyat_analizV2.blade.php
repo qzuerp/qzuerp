@@ -824,6 +824,11 @@
 														<label>Not</label>
 														<input type="text" class="form-control T_NOT form-control-sm"
 															placeholder="Not">
+
+														<div class="d-flex gap-3">
+															<button class="bol btn btn-sm btn-primary mt-2 h-25">Adetle Böl</button>
+															<button class="geri btn btn-sm btn-primary mt-2 h-25">Geri Al</button>
+														</div>
 													</div>
 												@endif
 
@@ -1727,6 +1732,35 @@
 						$('.STIME').trigger('input');
 					}
 				});
+			});
+
+			$('.bol').on('click',function(){
+				const $satir = $(this).closest('.satir-grubu');
+				const $input = $satir.find('.RES_TOTAL');
+
+				// eski değeri sakla
+				$input.data('prev', $input.val());
+
+				const tutar = parseFloat($input.val()) || 0;
+				const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
+
+				$input.val((tutar / miktar).toFixed(2));
+
+				hesapla();
+			});
+
+			$('.geri').on('click',function(){
+				const $satir = $(this).closest('.satir-grubu');
+				const $input = $satir.find('.RES_TOTAL');
+
+				const eski = $input.data('prev');
+
+				if (eski !== undefined) {
+					$input.val(eski);
+					$input.removeData('prev');
+				}
+
+				hesapla();
 			});
 
 			$(document).on('input', '.TIME, .PRICE, .PTIME, .STIME', function() {
