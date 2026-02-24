@@ -13,12 +13,12 @@ class Maliyet extends Controller
     {
         return view('maliyet');
     }
-    
+
     public function islemler(Request $request)
     {
         // dd(request()->all());
         $kart_islemleri = $request->input('kart_islemleri');
-        $firma = $request->input('firma').'.dbo.';
+        $firma = $request->input('firma') . '.dbo.';
 
         // Header bilgileri
         $EVRAKNO = $request->input('evrakSec');
@@ -40,20 +40,18 @@ class Maliyet extends Controller
         switch ($kart_islemleri) {
             case 'kart_olustur':
 
-                $SON_EVRAK=DB::table($firma.'stdm10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
-                $SON_ID= $SON_EVRAK->EVRAKNO;
+                $SON_EVRAK = DB::table($firma . 'stdm10e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+                $SON_ID = $SON_EVRAK->EVRAKNO;
 
                 $SON_ID = (int) $SON_ID;
                 if ($SON_ID == NULL) {
                     $EVRAKNO = 1;
-                }
-                
-                else {
+                } else {
                     $EVRAKNO = $SON_ID + 1;
                 }
 
-                FunctionHelpers::Logla('STMD10',$EVRAKNO,'C');
-                
+                FunctionHelpers::Logla('STMD10', $EVRAKNO, 'C');
+
                 $maxIndex = null;
                 $maxTarih = null;
 
@@ -69,24 +67,24 @@ class Maliyet extends Controller
 
                 $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
 
-                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL','TRY',''])
-                    ? (object)['KURS_1'=>1]
-                    : DB::table($firma.'excratt')
-                        ->where('EVRAKNOTARIH','<=',$tarih)
-                        ->where('CODEFROM',@$PARA_BIRIMI)
-                        ->orderBy('EVRAKNOTARIH','desc')
+                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL', 'TRY', ''])
+                    ? (object) ['KURS_1' => 1]
+                    : DB::table('excratt')
+                        ->where('EVRAKNOTARIH', '<=', $tarih)
+                        ->where('CODEFROM', @$PARA_BIRIMI)
+                        ->orderBy('EVRAKNOTARIH', 'desc')
                         ->first();
 
-                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL','TRY',''])
-                    ? (object)['KURS_1'=>1]
-                    : DB::table($firma.'excratt')
-                        ->where('EVRAKNOTARIH','<=',$tarih)
-                        ->where('CODEFROM',@$PARABIRIMI[$maxIndex])
-                        ->orderBy('EVRAKNOTARIH','desc')
+                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL', 'TRY', ''])
+                    ? (object) ['KURS_1' => 1]
+                    : DB::table('excratt')
+                        ->where('EVRAKNOTARIH', '<=', $tarih)
+                        ->where('CODEFROM', @$PARABIRIMI[$maxIndex])
+                        ->orderBy('EVRAKNOTARIH', 'desc')
                         ->first();
 
 
-                DB::table($firma.'stdm10e')->insert([
+                DB::table($firma . 'stdm10e')->insert([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
@@ -95,14 +93,14 @@ class Maliyet extends Controller
                     'KAYNAK_TYPE' => $KAYNAK_TYPE
                 ]);
 
-                $max_id = DB::table($firma.'stdm10e')->max('EVRAKNO');
+                $max_id = DB::table($firma . 'stdm10e')->max('EVRAKNO');
 
                 // Satırları ekle
                 if (!empty($TRNUM)) {
                     for ($i = 0; $i < count($TRNUM); $i++) {
-                        $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-                        
-                        DB::table($firma.'stdm10t')->insert([
+                        $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
+
+                        DB::table($firma . 'stdm10t')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'VALIDAFTERTARIH' => $VALIDAFTERTARIH[$i],
                             'UNSUR' => $UNSUR[$i],
@@ -118,11 +116,11 @@ class Maliyet extends Controller
                     }
                 }
 
-                return redirect('maliyet?ID='.$max_id)->with('success', 'Kart oluşturuldu');
-                // break;
+                return redirect('maliyet?ID=' . $max_id)->with('success', 'Kart oluşturuldu');
+            // break;
 
             case 'kart_duzenle':
-                FunctionHelpers::Logla('STMD10',$EVRAKNO,'W');
+                FunctionHelpers::Logla('STMD10', $EVRAKNO, 'W');
                 $maxIndex = null;
                 $maxTarih = null;
 
@@ -135,26 +133,26 @@ class Maliyet extends Controller
                         $maxIndex = $i;
                     }
                 }
-                
+
                 $tarih = date('Y/m/d', strtotime(@$VALIDAFTERTARIH[$maxIndex]));
                 // dd($tarih,$maxTarih);
-                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL','TRY',''])
-                    ? (object)['KURS_1'=>1]
-                    : DB::table($firma.'excratt')
-                        ->where('EVRAKNOTARIH','<=',$tarih)
-                        ->where('CODEFROM',@$PARA_BIRIMI)
-                        ->orderBy('EVRAKNOTARIH','desc')
+                $KUR = in_array(strtoupper(trim(@$PARA_BIRIMI)), ['TL', 'TRY', ''])
+                    ? (object) ['KURS_1' => 1]
+                    : DB::table('excratt')
+                        ->where('EVRAKNOTARIH', '<=', $tarih)
+                        ->where('CODEFROM', @$PARA_BIRIMI)
+                        ->orderBy('EVRAKNOTARIH', 'desc')
                         ->first();
 
-                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL','TRY',''])
-                    ? (object)['KURS_1'=>1]
-                    : DB::table($firma.'excratt')
-                        ->where('EVRAKNOTARIH','<=',$tarih)
-                        ->where('CODEFROM',@$PARABIRIMI[$maxIndex])
-                        ->orderBy('EVRAKNOTARIH','desc')
+                $KUR2 = in_array(strtoupper(trim(@$PARABIRIMI[$maxIndex])), ['TL', 'TRY', ''])
+                    ? (object) ['KURS_1' => 1]
+                    : DB::table('excratt')
+                        ->where('EVRAKNOTARIH', '<=', $tarih)
+                        ->where('CODEFROM', @$PARABIRIMI[$maxIndex])
+                        ->orderBy('EVRAKNOTARIH', 'desc')
                         ->first();
                 // E tablosunu güncelle
-                DB::table($firma.'stdm10e')->where('EVRAKNO', $EVRAKNO)->update([
+                DB::table($firma . 'stdm10e')->where('EVRAKNO', $EVRAKNO)->update([
                     'EVRAKNO' => $EVRAKNO,
                     'ENDEKS' => $ENDEX,
                     'TEZGAH_KODU' => $tezgah_hammadde_kodu,
@@ -166,8 +164,8 @@ class Maliyet extends Controller
                 // Mevcut ve yeni TRNUM'ları karşılaştır
                 $currentTRNUMS = [];
                 $liveTRNUMS = [];
-                
-                $currentTRNUMSObj = DB::table($firma.'stdm10t')
+
+                $currentTRNUMSObj = DB::table($firma . 'stdm10t')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
@@ -186,11 +184,11 @@ class Maliyet extends Controller
 
                 // Satırları güncelle
                 for ($i = 0; $i < count($TRNUM); $i++) {
-                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+                    $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
                     if (in_array($TRNUM[$i], $newTRNUMS)) {
                         // Yeni satır ekle
-                        DB::table($firma.'stdm10t')->insert([
+                        DB::table($firma . 'stdm10t')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'VALIDAFTERTARIH' => $VALIDAFTERTARIH[$i],
                             'UNSUR' => $UNSUR[$i],
@@ -207,7 +205,7 @@ class Maliyet extends Controller
 
                     if (in_array($TRNUM[$i], $updateTRNUMS)) {
                         // Mevcut satırı güncelle
-                        DB::table($firma.'stdm10t')
+                        DB::table($firma . 'stdm10t')
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM[$i])
                             ->update([
@@ -226,23 +224,23 @@ class Maliyet extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS as $deleteTRNUM) {
-                    DB::table($firma.'stdm10t')
+                    DB::table($firma . 'stdm10t')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
                         ->delete();
                 }
-                return redirect('maliyet?ID='.$request->evrakSec)->with('success', 'Düzenleme işlemi başarılı');
-                // break;
+                return redirect('maliyet?ID=' . $request->evrakSec)->with('success', 'Düzenleme işlemi başarılı');
+            // break;
             case 'kart_sil':
-                FunctionHelpers::Logla('STMD10',$EVRAKNO,'D');
+                FunctionHelpers::Logla('STMD10', $EVRAKNO, 'D');
 
-                DB::table($firma.'stdm10e')->where('EVRAKNO',$EVRAKNO)->delete();
-                DB::table($firma.'stdm10t')->where('EVRAKNO', $EVRAKNO)->delete();
-            
-                $sonID=DB::table($firma.'stdm10e')->min('EVRAKNO');
-                return redirect('maliyet?ID='.$sonID.'&silme=true');
-            
-                // break;
+                DB::table($firma . 'stdm10e')->where('EVRAKNO', $EVRAKNO)->delete();
+                DB::table($firma . 'stdm10t')->where('EVRAKNO', $EVRAKNO)->delete();
+
+                $sonID = DB::table($firma . 'stdm10e')->min('EVRAKNO');
+                return redirect('maliyet?ID=' . $sonID . '&silme=true');
+
+            // break;
         }
     }
 
@@ -251,25 +249,23 @@ class Maliyet extends Controller
         $islem = $request->input('islem');
         $selectdata = "";
         $kod = $request->input('kod');
-        $firma = $request->input('firma').'.dbo.';
-        switch($islem) {
+        $firma = $request->input('firma') . '.dbo.';
+        switch ($islem) {
 
             case 'H':
-                if(isset($kod)){
-                    $STOK00_VERILER=DB::table($firma.'stok00')
-                    ->where('KOD',$kod)
-                    ->first();
+                if (isset($kod)) {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')
+                        ->where('KOD', $kod)
+                        ->first();
 
                     $selectdata .= $STOK00_VERILER->IUNIT;
-                }
-                else
-                {
-                    $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+                } else {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
                     foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
-    
-                        $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
-    
+
+                        $selectdata .= "<option value='" . $STOK00_VERI->KOD . "|||" . $STOK00_VERI->AD . "|||" . $STOK00_VERI->IUNIT . "'>" . $STOK00_VERI->KOD . " | " . $STOK00_VERI->AD . "</option>";
+
                     }
                 }
                 return $selectdata;
@@ -278,29 +274,29 @@ class Maliyet extends Controller
 
             case 'I':
 
-            $IMLT00_VERILER=DB::table($firma.'imlt00')->orderBy('id', 'ASC')->get();
+                $IMLT00_VERILER = DB::table($firma . 'imlt00')->orderBy('id', 'ASC')->get();
 
-            foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
+                foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
 
-                $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
+                    $selectdata .= "<option value='" . $IMLT00_VERI->KOD . "|||" . $IMLT00_VERI->AD . "|||" . "TZGH" . "'>" . $IMLT00_VERI->KOD . " | " . $IMLT00_VERI->AD . "</option>";
 
-            }
+                }
 
-            return $selectdata;
+                return $selectdata;
 
             // break;
 
             case 'Y':
 
-            $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+                $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
-            foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
+                foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
 
-                $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+                    $selectdata .= "<option value='" . $STOK00_VERI->KOD . "|||" . $STOK00_VERI->AD . "|||" . $STOK00_VERI->IUNIT . "'>" . $STOK00_VERI->KOD . " | " . $STOK00_VERI->AD . "</option>";
 
-            }
+                }
 
-            return $selectdata;
+                return $selectdata;
 
             // break;
         }

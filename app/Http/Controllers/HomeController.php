@@ -46,7 +46,7 @@ class HomeController extends Controller
                     CASE WHEN s.FIYAT_PB = 'TRY' THEN 1 ELSE ISNULL(e.KURS_1,1) END
                 ) AS TUTAR
             FROM {$firma}stok40t s
-            LEFT JOIN {$firma}excratt e
+            LEFT JOIN excratt e
                 ON e.CODEFROM = s.FIYAT_PB
             AND e.CODETO   = 'TRY'
             AND CONVERT(date, e.EVRAKNOTARIH, 111) = CAST(s.created_at AS date)
@@ -65,7 +65,7 @@ class HomeController extends Controller
                     CASE WHEN s.FIYAT_PB = 'TRY' THEN 1 ELSE ISNULL(e.KURS_1,1) END
                 ) AS TUTAR
             FROM {$firma}stok46t s
-            LEFT JOIN {$firma}excratt e
+            LEFT JOIN excratt e
                 ON e.CODEFROM = s.FIYAT_PB
             AND e.CODETO   = 'TRY'
             AND CONVERT(date, e.EVRAKNOTARIH, 111) = CAST(s.created_at AS date)

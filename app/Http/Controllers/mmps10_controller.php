@@ -10,22 +10,24 @@ use Illuminate\Support\Facades\DB;
 class mmps10_controller extends Controller
 {
 
-  public function index() {
-    $sonID=DB::table('mmps10e')->min('id'); 
+  public function index()
+  {
+    $sonID = DB::table('mmps10e')->min('id');
     // print_r("son id  no : ".$sonID);
     if ($sonID == NULL) {
       $sonID = 1;
     }
 
     return view('mpsgiriskarti')->with('sonID', $sonID);
-    
+
   }
 
-  public function kartGetir(Request $request) {
+  public function kartGetir(Request $request)
+  {
     //açılır pencere ve listelere veri çekmek
     $id = $request->input('id');
-    $firma = $request->input('firma').'.dbo.';
-    $veri=DB::table($firma.'mmps10e')->where('id',$id)->first();
+    $firma = $request->input('firma') . '.dbo.';
+    $veri = DB::table($firma . 'mmps10e')->where('id', $id)->first();
 
     return json_encode($veri);
 
@@ -33,190 +35,188 @@ class mmps10_controller extends Controller
 
   public function createKaynakKodSelect(Request $request)
   {
-      $islem = $request->input('islem');
-      $selectdata = "";
-      $selectdata2 = [];
-      $kod = $request->input('kod');
-      $firma = $request->input('firma').'.dbo.';
-      switch($islem) {
-          case 'M':
-              if(isset($kod)){
-                  $STOK00_VERILER=DB::table($firma.'stok00')
-                  ->where('KOD',$kod)
-                  ->first();
+    $islem = $request->input('islem');
+    $selectdata = "";
+    $selectdata2 = [];
+    $kod = $request->input('kod');
+    $firma = $request->input('firma') . '.dbo.';
+    switch ($islem) {
+      case 'M':
+        if (isset($kod)) {
+          $STOK00_VERILER = DB::table($firma . 'stok00')
+            ->where('KOD', $kod)
+            ->first();
 
-                  $selectdata .= $STOK00_VERILER->IUNIT;
-              }
-              else
-              {
-                  $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+          $selectdata .= $STOK00_VERILER->IUNIT;
+        } else {
+          $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
-                  foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
-                      // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
-                      $selectdata2[] = [
-                          "KOD"   => $STOK00_VERI->KOD,
-                          "AD"    => $STOK00_VERI->AD,
-                          "IUNIT" => $STOK00_VERI->IUNIT
-                      ];
-                  }
-              }
-              return response()->json([
-                  'selectdata' => $selectdata,
-                  'selectdata2' => $selectdata2
-              ]);
-
-          // break;
-      case 'H':
-              if(isset($kod)){
-                  $STOK00_VERILER=DB::table($firma.'stok00')
-                  ->where('KOD',$kod)
-                  ->first();
-
-                  $selectdata .= $STOK00_VERILER->IUNIT;
-              }
-              else
-              {
-                  $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
-
-                  foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
-          
-                      // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
-                      $selectdata2[] = [
-                          "KOD"   => $STOK00_VERI->KOD,
-                          "AD"    => $STOK00_VERI->AD,
-                          "IUNIT" => $STOK00_VERI->IUNIT
-                      ];
-                  }
-                  
-              }
-              return response()->json([
-                  'selectdata' => $selectdata,
-                  'selectdata2' => $selectdata2
-              ]);
-
-          // break;
-
-      case 'I':
-
-          $IMLT00_VERILER=DB::table($firma.'imlt00')->orderBy('id', 'ASC')->get();
-
-          foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
-
-              // $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
-              $selectdata2[] = [
-                  "KOD"   => $IMLT00_VERI->KOD,
-                  "AD"    => $IMLT00_VERI->AD,
-                  "IUNIT" => "TZGH"
-              ];
+          foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
+            // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+            $selectdata2[] = [
+              "KOD" => $STOK00_VERI->KOD,
+              "AD" => $STOK00_VERI->AD,
+              "IUNIT" => $STOK00_VERI->IUNIT
+            ];
           }
-          return response()->json([
-              'selectdata' => $selectdata,
-              'selectdata2' => $selectdata2
-          ]);
+        }
+        return response()->json([
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
+        ]);
 
-          // break;
+      // break;
+      case 'H':
+        if (isset($kod)) {
+          $STOK00_VERILER = DB::table($firma . 'stok00')
+            ->where('KOD', $kod)
+            ->first();
 
-      case 'Y':
-
-          $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+          $selectdata .= $STOK00_VERILER->IUNIT;
+        } else {
+          $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
           foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
 
-              // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
-              $selectdata2[] = [
-                  "KOD"   => $STOK00_VERI->KOD,
-                  "AD"    => $STOK00_VERI->AD,
-                  "IUNIT" => $STOK00_VERI->IUNIT
-              ];
+            // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+            $selectdata2[] = [
+              "KOD" => $STOK00_VERI->KOD,
+              "AD" => $STOK00_VERI->AD,
+              "IUNIT" => $STOK00_VERI->IUNIT
+            ];
           }
-          return response()->json([
-              'selectdata' => $selectdata,
-              'selectdata2' => $selectdata2
-          ]);
-
-          // break;
-      }
-  }
-
-  public function getSipToEvrak(Request $request) {
-    $islem = $request->input('islem');
-    $KOD = $request->input('KOD');
-    $tabledata = "";
-    $firma = $request->input('firma').'.dbo.';
-
-    switch($islem) {
-
-      case 'V':
-
-        $STOK40_VERILER=DB::table($firma.'stok40t')
-        ->select('*')
-        ->where('KOD','=', $KOD)
-        ->whereNull('AK')
-        ->orWhere('AK','!=','K')
-        ->get();
-
-        foreach ($STOK40_VERILER as $key => $veri) {
-
-          $tabledata .= "<tr>";
-          $tabledata .= "<td>AAAA".$veri->EVRAKNO."ZZZZZZ</td>";
-          $tabledata .= "<td>".$veri->ARTNO."</td>";
-          $tabledata .= "<td>".$veri->KOD."</td>";
-          $tabledata .= "<td>".$veri->STOK_ADI."</td>";
-          $tabledata .= "<td>".$veri->SF_MIKTAR."</td>";
-          $tabledata .= "<td>".$veri->SF_SF_UNIT."</td>";
-          $tabledata .= "<td>".$veri->SF_BAKIYE."</td>";
-          $tabledata .= "</tr>";
 
         }
-        return $tabledata;
+        return response()->json([
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
+        ]);
 
-        // break;
+      // break;
+
+      case 'I':
+
+        $IMLT00_VERILER = DB::table($firma . 'imlt00')->orderBy('id', 'ASC')->get();
+
+        foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
+
+          // $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
+          $selectdata2[] = [
+            "KOD" => $IMLT00_VERI->KOD,
+            "AD" => $IMLT00_VERI->AD,
+            "IUNIT" => "TZGH"
+          ];
+        }
+        return response()->json([
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
+        ]);
+
+      // break;
 
       case 'Y':
 
-        $STOK40_VERILER=DB::table($firma.'stok40t')
-        ->whereNull('AK')
-        ->orWhere('AK','!=','K')
-        ->get();
+        $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
+
+        foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
+
+          // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+          $selectdata2[] = [
+            "KOD" => $STOK00_VERI->KOD,
+            "AD" => $STOK00_VERI->AD,
+            "IUNIT" => $STOK00_VERI->IUNIT
+          ];
+        }
+        return response()->json([
+          'selectdata' => $selectdata,
+          'selectdata2' => $selectdata2
+        ]);
+
+      // break;
+    }
+  }
+
+  public function getSipToEvrak(Request $request)
+  {
+    $islem = $request->input('islem');
+    $KOD = $request->input('KOD');
+    $tabledata = "";
+    $firma = $request->input('firma') . '.dbo.';
+
+    switch ($islem) {
+
+      case 'V':
+
+        $STOK40_VERILER = DB::table($firma . 'stok40t')
+          ->select('*')
+          ->where('KOD', '=', $KOD)
+          ->whereNull('AK')
+          ->orWhere('AK', '!=', 'K')
+          ->get();
 
         foreach ($STOK40_VERILER as $key => $veri) {
 
           $tabledata .= "<tr>";
-          $tabledata .= "<td>".$veri->EVRAKNO."</td>";
-          $tabledata .= "<td>".$veri->ARTNO."</td>";
-          $tabledata .= "<td>".$veri->KOD."</td>";
-          $tabledata .= "<td>".$veri->STOK_ADI."</td>";
-          $tabledata .= "<td>".$veri->SF_MIKTAR."</td>";
-          $tabledata .= "<td>".$veri->SF_SF_UNIT."</td>";
-          $tabledata .= "<td>".$veri->SF_BAKIYE."</td>";
+          $tabledata .= "<td>AAAA" . $veri->EVRAKNO . "ZZZZZZ</td>";
+          $tabledata .= "<td>" . $veri->ARTNO . "</td>";
+          $tabledata .= "<td>" . $veri->KOD . "</td>";
+          $tabledata .= "<td>" . $veri->STOK_ADI . "</td>";
+          $tabledata .= "<td>" . $veri->SF_MIKTAR . "</td>";
+          $tabledata .= "<td>" . $veri->SF_SF_UNIT . "</td>";
+          $tabledata .= "<td>" . $veri->SF_BAKIYE . "</td>";
+          $tabledata .= "</tr>";
+
+        }
+        return $tabledata;
+
+      // break;
+
+      case 'Y':
+
+        $STOK40_VERILER = DB::table($firma . 'stok40t')
+          ->whereNull('AK')
+          ->orWhere('AK', '!=', 'K')
+          ->get();
+
+        foreach ($STOK40_VERILER as $key => $veri) {
+
+          $tabledata .= "<tr>";
+          $tabledata .= "<td>" . $veri->EVRAKNO . "</td>";
+          $tabledata .= "<td>" . $veri->ARTNO . "</td>";
+          $tabledata .= "<td>" . $veri->KOD . "</td>";
+          $tabledata .= "<td>" . $veri->STOK_ADI . "</td>";
+          $tabledata .= "<td>" . $veri->SF_MIKTAR . "</td>";
+          $tabledata .= "<td>" . $veri->SF_SF_UNIT . "</td>";
+          $tabledata .= "<td>" . $veri->SF_BAKIYE . "</td>";
           $tabledata .= "</tr>";
 
         }
 
         return $tabledata;
 
-        // break;
+      // break;
     }
 
   }
 
-  public function getStok10aToTable(Request $request) {
+  public function getStok10aToTable(Request $request)
+  {
 
     $KOD = $request->input('KOD');
     $tabledata = "";
-    $firma = $request->input('firma').'.dbo.';
-    $STOK10A_VERILER=DB::table($firma.'stok10a')->where('KOD', $KOD)->orderBy('id', 'ASC')->get();
+    $firma = $request->input('firma') . '.dbo.';
+    $STOK10A_VERILER = DB::table($firma . 'stok10a')->where('KOD', $KOD)->orderBy('id', 'ASC')->get();
 
     foreach ($STOK10A_VERILER as $key => $veri) {
       $tabledata .= "<tr>";
-      $tabledata .= "<th>".trim($veri->KOD)."</th>";
-      $tabledata .= "<th>".$veri->STOK_ADI."</th>";
-      $tabledata .= "<th>".$veri->SF_MIKTAR."</th>";
-      $tabledata .= "<th>".$veri->AMBCODE."</th>";
-      $tabledata .= "<th>".$veri->LOCATION1."</th>";
-      $tabledata .= "<th>".$veri->LOCATION2."</th>";
-      $tabledata .= "<th>".$veri->LOCATION3."</th>";
-      $tabledata .= "<th>".$veri->LOCATION4."</th>";
+      $tabledata .= "<th>" . trim($veri->KOD) . "</th>";
+      $tabledata .= "<th>" . $veri->STOK_ADI . "</th>";
+      $tabledata .= "<th>" . $veri->SF_MIKTAR . "</th>";
+      $tabledata .= "<th>" . $veri->AMBCODE . "</th>";
+      $tabledata .= "<th>" . $veri->LOCATION1 . "</th>";
+      $tabledata .= "<th>" . $veri->LOCATION2 . "</th>";
+      $tabledata .= "<th>" . $veri->LOCATION3 . "</th>";
+      $tabledata .= "<th>" . $veri->LOCATION4 . "</th>";
       $tabledata .= "</tr>";
     }
 
@@ -224,12 +224,13 @@ class mmps10_controller extends Controller
 
   }
 
-  public function islemler(Request $request) {
+  public function islemler(Request $request)
+  {
 
     // dd(request()->all());
 
     $islem_turu = $request->kart_islemleri;
-    $firma = $request->input('firma').'.dbo.';
+    $firma = $request->input('firma') . '.dbo.';
     $EVRAKNO = $request->input('EVRAKNO');
     $MAMULSTOKKODU = $request->input('MAMULSTOKKODU');
     $MAMULSTOKADI = $request->input('MAMULSTOKADI');
@@ -300,7 +301,7 @@ class mmps10_controller extends Controller
 
     $satir_say = 0;
 
-    if(is_array($R_KAYNAKTYPE))
+    if (is_array($R_KAYNAKTYPE))
       $satir_say = count($R_KAYNAKTYPE);
 
     // dd([
@@ -308,19 +309,19 @@ class mmps10_controller extends Controller
     //   "all" => $request->all(),
     //   "control" => is_array($R_KAYNAKTYPE)
     // ]);
-    switch($islem_turu) {
+    switch ($islem_turu) {
 
 
       case 'listele':
 
-        $firma = $request->input('firma').'.dbo.';
+        $firma = $request->input('firma') . '.dbo.';
 
         $R_KAYNAKTYPE_B = $request->input('R_KAYNAKTYPE_B');
         $R_KAYNAKTYPE_E = $request->input('R_KAYNAKTYPE_E');
 
         $R_KAYNAKKODU_B = $request->input('R_KAYNAKKODU_B');
         $R_KAYNAKKODU_E = $request->input('R_KAYNAKKODU_E');
-        
+
         $TEZGAH_KODU_B = $request->input('TEZGAH_KODU_B');
         $TEZGAH_KODU_E = $request->input('TEZGAH_KODU_E');
 
@@ -338,12 +339,12 @@ class mmps10_controller extends Controller
           'firma' => $firma
 
         ]);
-        // print_r("mesaj mesaj");
+      // print_r("mesaj mesaj");
 
-        // break;
+      // break;
 
       case 'kart_sil':
-        FunctionHelpers::Logla('MMPS10',$EVRAKNO,'D');
+        FunctionHelpers::Logla('MMPS10', $EVRAKNO, 'D');
 
         // $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t','stok48t','stok48e','stok63','stok63t']);
 
@@ -351,42 +352,42 @@ class mmps10_controller extends Controller
         //   return redirect()->back()->with('error_swal', $msg);
         // }
 
-        DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->delete();
-        DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->delete();
+        DB::table($firma . 'mmps10e')->where('EVRAKNO', $EVRAKNO)->delete();
+        DB::table($firma . 'mmps10t')->where('EVRAKNO', $EVRAKNO)->delete();
 
         print_r("Silme işlemi başarılı.");
 
-        $sonID=DB::table($firma.'mmps10e')->min('id');
+        $sonID = DB::table($firma . 'mmps10e')->min('id');
 
         return redirect()->route('mpsgiriskarti', ['ID' => $sonID, 'silme' => 'ok']);
 
-        // break;
+      // break;
       case 'kart_olustur':
         // dd($request->all());
         $tarihKodu = date('ymd'); // Günün tarihi: 251105
         $tipKodu = $request->MPSEVRAKTYPE; // U veya F
 
         // Bugünün tarih koduyla başlayan evrakları bul
-        $sonEvrak = DB::table($firma.'mmps10e')
-            ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
-            ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
-            ->first();
+        $sonEvrak = DB::table($firma . 'mmps10e')
+          ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
+          ->where('EVRAKNO', 'like', '%' . $tarihKodu . '-%')
+          ->first();
 
         // Bugün için varsa son numarayı al, yoksa 1'den başlat
         if ($sonEvrak && $sonEvrak->EVRAKNO) {
-            $parca = explode('-', $sonEvrak->EVRAKNO);
-            $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
+          $parca = explode('-', $sonEvrak->EVRAKNO);
+          $sayac = isset($parca[1]) ? (int) $parca[1] + 1 : 1;
         } else {
-            $sayac = 1;
+          $sayac = 1;
         }
 
         // Yeni evrak numarasını oluştur
         $EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
 
 
-        FunctionHelpers::Logla('MMPS10',$EVRAKNO,'C');
+        FunctionHelpers::Logla('MMPS10', $EVRAKNO, 'C');
 
-        DB::table($firma.'mmps10e')->insert([
+        DB::table($firma . 'mmps10e')->insert([
           //'firma' => $firma,
           'EVRAKNO' => $EVRAKNO,
           'MAMULSTOKKODU' => $MAMULSTOKKODU,
@@ -428,11 +429,11 @@ class mmps10_controller extends Controller
 
         for ($i = 0; $i < $satir_say; $i++) {
 
-          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
-           $JOBNO = $EVRAKNO . $TRNUM[$i];
+          $JOBNO = $EVRAKNO . $TRNUM[$i];
 
-          DB::table($firma.'mmps10t')->insert([
+          DB::table($firma . 'mmps10t')->insert([
             //'firma' => $firma,
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
@@ -475,18 +476,18 @@ class mmps10_controller extends Controller
         print_r("Kayıt işlemi başarılı.");
 
         // Yeni kayıt yapısı
-        $sonID=DB::table($firma.'mmps10e')->max('id');
+        $sonID = DB::table($firma . 'mmps10e')->max('id');
 
         // $sonID=DB::table('mmps10e')->max('id');
         return redirect()->route('mpsgiriskarti', ['ID' => $sonID, 'kayit' => 'ok']);
 
-        // break;
+      // break;
 
       case 'kart_duzenle':
-        FunctionHelpers::Logla('MMPS10',$EVRAKNO,'W');
+        FunctionHelpers::Logla('MMPS10', $EVRAKNO, 'W');
 
-        DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->update([
-         // 'firma' => $firma,
+        DB::table($firma . 'mmps10e')->where('EVRAKNO', $EVRAKNO)->update([
+          // 'firma' => $firma,
           'EVRAKNO' => $EVRAKNO,
           'MAMULSTOKKODU' => $MAMULSTOKKODU,
           'MAMULSTOKADI' => $MAMULSTOKADI,
@@ -533,20 +534,20 @@ class mmps10_controller extends Controller
 
         $currentTRNUMS = array();
         $liveTRNUMS = array();
-        $currentTRNUMSObj = DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+        $currentTRNUMSObj = DB::table($firma . 'mmps10t')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
 
         foreach ($currentTRNUMSObj as $key => $veri) {
-          array_push($currentTRNUMS,$veri->TRNUM);
+          array_push($currentTRNUMS, $veri->TRNUM);
         }
 
         foreach ($TRNUM as $key => $veri) {
-          array_push($liveTRNUMS,$veri);
+          array_push($liveTRNUMS, $veri);
         }
 
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-       
+
         // dd([
         //   "New" => $newTRNUMS,
         //   "Update" => $updateTRNUMS,
@@ -557,60 +558,17 @@ class mmps10_controller extends Controller
         $X_say = count($newTRNUMS) + count($updateTRNUMS);
 
         for ($i = 0; $i < $satir_say; $i++) {
-          $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+          $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
           $JOBNO = $EVRAKNO . $TRNUM[$i];
-            if (in_array($TRNUM[$i], $newTRNUMS)) {
-              DB::table($firma.'mmps10t')->insert([
-                //'firma' => $firma,
-                'EVRAKNO' => $EVRAKNO,
-                'SRNUM' => $SRNUM,
-                'TRNUM' => $TRNUM[$i],
-                'JOBNO' => $JOBNO,
-                'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
-                'R_SIRANO' => $R_SIRANO[$i],
-                'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
-                'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
-                'KAYNAK_AD' => $KAYNAK_AD[$i],
-                'R_OPERASYON' => $R_OPERASYON[$i],
-                'R_OPERASYON_IMLT01_AD' => $R_OPERASYON_IMLT01_AD[$i],
-                'R_MIKTAR0' => $R_MIKTAR0[$i],
-                'R_MIKTAR1' => $R_MIKTAR1[$i],
-                'R_MIKTAR2' => $R_MIKTAR2[$i],
-                'R_MIKTART' => $R_MIKTART[$i],
-                'KAYNAK_BIRIM' => $KAYNAK_BIRIM[$i],
-                 'KALIPKODU' => $KALIPKODU[$i],
-                'R_MANUEL_TMMIKTAR' => $R_MANUEL_TMMIKTAR[$i],
-                'R_TMYMAMULMIKTAR' => $R_TMYMAMULMIKTAR[$i],
-                'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
-                'R_YMAMULMIKTAR' => $R_YMK_YMPAKET[$i] * $R_YMK_YMPAKETICERIGI[$i],
-                // 'R_YMAMULKODU' => $R_YMAMULKODU[$i],
-                'R_YMK_YMPAKET' => $R_YMK_YMPAKET[$i],
-                'R_YMK_YMPAKETICERIGI' => $R_YMK_YMPAKETICERIGI[$i],
-                'TEXT1' => $TEXT1[$i],
-                'TEXT2' => $TEXT2[$i],
-                'TEXT3' => $TEXT3[$i],
-                'TEXT4' => $TEXT4[$i],
-
-                'NUM1' => $TEXT1[$i],
-                'NUM2' => $TEXT2[$i],
-                'NUM3' => $TEXT3[$i],
-                'NUM4' => $TEXT4[$i],
-                'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
-                'created_at' => date('Y-m-d H:i:s'),
-              ]);
-            }
-
-
-
-          if (in_array($TRNUM[$i], $updateTRNUMS)) {
-            //Guncellenecek satirlar
-
-            DB::table($firma.'mmps10t')
-            ->where('EVRAKNO',$EVRAKNO)
-            ->where('TRNUM', $TRNUM[$i])
-            ->update([
-              'R_SIRANO' => $R_SIRANO[$i],
+          if (in_array($TRNUM[$i], $newTRNUMS)) {
+            DB::table($firma . 'mmps10t')->insert([
+              //'firma' => $firma,
+              'EVRAKNO' => $EVRAKNO,
+              'SRNUM' => $SRNUM,
+              'TRNUM' => $TRNUM[$i],
+              'JOBNO' => $JOBNO,
               'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
+              'R_SIRANO' => $R_SIRANO[$i],
               'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
               'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
               'KAYNAK_AD' => $KAYNAK_AD[$i],
@@ -626,7 +584,7 @@ class mmps10_controller extends Controller
               'R_TMYMAMULMIKTAR' => $R_TMYMAMULMIKTAR[$i],
               'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
               'R_YMAMULMIKTAR' => $R_YMK_YMPAKET[$i] * $R_YMK_YMPAKETICERIGI[$i],
-              // 'R_YMAMULKODU' => $R_YMAMULKODU,
+              // 'R_YMAMULKODU' => $R_YMAMULKODU[$i],
               'R_YMK_YMPAKET' => $R_YMK_YMPAKET[$i],
               'R_YMK_YMPAKETICERIGI' => $R_YMK_YMPAKETICERIGI[$i],
               'TEXT1' => $TEXT1[$i],
@@ -639,8 +597,51 @@ class mmps10_controller extends Controller
               'NUM3' => $TEXT3[$i],
               'NUM4' => $TEXT4[$i],
               'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
-              'updated_at' => date('Y-m-d H:i:s'),
+              'created_at' => date('Y-m-d H:i:s'),
             ]);
+          }
+
+
+
+          if (in_array($TRNUM[$i], $updateTRNUMS)) {
+            //Guncellenecek satirlar
+
+            DB::table($firma . 'mmps10t')
+              ->where('EVRAKNO', $EVRAKNO)
+              ->where('TRNUM', $TRNUM[$i])
+              ->update([
+                'R_SIRANO' => $R_SIRANO[$i],
+                'R_ACIK_KAPALI' => $R_ACIK_KAPALI[$i],
+                'R_KAYNAKTYPE' => $R_KAYNAKTYPE[$i],
+                'R_KAYNAKKODU' => $R_KAYNAKKODU[$i],
+                'KAYNAK_AD' => $KAYNAK_AD[$i],
+                'R_OPERASYON' => $R_OPERASYON[$i],
+                'R_OPERASYON_IMLT01_AD' => $R_OPERASYON_IMLT01_AD[$i],
+                'R_MIKTAR0' => $R_MIKTAR0[$i],
+                'R_MIKTAR1' => $R_MIKTAR1[$i],
+                'R_MIKTAR2' => $R_MIKTAR2[$i],
+                'R_MIKTART' => $R_MIKTART[$i],
+                'KAYNAK_BIRIM' => $KAYNAK_BIRIM[$i],
+                'KALIPKODU' => $KALIPKODU[$i],
+                'R_MANUEL_TMMIKTAR' => $R_MANUEL_TMMIKTAR[$i],
+                'R_TMYMAMULMIKTAR' => $R_TMYMAMULMIKTAR[$i],
+                'R_BAKIYEYMAMULMIKTAR' => $R_BAKIYEYMAMULMIKTAR[$i],
+                'R_YMAMULMIKTAR' => $R_YMK_YMPAKET[$i] * $R_YMK_YMPAKETICERIGI[$i],
+                // 'R_YMAMULKODU' => $R_YMAMULKODU,
+                'R_YMK_YMPAKET' => $R_YMK_YMPAKET[$i],
+                'R_YMK_YMPAKETICERIGI' => $R_YMK_YMPAKETICERIGI[$i],
+                'TEXT1' => $TEXT1[$i],
+                'TEXT2' => $TEXT2[$i],
+                'TEXT3' => $TEXT3[$i],
+                'TEXT4' => $TEXT4[$i],
+
+                'NUM1' => $TEXT1[$i],
+                'NUM2' => $TEXT2[$i],
+                'NUM3' => $TEXT3[$i],
+                'NUM4' => $TEXT4[$i],
+                'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
 
           }
 
@@ -648,274 +649,273 @@ class mmps10_controller extends Controller
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
 
-          DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+          DB::table($firma . 'mmps10t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
 
         }
 
         print_r("Düzenleme işlemi başarılı.");
 
-        $veri=DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->first();
+        $veri = DB::table($firma . 'mmps10e')->where('EVRAKNO', $EVRAKNO)->first();
 
-      
+
         return redirect()->route('mpsgiriskarti', ['ID' => $veri->id, 'duzenleme' => 'ok']);
 
-        // break;
+      // break;
 
-        case 'yazdir':
-          return view('Etiketler.mps_yazdir', compact('EVRAKNO'));
-    
+      case 'yazdir':
+        return view('Etiketler.mps_yazdir', compact('EVRAKNO'));
+
     }
 
   }
 
   public function chartVeri(Request $request)
   {
-      $user = Auth::user();
-      $firma = trim($user->firma) . '.dbo.';
+    $user = Auth::user();
+    $firma = trim($user->firma) . '.dbo.';
 
-      $data = DB::table($firma . 'mmps10t')
-          ->where('EVRAKNO', $request->EVRAKNO)
-          ->where('R_KAYNAKTYPE', 'I')
-          ->get();
+    $data = DB::table($firma . 'mmps10t')
+      ->where('EVRAKNO', $request->EVRAKNO)
+      ->where('R_KAYNAKTYPE', 'I')
+      ->get();
 
-      $categories = $data->pluck('KAYNAK_AD')->all();
+    $categories = $data->pluck('KAYNAK_AD')->all();
 
-      $rMiktarData = $data->map(function ($item) {
-          return (float) $item->R_YMAMULMIKTAR;
-      })->all();
+    $rMiktarData = $data->map(function ($item) {
+      return (float) $item->R_YMAMULMIKTAR;
+    })->all();
 
-      $rTmyMamulData = $data->map(function ($item) {
-          return (float) $item->R_TMYMAMULMIKTAR;
-      })->all();
+    $rTmyMamulData = $data->map(function ($item) {
+      return (float) $item->R_TMYMAMULMIKTAR;
+    })->all();
 
-      return response()->json([
-          'categories' => $categories,
-          'rMiktar' => $rMiktarData,
-          'rTmyMamul' => $rTmyMamulData,
-      ]);
+    return response()->json([
+      'categories' => $categories,
+      'rMiktar' => $rMiktarData,
+      'rTmyMamul' => $rTmyMamulData,
+    ]);
   }
 
   public function chartVeri2(Request $request)
   {
-      $user = Auth::user();
-      $firma = trim($user->firma) . '.dbo.';
+    $user = Auth::user();
+    $firma = trim($user->firma) . '.dbo.';
 
-      $data = DB::table($firma . 'mmps10t')
-          ->where('EVRAKNO', $request->EVRAKNO)
-          ->where('R_KAYNAKTYPE', 'I')
-          ->get();
+    $data = DB::table($firma . 'mmps10t')
+      ->where('EVRAKNO', $request->EVRAKNO)
+      ->where('R_KAYNAKTYPE', 'I')
+      ->get();
 
-      $categories = $data->pluck('KAYNAK_AD')->all();
+    $categories = $data->pluck('KAYNAK_AD')->all();
 
-      $rMiktarData = $data->map(function ($item) {
-          return (float) $item->R_MIKTART;
-      })->all();
+    $rMiktarData = $data->map(function ($item) {
+      return (float) $item->R_MIKTART;
+    })->all();
 
-      $data2 = [];
-      $A_sure = 0;
-      $U_sure = 0;
-      for ($i=0; $i < count($data); $i++) { 
-        $EVRAKLAR = DB::table($firma.'sfdc31e')->where('JOBNO',$data[$i]->JOBNO)->get();
-        foreach ($EVRAKLAR as $EVRAK) {
-          $A_sure += DB::table($firma.'sfdc31t')
-              ->where('EVRAKNO',$EVRAK->EVRAKNO)
-              ->where('ISLEM_TURU','A')
-              ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
-              ->value('toplam') ?? 0;
+    $data2 = [];
+    $A_sure = 0;
+    $U_sure = 0;
+    for ($i = 0; $i < count($data); $i++) {
+      $EVRAKLAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $data[$i]->JOBNO)->get();
+      foreach ($EVRAKLAR as $EVRAK) {
+        $A_sure += DB::table($firma . 'sfdc31t')
+          ->where('EVRAKNO', $EVRAK->EVRAKNO)
+          ->where('ISLEM_TURU', 'A')
+          ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+          ->value('toplam') ?? 0;
 
-          $U_sure += DB::table($firma.'sfdc31t')
-              ->where('EVRAKNO',$EVRAK->EVRAKNO)
-              ->where('ISLEM_TURU','U')
-              ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
-              ->value('toplam') ?? 0;
+        $U_sure += DB::table($firma . 'sfdc31t')
+          ->where('EVRAKNO', $EVRAK->EVRAKNO)
+          ->where('ISLEM_TURU', 'U')
+          ->selectRaw('SUM(CAST(SURE AS FLOAT)) as toplam')
+          ->value('toplam') ?? 0;
 
-        }
-        
-        $TOPLAM = $A_sure + $U_sure;
-        $data2[] = $TOPLAM;
-        $A_sure = 0;
-        $U_sure = 0;
       }
 
-      $rTmyMamulData = collect($data2)->map(function ($item) {
-          return (float) $item;
-      })->all();
+      $TOPLAM = $A_sure + $U_sure;
+      $data2[] = $TOPLAM;
+      $A_sure = 0;
+      $U_sure = 0;
+    }
 
-      
-      return response()->json([
-          'categories' => $categories,
-          'rMiktar' => $rMiktarData,
-          'rTmyMamul' => $rTmyMamulData,
-      ]);
+    $rTmyMamulData = collect($data2)->map(function ($item) {
+      return (float) $item;
+    })->all();
+
+
+    return response()->json([
+      'categories' => $categories,
+      'rMiktar' => $rMiktarData,
+      'rTmyMamul' => $rTmyMamulData,
+    ]);
   }
 
   public function verimlilikHesapla(Request $request)
   {
-      $user = Auth::user();
-      $firma = trim($user->firma) . '.dbo.';
-      $JOBNO = $request->JOBNO;
+    $user = Auth::user();
+    $firma = trim($user->firma) . '.dbo.';
+    $JOBNO = $request->JOBNO;
 
-      $data = DB::table($firma . 'mmps10t')
-          ->where('EVRAKNO', $request->EVRAKNO)
-          ->where('JOBNO', $JOBNO)
-          ->where('R_KAYNAKTYPE', 'I')
-          ->get();
+    $data = DB::table($firma . 'mmps10t')
+      ->where('EVRAKNO', $request->EVRAKNO)
+      ->where('JOBNO', $JOBNO)
+      ->where('R_KAYNAKTYPE', 'I')
+      ->get();
 
-      $PLANLANAN_MIKTAR = DB::table($firma . 'mmps10e')
-          ->where('EVRAKNO', $request->EVRAKNO)
-          ->value('SF_TOPLAMMIKTAR');
+    $PLANLANAN_MIKTAR = DB::table($firma . 'mmps10e')
+      ->where('EVRAKNO', $request->EVRAKNO)
+      ->value('SF_TOPLAMMIKTAR');
 
-      $categories = $data->pluck('KAYNAK_AD')->all();
+    $categories = $data->pluck('KAYNAK_AD')->all();
 
-      $rMiktarData = $data->map(function ($item) {
-          return (float) $item->R_MIKTAR0;
-      })->all();
+    $rMiktarData = $data->map(function ($item) {
+      return (float) $item->R_MIKTAR0;
+    })->all();
 
-      $A_sure = 0;
-      $U_sure = 0;
-      $D_sure = 0;
-      $TOPLAM_URETILEN = 0;
-      $SURECLER = [];
+    $A_sure = 0;
+    $U_sure = 0;
+    $D_sure = 0;
+    $TOPLAM_URETILEN = 0;
+    $SURECLER = [];
 
-      $EVRAKLAR = DB::table($firma . 'sfdc31e as e')
+    $EVRAKLAR = DB::table($firma . 'sfdc31e as e')
       ->leftJoin($firma . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
       ->where('e.JOBNO', $JOBNO)
       ->select('e.*', 't.*')
       ->get()
       ->groupBy('EVRAKNO');
 
-      $SURECLER = [];
-      $A_sure = $U_sure = $D_sure = $TOPLAM_URETILEN = 0;
+    $SURECLER = [];
+    $A_sure = $U_sure = $D_sure = $TOPLAM_URETILEN = 0;
 
-      foreach ($EVRAKLAR as $evrakNo => $rows) {
-          $EVRAK = $rows[0];
+    foreach ($EVRAKLAR as $evrakNo => $rows) {
+      $EVRAK = $rows[0];
 
-          // Sureleri hesapla
-          $A_sure += $rows->where('ISLEM_TURU', 'A')->sum(function($r) {
-              return (float) $r->SURE;
-          });
-          $U_sure += $rows->where('ISLEM_TURU', 'U')->sum(function($r) {
-              return (float) $r->SURE;
-          });
-          $D_sure += $rows->where('ISLEM_TURU', 'D')->sum(function($r) {
-              return (float) $r->SURE;
-          });
+      // Sureleri hesapla
+      $A_sure += $rows->where('ISLEM_TURU', 'A')->sum(function ($r) {
+        return (float) $r->SURE;
+      });
+      $U_sure += $rows->where('ISLEM_TURU', 'U')->sum(function ($r) {
+        return (float) $r->SURE;
+      });
+      $D_sure += $rows->where('ISLEM_TURU', 'D')->sum(function ($r) {
+        return (float) $r->SURE;
+      });
 
-          $TOPLAM_URETILEN += $EVRAK->SF_MIKTAR;
+      $TOPLAM_URETILEN += $EVRAK->SF_MIKTAR;
 
-          $SURECLER[] = [
-              'id' => $EVRAK->ID,
-              'veriler' => $rows
-          ];
-      }
-
-
-      $gerceklesenSure = $A_sure + $U_sure;
-      $planlananSure = array_sum($rMiktarData);
-
-      // Verimlilik hesaplama
-      $verimlilik = ($gerceklesenSure > 0) 
-        ? round(($planlananSure / $gerceklesenSure) * 100, 2)
-        : 0;
+      $SURECLER[] = [
+        'id' => $EVRAK->ID,
+        'veriler' => $rows
+      ];
+    }
 
 
-      return response()->json([
-          'verimlilik' => $verimlilik,
-          'planlanan' => $planlananSure,
-          'gerceklesen' => $gerceklesenSure,
-          'categories' => $categories,
-          'rMiktar' => $rMiktarData,
-          'rTmyMamul' => [$gerceklesenSure],
-          'MPSBilgileri' => $data,
-          'AYAR' => $A_sure,
-          'URETIM' => $U_sure,
-          'DURMA' => $D_sure,
-          'TOPLAM_MIKTAR' => $TOPLAM_URETILEN,
-          'SURECLER' => $SURECLER,
-          'PLANLANAN_MIKTAR' => $PLANLANAN_MIKTAR
-      ]);
+    $gerceklesenSure = $A_sure + $U_sure;
+    $planlananSure = array_sum($rMiktarData);
+
+    // Verimlilik hesaplama
+    $verimlilik = ($gerceklesenSure > 0)
+      ? round(($planlananSure / $gerceklesenSure) * 100, 2)
+      : 0;
+
+
+    return response()->json([
+      'verimlilik' => $verimlilik,
+      'planlanan' => $planlananSure,
+      'gerceklesen' => $gerceklesenSure,
+      'categories' => $categories,
+      'rMiktar' => $rMiktarData,
+      'rTmyMamul' => [$gerceklesenSure],
+      'MPSBilgileri' => $data,
+      'AYAR' => $A_sure,
+      'URETIM' => $U_sure,
+      'DURMA' => $D_sure,
+      'TOPLAM_MIKTAR' => $TOPLAM_URETILEN,
+      'SURECLER' => $SURECLER,
+      'PLANLANAN_MIKTAR' => $PLANLANAN_MIKTAR
+    ]);
   }
-  public function mps_olustur(Request $request,&$mpsCount = 0,$KAYNAK_MPS = '',&$visited = [])
+  public function mps_olustur(Request $request, &$mpsCount = 0, $KAYNAK_MPS = '', &$visited = [])
   {
-    if(Auth::check()) {
+    if (Auth::check()) {
       $u = Auth::user();
     }
 
     @$KOD = $request->KOD;
     @$AD = $request->AD;
     @$EVRAKNO = $request->EVRAKNO;
-    $firma = trim($u->firma).'.dbo.';
+    $firma = trim($u->firma) . '.dbo.';
 
     $sonuclar = [];
 
 
-    $MPS = DB::table($firma.'mmps10e')->where('EVRAKNO',$EVRAKNO)->first();
+    $MPS = DB::table($firma . 'mmps10e')->where('EVRAKNO', $EVRAKNO)->first();
 
-    for($i = 0;$i < count($KOD);$i++)
-    {
+    for ($i = 0; $i < count($KOD); $i++) {
       $key = $KOD[$i] . '_' . $i + $mpsCount;
 
-      if(isset($visited[$key])) continue;
+      if (isset($visited[$key]))
+        continue;
       $visited[$key] = true;
 
-      if(DB::table($firma.'bomu01e')->where('MAMULCODE',$KOD[$i])->exists())
-      {
+      if (DB::table($firma . 'bomu01e')->where('MAMULCODE', $KOD[$i])->exists()) {
         $tarihKodu = date('ymd');
-        $sonEvrak = DB::table($firma.'mmps10e')
-            ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
-            ->where('EVRAKNO', 'like', '%'.$tarihKodu.'-%')
-            ->first();
+        $sonEvrak = DB::table($firma . 'mmps10e')
+          ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
+          ->where('EVRAKNO', 'like', '%' . $tarihKodu . '-%')
+          ->first();
         $tipKodu = substr($EVRAKNO, 0, 1);
         // dd($sonEvrak,$tipKodu);
 
         if ($sonEvrak && $sonEvrak->EVRAKNO) {
-            $parca = explode('-', $sonEvrak->EVRAKNO);
-            $sayac = isset($parca[1]) ? (int)$parca[1] + 1 : 1;
+          $parca = explode('-', $sonEvrak->EVRAKNO);
+          $sayac = isset($parca[1]) ? (int) $parca[1] + 1 : 1;
         } else {
-            $sayac = 1;
+          $sayac = 1;
         }
 
         $NEXT_EVRAKNO = sprintf('%s%s-%03d', $tipKodu, $tarihKodu, $sayac);
 
-        DB::table($firma.'mmps10e')->insert([
-            'EVRAKNO' => $NEXT_EVRAKNO,
-            'MAMULSTOKKODU' => $KOD[$i],
-            'MAMULSTOKADI' => $AD[$i],
-            'HAVUZKODU' => $MPS->HAVUZKODU,
-            'STATUS' => $MPS->STATUS,
-            'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
-            'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
-            'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
-            'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
-            'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
-            'PROJEKODU' => $MPS->PROJEKODU,
-            'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
-            'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
-            'EGBS_TARIH' => $MPS->EGBS_TARIH,
-            'EGBT_TARIH' => $MPS->EGBT_TARIH,
-            'PLBS_TARIH' => $MPS->PLBS_TARIH,
-            'REBS_TARIH' => $MPS->REBS_TARIH,
-            'REBT_TARIH' => $MPS->REBT_TARIH,
-            'GK_1' => $MPS->GK_1,
-            'GK_2' => $MPS->GK_2,
-            'GK_3' => $MPS->GK_3,
-            'GK_4' => $MPS->GK_4,
-            'GK_5' => $MPS->GK_5,
-            'GK_6' => $MPS->GK_6,
-            'GK_7' => $MPS->GK_7,
-            'GK_8' => $MPS->GK_8,
-            'GK_9' => $MPS->GK_9,
-            'GK_10' => $MPS->GK_10,
-            'NOT_1' => $MPS->NOT_1,
-            'NOT_2' => $MPS->NOT_2,
-            'MUSTERIKODU' => $MPS->MUSTERIKODU,
-            'SIPNO' => $MPS->SIPNO,
-            'SIPARTNO' => $MPS->SIPARTNO,
-            'LAST_TRNUM' => $MPS->LAST_TRNUM,
-            'created_at' => now(),
-            'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI,
-            'ANAMPS' => $EVRAKNO,
-            'KAYNAK_MPS' => $KAYNAK_MPS
+        DB::table($firma . 'mmps10e')->insert([
+          'EVRAKNO' => $NEXT_EVRAKNO,
+          'MAMULSTOKKODU' => $KOD[$i],
+          'MAMULSTOKADI' => $AD[$i],
+          'HAVUZKODU' => $MPS->HAVUZKODU,
+          'STATUS' => $MPS->STATUS,
+          'SF_PAKETSAYISI' => $MPS->SF_PAKETSAYISI,
+          'SF_PAKETICERIGI' => $MPS->SF_PAKETICERIGI,
+          'SF_TOPLAMMIKTAR' => $MPS->SF_TOPLAMMIKTAR,
+          'URETIMDENTESTARIH' => $MPS->URETIMDENTESTARIH,
+          'BOMU01_FOYNO' => $MPS->BOMU01_FOYNO,
+          'PROJEKODU' => $MPS->PROJEKODU,
+          'ACIK_KAPALI' => $MPS->ACIK_KAPALI,
+          'KAPANIS_TARIHI' => $MPS->KAPANIS_TARIHI,
+          'EGBS_TARIH' => $MPS->EGBS_TARIH,
+          'EGBT_TARIH' => $MPS->EGBT_TARIH,
+          'PLBS_TARIH' => $MPS->PLBS_TARIH,
+          'REBS_TARIH' => $MPS->REBS_TARIH,
+          'REBT_TARIH' => $MPS->REBT_TARIH,
+          'GK_1' => $MPS->GK_1,
+          'GK_2' => $MPS->GK_2,
+          'GK_3' => $MPS->GK_3,
+          'GK_4' => $MPS->GK_4,
+          'GK_5' => $MPS->GK_5,
+          'GK_6' => $MPS->GK_6,
+          'GK_7' => $MPS->GK_7,
+          'GK_8' => $MPS->GK_8,
+          'GK_9' => $MPS->GK_9,
+          'GK_10' => $MPS->GK_10,
+          'NOT_1' => $MPS->NOT_1,
+          'NOT_2' => $MPS->NOT_2,
+          'MUSTERIKODU' => $MPS->MUSTERIKODU,
+          'SIPNO' => $MPS->SIPNO,
+          'SIPARTNO' => $MPS->SIPARTNO,
+          'LAST_TRNUM' => $MPS->LAST_TRNUM,
+          'created_at' => now(),
+          'TAMAMLANAN_URETIM_FISI_MIKTARI' => $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI,
+          'ANAMPS' => $EVRAKNO,
+          'KAYNAK_MPS' => $KAYNAK_MPS
         ]);
 
         $mpsCount++;
@@ -952,10 +952,10 @@ class mmps10_controller extends Controller
         ORDER BY B01T.SIRANO, B01T.BOMREC_INPUTTYPE ASC;";
 
         $table = DB::select($sql_sorgu);
-        
-        for ($j=0; $j < count($table); $j++) { 
+
+        for ($j = 0; $j < count($table); $j++) {
           $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
-          $JOBNO = $NEXT_EVRAKNO.$TRNUM;
+          $JOBNO = $NEXT_EVRAKNO . $TRNUM;
 
           $row = $table[$j];
           $TRNUM = str_pad($j, 6, "0", STR_PAD_LEFT);
@@ -966,7 +966,7 @@ class mmps10_controller extends Controller
           $miktar2 = $row->R_MIKTAR2 ?? 0;
           $toplam = $miktar0 + $miktar1 + $miktar2;
 
-          DB::table($firma.'mmps10t')->insert([
+          DB::table($firma . 'mmps10t')->insert([
             'EVRAKNO' => $NEXT_EVRAKNO,
             'TRNUM' => $TRNUM,
             'JOBNO' => $JOBNO,
@@ -1012,47 +1012,48 @@ class mmps10_controller extends Controller
 
       foreach ($hammaddeler as $hm) {
         $this->mps_olustur(new Request([
-            'KOD' => [$hm->BOMREC_KAYNAKCODE],
-            'AD' => [$hm->BOMREC_KAYNAKCODE],
-            'EVRAKNO' => $EVRAKNO,
-            'MPSEVRAKTYPE' => $tipKodu
-        ]),$mpsCount,$tipKodu.$sonEvrak->EVRAKNO,$visited);
+          'KOD' => [$hm->BOMREC_KAYNAKCODE],
+          'AD' => [$hm->BOMREC_KAYNAKCODE],
+          'EVRAKNO' => $EVRAKNO,
+          'MPSEVRAKTYPE' => $tipKodu
+        ]), $mpsCount, $tipKodu . $sonEvrak->EVRAKNO, $visited);
       }
     }
     return $sonuclar[] = [
-          'status' => 'ok',
-          'count' => $mpsCount,
-      ];;
+      'status' => 'ok',
+      'count' => $mpsCount,
+    ];
+    ;
   }
 
   public function mps_maliyeti_hesapla(Request $request)
   {
-      $u = Auth::user(); // auth middleware varsayımı
-      $firma = trim($u->firma) . '.dbo.';
-  
-      $mmps = DB::table($firma.'mmps10e')
-          ->where('EVRAKNO', $request->EVRAKNO)
-          ->first();
-  
-      if (!$mmps) {
-          return response()->json([
-              'error' => 'MPS kaydı bulunamadı'
-          ], 404);
-      }
-      $tarih = date('Y/m/d', strtotime($mmps->KAPANIS_TARIHI));
-  
-      $kur = DB::table($firma.'excratt')
-          ->where('CODEFROM', $request->PB)
-          ->where('EVRAKNOTARIH', $tarih)
-          ->first();
-  
-      if (!$kur) {
-          return response()->json([
-              'error' => 'Kur bilgisi bulunamadı'
-          ], 404);
-      }
-  
-      return $kur->KURS_1;
+    $u = Auth::user(); // auth middleware varsayımı
+    $firma = trim($u->firma) . '.dbo.';
+
+    $mmps = DB::table($firma . 'mmps10e')
+      ->where('EVRAKNO', $request->EVRAKNO)
+      ->first();
+
+    if (!$mmps) {
+      return response()->json([
+        'error' => 'MPS kaydı bulunamadı'
+      ], 404);
+    }
+    $tarih = date('Y/m/d', strtotime($mmps->KAPANIS_TARIHI));
+
+    $kur = DB::table('excratt')
+      ->where('CODEFROM', $request->PB)
+      ->where('EVRAKNOTARIH', $tarih)
+      ->first();
+
+    if (!$kur) {
+      return response()->json([
+        'error' => 'Kur bilgisi bulunamadı'
+      ], 404);
+    }
+
+    return $kur->KURS_1;
   }
-  
+
 }

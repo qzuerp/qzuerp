@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class DovizKaydetme extends Command
@@ -20,10 +19,6 @@ class DovizKaydetme extends Command
 
     public function handle()
     {
-        if(Auth::check()) {
-            $u = Auth::user();
-        }
-        $firma = trim($u->firma).'.dbo.';
         // TCMB'den son geçerli günü otomatik bulan fonksiyon
         $xml = $this->getLatestTCMBData();
 
@@ -45,7 +40,7 @@ class DovizKaydetme extends Command
 
             if (!empty($buyingRate) && !is_array($buyingRate)) {
 
-                DB::table($firma.'excratt')->insert([
+                DB::table('excratt')->insert([
                     'EVRAKNOTARIH' => $tarih,
                     'TRNUM'        => $trnum,
                     'SRNUM'        => $trnum,

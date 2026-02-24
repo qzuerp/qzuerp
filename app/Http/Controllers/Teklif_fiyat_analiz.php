@@ -19,10 +19,10 @@ class Teklif_fiyat_analiz extends Controller
     {
         // dd($request->all());
         $kart_islemleri = $request->input('kart_islemleri');
-        if(Auth::check()) {
+        if (Auth::check()) {
             $u = Auth::user();
         }
-        $firma = trim($u->firma).'.dbo.';
+        $firma = trim($u->firma) . '.dbo.';
         // $firma = $request->input('firma').'.dbo.';
 
         // Header bilgileri
@@ -41,12 +41,9 @@ class Teklif_fiyat_analiz extends Controller
 
         // $ESAS_MUSTERI;
 
-        if($MUSTERI == null)
-        {
-            $ESAS_MUSTERI = $UNVAN_1."|".$UNVAN_2;
-        }
-        else
-        {
+        if ($MUSTERI == null) {
+            $ESAS_MUSTERI = $UNVAN_1 . "|" . $UNVAN_2;
+        } else {
             $ESAS_MUSTERI = $MUSTERI;
         }
 
@@ -103,10 +100,10 @@ class Teklif_fiyat_analiz extends Controller
         switch ($kart_islemleri) {
             case 'kart_olustur':
                 // dd($request->all());
-                $son_evrak = DB::table($firma.'tekl20e')->select('EVRAKNO')->orderBy('EVRAKNO', 'desc')->first();
+                $son_evrak = DB::table($firma . 'tekl20e')->select('EVRAKNO')->orderBy('EVRAKNO', 'desc')->first();
                 $son_evrak == null ? $EVRAKNO = 1 : $EVRAKNO = $son_evrak->EVRAKNO + 1;
-                FunctionHelpers::Logla('TEKL20',$EVRAKNO,'C',$TARIH);
-                DB::table($firma.'tekl20e')->insert([
+                FunctionHelpers::Logla('TEKL20', $EVRAKNO, 'C', $TARIH);
+                DB::table($firma . 'tekl20e')->insert([
                     'TARIH' => $TARIH,
                     'EVRAKNO' => $EVRAKNO,
                     'TEKLIF_FIYAT_PB' => $TEKLIF,
@@ -119,14 +116,14 @@ class Teklif_fiyat_analiz extends Controller
                     '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI
                 ]);
 
-                $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
+                $max_id = DB::table($firma . 'tekl20e')->max('EVRAKNO');
 
                 // Satırları ekle
                 if (!empty($TRNUM)) {
                     for ($i = 0; $i < count($TRNUM); $i++) {
-                        $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-                        
-                        DB::table($firma.'tekl20t')->insert([
+                        $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
+
+                        DB::table($firma . 'tekl20t')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'KAYNAKTYPE' => 'M',
                             'KOD' => $KOD[$i],
@@ -148,13 +145,13 @@ class Teklif_fiyat_analiz extends Controller
                     }
                 }
 
-                return redirect('teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Kart oluşturuldu');
+                return redirect('teklif_fiyat_analiz?ID=' . $max_id)->with('success', 'Kart oluşturuldu');
                 break;
 
             case 'kart_duzenle':
-            FunctionHelpers::Logla('TEKL20',$EVRAKNO,'W',$TARIH);
+                FunctionHelpers::Logla('TEKL20', $EVRAKNO, 'W', $TARIH);
                 // E tablosunu güncelle
-                DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->update([
+                DB::table($firma . 'tekl20e')->where('EVRAKNO', $EVRAKNO)->update([
                     'TARIH' => $TARIH,
                     'TEKLIF_FIYAT_PB' => $TEKLIF,
                     'BASE_DF_CARIHESAP' => $ESAS_MUSTERI,
@@ -169,8 +166,8 @@ class Teklif_fiyat_analiz extends Controller
                 // Mevcut ve yeni TRNUM'ları karşılaştır
                 $currentTRNUMS = [];
                 $liveTRNUMS = [];
-                
-                $currentTRNUMSObj = DB::table($firma.'tekl20t')
+
+                $currentTRNUMSObj = DB::table($firma . 'tekl20t')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
@@ -189,11 +186,11 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Satırları güncelle veya yeni satır ekle
                 for ($i = 0; $i < count($TRNUM); $i++) {
-                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+                    $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
                     if (in_array($TRNUM[$i], $newTRNUMS)) {
                         // Yeni satır ekle
-                        DB::table($firma.'tekl20t')->insert([
+                        DB::table($firma . 'tekl20t')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'KAYNAKTYPE' => 'M',
                             'KOD' => $KOD[$i],
@@ -216,7 +213,7 @@ class Teklif_fiyat_analiz extends Controller
 
                     if (in_array($TRNUM[$i], $updateTRNUMS)) {
                         // Mevcut satırı güncelle
-                        DB::table($firma.'tekl20t')
+                        DB::table($firma . 'tekl20t')
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM[$i])
                             ->update([
@@ -241,7 +238,7 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS as $deleteTRNUM) {
-                    DB::table($firma.'tekl20t')
+                    DB::table($firma . 'tekl20t')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
                         ->delete();
@@ -250,8 +247,8 @@ class Teklif_fiyat_analiz extends Controller
 
                 $currentTRNUMS3 = [];
                 $liveTRNUMS3 = [];
-                
-                $currentTRNUMSObj3 = DB::table($firma.'tekl20tı')
+
+                $currentTRNUMSObj3 = DB::table($firma . 'tekl20tı')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
@@ -270,11 +267,11 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Satırları güncelle veya yeni satır ekle
                 for ($i = 0; $i < count($TRNUM3); $i++) {
-                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+                    $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
                     if (in_array($TRNUM3[$i], $newTRNUMS3)) {
                         // Yeni satır ekle
-                        DB::table($firma.'tekl20tı')->insert([
+                        DB::table($firma . 'tekl20tı')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'KAYNAKTYPE' => $KAYNAK_TIPI2[$i],
                             'KOD' => $KOD2[$i],
@@ -298,7 +295,7 @@ class Teklif_fiyat_analiz extends Controller
 
                     if (in_array($TRNUM3[$i], $updateTRNUMS3)) {
                         // Mevcut satırı güncelle
-                        DB::table($firma.'tekl20tı')
+                        DB::table($firma . 'tekl20tı')
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM3[$i])
                             ->update([
@@ -325,7 +322,7 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS3 as $deleteTRNUM) {
-                    DB::table($firma.'tekl20tı')
+                    DB::table($firma . 'tekl20tı')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
                         ->delete();
@@ -333,8 +330,8 @@ class Teklif_fiyat_analiz extends Controller
 
                 $currentTRNUMS2 = [];
                 $liveTRNUMS2 = [];
-                
-                $currentTRNUMSObj2 = DB::table($firma.'tekl20tı')
+
+                $currentTRNUMSObj2 = DB::table($firma . 'tekl20tı')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->select('TRNUM')
                     ->get();
@@ -352,11 +349,11 @@ class Teklif_fiyat_analiz extends Controller
                 $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
 
                 for ($i = 0; $i < count($TRNUM2); $i++) {
-                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+                    $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
                     if (in_array($TRNUM2[$i], $newTRNUMS2)) {
                         // Yeni satır ekle
-                        DB::table($firma.'tekl20tr')->insert([
+                        DB::table($firma . 'tekl20tr')->insert([
                             'EVRAKNO' => $EVRAKNO,
                             'MASRAF_TURU' => $MASRAF_TURU[$i],
                             'MASRAF_ACIKLAMASI' => $MASRAF_ACIKLAMASI[$i],
@@ -370,7 +367,7 @@ class Teklif_fiyat_analiz extends Controller
 
                     if (in_array($TRNUM2[$i], $updateTRNUMS2)) {
                         // Mevcut satırı güncelle
-                        DB::table($firma.'tekl20tr')
+                        DB::table($firma . 'tekl20tr')
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM2[$i])
                             ->update([
@@ -386,22 +383,22 @@ class Teklif_fiyat_analiz extends Controller
 
                 // Silinen satırları kaldır
                 foreach ($deleteTRNUMS2 as $deleteTRNUM2) {
-                    DB::table($firma.'tekl20tr')
+                    DB::table($firma . 'tekl20tr')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM2)
                         ->delete();
                 }
 
-                $veri = DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->first();
-                return redirect('teklif_fiyat_analiz?ID='.$request->ID_TO_REDIRECT)->with('success', 'Düzenleme işlemi başarılı');
+                $veri = DB::table($firma . 'tekl20e')->where('EVRAKNO', $EVRAKNO)->first();
+                return redirect('teklif_fiyat_analiz?ID=' . $request->ID_TO_REDIRECT)->with('success', 'Düzenleme işlemi başarılı');
                 break;
 
             case 'kart_sil':
-                FunctionHelpers::Logla('TEKL20',$EVRAKNO,'D',$TARIH);
-                DB::table($firma.'tekl20e')->where('EVRAKNO', $EVRAKNO)->delete();
-                DB::table($firma.'tekl20tı')->where('EVRAKNO', $EVRAKNO)->delete();
-                $max_id = DB::table($firma.'tekl20e')->max('EVRAKNO');
-                return redirect('teklif_fiyat_analiz?ID='.$max_id)->with('success', 'Silme İşlemi Başarılı');
+                FunctionHelpers::Logla('TEKL20', $EVRAKNO, 'D', $TARIH);
+                DB::table($firma . 'tekl20e')->where('EVRAKNO', $EVRAKNO)->delete();
+                DB::table($firma . 'tekl20tı')->where('EVRAKNO', $EVRAKNO)->delete();
+                $max_id = DB::table($firma . 'tekl20e')->max('EVRAKNO');
+                return redirect('teklif_fiyat_analiz?ID=' . $max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
             case 'yazdir':
                 $data = [
@@ -433,25 +430,23 @@ class Teklif_fiyat_analiz extends Controller
         $selectdata = "";
         $selectdata2 = [];
         $kod = $request->input('kod');
-        $firma = $request->input('firma').'.dbo.';
-        switch($islem) {
+        $firma = $request->input('firma') . '.dbo.';
+        switch ($islem) {
             case 'M':
-                if(isset($kod)){
-                    $STOK00_VERILER=DB::table($firma.'stok00')
-                    ->where('KOD',$kod)
-                    ->first();
+                if (isset($kod)) {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')
+                        ->where('KOD', $kod)
+                        ->first();
 
                     $selectdata .= $STOK00_VERILER->IUNIT;
-                }
-                else
-                {
-                    $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+                } else {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
                     foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
                         // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
                         $selectdata2[] = [
-                            "KOD"   => $STOK00_VERI->KOD,
-                            "AD"    => $STOK00_VERI->AD,
+                            "KOD" => $STOK00_VERI->KOD,
+                            "AD" => $STOK00_VERI->AD,
                             "IUNIT" => $STOK00_VERI->IUNIT
                         ];
                     }
@@ -461,76 +456,74 @@ class Teklif_fiyat_analiz extends Controller
                     'selectdata2' => $selectdata2
                 ]);
 
-            break;
-        case 'H':
-                if(isset($kod)){
-                    $STOK00_VERILER=DB::table($firma.'stok00')
-                    ->where('KOD',$kod)
-                    ->first();
+                break;
+            case 'H':
+                if (isset($kod)) {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')
+                        ->where('KOD', $kod)
+                        ->first();
 
                     $selectdata .= $STOK00_VERILER->IUNIT;
-                }
-                else
-                {
-                    $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+                } else {
+                    $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
                     foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
-            
+
                         // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
                         $selectdata2[] = [
-                            "KOD"   => $STOK00_VERI->KOD,
-                            "AD"    => $STOK00_VERI->AD,
+                            "KOD" => $STOK00_VERI->KOD,
+                            "AD" => $STOK00_VERI->AD,
                             "IUNIT" => $STOK00_VERI->IUNIT
                         ];
                     }
-                    
+
                 }
                 return response()->json([
                     'selectdata' => $selectdata,
                     'selectdata2' => $selectdata2
                 ]);
 
-            break;
+                break;
 
-        case 'I':
+            case 'I':
 
-            $IMLT00_VERILER=DB::table($firma.'imlt00')->orderBy('id', 'ASC')->get();
+                $IMLT00_VERILER = DB::table($firma . 'imlt00')->orderBy('id', 'ASC')->get();
 
-            foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
+                foreach ($IMLT00_VERILER as $key => $IMLT00_VERI) {
 
-                // $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
-                $selectdata2[] = [
-                    "KOD"   => $IMLT00_VERI->KOD,
-                    "AD"    => $IMLT00_VERI->AD,
-                    "IUNIT" => "TZGH"
-                ];
-            }
-            return response()->json([
-                'selectdata' => $selectdata,
-                'selectdata2' => $selectdata2
-            ]);
+                    // $selectdata .= "<option value='".$IMLT00_VERI->KOD."|||".$IMLT00_VERI->AD."|||"."TZGH"."'>".$IMLT00_VERI->KOD." | ".$IMLT00_VERI->AD."</option>";
+                    $selectdata2[] = [
+                        "KOD" => $IMLT00_VERI->KOD,
+                        "AD" => $IMLT00_VERI->AD,
+                        "IUNIT" => "TZGH"
+                    ];
+                }
+                return response()->json([
+                    'selectdata' => $selectdata,
+                    'selectdata2' => $selectdata2
+                ]);
 
-            break;
+                break;
 
-        case 'Y':
+            case 'Y':
 
-            $STOK00_VERILER=DB::table($firma.'stok00')->orderBy('id', 'ASC')->get();
+                $STOK00_VERILER = DB::table($firma . 'stok00')->orderBy('id', 'ASC')->get();
 
-            foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
+                foreach ($STOK00_VERILER as $key => $STOK00_VERI) {
 
-                // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
-                $selectdata2[] = [
-                    "KOD"   => $STOK00_VERI->KOD,
-                    "AD"    => $STOK00_VERI->AD,
-                    "IUNIT" => $STOK00_VERI->IUNIT
-                ];
-            }
-            return response()->json([
-                'selectdata' => $selectdata,
-                'selectdata2' => $selectdata2
-            ]);
+                    // $selectdata .= "<option value='".$STOK00_VERI->KOD."|||".$STOK00_VERI->AD."|||".$STOK00_VERI->IUNIT."'>".$STOK00_VERI->KOD." | ".$STOK00_VERI->AD."</option>";
+                    $selectdata2[] = [
+                        "KOD" => $STOK00_VERI->KOD,
+                        "AD" => $STOK00_VERI->AD,
+                        "IUNIT" => $STOK00_VERI->IUNIT
+                    ];
+                }
+                return response()->json([
+                    'selectdata' => $selectdata,
+                    'selectdata2' => $selectdata2
+                ]);
 
-            break;
+                break;
         }
     }
 
@@ -538,12 +531,12 @@ class Teklif_fiyat_analiz extends Controller
     {
         try {
             $user = Auth::user();
-            $firma = trim($user->firma).'.dbo.';
-            $veri = DB::table($firma.'stdm10t')
+            $firma = trim($user->firma) . '.dbo.';
+            $veri = DB::table($firma . 'stdm10t')
                 ->where('VALIDAFTERTARIH', '=', $request->input('TARIH'))
                 ->where('ENDEKS', '=', $request->input('ENDEX'))
                 ->where('EVRAKNO', '=', $request->input('EVRAKNO'))
-            ->get();
+                ->get();
 
             if (!$veri) {
                 return response()->json([
@@ -568,40 +561,38 @@ class Teklif_fiyat_analiz extends Controller
     }
     public function satir_fiyat_hesapla(Request $request)
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $u = Auth::user();
         }
-        $firma = trim($u->firma).'.dbo.';
+        $firma = trim($u->firma) . '.dbo.';
 
         $KOD = $request->KOD;
         $PB = $request->PB;
         $TARIH = $request->TARIH;
         $ENDEX = $request->ENDEX;
 
-        $veri = DB::table($firma.'stdm10t')
-        ->where('kod', $KOD)
-        ->where('ENDEKS', '=', $ENDEX)
-        ->where('VALIDAFTERTARIH', '<=', $TARIH)
-        ->orderBy('VALIDAFTERTARIH', 'desc')
-        ->first();
+        $veri = DB::table($firma . 'stdm10t')
+            ->where('kod', $KOD)
+            ->where('ENDEKS', '=', $ENDEX)
+            ->where('VALIDAFTERTARIH', '<=', $TARIH)
+            ->orderBy('VALIDAFTERTARIH', 'desc')
+            ->first();
 
 
         // dd($veri);
         $FIYAT = 0;
         try {
-            if($veri->PARABIRIMI == $PB) {
+            if ($veri->PARABIRIMI == $PB) {
                 $FIYAT = $veri->TUTAR;
-            }
-            else
-            {
+            } else {
                 $tarih = date('Y/m/d', strtotime($TARIH));
 
-                $kur1 = DB::table($firma.'excratt')
-                    ->where('CODEFROM',  $PB)
+                $kur1 = DB::table('excratt')
+                    ->where('CODEFROM', $PB)
                     ->where('EVRAKNOTARIH', $tarih)
                     ->first();
 
-                $kur2 = DB::table($firma.'excratt')
+                $kur2 = DB::table('excratt')
                     ->where('CODEFROM', $veri->PARABIRIMI)
                     ->where('EVRAKNOTARIH', $tarih)
                     ->first();
@@ -626,14 +617,14 @@ class Teklif_fiyat_analiz extends Controller
             $firma = trim($user->firma) . '.dbo.';
             $tarih = $request->input('tarih');
             $para_birimi = $request->input('parabirimi');
-    
+
             $istenenTarih = Carbon::createFromFormat('Y-m-d', $tarih)->startOfDay();
-    
+
             $veri = DB::table('EXCRATT')
                 ->where('CODEFROM', $para_birimi)
                 ->where('EVRAKNOTARIH', $istenenTarih->format('Y/m/d'))
                 ->first();
-    
+
             if (!$veri) {
                 $veri = DB::table('EXCRATT')
                     ->where('CODEFROM', $para_birimi)
@@ -641,14 +632,14 @@ class Teklif_fiyat_analiz extends Controller
                     ->orderBy('EVRAKNOTARIH', 'desc')
                     ->first();
             }
-    
+
             if (!$veri) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Belirtilen para birimi için kur verisi bulunamadı.'
                 ], 404);
             }
-    
+
             // Bulunan veriyi döndür
             return response()->json([
                 'success' => true,
@@ -657,7 +648,7 @@ class Teklif_fiyat_analiz extends Controller
                     : 'Veri başarıyla getirildi.',
                 'data' => $veri,
             ], 200);
-    
+
         } catch (\Exception $e) {
             \Log::error('Doviz kur getirme hatası: ' . $e->getMessage());
             return response()->json([
@@ -666,13 +657,13 @@ class Teklif_fiyat_analiz extends Controller
             ], 500);
         }
     }
-    
+
     public function recetedenHesapla(Request $request)
     {
         $kod = $request->input('kod');
         $MIKTAR = $request->miktar;
         $user = Auth::user();
-        $database = trim($user->firma).'.dbo.';
+        $database = trim($user->firma) . '.dbo.';
 
         $sql = "
             SELECT
@@ -682,42 +673,42 @@ class Teklif_fiyat_analiz extends Controller
                 (CASE WHEN B01T.BOMREC_OPERASYON IS NULL THEN ' ' ELSE B01T.BOMREC_OPERASYON END) AS OPERASYON,
                 (CASE WHEN B01T.BOMREC_INPUTTYPE = 'I' THEN IM0.AD ELSE S002.AD END) AS KAYNAK_AD,
                 B01T.ACIKLAMA AS KAYNAK_BIRIM,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS R_MIKTAR0,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK1 / B01E1.MAMUL_MIKTAR AS R_MIKTAR1,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK2 / B01E1.MAMUL_MIKTAR AS R_MIKTAR2,
-                (".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR)
+                " . $MIKTAR . " * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS R_MIKTAR0,
+                " . $MIKTAR . " * B01T.BOMREC_KAYNAK1 / B01E1.MAMUL_MIKTAR AS R_MIKTAR1,
+                " . $MIKTAR . " * B01T.BOMREC_KAYNAK2 / B01E1.MAMUL_MIKTAR AS R_MIKTAR2,
+                (" . $MIKTAR . " * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR)
                 + (CASE WHEN B01T.BOMREC_KAYNAK0 IS NULL THEN 0 ELSE
-                    ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR END ) AS R_MIKTART,
-                ".$MIKTAR." * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS TI_SF_MIKTAR,
+                    " . $MIKTAR . " * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR END ) AS R_MIKTART,
+                " . $MIKTAR . " * B01T.BOMREC_KAYNAK0 / B01E1.MAMUL_MIKTAR AS TI_SF_MIKTAR,
                 S002.IUNIT AS TI_SF_SF_UNIT,
                 S00.AD AS MAMULSTOKADI,
                 B01E1.MAMUL_MIKTAR
-            FROM ".$database."STOK00 S00
-            LEFT JOIN ".$database."BOMU01E B01E1 ON B01E1.MAMULCODE = S00.KOD
-            LEFT JOIN ".$database."BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
-            LEFT JOIN ".$database."STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
-            LEFT JOIN ".$database."imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
-            LEFT JOIN ".$database."imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
+            FROM " . $database . "STOK00 S00
+            LEFT JOIN " . $database . "BOMU01E B01E1 ON B01E1.MAMULCODE = S00.KOD
+            LEFT JOIN " . $database . "BOMU01T B01T ON B01T.EVRAKNO = B01E1.EVRAKNO
+            LEFT JOIN " . $database . "STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
+            LEFT JOIN " . $database . "imlt01 IM01 ON IM01.KOD = B01T.BOMREC_OPERASYON
+            LEFT JOIN " . $database . "imlt00 IM0 ON IM0.KOD = B01T.BOMREC_KAYNAKCODE
             WHERE S00.KOD = ?
             AND B01T.EVRAKNO IS NOT NULL";
 
         $results = DB::select($sql, [$kod]);
         return response()->json($results);
     }
-    
+
     public function evrakNoGetir(Request $request)
     {
         $user = Auth::user();
-        $firma = trim($user->firma).'.dbo.';
+        $firma = trim($user->firma) . '.dbo.';
         $kod = $request->input('KOD');
 
-        $evrakNo = $evrakNo = DB::table($firma.'stdm10t')
-        ->where('kod', $request->KOD)
-        ->where('ENDEKS', $request->ENDEX)
-        ->where('VALIDAFTERTARIH', '<=', $request->TARIH)
-        ->orderBy('VALIDAFTERTARIH', 'desc')
-        ->first();
-    
+        $evrakNo = $evrakNo = DB::table($firma . 'stdm10t')
+            ->where('kod', $request->KOD)
+            ->where('ENDEKS', $request->ENDEX)
+            ->where('VALIDAFTERTARIH', '<=', $request->TARIH)
+            ->orderBy('VALIDAFTERTARIH', 'desc')
+            ->first();
+
         return response()->json([
             'success' => true,
             'veri' => $evrakNo

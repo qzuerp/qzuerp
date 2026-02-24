@@ -58,7 +58,7 @@ class teklif_fiyat_analizV2 extends Controller
                 continue;
             $insertData[] = [
                 'KAYNAKTYPE' => 'M',
-                'KOD' => $row[0],
+                'KOD' => (string) $row[0],
                 'STOK_AD1' => $row[1] ?? null,
                 'SF_MIKTAR' => $row[2],
                 'SF_SF_UNIT' => $row[3],
@@ -174,7 +174,7 @@ class teklif_fiyat_analizV2 extends Controller
         $SIRKET_EMAIL_1 = isset($request->SIRKET_EMAIL_1) ? $request->SIRKET_EMAIL_1 : ' ';
         $TERMIN_TARIHI = isset($request->TERMIN_TARIHI) ? $request->TERMIN_TARIHI : ' ';
         $TEKLIF_ONAYI = isset($request->TEKLIF_ONAYI) ? 1 : 0;
-        
+
         $KURTRNUM = isset($request->KURTRNUM) ? $request->KURTRNUM : ' ';
         $CODEFROM = isset($request->CODEFROM) ? $request->CODEFROM : ' ';
         $KURS_1 = isset($request->KURS_1) ? $request->KURS_1 : ' ';
@@ -264,15 +264,15 @@ class teklif_fiyat_analizV2 extends Controller
                     'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
 
-                DB::table($firma.'tekl20x')->where('EVRAKNO',$EVRAKNO)->delete();
-                for($i=0;$i < count($KURTRNUM);$i++)
-                DB::table($firma.'tekl20x')->insert([
-                   'EVRAKNO' => $EVRAKNO,
-                   'TRNUM' => $KURTRNUM[$i],
-                   'CODEFROM' => $CODEFROM[$i],
-                   'KURS_1' => $KURS_1[$i],
-                   'EVRAKNOTARIH' => $EVRAKNOTARIH[$i]
-                ]);
+                DB::table($firma . 'tekl20x')->where('EVRAKNO', $EVRAKNO)->delete();
+                for ($i = 0; $i < count($KURTRNUM); $i++)
+                    DB::table($firma . 'tekl20x')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TRNUM' => $KURTRNUM[$i],
+                        'CODEFROM' => $CODEFROM[$i],
+                        'KURS_1' => $KURS_1[$i],
+                        'EVRAKNOTARIH' => $EVRAKNOTARIH[$i]
+                    ]);
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
                 $currentTRNUMS = [];
@@ -407,7 +407,7 @@ class teklif_fiyat_analizV2 extends Controller
                             'SOKTAK' => $SOKTAK[$i],
                             'FIYAT2' => $FIYAT_2[$i],
                             'NOT' => $NOTT[$i],
-                            'OLCU' => $H_OLCU[$i] ??0,
+                            'OLCU' => $H_OLCU[$i] ?? 0,
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -439,7 +439,7 @@ class teklif_fiyat_analizV2 extends Controller
                                 'SOKTAK' => $SOKTAK[$i],
                                 'FIYAT2' => $FIYAT_2[$i],
                                 'NOT' => $NOTT[$i],
-                                'OLCU' => $H_OLCU[$i] ??0,
+                                'OLCU' => $H_OLCU[$i] ?? 0,
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -753,7 +753,7 @@ class teklif_fiyat_analizV2 extends Controller
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
         $tarih = date('Y/m/d', strtotime(@$request->tarih));
-        $veri = DB::table($firma.'excratt')->where('EVRAKNOTARIH', $tarih)->get();
+        $veri = DB::table('excratt')->where('EVRAKNOTARIH', $tarih)->get();
 
         $data = '';
 
