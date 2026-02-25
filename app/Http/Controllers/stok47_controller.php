@@ -205,7 +205,7 @@ class stok47_controller extends Controller
         
         FunctionHelpers::apply_mail_settings();
 
-        if(true)
+        if($CARIHESAPCODE == 'TAKIMHANE')
         {
           // dd('sa');
           $mails = DB::table($firma.'pers00')->where('NAME2', '12')->orWhere('NAME2','04')->get();
@@ -228,7 +228,7 @@ class stok47_controller extends Controller
               );
           }
         }
-        else if($CARIHESAPCODE == 'STS')
+        else if(true)
         {
           $mails = DB::table($firma.'pers00')->where('NAME2','04')->get();
           $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
