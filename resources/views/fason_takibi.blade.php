@@ -101,21 +101,21 @@
         S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4,
         S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
         S01.LOTNUMBER, S01.SERINO
-        FROM {$database}.vw_stok01 S01
-        Left Join {$database}.STOK00 S00 ON S00.KOD = S01.KOD 
-        Left Join {$database}.GDEF00 GDF ON GDF.KOD = S01.AMBCODE 
+        FROM {$database}vw_stok01 S01
+        Left Join {$database}STOK00 S00 ON S00.KOD = S01.KOD 
+        Left Join {$database}GDEF00 GDF ON GDF.KOD = S01.AMBCODE 
         Left Join (
             Select KOD,LOTNUMBER, created_at, MAX(EVRAKNO) AS EVRAKNO
-            From {$database}.stok63t
+            From {$database}stok63t
             Group By KOD, created_at, EVRAKNO,LOTNUMBER
         ) S63T_MAX 
             ON S01.KOD = S63T_MAX.KOD  
             AND S63T_MAX.LOTNUMBER = S01.LOTNUMBER
-        Left Join {$database}.stok63t S63T 
+        Left Join {$database}stok63t S63T 
             ON S63T.KOD = S63T_MAX.KOD 
             AND S63T.EVRAKNO = S63T_MAX.EVRAKNO 
             AND S63T.LOTNUMBER = S01.LOTNUMBER
-        left join {$database}.dosyalar00 D00 
+        left join {$database}dosyalar00 D00 
             ON D00.EVRAKNO = S01.KOD 
             AND D00.EVRAKTYPE = 'STOK00' 
             AND D00.DOSYATURU = 'GORSEL'
