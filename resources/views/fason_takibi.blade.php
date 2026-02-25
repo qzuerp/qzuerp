@@ -91,10 +91,10 @@
         GDF.GK_2,
         S01.MIKTAR SF_MIKTAR,
         S01.KOD,
-        S00.AD S_AD,
+        S00.AD STOK_ADI,
         S00.NAME2 STOK_ADI2,
         S00.REVNO,
-        S01.SF_SF_UNIT,
+        S01.SF_SF_UNIT as SF_UNIT,
         S63T.EVRAKNO,
         S63T_MAX.EVRAKNO IRSALIYE,
         S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4,
@@ -231,7 +231,7 @@
                         <div class="table-header-wrapper d-flex justify-content-between align-items-center">
                             <div>
                                 <h4 class="mb-1"><i class="fas fa-boxes mr-2"></i>Fason Takibi Listesi</h4>
-                                <p class="mb-0 opacity-75">Toplam {{ $tumEvraklar->count() }} kayıt</p>
+                                <p class="mb-0 opacity-75">Toplam kayıt</p>
                             </div>
                             <button class="export-btn" onclick="exportToExcel()">
                                 <i class="fas fa-file-excel"></i>Excel'e Aktar

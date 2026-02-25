@@ -1018,7 +1018,7 @@
 									</div>
 									<div class="col-md-2">
 										<label for="gecerlilik_tarih">GECERLILIK TARIHI</label>
-										<input type="date" name="GECERLILIK_TARIHI" id="GECERLILIK_TARIHI"
+										<input type="text" name="GECERLILIK_TARIHI" id="GECERLILIK_TARIHI"
 											data-bs-toggle="tooltip" data-bs-placement="top"
 											data-bs-title="GECERLILIK_TARIHI" class="form-control"
 											value="{{ @$kart_veri->GECERLILIK_TARIHI }}">
@@ -1191,6 +1191,7 @@
 															<thead>
 																<tr>
 																	<th>#</th>
+																	<th>SıraNo</th>
 																	<th style="min-width:280px; font-size: 13px !important;">
 																		Stok Kodu</th>
 																	<th style="min-width:200px; font-size: 13px !important;">
@@ -1215,6 +1216,9 @@
 																		<button type="button" class="btn btn-default"
 																			id="addRow"><i class="fa fa-plus"
 																				style="color: blue"></i></button>
+																	</td>
+																	<td>
+																		Sıra No
 																	</td>
 																	<td>
 																		<div class="d-flex" style="display: flex;">
@@ -1299,8 +1303,10 @@
 																		->where('EVRAKNO', @$kart_veri->EVRAKNO)
 																		->orderBy('TRNUM', 'ASC')
 																		->select('t.*')->get();
+																	$siraNo = 0;
 																	if (!$t_kart_veri->isEmpty()) {
 																		foreach ($t_kart_veri as $key => $veri) {
+																		$siraNo++;
 																@endphp
 																<tr>
 																	<input type="hidden" name="TRNUM[]"
@@ -1311,6 +1317,9 @@
 																		<button type='button' class='btn btn-default satir_detay' data-trnum="{{ $veri->TRNUM }}" data-bs-toggle="modal"
 																		data-bs-target="#satir_detay"><i
 																				class='fa fa-plus'></i></button>
+																	</td>
+																	<td>
+																		{{ $siraNo }}
 																	</td>
 																	<td><input type="text" name="KOD[]" value="{{$veri->KOD}}"
 																			class="form-control" readonly></td>
@@ -1397,60 +1406,64 @@
 															</thead>
 															<tbody>
 																	@php
+																		// 1️⃣ Veriyi çek
 																		$veri = DB::table($ekranTableTI)
-																			->where('EVRAKNO', @$evrakno)
-																			->orderBy('OR_TRNUM', 'ASC')
-																			->orderBy('TRNUM', 'ASC')
-																			->get()
-																			->groupBy('OR_TRNUM');
+																			->leftJoin($ekranTableT, $ekranTableTI.'.OR_TRNUM', '=', $ekranTableT.'.TRNUM')
+																			->where($ekranTableTI.'.EVRAKNO', @$evrakno)
+																			->orderBy($ekranTableTI.'.OR_TRNUM', 'ASC')
+																			->orderBy($ekranTableTI.'.TRNUM', 'ASC')
+																			->get([$ekranTableTI.'.*', $ekranTableT.'.KOD as MAMUL']);
 
-																		if (!$veri->isEmpty()) {
-																			foreach ($veri as $orTrnum => $grupVeri) {
+																		// 2️⃣ OR_TRNUM'a göre PHP collection ile gruplama
+																		$veriGrup = $veri->groupBy(function($item){
+																			return $item->OR_TRNUM;
+																		});
 																	@endphp
 
-																		@php
-																			foreach ($grupVeri as $key => $satir) {
-																		@endphp
-																		<tr>
-																			<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																			<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																	@if(!$veriGrup->isEmpty())
+																		@foreach($veriGrup as $orTrnum => $grupVeri)
+																			{{-- Grup başlığı --}}
+																			<tr class="group-footer" style="background-color: #f9f9f9;">
+																				<td colspan="7" class="text-right"><strong>{{ $grupVeri->first()->MAMUL }}</strong></td>
+																			</tr>
 
-																			<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																			<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																			<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																			<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																			<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																			<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																			<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																			<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																			<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																			<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																			<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																			<td>
-																				<button type='button' class='btn btn-default delete-row'>
-																					<i class='fa fa-minus' style='color: red'></i>
-																				</button>
-																			</td>
-																		</tr>
-																		@php
-																			}
-																		@endphp
+																			{{-- Grup içi satırlar --}}
+																			@foreach($grupVeri as $key => $satir)
+																				<tr>
+																					<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																					<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																					<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
 
-																		<!-- Grup Toplamı (İsteğe Bağlı) -->
-																		<tr class="group-footer" style="background-color: #f9f9f9;">
-																			<td colspan="8" class="text-right"><strong>Grup Toplamı:</strong></td>
-																			<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
-																			<td colspan="7"></td>
-																		</tr>
+																					<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																					<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																					<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																					<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																					<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																					<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
+																					<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
+																					<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																					<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
+																					<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																					<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
+																					<td>
+																						<button type='button' class='btn btn-default delete-row'>
+																							<i class='fa fa-minus' style='color: red'></i>
+																						</button>
+																					</td>
+																				</tr>
+																			@endforeach
 
-																		@php
-																		}
-																	}
-																	@endphp
+																			{{-- Grup toplamı --}}
+																			<tr class="group-footer" style="background-color: #f9f9f9;">
+																				<td colspan="11" class="text-right"><strong>Grup Toplamı:</strong></td>
+																				<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
+																				<td colspan="7"></td>
+																			</tr>
+																		@endforeach
+																	@endif
 															</tbody>
 														</table>
 													</div>
@@ -1623,22 +1636,6 @@
 
 
 		<script>
-			function stokAdiGetir3(veri) {
-				const veriler = veri.split("|||");
-				//$('#STOK_KODU_SHOW').val(veriler[0]);
-				$('#STOK_KOD').val(veriler[0]);
-				$('#KODADI').val(veriler[1]);
-				$('#ISLEM_BIRIMI').val(veriler[2]);
-			}
-			function stokAdiGetir4(veri) {
-				const veriler = veri.split("|||");
-				console.log(veriler);
-				//$('#STOK_KODU_SHOW').val(veriler[0]);
-				$('#STOK_KOD2').val(veriler[0]);
-				$('#KODADI2').val(veriler[1]);
-				$('#ISLEM_BIRIMI2').val(veriler[2]);
-			}
-
 			$('.satir_detay').on('click',function(){
 				aktifSatir = $(this).closest('tr');
 				$('#OR_TRNUM').val($(this).data('trnum'));
@@ -1716,9 +1713,9 @@
 										card.find('.TIME').val(ayar);
 										card.find('.PTIME').val(isleme);
 										card.find('.STIME').val(soktak);
-										card.find('.TOTAL').val(fiyat.toFixed(2));
-										card.find('.RES_TOTAL').val(fiyat.toFixed(2));
-										card.find('.tutar-input').val(fiyat2.toFixed(2));
+										card.find('.TOTAL').val(round(fiyat, 2));
+										card.find('.RES_TOTAL').val(round(fiyat, 2));
+										card.find('.tutar-input').val(round(fiyat2, 2));
 										card.find('.birim-select').val(TTEKLIF_BIRIMI).trigger('change');
 										card.find('.T_NOT').val(NOT);
 									}
@@ -1744,7 +1741,7 @@
 				const tutar = parseFloat($input.val()) || 0;
 				const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
 
-				$input.val((tutar / miktar).toFixed(2));
+				$input.val(round(tutar / miktar, 2));
 
 				hesapla();
 			});
@@ -1776,9 +1773,23 @@
 			if (codeFrom === "USD") {
 				$("input[name='FIYAT[]']").each(function () {
 					const base = parseFloat($(this).val()) || 0;
-					$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val((base / kurDeger).toFixed(3));
+					$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val(round(base / kurDeger, 3));
 				});
 			}
+
+
+			$('input[name="FIYAT2[]"]').each(function(){
+				const base = parseFloat($(this).val()) || 0;
+				const kurBirimi = $(this).closest("tr").find("input[name='PARA_BIRIMI2[]']").val();
+				let kur = 0;
+				$('input[name="CODEFROM[]"]').each(function () {
+					if(kurBirimi == $(this).val()){
+						kur = $(this).closest('tr').find('input[name="KURS_1[]"]').val();
+					}
+				});
+
+				$(this).closest("tr").find("input[name='FIYAT_2[]']").val(round(base / kur));
+			});
 		});
 
 			$(document).on('input', '.TIME, .PRICE, .PTIME, .STIME', function() {
@@ -1796,12 +1807,12 @@
 				var total = ayar + islem + s_islem;
 
 				// yeni alanlara yaz
-				card.find('.AYAR_TUTAR').val(ayar.toFixed(2));
-				card.find('.ISLEM_TUTAR').val(islem.toFixed(2));
-				card.find('.SOKTAK_TUTAR').val(s_islem.toFixed(2));
+				card.find('.AYAR_TUTAR').val(round(ayar, 2));
+				card.find('.ISLEM_TUTAR').val(round(islem, 2));
+				card.find('.SOKTAK_TUTAR').val(round(s_islem, 2));
 
 				// eski total alanı aynı
-				card.find('.TOTAL').val(total.toFixed(2));
+				card.find('.TOTAL').val(round(total, 2));
 
 			});
 
@@ -1818,7 +1829,7 @@
 					(tutar * Number(kur2.data.KURS_1 || 1)) /
 					Number(kur1.data.KURS_1 || 1);
 
-				$satir.find('.RES_TOTAL').val(total.toFixed(2));
+				$satir.find('.RES_TOTAL').val(round(total, 2));
 				hesapla();
 			});
 
@@ -1836,11 +1847,11 @@
 
 
 				let miktar = parseFloat($('#SF_MIKTAR').val());
-				$('.HESAPLANAN_FIYAT').val((toplam).toFixed(2));
+				$('.HESAPLANAN_FIYAT').val(round(toplam, 2));
 				if (!isNaN(miktar) && miktar !== 0) {
-					$('.HESAPLANAN_TUTAR').val((toplam * miktar).toFixed(2));
+					$('.HESAPLANAN_TUTAR').val(round(toplam * miktar, 2));
 				}
-				$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+toplam.toFixed(2)+ ' '+$('#teklif').val());
+				$('#TOPLANICAK_LABEL').text('Toplam Tutar: '+round(toplam, 2)+ ' '+$('#teklif').val());
 			}
 
 			var aktifSatir = null;
@@ -1960,10 +1971,10 @@
 				document.getElementById("OLCU1").addEventListener("input", function () {
 					const sonuc = agirlikHesapla(this.value);
 					$('#AGIRLIK').val(sonuc);
-					$('#AGIRLIK_SHOW').val(sonuc.toFixed(3));
+					$('#AGIRLIK_SHOW').val(round(sonuc, 3));
 
 					var fiyat = sonuc * $('#MALZEME_FIYATI').val();
-					$('#MALZEME_TUTARI').val(fiyat.toFixed(2));
+					$('#MALZEME_TUTARI').val(round(fiyat, 2));
 					hesapla();
 				});
 				$('#uygula').on('click', async function () {
@@ -1991,7 +2002,7 @@
 					aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val($('#SF_MIKTAR').val());
 					aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 					aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
-					aktifSatir.find('input[name="DOLAR_FIYAT[]"]').val(($('#FIYAT').val() / dolarKur.data.KURS_1).toFixed(2));
+					aktifSatir.find('input[name="DOLAR_FIYAT[]"]').val(round($('#FIYAT').val() / dolarKur.data.KURS_1));
 					aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
 					operasyonlariTabloyaBas();
 				});
@@ -2037,7 +2048,7 @@
 							<td><input type="text" name="NOTT[]" value="" class="form-control" readonly></td>
 							<td class="text-end"><input type="text" name="FIYAT2[]" value="${TUTAR}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="TUTAR2[]" value="${(TUTAR * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>
+							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
 							<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
 						</tr>`;
@@ -2074,7 +2085,7 @@
 							<td><input type="text" name="NOTT[]" value="${NOT}" class="form-control" readonly></td>
 							<td class="text-end"><input type="text" name="FIYAT2[]" value="${total}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="FIYAT_2[]" value="${FIYAT2 ?? ''}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="TUTAR2[]" value="${(total * SF_MIKTAR).toFixed(2)}" class="form-control number" readonly></td>
+							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(total * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${OParaBirimi || TEKLIF_PB}" class="form-control" readonly></td>
 							<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
 						</tr>`;
@@ -2180,9 +2191,44 @@
 				}
 				return kurCache.get(key);
 			}
+			$('#DOVIZ_TARIHI').change(function () {
+				var tarih = $(this).val();
+				$.ajax({
+					url: "{{ route('V2_getDovizKuru') }}",
+					type: "post",
+					data: { 
+						tarih: tarih,
+						_token: '{{ csrf_token() }}'
+					},
+					success: function (response) {
+						console.log(response);
+						$('#dovizKurlari tbody').html(response.data);
+					}
+				});
+			});
 		</script>
 
 		<script>
+			function round(value, decimals = 2) {
+				const num = Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+				return num.toFixed(decimals);
+			}
+			function stokAdiGetir3(veri) {
+				const veriler = veri.split("|||");
+				//$('#STOK_KODU_SHOW').val(veriler[0]);
+				$('#STOK_KOD').val(veriler[0]);
+				$('#KODADI').val(veriler[1]);
+				$('#ISLEM_BIRIMI').val(veriler[2]);
+			}
+			function stokAdiGetir4(veri) {
+				const veriler = veri.split("|||");
+				console.log(veriler);
+				//$('#STOK_KODU_SHOW').val(veriler[0]);
+				$('#STOK_KOD2').val(veriler[0]);
+				$('#KODADI2').val(veriler[1]);
+				$('#ISLEM_BIRIMI2').val(veriler[2]);
+			}
+
 			function getKaynakCodeSelect() {
 				const KAYNAK_TIPI = document.getElementById("KAYNAK_TIPI").value;
 				const firma = document.getElementById("firma").value;
@@ -2529,22 +2575,6 @@
 				// $("#PARA_BIRIMI").val(teklif);
 				$("#veriTable tbody tr").each(function () {
 					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
-				});
-			});
-
-			$('#DOVIZ_TARIHI').change(function () {
-				var tarih = $(this).val();
-				$.ajax({
-					url: "{{ route('V2_getDovizKuru') }}",
-					type: "post",
-					data: { 
-						tarih: tarih,
-						_token: '{{ csrf_token() }}'
-					},
-					success: function (response) {
-						console.log(response);
-						$('#dovizKurlari tbody').html(response.data);
-					}
 				});
 			});
 		</script>
