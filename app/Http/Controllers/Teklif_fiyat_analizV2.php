@@ -766,7 +766,7 @@ class teklif_fiyat_analizV2 extends Controller
                         <input type='hidden' class='form-control' readonly name='EVRAKNOTARIH[]' value='$value->EVRAKNOTARIH'>
                     </td>
                     <td>
-                        <input type='text' class='form-control' name='KURS_1[]' value='$value->KURS_1'>
+                        <input type='text' class='form-control KURLAR' name='KURS_1[]' value='$value->KURS_1'>
                     </td>
                 </tr>
             ";

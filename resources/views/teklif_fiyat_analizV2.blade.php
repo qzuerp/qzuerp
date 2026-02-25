@@ -1482,7 +1482,7 @@
 																			<input type="hidden" class="form-control" name="KURTRNUM[]" value="{{ $item->TRNUM }}" readonly>
 																			<input type="hidden" class="form-control" name="EVRAKNOTARIH[]" value="{{ $item->EVRAKNOTARIH }}" readonly>
 																		</td>
-																		<td><input type="text" class="form-control" name="KURS_1[]" value="{{ $item->KURS_1 }}"></td>
+																		<td><input type="text" class="form-control KURLAR" name="KURS_1[]" value="{{ $item->KURS_1 }}"></td>
 																	</tr>
 																@endforeach
 															</tbody>
@@ -1762,6 +1762,24 @@
 
 				hesapla();
 			});
+
+		$(document).on('input', '.KURLAR', function () {
+
+			const $satir = $(this).closest('tr');
+
+			const kurDeger   = parseFloat($(this).val().replace(',', '.')) || 0;
+			const codeFrom   = $satir.find("input[name='CODEFROM[]']").val();
+
+			// console.log("Para Birimi:", codeFrom);
+			// console.log("Yeni Kur:", kurDeger);
+
+			if (codeFrom === "USD") {
+				$("input[name='FIYAT[]']").each(function () {
+					const base = parseFloat($(this).val()) || 0;
+					$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val((base / kurDeger).toFixed(3));
+				});
+			}
+		});
 
 			$(document).on('input', '.TIME, .PRICE, .PTIME, .STIME', function() {
 				var card = $(this).closest('.operation-detail-card');
