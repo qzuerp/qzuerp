@@ -20,104 +20,108 @@
 
 //   $fasonGiden = DB::table($database.'gdef00')->where('GK_2','FSN_G2')->get();
   
-  $tumEvraklar = DB::table($database.'stok10a as S10A')
-    ->leftJoin($database.'gdef00 as G00', 'S10A.AMBCODE', '=', 'G00.KOD')
-    ->join($database.'stok00 as S00', 'S00.KOD', '=', 'S10A.KOD') // INNER JOIN
-    ->leftJoin($database.'stok63t as S63T', function ($join) {
-        $join->on('S63T.KOD', '=', 'S10A.KOD')
-             ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
-    })
-    ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
-    ->leftJoin($database.'dosyalar00 as D00', function ($join) {
-    $join->on('D00.EVRAKNO', '=', 'S10A.KOD')
-         ->where('D00.EVRAKTYPE', 'STOK00')
-         ->where('D00.DOSYATURU', 'GORSEL');
-    })
-    ->where('G00.GK_2', 'FSN_G2')
-    ->selectRaw('
-        S10A.KOD,
-        S10A.STOK_ADI,
-        SUM(S10A.SF_MIKTAR) AS SF_MIKTAR,
-        S10A.SF_SF_UNIT AS SF_UNIT,
-        S10A.LOTNUMBER,
-        S10A.SERINO,
-        S10A.AMBCODE,
-        G00.AD AS DEPO_ADI,
-        S10A.TEXT1,
-        S10A.TEXT2,
-        S10A.TEXT3,
-        S10A.TEXT4,
-        S10A.NUM1,
-        S10A.NUM2,
-        S10A.NUM3,
-        S10A.NUM4,
-        S10A.LOCATION1,
-        S10A.LOCATION2,
-        S10A.LOCATION3,
-        S10A.LOCATION4,
-        S00.NAME2 AS STOK_ADI2,
-        S00.id,
-        S00.REVNO,
-        S63T.TERMIN_TAR,
-        S63E.TARIH,
-        D00.DOSYA
-    ')
-    ->groupBy(
-        'S10A.KOD',
-        'S10A.LOTNUMBER',
-        'S10A.STOK_ADI',
-        'S10A.SF_SF_UNIT',
-        'S10A.SERINO',
-        'S10A.AMBCODE',
-        'G00.AD',
-        'S10A.TEXT1','S10A.TEXT2','S10A.TEXT3','S10A.TEXT4',
-        'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
-        'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
-        'S00.NAME2','S00.id','S00.REVNO',
-        'S63T.TERMIN_TAR',
-        'S63E.TARIH',
-        'D00.DOSYA'
-    )
-    ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
-    ->get();
+   //$umEvraklar = DB::table($database.'stok10a as S10A')
+   // ->leftJoin($database.'gdef00 as G00', 'S10A.AMBCODE', '=', 'G00.KOD')
+   // ->join($database.'stok00 as S00', 'S00.KOD', '=', 'S10A.KOD') // INNER JOIN
+   // ->leftJoin($database.'stok63t as S63T', function ($join) {
+   //     $join->on('S63T.KOD', '=', 'S10A.KOD')
+   //          ->on('S10A.LOTNUMBER', '=', 'S63T.LOTNUMBER');
+   // })
+   // ->leftJoin($database.'stok63e as S63E', 'S63E.EVRAKNO', '=', 'S63T.EVRAKNO')
+   // ->leftJoin($database.'dosyalar00 as D00', function ($join) {
+   // $join->on('D00.EVRAKNO', '=', 'S10A.KOD')
+   //      ->where('D00.EVRAKTYPE', 'STOK00')
+   //      ->where('D00.DOSYATURU', 'GORSEL');
+   // })
+   // ->where('G00.GK_2', 'FSN_G2')
+   // ->selectRaw('
+   //     S10A.KOD,
+   //     S10A.STOK_ADI,
+   //     SUM(S10A.SF_MIKTAR) AS SF_MIKTAR,
+   //     S10A.SF_SF_UNIT AS SF_UNIT,
+   //     S10A.LOTNUMBER,
+   //     S10A.SERINO,
+   //     S10A.AMBCODE,
+   //     G00.AD AS DEPO_ADI,
+   //     S10A.TEXT1,
+   //     S10A.TEXT2,
+   //     S10A.TEXT3,
+   //     S10A.TEXT4,
+   //     S10A.NUM1,
+   //     S10A.NUM2,
+   //     S10A.NUM3,
+   //     S10A.NUM4,
+   //     S10A.LOCATION1,
+   //     S10A.LOCATION2,
+   //     S10A.LOCATION3,
+   //     S10A.LOCATION4,
+   //     S00.NAME2 AS STOK_ADI2,
+   //     S00.id,
+   //     S00.REVNO,
+   //     S63T.TERMIN_TAR,
+   //     S63E.TARIH,
+   //     D00.DOSYA
+   // ')
+   // ->groupBy(
+   //     'S10A.KOD',
+   //     'S10A.LOTNUMBER',
+   //     'S10A.STOK_ADI',
+   //     'S10A.SF_SF_UNIT',
+   //     'S10A.SERINO',
+   //     'S10A.AMBCODE',
+   //     'G00.AD',
+   //     'S10A.TEXT1','S10A.TEXT2','S10A.TEXT3','S10A.TEXT4',
+   //     'S10A.NUM1','S10A.NUM2','S10A.NUM3','S10A.NUM4',
+   //     'S10A.LOCATION1','S10A.LOCATION2','S10A.LOCATION3','S10A.LOCATION4',
+   //     'S00.NAME2','S00.id','S00.REVNO',
+   //     'S63T.TERMIN_TAR',
+   //     'S63E.TARIH',
+   //     'D00.DOSYA'
+   // )
+   // ->havingRaw('SUM(S10A.SF_MIKTAR) > 0')
+   // ->get();
 
-    // $tumEvraklar = DB::select("
-    //     select 
-    //     D00.DOSYA,
-    //     S01.AMBCODE AS DEPO_ADI,
-    //     S63T.created_at AS TARIH,
-    //     S63T.TERMIN_TAR,
-    //     GDF.GK_2,
-    //     S01.MIKTAR SF_MIKTAR,
-    //     S01.KOD,
-    //     S00.AD S_AD,
-    //     S00.NAME2 STOK_ADI2,
-    //     S00.REVNO,
-    //     S01.SF_SF_UNIT,
-    //     S63T.EVRAKNO,
-    //     S63T_MAX.EVRAKNO IRSALIYE,
-    //     S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4,
-    //     S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4,
-    //     S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
-    //     S01.LOTNUMBER, S01.SERINO
-    //     from {$database}vw_stok01 S01
-    //     Left Join {$database}STOK00 S00 ON S00.KOD = S01.KOD 
-    //     Left Join {$database}GDEF00 GDF ON GDF.KOD = S01.KOD 
-    //     Left Join (
-    //         Select KOD, created_at, MAX(EVRAKNO) AS EVRAKNO
-    //         From {$database}stok63t
-    //         Group By KOD, created_at, EVRAKNO
-    //     ) S63T_MAX ON S01.KOD = S63T_MAX.KOD
-    //     Left Join {$database}stok63t S63T 
-    //         ON S63T.KOD = S63T_MAX.KOD 
-    //         AND S63T.EVRAKNO = S63T_MAX.EVRAKNO
-    //     left join {$database}dosyalar00 D00 
-    //         ON D00.EVRAKNO = S01.KOD 
-    //         AND D00.EVRAKTYPE = 'STOK00' 
-    //         AND D00.DOSYATURU = 'GORSEL'
-    //     Where 1=1
-    //     And GDF.GK_2 is null
-    // ");
+    $tumEvraklar = DB::select("
+        SELECT 
+        D00.DOSYA,
+        S01.AMBCODE AS DEPO_ADI,
+        S63T.created_at AS TARIH,
+        S63T.TERMIN_TAR,
+        s63t.LOTNUMBER,
+        GDF.GK_2,
+        S01.MIKTAR SF_MIKTAR,
+        S01.KOD,
+        S00.AD S_AD,
+        S00.NAME2 STOK_ADI2,
+        S00.REVNO,
+        S01.SF_SF_UNIT,
+        S63T.EVRAKNO,
+        S63T_MAX.EVRAKNO IRSALIYE,
+        S01.TEXT1, S01.TEXT2, S01.TEXT3, S01.TEXT4,
+        S01.NUM1, S01.NUM2, S01.NUM3, S01.NUM4,
+        S01.LOCATION1, S01.LOCATION2, S01.LOCATION3, S01.LOCATION4,
+        S01.LOTNUMBER, S01.SERINO
+        FROM {$database}.vw_stok01 S01
+        Left Join {$database}.STOK00 S00 ON S00.KOD = S01.KOD 
+        Left Join {$database}.GDEF00 GDF ON GDF.KOD = S01.AMBCODE 
+        Left Join (
+            Select KOD,LOTNUMBER, created_at, MAX(EVRAKNO) AS EVRAKNO
+            From {$database}.stok63t
+            Group By KOD, created_at, EVRAKNO,LOTNUMBER
+        ) S63T_MAX 
+            ON S01.KOD = S63T_MAX.KOD  
+            AND S63T_MAX.LOTNUMBER = S01.LOTNUMBER
+        Left Join {$database}.stok63t S63T 
+            ON S63T.KOD = S63T_MAX.KOD 
+            AND S63T.EVRAKNO = S63T_MAX.EVRAKNO 
+            AND S63T.LOTNUMBER = S01.LOTNUMBER
+        left join {$database}.dosyalar00 D00 
+            ON D00.EVRAKNO = S01.KOD 
+            AND D00.EVRAKTYPE = 'STOK00' 
+            AND D00.DOSYATURU = 'GORSEL'
+        Where S01.MIKTAR > 0
+        AND GDF.GK_2 = 'FSN_G2'
+    ");
 
 @endphp
 

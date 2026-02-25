@@ -43,6 +43,7 @@ $t_kart_veri = DB::table($ekranTableT . ' as t')
   ->orderBy('t.id', 'ASC')
   ->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')
   ->get();
+
 $sevkirs_evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 $cari_evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
 $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
