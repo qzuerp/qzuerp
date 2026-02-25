@@ -47,6 +47,7 @@ class stok29_controller extends Controller
     $veri=DB::table($firma.'stok46e')
     ->leftJoin($firma.'stok46t', $firma.'stok46e.EVRAKNO', '=', $firma.'stok46t.EVRAKNO')
     ->where('stok46e.CARIHESAPCODE',$CARI_KODU)
+    ->whereNull('stok46t.AK')
     ->get(['stok46e.EVRAKNO','stok46t.KOD','stok46t.STOK_ADI']);
 
     return json_encode($veri);
