@@ -1423,7 +1423,9 @@
 																			->where($ekranTableTI.'.EVRAKNO', @$evrakno)
 																			->orderBy($ekranTableTI.'.OR_TRNUM', 'ASC')
 																			->orderBy($ekranTableTI.'.TRNUM', 'ASC')
-																			->get([$ekranTableTI.'.*', $ekranTableT.'.KOD as MAMUL']);
+																			->groupBy($ekranTableTI.'.TRNUM', $ekranTableTI.'.OR_TRNUM', $ekranTableTI.'.EVRAKNO') 
+																			->select($ekranTableTI.'.*', DB::raw('MAX('.$ekranTableT.'.KOD) as MAMUL'))
+																			->get();
 
 																		// 2️⃣ OR_TRNUM'a göre PHP collection ile gruplama
 																		$veriGrup = $veri->groupBy(function($item){
@@ -1647,6 +1649,9 @@
 
 
 		<script>
+			$(document).on('focus', '.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
+				$(this).select();
+			});
 			$('.satir_detay').on('click',function(){
 				aktifSatir = $(this).closest('tr');
 				$('#OR_TRNUM').val($(this).data('trnum'));
