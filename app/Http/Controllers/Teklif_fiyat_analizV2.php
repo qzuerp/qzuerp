@@ -559,7 +559,8 @@ class teklif_fiyat_analizV2 extends Controller
                     'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
                     'AD_SOYAD' => $AD_SOYAD,
                     'SIRKET_IS_TEL' => $SIRKET_IS_TEL,
-                    'TERMIN_TAR' => $TERMIN_TARIHI
+                    'TERMIN_TAR' => $TERMIN_TARIHI,
+                    'ACIKLAMA' => $ACIKLAMA_T
                 ];
                 return view('yazdirilicak_formlar.teklif_formu', compact('data'));
         }

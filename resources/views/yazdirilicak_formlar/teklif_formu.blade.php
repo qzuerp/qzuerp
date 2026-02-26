@@ -105,17 +105,17 @@
                 <td class="sira">{{ $i + 1 }}</td>
                 <td class="parca-adi">{{ $data['STOK_AD1'][$i] }}</td>
                 <td>{{ $data['KOD'][$i] }}</td>
-                <td>{{ $data['MALZEME'][$i] ?? '' }}</td>
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
                 <td>{{ $data['FIYAT'][$i] }}</td>
                 <td>{{ $data['TUTAR'][$i] }}</td>
                 <td>{{ $data['TERMIN_TAR'][$i] ?? '' }} Gün</td>
+                <td>{{ $data['ACIKLAMA'][$i] ?? '' }}</td>
             </tr>
             @endfor
         </tbody>
         <!-- NOT satırı -->
         <tr class="note-row">
-            <td colspan="8">NOT: MALZEME + İŞLEME OLARAK TEKLİF VERİLMİŞTİR,</td>
+            <td colspan="8">{{ $data['NOTES_1'] }}</td>
         </tr>
         <!-- TOPLAM satırı -->
         <tr class="total-row">
@@ -134,7 +134,7 @@
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
         <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren 30 gün</div>
-        <div><span>Teklif geçerlilik Tarihi :</span> {{ isset($data['GECERLILIK_TARIHI']) ? $data['GECERLILIK_TARIHI'] . ' Gün' : '' }}</div>
+        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] == '' ? $data['GECERLILILIK_TARIHI'] . ' Gün' : '' }}</div>
     </div>
 
     <!-- ADDRESS -->
