@@ -97,6 +97,7 @@
                 <th style="width:80px;">FİYATI</th>
                 <th style="width:90px;">TOP.TUTAR</th>
                 <th style="width:70px;">TERMİN</th>
+                <th style="width:70px;">NOT</th>
             </tr>
         </thead>
         <tbody>
