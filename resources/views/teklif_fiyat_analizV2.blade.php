@@ -1643,7 +1643,7 @@
 
 
 		<script>
-			$(document).on('focus', '.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
+			$(document).on('focus', '.tutar-input,.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
 				$(this).select();
 			});
 			$('.satir_detay').on('click',function(){
