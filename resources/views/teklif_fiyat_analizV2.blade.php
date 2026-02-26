@@ -1207,9 +1207,9 @@
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		Tutar</th>
 																	<th style="min-width:170px; font-size: 13px !important;">
-																		Para Birimi</th>
-																	<th style="min-width:170px; font-size: 13px !important;">
 																		Termin Tar.</th>
+																	<th style="min-width:170px; font-size: 13px !important;">
+																		Açıklama</th>
 																</tr>
 																<tr class="satirEkle" style="background-color:#3c8dbc">
 																	<td>
@@ -1281,16 +1281,22 @@
 																			readonly>
 																	</td>
 																	<td>
-																		<input type="text" name="" id="PARA_BIRIMI"
+																		<input type="hidden" name="" id="PARA_BIRIMI"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="PRICEUNIT" data-isim="Para Birimi"
 																			class="form-control"
 																			value="" readonly>
-																	</td>
-																	<td>
+
 																		<input type="number" name="" id="TERMIN_TAR"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="TERMIN_TAR" data-isim="Termin Tarihi"
+																			class="form-control"
+																			value="">
+																	</td>
+																	<td>
+																		<input type="text" name="" id="ACIKLAMA"
+																			data-bs-toggle="tooltip" data-bs-placement="top"
+																			data-bs-title="ACIKLAMA" data-isim="Açıklama"
 																			class="form-control"
 																			value="">
 																	</td>
@@ -1344,18 +1350,23 @@
 																	<td><input type="text" name="TUTAR[]"
 																			value="{{round($veri->TUTAR, 2)}}" class="form-control number"
 																			readonly></td>
-																	<td><input type="text" name="PARA_BIRIMI[]"
-																			value="{{$veri->PRICEUNIT}}" class="form-control"
-																			readonly>
-																	</td>
+																	
 																	<td><input type="number" name="TERMIN_TARIHI[]"
 																			value="{{$veri->TERMIN_TARIHI}}" class="form-control">
 																	</td>
+																	<td>
+																		<input type="text" name="ACIKLAMA_T[]"
+																			value="{{$veri->ACIKLAMA}}" class="form-control">
+																	</td>
+
 																	<td><button type='button' id='deleteSingleRow'
 																			class='btn btn-default delete-row'><i
 																				class='fa fa-minus'
 																				style='color: red'></i></button>
 																	</td>
+																	<input type="hidden" name="PARA_BIRIMI[]"
+																			value="{{$veri->PRICEUNIT}}" class="form-control"
+																			readonly>
 																</tr>
 																@php
 																		}
@@ -1424,7 +1435,7 @@
 																		@foreach($veriGrup as $orTrnum => $grupVeri)
 																			{{-- Grup başlığı --}}
 																			<tr class="group-footer" style="background-color: #f9f9f9;">
-																				<td colspan="7" class="text-right"><strong>{{ $grupVeri->first()->MAMUL }}</strong></td>
+																				<td colspan="2" class="text-right"><strong>{{ $grupVeri->first()->MAMUL }}</strong></td>
 																			</tr>
 
 																			{{-- Grup içi satırlar --}}
@@ -2542,7 +2553,7 @@
 				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='" + satirEkleInputs.FIYAT + "' ></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='FIYAT2[]' value='" + satirEkleInputs.DOLAR_FIYAT + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='" + satirEkleInputs.TUTAR + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='PARA_BIRIMI[]' value='" + satirEkleInputs.PARA_BIRIMI + "' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA_T[]' value='" + satirEkleInputs.ACIKLAMA + "' readonly> <input type='hidden' class='form-control' name='PARA_BIRIMI[]' value='" + satirEkleInputs.PARA_BIRIMI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='TERMIN_TARIHI[]' value='" + satirEkleInputs.TERMIN_TARIHI + "' readonly></td> ";
 
 

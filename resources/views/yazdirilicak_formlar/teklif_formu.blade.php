@@ -109,7 +109,7 @@
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
                 <td>{{ $data['FIYAT'][$i] }}</td>
                 <td>{{ $data['TUTAR'][$i] }}</td>
-                <td>{{ $data['TERMIN'][$i] ?? '' }}</td>
+                <td>{{ $data['TERMIN_TAR'][$i] ?? '' }} Gün</td>
             </tr>
             @endfor
         </tbody>
@@ -125,7 +125,7 @@
                 @php
                     $toplam = array_sum(array_map('floatval', $data['TUTAR']));
                 @endphp
-                ${{ number_format($toplam, 2, ',', '.') }}
+                {{ number_format($toplam, 2, ',', '.') }}
             </td>
         </tr>
     </table>
@@ -134,7 +134,7 @@
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
         <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren 30 gün</div>
-        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }}</div>
+        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }} Gün</div>
     </div>
 
     <!-- ADDRESS -->

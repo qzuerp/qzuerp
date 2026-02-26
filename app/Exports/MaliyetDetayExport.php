@@ -17,6 +17,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
 {
     protected $evrakno;
     protected $kolonlar = [];
+    protected $kolonSayac = [];   // GLOBAL sayaç
 
     public function __construct($evrakno)
     {
@@ -31,6 +32,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
         $rows = DB::table($firma . 'tekl20t as T20t')
             ->leftJoin($firma . 'tekl20tı as T20ti', 'T20t.TRNUM', '=', 'T20ti.OR_TRNUM')
             ->where('T20t.EVRAKNO', $this->evrakno)
+            ->orderBy('T20ti.OR_TRNUM')
             ->get([
                 'T20ti.*',
                 'T20t.KOD as TKOD',
@@ -40,6 +42,8 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                 'T20t.FIYAT as TFIYAT',
                 'T20t.FIYAT2 as TFIYAT2',
                 'T20t.TUTAR as TTUTAR',
+                'T20t.TERMIN_TARIHI as TTERMIN_TARIHI',
+                'T20t.ACIKLAMA as TACIKLAMA',
             ]);
 
         $sonuc = [];
@@ -51,25 +55,47 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             if (!isset($sonuc[$key])) {
                 $sonuc[$key] = [
                     'PARCA KODU' => $r->TKOD,
-                    'PARCA ADI'  => $r->TAD,
-                    'MIKTAR'     => $r->TMIKTAR,
-                    'BIRIM'      => $r->TBIRIM,
-                    'FIYAT'      => $r->TFIYAT,
-                    'DOLAR FIYATI'=> $r->TFIYAT2,
-                    'TUTAR'      => $r->TTUTAR,
+                    'PARCA ADI' => $r->TAD,
+                    'MIKTAR' => $r->TMIKTAR,
+                    'REVİZYON' => $r->TBIRIM,
+                    'TERMİN' => $r->TTERMIN_TARIHI . ' Gün',
+                    'AÇIKLAMA' => $r->TACIKLAMA,
+                    'FIYAT' => $r->TFIYAT,
+                    'DOLAR FIYATI' => $r->TFIYAT2,
+                    'TUTAR' => $r->TTUTAR,
                 ];
             }
 
             if ($r->KAYNAKTYPE == 'H') {
-                $sonuc[$key]['MALZEME']       = $r->KOD;
-                $sonuc[$key]['ÖLÇÜ']          = $r->OLCU;
+                $sonuc[$key]['MALZEME'] = $r->KOD;
+                $sonuc[$key]['ÖLÇÜ'] = $r->OLCU;
                 $sonuc[$key]['MALZEME FIYAT'] = $r->FIYAT;
             }
 
             if ($r->KAYNAKTYPE == 'I') {
-                $kolon = trim($r->KOD);
+
+                $baseKolon = trim($r->KOD);
+
+                // Parça bazlı sayaç
+                if (!isset($sonuc[$key]['_sayac'][$baseKolon])) {
+                    $sonuc[$key]['_sayac'][$baseKolon] = 1;
+                } else {
+                    $sonuc[$key]['_sayac'][$baseKolon]++;
+                }
+
+                $index = $sonuc[$key]['_sayac'][$baseKolon];
+
+                $kolon = $index == 1
+                    ? $baseKolon
+                    : $index . '. ' . $baseKolon;
+
                 $sonuc[$key][$kolon] = $r->FIYAT;
             }
+        }
+
+        // iç sayaç arrayini temizle
+        foreach ($sonuc as &$row) {
+            unset($row['_sayac']);
         }
 
         return array_values($sonuc);
@@ -79,25 +105,63 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
     {
         $sonuc = $this->getSonuc();
 
-        $kolonlar = collect($sonuc)
+        $tumKolonlar = collect($sonuc)
             ->flatMap(fn($r) => array_keys($r))
             ->unique()
             ->values();
 
-        // sabit başta kalacaklar
-        $bas = ['PARCA KODU','PARCA ADI','MIKTAR','BIRIM'];
+        $bas = [
+            'PARCA KODU',
+            'PARCA ADI',
+            'MIKTAR',
+        ];
 
-        // kesin sonda olacaklar
-        $son = ['FIYAT','DOLAR FIYAT','TUTAR'];
+        // SABİT ORTA BAŞLIK SIRASI
+        $sabitOrta = [
+            'REVİZYON',
+            'TERMİN',
+            'AÇIKLAMA',
+            'MALZEME',
+            'ÖLÇÜ',
+            'MALZEME FIYAT',
+        ];
 
-        $orta = $kolonlar
-            ->reject(fn($k)=>in_array($k,$bas) || in_array($k,$son))
+        $son = [
+            'FIYAT',
+            'DOLAR FIYATI',
+            'TUTAR',
+        ];
+
+        // Operasyon kolonları
+        $operasyonlar = $tumKolonlar
+            ->reject(fn($k) =>
+                in_array($k, $bas) ||
+                in_array($k, $sabitOrta) ||
+                in_array($k, $son)
+            )
+            ->sort(function ($a, $b) {
+
+                preg_match('/^(\d+)\.\s*(.*)$/', $a, $ma);
+                preg_match('/^(\d+)\.\s*(.*)$/', $b, $mb);
+
+                $nameA = $ma[2] ?? $a;
+                $nameB = $mb[2] ?? $b;
+
+                $indexA = isset($ma[1]) ? (int)$ma[1] : 1;
+                $indexB = isset($mb[1]) ? (int)$mb[1] : 1;
+
+                if ($nameA == $nameB) {
+                    return $indexA <=> $indexB;
+                }
+
+                return strcmp($nameA, $nameB);
+            })
             ->values();
 
         $this->kolonlar = collect($bas)
-            ->concat($orta)
+            ->concat($sabitOrta)
+            ->concat($operasyonlar)
             ->concat($son)
-            ->unique()
             ->values()
             ->toArray();
 
@@ -123,32 +187,25 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
     {
         $toplamKolon = count($this->kolonlar);
         $toplamSatir = $sheet->getHighestRow();
-        $sonKolon    = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($toplamKolon);
+        $sonKolon = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($toplamKolon);
 
         $sheet->getStyle("A1:{$sonKolon}{$toplamSatir}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => Border::BORDER_THIN,
-                    'color'       => ['argb' => 'FFD0D7E3'],
+                    'color' => ['argb' => 'FFD0D7E3'],
                 ],
             ],
         ]);
 
         return [
             1 => [
-                'font' => [
-                    'bold'  => true,
-                    'color' => ['argb' => 'FFFFFFFF'],
-                    'size'  => 10,
-                ],
-                'fill' => [
-                    'fillType'   => Fill::FILL_SOLID,
-                    'startColor' => ['argb' => 'FF2D3A5F'],
-                ],
-                'alignment' => [
-                    'horizontal' => Alignment::HORIZONTAL_CENTER,
-                    'vertical'   => Alignment::VERTICAL_CENTER,
-                ],
+                'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'size' => 10],
+                'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF2D3A5F']],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+            ],
+            $toplamSatir => [
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_RIGHT],
             ],
         ];
     }

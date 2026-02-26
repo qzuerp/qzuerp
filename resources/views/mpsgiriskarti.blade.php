@@ -128,7 +128,7 @@
 							<div class="box-body">
 								<!-- Üst Kontrol Paneli -->
 								<div class="row">
-									<div class="col-md-2" id="EVRAK_ALANI">
+									<div class="col-md-2 d-flex" id="EVRAK_ALANI">
 										<select id="evrakSec" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="EVRAKNO" class="EVRAKNO form-control js-example-basic-single" 
 												name="evrakSec" onchange="evrakGetirRedirect(this.value, '{{ $ekranLink }}')" >
 											@php
@@ -139,6 +139,9 @@
 												}
 											@endphp
 										</select>
+										<button class="btn btn-primary kopyalaBtn" type="button" data-text="{{ @$kart_veri->EVRAKNO }}">
+											<i class="fa-solid fa-copy"></i>
+										</button>
 										<input type="hidden" id="ID_TO_REDIRECT" value="{{ @$kart_veri->id }}">
 									</div>
 									
@@ -2714,7 +2717,15 @@
 
 							}
 						});
-
+					},
+					error:function()
+					{
+						Swal.close();
+						Swal.fire({
+							title:'Hata',
+							text:'Bir hata oluştu',
+							icon:'danger',
+						})
 					}
 				});
 			}

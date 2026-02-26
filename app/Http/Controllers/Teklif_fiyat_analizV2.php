@@ -118,6 +118,7 @@ class teklif_fiyat_analizV2 extends Controller
         $KOD = isset($request->KOD) ? $request->KOD : ' ';
         $KODADI = isset($request->KODADI) ? $request->KODADI : ' ';
         $ACIKLAMA = isset($request->ACIKLAMA) ? $request->ACIKLAMA : ' ';
+        $ACIKLAMA_T = isset($request->ACIKLAMA_T) ? $request->ACIKLAMA_T : ' ';
         $ISLEM_MIKTARI = isset($request->ISLEM_MIKTARI) ? $request->ISLEM_MIKTARI : ' ';
         $ISLEM_BIRIMI = isset($request->ISLEM_BIRIMI) ? $request->ISLEM_BIRIMI : ' ';
         $FIYAT = isset($request->FIYAT) ? $request->FIYAT : [];
@@ -226,7 +227,8 @@ class teklif_fiyat_analizV2 extends Controller
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
                             'TRNUM' => $TRNUM[$i],
                             'FIYAT2' => $DOLAR_FIYAT[$i],
-                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
+                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i],
+                            'ACIKLAMA' => $ACIKLAMA_T[$i],
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -312,7 +314,8 @@ class teklif_fiyat_analizV2 extends Controller
                             'PRICEUNIT' => $PARA_BIRIMI[$i],
                             'TRNUM' => $TRNUM[$i],
                             'FIYAT2' => $DOLAR_FIYAT[$i],
-                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
+                            'TERMIN_TARIHI' => $TERMIN_TARIHI[$i],
+                            'ACIKLAMA' => $ACIKLAMA_T[$i],
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -338,7 +341,8 @@ class teklif_fiyat_analizV2 extends Controller
                                 'PRICEUNIT' => $PARA_BIRIMI[$i],
                                 'TRNUM' => $TRNUM[$i],
                                 'FIYAT2' => $DOLAR_FIYAT[$i],
-                                'TERMIN_TARIHI' => $TERMIN_TARIHI[$i]
+                                'TERMIN_TARIHI' => $TERMIN_TARIHI[$i],
+                                'ACIKLAMA' => $ACIKLAMA_T[$i],
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -554,7 +558,8 @@ class teklif_fiyat_analizV2 extends Controller
                     'PRICEUNIT' => $PARA_BIRIMI,
                     'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
                     'AD_SOYAD' => $AD_SOYAD,
-                    'SIRKET_IS_TEL' => $SIRKET_IS_TEL
+                    'SIRKET_IS_TEL' => $SIRKET_IS_TEL,
+                    'TERMIN_TAR' => $TERMIN_TARIHI
                 ];
                 return view('yazdirilicak_formlar.teklif_formu', compact('data'));
         }
@@ -779,14 +784,24 @@ class teklif_fiyat_analizV2 extends Controller
 
     public function excel_export_maliyetler(Request $request)
     {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
         $evrakno = $request->input('EVRAKNO');
-        return Excel::download(new MaliyetlerExport($evrakno), 'maliyetler_' . $evrakno . '.xlsx');
+        $TEKLIFNO = DB::table($firma.'tekl20e')->where('EVRAKNO',$evrakno)->value('MUSTERI_TEKLIF_NO');
+        return Excel::download(new MaliyetlerExport($evrakno),  $TEKLIFNO.' - ' . $evrakno . '.xlsx');
     }
 
     public function excel_export_maliyetler_detay(Request $request)
     {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
         $evrakno = $request->input('EVRAKNO');
-        return Excel::download(new MaliyetDetayExport($evrakno), 'maliyetler_detayi_' . $evrakno . '.xlsx');
+        $TEKLIFNO = DB::table($firma.'tekl20e')->where('EVRAKNO',$evrakno)->value('MUSTERI_TEKLIF_NO');
+        return Excel::download(new MaliyetDetayExport($evrakno), $TEKLIFNO.' detayı - ' . $evrakno . '.xlsx');
     }
 
     public function oprt_save(Request $request)

@@ -70,7 +70,7 @@
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT, 2, ',', '.') }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT2, 2, ',', '.') }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->TUTAR, 2, ',', '.') }}</td>
-            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->TERMIN_TARIHI }}</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->TERMIN_TARIHI }} Gün</td>
         </tr>
     @endforeach
     </tbody>
