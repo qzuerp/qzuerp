@@ -1417,66 +1417,60 @@
 															</thead>
 															<tbody>
 																	@php
-																		// 1️⃣ Veriyi çek
 																		$veri = DB::table($ekranTableTI)
-																			->leftJoin($ekranTableT, $ekranTableTI.'.OR_TRNUM', '=', $ekranTableT.'.TRNUM')
-																			->where($ekranTableTI.'.EVRAKNO', @$evrakno)
-																			->orderBy($ekranTableTI.'.OR_TRNUM', 'ASC')
-																			->orderBy($ekranTableTI.'.TRNUM', 'ASC')
-																			->groupBy($ekranTableTI.'.TRNUM', $ekranTableTI.'.OR_TRNUM', $ekranTableTI.'.EVRAKNO') 
-																			->select($ekranTableTI.'.*', DB::raw('MAX('.$ekranTableT.'.KOD) as MAMUL'))
-																			->get();
+																			->where('EVRAKNO', @$evrakno)
+																			->orderBy('OR_TRNUM', 'ASC')
+																			->orderBy('TRNUM', 'ASC')
+																			->get()
+																			->groupBy('OR_TRNUM');
 
-																		// 2️⃣ OR_TRNUM'a göre PHP collection ile gruplama
-																		$veriGrup = $veri->groupBy(function($item){
-																			return $item->OR_TRNUM;
-																		});
+																		if (!$veri->isEmpty()) {
+																			foreach ($veri as $orTrnum => $grupVeri) {
 																	@endphp
 
-																	@if(!$veriGrup->isEmpty())
-																		@foreach($veriGrup as $orTrnum => $grupVeri)
-																			{{-- Grup başlığı --}}
-																			<tr class="group-footer" style="background-color: #f9f9f9;">
-																				<td colspan="2" class="text-right"><strong>{{ $grupVeri->first()->MAMUL }}</strong></td>
-																			</tr>
+																		@php
+																			foreach ($grupVeri as $key => $satir) {
+																		@endphp
+																		<tr>
+																			<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																			<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
 
-																			{{-- Grup içi satırlar --}}
-																			@foreach($grupVeri as $key => $satir)
-																				<tr>
-																					<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																					<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																					<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																			<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																			<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																			<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																			<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																			<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																			<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
+																			<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
+																			<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																			<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
+																			<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																			<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
+																			<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																			<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																			<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
+																			<td>
+																				<button type='button' class='btn btn-default delete-row'>
+																					<i class='fa fa-minus' style='color: red'></i>
+																				</button>
+																			</td>
+																		</tr>
+																		@php
+																			}
+																		@endphp
 
-																					<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																					<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																					<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																					<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																					<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																					<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																					<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																					<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																					<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																					<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																					<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																					<td>
-																						<button type='button' class='btn btn-default delete-row'>
-																							<i class='fa fa-minus' style='color: red'></i>
-																						</button>
-																					</td>
-																				</tr>
-																			@endforeach
+																		<!-- Grup Toplamı (İsteğe Bağlı) -->
+																		<tr class="group-footer" style="background-color: #f9f9f9;">
+																			<td colspan="8" class="text-right"><strong>Grup Toplamı:</strong></td>
+																			<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
+																			<td colspan="7"></td>
+																		</tr>
 
-																			{{-- Grup toplamı --}}
-																			<tr class="group-footer" style="background-color: #f9f9f9;">
-																				<td colspan="11" class="text-right"><strong>Grup Toplamı:</strong></td>
-																				<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
-																				<td colspan="7"></td>
-																			</tr>
-																		@endforeach
-																	@endif
+																		@php
+																		}
+																	}
+																	@endphp
 															</tbody>
 														</table>
 													</div>
