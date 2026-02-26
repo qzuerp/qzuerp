@@ -84,7 +84,7 @@
     $tumEvraklar = DB::select("
         SELECT 
         D00.DOSYA,
-        S01.AMBCODE AS DEPO_ADI,
+        GDF.AD AS DEPO_ADI,
         S63T.created_at AS TARIH,
         S63T.TERMIN_TAR,
         s63t.LOTNUMBER,
