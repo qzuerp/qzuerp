@@ -92,7 +92,6 @@
                 <th style="width:35px;">Sıra</th>
                 <th>PARÇA ADI</th>
                 <th style="width:110px;">PARÇA KODU</th>
-                <th style="width:80px;">MALZEME</th>
                 <th style="width:45px;">ADET</th>
                 <th style="width:80px;">FİYATI</th>
                 <th style="width:90px;">TOP.TUTAR</th>
