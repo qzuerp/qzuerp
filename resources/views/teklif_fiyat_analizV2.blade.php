@@ -1396,7 +1396,7 @@
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		Ayar</th>
 																	<th style="min-width:120px; font-size: 13px !important;">
-																		İşeleme</th>
+																		işleme</th>
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		Sök-Tak</th>
 																	<th style="min-width:100px; font-size: 13px !important;">

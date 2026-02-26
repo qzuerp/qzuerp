@@ -134,7 +134,7 @@
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
         <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren 30 gün</div>
-        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }} Gün</div>
+        <div><span>Teklif geçerlilik Tarihi :</span> {{ isset($data['GECERLILIK_TARIHI']) ? $data['GECERLILIK_TARIHI'] . ' Gün' : '' }}</div>
     </div>
 
     <!-- ADDRESS -->
