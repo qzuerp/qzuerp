@@ -1417,6 +1417,8 @@
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		İşlem miktarı</th>
 																	<th style="min-width:120px; font-size: 13px !important;">
+																		Birim Fiyatı</th>
+																	<th style="min-width:120px; font-size: 13px !important;">
 																		Ayar</th>
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		işleme</th>
@@ -1458,11 +1460,13 @@
 																			<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
 																			<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
 																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																			
 
 																			<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
 																			<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
 																			<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
 																			<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																			<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
 																			<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
 																			<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
 																			<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
@@ -1701,11 +1705,25 @@
 						$('.COPRS').hide();
 						container.find('.dynamic-card').remove();
 
-						secimSirasi.forEach(function(k,index){
-							$(`#${k}`).prop('checked', true);
-							$(`#T${k}`).text(index + 1);
+						let varMi = false;
+
+						$('#maliyetDetayTable tbody tr').each(function () {
+							let rowOR = $(this).find('input[name="OR_TRNUM[]"]').val();
+
+							if (rowOR == OR_TRNUM) {
+								varMi = true;
+								return false;
+							}
 						});
 
+						if (!varMi) {
+							secimSirasi.forEach(function(k,index){
+								$(`#${k}`).prop('checked', true);
+								$(`#T${k}`).text(index + 1);
+								$('#C' + k).show();
+								container.append($('#C' + k));
+							});
+						}
 
 
 						// Malzeme alanlarını sıfırla
@@ -1745,6 +1763,7 @@
 							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
 							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
+							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || '';
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
 
 							// res.data içinden bu operasyonun GK_1 değerini bul
@@ -1767,7 +1786,7 @@
 												<label class="form-label-sm fw-bold">Birim Fiyat</label>
 												<div class="input-group">
 													<input type="number" class="form-control text-end form-control-sm PRICE"
-														value="${round(teklif_fiyat, 2)}" placeholder="0.00">
+														value="${round(birimFiyat, 2)}" placeholder="0.00">
 													<span class="input-group-text">${teklif_pb}</span>
 												</div>
 											</div>
@@ -1882,6 +1901,7 @@
 							$newCard.find('.STIME').trigger('input');
 							$newCard.find('.PRICE').trigger('input');
 							$newCard.find('.TOPLANICAK').trigger('input');
+							hesapla();
 						});
 
 						// DIGER_KART'ı göster ve en sona taşı
@@ -2217,6 +2237,7 @@
 							<td><input type="text" name="KOD2[]" value="${HKOD}" class="form-control" readonly></td> 
 							<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
 							<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+							<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="AYAR[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="ISLEME[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="SOKTAK[]" value="" class="form-control number"></td>
@@ -2242,6 +2263,7 @@
 						let SOKTAK = kart.find('.STIME').val() || 0;
 						let OParaBirimi = kart.find('.birim-select').val();
 						let FIYAT2 = kart.find('.tutar-input').val() || 0;
+						let BIRIM_FIYAT = kart.find('.PRICE').val() || 0;
 						let NOT = kart.find('.T_NOT').val() || '';
 						if(total == 0) return;
 						let TRNUM = getTRNUM();
@@ -2254,6 +2276,7 @@
 							<td><input type="text" name="KOD2[]" value="${kod}" class="form-control" readonly></td> 
 							<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
 							<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+							<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="${BIRIM_FIYAT}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="AYAR[]" value="${ayar}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="ISLEME[]" value="${ISLEME}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="SOKTAK[]" value="${SOKTAK}" class="form-control number"></td>
