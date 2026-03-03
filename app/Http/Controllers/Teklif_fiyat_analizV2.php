@@ -370,6 +370,10 @@ class teklif_fiyat_analizV2 extends Controller
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
                         ->delete();
+                    DB::table($firma . 'tekl20o')
+                        ->where('EVRAKNO', $EVRAKNO)
+                        ->where('OR_TRNUM', $deleteTRNUM)
+                        ->delete();
                 }
 
 
@@ -542,6 +546,7 @@ class teklif_fiyat_analizV2 extends Controller
                 DB::table($firma . 'tekl20t')->where('EVRAKNO', $EVRAKNO)->delete();
                 DB::table($firma . 'tekl20tı')->where('EVRAKNO', $EVRAKNO)->delete();
                 DB::table($firma . 'tekl20tr')->where('EVRAKNO', $EVRAKNO)->delete();
+                DB::table($firma . 'tekl20o')->where('EVRAKNO', $EVRAKNO)->delete();
                 $max_id = DB::table($firma . 'tekl20e')->max('EVRAKNO');
                 return redirect('V2_teklif_fiyat_analiz?ID=' . $max_id)->with('success', 'Silme İşlemi Başarılı');
                 break;
