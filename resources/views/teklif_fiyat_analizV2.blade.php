@@ -1746,7 +1746,7 @@
 
 						let teklif_pb = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
 
-						$('#maliyetDetayTable tbody tr').each(function () {
+						$('#maliyetDetayTable tbody tr').each(function (index, element) {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
 
@@ -1775,7 +1775,7 @@
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
 							
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
-							let isFSN = (operasyon && res.data.GK_1 === 'FSN')
+							let isFSN = (operasyon && res.data[index].GK_1 === 'FSN')
 							console.log(isFSN, operasyon);
 
 							let cardHtml = '';
