@@ -1376,71 +1376,83 @@
 														</table>
 													</div>
 													<style>
-														/* Tablonun dış kapsayıcısı */
-														#tab_3 {
-															max-height: 600px;
+														/* Tablonun kaydırma alanı ve yüksekliği */
+														.table-scroll-area {
+															max-height: 600px; /* İstediğiniz yüksekliği buradan ayarlayın */
 															overflow-y: auto;
-															position: relative; /* Sticky için referans */
+															overflow-x: auto; /* Yatay kaydırma gerekirse */
+															position: relative;
+															border: 1px solid #dee2e6;
 														}
 
-														/* Tablo genel ayarı */
+														/* Sticky Header (Sabit Başlık) Ayarları */
 														#maliyetDetayTable {
-															border-collapse: separate; /* Sticky için 'separate' daha sağlıklıdır */
+															border-collapse: separate; /* Sticky çalışması için bu ŞART */
 															border-spacing: 0;
+															width: 100%;
+															margin-bottom: 0;
 														}
 
-														/* Başlık hücrelerini sabitle */
 														#maliyetDetayTable thead th {
 															position: sticky;
-															top: 0;
-															background-color: #ffffff !important; /* Arka plan şart */
-															z-index: 100;
-															box-shadow: inset 0 -1px 0 #dee2e6, inset 0 1px 0 #dee2e6; /* Border yerine box-shadow kullanımı sticky'de daha pürüzsüz görünür */
-															padding: 10px;
+															top: 0; /* En üste yapıştır */
+															background-color: #ffffff !important; /* Arka plan olmazsa alt satırlar görünür */
+															z-index: 100; /* Satırların ve inputların üstünde kalması için */
+															box-shadow: inset 0 -2px 0 #dee2e6; /* Alt kenarlık çizgisi (sticky'de border kaybolmaması için) */
+															padding: 10px 5px;
+															vertical-align: middle;
+															white-space: nowrap;
+														}
+
+														/* Hücre kenarlıkları (separate modunda borderlar kaybolmaması için manuel ekliyoruz) */
+														#maliyetDetayTable th,
+														#maliyetDetayTable td {
+															border-right: 1px solid #dee2e6;
+															border-bottom: 1px solid #dee2e6;
+														}
+
+														#maliyetDetayTable th:first-child,
+														#maliyetDetayTable td:first-child {
+															border-left: 1px solid #dee2e6;
+														}
+
+														/* Grup toplamı satırı tasarımı */
+														.group-footer {
+															background-color: #f8f9fa !important;
+															font-weight: bold;
 														}
 													</style>
+
 													<div class="tab-pane" id="tab_3">
 														<div class="d-flex justify-content-end mb-2">
 															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
 																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
 															</a>
 														</div>
-														<table class="table table-bordered text-center" id="maliyetDetayTable">
-															<thead>
-																<tr>
-																	<th>
-																		Kaynak Tipi</th>
-																	<th style="min-width:280px; font-size: 13px !important;">
-																		Stok Kodu</th>
-																	<th style="min-width:200px; font-size: 13px !important;">
-																		Stok adı</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		İşlem miktarı</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Birim Fiyatı</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Ayar</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		işleme</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Sök-Tak</th>
-																	<th style="min-width:100px; font-size: 13px !important;">
-																		Revizyon</th>
-																	<th style="min-width:100px; font-size: 13px !important;">
-																		Not</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Fiyat</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Fiyat 2</th>
-																	<th style="min-width:120px; font-size: 13px !important;">
-																		Tutar</th>
-																	<th style="min-width:170px; font-size: 13px !important;">
-																		Para Birimi</th>
-																	<th style="min-width:170px; font-size: 13px !important;">
-																		Hammadde Ölçüsü</th>
-																</tr>
-															</thead>
-															<tbody >
+
+														<div class="table-scroll-area">
+															<table class="table text-center" id="maliyetDetayTable">
+																<thead>
+																	<tr>
+																		<th>Kaynak Tipi</th>
+																		<th style="min-width:280px; font-size: 13px !important;">Stok Kodu</th>
+																		<th style="min-width:200px; font-size: 13px !important;">Stok adı</th>
+																		<th style="min-width:120px; font-size: 13px !important;">İşlem miktarı</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Birim Fiyatı</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Ayar</th>
+																		<th style="min-width:120px; font-size: 13px !important;">işleme</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Sök-Tak</th>
+																		<th style="min-width:100px; font-size: 13px !important;">Revizyon</th>
+																		<th style="min-width:100px; font-size: 13px !important;">Not</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Fiyat 2</th>
+																		<th style="min-width:120px; font-size: 13px !important;">Tutar</th>
+																		<th style="min-width:170px; font-size: 13px !important;">Para Birimi</th>
+																		<th style="min-width:170px; font-size: 13px !important;">Hammadde Ölçüsü</th>
+																		<th>İşlem</th>
+																	</tr>
+																</thead>
+																<tbody>
 																	@php
 																		$veri = DB::table($ekranTableTI)
 																			->where('EVRAKNO', @$evrakno)
@@ -1451,55 +1463,49 @@
 
 																		if (!$veri->isEmpty()) {
 																			foreach ($veri as $orTrnum => $grupVeri) {
+																				foreach ($grupVeri as $key => $satir) {
 																	@endphp
+																	<tr>
+																		<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																		<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																		<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
 
-																		@php
-																			foreach ($grupVeri as $key => $satir) {
-																		@endphp
-																		<tr>
-																			<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																			<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																			<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
-																			
-
-																			<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																			<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																			<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																			<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																			<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
-																			<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																			<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																			<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																			<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																			<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																			<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																			<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																			<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																			<td>
-																				<button type='button' class='btn btn-default delete-row'>
-																					<i class='fa fa-minus' style='color: red'></i>
-																				</button>
-																			</td>
-																		</tr>
-																		@php
+																		<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																		<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																		<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																		<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
+																		<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																		<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
+																		<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
+																		<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																		<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
+																		<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																		<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
+																		<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																		<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																		<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
+																		<td>
+																			<button type='button' class='btn btn-default delete-row'>
+																				<i class='fa fa-minus' style='color: red'></i>
+																			</button>
+																		</td>
+																	</tr>
+																	@php
+																				}
+																	@endphp
+																	<tr class="group-footer">
+																		<td colspan="12" class="text-right"><strong>Grup Toplamı ({{ $orTrnum }}):</strong></td>
+																		<td><strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong></td>
+																		<td colspan="3"></td>
+																	</tr>
+																	@php
 																			}
-																		@endphp
-
-																		<!-- Grup Toplamı (İsteğe Bağlı) -->
-																		<tr class="group-footer" style="background-color: #f9f9f9;">
-																			<td colspan="8" class="text-right"><strong>Grup Toplamı:</strong></td>
-																			<td><strong>{{ $grupVeri->sum('TUTAR') }}</strong></td>
-																			<td colspan="7"></td>
-																		</tr>
-
-																		@php
 																		}
-																	}
 																	@endphp
-															</tbody>
-														</table>
+																</tbody>
+															</table>
+														</div>
 													</div>
 													<div class="tab-pane" id="tab_4">
 														<div class="row mb-2">
