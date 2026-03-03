@@ -535,7 +535,7 @@
 																	</td>
 																	<td>
 																		<div class="d-flex ">
-																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW">
+																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW2">
 																				@php
 																					$takimhaneler = DB::table($database.'stok00')->where('GK_1','07')->get();
 																				@endphp
@@ -555,7 +555,7 @@
 																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW2">
 																			<option value=" ">Seç</option>
 																			@php
 																			$imlt01_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();

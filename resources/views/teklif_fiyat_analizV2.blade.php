@@ -1376,22 +1376,28 @@
 														</table>
 													</div>
 													<style>
-														<style>
-														/* Tablonun kapsayıcısına (parent) maksimum yükseklik ve kaydırma özelliği veriyoruz */
+														/* Tablonun dış kapsayıcısı */
 														#tab_3 {
-															max-height: 600px; /* İstediğiniz yüksekliği buraya yazın */
+															max-height: 600px;
 															overflow-y: auto;
+															position: relative; /* Sticky için referans */
 														}
 
-														/* Tablo başlığını yapışkan (sticky) hale getiriyoruz */
+														/* Tablo genel ayarı */
+														#maliyetDetayTable {
+															border-collapse: separate; /* Sticky için 'separate' daha sağlıklıdır */
+															border-spacing: 0;
+														}
+
+														/* Başlık hücrelerini sabitle */
 														#maliyetDetayTable thead th {
 															position: sticky;
 															top: 0;
-															background-color: #fff; /* Arka planın şeffaf olup satırların üst üste binmemesi için */
-															z-index: 10; /* Diğer satırların üstünde kalması için */
-															box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Opsiyonel: Alt kısma hafif bir gölge */
+															background-color: #ffffff !important; /* Arka plan şart */
+															z-index: 100;
+															box-shadow: inset 0 -1px 0 #dee2e6, inset 0 1px 0 #dee2e6; /* Border yerine box-shadow kullanımı sticky'de daha pürüzsüz görünür */
+															padding: 10px;
 														}
-													</style>
 													</style>
 													<div class="tab-pane" id="tab_3">
 														<div class="d-flex justify-content-end mb-2">
