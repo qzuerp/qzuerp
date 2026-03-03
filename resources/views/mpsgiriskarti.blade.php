@@ -53,7 +53,7 @@
     })
     ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
     ->selectRaw("
-        DISTINCT
+        
         case
             when mlit.PARABIRIMI = 'TRY' then mlit.TUTAR
             else mlit.TUTAR *
@@ -66,7 +66,7 @@
         case when s.AD is NULL then i.AD else s.AD end as KAYNAK_AD,
         case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as KAYNAK_BIRIM
     ")
-    ->orderBy('t.R_SIRANO')
+	->orderByRaw('CAST(t.R_SIRANO AS INT) ASC')
     ->get();
 
 

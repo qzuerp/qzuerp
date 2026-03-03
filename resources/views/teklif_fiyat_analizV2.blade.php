@@ -576,7 +576,7 @@
 								<hr class="mt-1 mb-1">
 							</div>
 
-							<div class="row g-3">
+							<div class="row g-3 ">
 								@php
 									$OPERASON_VERILERI = DB::table($database . 'gecoust')->where('EVRAKNO', 'TEZGAHGK6')->get();
 								@endphp
@@ -586,9 +586,9 @@
 											<input type="checkbox" id="{{ $OPERASYON->KOD }}" name="OPRS[]"
 												class="d-none checkbox-input OPRS" value="{{ $OPERASYON->KOD }}">
 											<label class="operation-label" for="{{ $OPERASYON->KOD }}">
-												<!-- <div class="operation-icon">
-																		<i class="fa-solid fa-gear"></i>
-																	</div> -->
+												<div class="operation-icon">
+													<span id="T{{ $OPERASYON->KOD }}" class="order-text"></span>
+												</div>
 												<div class="operation-content">
 													<span class="operation-name">{{ $OPERASYON->AD }}</span>
 													<span class="operation-code">{{ $OPERASYON->KOD }}</span>
@@ -643,7 +643,7 @@
 								</div>
 							</div>
 
-							<div class="row g-2">
+							<div class="row g-2 OPRS_CONTAINER">
 								@php
 									$tarih = date('Y/m/d', strtotime(@$kart_veri->TARIH));
 
@@ -1375,7 +1375,24 @@
 															</tbody>
 														</table>
 													</div>
+													<style>
+														<style>
+														/* Tablonun kapsayıcısına (parent) maksimum yükseklik ve kaydırma özelliği veriyoruz */
+														#tab_3 {
+															max-height: 600px; /* İstediğiniz yüksekliği buraya yazın */
+															overflow-y: auto;
+														}
 
+														/* Tablo başlığını yapışkan (sticky) hale getiriyoruz */
+														#maliyetDetayTable thead th {
+															position: sticky;
+															top: 0;
+															background-color: #fff; /* Arka planın şeffaf olup satırların üst üste binmemesi için */
+															z-index: 10; /* Diğer satırların üstünde kalması için */
+															box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Opsiyonel: Alt kısma hafif bir gölge */
+														}
+													</style>
+													</style>
 													<div class="tab-pane" id="tab_3">
 														<div class="d-flex justify-content-end mb-2">
 															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
@@ -1415,7 +1432,7 @@
 																		Hammadde Ölçüsü</th>
 																</tr>
 															</thead>
-															<tbody>
+															<tbody >
 																	@php
 																		$veri = DB::table($ekranTableTI)
 																			->where('EVRAKNO', @$evrakno)
@@ -1646,7 +1663,10 @@
 			$(document).on('focus', '.tutar-input,.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
 				$(this).select();
 			});
-			$('.satir_detay').on('click',function(){
+
+			let secimSirasi = [];
+
+			$('.satir_detay').on('click', function () {
 				aktifSatir = $(this).closest('tr');
 				$('#OR_TRNUM').val($(this).data('trnum'));
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
@@ -1658,117 +1678,242 @@
 				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
 
 				$.ajax({
-					url:'operasyon/get',
-					type:'post',
-					data:{
-						TRNUM:$(this).data('trnum'),
-						EVRAKNO:'{{ @$kart_veri->EVRAKNO }}',
-						_token:'{{ csrf_token() }}',
+					url: 'operasyon/get',
+					type: 'post',
+					data: {
+						TRNUM: $(this).data('trnum'),
+						EVRAKNO: '{{ @$kart_veri->EVRAKNO }}',
+						_token: '{{ csrf_token() }}',
 					},
-					success: function(res){
-						$('.OPRS').prop('checked', false);
-						$('.COPRS').toggle(false);
-						res.data.forEach((row) => {
-							$(`#${row.OPERASYON}`).prop('checked', true);
-							$(`#C${row.OPERASYON}`).toggle(true);
-						});
-
-						// Satırlardan kartlara veri yazdır
+					success: function (res) {
+						let container = $('.row.g-2.OPRS_CONTAINER');
 						let OR_TRNUM = $('#OR_TRNUM').val();
 
-						// Önce tüm kartları sıfırla (döngü dışında, 1 kez)
+						secimSirasi = res.data.map(x => x.OPERASYON);
+
+						$('.OPRS').prop('checked',false);
+						$('.COPRS').hide();
+
+						secimSirasi.forEach(function(k,index){
+							$(`#${k}`).prop('checked', true);
+							$(`#T${k}`).text(index + 1);
+						});
+
+
+						container.find('.dynamic-card').remove();
+						$('.COPRS').hide();
+
+						// Malzeme alanlarını sıfırla
 						let $mc = $('#MALZEME_CINSI');
 						$mc.val('');
-						if($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
+						if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
 						$('#MALZEME_TUTARI').val(0);
 						$('#OLCU1').val('');
-						$('.operation-detail-card').each(function(){
-							let card = $(this);
-							card.find('.TIME').val(0);
-							card.find('.PTIME').val(0);
-							card.find('.STIME').val(0);
-							card.find('.TOTAL').val(0);
-							card.find('.RES_TOTAL').val(0);
-							card.find('.tutar-input').val(0);
-							card.find('.T_NOT').val('');
-							card.find('.birim-select').val('').trigger('change');
-						});
 
-						// Eşleşen satırları kartlara yazdır
-						$('#maliyetDetayTable tbody tr').each(function(){
+						let teklif_pb = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
+
+						// Döngü maliyetDetayTable üzerinden — OR_TRNUM eşleşen satırlar
+						$('#maliyetDetayTable tbody tr').each(function () {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
-							if(rowOR != OR_TRNUM) return;
+
+							if (rowOR != OR_TRNUM) return;
 
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
-							let kod = row.find('input[name="KOD2[]"]').val();
 
-							if(tip == 'H'){
+							if (tip == 'H') {
+								// Malzeme alanını doldur
+								let kod = row.find('input[name="KOD2[]"]').val();
 								$mc.val(kod);
-								if($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
+								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
 								$('#MALZEME_TUTARI').val(row.find('input[name="FIYAT2[]"]').val());
 								$('#OLCU1').val(row.find('input[name="H_OLCU[]"]').val()).trigger('change');
-							} else if(tip == 'I'){
-								$('.operation-detail-card').each(function(){
-									let card = $(this);
-									if(card.find('.OPERASYON_KOD').text().trim() == kod){
-										let ayar   = parseFloat(row.find('input[name="AYAR[]"]').val()) || 0;
-										let isleme = parseFloat(row.find('input[name="ISLEME[]"]').val()) || 0;
-										let soktak = parseFloat(row.find('input[name="SOKTAK[]"]').val()) || 0;
-										let fiyat  = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
-										let fiyat2  = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
-										let TTEKLIF_BIRIMI  = row.find('input[name="PARA_BIRIMI2[]"]').val();
-										let NOT  = row.find('input[name="NOTT[]"]').val() || '';
-										console.log(TTEKLIF_BIRIMI);
-										card.find('.TIME').val(ayar);
-										card.find('.PTIME').val(isleme);
-										card.find('.STIME').val(soktak);
-										card.find('.TOTAL').val(round(fiyat, 2));
-										card.find('.RES_TOTAL').val(round(fiyat, 2));
-										card.find('.tutar-input').val(round(fiyat2, 2));
-										card.find('.birim-select').val(TTEKLIF_BIRIMI).trigger('change');
-										card.find('.T_NOT').val(NOT);
-									}
-								});
+								return; // kart oluşturma, sonraki satıra geç
 							}
+
+							if (tip != 'I') return; // I dışındaki tipler için kart oluşturma
+
+							let k          = row.find('input[name="KOD2[]"]').val();
+							let ayar       = parseFloat(row.find('input[name="AYAR[]"]').val()) || 0;
+							let isleme     = parseFloat(row.find('input[name="ISLEME[]"]').val()) || 0;
+							let soktak     = parseFloat(row.find('input[name="SOKTAK[]"]').val()) || 0;
+							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
+							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
+							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
+							let not        = row.find('input[name="NOTT[]"]').val() || '';
+
+							// res.data içinden bu operasyonun GK_1 değerini bul
+							let operasyon  = res.data.find(x => x.OPERASYON == k);
+							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
+							let teklif_fiyat = operasyon ? parseFloat(operasyon.TEKLIF_FIYAT ?? 0) : 0;
+
+							let cardHtml = '';
+
+							if (!isFSN) {
+								cardHtml = `
+								<div class="col-2 COPRS dynamic-card" id="C${k}" style="display:block;">
+									<div class="operation-detail-card">
+										<div class="card-header d-flex justify-content-between align-items-center">
+											<strong class="OPERASYON_KOD">${k}</strong>
+											<button style="border:none;outline:none;background:transparent;"><i class="fa-solid fa-plus clone"></i></button>
+										</div>
+										<div class="card-body">
+											<div>
+												<label class="form-label-sm fw-bold">Birim Fiyat</label>
+												<div class="input-group">
+													<input type="number" class="form-control text-end form-control-sm PRICE"
+														value="${round(teklif_fiyat, 2)}" placeholder="0.00">
+													<span class="input-group-text">${teklif_pb}</span>
+												</div>
+											</div>
+											<div class="mb-2">
+												<label class="form-label-sm fw-bold">Ayar</label>
+												<div class="d-flex gap-1">
+													<input type="number" class="form-control form-control-sm TIME"
+														value="${ayar}" placeholder="0.00">
+													<div class="input-group">
+														<input type="number" class="form-control text-end form-control-sm AYAR_TUTAR"
+															placeholder="0.00">
+														<span class="input-group-text">${teklif_pb}</span>
+													</div>
+												</div>
+											</div>
+											<div class="mb-2">
+												<label class="form-label-sm fw-bold">İşleme</label>
+												<div class="d-flex gap-1">
+													<div class="input-group">
+														<input type="number" class="form-control form-control-sm PTIME"
+															value="${isleme}" placeholder="0.00">
+													</div>
+													<div class="input-group">
+														<input type="number" class="form-control text-end form-control-sm PTIME ISLEM_TUTAR"
+															placeholder="0.00">
+														<span class="input-group-text">${teklif_pb}</span>
+													</div>
+												</div>
+											</div>
+											<div class="mb-2">
+												<label class="form-label-sm fw-bold">Sök-Tak</label>
+												<div class="d-flex gap-1">
+													<div class="input-group">
+														<input type="number" class="form-control form-control-sm STIME"
+															value="${soktak}" placeholder="0.00">
+													</div>
+													<div class="input-group">
+														<input type="number" class="form-control text-end form-control-sm STIME SOKTAK_TUTAR"
+															placeholder="0.00">
+														<span class="input-group-text">${teklif_pb}</span>
+													</div>
+												</div>
+											</div>
+											<div>
+												<label class="form-label-sm fw-bold">Tutar</label>
+												<div class="d-flex gap-1">
+													<div class="input-group">
+														<input type="number" class="form-control text-end form-control-sm TOTAL TOPLANICAK"
+															value="${round(fiyat, 2)}" placeholder="0.00">
+														<span class="input-group-text">${teklif_pb}</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>`;
+							} else {
+								let kurOptions = '<option>Seç</option>';
+								@foreach($kur_veri as $veri)
+								kurOptions += `<option value="{{ $veri->KOD }}" ${paraBirimi === '{{ $veri->KOD }}' ? 'selected' : ''}>{{ $veri->KOD }} - {{ $veri->AD }}</option>`;
+								@endforeach
+
+								cardHtml = `
+								<div class="col-2 COPRS dynamic-card" id="C${k}" style="display:block;">
+									<div class="operation-detail-card">
+										<div class="card-header d-flex justify-content-between align-items-center">
+											<strong class="OPERASYON_KOD">${k}</strong>
+											<button style="border:none;outline:none;background:transparent;"><i class="fa-solid fa-plus clone"></i></button>
+										</div>
+										<div class="card-body">
+											<div class="satir-grubu">
+												<label class="form-label-sm fw-bold">Tutar</label>
+												<div class="d-flex gap-1">
+													<div class="input-group">
+														<input type="number" class="tutar-input form-control text-end form-control-sm"
+															value="${round(fiyat2, 2)}" placeholder="0.00">
+														<select class="birim-select form-select p-1"
+															style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
+															${kurOptions}
+														</select>
+													</div>
+												</div>
+												<label>Çevirilmiş Tutar</label>
+												<input type="number"
+													class="form-control text-end form-control-sm RES_TOTAL TOTAL TOPLANICAK"
+													value="${round(fiyat, 2)}" placeholder="0.00">
+												<label>Not</label>
+												<input type="text" class="form-control T_NOT form-control-sm"
+													value="${not}" placeholder="Not">
+												<div class="d-flex gap-3">
+													<button class="bol btn btn-sm btn-primary mt-2 h-25">Adetle Böl</button>
+													<button class="geri btn btn-sm btn-primary mt-2 h-25">Geri Al</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>`;
+							}
+
+							// #DIGER_KART'tan önce ekle
+							let $diger = $('#DIGER_KART');
+							if ($diger.length) {
+								$diger.before(cardHtml);
+							} else {
+								container.append(cardHtml);
+							}
+
+							// Trigger
+							let $newCard = container.find('#C' + k);
+							$newCard.find('.TIME').trigger('input');
+							$newCard.find('.PTIME').trigger('input');
+							$newCard.find('.STIME').trigger('input');
+							$newCard.find('.PRICE').trigger('input');
+							$newCard.find('.TOPLANICAK').trigger('input');
 						});
-						$('.TIME').trigger('input');
-						$('.TOPLANICAK').trigger('input');
-						$('.PRICE').trigger('input');
-						$('.PTIME').trigger('input');
-						$('.STIME').trigger('input');
+
+						// DIGER_KART'ı göster ve en sona taşı
+						$('#DIGER_KART').show();
+						container.append($('#DIGER_KART'));
 					}
 				});
 			});
 
-			$('.bol').on('click',function(){
-				const $satir = $(this).closest('.satir-grubu');
-				const $input = $satir.find('.RES_TOTAL');
+		$(document).on('click', '.bol', function() {
+			const $satir = $(this).closest('.satir-grubu');
+			const $input = $satir.find('.RES_TOTAL');
 
-				// eski değeri sakla
-				$input.data('prev', $input.val());
+			// eski değeri sakla
+			$input.data('prev', $input.val());
 
-				const tutar = parseFloat($input.val()) || 0;
-				const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
+			const tutar = parseFloat($input.val()) || 0;
+			const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
 
-				$input.val(round(tutar / miktar, 2));
+			$input.val(round(tutar / miktar, 2));
 
-				hesapla();
-			});
+			hesapla();
+		});
 
-			$('.geri').on('click',function(){
-				const $satir = $(this).closest('.satir-grubu');
-				const $input = $satir.find('.RES_TOTAL');
+		$(document).on('click', '.geri', function() {
+			const $satir = $(this).closest('.satir-grubu');
+			const $input = $satir.find('.RES_TOTAL');
 
-				const eski = $input.data('prev');
+			const eski = $input.data('prev');
 
-				if (eski !== undefined) {
-					$input.val(eski);
-					$input.removeData('prev');
-				}
+			if (eski !== undefined) {
+				$input.val(eski);
+				$input.removeData('prev');
+			}
 
-				hesapla();
-			});
+			hesapla();
+		});
 
 		$(document).on('input', '.KURLAR', function () {
 
@@ -1906,6 +2051,7 @@
 						}
 					});
 				});
+
 				$('#mastarSelect').on('change',function(){
 					$.ajax({
 						url:'mastar/get',
@@ -1957,36 +2103,42 @@
 
 					return "";
 				}
-				let secimSirasi = [];
 
 				$(document).on('change', '.OPRS', function () {
 					const kod = $(this).val();
-					const card = $('#C' + kod);
 					const container = $('.COPRS').first().parent();
 
 					if ($(this).is(':checked')) {
+						// Mevcut seçili checkbox sayısı (yeni eklenmeden önce)
+						const mevcutSayi = secimSirasi.length;
+						const yeniSira = mevcutSayi + 1;
+
 						secimSirasi.push(kod);
-						card.show();
+
+						$('#C' + kod).show();
+						$('#T' + kod).text(yeniSira);
+						container.append($('#C' + kod));
+
 					} else {
+						$('#C' + kod).hide();
+						$('#T' + kod).text('');
 						secimSirasi = secimSirasi.filter(k => k !== kod);
-						card.hide();
+
+						// Kalan kartların sıra numaralarını güncelle
+						secimSirasi.forEach((k, index) => {
+							$('#T' + k).text(index + 1);
+						});
 					}
 
-					secimSirasi.forEach(function (k) {
+					// DOM sırasını güncelle
+					secimSirasi.forEach(k => {
 						container.append($('#C' + k));
 					});
 
+					// DİĞER kart hep en sonda
 					container.append($('#DIGER').closest('.col-2'));
 				});
-				document.getElementById("OLCU1").addEventListener("input", function () {
-					const sonuc = agirlikHesapla(this.value);
-					$('#AGIRLIK').val(sonuc);
-					$('#AGIRLIK_SHOW').val(round(sonuc, 3));
 
-					var fiyat = sonuc * $('#MALZEME_FIYATI').val();
-					$('#MALZEME_TUTARI').val(round(fiyat, 2));
-					hesapla();
-				});
 				$('#uygula').on('click', async function () {
 					const OR_TRNUM = $('#OR_TRNUM').val();
 					if (!OR_TRNUM) return;
@@ -1998,12 +2150,10 @@
 							OR_TRNUM:OR_TRNUM,
 							EVRAKNO: "{{ @$kart_veri->EVRAKNO }}",
 							_token:'{{ csrf_token() }}',
-							OPRS: $('.OPRS:checked').map(function () {
-								return this.value;
-							}).get()
+							OPRS: secimSirasi
 						},
 						success: function (response) {
-							console.log(response);
+							secimSirasi = [];
 						}
 					});
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
@@ -2015,6 +2165,17 @@
 					aktifSatir.find('input[name="DOLAR_FIYAT[]"]').val(round($('#FIYAT').val() / dolarKur.data.KURS_1));
 					aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
 					operasyonlariTabloyaBas();
+				});
+
+				
+				document.getElementById("OLCU1").addEventListener("input", function () {
+					const sonuc = agirlikHesapla(this.value);
+					$('#AGIRLIK').val(sonuc);
+					$('#AGIRLIK_SHOW').val(round(sonuc, 3));
+
+					var fiyat = sonuc * $('#MALZEME_FIYATI').val();
+					$('#MALZEME_TUTARI').val(round(fiyat, 2));
+					hesapla();
 				});
 
 				$(document).on("click",".operation-detail-card .clone",function(){

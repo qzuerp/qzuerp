@@ -47,6 +47,16 @@
 		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as STOK_ADI, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as STOK_BIRIM")
 		->get();
 
+		
+	$tt_kart_veri = DB::table($ekranTableT . ' as t')
+		->leftJoin($database.'stok00 as s', 't.BOMREC_KAYNAKCODE', '=', 's.KOD')
+		->leftJoin($database.'imlt00 as i', 't.BOMREC_KAYNAKCODE', '=', 'i.KOD')
+		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+		->where('t.BOMREC_KAYNAKCODE', 'T')
+		->orderBy('t.SIRANO', 'ASC')
+		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as STOK_ADI, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as STOK_BIRIM")
+		->get();
+
 
 	$evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 
@@ -198,6 +208,7 @@
 									<div class="nav-tabs-custom">
 										<ul class="nav nav-tabs">
 											<li class="nav-item" ><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Ürün Bilgileri</a></li>
+											<li class="nav-item" ><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Takımlar</a></li>
 											<li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 											<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 										</ul>
@@ -477,6 +488,133 @@
 																		<td><input type="number" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
 
+																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
+																	</tr>
+																@endforeach
+															</tbody>
+
+														</table>
+
+													</div>
+												</div>
+											</div>
+
+											<div class="tab-pane" id="tab_2">
+												<div class="row">
+													<div class="row" >
+
+														<div class="col my-2">
+                    													<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
+       														</div>
+														<br><br>
+
+														<table class="table table-bordered text-center" style="width: 100%;font-size: 9pt;" id="veriTable2" >
+
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th style="min-width:80px">Sıra No</th>
+																	<th style="min-width:150px">KT</th>
+																	<th style="min-width:300px">Kod</th>
+																	<th style="min-width:300px">Ad</th>
+																	<th style="min-width:300px">Operasyon Kodu</th>
+																	<th style="min-width:300px">Operasyon Adı</th>
+																	<th style="min-width:80px">Adet</th>
+																	<th></th>
+																</tr>
+																<tr class="satirEkle">
+																	<td>
+																		<button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button>
+																	</td>
+																	<td>
+																		<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" data-name="SIRANO" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
+																		
+																	</td>
+																	<td>
+																		<input type="text" readonly class="form-control" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL" value="T">
+																	</td>
+																	<td>
+																		<div class="d-flex ">
+																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW">
+																				@php
+																					$takimhaneler = DB::table($database.'stok00')->where('GK_1','07')->get();
+																				@endphp
+																				<option>Seç</option>
+																				@foreach($takimhaneler as $takimhane)
+																					<option value="{{ $takimhane->KOD }}">{{ $takimhane->KOD }} - {{ $takimhane->AD }}</option>
+																				@endforeach
+																			</select>
+																			<span class="d-flex -btn">
+																				<button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><span class="fa-solid fa-magnifying-glass"  >
+																				</span></button>
+																			</span>
+																		</div>
+																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL" class="form-control">
+																	</td>
+																	<td>
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+																	</td>
+																	<td>
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
+																			<option value=" ">Seç</option>
+																			@php
+																			$imlt01_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
+
+																			foreach ($imlt01_evraklar as $key => $veri) {
+																				echo "<option value ='".$veri->KOD."|||".$veri->AD."'>".$veri->KOD." | ".$veri->AD."</option>";
+																			}
+																			@endphp
+																		</select>
+																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL" class="form-control">
+																	</td>
+																	<td>
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" data-name="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+																	</td>
+													                <td style="min-width: 150px;">
+										                                <div class="d-flex ">
+										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" data-name="BOMREC_KAYNAK0" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+										                                    <span class="d-flex -btn">
+										                                        <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
+										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
+										                                        </button>
+										                                    </span>
+										                                </div>
+										                            </td>
+																	<td>#</td>
+																</tr>
+															</thead>
+															<tbody>
+																@foreach ($tt_kart_veri as $key => $veri)
+																	<tr>
+																		<td>
+																			@include('components.detayBtn', ['KOD' => $veri->BOMREC_KAYNAKCODE])
+																		</td>
+																		<td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+																		<td><input type="number" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
+																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T-{{ $veri->id }}" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
+																		<td>
+																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}" disabled>
+																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE[]" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}">
+																		</td>
+																		<td>
+																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE_AD_SHOW_T" id="BOMREC_KAYNAKCODE_AD_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled>
+																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE_AD[]" id="BOMREC_KAYNAKCODE_AD" value="{{ $veri->STOK_ADI }}">
+																		</td>																	
+																		<td>
+																			<input type="text" class="form-control" readonly data-max name="BOMREC_OPERASYON[]" id="BOMREC_OPERASYON" value="{{ $veri->BOMREC_OPERASYON }}">
+																		</td>
+																		<td>
+																			<input type="text" class="form-control" data-max name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
+																			<input type="hidden" class="form-control" data-max name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
+																		</td>																
+																		<td class="d-flex">
+																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
+																			<span class="d-flex -btn">
+										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModalSatir" type="button">
+										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
+										                                        </button>
+										                                    </span>
+																		</td>
 																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 																	</tr>
 																@endforeach
@@ -1400,6 +1538,45 @@
 				}
 
 			});
+
+			$("#addRow2").on('click', function() {
+
+				var TRNUM_FILL = getTRNUM();
+
+				var satirEkleInputs = getInputs('satirEkle');
+
+				var htmlCode = " ";
+
+				htmlCode += " <tr> ";
+				htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+				htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+				htmlCode += " <td><input type='text' class='form-control' name='SIRANO[]' value='"+satirEkleInputs.SIRANO_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE_AD[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
+				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+				htmlCode += " </tr> ";
+
+
+				if (satirEkleInputs.BOMREC_KAYNAKCODE_FILL==null || satirEkleInputs.BOMREC_KAYNAKCODE_FILL==" " || satirEkleInputs.BOMREC_KAYNAKCODE_FILL=="") {
+					eksikAlanHataAlert2();
+				}
+
+				else {
+
+					$("#veriTable2 > tbody").append(htmlCode);
+					updateLastTRNUM(TRNUM_FILL);
+
+					emptyInputs('satirEkle');
+
+				}
+
+			});
+
 
 		});
 	</script>

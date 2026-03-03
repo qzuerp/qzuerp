@@ -602,7 +602,7 @@ if (isset($kart_veri)) {
                           <input type="text" class="form-control" name="SERINO[]" value="{{ $veri->SERINO }}" readonly>
                         </td>
                         <td>
-                          <input type="text" class="form-control" name="SF_MIKTAR[]" value="{{ floor($veri->SF_MIKTAR) }}">
+                          <input type="text" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
                           <!-- <input type="hidden" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"> -->
                         </td>
                         <td>
@@ -622,16 +622,16 @@ if (isset($kart_veri)) {
                           <input type="text" class="form-control" name="TEXT4[]" value="{{ $veri->SF_VRI_VR_R4 }}">
                         </td>
                         <td>
-                          <input type="number" class="form-control" name="NUM1[]" value="{{ floor($veri->SF_VRI_NUM1) }}">
+                          <input type="number" class="form-control" name="NUM1[]" value="{{ $veri->SF_VRI_NUM1 }}">
                         </td>
                         <td>
-                          <input type="number" class="form-control" name="NUM2[]" value="{{ floor($veri->SF_VRI_NUM2) }}">
+                          <input type="number" class="form-control" name="NUM2[]" value="{{ $veri->SF_VRI_NUM2 }}">
                         </td>
                         <td>
-                          <input type="number" class="form-control" name="NUM3[]" value="{{ floor($veri->SF_VRI_NUM3) }}">
+                          <input type="number" class="form-control" name="NUM3[]" value="{{ $veri->SF_VRI_NUM3 }}">
                         </td>
                         <td>
-                          <input type="number" class="form-control" name="NUM4[]" value="{{ floor($veri->SF_VRI_NUM4) }}">
+                          <input type="number" class="form-control" name="NUM4[]" value="{{ $veri->SF_VRI_NUM4 }}">
                         </td>
 
                         <td>
@@ -867,8 +867,8 @@ if (isset($kart_veri)) {
                       <input type="text" class="form-control" name="TI_KARSISERINO[]" value="{{ $veri->KARSISERINO }}">
                     </td>
                     <td>
-                      <input type="number" class="form-control" name="TI_KARSISF_MIKTAR" value="{{ floor($veri->KARSISF_MIKTAR) }}" disabled>
-                      <input type="hidden" class="form-control" name="TI_KARSISF_MIKTAR[]" value="{{ floor($veri->KARSISF_MIKTAR) }}">
+                      <input type="number" class="form-control" name="TI_KARSISF_MIKTAR" value="{{ $veri->KARSISF_MIKTAR }}" disabled>
+                      <input type="hidden" class="form-control" name="TI_KARSISF_MIKTAR[]" value="{{ $veri->KARSISF_MIKTAR }}">
                     </td>
                     <td>
                       {{-- önce hidden, sonra checkbox --}}
@@ -885,7 +885,7 @@ if (isset($kart_veri)) {
                       <input type="text" class="form-control" name="TI_STOK_ADI[]" value="{{ $veri->STOK_ADI }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_SF_MIKTAR[]" value="{{ floor($veri->STOK_MIKTARI) }}">
+                      <input type="text" class="form-control" name="TI_SF_MIKTAR[]" value="{{ $veri->STOK_MIKTARI }}">
                     </td>
                     <td>
                       <input type="text" class="form-control" name="TI_SF_SF_UNIT[]" value="{{ $veri->STOK_ISLEM_BIRIMI }}" readonly>
@@ -912,16 +912,16 @@ if (isset($kart_veri)) {
                       <input type="text" class="form-control" name="TI_TEXT4[]" value="{{ $veri->TEXT4 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM1[]" value="{{ floor($veri->NUM1) }}" readonly>
+                      <input type="text" class="form-control" name="TI_NUM1[]" value="{{ $veri->NUM1 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM2[]" value="{{ floor($veri->NUM2) }}" readonly>
+                      <input type="text" class="form-control" name="TI_NUM2[]" value="{{ $veri->NUM2 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM3[]" value="{{ floor($veri->NUM3) }}" readonly>
+                      <input type="text" class="form-control" name="TI_NUM3[]" value="{{ $veri->NUM3 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM4[]" value="{{ floor($veri->NUM4) }}" readonly>
+                      <input type="text" class="form-control" name="TI_NUM4[]" value="{{ $veri->NUM4 }}" readonly>
                     </td>
                     <td>
                       <input type="text" class="form-control" name="TI_LOK1[]" value="{{ $veri->LOCATION1 }}" readonly>

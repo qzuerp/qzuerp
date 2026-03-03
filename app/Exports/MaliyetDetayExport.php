@@ -31,7 +31,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
 
         $rows = DB::table($firma . 'tekl20t as T20t')
             ->leftJoin($firma . 'tekl20tı as T20ti', 'T20t.TRNUM', '=', 'T20ti.OR_TRNUM')
-            ->where('T20t.EVRAKNO', $this->evrakno)
+            ->where('T20ti.EVRAKNO', $this->evrakno)
             ->orderBy('T20ti.OR_TRNUM')
             ->get([
                 'T20ti.*',

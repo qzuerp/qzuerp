@@ -160,6 +160,7 @@ class teklif_fiyat_analizV2 extends Controller
         $H_OLCU = isset($request->H_OLCU) ? $request->H_OLCU : ' ';
         $NOTT = isset($request->NOTT) ? $request->NOTT : ' ';
         $PARA_BIRIMI2 = isset($request->PARA_BIRIMI2) ? $request->PARA_BIRIMI2 : ' ';
+        $BIRIM_FIYAT = isset($request->BIRIM_FIYAT) ? $request->BIRIM_FIYAT : ' ';
         $NETAGIRLIK2 = isset($request->NETAGIRLIK2) ? $request->NETAGIRLIK2 : ' ';
         $BRUTAGIRLIK2 = isset($request->BRUTAGIRLIK2) ? $request->BRUTAGIRLIK2 : ' ';
         $HACIM2 = isset($request->HACIM2) ? $request->HACIM2 : ' ';
@@ -267,14 +268,19 @@ class teklif_fiyat_analizV2 extends Controller
                 ]);
 
                 DB::table($firma . 'tekl20x')->where('EVRAKNO', $EVRAKNO)->delete();
-                for ($i = 0; $i < count($KURTRNUM); $i++)
-                    DB::table($firma . 'tekl20x')->insert([
-                        'EVRAKNO' => $EVRAKNO,
-                        'TRNUM' => $KURTRNUM[$i],
-                        'CODEFROM' => $CODEFROM[$i],
-                        'KURS_1' => $KURS_1[$i],
-                        'EVRAKNOTARIH' => $EVRAKNOTARIH[$i]
-                    ]);
+                if (is_array($KURTRNUM)) {
+                    for ($i = 0; $i < count($KURTRNUM) ?? 0; $i++)
+                    {
+                        DB::table($firma . 'tekl20x')->insert([
+                            'EVRAKNO' => $EVRAKNO,
+                            'TRNUM' => $KURTRNUM[$i],
+                            'CODEFROM' => $CODEFROM[$i],
+                            'KURS_1' => $KURS_1[$i],
+                            'EVRAKNOTARIH' => $EVRAKNOTARIH[$i]
+                        ]);
+                    }
+                }
+                    
 
                 // Mevcut ve yeni TRNUM'ları karşılaştır
                 $currentTRNUMS = [];
@@ -412,6 +418,7 @@ class teklif_fiyat_analizV2 extends Controller
                             'FIYAT2' => $FIYAT_2[$i],
                             'NOT' => $NOTT[$i],
                             'OLCU' => $H_OLCU[$i] ?? 0,
+                            'BIRIM_FIYAT' => $BIRIM_FIYAT[$i] ?? 0,
                             // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                             // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                             // 'HACIM' => $HACIM[$i],
@@ -444,6 +451,7 @@ class teklif_fiyat_analizV2 extends Controller
                                 'FIYAT2' => $FIYAT_2[$i],
                                 'NOT' => $NOTT[$i],
                                 'OLCU' => $H_OLCU[$i] ?? 0,
+                                'BIRIM_FIYAT' => $BIRIM_FIYAT[$i] ?? 0,
                                 // 'NETAGIRLIK' => $NETAGIRLIK[$i],
                                 // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
                                 // 'HACIM' => $HACIM[$i],
@@ -782,7 +790,6 @@ class teklif_fiyat_analizV2 extends Controller
             'data' => $data
         ]);
     }
-
     public function excel_export_maliyetler(Request $request)
     {
         if(Auth::check()) {
@@ -812,11 +819,12 @@ class teklif_fiyat_analizV2 extends Controller
 
         $OPRS = $request->OPRS ?? [];
         DB::table($firma . 'tekl20o')->where('EVRAKNO', $request->EVRAKNO)->where('OR_TRNUM', $request->OR_TRNUM)->delete();
-        foreach ($OPRS as $operasyon) {
+        foreach ($OPRS as $index => $operasyon) {
             DB::table($firma . 'tekl20o')->insert([
                 'EVRAKNO' => $request->EVRAKNO,
                 'OR_TRNUM' => $request->OR_TRNUM,
                 'OPERASYON' => $operasyon,
+                'SIRA' => $index + 1
             ]);
         }
     }
@@ -825,14 +833,17 @@ class teklif_fiyat_analizV2 extends Controller
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
         $evrakno = $request->input('EVRAKNO');
-        $results = DB::table($firma . 'tekl20o')
-            ->where('EVRAKNO', $evrakno)
-            ->where('OR_TRNUM', $request->TRNUM)
-            ->get(['OPERASYON']);
+        $results = DB::table($firma . 'tekl20o as T20O')
+            ->leftJoin($firma.'imlt00 as I00', function($join) {
+                $join->on(DB::raw('LTRIM(RTRIM(I00.GK_6))'), '=', DB::raw('LTRIM(RTRIM(T20O.OPERASYON))'));
+            })
+            ->where('T20O.EVRAKNO', $evrakno)
+            ->where('T20O.OR_TRNUM', $request->TRNUM)
+            ->orderBy('T20O.SIRA','asc')
+            ->get(['T20O.OPERASYON','I00.GK_1']);
         return response()->json([
             'data' => $results
         ]);
-
     }
     public function malzeme_get(Request $request)
     {

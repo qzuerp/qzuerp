@@ -19,6 +19,12 @@ $(function () {
 
 });
 
+$(document).on('keydown', function(e) {
+    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+        e.preventDefault(); // tarayıcı kaydetmesini engelle
+        $('#kartDuzenle2Btn').click(); // button click
+    }
+});
 
 $(document).ready(function () {
 
