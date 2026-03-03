@@ -527,11 +527,11 @@
 																		<button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button>
 																	</td>
 																	<td>
-																		<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" data-name="SIRANO" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL" >
+																		<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIRANO" data-name="SIRANO" class="form-control" min="0" style="color: red" name="SIRANO_FILL" id="SIRANO_FILL2" >
 																		
 																	</td>
 																	<td>
-																		<input type="text" readonly class="form-control" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL" value="T">
+																		<input type="text" readonly class="form-control" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL2" value="T">
 																	</td>
 																	<td>
 																		<div class="d-flex ">
@@ -549,10 +549,10 @@
 																				</span></button>
 																			</span>
 																		</div>
-																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL" class="form-control">
+																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL2" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
 																	</td>
 																	<td>
 																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW2">
@@ -565,14 +565,14 @@
 																			}
 																			@endphp
 																		</select>
-																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL" class="form-control">
+																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL2" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" data-name="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" data-name="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
 																	</td>
 													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
-										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" data-name="BOMREC_KAYNAK0" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" data-name="BOMREC_KAYNAK0" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL2" value="0">
 										                                    <span class="d-flex -btn">
 										                                        <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
 										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
@@ -584,40 +584,7 @@
 																</tr>
 															</thead>
 															<tbody>
-																@foreach ($tt_kart_veri as $key => $veri)
-																	<tr>
-																		<td>
-																			@include('components.detayBtn', ['KOD' => $veri->BOMREC_KAYNAKCODE])
-																		</td>
-																		<td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-																		<td><input type="number" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
-																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T-{{ $veri->id }}" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
-																		<td>
-																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}" disabled>
-																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE[]" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}">
-																		</td>
-																		<td>
-																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE_AD_SHOW_T" id="BOMREC_KAYNAKCODE_AD_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled>
-																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE_AD[]" id="BOMREC_KAYNAKCODE_AD" value="{{ $veri->STOK_ADI }}">
-																		</td>																	
-																		<td>
-																			<input type="text" class="form-control" readonly data-max name="BOMREC_OPERASYON[]" id="BOMREC_OPERASYON" value="{{ $veri->BOMREC_OPERASYON }}">
-																		</td>
-																		<td>
-																			<input type="text" class="form-control" data-max name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
-																			<input type="hidden" class="form-control" data-max name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
-																		</td>																
-																		<td class="d-flex">
-																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
-																			<span class="d-flex -btn">
-										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModalSatir" type="button">
-										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
-										                                        </button>
-										                                    </span>
-																		</td>
-																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
-																	</tr>
-																@endforeach
+																
 															</tbody>
 
 														</table>
