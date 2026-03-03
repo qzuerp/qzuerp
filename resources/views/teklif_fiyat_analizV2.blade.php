@@ -1693,6 +1693,12 @@
 				$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
 				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
 
+				$('.TIME').val('');
+				$('.PTIME').val('');
+				$('.STIME').val('');
+				$('.PRICE').val('');
+				$('.TOPLANICAK').val('');
+
 				$.ajax({
 					url: 'operasyon/get',
 					type: 'post',
