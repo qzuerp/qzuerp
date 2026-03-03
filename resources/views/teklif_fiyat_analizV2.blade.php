@@ -1775,7 +1775,7 @@
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
 							
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
-							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
+							let isFSN      = operasyon ? res.data.GK_1 === 'FSN' : false;
 							let teklif_fiyat = operasyon ? parseFloat(operasyon.TEKLIF_FIYAT ?? 0) : 0;
 
 							let cardHtml = '';
