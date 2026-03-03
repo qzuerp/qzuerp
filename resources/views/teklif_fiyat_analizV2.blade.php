@@ -1715,24 +1715,23 @@
 
 						$('#maliyetDetayTable tbody tr').each(function () {
 							let rowOR = $(this).find('input[name="OR_TRNUM[]"]').val();
-
-							if (rowOR == OR_TRNUM) {
+							console.log(rowOR,OR_TRNUM);
+							if (String(rowOR) === String(OR_TRNUM)) {
 								varMi = true;
-								return false;
+								return false; // $.each'i durdurur, OK
+							}
+							console.log(varMi);
+						});
+						secimSirasi.forEach(function(k, index) {
+							$('#' + k).prop('checked', true);
+							$('#T' + k).text(index + 1);
+							if (!varMi) {
+								$('#C' + k).show();
+								container.append($('#C' + k));
 							}
 						});
 
-						if (!varMi) {
-							secimSirasi.forEach(function(k,index){
-								$(`#${k}`).prop('checked', true);
-								$(`#T${k}`).text(index + 1);
-								$('#C' + k).show();
-								container.append($('#C' + k));
-							});
-						}
 
-
-						// Malzeme alanlarını sıfırla
 						let $mc = $('#MALZEME_CINSI');
 						$mc.val('');
 						if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
@@ -1741,7 +1740,6 @@
 
 						let teklif_pb = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
 
-						// Döngü maliyetDetayTable üzerinden — OR_TRNUM eşleşen satırlar
 						$('#maliyetDetayTable tbody tr').each(function () {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
@@ -1751,17 +1749,15 @@
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
 
 							if (tip == 'H') {
-								// Malzeme alanını doldur
 								let kod = row.find('input[name="KOD2[]"]').val();
 								$mc.val(kod);
 								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
 								$('#MALZEME_TUTARI').val(row.find('input[name="FIYAT2[]"]').val());
 								$('#OLCU1').val(row.find('input[name="H_OLCU[]"]').val()).trigger('change');
-								return; // kart oluşturma, sonraki satıra geç
+								return; 
 							}
 
-							if (tip != 'I') return; // I dışındaki tipler için kart oluşturma
-
+							if (tip != 'I') return;
 							let k          = row.find('input[name="KOD2[]"]').val();
 							let ayar       = parseFloat(row.find('input[name="AYAR[]"]').val()) || 0;
 							let isleme     = parseFloat(row.find('input[name="ISLEME[]"]').val()) || 0;
@@ -1771,8 +1767,7 @@
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
 							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || '';
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
-
-							// res.data içinden bu operasyonun GK_1 değerini bul
+							
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
 							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
 							let teklif_fiyat = operasyon ? parseFloat(operasyon.TEKLIF_FIYAT ?? 0) : 0;
@@ -2140,7 +2135,6 @@
 					const container = $('.COPRS').first().parent();
 
 					if ($(this).is(':checked')) {
-						// Mevcut seçili checkbox sayısı (yeni eklenmeden önce)
 						const mevcutSayi = secimSirasi.length;
 						const yeniSira = mevcutSayi + 1;
 
@@ -2155,7 +2149,6 @@
 						$('#T' + kod).text('');
 						secimSirasi = secimSirasi.filter(k => k !== kod);
 
-						// Kalan kartların sıra numaralarını güncelle
 						secimSirasi.forEach((k, index) => {
 							$('#T' + k).text(index + 1);
 						});
