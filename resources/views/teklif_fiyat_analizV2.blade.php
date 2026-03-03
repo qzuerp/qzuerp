@@ -1699,6 +1699,7 @@
 
 						$('.OPRS').prop('checked',false);
 						$('.COPRS').hide();
+						container.find('.dynamic-card').remove();
 
 						secimSirasi.forEach(function(k,index){
 							$(`#${k}`).prop('checked', true);
@@ -1706,8 +1707,6 @@
 						});
 
 
-						container.find('.dynamic-card').remove();
-						$('.COPRS').hide();
 
 						// Malzeme alanlarını sıfırla
 						let $mc = $('#MALZEME_CINSI');
