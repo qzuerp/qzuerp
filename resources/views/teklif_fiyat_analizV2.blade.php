@@ -722,7 +722,8 @@
 									<div class="col-2 COPRS" id="C{{ $OPERASYON->KOD }}" style="display:none;">
 										<div class="operation-detail-card">
 											<div class="card-header d-flex justify-content-between align-items-center ">
-												<strong class="OPERASYON_KOD">{{ $OPERASYON->CNAME }}</strong>
+												<strong class="OPERASYON_AD">{{ $OPERASYON->CNAME }}</strong>
+												<strong class="OPERASYON_KOD d-none">{{ $OPERASYON->KOD }}</strong>
 												<button style="border:none;outline:none;background:transparant;"><i
 														class="fa-solid fa-plus clone"></i></button>
 											</div>
@@ -1746,7 +1747,7 @@
 
 						let teklif_pb = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
 
-						$('#maliyetDetayTable tbody tr').each(function (index, element) {
+						$('#maliyetDetayTable tbody tr').each(function () {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
 
@@ -1771,12 +1772,12 @@
 							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
 							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
-							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || '';
+							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val();
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
 							
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
-							let isFSN = (operasyon && res.data[index].GK_1 === 'FSN')
-							console.log(isFSN, operasyon);
+							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
+							let teklif_fiyat = operasyon ? parseFloat(operasyon.TEKLIF_FIYAT ?? 0) : 0;
 
 							let cardHtml = '';
 
@@ -2262,6 +2263,7 @@
 
 						let kart = $(this);
 						let kod   = kart.find('.OPERASYON_KOD').text();
+						let ad   = kart.find('.OPERASYON_AD').text();
 						let total = kart.find('.TOTAL').val() || 0;
 						let ayar = kart.find('.TIME').val() || 0;
 						let ISLEME = kart.find('.PTIME').val() || 0;
@@ -2279,7 +2281,7 @@
 							<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
 							<td><input type="text" name="KAYNAKTYPE2[]" value="I" class="form-control" readonly></td> 
 							<td><input type="text" name="KOD2[]" value="${kod}" class="form-control" readonly></td> 
-							<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
+							<td class="text-end"><input type="text" name="KODADI2[]" value="${ad}" class="form-control"></td>
 							<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="${BIRIM_FIYAT}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="AYAR[]" value="${ayar}" class="form-control number"></td>

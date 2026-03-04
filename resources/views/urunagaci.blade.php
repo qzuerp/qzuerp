@@ -43,6 +43,7 @@
 		->leftJoin($database.'stok00 as s', 't.BOMREC_KAYNAKCODE', '=', 's.KOD')
 		->leftJoin($database.'imlt00 as i', 't.BOMREC_KAYNAKCODE', '=', 'i.KOD')
 		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+		->where('t.BOMREC_INPUTTYPE','!=', 'T')
 		->orderBy('t.SIRANO', 'ASC')
 		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as STOK_ADI, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as STOK_BIRIM")
 		->get();
@@ -52,7 +53,7 @@
 		->leftJoin($database.'stok00 as s', 't.BOMREC_KAYNAKCODE', '=', 's.KOD')
 		->leftJoin($database.'imlt00 as i', 't.BOMREC_KAYNAKCODE', '=', 'i.KOD')
 		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-		->where('t.BOMREC_KAYNAKCODE', 'T')
+		->where('t.BOMREC_INPUTTYPE', 'T')
 		->orderBy('t.SIRANO', 'ASC')
 		->selectRaw("t.*, case when s.AD is NULL then i.AD else s.AD end as STOK_ADI, case when s.IUNIT is NULL then 'SAAT' else s.IUNIT end as STOK_BIRIM")
 		->get();
@@ -208,7 +209,7 @@
 									<div class="nav-tabs-custom">
 										<ul class="nav nav-tabs">
 											<li class="nav-item" ><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Ürün Bilgileri</a></li>
-											<!-- <li class="nav-item" ><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Takımlar</a></li> -->
+											<li class="nav-item" ><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Takımlar</a></li>
 											<li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 											<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 										</ul>
@@ -535,7 +536,7 @@
 																	</td>
 																	<td>
 																		<div class="d-flex ">
-																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW2">
+																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3T(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW2">
 																				@php
 																					$takimhaneler = DB::table($database.'stok00')->where('GK_1','07')->get();
 																				@endphp
@@ -552,10 +553,10 @@
 																		<input style="color: red" type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL2" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" data-name="STOK_ADI" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL2">
 																	</td>
 																	<td>
-																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW2">
+																		<select class="form-control select2 js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON" data-name="BOMREC_OPERASYON" onchange="stokAdiGetir4T(this.value)" style="color: blue" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW2">
 																			<option value=" ">Seç</option>
 																			@php
 																			$imlt01_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
@@ -568,7 +569,7 @@
 																		<input style="color: red" type="hidden" maxlength="255"  name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL2" class="form-control">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" data-name="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_OPERASYON_AD" data-name="BOMREC_OPERASYON_AD" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW2" disabled><input type="hidden" class="form-control" maxlength="255" style="color: red" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL2">
 																	</td>
 													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
@@ -584,7 +585,40 @@
 																</tr>
 															</thead>
 															<tbody>
-																
+																@foreach ($tt_kart_veri as $key => $veri)
+																	<tr>
+																		<td>
+																			@include('components.detayBtn', ['KOD' => $veri->BOMREC_KAYNAKCODE])
+																		</td>
+																		<td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
+																		<td><input type="number" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
+																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T-{{ $veri->id }}" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
+																		<td>
+																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}" disabled>
+																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE[]" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}">
+																		</td>
+																		<td>
+																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE_AD_SHOW_T" id="BOMREC_KAYNAKCODE_AD_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled>
+																			<input type="hidden" class="form-control" maxlength="24" name="BOMREC_KAYNAKCODE_AD[]" id="BOMREC_KAYNAKCODE_AD" value="{{ $veri->STOK_ADI }}">
+																		</td>																	
+																		<td>
+																			<input type="text" class="form-control" readonly data-max name="BOMREC_OPERASYON[]" id="BOMREC_OPERASYON" value="{{ $veri->BOMREC_OPERASYON }}">
+																		</td>
+																		<td>
+																			<input type="text" class="form-control" data-max name="BOMREC_OPERASYON_AD_SHOW_T" id="BOMREC_OPERASYON_AD_SHOW_T" value="{{ $veri->BOMREC_OPERASYON_AD }}" disabled>
+																			<input type="hidden" class="form-control" data-max name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
+																		</td>																
+																		<td class="d-flex">
+																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
+																			<span class="d-flex -btn">
+										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModalSatir" type="button">
+										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
+										                                        </button>
+										                                    </span>
+																		</td>
+																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
+																	</tr>
+																@endforeach
 															</tbody>
 
 														</table>
@@ -1162,19 +1196,6 @@
 	{{-- Ağırlık Hesaplama --}}
 	    <script>
 			
-		    // document.getElementById('BOMREC_INPUTTYPE_SHOW').addEventListener('change', function () {
-			// 	const KT = this.value;
-
-			// 	document.getElementById('timeForm').style.display = 'none';
-			// 	document.getElementById('dimensionsForm').style.display = 'none';
-
-			// 	if (KT === 'H') {
-			// 		document.getElementById('timeForm').style.display = 'block';
-			// 	} else if (KT === 'I') {
-			// 		document.getElementById('dimensionsForm').style.display = 'block';
-			// 	}
-			// });
-
 			$('#BOMREC_INPUTTYPE_SHOW').on('change', function () {
 				var selectedValue = $.trim($(this).val());
 
@@ -1378,6 +1399,27 @@
 		// window.onload = addRowHandlers();
 
 		$(document).ready(function() {
+
+			// $('#verilerForm').on('submit', function(e) {
+			// 	e.preventDefault();
+			// 	let KOD1 = $('#MAMULCODE_SHOW').val();
+			// 	let KOD2 = $('input[name="BOMREC_KAYNAKCODE[]"]').val();
+
+			// 	KOD2.forEach((item, index) => {
+			// 		if(KOD2[index] == KOD1)
+			// 		{
+			// 			swal.fire({
+			// 				title: 'Hata!',
+			// 				text: 'Reçete Ürün Kodu ile satır ürün Kodu aynı olamaz!',
+			// 				icon: 'error',
+			// 				confirmButtonText: 'Tamam'
+			// 			});
+			// 			return false;
+			// 			$('#loader').hide();
+			// 		}
+			// 	});
+			// });
+
 			$('#YMAMULCODE_SHOW').select2({
 				placeholder: 'Stok kodu seç...',
 				ajax: {
@@ -1517,19 +1559,19 @@
 				htmlCode += " <tr> ";
 				htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
-				htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
-				htmlCode += " <td><input type='text' class='form-control' name='SIRANO[]' value='"+satirEkleInputs.SIRANO_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE_AD[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
+				htmlCode += detayBtnForJS(satirEkleInputs.BOMREC_KAYNAKCODE_FILL2);
+				htmlCode += " <td><input type='text' class='form-control' name='SIRANO[]' value='"+satirEkleInputs.SIRANO_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE_AD[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL2+"'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				htmlCode += " </tr> ";
 
 
-				if (satirEkleInputs.BOMREC_KAYNAKCODE_FILL==null || satirEkleInputs.BOMREC_KAYNAKCODE_FILL==" " || satirEkleInputs.BOMREC_KAYNAKCODE_FILL=="") {
+				if (satirEkleInputs.BOMREC_KAYNAKCODE_FILL2==null || satirEkleInputs.BOMREC_KAYNAKCODE_FILL2==" " || satirEkleInputs.BOMREC_KAYNAKCODE_FILL2=="") {
 					eksikAlanHataAlert2();
 				}
 
@@ -1618,6 +1660,28 @@
 			$('#BOMREC_OPERASYON_FILL').val(veriler[0]);
 			$('#BOMREC_OPERASYON_AD_SHOW').val(veriler[1]);
 			$('#BOMREC_OPERASYON_AD_FILL').val(veriler[1]);
+
+		}
+
+		function stokAdiGetir3T(veri) {
+
+			const veriler = veri.split("|||");
+
+			// $('#BOMREC_KAYNAKCODE_SHOW').val(veriler[0]);
+			$('#BOMREC_KAYNAKCODE_FILL2').val(veriler[0]);
+			$('#BOMREC_KAYNAKCODE_AD_SHOW2').val(veriler[1]);
+			$('#BOMREC_KAYNAKCODE_AD_FILL2').val(veriler[1]);
+			$('#ACIKLAMA_FILL2').val(veriler[2] == 'TZGH' ? 'SAAT' : veriler[2])
+			}
+
+		function stokAdiGetir4T(veri) {
+
+			const veriler = veri.split("|||");
+
+			//$('#BOMREC_OPERASYON_SHOW').val(veriler[0]);
+			$('#BOMREC_OPERASYON_FILL2').val(veriler[0]);
+			$('#BOMREC_OPERASYON_AD_SHOW2').val(veriler[1]);
+			$('#BOMREC_OPERASYON_AD_FILL2').val(veriler[1]);
 
 		}
 
