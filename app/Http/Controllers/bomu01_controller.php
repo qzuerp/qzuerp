@@ -211,6 +211,7 @@ class bomu01_controller extends Controller
     $NUM3 = $request->NUM3;
     $NUM4 = $request->NUM4;
     $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
+    $ACIKLAMA2 = $request->ACIKLAMA2;
 
     if ($BOMREC_KAYNAKCODE == null) {
       $satir_say = 0;
@@ -305,32 +306,33 @@ class bomu01_controller extends Controller
           DB::table(trim($firma) . '.dbo.' . 'bomu01t')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
-            'TRNUM' => $TRNUM[$i],
-            'SIRANO' => $SIRANO[$i],
-            'BOMREC_INPUTTYPE' => $BOMREC_INPUTTYPE[$i],
-            'BOMREC_KAYNAKCODE' => $BOMREC_KAYNAKCODE[$i],
-            'BOMREC_KAYNAKCODE_AD' => $BOMREC_KAYNAKCODE_AD[$i],
-            'BOMREC_OPERASYON' => $BOMREC_OPERASYON[$i],
-            'BOMREC_OPERASYON_AD' => $BOMREC_OPERASYON_AD[$i],
-            'BOMREC_KAYNAK0' => $BOMREC_KAYNAK0[$i],
-            'BOMREC_YMAMULPS' => $BOMREC_YMAMULPS[$i],
-            'BOMREC_YMAMULPM' => $BOMREC_YMAMULPM[$i],
-            'BOMREC_KAYNAK1' => $BOMREC_KAYNAK01[$i],
-            'BOMREC_KAYNAK2' => $BOMREC_KAYNAK02[$i],
-            'ACIKLAMA' => $ACIKLAMA[$i],
-            'KALIP_KODU1' => $KALIP_KODU1[$i] ?? '',
-            'KALIP_KODU2' => $KALIP_KODU2[$i] ?? '',
-            'KALIP_KODU3' => $KALIP_KODU3[$i] ?? '',
-            'KALIP_KODU4' => $KALIP_KODU4[$i] ?? '',
-            'TEXT1' => $TEXT1[$i],
-            'TEXT2' => $TEXT2[$i],
-            'TEXT3' => $TEXT3[$i],
-            'TEXT4' => $TEXT4[$i],
-            'NUM1' => $NUM1[$i],
-            'NUM2' => $NUM2[$i],
-            'NUM3' => $NUM3[$i],
-            'NUM4' => $NUM4[$i],
-            'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i],
+            'TRNUM' => $TRNUM[$i] || NULL,
+            'SIRANO' => $SIRANO[$i] || NULL,
+            'BOMREC_INPUTTYPE' => $BOMREC_INPUTTYPE[$i] || NULL,
+            'BOMREC_KAYNAKCODE' => $BOMREC_KAYNAKCODE[$i] || NULL,
+            'BOMREC_KAYNAKCODE_AD' => $BOMREC_KAYNAKCODE_AD[$i] || NULL,
+            'BOMREC_OPERASYON' => $BOMREC_OPERASYON[$i] || NULL,
+            'BOMREC_OPERASYON_AD' => $BOMREC_OPERASYON_AD[$i] || NULL,
+            'BOMREC_KAYNAK0' => $BOMREC_KAYNAK0[$i] || NULL,
+            'BOMREC_YMAMULPS' => $BOMREC_YMAMULPS[$i] || NULL,
+            'BOMREC_YMAMULPM' => $BOMREC_YMAMULPM[$i] || NULL,
+            'BOMREC_KAYNAK1' => $BOMREC_KAYNAK01[$i] || NULL,
+            'BOMREC_KAYNAK2' => $BOMREC_KAYNAK02[$i] || NULL,
+            'ACIKLAMA' => $ACIKLAMA[$i] || NULL,
+            'KALIP_KODU1' => $KALIP_KODU1[$i] ?? '' || NULL,
+            'KALIP_KODU2' => $KALIP_KODU2[$i] ?? '' || NULL,
+            'KALIP_KODU3' => $KALIP_KODU3[$i] ?? '' || NULL,
+            'KALIP_KODU4' => $KALIP_KODU4[$i] ?? '' || NULL,
+            'TEXT1' => $TEXT1[$i] || NULL,
+            'TEXT2' => $TEXT2[$i] || NULL,
+            'TEXT3' => $TEXT3[$i] || NULL,
+            'TEXT4' => $TEXT4[$i] || NULL,
+            'NUM1' => $NUM1[$i] || NULL,
+            'NUM2' => $NUM2[$i] || NULL,
+            'NUM3' => $NUM3[$i] || NULL,
+            'NUM4' => $NUM4[$i] || NULL,
+            'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] || NULL,
+            'ACIKLAMA2' => $ACIKLAMA2[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -415,6 +417,7 @@ class bomu01_controller extends Controller
               'NUM3' => $NUM3[$i] ?? NULL,
               'NUM4' => $NUM4[$i] ?? NULL,
               'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] ?? NULL,
+              'ACIKLAMA2' => $ACIKLAMA2[$i],
               'created_at' => date('Y-m-d H:i:s') ?? NULL,
             ]);
 
@@ -452,7 +455,8 @@ class bomu01_controller extends Controller
               'NUM3' => $NUM3[$i] ?? NULL,
               'NUM4' => $NUM4[$i] ?? NULL,
               'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] ?? NULL,
-              // 'updated_at' => date('Y-m-d H:i:s'),
+              'ACIKLAMA2' => $ACIKLAMA2[$i],
+              'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
           }

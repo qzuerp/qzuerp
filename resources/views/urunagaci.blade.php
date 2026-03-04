@@ -488,6 +488,9 @@
 																		<td><input type="number" class="form-control" name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
 																		<td><input type="number" class="form-control" name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+																		<td>
+																			<input type="text" class="form-control" name="ACIKLAMA2[]" value="{{ $veri->ACIKLAMA2 }}">
+																		</td>
 
 																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 																	</tr>
@@ -521,6 +524,7 @@
 																	<th style="min-width:300px">Operasyon Kodu</th>
 																	<th style="min-width:300px">Operasyon Adı</th>
 																	<th style="min-width:80px">Adet</th>
+																	<th style="min-width:80px">Açıklama</th>
 																	<th></th>
 																</tr>
 																<tr class="satirEkle">
@@ -573,13 +577,11 @@
 																	</td>
 													                <td style="min-width: 150px;">
 										                                <div class="d-flex ">
-										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" data-name="BOMREC_KAYNAK0" class="form-control txt-radius" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL2" value="0">
-										                                    <span class="d-flex -btn">
-										                                        <button class="btn btn-radius btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button">
-										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
-										                                        </button>
-										                                    </span>
+										                                    <input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAK0" data-name="BOMREC_KAYNAK0" class="form-control" style="color: red" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL2" value="0">
 										                                </div>
+										                            </td>
+																	<td style="min-width: 150px;">
+																		<input type="text" class="form-control" id="ACIKLAMA2" value="">
 										                            </td>
 																	<td>#</td>
 																</tr>
@@ -591,7 +593,7 @@
 																			@include('components.detayBtn', ['KOD' => $veri->BOMREC_KAYNAKCODE])
 																		</td>
 																		<td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
-																		<td><input type="number" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
+																		<td><input type="text" class="form-control" min="0" name="SIRANO[]" id="SIRANO" value="{{ $veri->SIRANO }}"></td>
 																		<td><input type="text" class="form-control" name="BOMREC_INPUTTYPE_SHOW_T" id="BOMREC_INPUTTYPE_SHOW_T-{{ $veri->id }}" value="{{ $veri->BOMREC_INPUTTYPE }}" disabled><input type="hidden" class="form-control" maxlength="24" name="BOMREC_INPUTTYPE[]" id="BOMREC_INPUTTYPE" value="{{ $veri->BOMREC_INPUTTYPE }}"></td>
 																		<td>
 																			<input type="text" class="form-control" name="BOMREC_KAYNAKCODE" id="BOMREC_KAYNAKCODE" value="{{ $veri->BOMREC_KAYNAKCODE }}" disabled>
@@ -615,6 +617,9 @@
 										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
 										                                        </button>
 										                                    </span>
+																		</td>
+																		<td>
+																			<input type="text" class="form-control" name="ACIKLAMA2[]" value="{{ $veri->ACIKLAMA2 }}">
 																		</td>
 																		<td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
 																	</tr>
@@ -1403,8 +1408,8 @@
 			// $('#verilerForm').on('submit', function(e) {
 			// 	e.preventDefault();
 			// 	let KOD1 = $('#MAMULCODE_SHOW').val();
-			// 	let KOD2 = $('input[name="BOMREC_KAYNAKCODE[]"]').val();
-
+			// 	let KOD2 = $('input[name="BOMREC_KAYNAKCODE[]"]').map(function(){return this.value;}).get();66
+			// 	console.log(KOD2);
 			// 	KOD2.forEach((item, index) => {
 			// 		if(KOD2[index] == KOD1)
 			// 		{
@@ -1414,7 +1419,6 @@
 			// 				icon: 'error',
 			// 				confirmButtonText: 'Tamam'
 			// 			});
-			// 			return false;
 			// 			$('#loader').hide();
 			// 		}
 			// 	});
@@ -1527,6 +1531,7 @@
         		htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA2[]' value='"+satirEkleInputs.ACIKLAMA2+"'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				htmlCode += " </tr> ";
 
@@ -1567,6 +1572,7 @@
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL2+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA2[]' value='"+satirEkleInputs.ACIKLAMA2+"'></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 				htmlCode += " </tr> ";
 
