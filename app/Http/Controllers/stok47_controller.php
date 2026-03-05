@@ -516,12 +516,10 @@ class stok47_controller extends Controller
           $u = Auth::user();
         }
         $firma = trim($u->firma).'.dbo.';
-        // dd($request->all());
         if($CARI_KOD != NULL)
           sort($CARI_KOD);
         $ONCEKI_CARI = "";
         $hesap_id = DB::table($firma.'pers00')->where('KOD', $TALEP_EDEN_KISI)->value('bagli_hesap');
-        //Sipariş ekle
         for ($i = 0; $i < $satir_say2; $i++) {
           $SON_EVRAK = DB::table($firma . 'stok46e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
           $SON_ID = $SON_EVRAK->EVRAKNO;
