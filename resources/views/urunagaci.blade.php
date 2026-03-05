@@ -1252,6 +1252,7 @@
 			{
 				$('#MAMULCODE_SHOW').prop('disabled', false);
 				$('#MAMULCODE_SHOW').val('').trigger('change');
+				$('#veriTable2 tbody tr').remove();
 			}
 			
 		    function calculateWeight() {
