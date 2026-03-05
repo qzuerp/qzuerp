@@ -1731,11 +1731,15 @@
 
 						let operasyonSayac = {};
 
-						// DÜZELTME: .filter() ile sadece OR_TRNUM eşleşen satırları al
-						$('#maliyetDetayTable tbody tr:not(.group-footer)').filter(function() {
-							return $(this).find('input[name="OR_TRNUM[]"]').val() == OR_TRNUM;
-						}).each(function(rowIndex) {
+						$('#maliyetDetayTable tbody tr:not(.group-footer)').each(function(rowIndex) {
 							let row = $(this);
+							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
+							console.log(rowOR, OR_TRNUM);
+							if (rowOR != OR_TRNUM)
+							{
+								return;
+							}
+
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
 
 							if (tip === 'H') {
@@ -1896,11 +1900,6 @@
 							$newCard.find('.STIME').trigger('input');
 							$newCard.find('.PRICE').trigger('input');
 							$newCard.find('.TOPLANICAK').trigger('input');
-						});
-
-						// DÜZELTME: COPRS gösterimi döngü bittikten sonra
-						secimSirasi.forEach(function(k) {
-							$('#C' + k).show();
 						});
 
 						hesapla();
@@ -2328,7 +2327,6 @@
 						let FIYAT2 = kart.find('.tutar-input').val() || 0;
 						let BIRIM_FIYAT = kart.find('.PRICE').val() || 0;
 						let NOT = kart.find('.T_NOT').val() || '';
-						if(total == 0) return;
 						let TRNUM = getTRNUM();
 
 						let tr = `

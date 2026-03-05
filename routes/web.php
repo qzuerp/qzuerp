@@ -63,6 +63,7 @@ use App\Http\Controllers\parametreler;
 use App\Http\Controllers\srvbs0_controller;
 use App\Http\Controllers\takvim0_controller;
 use App\Http\Controllers\api_controller;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -106,8 +107,12 @@ Route::group(['middleware' => ['auth']], function() {
     | Dashboard & Index
     |--------------------------------------------------------------------------
     */
-    Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-    Route::get('/dashboard/siparis-chart', [App\Http\Controllers\HomeController::class, 'siparisChart']);
+    Route::get('/index', [HomeController::class, 'index'])->name('index');
+    Route::get('/dashboard/siparis-chart', [HomeController::class, 'siparisChart']);
+    Route::get('/dashboard/acik-siparisler',    [HomeController::class, 'getAcikSiparisler']);
+    Route::get('/dashboard/sik-kullanilanlar',  [HomeController::class, 'getSikKullanilanlar']);
+    Route::get('/dashboard/karlilik',           [HomeController::class, 'getKarlilik']);
+    Route::get('/dashboard/uretim-gerceklesme', [HomeController::class, 'getUretimGerceklesme']);
 
     /*
     |--------------------------------------------------------------------------

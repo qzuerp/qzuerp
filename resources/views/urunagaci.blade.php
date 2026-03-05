@@ -581,7 +581,7 @@
 										                                </div>
 										                            </td>
 																	<td style="min-width: 150px;">
-																		<input type="text" class="form-control" id="ACIKLAMA2" value="">
+																		<input type="text" class="form-control ACIKLAMA2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA2" data-name="ACIKLAMA2" id="ACIKLAMA2" value="">
 										                            </td>
 																	<td>#</td>
 																</tr>
