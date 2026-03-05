@@ -30,10 +30,12 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
         $firma = trim($user->firma) . '.dbo.';
 
         $rows = DB::table($firma . 'tekl20t as T20t')
-            ->leftJoin($firma . 'tekl20tı as T20ti', 'T20t.TRNUM', '=', 'T20ti.OR_TRNUM')
+            ->leftJoin($firma . 'tekl20tı as T20ti', function ($join) {
+                $join->on('T20ti.EVRAKNO', '=', 'T20t.EVRAKNO')
+                    ->on('T20t.TRNUM', '=', 'T20ti.OR_TRNUM');
+            })
             ->where('T20ti.EVRAKNO', $this->evrakno)
-            ->orderBy('T20ti.OR_TRNUM')
-            ->get([
+            ->select([
                 'T20ti.*',
                 'T20t.KOD as TKOD',
                 'T20t.STOK_AD1 as TAD',
@@ -43,8 +45,10 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                 'T20t.FIYAT2 as TFIYAT2',
                 'T20t.TUTAR as TTUTAR',
                 'T20t.TERMIN_TARIHI as TTERMIN_TARIHI',
-                'T20t.ACIKLAMA as TACIKLAMA',
-            ]);
+                'T20t.ACIKLAMA as TACIKLAMA'
+            ])
+            ->orderBy('T20ti.OR_TRNUM')
+            ->get();
 
         $sonuc = [];
 

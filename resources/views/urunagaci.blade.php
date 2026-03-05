@@ -246,7 +246,7 @@
 																	<th style="min-width:300px">Kalıp Kodu 1</th>
 																	<th style="min-width:300px">Kalıp Kodu 2</th>
 																	<th style="min-width:300px">Kalıp Kodu 3</th>
-																	<th style="min-width:300px">Kalıp Kodu 4</th>
+																	<th style="min-width:300px">Kalıp Kodu 4</th> 
 																	<th>Varyant Text 1</th>
 																	<th>Varyant Text 2</th>
 																	<th>Varyant Text 3</th>

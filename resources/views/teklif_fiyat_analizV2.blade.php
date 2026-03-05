@@ -1714,30 +1714,14 @@
 
 						secimSirasi = res.data.map(x => x.OPERASYON);
 
-						$('.OPRS').prop('checked',false);
+						$('.OPRS').prop('checked', false);
 						$('.COPRS').hide();
 						container.find('.dynamic-card').remove();
 
-						let varMi = false;
-
-						$('#maliyetDetayTable tbody tr').each(function () {
-							let rowOR = $(this).find('input[name="OR_TRNUM[]"]').val();
-							console.log(rowOR,OR_TRNUM);
-							if (String(rowOR) === String(OR_TRNUM)) {
-								varMi = true;
-								return false; // $.each'i durdurur, OK
-							}
-							console.log(varMi);
-						});
 						secimSirasi.forEach(function(k, index) {
 							$('#' + k).prop('checked', true);
 							$('#T' + k).text(index + 1);
-							if (!varMi) {
-								$('#C' + k).show();
-								container.append($('#C' + k));
-							}
 						});
-
 
 						let $mc = $('#MALZEME_CINSI');
 						$mc.val('');
@@ -1745,45 +1729,58 @@
 						$('#MALZEME_TUTARI').val(0);
 						$('#OLCU1').val('');
 
-						let teklif_pb = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
+						let operasyonSayac = {};
 
-						$('#maliyetDetayTable tbody tr').each(function () {
+						$('#maliyetDetayTable tbody tr').each(function(rowIndex) {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
-
-							if (rowOR != OR_TRNUM) return;
+							if (String(rowOR) !== String(OR_TRNUM))
+							{
+								secimSirasi.forEach(function(k, index) {
+									$('#C' + k).show();
+								});
+								return;
+							} 
 
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
 
-							if (tip == 'H') {
+							if (tip === 'H') {
 								let kod = row.find('input[name="KOD2[]"]').val();
 								$mc.val(kod);
 								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
 								$('#MALZEME_TUTARI').val(row.find('input[name="FIYAT2[]"]').val());
 								$('#OLCU1').val(row.find('input[name="H_OLCU[]"]').val()).trigger('change');
-								return; 
+								return;
 							}
 
-							if (tip != 'I') return;
-							let k          = row.find('input[name="KOD2[]"]').val();
+							if (tip !== 'I') return;
+
+							let k = row.find('input[name="KOD2[]"]').val();
+
+							operasyonSayac[k] = (operasyonSayac[k] || 0);
+							let kartIndex = operasyonSayac[k];
+							operasyonSayac[k]++;
+
+							let kartId = `DC${k}_${OR_TRNUM}_${kartIndex}`;
+
+							let teklif_pb  = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
+							let operasyon  = res.data.find(x => x.OPERASYON == k);
+							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
+
 							let ayar       = parseFloat(row.find('input[name="AYAR[]"]').val()) || 0;
 							let isleme     = parseFloat(row.find('input[name="ISLEME[]"]').val()) || 0;
 							let soktak     = parseFloat(row.find('input[name="SOKTAK[]"]').val()) || 0;
 							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
 							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
-							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val();
+							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || 0;
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
-							
-							let operasyon  = res.data.find(x => x.OPERASYON == k);
-							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
-							let teklif_fiyat = operasyon ? parseFloat(operasyon.TEKLIF_FIYAT ?? 0) : 0;
 
 							let cardHtml = '';
 
 							if (!isFSN) {
 								cardHtml = `
-								<div class="col-2 COPRS dynamic-card" id="C${k}" style="display:block;">
+								<div class="col-2 COPRS dynamic-card" id="${kartId}" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header d-flex justify-content-between align-items-center">
 											<strong class="OPERASYON_KOD">${k}</strong>
@@ -1804,8 +1801,7 @@
 													<input type="number" class="form-control form-control-sm TIME"
 														value="${ayar}" placeholder="0.00">
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm AYAR_TUTAR"
-															placeholder="0.00">
+														<input type="number" class="form-control text-end form-control-sm AYAR_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -1818,8 +1814,7 @@
 															value="${isleme}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm PTIME ISLEM_TUTAR"
-															placeholder="0.00">
+														<input type="number" class="form-control text-end form-control-sm PTIME ISLEM_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -1832,8 +1827,7 @@
 															value="${soktak}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm STIME SOKTAK_TUTAR"
-															placeholder="0.00">
+														<input type="number" class="form-control text-end form-control-sm STIME SOKTAK_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -1858,7 +1852,7 @@
 								@endforeach
 
 								cardHtml = `
-								<div class="col-2 COPRS dynamic-card" id="C${k}" style="display:block;">
+								<div class="col-2 COPRS dynamic-card" id="${kartId}" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header d-flex justify-content-between align-items-center">
 											<strong class="OPERASYON_KOD">${k}</strong>
@@ -1894,7 +1888,6 @@
 								</div>`;
 							}
 
-							// #DIGER_KART'tan önce ekle
 							let $diger = $('#DIGER_KART');
 							if ($diger.length) {
 								$diger.before(cardHtml);
@@ -1902,83 +1895,80 @@
 								container.append(cardHtml);
 							}
 
-							// Trigger
-							let $newCard = container.find('#C' + k);
+							// Trigger hesaplamalar
+							let $newCard = container.find('#' + kartId);
 							$newCard.find('.TIME').trigger('input');
 							$newCard.find('.PTIME').trigger('input');
 							$newCard.find('.STIME').trigger('input');
 							$newCard.find('.PRICE').trigger('input');
 							$newCard.find('.TOPLANICAK').trigger('input');
-							hesapla();
 						});
 
-						// DIGER_KART'ı göster ve en sona taşı
+						hesapla();
+
 						$('#DIGER_KART').show();
 						container.append($('#DIGER_KART'));
 					}
 				});
 			});
 
-		$(document).on('click', '.bol', function() {
-			const $satir = $(this).closest('.satir-grubu');
-			const $input = $satir.find('.RES_TOTAL');
+			$(document).on('click', '.bol', function() {
+				const $satir = $(this).closest('.satir-grubu');
+				const $input = $satir.find('.RES_TOTAL');
 
-			// eski değeri sakla
-			$input.data('prev', $input.val());
+				// eski değeri sakla
+				$input.data('prev', $input.val());
 
-			const tutar = parseFloat($input.val()) || 0;
-			const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
+				const tutar = parseFloat($input.val()) || 0;
+				const miktar = parseFloat($('#SF_MIKTAR').val()) || 1;
 
-			$input.val(round(tutar / miktar, 2));
+				$input.val(round(tutar / miktar, 2));
 
-			hesapla();
-		});
-
-		$(document).on('click', '.geri', function() {
-			const $satir = $(this).closest('.satir-grubu');
-			const $input = $satir.find('.RES_TOTAL');
-
-			const eski = $input.data('prev');
-
-			if (eski !== undefined) {
-				$input.val(eski);
-				$input.removeData('prev');
-			}
-
-			hesapla();
-		});
-
-		$(document).on('input', '.KURLAR', function () {
-
-			const $satir = $(this).closest('tr');
-
-			const kurDeger   = parseFloat($(this).val().replace(',', '.')) || 0;
-			const codeFrom   = $satir.find("input[name='CODEFROM[]']").val();
-
-			// console.log("Para Birimi:", codeFrom);
-			// console.log("Yeni Kur:", kurDeger);
-
-			if (codeFrom === "USD") {
-				$("input[name='FIYAT[]']").each(function () {
-					const base = parseFloat($(this).val()) || 0;
-					$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val(round(base / kurDeger, 3));
-				});
-			}
-
-
-			$('input[name="FIYAT2[]"]').each(function(){
-				const base = parseFloat($(this).val()) || 0;
-				const kurBirimi = $(this).closest("tr").find("input[name='PARA_BIRIMI2[]']").val();
-				let kur = 0;
-				$('input[name="CODEFROM[]"]').each(function () {
-					if(kurBirimi == $(this).val()){
-						kur = $(this).closest('tr').find('input[name="KURS_1[]"]').val();
-					}
-				});
-
-				$(this).closest("tr").find("input[name='FIYAT_2[]']").val(round(base / kur));
+				hesapla();
 			});
-		});
+
+			$(document).on('click', '.geri', function() {
+				const $satir = $(this).closest('.satir-grubu');
+				const $input = $satir.find('.RES_TOTAL');
+
+				const eski = $input.data('prev');
+
+				if (eski !== undefined) {
+					$input.val(eski);
+					$input.removeData('prev');
+				}
+
+				hesapla();
+			});
+
+			$(document).on('input', '.KURLAR', function () {
+
+				const $satir = $(this).closest('tr');
+
+				const kurDeger   = parseFloat($(this).val().replace(',', '.')) || 0;
+				const codeFrom   = $satir.find("input[name='CODEFROM[]']").val();
+
+				if (codeFrom === "USD") {
+					$("input[name='FIYAT[]']").each(function () {
+						const base = parseFloat($(this).val()) || 0;
+						$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val(round(base / kurDeger, 3));
+					});
+				}
+
+
+				$('input[name="FIYAT2[]"]').each(function(){
+					const base = parseFloat($(this).val()) || 0;
+					const kurBirimi = $(this).closest("tr").find("input[name='PARA_BIRIMI2[]']").val();
+					let kur = 0;
+					$('input[name="CODEFROM[]"]').each(function () {
+						if(kurBirimi == $(this).val()){
+							kur = $(this).closest('tr').find('input[name="KURS_1[]"]').val();
+						}
+					});
+
+					$(this).closest("tr").find("input[name='FIYAT_2[]']").val(round(base / kur));
+				});
+			});
 
 			$(document).on('input', '.TIME, .PRICE, .PTIME, .STIME', function() {
 				var card = $(this).closest('.operation-detail-card');
@@ -1994,12 +1984,10 @@
 				var s_islem = STIME * (PRICE / 60);
 				var total = ayar + islem + s_islem;
 
-				// yeni alanlara yaz
 				card.find('.AYAR_TUTAR').val(round(ayar, 2));
 				card.find('.ISLEM_TUTAR').val(round(islem, 2));
 				card.find('.SOKTAK_TUTAR').val(round(s_islem, 2));
 
-				// eski total alanı aynı
 				card.find('.TOTAL').val(round(total, 2));
 
 			});
@@ -2045,10 +2033,70 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
-				$(document).on('change', '.OPRS', function () {
-					var targetId = "C" + this.id;
-					$("#" + targetId).toggle(this.checked);
-				});
+				// $(document).on('change', '.OPRS', function () {
+				// 	let OR_TRNUM = $('#OR_TRNUM').val();
+				// 	let k = this.id;
+				// 	let isChecked = this.checked;
+					
+				// 	let $dinamikKartlar = $('[id^="DC' + k + '_' + OR_TRNUM + '_"]');
+				// 	let $sabitKart = $('#C' + k);
+					
+
+				// 	if ($dinamikKartlar.length > 0) {
+				// 		$dinamikKartlar.toggle(isChecked);
+				// 		$sabitKart.hide();
+				// 	} else {
+				// 		$sabitKart.toggle(isChecked);
+				// 	}
+				// });
+
+				function updateOperationTabs() {
+					let OR_TRNUM = $('#OR_TRNUM').val();
+					const container = $('.row.g-2.OPRS_CONTAINER');
+
+					document.querySelectorAll('.OPRS').forEach(checkbox => {
+						let k = checkbox.id;
+						let isChecked = checkbox.checked;
+						let $dinamikKartlar = $('[id^="DC' + k + '_' + OR_TRNUM + '_"]');
+						let sabitKart = document.getElementById('C' + k);
+
+						if ($dinamikKartlar.length > 0) {
+							$dinamikKartlar.each(function() {
+								this.style.display = isChecked ? 'block' : 'none';
+							});
+							if (sabitKart) sabitKart.style.display = 'none';
+						} else {
+							if (sabitKart) sabitKart.style.display = isChecked ? 'block' : 'none';
+						}
+
+						if (isChecked) {
+							if (!secimSirasi.includes(k)) secimSirasi.push(k);
+						} else {
+							secimSirasi = secimSirasi.filter(x => x !== k);
+						}
+					});
+
+					secimSirasi.forEach((k, index) => {
+						$('#T' + k).text(index + 1);
+					});
+
+					secimSirasi.forEach(k => {
+						const $din = $('[id^="DC' + k + '_' + OR_TRNUM + '_"]');
+						const $sbt = $('#C' + k);
+
+						if ($din.length > 0) {
+							$din.each(function () {
+								$('#DIGER_KART').before($(this));
+							});
+							$('#DIGER_KART').before($sbt);
+						} else {
+							$('#DIGER_KART').before($sbt);
+						}
+					});
+
+					$('#DIGER_KART').show();
+					container.append($('#DIGER_KART'));
+				}
 
 				document.getElementById('selectAll')?.addEventListener('click', function() {
 					document.querySelectorAll('.OPRS').forEach(cb => cb.checked = true);
@@ -2059,14 +2107,6 @@
 					document.querySelectorAll('.OPRS').forEach(cb => cb.checked = false);
 					updateOperationTabs();
 				});
-				function updateOperationTabs() {
-					document.querySelectorAll('.OPRS').forEach(checkbox => {
-						const targetDiv = document.getElementById('C' + checkbox.value);
-						if (targetDiv) {
-							targetDiv.style.display = checkbox.checked ? 'block' : 'none';
-						}
-					});
-				}
 
 				$('#MALZEME_CINSI').on('change',function(){
 					$.ajax({
@@ -2139,35 +2179,55 @@
 
 				$(document).on('change', '.OPRS', function () {
 					const kod = $(this).val();
-					const container = $('.COPRS').first().parent();
+					const OR_TRNUM = $('#OR_TRNUM').val();
+					const container = $('.row.g-2.OPRS_CONTAINER');
+
+					const $dinamikKartlar = $('[id^="DC' + kod + '_' + OR_TRNUM + '_"]');
+					const $sabitKart = $('#C' + kod);
 
 					if ($(this).is(':checked')) {
-						const mevcutSayi = secimSirasi.length;
-						const yeniSira = mevcutSayi + 1;
-
+						const yeniSira = secimSirasi.length + 1;
 						secimSirasi.push(kod);
-
-						$('#C' + kod).show();
 						$('#T' + kod).text(yeniSira);
-						container.append($('#C' + kod));
 
+						if ($dinamikKartlar.length > 0) {
+							$dinamikKartlar.show();
+							$sabitKart.hide();
+						} else {
+							$sabitKart.show();
+						}
 					} else {
-						$('#C' + kod).hide();
 						$('#T' + kod).text('');
 						secimSirasi = secimSirasi.filter(k => k !== kod);
+
+						if ($dinamikKartlar.length > 0) {
+							$dinamikKartlar.hide();
+							$sabitKart.hide();
+						} else {
+							$sabitKart.hide();
+						}
 
 						secimSirasi.forEach((k, index) => {
 							$('#T' + k).text(index + 1);
 						});
 					}
 
-					// DOM sırasını güncelle
 					secimSirasi.forEach(k => {
-						container.append($('#C' + k));
+						const $din = $('[id^="DC' + k + '_' + OR_TRNUM + '_"]');
+						const $sbt = $('#C' + k);
+
+						if ($din.length > 0) {
+							$din.each(function () {
+								$('#DIGER_KART').before($(this));
+							});
+							$('#DIGER_KART').before($sbt);
+						} else {
+							$('#DIGER_KART').before($sbt);
+						}
 					});
 
-					// DİĞER kart hep en sonda
-					container.append($('#DIGER').closest('.col-2'));
+					$('#DIGER_KART').show();
+					container.append($('#DIGER_KART'));
 				});
 
 				$('#uygula').on('click', async function () {
@@ -2197,7 +2257,6 @@
 					aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
 					operasyonlariTabloyaBas();
 				});
-
 				
 				document.getElementById("OLCU1").addEventListener("input", function () {
 					const sonuc = agirlikHesapla(this.value);
@@ -2325,6 +2384,7 @@
 						cache: true
 					}
 				});
+
 				$('#HammadeKodu').select2({
 					placeholder: 'Stok kodu seç...',
 					dropdownParent: $('#satir_detay'),
@@ -2722,7 +2782,16 @@
 							updateLastTRNUM(TRNUM_FILL);
 
 							emptyInputs('satirEkle2');
-							$('#DIGER').val(parseFloat($('#DIGER').val() || 0) + parseFloat(res || 0));
+							let toplam = 0;
+
+							$('input[name="TEKLIF[]"]').each(function() {
+								let val = parseFloat($(this).val()) || 0;
+								toplam += val;
+							});
+
+							let diger = parseFloat($('#DIGER').val()) || 0;
+
+							$('#DIGER').val(diger + toplam);
 							hesapla();
 						}
 					}
