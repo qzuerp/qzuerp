@@ -2185,7 +2185,7 @@
 
 					const $dinamikKartlar = $('[id^="DC' + kod + '_' + OR_TRNUM + '_"]');
 					const $sabitKart = $('#C' + kod);
-
+					console.log(secimSirasi);
 					if ($(this).is(':checked')) {
 						const yeniSira = secimSirasi.length + 1;
 						secimSirasi.push(kod);
@@ -2197,6 +2197,9 @@
 						} else {
 							$sabitKart.show();
 						}
+						secimSirasi.forEach((k, index) => {
+							$('#T' + k).text(index + 1);
+						});
 					} else {
 						$('#T' + kod).text('');
 						secimSirasi = secimSirasi.filter(k => k !== kod);
@@ -2207,10 +2210,6 @@
 						} else {
 							$sabitKart.hide();
 						}
-
-						secimSirasi.forEach((k, index) => {
-							$('#T' + k).text(index + 1);
-						});
 					}
 
 					secimSirasi.forEach(k => {
