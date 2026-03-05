@@ -1740,7 +1740,7 @@
 								secimSirasi.forEach(function(k, index) {
 									$('#C' + k).show();
 								});
-								return;
+								return false;
 							}
 
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
