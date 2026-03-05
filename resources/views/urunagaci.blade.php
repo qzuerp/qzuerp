@@ -246,7 +246,7 @@
 																	<th style="min-width:300px">Kalıp Kodu 1</th>
 																	<th style="min-width:300px">Kalıp Kodu 2</th>
 																	<th style="min-width:300px">Kalıp Kodu 3</th>
-																	<th style="min-width:300px">Kalıp Kodu 4</th> 
+																	<th style="min-width:300px">Kalıp Kodu 4</th>
 																	<th>Varyant Text 1</th>
 																	<th>Varyant Text 2</th>
 																	<th>Varyant Text 3</th>
@@ -542,7 +542,7 @@
 																		<div class="d-flex ">
 																			<select class="form-control js-example-basic-single" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BOMREC_KAYNAKCODE" data-name="BOMREC_KAYNAKCODE" onchange="stokAdiGetir3T(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW2">
 																				@php
-																					$takimhaneler = DB::table($database.'stok00')->where('GK_1','07')->get();
+																					$takimhaneler = DB::table($database.'stok00')->get();
 																				@endphp
 																				<option>Seç</option>
 																				@foreach($takimhaneler as $takimhane)
