@@ -1731,16 +1731,17 @@
 
 						let operasyonSayac = {};
 
-						$('#maliyetDetayTable tbody tr').each(function(rowIndex) {
+						$('#maliyetDetayTable tbody tr:not(.group-footer)').each(function(rowIndex) {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
-							if (String(rowOR) !== String(OR_TRNUM))
+							console.log(rowOR, OR_TRNUM);
+							if (rowOR != OR_TRNUM)
 							{
 								secimSirasi.forEach(function(k, index) {
 									$('#C' + k).show();
 								});
 								return;
-							} 
+							}
 
 							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
 
@@ -2281,7 +2282,6 @@
 
 					let OR_TRNUM = $('#OR_TRNUM').val();
 
-					// Aynı OR_TRNUM'a sahip mevcut satırları sil
 					$('#maliyetDetayTable tbody tr').each(function(){
 						let val = $(this).find('input[name="OR_TRNUM[]"]').val();
 						if(val == OR_TRNUM) $(this).remove();
