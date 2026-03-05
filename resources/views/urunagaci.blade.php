@@ -1567,7 +1567,7 @@
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
 				htmlCode += detayBtnForJS(satirEkleInputs.BOMREC_KAYNAKCODE_FILL2);
 				htmlCode += " <td><input type='text' class='form-control' name='SIRANO[]' value='"+satirEkleInputs.SIRANO_FILL2+"'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL2+"'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='T' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='T'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL2+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE_AD[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL2+"'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL2+"'></td> ";
