@@ -313,7 +313,7 @@
         /* ── Stat Cards ── */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 14px; margin-bottom: 16px;
         }
         .stat-card {
@@ -321,6 +321,7 @@
             border-radius: var(--radius); padding: 18px;
             text-decoration: none; transition: all .2s;
             position: relative; overflow: hidden;
+            width:100%;
         }
         .stat-card::after {
             content: ''; position: absolute;
