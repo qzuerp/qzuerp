@@ -1773,6 +1773,7 @@
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
 							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || 0;
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
+							let ad        = row.find('input[name="KODADI2[]"]').val() || '';
 
 							let cardHtml = '';
 
@@ -1781,7 +1782,8 @@
 								<div class="col-2 COPRS dynamic-card" id="${kartId}" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header d-flex justify-content-between align-items-center">
-											<strong class="OPERASYON_KOD">${k}</strong>
+											<strong class="OPERASYON_AD">${ad}</strong>
+											<strong class="OPERASYON_KOD d-none">${k}</strong>
 											<button style="border:none;outline:none;background:transparent;"><i class="fa-solid fa-plus clone"></i></button>
 										</div>
 										<div class="card-body">
@@ -1853,7 +1855,8 @@
 								<div class="col-2 COPRS dynamic-card" id="${kartId}" style="display:block;">
 									<div class="operation-detail-card">
 										<div class="card-header d-flex justify-content-between align-items-center">
-											<strong class="OPERASYON_KOD">${k}</strong>
+											<strong class="OPERASYON_AD">${ad}</strong>
+											<strong class="OPERASYON_KOD d-none">${k}</strong>
 											<button style="border:none;outline:none;background:transparent;"><i class="fa-solid fa-plus clone"></i></button>
 										</div>
 										<div class="card-body">
@@ -2278,10 +2281,12 @@
 
 					let OR_TRNUM = $('#OR_TRNUM').val();
 
-					$('#maliyetDetayTable tbody tr').each(function(){
+					$('#maliyetDetayTable tbody tr:not(.group-footer').each(function(){
 						let val = $(this).find('input[name="OR_TRNUM[]"]').val();
 						if(val == OR_TRNUM) $(this).remove();
+						console.log(val, OR_TRNUM);
 					});
+
 					let HKOD = $('#MALZEME_CINSI').val();
 					let SF_IUNIT = $('#SF_IUNIT').val() || 0;
 					let StokAdi  = $('#StokAdi').val() || 0;
@@ -2315,6 +2320,11 @@
 
 					updateLastTRNUM(HTRNUM);
 					$('.operation-detail-card').not(':last').each(function(){
+						let $parent = $(this).parent();
+						
+						if ($parent.css('display') !== 'block') {
+							return true;
+						}
 
 						let kart = $(this);
 						let kod   = kart.find('.OPERASYON_KOD').text();
