@@ -94,6 +94,22 @@
         --shadow-medium: 0 4px 20px rgba(0,0,0,0.12);
         --border-radius: 8px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        --bg:      #f0f4f8;
+        --surface: #ffffff;
+        --border:  #e2e8f0;
+        --text-1:  #0f172a;
+        --text-2:  #475569;
+        --text-3:  #94a3b8;
+        --blue:    #3b82f6;
+        --indigo:  #6366f1;
+        --green:   #22c55e;
+        --amber:   #f59e0b;
+        --red:     #ef4444;
+        --purple:  #8b5cf6;
+        --teal:    #10b981;
+        --radius:  12px;
+        --shadow:  0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
     }
 
     /* Modern Header */
@@ -370,84 +386,53 @@
             display: none !important;
         }
     }
-
-     .notification-dropdown .dropdown-menu {
-        border: none;
-        border-radius: 12px;
+    /* ── Alarm Paneli (Drawer) ── */
+    .alarm-drawer {
+        position: fixed; top: 0; right: -380px; width: 360px; height: 100vh;
+        background: var(--surface); border-left: 1px solid var(--border);
+        box-shadow: -8px 0 32px rgba(0,0,0,.1); z-index: 9999;
+        transition: right .3s cubic-bezier(.4,0,.2,1);
+        display: flex; flex-direction: column;
     }
-    
-    .notification-dropdown .dropdown-item {
-        padding: 12px 16px;
-        border-bottom: 1px solid #f0f0f0;
-        cursor: pointer;
-        transition: background-color 0.2s;
+    .alarm-drawer.open { right: 0; }
+    .alarm-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,.3);
+        z-index: 9998; opacity: 0; pointer-events: none; transition: opacity .3s;
     }
-    
-    .notification-dropdown .dropdown-item:hover {
-        background-color: #f8f9fa;
+    .alarm-overlay.open { opacity: 1; pointer-events: all; }
+    .alarm-drawer-header {
+        padding: 20px; border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
     }
-    
-    .notification-dropdown .dropdown-item:last-child {
-        border-bottom: none;
+    .alarm-drawer-header h3 { font-size: 16px; font-weight: 800; color: var(--text-1); }
+    .alarm-close-btn {
+        width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+        background: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center;
+        color: var(--text-2); transition: all .2s;
     }
-    
-    .notification-dropdown .badge {
-        font-size: 0.65rem;
-        padding: 0.25em 0.5em;
-        min-width: 18px;
-        left:80%;
-        top:9px;
+    .alarm-close-btn:hover { background: var(--red); color: white; border-color: var(--red); }
+    .alarm-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .alarm-item {
+        display: flex; align-items: flex-start; gap: 12px;
+        padding: 12px; border-radius: 10px; border: 1px solid var(--border);
+        transition: all .2s;
     }
-    
-    .notification-item {
-        display: flex;
-        gap: 10px;
-        align-items: start;
+    .alarm-item:hover { transform: translateX(-2px); }
+    .alarm-item.error    { border-color: #fecaca; background: #fff5f5; }
+    .alarm-item.warning  { border-color: #fde68a; background: #fffbeb; }
+    .alarm-item.info   { border-color: #bfdbfe; background: #eff6ff; }
+    .alarm-item.success  { border-color: #bbf7d0; background: #f0fdf4; }
+    .alarm-icon-wrap {
+        width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center; font-size: 13px;
     }
-    
-    .notification-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    
-    .notification-content {
-        flex: 1;
-        min-width: 0;
-        text-decoration: none;
-        text-align: start;
-    }
-    
-    .notification-title {
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 2px;
-        color: #212529;
-    }
-    
-    .notification-message {
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin-bottom: 4px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .notification-time {
-        font-size: 0.75rem;
-        color: #adb5bd;
-    }
-    
-    .notification-unread {
-        background-color: #e7f3ff;
-    }
-    
+    .alarm-item.error   .alarm-icon-wrap  { background: #fee2e2; color: var(--red); }
+    .alarm-item.warning .alarm-icon-wrap  { background: #fef3c7; color: var(--amber); }
+    .alarm-item.info    .alarm-icon-wrap  { background: #dbeafe; color: var(--blue); }
+    .alarm-item.success .alarm-icon-wrap  { background: #dcfce7; color: var(--green); }
+    .alarm-title { font-size: 12px; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+    .alarm-desc  { font-size: 11px; color: var(--text-2); }
+    .alarm-time  { font-size: 10px; color: var(--text-3); margin-top: 4px; }
     .notification-dot {
         width: 8px;
         height: 8px;
@@ -455,25 +440,16 @@
         border-radius: 50%;
         margin-top: 6px;
     }
-
-    /* Scrollbar stil */
-    #notiList::-webkit-scrollbar {
-        width: 6px;
+    .notif-btn {
+        position: relative; width: 38px; height: 38px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 8px; display: flex; align-items: center; justify-content: center;
+        cursor: pointer; color: #fff; transition: all .2s; flex-shrink: 0;
     }
-    
-    #notiList::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    #notiList::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 10px;
-    }
-    
-    #notiList::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-    }
+    .notif-btn:hover { background: #fef3c7; border-color: #fbbf24; color: #d97706; }
+    .empty-recent { padding: 40px; text-align: center; color: #d1d5db; }
+    .empty-recent i { font-size: 36px; display: block; margin-bottom: 8px; }
 </style>
 <div class="wrapper">
     <header class="modern-header">
@@ -507,24 +483,10 @@
 
             <div class="d-flex align-items-center" style="gap: 8px;">
                 <!-- Bildirim Dropdown -->
-                <div class="dropdown notification-dropdown">
-                    <button class="btn dropdown-toggle position-relative" type="button" id="notiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-bell fs-5"></i>
-                        <span id="notiCount" class="badge bg-danger position-absolute translate-middle rounded-pill" style="display: none;">0</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notiDropdown" id="notiList" style="max-width:550px; max-height: 400px; overflow-y: auto;">
-                        <li class="dropdown-header d-flex justify-content-between align-items-center">
-                            <span class="fw-bold">Bildirimler</span>
-                            <a href="#" id="markAllRead" class="text-primary text-decoration-none small">Tümünü Okundu İşaretle</a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li id="emptyState" class="text-center py-4 text-muted">
-                            <i class="fa-solid fa-bell-slash fs-1 mb-2"></i>
-                            <p class="mb-0">Henüz bildiriminiz yok</p>
-                        </li>
-                    </ul>
-                </div>
-
+                <button class="notif-btn " onclick="toggleAlarmDrawer()" title="Alarm Merkezi">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notiCount" class="badge bg-danger position-absolute translate-middle rounded-pill" style="display: none;">0</span>
+                </button>
                 <!-- Kullanıcı Dropdown -->
                 <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -571,8 +533,34 @@
         </div>
     </header>
 </div>
+{{-- ══ Alarm Overlay & Drawer ══ --}}
+<div class="alarm-overlay" id="alarmOverlay" onclick="toggleAlarmDrawer()"></div>
+<div class="alarm-drawer" id="alarmDrawer">
+    <div class="alarm-drawer-header">
+        <h3>🔔 Bildirim Merkezi</h3>
+        <button class="alarm-close-btn" onclick="toggleAlarmDrawer()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    
+    <div class="alarm-body" id="notiList">
+        <a href="#" id="markAllRead" class="text-primary text-decoration-none small">Tümünü Okundu İşaretle</a>
+        <hr class="dropdown-divider">
+        
 
+        <div class="empty-recent text-center py-4 text-muted" id="emptyState">
+            <i class="fa-solid fa-bell-slash mx-auto mb-2"></i>
+            <p class="mb-0">Henüz bildiriminiz yok</p>
+        </div>
+    </div>
+</div>
 <script>
+    // ── Alarm Drawer ───────────────────────────────────────────────
+    function toggleAlarmDrawer() {
+        document.getElementById('alarmDrawer').classList.toggle('open');
+        document.getElementById('alarmOverlay').classList.toggle('open');
+    }
+
     (() => {
         'use strict';
 
@@ -618,7 +606,7 @@
 
             toggleEmptyState() {
                 const { notiList, emptyState } = NotificationState.elements;
-                const items = notiList.querySelectorAll('.notification-item');
+                const items = notiList.querySelectorAll('.alarm-item');
                 emptyState.style.display = items.length === 0 ? 'block' : 'none';
             },
 
@@ -721,25 +709,25 @@
                 const fragment = document.createDocumentFragment();
 
                 notifications.forEach(n => {
-                    const li = document.createElement("li");
-                    li.className = "dropdown-item notification-item notification-unread";
-                    li.dataset.id = n.id;
+                    const div = document.createElement("div");
+                    div.className = `alarm-item ${n.type} notification-unread`;
+                    div.dataset.id = n.id;
                     
-                    li.innerHTML = `
-                        <div class="notification-icon bg-light">
+                    div.innerHTML = `
+                        <div class="alarm-icon-wrap">
                             ${Utils.getNotificationIcon(n.type || 'default')}
                         </div>
-                        <a href='${n.url || '#'}' class="notification-content">
-                            <div class="notification-title text-truncate">${n.title}</div>
-                            <div class="notification-message text-truncate">${n.message}</div>
-                            <div class="notification-time">${Utils.timeAgo(n.created_at)}</div>
+                        <a href='${n.url || '#'}' class="text-decoration-none">
+                            <div class="alarm-title text-truncate">${n.title}</div>
+                            <div class="alarm-desc text-truncate">${n.message}</div>
+                            <div class="alarm-time">${Utils.timeAgo(n.created_at)}</div>
                         </a>
                         <div class="notification-dot"></div>
                     `;
                     
-                    fragment.appendChild(li);
+                    fragment.appendChild(div);
                 });
-
+                
                 divider.after(fragment);
             },
 
@@ -764,7 +752,7 @@
             init() {
                 // Bildirime tıklama - event delegation
                 document.addEventListener('click', (e) => {
-                    const item = e.target.closest('.notification-item');
+                    const item = e.target.closest('.alarm-item');
                     if (!item) return;
 
                     const notificationId = item.dataset.id;
@@ -784,7 +772,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    const unreadItems = document.querySelectorAll('.notification-item.notification-unread');
+                    const unreadItems = document.querySelectorAll('.alarm-item.notification-unread');
                     const ids = Array.from(unreadItems).map(item => item.dataset.id);
                     
                     if (ids.length > 0) {
@@ -797,11 +785,6 @@
                         Utils.stopTitleNotification();
                         NotificationAPI.markAsRead(ids);
                     }
-                });
-
-                // Dropdown açıldığında
-                NotificationState.elements.notiDropdown?.addEventListener('click', () => {
-                    Utils.stopTitleNotification();
                 });
 
                 // Visibility change
