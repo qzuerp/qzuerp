@@ -525,22 +525,27 @@
 
             <!-- ── Satır 4: Karlılık + Üretim ── -->
             <div class="grid-2 mb-4">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-money-bill-trend-up"></i> Karlılık Analizi</h3>
+                @if(in_array("SSF", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-money-bill-trend-up"></i> Karlılık Analizi</h3>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-karlilik" style="height:300px"></div>
+                        </div>
                     </div>
-                    <div class="chart-body">
-                        <div id="hc-karlilik" style="height:300px"></div>
+                @endif
+                
+                @if(in_array("MPSGRS", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-industry"></i> Üretim Gerçekleşme Oranı</h3>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-uretim" style="height:300px"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-industry"></i> Üretim Gerçekleşme Oranı</h3>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-uretim" style="height:300px"></div>
-                    </div>
-                </div>
+                @endif
             </div>
 
             <!-- ── Doğum Günü Modal ── -->
