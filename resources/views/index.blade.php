@@ -482,8 +482,7 @@
             </div>
 
             <!-- ── Satır 3: Satış/Satın Alma + Son Kullanılanlar ── -->
-            <div class="grid-2-1 mb-4">
-
+            <div class="grid-2-2 mb-4">
                 @if(in_array("SSF", $kullanici_read_yetkileri))
                     <div class="chart-card">
                         <div class="chart-header">
@@ -493,8 +492,8 @@
                             <div id="hc-siparis" style="height:320px"></div>
                         </div>
                     </div>
-                @else
-                    {{-- Açık Siparişler (SSF yetkisi yoksa) --}}
+                @endif
+                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3><i class="fa-solid fa-boxes-stacked"></i> Açık Satış Siparişleri</h3>
@@ -525,7 +524,7 @@
 
             <!-- ── Satır 4: Karlılık + Üretim ── -->
             <div class="grid-2 mb-4">
-                @if(in_array("SSF", $kullanici_read_yetkileri))
+                @if(in_array("SSF", $kullanici_read_yetkileri) && in_array("URETIM_GAZETESI", $kullanici_read_yetkileri))
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3><i class="fa-solid fa-money-bill-trend-up"></i> Karlılık Analizi</h3>
@@ -916,7 +915,8 @@
                 ]
             });
         }).fail(function(){ $('#hc-siparis').html('<div class="empty-recent"><i class="fa-solid fa-plug-circle-xmark" style="font-size:32px;margin-bottom:8px;display:block"></i><p style="font-size:13px">Endpoint bağlanamadı</p></div>'); });
-        @else
+        @endif
+        @if(in_array("SATISSIP", $kullanici_read_yetkileri))
         $.getJSON('/dashboard/acik-siparisler', function(res) {
             const categories = res.map(x => x.ay);
             Highcharts.chart('hc-acik-siparis', {

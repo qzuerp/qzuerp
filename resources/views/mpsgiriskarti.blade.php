@@ -1203,7 +1203,7 @@
 															foreach ($kayitliStok as $key => $veri) {
 
 																if (@$kart_veri->MAMULCODE == $veri->BOMREC_KAYNAKCODE) {
-																	echo "<option value ='".$veri->BOMREC_KAYNAKCODE."|||".$veri->AD."' selected>".$veri->BOMREC_KAYNAKCODE."</option>";
+																	echo "<option value ='".$veri->BOMREC_KAYNAKCODE."|||".@$veri->AD."' selected>".$veri->BOMREC_KAYNAKCODE."</option>";
 																}
 
 																else {
