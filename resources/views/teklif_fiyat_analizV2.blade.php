@@ -2265,6 +2265,7 @@
 							secimSirasi = [];
 						}
 					});
+					
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
 					aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 					aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
@@ -2298,6 +2299,7 @@
 					clone.find('.AYAR_TUTAR').val('').trigger('change');
 					clone.find('.ISLEM_TUTAR').val('').trigger('change');
 					clone.find('.SOKTAK_TUTAR').val('').trigger('change');
+					clone.find('.TOPLANICAK').val('').trigger('change');
 
 					clone.find('.tutar-input').val('').trigger('change');
 

@@ -564,6 +564,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/hizli_islem_verileri', [main_controller::class, 'hizli_islem_verileri']);
     Route::post('/seri_no_uret', [main_controller::class, 'seri_no_uret']);
     Route::post('main_getIlceler', [main_controller::class, 'getIlceler']);
+    Route::get('/indir/{path}', [main_controller::class, 'download'])->name('dosya.indir')->where('path', '.*');
 
 
     /*

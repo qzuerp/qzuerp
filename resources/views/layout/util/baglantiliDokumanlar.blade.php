@@ -109,6 +109,11 @@
                                 value="{{ $veri->id }},{{ $firma }}">
                             <i class="fa fa-trash"></i>
                         </button>
+                        
+                        <a href="{{ route('dosya.indir', 'qzuerp/1765436576_chart.png') }}" 
+                          class="btn btn-outline-primary download-link">
+                            <i class="fa fa-download"></i>
+                        </a>
                     </td>
                 </tr>
             @endforeach

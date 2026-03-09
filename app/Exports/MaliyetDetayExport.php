@@ -17,7 +17,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
 {
     protected $evrakno;
     protected $kolonlar = [];
-    protected $kolonSayac = [];   // GLOBAL sayaç
+    protected $kolonSayac = [];
 
     public function __construct($evrakno)
     {
@@ -80,7 +80,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
 
                 $baseKolon = trim($r->KOD);
 
-                // Parça bazlı sayaç
                 if (!isset($sonuc[$key]['_sayac'][$baseKolon])) {
                     $sonuc[$key]['_sayac'][$baseKolon] = 1;
                 } else {
@@ -97,7 +96,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             }
         }
 
-        // iç sayaç arrayini temizle
         foreach ($sonuc as &$row) {
             unset($row['_sayac']);
         }
@@ -120,7 +118,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             'MIKTAR',
         ];
 
-        // SABİT ORTA BAŞLIK SIRASI
         $sabitOrta = [
             'REVİZYON',
             'TERMİN',
@@ -136,7 +133,6 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             'TUTAR',
         ];
 
-        // Operasyon kolonları
         $operasyonlar = $tumKolonlar
             ->reject(fn($k) =>
                 in_array($k, $bas) ||

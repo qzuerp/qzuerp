@@ -41,6 +41,18 @@ class main_controller extends Controller
     $serino = str_pad($id, 12, '0', STR_PAD_LEFT);
     return $serino++;
   }
+
+  public function download($path)
+  {
+      $fullPath = public_path('dosyalar/' . $path);
+
+      if (file_exists($fullPath)) {
+          return response()->download($fullPath);
+      }
+
+      abort(404, 'Dosya bulunamadı.');
+  }
+
   public function hizli_islem_verileri(Request $request) {
     $DEPO = $request->veriler[2];
     $LOK1 = $request->veriler[3] ?? NULL;
