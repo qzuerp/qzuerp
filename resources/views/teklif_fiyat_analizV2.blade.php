@@ -1377,47 +1377,36 @@
 														</table>
 													</div>
 													<style>
-														/* Tablonun kaydırma alanı ve yüksekliği */
 														.table-scroll-area {
-															max-height: 600px; /* İstediğiniz yüksekliği buradan ayarlayın */
+															max-height: 600px;
 															overflow-y: auto;
-															overflow-x: auto; /* Yatay kaydırma gerekirse */
-															position: relative;
+															overflow-x: auto;
 															border: 1px solid #dee2e6;
+															border-radius: 4px;
+															position: relative;
 														}
 
-														/* Sticky Header (Sabit Başlık) Ayarları */
 														#maliyetDetayTable {
-															border-collapse: separate; /* Sticky çalışması için bu ŞART */
-															border-spacing: 0;
+															border-collapse: collapse;
 															width: 100%;
 															margin-bottom: 0;
 														}
 
 														#maliyetDetayTable thead th {
-															position: sticky;
-															top: 0; /* En üste yapıştır */
-															background-color: #ffffff !important; /* Arka plan olmazsa alt satırlar görünür */
-															z-index: 100; /* Satırların ve inputların üstünde kalması için */
-															box-shadow: inset 0 -2px 0 #dee2e6; /* Alt kenarlık çizgisi (sticky'de border kaybolmaması için) */
+															background-color: #ffffff;
+															z-index: 10;
+															position: relative;
 															padding: 10px 5px;
-															vertical-align: middle;
 															white-space: nowrap;
+															border: 1px solid #dee2e6;
+															/* Sticky yerine JS ile transform kullanacağız */
 														}
 
-														/* Hücre kenarlıkları (separate modunda borderlar kaybolmaması için manuel ekliyoruz) */
-														#maliyetDetayTable th,
 														#maliyetDetayTable td {
-															border-right: 1px solid #dee2e6;
-															border-bottom: 1px solid #dee2e6;
+															border: 1px solid #dee2e6;
+															padding: 6px 4px;
 														}
 
-														#maliyetDetayTable th:first-child,
-														#maliyetDetayTable td:first-child {
-															border-left: 1px solid #dee2e6;
-														}
-
-														/* Grup toplamı satırı tasarımı */
 														.group-footer {
 															background-color: #f8f9fa !important;
 															font-weight: bold;
@@ -1426,34 +1415,36 @@
 
 													<div class="tab-pane" id="tab_3">
 														<div class="d-flex justify-content-end mb-2">
-															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
+															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" 
+															target="_blank" class="btn btn-success">
 																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
 															</a>
 														</div>
 
-														<div class="table-scroll-area">
+														<div class="table-scroll-area" id="maliyetScrollArea">
 															<table class="table text-center" id="maliyetDetayTable">
-																<thead>
+																<thead id="maliyetThead">
 																	<tr>
 																		<th>Kaynak Tipi</th>
-																		<th style="min-width:280px; font-size: 13px !important;">Stok Kodu</th>
-																		<th style="min-width:200px; font-size: 13px !important;">Stok adı</th>
-																		<th style="min-width:120px; font-size: 13px !important;">İşlem miktarı</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Birim Fiyatı</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Ayar</th>
-																		<th style="min-width:120px; font-size: 13px !important;">işleme</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Sök-Tak</th>
-																		<th style="min-width:100px; font-size: 13px !important;">Revizyon</th>
-																		<th style="min-width:100px; font-size: 13px !important;">Not</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Fiyat 2</th>
-																		<th style="min-width:120px; font-size: 13px !important;">Tutar</th>
-																		<th style="min-width:170px; font-size: 13px !important;">Para Birimi</th>
-																		<th style="min-width:170px; font-size: 13px !important;">Hammadde Ölçüsü</th>
+																		<th style="min-width:280px; font-size:13px">Stok Kodu</th>
+																		<th style="min-width:200px; font-size:13px">Stok adı</th>
+																		<th style="min-width:120px; font-size:13px">İşlem miktarı</th>
+																		<th style="min-width:120px; font-size:13px">Birim Fiyatı</th>
+																		<th style="min-width:120px; font-size:13px">Ayar</th>
+																		<th style="min-width:120px; font-size:13px">İşleme</th>
+																		<th style="min-width:120px; font-size:13px">Sök-Tak</th>
+																		<th style="min-width:100px; font-size:13px">Revizyon</th>
+																		<th style="min-width:100px; font-size:13px">Not</th>
+																		<th style="min-width:120px; font-size:13px">Fiyat</th>
+																		<th style="min-width:120px; font-size:13px">Fiyat 2</th>
+																		<th style="min-width:120px; font-size:13px">Tutar</th>
+																		<th style="min-width:170px; font-size:13px">Para Birimi</th>
+																		<th style="min-width:170px; font-size:13px">Hammadde Ölçüsü</th>
 																		<th>İşlem</th>
 																	</tr>
 																</thead>
 																<tbody>
+																	{{-- Blade kısmı aynı kalıyor --}}
 																	@php
 																		$veri = DB::table($ekranTableTI)
 																			->where('EVRAKNO', @$evrakno)
@@ -1493,10 +1484,13 @@
 																		</td>
 																	</tr>
 																	@php
-																				}
+																		}
+																		$Tveri = DB::table($ekranTableT)->where('TRNUM', $orTrnum)->first();
 																	@endphp
 																	<tr class="group-footer">
-																		<td colspan="12" class="text-right"><strong>Grup Toplamı ({{ $orTrnum }}):</strong></td>
+																		<td colspan="12" class="text-right">
+																			<strong>{{ $Tveri->KOD }} - {{ $Tveri->STOK_AD1 }}</strong>
+																		</td>
 																		<td><strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong></td>
 																		<td colspan="3"></td>
 																	</tr>
@@ -1508,6 +1502,27 @@
 															</table>
 														</div>
 													</div>
+
+													<script>
+														(function () {
+															const scrollArea = document.getElementById('maliyetScrollArea');
+															const thead = document.getElementById('maliyetThead');
+
+															if (!scrollArea || !thead) return;
+
+															// Scroll ettikçe thead'i aşağı kaydır — parent overflow/transform ne olursa olsun çalışır
+															scrollArea.addEventListener('scroll', function () {
+																thead.style.transform = 'translateY(' + scrollArea.scrollTop + 'px)';
+															});
+
+															// Tab değişiminde de sıfırla (Bootstrap tab show event)
+															document.querySelectorAll('[data-bs-toggle="tab"], [data-toggle="tab"]').forEach(function (tab) {
+																tab.addEventListener('shown.bs.tab', function () {
+																	thead.style.transform = 'translateY(0px)';
+																});
+															});
+														})();
+													</script>
 													<div class="tab-pane" id="tab_4">
 														<div class="row mb-2">
 															<div class="col-md-3">
@@ -1771,9 +1786,12 @@
 							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
 							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
 							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
-							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val() || 0;
+							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val();
 							let not        = row.find('input[name="NOTT[]"]').val() || '';
 							let ad        = row.find('input[name="KODADI2[]"]').val() || '';
+
+							
+
 
 							let cardHtml = '';
 
@@ -2268,12 +2286,31 @@
 					hesapla();
 				});
 
-				$(document).on("click",".operation-detail-card .clone",function(){
+				$(document).on("click", ".operation-detail-card .clone", function() {
 					let col = $(this).closest(".COPRS");
 					let clone = col.clone(true);
+					
 					let newId = "C" + Date.now();
 					clone.attr("id", newId);
+					clone.find('.TIME').val('').trigger('change');
+					clone.find('.PTIME').val('').trigger('change');
+					clone.find('.STIME').val('').trigger('change');
+					clone.find('.AYAR_TUTAR').val('').trigger('change');
+					clone.find('.ISLEM_TUTAR').val('').trigger('change');
+					clone.find('.SOKTAK_TUTAR').val('').trigger('change');
+
+					clone.find('.tutar-input').val('').trigger('change');
+
+					if (clone.find(".remove-btn").length === 0) {
+						clone.find(".clone").after('<button type="button" class="remove-btn" style="margin-left:5px; border:none;outline:none;background:transparant;"><i class="fa-solid fa-trash"></i></button>');
+					}
+
 					col.after(clone);
+					hesapla();
+				});
+
+				$(document).on("click", ".remove-btn", function() {
+					$(this).closest(".COPRS").remove();
 					hesapla();
 				});
 

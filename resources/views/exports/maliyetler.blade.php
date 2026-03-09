@@ -2,11 +2,11 @@
     <thead>
     {{-- Başlık --}}
     <tr>
-        <th colspan="8" style="font-weight: bold; font-size: 16px; text-align: center; background-color: #1F4E79; color: #FFFFFF; border: 1px solid #000000; height: 35px;">
+        <th colspan="9" style="font-weight: bold; font-size: 16px; text-align: center; background-color: #1F4E79; color: #FFFFFF; border: 1px solid #000000; height: 35px;">
             TEKLİF FİYAT ANALİZİ
         </th>
     </tr>
-    <tr><td colspan="8" style="height: 5px;"></td></tr>
+    <tr><td colspan="9" style="height: 5px;"></td></tr>
 
     {{-- Bilgi Alanı --}}
     <tr>
@@ -58,6 +58,7 @@
         <th style="font-weight: bold; text-align: center; background-color: #2E75B6; color: #FFFFFF; border: 1px solid #1F4E79; padding: 6px;">Dolar</th>
         <th style="font-weight: bold; text-align: center; background-color: #2E75B6; color: #FFFFFF; border: 1px solid #1F4E79; padding: 6px;">Tutar</th>
         <th style="font-weight: bold; text-align: center; background-color: #2E75B6; color: #FFFFFF; border: 1px solid #1F4E79; padding: 6px;">Termin Tarihi</th>
+        <th style="font-weight: bold; text-align: center; background-color: #2E75B6; color: #FFFFFF; border: 1px solid #1F4E79; padding: 6px;">Açıklama</th>
     </tr>
     </thead>
     <tbody>
@@ -70,7 +71,8 @@
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT, 2, ',', '.') }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT2, 2, ',', '.') }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->TUTAR, 2, ',', '.') }}</td>
-            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->TERMIN_TARIHI }} Gün</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ isset($detay->TERMIN_TARIHI) ? 'Gün' : '' }}</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->ACIKLAMA }}</td>
         </tr>
     @endforeach
     </tbody>
@@ -78,6 +80,7 @@
         <tr>
             <td colspan="6" style="border: 1px solid #1F4E79; font-weight: bold; text-align: right; background-color: #1F4E79; color: #FFFFFF; padding: 6px;">TOPLAM:</td>
             <td style="border: 1px solid #1F4E79; font-weight: bold; text-align: right; background-color: #1F4E79; color: #FFFFFF; padding: 6px;">{{ number_format($detaylar->sum('TUTAR'), 2, ',', '.') }}</td>
+            <td style="border: 1px solid #1F4E79; background-color: #1F4E79;"></td>
             <td style="border: 1px solid #1F4E79; background-color: #1F4E79;"></td>
         </tr>
     </tfoot>
