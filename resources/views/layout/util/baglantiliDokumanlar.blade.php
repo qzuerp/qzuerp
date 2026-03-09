@@ -128,3 +128,10 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).on('click', '.download-link', function(e) {
+      setTimeout(() => {
+          $('#loader').fadeOut(500);
+      }, 1000);
+  });
+</script>
