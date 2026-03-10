@@ -82,6 +82,7 @@
 		.operation-card {
 			position: relative;
 			width: 100%;
+			user-select: none;  
 		}
 
 		.checkbox-input {
