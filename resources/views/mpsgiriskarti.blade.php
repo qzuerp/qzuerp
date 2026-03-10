@@ -242,7 +242,7 @@
 										<div class="form-group">
 											<label>Sipariş Art No</label>
 											<div class="d-flex ">
-												<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="SIPARTNO form-control txt-radius" style="color:red" 
+												<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="SIPARTNO form-control txt-radius" style="color:red" 
 													data-max name="SIPARTNO" id="SIPARTNO" 
 													value="{{ @$kart_veri->SIPARTNO }}" readonly>
 												<span class="d-flex -btn">

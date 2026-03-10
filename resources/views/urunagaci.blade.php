@@ -463,15 +463,15 @@
 																			<input type="hidden" class="form-control" data-max name="BOMREC_OPERASYON_AD[]" id="BOMREC_OPERASYON_AD" value="{{ $veri->BOMREC_OPERASYON_AD }}">
 																		</td>																
 																		<td class="d-flex">
-																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK0 }}">
+																			<input type="text" class="form-control" name="BOMREC_KAYNAK0[]" id="BOMREC_KAYNAK0-{{ $veri->id }}" value="{{ round($veri->BOMREC_KAYNAK0) }}">
 																			<span class="d-flex -btn">
 										                                        <button class="btn btn-radius btn-primary hesaplama_btn_satir" data-id="{{ $veri->id }}" data-bs-toggle="modal" data-bs-target="#dimensionsModalSatir" type="button">
-										                                            <span class="fa-solid fa-magnifying-glass"  ></span>
+										                                            <span class="fa-solid fa-magnifying-glass"></span>
 										                                        </button>
 										                                    </span>
 																		</td>
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK1 }}" ></td>
-																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ $veri->BOMREC_KAYNAK2 }}" ></td>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ round($veri->BOMREC_KAYNAK1) }}" ></td>
+																		<td><input type="text" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ round($veri->BOMREC_KAYNAK2) }}" ></td>
 																		<td><input type="text" class="form-control" maxlength='255' name="ACIKLAMA[]" id="ACIKLAMA" value="{{ $veri->STOK_BIRIM }}" readonly></td>
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >

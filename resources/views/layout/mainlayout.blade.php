@@ -370,99 +370,97 @@
       // });
     });
 
-    // Mevcut bir değeri formatlayan yardımcı fonksiyon
-    function formatDecimalValue(value) {
-        if (!value || value.toString().trim() === '') return '';
+    // function formatDecimalValue(value) {
+    //   if (!value || value.toString().trim() === '') return '';
 
-        let raw = value.toString().trim();
+    //   let raw = value.toString().trim();
 
-        // Zaten Türkçe formatlı mı? (ör: 2.222,00 — nokta binlik, virgül ondalık)
-        const alreadyFormatted = /^[\d.]+,\d{0,2}$/.test(raw) && raw.includes('.');
+    //   const alreadyFormatted = /^[\d.]+,\d{0,2}$/.test(raw) && raw.includes('.');
 
-        if (alreadyFormatted) {
-            // Sadece binlik noktaları kaldır, virgül ondalık ayraç olarak kalsın
-            raw = raw.replace(/\./g, '');
-        } else {
-            // Ham sayı: nokta ondalık ayraç olabilir (ör: 2222.00)
-            raw = raw.replace(/,/g, '.'); // virgülü noktaya çevir
-            // Şimdi noktayı virgüle çevir
-            raw = raw.replace('.', ',');
-        }
+    //   if (alreadyFormatted) {
+    //       raw = raw.replace(/\./g, '');
+    //   } else {
+    //       raw = raw.replace(/,/g, '.');
+    //       raw = raw.replace('.', ',');
+    //   }
 
-        // Rakam ve virgül dışını temizle
-        raw = raw.replace(/[^0-9,]/g, '');
+    //   raw = raw.replace(/[^0-9,]/g, '');
 
-        const firstComma = raw.indexOf(',');
-        let intPart, decPart;
+    //   const firstComma = raw.indexOf(',');
+    //   let intPart, decPart;
 
-        if (firstComma !== -1) {
-            intPart = raw.slice(0, firstComma);
-            decPart = raw.slice(firstComma + 1).replace(/,/g, '').slice(0, 2);
-        } else {
-            intPart = raw;
-            decPart = undefined;
-        }
+    //   if (firstComma !== -1) {
+    //       intPart = raw.slice(0, firstComma);
+    //       decPart = raw.slice(firstComma + 1).replace(/,/g, '').slice(0, 2);
+    //   } else {
+    //       intPart = raw;
+    //       decPart = undefined;
+    //   }
 
-        if (intPart !== '') {
-            intPart = parseInt(intPart, 10).toLocaleString('tr-TR');
-        }
+    //   // intPart boşsa veya NaN olursa 0 yaz
+    //   const intNum = parseInt(intPart, 10);
+    //   intPart = isNaN(intNum) ? '0' : intNum.toLocaleString('tr-TR');
 
-        return decPart !== undefined ? intPart + ',' + decPart : intPart;
-    }
+    //   return decPart !== undefined ? intPart + ',' + decPart : intPart;
+    // }
 
-    $(document).ready(function () {
-        // number inputları text'e çevir
-        $('input[type="number"]').attr('type', 'text').addClass('decimal');
+    // $(document).on('input', '.decimal', function () {
+    //   const input = this;
+    //   const cursorPos = input.selectionStart;
+    //   const oldLength = input.value.length;
 
-        // Sayfa açılışında tüm .decimal inputları formatla
-        $('.decimal').each(function () {
-            this.value = formatDecimalValue(this.value);
-        });
-    });
+    //   let raw = input.value.replace(/[^0-9,]/g, '');
 
-    $(document).on('input', '.decimal', function () {
-        const input = this;
-        const cursorPos = input.selectionStart;
-        const oldLength = input.value.length;
+    //   const firstComma = raw.indexOf(',');
+    //   if (firstComma !== -1) {
+    //       raw = raw.slice(0, firstComma + 1) + raw.slice(firstComma + 1).replace(/,/g, '');
+    //   }
 
-        let raw = input.value.replace(/[^0-9,]/g, '');
+    //   const parts = raw.split(',');
+    //   let intPart = parts[0];
+    //   let decPart = parts[1] !== undefined ? parts[1].slice(0, 2) : undefined;
 
-        const firstComma = raw.indexOf(',');
-        if (firstComma !== -1) {
-            raw = raw.slice(0, firstComma + 1) + raw.slice(firstComma + 1).replace(/,/g, '');
-        }
+    //   // Sıfırla başlayan tam sayıları temizle (01234 → 1234), ama tek "0" kalsın
+    //   if (intPart.length > 1 && intPart.startsWith('0')) {
+    //       intPart = intPart.replace(/^0+/, '') || '0';
+    //   }
 
-        const parts = raw.split(',');
-        let intPart = parts[0];
-        let decPart = parts[1] !== undefined ? parts[1].slice(0, 2) : undefined;
+    //   if (intPart !== '') {
+    //       const intNum = parseInt(intPart, 10);
+    //       intPart = isNaN(intNum) ? '0' : intNum.toLocaleString('tr-TR');
+    //   }
 
-        if (intPart !== '') {
-            intPart = parseInt(intPart, 10).toLocaleString('tr-TR');
-        }
+    //   let result;
+    //   if (decPart !== undefined) {
+    //       result = intPart + ',' + decPart;
+    //   } else if (raw.endsWith(',')) {
+    //       result = intPart + ',';
+    //   } else {
+    //       result = intPart;
+    //   }
 
-        let result;
-        if (decPart !== undefined) {
-            result = intPart + ',' + decPart;
-        } else if (raw.endsWith(',')) {
-            result = intPart + ',';
-        } else {
-            result = intPart;
-        }
+    //   input.value = result;
 
-        input.value = result;
+    //   const newLength = input.value.length;
+    //   const diff = newLength - oldLength;
+    //   input.setSelectionRange(cursorPos + diff, cursorPos + diff);
+    // });
 
-        const newLength = input.value.length;
-        const diff = newLength - oldLength;
-        input.setSelectionRange(cursorPos + diff, cursorPos + diff);
-    });
+    // $(document).ready(function () {
+    //     $('input[type="number"]').attr('type', 'text').addClass('decimal');
 
-    $(document).on('submit', 'form', function () {
-        $(this).find('.decimal').each(function () {
-            this.value = this.value
-                .replace(/\./g, '')
-                .replace(',', '.');
-        });
-    });
+    //     $('.decimal').each(function () {
+    //         this.value = formatDecimalValue(this.value);
+    //     });
+    // });
+
+    // $(document).on('submit', 'form', function () {
+    //     $(this).find('.decimal').each(function () {
+    //         this.value = this.value
+    //             .replace(/\./g, '')
+    //             .replace(',', '.');
+    //     });
+    // });
     
     $(document).on('click', '.delete-row', function() {
       $(this).closest('tr').remove();

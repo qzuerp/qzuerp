@@ -82,7 +82,7 @@
 		.operation-card {
 			position: relative;
 			width: 100%;
-			user-select: none;  
+			user-select: none;
 		}
 
 		.checkbox-input {
@@ -1440,61 +1440,71 @@
 																	</tr>
 																</thead>
 																<tbody>
-																	{{-- Blade kısmı aynı kalıyor --}}
-																	@php
-																		$veri = DB::table($ekranTableTI)
-																			->where('EVRAKNO', @$evrakno)
-																			->orderBy('OR_TRNUM', 'ASC')
-																			->orderBy('TRNUM', 'ASC')
-																			->get()
-																			->groupBy('OR_TRNUM');
+																@php
+																	$sorgu = "
+																		SELECT 
+																			TI.*, TT.KOD as TT_KOD, TT.STOK_AD1 AS TT_STOK_AD1
+																		FROM $ekranTableTI TI
+																		OUTER APPLY (
+																			SELECT TOP 1 * FROM $ekranTableT WHERE TRNUM = TI.OR_TRNUM 
+																		) TT
+																		WHERE TI.EVRAKNO = :evrakno
+																		ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
+																	";
 
-																		if (!$veri->isEmpty()) {
-																			foreach ($veri as $orTrnum => $grupVeri) {
-																				foreach ($grupVeri as $key => $satir) {
-																	@endphp
-																	<tr>
-																		<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																		<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																		<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR}}">
+																	$hamVeri = DB::select($sorgu, ['evrakno' => $evrakno]);
+																	
+																	// PHP tarafında gruplama işlemini koleksiyon üzerinden yapıyoruz
+																	$veri = collect($hamVeri)->groupBy('OR_TRNUM');
+																@endphp
 
-																		<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																		<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																		<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																		<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																		<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
-																		<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																		<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																		<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																		<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																		<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																		<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																		<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																		<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																		<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																		<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																		<td>
-																			<button type='button' class='btn btn-default delete-row'>
-																				<i class='fa fa-minus' style='color: red'></i>
-																			</button>
-																		</td>
-																	</tr>
-																	@php
-																		}
-																		$Tveri = DB::table($ekranTableT)->where('TRNUM', $orTrnum)->first();
-																	@endphp
-																	<tr class="group-footer">
-																		<td colspan="12" class="text-right">
-																			<strong>{{ $Tveri->KOD }} - {{ $Tveri->STOK_AD1 }}</strong>
-																		</td>
-																		<td><strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong></td>
-																		<td colspan="3"></td>
-																	</tr>
-																	@php
-																			}
-																		}
-																	@endphp
-																</tbody>
+																@if($veri->isNotEmpty())
+																	@foreach ($veri as $orTrnum => $grupVeri)
+																		@foreach ($grupVeri as $key => $satir)
+																			<tr>
+																				<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																				<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																				{{-- $kart_veri dışarıdan geliyorsa burada kalabilir --}}
+																				<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR ?? 0}}">
+
+																				<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																				<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																				<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																				<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																				<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
+																				<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																				<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
+																				<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
+																				<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																				<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
+																				<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																				<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
+																				<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																				<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																				<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
+																				<td>
+																					<button type='button' class='btn btn-default delete-row'>
+																						<i class='fa fa-minus' style='color: red'></i>
+																					</button>
+																				</td>
+																			</tr>
+																		@endforeach
+
+																		@php 
+																			$ilkSatir = $grupVeri->first(); 
+																		@endphp
+																		<tr class="group-footer" style="background-color: #f9f9f9;">
+																			<td colspan="12" class="text-right">
+																				<strong>{{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}</strong>
+																			</td>
+																			<td>
+																				<strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong>
+																			</td>
+																			<td colspan="3"></td>
+																		</tr>
+																	@endforeach
+																@endif
+															</tbody>
 															</table>
 														</div>
 													</div>
@@ -2181,7 +2191,6 @@
 
 					const $dinamikKartlar = $('[id^="DC' + kod + '_' + OR_TRNUM + '_"]');
 					const $sabitKart = $('#C' + kod);
-					console.log(secimSirasi);
 					if ($(this).is(':checked')) {
 						const yeniSira = secimSirasi.length + 1;
 						secimSirasi.push(kod);
