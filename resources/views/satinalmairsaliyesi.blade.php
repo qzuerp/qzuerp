@@ -1516,16 +1516,6 @@
 				}
 			});
 
-			$("#verilerForm").on("submit", function (e) {
-				if (!validateNumbers()) {
-					e.preventDefault();
-					Swal.fire({
-						title: 'Hatalı var alan var!',
-						icon: 'warning',
-						confirmButtonText: 'Tamam'
-					});
-				}
-			});
 			$("#addRow").on('click', async function () {
 				var TRNUM_FILL = getTRNUM();
 

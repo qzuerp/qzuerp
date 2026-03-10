@@ -655,7 +655,6 @@
 											S10E.PARA_BIRIMI,
 											I00.KOD AS TEZGAH,
 
-											/* -------- TL KARŞILIĞI -------- */
 											CASE 
 												WHEN TRIM(S10E.PARA_BIRIMI) = 'TL'
 													THEN S10E.MALIYETT
@@ -666,7 +665,6 @@
 											EXT.KURS_1,
 											EXT2.KURS_1,
 
-											/* -------- TEKLIF FIYAT -------- */
 											CASE 
 												WHEN ? = 'TL' THEN
 													CASE 
@@ -693,12 +691,10 @@
 										LEFT JOIN {$database}stdm10e AS S10E
 											ON S10E.TEZGAH_KODU = I00.KOD
 
-										/* maliyet döviz kuru */
 										LEFT JOIN {$database}excratt AS EXT
 											ON EXT.EVRAKNOTARIH = ?
 											AND EXT.CODEFROM = S10E.PARA_BIRIMI
 
-										/* teklif döviz kuru */
 										LEFT JOIN {$database}excratt AS EXT2
 											ON EXT2.EVRAKNOTARIH = ?
 											AND EXT2.CODEFROM = ?
@@ -715,7 +711,6 @@
 											$kart_veri->TEKLIF_FIYAT_PB
 										]
 									);
-
 
 								@endphp
 								@foreach($BOPERASON_VERILERI as $OPERASYON)
@@ -1334,22 +1329,22 @@
 																	<td><input type="text" name="KODADI[]"
 																			value="{{$veri->STOK_AD1}}" class="form-control"
 																			readonly></td>
-																	<td><input type="text" name="ISLEM_MIKTARI[]"
+																	<td><input type="number" name="ISLEM_MIKTARI[]"
 																			value="{{round($veri->SF_MIKTAR)}}"
-																			class="form-control number">
+																			class="form-control">
 																	</td>
 																	<td><input type="text" name="ISLEM_BIRIMI[]"
 																			value="{{$veri->SF_SF_UNIT}}" class="form-control"
 																			readonly>
 																	</td>
-																	<td><input type="text" name="FIYAT[]"
+																	<td><input type="number" name="FIYAT[]"
 																			value="{{round($veri->FIYAT, 2)}}"
 																			class="form-control number"></td>
-																	<td><input type="text" name="DOLAR_FIYAT[]"
+																	<td><input type="number" name="DOLAR_FIYAT[]"
 																		value="{{ round($veri->FIYAT2, 2) }}"
 																		class="form-control number"></td>
-																	<td><input type="text" name="TUTAR[]"
-																			value="{{round($veri->TUTAR, 2)}}" class="form-control number"
+																	<td><input type="number" name="TUTAR[]"
+																			value="{{round($veri->TUTAR, 2)}}" class="form-control"
 																			readonly></td>
 																	
 																	<td><input type="number" name="TERMIN_TARIHI[]"
@@ -1712,7 +1707,6 @@
 				$('.TIME').val('');
 				$('.PTIME').val('');
 				$('.STIME').val('');
-				$('.PRICE').val('');
 				$('.TOPLANICAK').val('');
 
 				$.ajax({
@@ -2052,23 +2046,6 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
-				// $(document).on('change', '.OPRS', function () {
-				// 	let OR_TRNUM = $('#OR_TRNUM').val();
-				// 	let k = this.id;
-				// 	let isChecked = this.checked;
-					
-				// 	let $dinamikKartlar = $('[id^="DC' + k + '_' + OR_TRNUM + '_"]');
-				// 	let $sabitKart = $('#C' + k);
-					
-
-				// 	if ($dinamikKartlar.length > 0) {
-				// 		$dinamikKartlar.toggle(isChecked);
-				// 		$sabitKart.hide();
-				// 	} else {
-				// 		$sabitKart.toggle(isChecked);
-				// 	}
-				// });
-
 				function updateOperationTabs() {
 					let OR_TRNUM = $('#OR_TRNUM').val();
 					const container = $('.row.g-2.OPRS_CONTAINER');
@@ -2265,7 +2242,7 @@
 							secimSirasi = [];
 						}
 					});
-					
+
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
 					aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 					aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());

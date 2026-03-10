@@ -130,7 +130,7 @@ class stok29_controller extends Controller
           'TEDARIKCI_E' => $TEDARIKCI_E,
           'TARIH_B' => $TARIH_B,
           'TARIH_E' => $TARIH_E,
-          'firma' => $firma  // $firma değişkeni burada eklendi
+          'firma' => $firma
         ]);
 
         break;
@@ -143,7 +143,15 @@ class stok29_controller extends Controller
 
         DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK29T')->delete();
 
-        print_r("Silme işlemi başarılı.");
+        for($i = 0;$i < $satir_say;$i++)
+        {
+          DB::table($firma.'stok46t')
+          ->where('ARTNO', $SIPARTNO[$i])
+          ->update([
+              'SF_BAKIYE' => DB::raw("SF_BAKIYE + $SF_MIKTAR[$i]"),
+              'AK' => DB::raw("CASE WHEN (SF_BAKIYE + $SF_MIKTAR[$i]) = SF_MIKTAR THEN 'A' ELSE 'K' END") 
+          ]);
+        }
 
         $sonID=DB::table($firma.'stok29e')->min('id');
         return redirect()->route('satinalmairsaliyesi', ['ID' => $sonID, 'silme' => 'ok']);
@@ -151,6 +159,7 @@ class stok29_controller extends Controller
         // break;
 
       case 'kart_olustur':
+        // dd($request->all());
         $son_evrak = DB::table($firma.'stok29e')
         ->selectRaw('MAX(CAST(EVRAKNO AS INT)) AS EVRAKNO')
         ->value('EVRAKNO');
@@ -497,11 +506,15 @@ class stok29_controller extends Controller
             if($SIPARTNO != null)
             {
               DB::update("
-                  UPDATE {$firma}stok46t 
-                  SET 
-                      NETKAPANANMIK = NETKAPANANMIK - {$mevcutMiktar},
-                      SF_BAKIYE = SF_MIKTAR - (NETKAPANANMIK - {$mevcutMiktar}) 
-                  WHERE CAST(EVRAKNO AS VARCHAR) + CAST(TRNUM AS VARCHAR) = '{$SIPARTNO}'
+              UPDATE {$firma}stok46t 
+                SET 
+                    NETKAPANANMIK = NETKAPANANMIK - {$mevcutMiktar},
+                    SF_BAKIYE = SF_MIKTAR - (NETKAPANANMIK - {$mevcutMiktar}),
+                    AK = CASE 
+                            WHEN (SF_MIKTAR - (NETKAPANANMIK - {$mevcutMiktar})) = SF_MIKTAR THEN 'A' 
+                            ELSE AK 
+                        END
+                WHERE CAST(EVRAKNO AS VARCHAR) + CAST(TRNUM AS VARCHAR) = '{$SIPARTNO}'
               ");
             }
 
