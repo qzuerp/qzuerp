@@ -370,6 +370,17 @@
       // });
     });
 
+    $(document).ready(function() {
+      $('input[type="number"]').attr('type', 'text').addClass('decimal');
+    });
+
+    $(document).on('input', '.decimal', function() {
+      let val = this.value.replace(/[^0-9.,]/g, '').replace(',', '.');
+      const parts = val.split('.');
+      if (parts.length > 2) val = parts.shift() + '.' + parts.join('');
+      this.value = val;
+    });
+
     // function formatDecimalValue(value) {
     //   if (!value || value.toString().trim() === '') return '';
 
@@ -461,7 +472,7 @@
     //             .replace(',', '.');
     //     });
     // });
-    
+
     $(document).on('click', '.delete-row', function() {
       $(this).closest('tr').remove();
       checkTableChanges();
