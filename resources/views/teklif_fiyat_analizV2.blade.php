@@ -2191,6 +2191,7 @@
 
 					const $dinamikKartlar = $('[id^="DC' + kod + '_' + OR_TRNUM + '_"]');
 					const $sabitKart = $('#C' + kod);
+					console.log($dinamikKartlar.length, $sabitKart.length);
 					if ($(this).is(':checked')) {
 						const yeniSira = secimSirasi.length + 1;
 						secimSirasi.push(kod);
