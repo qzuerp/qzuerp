@@ -140,7 +140,7 @@ class stok46_controller extends Controller
           'EVRAKNO' => $EVRAKNO,
           'TARIH' => $TARIH,
           'CARIHESAPCODE' => $CARIHESAPCODE,
-          'AK' => $AK,
+          'AK' => $AK ?? 'A',
           'created_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
           'NOT' => $NOT,
@@ -177,7 +177,7 @@ class stok46_controller extends Controller
             'FIYAT' => $FIYAT[$i],
             'FIYAT_PB' => $FIYAT_PB[$i], 
             'NETKAPANANMIK' => 0,
-            'AK' => $T_AK[$i],
+            'AK' => $T_AK[$i] ?? 'A',
             'ARTNO' => $EVRAKNO.$TRNUM[$i]
           ]);
 
@@ -263,7 +263,7 @@ class stok46_controller extends Controller
         DB::table($firma.'stok46e')->where('EVRAKNO',$EVRAKNO)->update([
           'TARIH' => $TARIH,
           'CARIHESAPCODE' => $CARIHESAPCODE,
-          'AK' => $AK,
+          'AK' => $AK ?? 'A',
           'updated_at' => date('Y-m-d H:i:s'),
           'LAST_TRNUM' => $LAST_TRNUM,
           'NOT' => $NOT,
@@ -323,7 +323,7 @@ class stok46_controller extends Controller
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],
               'NETKAPANANMIK' => 0,
-              'AK' => $T_AK[$i],
+              'AK' => $T_AK[$i] ?? 'A',
               'ARTNO' => $EVRAKNO.$TRNUM[$i]
             ]);
 
@@ -354,7 +354,7 @@ class stok46_controller extends Controller
               'updated_at' => date('Y-m-d H:i:s'),
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i],  
-              'AK' => $T_AK[$i],
+              'AK' => $T_AK[$i] ?? 'A',
             ]);
 
           }

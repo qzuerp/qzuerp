@@ -686,8 +686,8 @@
 																<th style="min-width: 150px;">Lot No</th>
 																<th style="min-width: 150px;">Seri No</th>
 																<th style="min-width: 150px;">İşlem Mik.</th>
-																<th style="min-width: 150px;">Fiyat</th>
-																<th style="min-width: 150px;">Para Birimi</th>
+																<!-- <th style="min-width: 150px;">Fiyat</th>
+																<th style="min-width: 150px;">Para Birimi</th> -->
 																<th style="min-width: 150px;">İşlem Br.</th>
 																<th style="min-width: 150px;">Not</th>
 																<th style="min-width: 150px;">Mps Kodu</th>
@@ -1674,18 +1674,8 @@
 						htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + setValueOfJsonObject(kartVerisi2.LOTNUMBER) + "' readonly></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly></td> ";
 						htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='" + setValueOfJsonObject(kartVerisi2.SF_BAKIYE) + "'></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + setValueOfJsonObject(kartVerisi2.FIYAT) + "'></td> ";
-						htmlCode += "<td><select name='FIYAT_PB[]' class='form-control js-example-basic-single select2 ' style='width: 100%; border-radius: 5px;'>";
-						htmlCode += "<option value=' '>Seç</option>";
-
-						@php
-							$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
-							foreach ($kur_veri as $key => $value) {
-								echo 'htmlCode += "<option value=\'' . $value->KOD . '\' "+(kartVerisi2.FIYAT_PB == \'' . $value->KOD . '\' ? \'selected\' : \'\')+">' . $value->KOD . ' - ' . $value->AD . '</option>";';
-							}
-						@endphp
-
-						htmlCode += "</select></td>";
+						htmlCode += " input type='hidden' class='form-control' name='FIYAT[]' value='" + setValueOfJsonObject(kartVerisi2.FIYAT) + "'></td> ";
+						htmlCode += " input type='hidden' class='form-control' name='FIYAT_PB[]' value='" + setValueOfJsonObject(kartVerisi2.FIYAT_PB) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + setValueOfJsonObject(kartVerisi2.SF_SF_UNIT) + "' readonly><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + setValueOfJsonObject(kartVerisi2.SF_SF_UNIT) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='NOT1[]' value='" + setValueOfJsonObject(kartVerisi2.NOT1) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='MPS_KODU[]' value='" + setValueOfJsonObject(kartVerisi2.MPS_KODU) + "'></td> ";
