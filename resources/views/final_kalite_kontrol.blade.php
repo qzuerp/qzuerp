@@ -89,7 +89,7 @@
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
-										<input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
+										<input type="hidden" name="firma" id="firma" value="{{ @$kullanici_veri->firma }}">
 									</div>
 									<div class="col-md-6 d-flex align-items-end justify-content-end">
 										@include('layout.util.evrakIslemleri')
