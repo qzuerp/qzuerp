@@ -506,7 +506,7 @@
 																	<td><input type="text" class="form-control" name="SERINO[]"
 																			value="{{ $veri->SERINO }}"></td>
 																	<td><input type="number" class="form-control number"
-																			name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
+																			name="SF_MIKTAR[]" value="{{ round($veri->SF_MIKTAR,3) }}">
 																	</td>
 																	<td><input type="text" class="form-control"
 																			name="SF_SF_UNIT_SHOW_T"

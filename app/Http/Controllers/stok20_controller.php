@@ -590,10 +590,9 @@ class stok20_controller extends Controller
         }
 
         foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
-
           DB::table($firma.'stok20t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+          DB::table($firma.'stok20tı')->where('EVRAKNO',$EVRAKNO)->where('TI_KARSITRNUM',$deleteTRNUM)->delete();
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK20T')->where('TRNUM',$deleteTRNUM)->delete();
-
         }
 
 

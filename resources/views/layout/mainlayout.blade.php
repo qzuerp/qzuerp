@@ -372,113 +372,91 @@
 
     $(document).ready(function() {
       $('input[type="number"]').attr('type', 'text').addClass('decimal');
+
+      const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+              mutation.addedNodes.forEach(function(node) {
+                  $(node).find('input[type="number"]').addBack('input[type="number"]')
+                        .attr('type', 'text').addClass('decimal');
+              });
+          });
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
     });
 
     $(document).on('input', '.decimal', function() {
-      let val = this.value.replace(/[^0-9.,]/g, '').replace(',', '.');
-      const parts = val.split('.');
-      if (parts.length > 2) val = parts.shift() + '.' + parts.join('');
-      this.value = val;
+        let val = this.value.replace(/[^0-9.,]/g, '').replace(',', '.');
+        const parts = val.split('.');
+        if (parts.length > 2) val = parts.shift() + '.' + parts.join('');
+        this.value = val;
     });
 
-    // function formatDecimalValue(value) {
-    //   if (!value && value !== 0) return '';
+    // function formatTR(value) {
+    //     if (value === '' || value === null || value === undefined) return '';
 
-    //   let raw = value.toString().trim();
-    //   if (raw === '') return '';
+    //     let str = String(value).replace(',', '.');
+    //     const parts = str.split('.');
+    //     let intPart = parts[0];
+    //     let decPart = parts.length > 1 ? parts[1] : null;
 
-    //   const dotDecimal = /^(\d+)\.(\d{1,2})$/.test(raw);
-    //   if (dotDecimal) {
-    //     raw = raw.replace('.', ',');
-    //   } else {
-    //     // Binlik noktaları temizle, virgülü koru
-    //     raw = raw.replace(/\./g, '');
-    //   }
+    //     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    //   raw = raw.replace(/[^0-9,]/g, '');
-
-    //   const commaIndex = raw.indexOf(',');
-    //   let intPart, decPart;
-
-    //   if (commaIndex !== -1) {
-    //     intPart = raw.slice(0, commaIndex);
-    //     decPart = raw.slice(commaIndex + 1).replace(/,/g, '').slice(0, 2);
-    //   } else {
-    //     intPart = raw;
-    //     decPart = undefined;
-    //   }
-
-    //   const intNum = parseInt(intPart, 10);
-    //   intPart = isNaN(intNum) ? '0' : intNum.toLocaleString('tr-TR');
-
-    //   return decPart !== undefined ? `${intPart},${decPart}` : intPart;
+    //     return decPart !== null ? intPart + ',' + decPart : intPart;
     // }
 
-    // $(document).on('input', '.decimal', function () {
-    //   const input = this;
-    //   const cursorPos = input.selectionStart;
-    //   const oldLength = input.value.length;
-
-    //   let raw = input.value;
-
-    //   // "0.2" gibi noktalı ondalık girişi destekle
-    //   const dotAsDecimal = /^(\d*)\.(\d{0,2})$/.test(raw);
-    //   if (dotAsDecimal) {
-    //     raw = raw.replace('.', ',');
-    //   } else {
-    //     raw = raw.replace(/\./g, ''); // binlik noktaları temizle
-    //   }
-
-    //   raw = raw.replace(/[^0-9,]/g, '');
-
-    //   // Birden fazla virgülü temizle
-    //   const commaIndex = raw.indexOf(',');
-    //   if (commaIndex !== -1) {
-    //     raw = raw.slice(0, commaIndex + 1) + raw.slice(commaIndex + 1).replace(/,/g, '');
-    //   }
-
-    //   const parts = raw.split(',');
-    //   let intPart = parts[0];
-    //   let decPart = parts[1] !== undefined ? parts[1].slice(0, 2) : undefined;
-
-    //   // Baştaki sıfırları temizle
-    //   if (intPart.length > 1 && intPart.startsWith('0')) {
-    //     intPart = intPart.replace(/^0+/, '') || '0';
-    //   }
-
-    //   // Binlik formatla
-    //   if (intPart !== '') {
-    //     const intNum = parseInt(intPart, 10);
-    //     intPart = isNaN(intNum) ? '' : intNum.toLocaleString('tr-TR');
-    //   }
-
-    //   let result;
-    //   if (decPart !== undefined) {
-    //     result = `${intPart},${decPart}`;
-    //   } else if (raw.endsWith(',')) {
-    //     result = `${intPart},`;
-    //   } else {
-    //     result = intPart;
-    //   }
-
-    //   input.value = result;
-
-    //   const newLength = input.value.length;
-    //   input.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
-    // });
+    // function initDecimalInput(el) {
+    //     $(el).attr('type', 'text').addClass('decimal');
+    //     const val = $(el).val();
+    //     if (val !== '') $(el).val(formatTR(val));
+    // }
 
     // $(document).ready(function () {
-    //   $('input[type="number"]').attr('type', 'text').addClass('decimal');
-    //   $('.decimal').each(function () {
-    //     this.value = formatDecimalValue(this.value);
-    //   });
+    //     $('input[type="number"]').each(function () {
+    //         initDecimalInput(this);
+    //     });
+
+    //     const observer = new MutationObserver(function (mutations) {
+    //         mutations.forEach(function (mutation) {
+    //             mutation.addedNodes.forEach(function (node) {
+    //                 $(node).find('input[type="number"]').addBack('input[type="number"]').each(function () {
+    //                     initDecimalInput(this);
+    //                 });
+    //             });
+    //         });
+    //     });
+
+    //     observer.observe(document.body, { childList: true, subtree: true });
     // });
 
-    // $(document).on('submit', 'form', function () {
-    //   $(this).find('.decimal').each(function () {
-    //     this.value = this.value.replace(/\./g, '').replace(',', '.');
-    //   });
+    // $(document).on('input', '.decimal', function () {
+    //     const el = this;
+    //     const cursorPos = el.selectionStart;
+    //     const prevLen = el.value.length;
+
+    //     let clean = el.value.replace(/[^0-9,]/g, '');
+
+    //     const parts = clean.split(',');
+    //     let intPart = parts[0];
+    //     let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
+
+    //     if (intPart.length > 1 && intPart.startsWith('0')) {
+    //         intPart = intPart.replace(/^0+/, '') || '0';
+    //     }
+    //     const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    //     el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
+
+    //     // Cursor pozisyonunu koru
+    //     const newLen = el.value.length;
+    //     el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
     // });
+
+    // $('#verilerForm').on('submit', function () {
+    //     $(this).find('.decimal').each(function () {
+    //         this.value = this.value.replace(/\./g, '').replace(',', '.');
+    //     });
+    // });
+
 
     $(document).on('click', '.delete-row', function() {
       $(this).closest('tr').remove();

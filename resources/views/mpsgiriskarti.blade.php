@@ -2212,7 +2212,8 @@
 			function ozelInput()
 			{
 				$('#MAMULSTOKKODU_SHOW').prop('disabled',false);
-				$('#SF_PAKETSAYISI').val('1')
+				$('#SF_PAKETSAYISI').val('1');
+				$('#STATUS').val('C').trigger('change');
 			}
 
 			function getKaynakCodeSelect() {

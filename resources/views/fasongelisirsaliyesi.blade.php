@@ -993,12 +993,12 @@
                       <th>Lok 2</th>
                       <th>Lok 3</th>
                       <th>Lok 4</th>
-                      <th>#</th>
                     </tr>
                   </thead>
 
-                  <!-- <tfoot>
+                  <tfoot>
                     <tr class="bg-info">
+                      <th>ID</th>
                       <th>Kod</th>
                       <th>Ad</th>
                       <th>Miktar</th>
@@ -1018,9 +1018,8 @@
                       <th>Lok 2</th>
                       <th>Lok 3</th>
                       <th>Lok 4</th>
-                      <th>#</th>
                     </tr>
-                  </tfoot> -->
+                  </tfoot>
 
                   <tbody>
                     
@@ -1176,45 +1175,48 @@
                 Swal.showLoading();
             }
         });
+        let table = $('#seriNoSec').DataTable();
+
         $.ajax({
           url: '/mevcutVeriler',
           type: 'get',
           data: { KOD: kod },
           success: function (res) {
-            let htmlCode = '';
+
+            table.clear(); // eski verileri temizle
 
             res.forEach((row) => {
-              htmlCode += `
-                <tr>
-                  <td>${id || ''}</td>
-                  <td>${row.KOD || ''}</td>
-                  <td>${row.STOK_ADI || ''}</td>
-                  <td>${row.MIKTAR || ''}</td>
-                  <td>${row.SF_SF_UNIT || ''}</td>
-                  <td>${row.LOTNUMBER || ''}</td>
-                  <td>${row.SERINO || ''}</td>
-                  <td>${row.AMBCODE || ''} - ${row.AD || ''}</td>
-                  <td>${row.TEXT1 || ''}</td>
-                  <td>${row.TEXT2 || ''}</td>
-                  <td>${row.TEXT3 || ''}</td>
-                  <td>${row.TEXT4 || ''}</td>
-                  <td>${row.NUM1 || ''}</td>
-                  <td>${row.NUM2 || ''}</td>
-                  <td>${row.NUM3 || ''}</td>
-                  <td>${row.NUM4 || ''}</td>
-                  <td>${row.LOCATION1 || ''}</td>
-                  <td>${row.LOCATION2 || ''}</td>
-                  <td>${row.LOCATION3 || ''}</td>
-                  <td>${row.LOCATION4 || ''}</td>
-                </tr>`;
+              table.row.add([
+                id || '',
+                row.KOD || '',
+                row.STOK_ADI || '',
+                row.MIKTAR || '',
+                row.SF_SF_UNIT || '',
+                row.LOTNUMBER || '',
+                row.SERINO || '',
+                (row.AMBCODE || '') + ' - ' + (row.AD || ''),
+                row.TEXT1 || '',
+                row.TEXT2 || '',
+                row.TEXT3 || '',
+                row.TEXT4 || '',
+                row.NUM1 || '',
+                row.NUM2 || '',
+                row.NUM3 || '',
+                row.NUM4 || '',
+                row.LOCATION1 || '',
+                row.LOCATION2 || '',
+                row.LOCATION3 || '',
+                row.LOCATION4 || ''
+              ]);
             });
 
-            $("#seriNoSec > tbody").html(htmlCode);
+            table.draw(); // tabloyu güncelle
           },
           error: function (error) {
             console.log(error);
-          },complete: function () {
-              Swal.close();
+          },
+          complete: function () {
+            Swal.close();
           }
         });
       }

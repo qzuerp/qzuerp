@@ -647,7 +647,7 @@
                                 <input type="hidden" class="form-control" maxlength="6" name="TI_TRNUM[]"
                                   value="{{ $veri->TRNUM }}">
                               </td>
-                              <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]'
+                              <td style='display: none;'><input type='hidden' class='form-control' name='6[]'
                                   value='{{ $veri->ARTNO }}'></td>
                               <td>
                                 <input type="text" class="form-control" name="CARI_KOD[]" value="{{ $veri->CARI_KODU }}"
@@ -660,17 +660,17 @@
                               </td>
 
                               <td>
-                                <input type="text" class="form-control" name="SATIN_ALINACAK_MIK[]"
-                                  value="{{ $veri->SF_MIKTAR }}">
+                                <input type="number" class="form-control" name="SATIN_ALINACAK_MIK[]"
+                                  value="{{ round($veri->SF_MIKTAR,3) }}">
                               </td>
 
                               <td>
-                                <input type="text" class="form-control" name="VEREBILECEGI_MIK[]"
-                                  value="{{ $veri->VEREBILECEGI_MIK }}">
+                                <input type="number" class="form-control" name="VEREBILECEGI_MIK[]"
+                                  value="{{ round($veri->VEREBILECEGI_MIK,3) }}">
                               </td>
 
                               <td>
-                                <input type="text" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}">
+                                <input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}">
                               </td>
 
                               <td>

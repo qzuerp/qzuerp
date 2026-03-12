@@ -394,7 +394,40 @@
     }
   });
 
+  $('#seriNoSec tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Git</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
+  });
+
   $(document).ready(function () {
+    var table = $('#seriNoSec').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      deferRender: true,
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
+
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
     // DataTable
     var table = $('#evrakSuzTable').DataTable({
       "order": [[0, "desc"]],

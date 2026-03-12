@@ -1702,6 +1702,71 @@
 				$(this).select();
 			});
 
+			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
+			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
+
+			function formatTR(value) {
+				if (value === '' || value === null || value === undefined) return '';
+				let str = String(value).replace(',', '.');
+				const parts = str.split('.');
+				let intPart = parts[0];
+				let decPart = parts.length > 1 ? parts[1] : null;
+				intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+				return decPart !== null ? intPart + ',' + decPart : intPart;
+			}
+
+			function initDecimalInput(el) {
+				$(el).addClass('decimal');
+				const val = $(el).val();
+				if (val !== '') $(el).val(formatTR(val));
+			}
+
+			$(document).ready(function () {
+				$(DECIMAL_SELECTOR).each(function () {
+					initDecimalInput(this);
+				});
+
+				const observer = new MutationObserver(function (mutations) {
+					mutations.forEach(function (mutation) {
+						mutation.addedNodes.forEach(function (node) {
+							$(node).find(DECIMAL_SELECTOR).addBack(DECIMAL_SELECTOR).each(function () {
+								initDecimalInput(this);
+							});
+						});
+					});
+				});
+
+				observer.observe(document.body, { childList: true, subtree: true });
+			});
+
+			$(document).on('input', '.decimal', function () {
+				const el = this;
+				const cursorPos = el.selectionStart;
+				const prevLen = el.value.length;
+
+				let clean = el.value.replace(/[^0-9,]/g, '');
+
+				const parts = clean.split(',');
+				let intPart = parts[0];
+				let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
+
+				if (intPart.length > 1 && intPart.startsWith('0')) {
+					intPart = intPart.replace(/^0+/, '') || '0';
+				}
+
+				const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+				el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
+
+				const newLen = el.value.length;
+				el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
+			});
+
+			$('#verilerForm').on('submit', function () {
+				$(this).find('.decimal').each(function () {
+					this.value = this.value.replace(/\./g, '').replace(',', '.');
+				});
+			});
+
 			let secimSirasi = [];
 
 			$('.satir_detay').on('click', function () {
@@ -2390,6 +2455,17 @@
 						$('#maliyetDetayTable tbody').append(tr);
 
 						updateLastTRNUM(TRNUM);
+
+						
+						$('.tutar-input').val('').trigger('change');
+						$('.TIME').val('').trigger('change');
+						$('.PTIME').val('').trigger('change');
+						$('.STIME').val('').trigger('change');
+						$('.AYAR_TUTAR').val('').trigger('change');
+						$('.ISLEM_TUTAR').val('').trigger('change');
+						$('.SOKTAK_TUTAR').val('').trigger('change');
+						$('.TOPLANICAK').val('').trigger('change');
+						$('.TOTAL').val('').trigger('change');
 					});
 				}
 

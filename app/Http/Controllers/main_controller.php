@@ -90,6 +90,7 @@ class main_controller extends Controller
             'g.AD as DEPO_AD'
         )
         ->where('s.KOD', $KOD)
+        ->leftJoin($firma.'stok00 as s0', 's.KOD', '=', 's0.KOD')
         ->orderBy('s.created_at', 'desc')
         ->get();
     
