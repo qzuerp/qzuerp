@@ -1000,6 +1000,7 @@ if (isset($kart_veri)) {
                               <th style="min-width:100px">Gönderilecek Malzeme Adı</th>
                               <th style="min-width:100px">Miktar</th>
                               <th style="min-width:100px">Birim</th>
+                              <th style="min-width:100px">Termin Tar.</th>
                               <th style="min-width:100px">Lot No</th>
                               <th style="min-width:100px">Seri No</th>
                               <th style="min-width:100px">Depo</th>
@@ -1030,6 +1031,7 @@ if (isset($kart_veri)) {
                                 <td><input type="text" class="form-control" name="STOK_ADI[]" value="{{ $value->AD }}" readonly></td>
                                 <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $value->MIKTAR }}"></td>
                                 <td><input type="text" class="form-control" name="SF_SF_UNIT[]" value="{{ $value->IUNIT }}" readonly></td>
+                                <td><input type="text" class="form-control" name="TERMIN_TAR[]" value="" readonly></td>
                                
                                 <td><input type="text" class="form-control" name="LOTNUMBER[]" value="{{ $value->LOTNUMBER }}" readonly></td>
                                 <td><input type="text" class="form-control" name="SERINO[]" value="{{ $value->SERINO }}" readonly></td>

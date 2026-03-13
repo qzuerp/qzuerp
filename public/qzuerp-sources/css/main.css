@@ -1059,13 +1059,13 @@ input[type="checkbox"]:focus {
   color: #fff;
   font-size: 25px;
   font-weight: 600;
-  opacity: 0;
-  transition: all 0.5s ease;
+  transform:scale(0);
+  transition: all 0.7s ease;
 }
 
 .sidebar.open .logo-details .icon,
 .sidebar.open .logo-details .logo_name {
-  opacity: 1;
+  transform:scale(1);
 }
 
 /* Tüm butonları outline görünümüne çevir */

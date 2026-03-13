@@ -1443,10 +1443,14 @@
 																@php
 																	$sorgu = "
 																		SELECT 
-																			TI.*, TT.KOD as TT_KOD, TT.STOK_AD1 AS TT_STOK_AD1
-																		FROM $ekranTableTI TI
+																			TI.*, 
+																			TT.KOD as TT_KOD, 
+																			TT.STOK_AD1 AS TT_STOK_AD1
+																		FROM {$database}tekl20tı TI
 																		OUTER APPLY (
-																			SELECT TOP 1 * FROM $ekranTableT WHERE TRNUM = TI.OR_TRNUM 
+																			SELECT TOP 1 * 
+																			FROM {$database}tekl20t 
+																			WHERE TRNUM = TI.OR_TRNUM
 																		) TT
 																		WHERE TI.EVRAKNO = :evrakno
 																		ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
@@ -1696,78 +1700,82 @@
 			</section>
 		</div>
 
-
+		<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5"></script>
 		<script>
 			$(document).on('focus', '.tutar-input,.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
 				$(this).select();
 			});
-
-			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
-			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
-
-			function formatTR(value) {
-			    if (value === '' || value === null || value === undefined) return '';
-
-			    let str = String(value).replace(',', '.');
-			    const parts = str.split('.');
-			    let intPart = parts[0];
-			    let decPart = parts.length > 1 ? parts[1] : null;
-
-			    intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-			    return decPart !== null ? intPart + ',' + decPart : intPart;
-			}
-
-			function initDecimalInput(el) {
-			    $(el).attr('type', 'text').removeClass('decimal');
-			    const val = $(el).val();
-			    if (val !== '') $(el).val(formatTR(val));
-			}
-
-			$(document).ready(function () {
-			    $(DECIMAL_SELECTOR).each(function () {
-			        initDecimalInput(this);
-			    });
-
-			    const observer = new MutationObserver(function (mutations) {
-			        mutations.forEach(function (mutation) {
-			            mutation.addedNodes.forEach(function (node) {
-			                $(node).find('input[type="number"]').addBack('input[type="number"]').each(function () {
-			                    initDecimalInput(this);
-			                });
-			            });
-			        });
-			    });
-
-			    observer.observe(document.body, { childList: true, subtree: true });
+			new AutoNumeric('.price', {
+				digitGroupSeparator: '.',
+				decimalCharacter: ',',
+				decimalPlaces: 2
 			});
+			// const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
+			// const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
 
-			$(document).on('input', DECIMAL_SELECTOR, function () {
-			    const el = this;
-			    const cursorPos = el.selectionStart;
-			    const prevLen = el.value.length;
+			// function formatTR(value) {
+			//     if (value === '' || value === null || value === undefined) return '';
 
-			    let clean = el.value.replace(/[^0-9,]/g, '');
+			//     let str = String(value).replace(',', '.');
+			//     const parts = str.split('.');
+			//     let intPart = parts[0];
+			//     let decPart = parts.length > 1 ? parts[1] : null;
 
-			    const parts = clean.split(',');
-			    let intPart = parts[0];
-			    let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
+			//     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-			    if (intPart.length > 1 && intPart.startsWith('0')) {
-			        intPart = intPart.replace(/^0+/, '') || '0';
-			    }
-			    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-			    el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
+			//     return decPart !== null ? intPart + ',' + decPart : intPart;
+			// }
 
-			    const newLen = el.value.length;
-			    el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
-			});
+			// function initDecimalInput(el) {
+			//     $(el).attr('type', 'text').removeClass('decimal');
+			//     const val = $(el).val();
+			//     if (val !== '') $(el).val(formatTR(val));
+			// }
 
-			$('#verilerForm').on('submit', function () {
-			    $(this).find(DECIMAL_SELECTOR).each(function () {
-			        this.value = this.value.replace(/\./g, '').replace(',', '.');
-			    });
-			});
+			// $(document).ready(function () {
+			//     $(DECIMAL_SELECTOR).each(function () {
+			//         initDecimalInput(this);
+			//     });
+
+			//     const observer = new MutationObserver(function (mutations) {
+			//         mutations.forEach(function (mutation) {
+			//             mutation.addedNodes.forEach(function (node) {
+			//                 $(node).find('input[type="number"]').addBack('input[type="number"]').each(function () {
+			//                     initDecimalInput(this);
+			//                 });
+			//             });
+			//         });
+			//     });
+
+			//     observer.observe(document.body, { childList: true, subtree: true });
+			// });
+
+			// $(document).on('input', DECIMAL_SELECTOR, function () {
+			//     const el = this;
+			//     const cursorPos = el.selectionStart;
+			//     const prevLen = el.value.length;
+
+			//     let clean = el.value.replace(/[^0-9,]/g, '');
+
+			//     const parts = clean.split(',');
+			//     let intPart = parts[0];
+			//     let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
+
+			//     if (intPart.length > 1 && intPart.startsWith('0')) {
+			//         intPart = intPart.replace(/^0+/, '') || '0';
+			//     }
+			//     const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+			//     el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
+
+			//     const newLen = el.value.length;
+			//     el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
+			// });
+
+			// $('#verilerForm').on('submit', function () {
+			//     $(this).find(DECIMAL_SELECTOR).each(function () {
+			//         this.value = this.value.replace(/\./g, '').replace(',', '.');
+			//     });
+			// });
 
 			let secimSirasi = [];
 
@@ -2457,18 +2465,16 @@
 						$('#maliyetDetayTable tbody').append(tr);
 
 						updateLastTRNUM(TRNUM);
-
-						
-						$('.tutar-input').val('').trigger('change');
-						$('.TIME').val('').trigger('change');
-						$('.PTIME').val('').trigger('change');
-						$('.STIME').val('').trigger('change');
-						$('.AYAR_TUTAR').val('').trigger('change');
-						$('.ISLEM_TUTAR').val('').trigger('change');
-						$('.SOKTAK_TUTAR').val('').trigger('change');
-						$('.TOPLANICAK').val('').trigger('change');
-						$('.TOTAL').val('').trigger('change');
 					});
+					$('.tutar-input').val('').trigger('change');
+					$('.TIME').val('').trigger('change');
+					$('.PTIME').val('').trigger('change');
+					$('.STIME').val('').trigger('change');
+					$('.AYAR_TUTAR').val('').trigger('change');
+					$('.ISLEM_TUTAR').val('').trigger('change');
+					$('.SOKTAK_TUTAR').val('').trigger('change');
+					$('.TOPLANICAK').val('').trigger('change');
+					$('.TOTAL').val('').trigger('change');
 				}
 
 				$('.delete-row').on('click',function(){
