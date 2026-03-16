@@ -229,7 +229,7 @@
 		outline: none;
 	}
 
-	#satir_detay .form-control-sm {
+	#satir_detay . {
 		font-size: 12.5px;
 		padding: 6px 10px;
 		border-radius: 7px;
@@ -517,7 +517,7 @@
 
 	/* ── OPERASYON DETAY KARTLARI ── */
 	.operation-detail-card {
-		border: 1.5px solid #eef0f6;
+		border: 1.5px solid rgb(194, 194, 194);
 		border-radius: 10px;
 		overflow: hidden;
 		height: 100%;
@@ -1259,7 +1259,7 @@
 													<div>
 														<label class="form-label-sm fw-bold">Birim Fiyat</label>
 														<div class="input-group">
-															<input type="number" class="form-control text-end form-control-sm PRICE"
+															<input type="number" class="form-control text-end  PRICE"
 																value="{{ round($OPERASYON->TEKLIF_FIYAT, 2) }}" placeholder="0.00">
 															<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
 														</div>
@@ -1267,11 +1267,11 @@
 													<div class="mb-2">
 														<label class="form-label-sm fw-bold">Ayar</label>
 														<div class="d-flex gap-1">
-															<input type="number" class="form-control form-control-sm TIME"
+															<input type="number" class="form-control  TIME"
 																placeholder="0.00">
 															<div class="input-group">
 																<input type="number"
-																	class="form-control text-end form-control-sm AYAR_TUTAR"
+																	class="form-control text-end  AYAR_TUTAR"
 																	placeholder="0.00">
 																<span
 																	class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
@@ -1282,13 +1282,13 @@
 														<label class="form-label-sm fw-bold">İşleme</label>
 														<div class="d-flex gap-1">
 															<div class="input-group">
-																<input type="number" class="form-control form-control-sm PTIME"
+																<input type="number" class="form-control  PTIME"
 																	placeholder="0.00">
 															</div>
 
 															<div class="input-group">
 																<input type="number"
-																	class="form-control text-end form-control-sm PTIME ISLEM_TUTAR"
+																	class="form-control text-end  PTIME ISLEM_TUTAR"
 																	placeholder="0.00">
 																<span
 																	class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
@@ -1300,13 +1300,13 @@
 														<label class="form-label-sm fw-bold">Sök-Tak</label>
 														<div class="d-flex gap-1">
 															<div class="input-group">
-																<input type="number" class="form-control form-control-sm STIME"
+																<input type="number" class="form-control  STIME"
 																	placeholder="0.00">
 															</div>
 
 															<div class="input-group">
 																<input type="number"
-																	class="form-control text-end form-control-sm STIME SOKTAK_TUTAR"
+																	class="form-control text-end  STIME SOKTAK_TUTAR"
 																	placeholder="0.00">
 																<span
 																	class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
@@ -1318,7 +1318,7 @@
 														<div class="d-flex gap-1">
 															<div class="input-group">
 																<input type="number"
-																	class="form-control text-end form-control-sm TOTAL TOPLANICAK"
+																	class="form-control text-end  TOTAL TOPLANICAK"
 																	placeholder="0.00">
 																<span
 																	class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
@@ -1331,7 +1331,7 @@
 														<div class="d-flex gap-1">
 															<div class="input-group ">
 																<input type="number"
-																	class="tutar-input form-control text-end form-control-sm"
+																	class="tutar-input form-control text-end "
 																	placeholder="0.00">
 																<select class="birim-select form-select p-1"
 																	style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
@@ -1347,10 +1347,10 @@
 														</div>
 														<label>Çevirilmiş Tutar</label>
 														<input type="number"
-															class="form-control text-end form-control-sm RES_TOTAL TOTAL TOPLANICAK"
+															class="form-control text-end  RES_TOTAL TOTAL TOPLANICAK"
 															placeholder="0.00">
 														<label>Not</label>
-														<input type="text" class="form-control T_NOT form-control-sm"
+														<input type="text" class="form-control T_NOT "
 															placeholder="Not">
 
 														<div class="d-flex gap-3">
@@ -1374,7 +1374,7 @@
 											<div>
 												<label class="form-label-sm fw-bold">Tutar</label>
 												<input type="number" id="DIGER"
-													class="form-control form-control-sm TOTAL TOPLANICAK"
+													class="form-control  TOTAL TOPLANICAK"
 													placeholder="0.00">
 											</div>
 										</div>
@@ -1463,7 +1463,7 @@
 					</div>
 				</div>
 				<div class="modal-footer py-2 bg-light" style="justify-content: space-between !important;">
-					<div>
+					<div class="d-flex gap-3">
 						<label id="TOPLANICAK_LABEL" class="text-danger form-label-sm fw-bold"></label> |
 						<label id="LABEL_SF_MIKTAR" class="text-danger form-label-sm fw-bold"></label>
 					</div>
@@ -2305,7 +2305,7 @@
 											<div>
 												<label class="form-label-sm fw-bold">Birim Fiyat</label>
 												<div class="input-group">
-													<input type="number" class="form-control text-end form-control-sm PRICE"
+													<input type="number" class="form-control text-end  PRICE"
 														value="${round(birimFiyat, 2)}" placeholder="0.00">
 													<span class="input-group-text">${teklif_pb}</span>
 												</div>
@@ -2313,10 +2313,10 @@
 											<div class="mb-2">
 												<label class="form-label-sm fw-bold">Ayar</label>
 												<div class="d-flex gap-1">
-													<input type="number" class="form-control form-control-sm TIME"
+													<input type="number" class="form-control  TIME"
 														value="${ayar}" placeholder="0.00">
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm AYAR_TUTAR" placeholder="0.00">
+														<input type="number" class="form-control text-end  AYAR_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2325,11 +2325,11 @@
 												<label class="form-label-sm fw-bold">İşleme</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="number" class="form-control form-control-sm PTIME"
+														<input type="number" class="form-control  PTIME"
 															value="${isleme}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm PTIME ISLEM_TUTAR" placeholder="0.00">
+														<input type="number" class="form-control text-end  PTIME ISLEM_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2338,11 +2338,11 @@
 												<label class="form-label-sm fw-bold">Sök-Tak</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="number" class="form-control form-control-sm STIME"
+														<input type="number" class="form-control  STIME"
 															value="${soktak}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm STIME SOKTAK_TUTAR" placeholder="0.00">
+														<input type="number" class="form-control text-end  STIME SOKTAK_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2351,7 +2351,7 @@
 												<label class="form-label-sm fw-bold">Tutar</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="number" class="form-control text-end form-control-sm TOTAL TOPLANICAK"
+														<input type="number" class="form-control text-end  TOTAL TOPLANICAK"
 															value="${round(fiyat, 2)}" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
@@ -2379,7 +2379,7 @@
 												<label class="form-label-sm fw-bold">Tutar</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="number" class="tutar-input form-control text-end form-control-sm"
+														<input type="number" class="tutar-input form-control text-end "
 															value="${round(fiyat2, 2)}" placeholder="0.00">
 														<select class="birim-select form-select p-1"
 															style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
@@ -2389,10 +2389,10 @@
 												</div>
 												<label>Çevirilmiş Tutar</label>
 												<input type="number"
-													class="form-control text-end form-control-sm RES_TOTAL TOTAL TOPLANICAK"
+													class="form-control text-end  RES_TOTAL TOTAL TOPLANICAK"
 													value="${round(fiyat, 2)}" placeholder="0.00">
 												<label>Not</label>
-												<input type="text" class="form-control T_NOT form-control-sm"
+												<input type="text" class="form-control T_NOT "
 													value="${not}" placeholder="Not">
 												<div class="d-flex gap-3">
 													<button class="bol btn btn-sm btn-primary mt-2 h-25">Adetle Böl</button>
