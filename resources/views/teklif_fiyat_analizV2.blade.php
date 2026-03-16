@@ -2219,9 +2219,18 @@
 					aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
 					aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val($('#SF_MIKTAR').val());
 					aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
-					aktifSatir.find('input[name="FIYAT[]"]').val($('#FIYAT').val());
-					aktifSatir.find('input[name="DOLAR_FIYAT[]"]').val(round($('#FIYAT').val() / dolarKur.data.KURS_1));
-					aktifSatir.find('input[name="TUTAR[]"]').val($('#FIYAT').val() * $('#SF_MIKTAR').val());
+
+					let fiyat = parseFloat($('#FIYAT').val().replace('.', ',')) || 0;
+					console.log(fiyat);
+					let miktar = parseFloat($('#SF_MIKTAR').val()) || 0;
+
+					let dolarFiyat = round(fiyat / dolarKur.data.KURS_1);
+					let tutar = fiyat * miktar;
+
+					AutoNumeric.set(aktifSatir.find('input[name="FIYAT[]"]')[0], fiyat);
+					AutoNumeric.set(aktifSatir.find('input[name="DOLAR_FIYAT[]"]')[0], dolarFiyat);
+					AutoNumeric.set(aktifSatir.find('input[name="TUTAR[]"]')[0], tutar);
+
 					operasyonlariTabloyaBas();
 				});
 				
