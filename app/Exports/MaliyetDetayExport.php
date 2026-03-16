@@ -29,26 +29,25 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
 
-        $rows = DB::table($firma . 'tekl20t as T20t')
-            ->leftJoin($firma . 'tekl20tı as T20ti', function ($join) {
-                $join->on('T20ti.EVRAKNO', '=', 'T20t.EVRAKNO')
-                    ->on('T20t.TRNUM', '=', 'T20ti.OR_TRNUM');
-            })
-            ->where('T20ti.EVRAKNO', $this->evrakno)
-            ->select([
-                'T20ti.*',
-                'T20t.KOD as TKOD',
-                'T20t.STOK_AD1 as TAD',
-                'T20t.SF_MIKTAR as TMIKTAR',
-                'T20t.SF_SF_UNIT as TBIRIM',
-                'T20t.FIYAT as TFIYAT',
-                'T20t.FIYAT2 as TFIYAT2',
-                'T20t.TUTAR as TTUTAR',
-                'T20t.TERMIN_TARIHI as TTERMIN_TARIHI',
-                'T20t.ACIKLAMA as TACIKLAMA'
-            ])
-            ->orderBy('T20ti.OR_TRNUM')
-            ->get();
+        $rows = DB::select("SELECT 
+            T20ti.*, 
+            T20t.KOD AS TKOD, 
+            T20t.STOK_AD1 AS TAD, 
+            T20t.SF_MIKTAR AS TMIKTAR, 
+            T20t.SF_SF_UNIT AS TBIRIM, 
+            T20t.FIYAT AS TFIYAT, 
+            T20t.FIYAT2 AS TFIYAT2, 
+            T20t.TUTAR AS TTUTAR, 
+            T20t.TERMIN_TARIHI AS TTERMIN_TARIHI, 
+            T20t.ACIKLAMA AS TACIKLAMA
+        FROM tekl20t AS T20t
+        LEFT JOIN tekl20tı AS T20ti ON (
+            T20ti.EVRAKNO = T20t.EVRAKNO 
+            AND T20t.TRNUM = T20ti.OR_TRNUM
+        )
+        LEFT JOIN GECOUST GC ON GC.EVRAKNO ='TEZGAHGK6' AND GC.KOD = T20Tİ.KOD
+        WHERE T20ti.EVRAKNO = $this->evrakno
+        ORDER BY T20ti.OR_TRNUM,GC.TRNUM ASC;");
 
         $sonuc = [];
 
@@ -112,57 +111,22 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             ->unique()
             ->values();
 
-        $bas = [
-            'PARCA KODU',
-            'PARCA ADI',
-            'MIKTAR',
-        ];
-
-        $sabitOrta = [
-            'REVİZYON',
-            'TERMİN',
-            'AÇIKLAMA',
-            'MALZEME',
-            'ÖLÇÜ',
-            'MALZEME FIYAT',
-        ];
-
-        $son = [
-            'FIYAT',
-            'DOLAR FIYATI',
-            'TUTAR',
-        ];
-
+        $bas = ['PARCA KODU', 'PARCA ADI', 'MIKTAR'];
+        $sabitOrta = ['REVİZYON', 'TERMİN', 'AÇIKLAMA', 'MALZEME', 'ÖLÇÜ', 'MALZEME FIYAT'];
+        $son = ['FIYAT', 'DOLAR FIYATI', 'TUTAR'];
+        
         $operasyonlar = $tumKolonlar
-            ->reject(fn($k) =>
-                in_array($k, $bas) ||
-                in_array($k, $sabitOrta) ||
+            ->reject(fn($k) => 
+                in_array($k, $bas) || 
+                in_array($k, $sabitOrta) || 
                 in_array($k, $son)
             )
-            ->sort(function ($a, $b) {
-
-                preg_match('/^(\d+)\.\s*(.*)$/', $a, $ma);
-                preg_match('/^(\d+)\.\s*(.*)$/', $b, $mb);
-
-                $nameA = $ma[2] ?? $a;
-                $nameB = $mb[2] ?? $b;
-
-                $indexA = isset($ma[1]) ? (int)$ma[1] : 1;
-                $indexB = isset($mb[1]) ? (int)$mb[1] : 1;
-
-                if ($nameA == $nameB) {
-                    return $indexA <=> $indexB;
-                }
-
-                return strcmp($nameA, $nameB);
-            })
             ->values();
 
         $this->kolonlar = collect($bas)
             ->concat($sabitOrta)
             ->concat($operasyonlar)
             ->concat($son)
-            ->values()
             ->toArray();
 
         return $this->kolonlar;

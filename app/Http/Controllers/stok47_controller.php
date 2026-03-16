@@ -516,8 +516,8 @@ class stok47_controller extends Controller
           $u = Auth::user();
         }
         $firma = trim($u->firma).'.dbo.';
-        if($CARI_KOD != NULL)
-          sort($CARI_KOD);
+        // if($CARI_KOD != NULL)
+        //   sort($CARI_KOD);
         $ONCEKI_CARI = "";
         $hesap_id = DB::table($firma.'pers00')->where('KOD', $TALEP_EDEN_KISI)->value('bagli_hesap');
         for ($i = 0; $i < $satir_say2; $i++) {

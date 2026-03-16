@@ -235,27 +235,15 @@
 		border-radius: 7px;
 	}
 
-	/* ── INPUT GROUP ── */
-	#satir_detay .input-group .form-control {
-		border-right: none;
-		border-radius: 8px 0 0 8px;
-	}
-
-	#satir_detay .input-group .form-control:focus {
-		border-right: none;
-		z-index: 3;
-	}
-
 	#satir_detay .input-group-text {
 		background: #f1f5f9;
 		border: 1.5px solid #e2e8f0;
 		border-left: none;
 		border-radius: 0 8px 8px 0;
 		color: #64748b;
-		font-size: 11px;
+		font-size: 9px;
 		font-weight: 600;
-		padding: 0 10px;
-		letter-spacing: 0.02em;
+		padding: 0 2px;
 	}
 
 	/* ── SELECT (native) ── */
