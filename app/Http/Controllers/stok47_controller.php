@@ -566,7 +566,8 @@ class stok47_controller extends Controller
             // 'ARTNO' => $request->TI_ARTNO[$i],
             'TALEP_EVRAKNO' => $EVRAKNO,
             'LOTNUMBER' => $TI_LOTNUMBER[$i],
-            'NOT1' => $TI_NOT1[$i]
+            'NOT1' => $TI_NOT1[$i],
+            'AK' => 'A'
           ]);
           $ONCEKI_CARI = $CARI_KOD[$i];
 

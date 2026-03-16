@@ -78,237 +78,713 @@
 			transform: rotate(-15deg);
 		}
 
-		/* Operasyon Kartları - Kompakt */
-		.operation-card {
-			position: relative;
-			width: 100%;
-			user-select: none;
-		}
+/* =====================================================
+   SATIR DETAY MODALİ — SOFT & PROFESSIONAL REDESIGN
+   ===================================================== */
 
-		.checkbox-input {
-			position: absolute;
-			opacity: 0;
-			cursor: pointer;
-		}
+	#satir_detay *,
+	#satir_detay *::before,
+	#satir_detay *::after {
+		box-sizing: border-box;
+	}
 
+	/* ── MODAL SHELL ── */
+	#satir_detay .modal-content {
+		border: none;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 24px 64px rgba(15, 23, 42, 0.14), 0 4px 16px rgba(15, 23, 42, 0.06);
+		background: #f8f9fc;
+	}
+
+	/* ── MODAL HEADER ── */
+	#satir_detay .modal-header {
+		background: #ffffff;
+		border-bottom: 1px solid #eef0f6;
+		padding: 14px 24px;
+		backdrop-filter: blur(12px);
+	}
+
+	#satir_detay .modal-title {
+		font-size: 14px;
+		font-weight: 600;
+		color: #1e293b;
+		letter-spacing: -0.01em;
+	}
+
+	#satir_detay .modal-title i {
+		color: #6366f1;
+		margin-right: 6px;
+	}
+
+	#satir_detay .btn-close {
+		width: 28px;
+		height: 28px;
+		background-color: #f1f5f9;
+		border-radius: 8px;
+		opacity: 0.7;
+		transition: all 0.18s ease;
+	}
+
+	#satir_detay .btn-close:hover {
+		background-color: #e2e8f0;
+		opacity: 1;
+	}
+
+	/* ── TABS ── */
+	#satir_detay .nav-tabs {
+		background: #ffffff;
+		border-bottom: 1px solid #eef0f6;
+		padding: 0 20px;
+		gap: 2px;
+	}
+
+	#satir_detay .nav-tabs .nav-link {
+		font-size: 12.5px;
+		font-weight: 500;
+		color: #64748b;
+		padding: 10px 16px;
+		border: none;
+		border-bottom: 2px solid transparent;
+		border-radius: 0;
+		transition: all 0.18s ease;
+		margin-bottom: -1px;
+		background: transparent;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+	}
+
+	#satir_detay .nav-tabs .nav-link i {
+		font-size: 11px;
+		opacity: 0.7;
+	}
+
+	#satir_detay .nav-tabs .nav-link:hover {
+		color: #4f46e5;
+		background: #f5f3ff;
+		border-radius: 8px 8px 0 0;
+	}
+
+	#satir_detay .nav-tabs .nav-link.active {
+		color: #4f46e5;
+		border-bottom-color: #4f46e5;
+		font-weight: 600;
+		background: transparent;
+	}
+
+	#satir_detay .nav-tabs .nav-link.active i {
+		opacity: 1;
+	}
+
+	/* ── TAB CONTENT ── */
+	#satir_detay .tab-content {
+		padding: 24px !important;
+		background: #f8f9fc;
+		min-height: 420px;
+	}
+
+	/* ── FORM LABELS ── */
+	#satir_detay .form-label {
+		font-size: 11.5px;
+		font-weight: 600;
+		color: #475569;
+		letter-spacing: 0.02em;
+		margin-bottom: 5px;
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+
+	#satir_detay .form-label i {
+		font-size: 10px;
+		color: #94a3b8;
+	}
+
+	/* ── FORM CONTROLS ── */
+	#satir_detay .form-control {
+		border: 1.5px solid #e2e8f0;
+		border-radius: 8px;
+		font-size: 13px;
+		font-weight: 400;
+		color: #1e293b;
+		background: #ffffff;
+		padding: 8px 12px;
+		transition: all 0.18s ease;
+		height: auto;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+	}
+
+	#satir_detay .form-control::placeholder {
+		color: #c1c9d8;
+		font-weight: 300;
+	}
+
+	#satir_detay .form-control:focus {
+		border-color: #818cf8;
+		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+		background: #fff;
+		outline: none;
+	}
+
+	#satir_detay .form-control-sm {
+		font-size: 12.5px;
+		padding: 6px 10px;
+		border-radius: 7px;
+	}
+
+	/* ── INPUT GROUP ── */
+	#satir_detay .input-group .form-control {
+		border-right: none;
+		border-radius: 8px 0 0 8px;
+	}
+
+	#satir_detay .input-group .form-control:focus {
+		border-right: none;
+		z-index: 3;
+	}
+
+	#satir_detay .input-group-text {
+		background: #f1f5f9;
+		border: 1.5px solid #e2e8f0;
+		border-left: none;
+		border-radius: 0 8px 8px 0;
+		color: #64748b;
+		font-size: 11px;
+		font-weight: 600;
+		padding: 0 10px;
+		letter-spacing: 0.02em;
+	}
+
+	/* ── SELECT (native) ── */
+	#satir_detay select.form-control {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		padding-right: 32px;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	/* ── GENEL TAB — CARDS ── */
+	#satir_detay #genel .col-md-4,
+	#satir_detay #genel .col-md-6,
+	#satir_detay #genel .col-4 {
+		position: relative;
+	}
+
+	#satir_detay #genel .row {
+		background: #ffffff;
+		border-radius: 12px;
+		padding: 20px;
+		border: 1px solid #eef0f6;
+		box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+	}
+
+	/* ── OPERASYON SEÇ TAB ── */
+	#satir_detay #operasyonSec h6 {
+		font-size: 13px;
+		font-weight: 600;
+		color: #1e293b;
+	}
+
+	#satir_detay #operasyonSec hr {
+		border-color: #eef0f6;
+		opacity: 1;
+	}
+
+	#satir_detay #selectAll,
+	#satir_detay #deselectAll {
+		font-size: 11.5px;
+		font-weight: 500;
+		border-radius: 7px;
+		padding: 5px 12px;
+		transition: all 0.18s;
+	}
+
+	#satir_detay #selectAll {
+		background: #4f46e5;
+		border-color: #4f46e5;
+		color: #fff;
+	}
+
+	#satir_detay #selectAll:hover {
+		background: #3730a3;
+		border-color: #3730a3;
+	}
+
+	#satir_detay #deselectAll {
+		background: #f1f5f9;
+		border-color: #e2e8f0;
+		color: #64748b;
+	}
+
+	#satir_detay #deselectAll:hover {
+		background: #e2e8f0;
+		color: #334155;
+	}
+
+	/* ── OPERATION CARDS ── */
+	.operation-card {
+		position: relative;
+		width: 100%;
+		user-select: none;
+	}
+
+	.checkbox-input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.operation-label {
+		display: flex;
+		align-items: center;
+		padding: 9px 11px;
+		border: 1.5px solid #e8eaf2;
+		border-radius: 10px;
+		cursor: pointer;
+		transition: all 0.18s ease;
+		background: #ffffff;
+		gap: 8px;
+		box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+	}
+
+	.operation-label:hover {
+		border-color: #a5b4fc;
+		box-shadow: 0 2px 8px rgba(99,102,241,0.1);
+		transform: translateY(-1px);
+	}
+
+	.checkbox-input:checked + .operation-label {
+		border-color: #6366f1;
+		background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+		box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+	}
+
+	.operation-icon {
+		flex-shrink: 0;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f1f5f9;
+		border-radius: 7px;
+		color: #94a3b8;
+		font-size: 12px;
+		font-weight: 700;
+		font-family: 'DM Mono', monospace;
+		transition: all 0.18s;
+	}
+
+	.checkbox-input:checked + .operation-label .operation-icon {
+		background: #6366f1;
+		color: #fff;
+	}
+
+	.operation-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		min-width: 0;
+	}
+
+	.operation-name {
+		font-weight: 600;
+		color: #1e293b;
+		font-size: 12px;
+		line-height: 1.3;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.operation-code {
+		font-size: 10.5px;
+		color: #94a3b8;
+		line-height: 1.1;
+		font-family: 'DM Mono', monospace;
+	}
+
+	.operation-check {
+		flex-shrink: 0;
+		width: 18px;
+		height: 18px;
+		border: 1.5px solid #cbd5e1;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.18s;
+	}
+
+	.operation-check i {
+		font-size: 9px;
+		opacity: 0;
+		transition: opacity 0.18s;
+	}
+
+	.checkbox-input:checked + .operation-label .operation-check {
+		background: #6366f1;
+		border-color: #6366f1;
+	}
+
+	.checkbox-input:checked + .operation-label .operation-check i {
+		color: #fff;
+		opacity: 1;
+	}
+
+	.checkbox-input:focus + .operation-label {
+		outline: 2px solid #6366f1;
+		outline-offset: 2px;
+	}
+
+	/* ── HAMMADDE PANELİ — REDESIGN ── */
+	.hammadde-panel {
+		border: 1.5px solid #fde68a;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 2px 12px rgba(245,158,11,0.08), 0 1px 4px rgba(0,0,0,0.04);
+		background: #fff;
+	}
+
+	.hammadde-panel-header {
+		background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+		border-bottom: 1.5px solid #fde68a;
+		padding: 12px 18px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.hammadde-icon-wrap {
+		width: 36px;
+		height: 36px;
+		background: #f59e0b;
+		border-radius: 9px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		font-size: 16px;
+		flex-shrink: 0;
+		box-shadow: 0 2px 6px rgba(245,158,11,0.3);
+	}
+
+	.hammadde-title {
+		display: block;
+		font-size: 13px;
+		font-weight: 700;
+		color: #78350f;
+		line-height: 1.3;
+	}
+
+	.hammadde-subtitle {
+		display: block;
+		font-size: 11px;
+		color: #a16207;
+		font-weight: 400;
+	}
+
+	.hammadde-badge {
+		background: #f59e0b;
+		color: #fff;
+		font-size: 10.5px;
+		font-weight: 600;
+		padding: 3px 10px;
+		border-radius: 20px;
+		letter-spacing: 0.2px;
+		box-shadow: 0 1px 4px rgba(245,158,11,0.25);
+	}
+
+	.hammadde-panel-body {
+		padding: 18px;
+		background: #fffcf0;
+	}
+
+	.hammadde-input {
+		border-color: #fcd34d !important;
+	}
+
+	.hammadde-input:focus {
+		border-color: #f59e0b !important;
+		box-shadow: 0 0 0 3px rgba(245,158,11,0.12) !important;
+	}
+
+	/* ── OPERASYON DETAY KARTLARI ── */
+	.operation-detail-card {
+		border: 1.5px solid #eef0f6;
+		border-radius: 10px;
+		overflow: hidden;
+		height: 100%;
+		background: #ffffff;
+		box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+		transition: box-shadow 0.18s;
+	}
+
+	.operation-detail-card:hover {
+		box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+	}
+
+	.operation-detail-card .card-header {
+		background: #f8f9fc;
+		color: #334155;
+		padding: 8px 12px;
+		font-size: 12px;
+		font-weight: 600;
+		border-bottom: 1px solid #eef0f6;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.operation-detail-card .card-header button {
+		width: 22px;
+		height: 22px;
+		border: none;
+		outline: none;
+		background: #e8eaf2;
+		border-radius: 6px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.15s;
+		padding: 0;
+	}
+
+	.operation-detail-card .card-header button:hover {
+		background: #6366f1;
+		color: #fff;
+	}
+
+	.operation-detail-card .card-header button i {
+		font-size: 10px;
+		color: inherit;
+	}
+
+	.operation-detail-card .card-body {
+		padding: 10px;
+		background: #fff;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.form-label-sm {
+		font-size: 10.5px;
+		font-weight: 600;
+		color: #64748b;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		margin-bottom: 3px;
+		display: block;
+	}
+
+	/* ── MASTAR TAB ── */
+	#satir_detay #mastar .form-label {
+		text-transform: none;
+		font-size: 12.5px;
+	}
+
+	#satir_detay #masrafTable {
+		font-size: 12.5px;
+		border-radius: 8px;
+		overflow: hidden;
+		border: 1.5px solid #eef0f6;
+	}
+
+	#satir_detay #masrafTable thead tr:first-child th {
+		background: #f8f9fc;
+		color: #475569;
+		font-size: 11px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 8px 12px;
+		border-color: #eef0f6;
+	}
+
+	#satir_detay #masrafTable .satirEkle2 {
+		background: #f5f3ff !important;
+	}
+
+	#satir_detay #masrafTable .satirEkle2 td {
+		padding: 6px;
+		border-color: #e8eaf2;
+	}
+
+	#satir_detay #masrafTable tbody tr td {
+		padding: 7px 12px;
+		vertical-align: middle;
+		border-color: #eef0f6;
+	}
+
+	/* ── FSN SATIR GRUBU ── */
+	.satir-grubu {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.satir-grubu label {
+		font-size: 10.5px;
+		font-weight: 600;
+		color: #64748b;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.satir-grubu .birim-select {
+		font-size: 10px;
+		padding: 0 4px;
+		max-width: 40px;
+		border-left: none;
+		border-radius: 0 8px 8px 0;
+		background: #f8f9fc;
+		color: #475569;
+	}
+
+	.satir-grubu .bol,
+	.satir-grubu .geri {
+		font-size: 11px;
+		padding: 4px 10px;
+		border-radius: 7px;
+		border: none;
+		font-weight: 500;
+		transition: all 0.15s;
+	}
+
+	.satir-grubu .bol {
+		background: #eef2ff;
+		color: #4f46e5;
+	}
+
+	.satir-grubu .bol:hover {
+		background: #4f46e5;
+		color: #fff;
+	}
+
+	.satir-grubu .geri {
+		background: #f8f9fc;
+		color: #64748b;
+	}
+
+	.satir-grubu .geri:hover {
+		background: #e2e8f0;
+		color: #334155;
+	}
+
+	/* ── MODAL FOOTER ── */
+	#satir_detay .modal-footer {
+		background: #ffffff;
+		border-top: 1px solid #eef0f6;
+		padding: 12px 20px;
+		justify-content: space-between !important;
+	}
+
+	#satir_detay #TOPLANICAK_LABEL,
+	#satir_detay #LABEL_SF_MIKTAR {
+		font-size: 12.5px;
+		font-weight: 700;
+		color: #dc2626;
+		font-family: 'DM Mono', monospace;
+	}
+
+	#satir_detay .modal-footer .btn-secondary {
+		background: #f1f5f9;
+		border: 1.5px solid #e2e8f0;
+		color: #475569;
+		border-radius: 8px;
+		font-size: 13px;
+		font-weight: 500;
+		padding: 7px 18px;
+		transition: all 0.18s;
+	}
+
+	#satir_detay .modal-footer .btn-secondary:hover {
+		background: #e2e8f0;
+		color: #1e293b;
+	}
+
+	#satir_detay .modal-footer .btn-success {
+		background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+		border: none;
+		color: #fff;
+		border-radius: 8px;
+		font-size: 13px;
+		font-weight: 600;
+		padding: 7px 20px;
+		transition: all 0.2s;
+		box-shadow: 0 2px 8px rgba(99,102,241,0.25);
+	}
+
+	#satir_detay .modal-footer .btn-success:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+		background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%);
+	}
+
+	#satir_detay .modal-footer .btn-success:active {
+		transform: translateY(0);
+	}
+
+	/* ── DRAG OVERLAY ── */
+	#drag-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(15, 23, 42, 0.82);
+		backdrop-filter: blur(6px);
+		display: none;
+		align-items: center;
+		justify-content: center;
+		z-index: 999999;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	#drag-overlay.active {
+		display: flex;
+	}
+
+	#drag-overlay .text {
+		color: #fff;
+		font-size: 28px;
+		font-weight: 600;
+		pointer-events: none;
+		font-family: 'DM Sans', sans-serif;
+		letter-spacing: -0.02em;
+	}
+
+	#drag-overlay .text i {
+		font-size: 56px;
+		transform: rotate(-12deg);
+		display: block;
+		margin-bottom: 8px;
+		color: #818cf8;
+	}
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 768px) {
+		#satir_detay .tab-content {
+			padding: 14px !important;
+		}
 		.operation-label {
-			display: flex;
-			align-items: center;
-			padding: 0.5rem 0.65rem;
-			border: 1.5px solid #e0e0e0;
-			border-radius: 0.375rem;
-			cursor: pointer;
-			transition: all 0.2s ease;
-			background: #fff;
-			gap: 0.5rem;
+			padding: 8px 10px;
 		}
-
-		.operation-label:hover {
-			border-color: #0d6efd;
-			box-shadow: 0 1px 4px rgba(13, 110, 253, 0.15);
-		}
-
-		.checkbox-input:checked+.operation-label {
-			border-color: #0d6efd;
-			background: #e3f2fd;
-		}
-
-		.operation-icon {
-			flex-shrink: 0;
-			width: 32px;
-			height: 32px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #f8f9fa;
-			border-radius: 0.25rem;
-			color: #6c757d;
-			transition: all 0.2s;
-		}
-
-		.checkbox-input:checked+.operation-label .operation-icon {
-			background: #0d6efd;
-			color: white;
-		}
-
-		.operation-content {
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-			gap: 0.05rem;
-			min-width: 0;
-		}
-
 		.operation-name {
-			font-weight: 600;
-			color: #212529;
-			font-size: 0.813rem;
-			line-height: 1.2;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+			font-size: 11.5px;
 		}
-
-		.operation-code {
-			font-size: 0.688rem;
-			color: #6c757d;
-			line-height: 1.1;
+		#satir_detay .modal-footer {
+			flex-direction: column;
+			gap: 8px;
+			align-items: stretch !important;
 		}
-
-		.operation-check {
-			flex-shrink: 0;
-			width: 20px;
-			height: 20px;
-			border: 2px solid #dee2e6;
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			transition: all 0.2s;
-		}
-
-		.operation-check i {
-			font-size: 0.688rem;
-			opacity: 0;
-			transition: opacity 0.2s;
-		}
-
-		.checkbox-input:checked+.operation-label .operation-check {
-			background: #0d6efd;
-			border-color: #0d6efd;
-		}
-
-		.checkbox-input:checked+.operation-label .operation-check i {
-			color: white;
-			opacity: 1;
-		}
-
-		/* Operasyon Detay Kartları - Kompakt */
-		.operation-detail-card {
-			border: 1px solid #e5e5e5;
-			border-radius: 0.375rem;
-			overflow: hidden;
-			height: 100%;
-			background: #fff;
-		}
-
-		.operation-detail-card .card-header {
-			background: #f8f9fa;
-			color: #495057;
-			padding: 0.5rem 0.75rem;
-			font-size: 0.813rem;
-			font-weight: 600;
-			border-bottom: 1px solid #e5e5e5;
-		}
-
-		.operation-detail-card .card-body {
-			padding: 0.75rem;
-			background: #fff;
-		}
-
-		.form-label-sm {
-			font-size: 0.75rem;
-			font-weight: 500;
-			color: #495057;
-			margin-bottom: 0.25rem;
-		}
-
-		/* Form Elemanları - Kompakt */
-		.operation-detail-card .form-control-sm {
-			font-size: 0.813rem;
-			padding: 0.375rem 0.5rem;
-			height: calc(1.5em + 0.75rem + 2px);
-		}
-
-		.operation-detail-card .mb-2 {
-			margin-bottom: 0.5rem !important;
-		}
-
-		.operation-detail-card .mb-2:last-child {
-			margin-bottom: 0 !important;
-		}
-
-		#operasyon .form-label {
-			font-size: 0.813rem;
-			margin-bottom: 0.25rem;
-			font-weight: 500;
-		}
-
-		#operasyon .form-control {
-			font-size: 0.875rem;
-			padding: 2px;
-			/* text-align: right; */
-		}
-
-		/* Genel Form İyileştirmeleri */
-		.form-control:focus {
-			border-color: #0d6efd;
-			box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
-		}
-
-		.input-group-text {
-			background-color: #f8f9fa;
-			border-color: #dee2e6;
-			color: #6c757d;
-			font-size: 8px;
-			padding: 0.1rem 0.1rem;
-		}
-
-		/* Butonlar - Kompakt */
-		.btn-sm {
-			padding: 0.375rem 0.75rem;
-			font-size: 0.813rem;
-		}
-
-		.modal-footer .btn {
-			padding: 0.5rem 1rem;
-			font-size: 0.875rem;
-		}
-
-		/* Hız İyileştirmeleri */
-		* {
-			-webkit-font-smoothing: antialiased;
-			-moz-osx-font-smoothing: grayscale;
-		}
-
-		.operation-label,
-		.operation-check,
-		.operation-icon,
-		.checkbox-input:checked+.operation-label {
-			will-change: transform;
-		}
-
-		/* Responsive - Kompakt */
-		@media (max-width: 768px) {
-			.operation-label {
-				padding: 0.45rem 0.6rem;
-			}
-
-			.operation-name {
-				font-size: 0.75rem;
-			}
-
-			.operation-icon {
-				width: 28px;
-				height: 28px;
-			}
-
-			.tab-content {
-				padding: 0.75rem 1rem !important;
-			}
-		}
-
-		/* Klavye Navigasyonu İçin */
-		.checkbox-input:focus+.operation-label {
-			outline: 2px solid #0d6efd;
-			outline-offset: 2px;
-		}
-
-		/* Input'lara TAB ile hızlı geçiş */
-		.form-control {
-			transition: border-color 0.15s ease-in-out;
-			/* padding:0px; */
-		}
+	}
 	</style>
 
 	<div id="drag-overlay">
@@ -606,43 +1082,98 @@
 
 						<!-- OPERASYON -->
 						<div class="tab-pane fade" id="operasyon">
-							<div class="row mb-2">
-								<div class="col-3">
-									<label class="form-label fw-bold">Malzeme Cinsi</label>
-									<select class="select2" id="MALZEME_CINSI" data-modal="satir_detay">
-										@php
-											$MLZM = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKGK13')->get();
-										@endphp
-										<option value="">Seç</option>
-										@foreach($MLZM as $MLZM_VERI)
-											<option value="{{ $MLZM_VERI->KOD }}">{{ $MLZM_VERI->KOD }}</option>
-										@endforeach
-									</select>
-								</div>
-								<div class="col-3">
-									<label class="form-label fw-bold">Yoğunluk</label>
-									<input type="number" id="MALZEME_YOGUNLUK" class="form-control" readonly>
-								</div>
-								<div class="col-3">
-									<label class="form-label fw-bold">Malzeme Birim Fiyatı</label>
-									<input type="number" id="MALZEME_FIYATI" class="form-control" placeholder="0.00">
-								</div>
-								<div class="col-3">
-									<label class="form-label fw-bold">Malzeme Tutar</label>
-									<input type="number" id="MALZEME_TUTARI" class="form-control TOPLANICAK"
-										placeholder="0.00">
-								</div>
-								<div class="col-6">
-									<label class="form-label fw-bold">En Boy Kalınlık / Çap Boy</label>
-									<input type="text" id="OLCU1" class="form-control"
-										placeholder="EnxBoyxKalınlık Veya ÇapxBoy">
-								</div>
-								<div class="col-6">
-									<label class="form-label fw-bold">Ağırlık</label>
-									<input type="text" id="AGIRLIK_SHOW" class="form-control" placeholder="0.00">
-									<input type="hidden" id="AGIRLIK" class="form-control" placeholder="0.00">
-								</div>
-							</div>
+							    {{-- ===== HAMMADDE BÖLÜMÜ ===== --}}
+									<div class="hammadde-panel mb-4">
+										<div class="hammadde-panel-header">
+											<div class="d-flex align-items-center gap-2">
+												<div class="hammadde-icon-wrap">
+													<i class="fa-solid fa-cubes-stacked"></i>
+												</div>
+												<div>
+													<span class="hammadde-title">Hammadde Bilgileri</span>
+													<span class="hammadde-subtitle">Malzeme seçimi ve ağırlık hesabı</span>
+												</div>
+											</div>
+											<div class="hammadde-badge">
+												<i class="fa-solid fa-circle-dot me-1"></i> Zorunlu Alan
+											</div>
+										</div>
+
+										<div class="hammadde-panel-body">
+											<div class="row g-3 align-items-end">
+												<div class="col-3">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-layer-group me-1 text-warning"></i>
+														Malzeme Cinsi
+													</label>
+													<select class="select2 hammadde-select" id="MALZEME_CINSI" data-modal="satir_detay">
+														@php
+															$MLZM = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKGK13')->get();
+														@endphp
+														<option value="">— Seçiniz —</option>
+														@foreach($MLZM as $MLZM_VERI)
+															<option value="{{ $MLZM_VERI->KOD }}">{{ $MLZM_VERI->KOD }}</option>
+														@endforeach
+													</select>
+												</div>
+
+												<div class="col-3">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-weight-hanging me-1 text-info"></i>
+														Yoğunluk
+													</label>
+													<div class="input-group">
+														<input type="number" id="MALZEME_YOGUNLUK" class="form-control hammadde-input" readonly>
+														<span class="input-group-text">g/cm³</span>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-tag me-1 text-success"></i>
+														Malzeme Birim Fiyatı
+													</label>
+													<div class="input-group">
+														<input type="number" id="MALZEME_FIYATI" class="form-control hammadde-input" placeholder="0.00">
+														<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
+													</div>
+												</div>
+
+												<div class="col-3">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-coins me-1 text-danger"></i>
+														Malzeme Tutar
+													</label>
+													<div class="input-group">
+														<input type="number" id="MALZEME_TUTARI" class="form-control hammadde-input TOPLANICAK fw-bold" placeholder="0.00">
+														<span class="input-group-text">{{ $kart_veri->TEKLIF_FIYAT_PB }}</span>
+													</div>
+												</div>
+
+												<div class="col-6">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-ruler-combined me-1 text-primary"></i>
+														En × Boy × Kalınlık / Çap × Boy
+													</label>
+													<input type="text" id="OLCU1" class="form-control hammadde-input"
+														placeholder="Örn: 100x200x5 veya 50x300">
+												</div>
+
+												<div class="col-6">
+													<label class="form-label fw-bold">
+														<i class="fa-solid fa-scale-balanced me-1 text-secondary"></i>
+														Ağırlık
+													</label>
+													<div class="input-group">
+														<input type="text" id="AGIRLIK_SHOW" class="form-control hammadde-input" placeholder="0.00">
+														<span class="input-group-text">kg</span>
+													</div>
+													<input type="hidden" id="AGIRLIK" placeholder="0.00">
+												</div>
+											</div>
+										</div>
+									</div>
+								{{-- ===== HAMMADDE BÖLÜMÜ SON ===== --}}
 
 							<div class="row g-2 OPRS_CONTAINER">
 								@php
@@ -871,7 +1402,7 @@
 								<div class="col-md-6">
 									<label class="form-label fw-bold">Mastar Durumu / Fiyatı</label>
 									<input type="text" id="mastarD" class="form-control TOPLANICAK"
-										placeholder="Mastar Adı">
+										placeholder="Mastar Durumu">
 								</div>
 
 								<div class="col-12 mt-2">
@@ -1449,16 +1980,16 @@
 																		FROM {$database}tekl20tı TI
 																		OUTER APPLY (
 																			SELECT TOP 1 * 
-																			FROM {$database}tekl20t 
+																			FROM {$database}tekl20t
 																			WHERE TRNUM = TI.OR_TRNUM
+    																		AND EVRAKNO = TI.EVRAKNO
 																		) TT
-																		WHERE TT.EVRAKNO = :evrakno
+																		WHERE TI.EVRAKNO = :evrakno
 																		ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
 																	";
 
 																	$hamVeri = DB::select($sorgu, ['evrakno' => $evrakno]);
 																	
-																	// PHP tarafında gruplama işlemini koleksiyon üzerinden yapıyoruz
 																	$veri = collect($hamVeri)->groupBy('OR_TRNUM');
 																@endphp
 
@@ -1468,7 +1999,6 @@
 																			<tr>
 																				<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
 																				<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																				{{-- $kart_veri dışarıdan geliyorsa burada kalabilir --}}
 																				<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR ?? 0}}">
 
 																				<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
@@ -1670,6 +2200,11 @@
 				$('.STIME').val('');
 				$('.TOPLANICAK').val('');
 
+				$('#uygula').prop('disabled',true);
+				setTimeout(() => {
+					
+				$('#uygula').prop('disabled',false);
+				}, 1500);
 				$.ajax({
 					url: 'operasyon/get',
 					type: 'post',
@@ -1718,6 +2253,13 @@
 								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
 								$('#MALZEME_TUTARI').val(row.find('input[name="FIYAT2[]"]').val());
 								$('#OLCU1').val(row.find('input[name="H_OLCU[]"]').val()).trigger('change');
+								return;
+							}
+
+							if (tip === 'M') {
+								let kod = row.find('input[name="KOD2[]"]').val();
+								$('#mastarSelect').val(kod).trigger('change');
+								$('#mastarD').val(row.find('input[name="FIYAT2[]"]').val());
 								return;
 							}
 
@@ -2076,6 +2618,9 @@
 				});
 
 				$('#MALZEME_CINSI').on('change',function(){
+					if($(this).val() == '' || $(this).val() == ' ')
+						return;
+
 					$.ajax({
 						url:'malzeme/get',
 						type:'post',
@@ -2093,6 +2638,9 @@
 				});
 
 				$('#mastarSelect').on('change',function(){
+					if($(this).val() == "")
+						return;
+					
 					$.ajax({
 						url:'mastar/get',
 						type:'post',
@@ -2280,7 +2828,6 @@
 					$('#maliyetDetayTable tbody tr:not(.group-footer').each(function(){
 						let val = $(this).find('input[name="OR_TRNUM[]"]').val();
 						if(val == OR_TRNUM) $(this).remove();
-						console.log(val, OR_TRNUM);
 					});
 
 					let HKOD = $('#MALZEME_CINSI').val();
@@ -2309,12 +2856,44 @@
 							<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-							<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
+							<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
 						</tr>`;
 
 					$('#maliyetDetayTable tbody').append(htr);
 
 					updateLastTRNUM(HTRNUM);
+
+					let MTUTAR = $('#mastarD').val();
+
+					if (!isNaN(parseFloat(MTUTAR))) 
+					{
+						let MKOD = $('#mastarSelect').val();
+						let MTRNUM = getTRNUM();
+						let Mtr = `
+							<tr>
+								<input type="hidden" name="TRNUM3[]" value="${MTRNUM}">
+								<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
+								<td><input type="text" name="KAYNAKTYPE2[]" value="M" class="form-control" readonly></td> 
+								<td><input type="text" name="KOD2[]" value="${MKOD}" class="form-control" readonly></td> 
+								<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
+								<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="AYAR[]" value="" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="ISLEME[]" value="" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="SOKTAK[]" value="" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
+								<td><input type="text" name="NOTT[]" value="" class="form-control" readonly></td>
+								<td class="text-end"><input type="text" name="FIYAT2[]" value="${MTUTAR}" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
+								<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(MTUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
+								<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
+							</tr>`;
+
+						$('#maliyetDetayTable tbody').append(Mtr);
+						updateLastTRNUM(MTRNUM);
+					}
+
 					$('.operation-detail-card').not(':last').each(function(){
 						let $parent = $(this).parent();
 						

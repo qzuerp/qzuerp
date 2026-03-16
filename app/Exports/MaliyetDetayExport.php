@@ -62,7 +62,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                     'PARCA ADI' => $r->TAD,
                     'MIKTAR' => $r->TMIKTAR,
                     'REVİZYON' => $r->TBIRIM,
-                    'TERMİN' => $r->TTERMIN_TARIHI . ' Gün',
+                    'TERMİN' => isset($r->TTERMIN_TARIHI) ? $r->TTERMIN_TARIHI . ' Gün' : '',
                     'AÇIKLAMA' => $r->TACIKLAMA,
                     'FIYAT' => $r->TFIYAT,
                     'DOLAR FIYATI' => $r->TFIYAT2,
@@ -76,7 +76,7 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                 $sonuc[$key]['MALZEME FIYAT'] = $r->FIYAT;
             }
 
-            if ($r->KAYNAKTYPE == 'I') {
+            if ($r->KAYNAKTYPE == 'I' || $r->KAYNAKTYPE == 'M') {
 
                 $baseKolon = trim($r->KOD);
 

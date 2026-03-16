@@ -63,7 +63,7 @@
     <table class="info-grid">
         <tr>
             <td class="label">Gönderen</td>
-            <td class="value" colspan="3">{{ $firmaB->YETKILI ?? $u->name }}</td>
+            <td class="value" colspan="3">{{ $u->name }}</td>
             <td class="right-label">Teklif No</td>
             <td class="right-value">{{ $teklif_no }}</td>
         </tr>
@@ -108,7 +108,7 @@
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
                 <td>{{ $data['FIYAT'][$i] }}</td>
                 <td>{{ $data['TUTAR'][$i] }}</td>
-                <td>{{ $data['TERMIN_TAR'][$i] ?? '' }} Gün</td>
+                <td>{{ isset($data['TERMIN_TAR'][$i]) ? $data['TERMIN_TAR'][$i].' Gün' : '' }}</td>
                 <td>{{ $data['ACIKLAMA'][$i] ?? '' }}</td>
             </tr>
             @endfor
@@ -134,7 +134,7 @@
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
         <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren 30 gün</div>
-        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] == '' ? $data['GECERLILILIK_TARIHI'] . ' Gün' : '' }}</div>
+        <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }}</div>
     </div>
 
     <!-- ADDRESS -->
