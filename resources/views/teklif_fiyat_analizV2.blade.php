@@ -1338,13 +1338,13 @@
 																			value="{{$veri->SF_SF_UNIT}}" class="form-control"
 																			readonly>
 																	</td>
-																	<td><input type="number" name="FIYAT[]"
+																	<td><input type="text" name="FIYAT[]"
 																			value="{{round($veri->FIYAT, 2)}}"
 																			class="form-control number"></td>
-																	<td><input type="number" name="DOLAR_FIYAT[]"
+																	<td><input type="text" name="DOLAR_FIYAT[]"
 																		value="{{ round($veri->FIYAT2, 2) }}"
 																		class="form-control number"></td>
-																	<td><input type="number" name="TUTAR[]"
+																	<td><input type="text" name="TUTAR[]"
 																			value="{{round($veri->TUTAR, 2)}}" class="form-control"
 																			readonly></td>
 																	
@@ -1452,7 +1452,7 @@
 																			FROM {$database}tekl20t 
 																			WHERE TRNUM = TI.OR_TRNUM
 																		) TT
-																		WHERE TI.EVRAKNO = :evrakno
+																		WHERE TT.EVRAKNO = :evrakno
 																		ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
 																	";
 
@@ -1576,127 +1576,6 @@
 						</div>
 					</div>
 				</form>
-
-				<!-- <div class="modal fade bd-example-modal-lg" id="modal_maliyetListesi" tabindex="-1" role="dialog"
-					aria-labelledby="modal_maliyetListesi">
-					<div class="modal-dialog modal-xl">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-										style='color: blue'></i>&nbsp;&nbsp;Maliyet Listesi</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row" style="overflow: auto">
-									<input type="hidden" id="OR_TRNUM"/>
-									<table class="table table-bordered text-center" id="maliyetListesi">
-										<thead>
-											<tr>
-												<th style="">#</th>
-												<th style="min-width:280px; font-size: 13px !important;">
-													Kaynak Tipi</th>
-												<th style="min-width:280px; font-size: 13px !important;">
-													Stok Kodu</th>
-												<th style="min-width:200px; font-size: 13px !important;">
-													Stok adı</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													İşlem miktarı</th>
-												<th style="min-width:100px; font-size: 13px !important;">
-													İşlem Birimi</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Fiyat</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Tutar</th>
-												<th style="min-width:170px; font-size: 13px !important;">
-													Para Birimi</th>
-												<th style="min-width:120px; font-size: 13px !important;">Net
-													Ağırlık</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Bürüt Ağırlık</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Hacim</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Ambalaj Ağırlığı</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Auto</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Stok miktarı</th>
-												<th style="min-width:120px; font-size: 13px !important;">
-													Stok temel birim</th>
-											</tr>
-											<tr class="satirEkle3" style="background-color:#3c8dbc">
-												<td>
-													<button type="button" class="btn btn-default" id="addRow3"><i class="fa fa-plus" style="color: blue"></i></button>
-												</td>
-												<td>
-													<select  class="form-control req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KAYNAKTYPE" style="width:100% !important;" data-isim="Kaynak Tipi" onchange="getKaynakCodeSelect()" name="" id="KAYNAK_TIPI">
-														<option value=" ">Seç</option>
-														<option value="H">H - Hammadde</option>
-														<option value="I">I - Tezgah / İş Merk</option>
-														<option value="Y">Y - Yan Ürün</option>
-													</select>
-												</td>
-												<td>
-													<div class="d-flex" data-modal="modal_maliyetListesi" style="display: flex;">
-														<select class="form-control select2 js-example-basic-single req" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" style="width:100% !important;" data-isim="Kod" onchange="stokAdiGetir4(this.value)" id="KOD">
-															<option value=" ">Seç</option>
-														</select>
-														<input type="hidden" id="STOK_KOD2">
-													</div>
-												</td>
-												<td>
-													<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_AD1" data-isim="Kod Adı" maxlength="255" style="color: red" name="" id="KODADI2" readonly>
-												</td>
-												<td>
-													<input type="text" name="" id="ISLEM_MIKTARI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" data-isim="İşlem Miktarı" class="form-control req number" value="">
-												</td>
-												<td>
-													<input type="text" name="" id="ISLEM_BIRIMI2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi" class="form-control" value="" readonly>
-												</td>
-												<td>
-													<input type="number" name="" id="FIYAT" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="form-control" value="">
-												</td>
-												<td> 
-													<input type="number" name="" id="TUTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TUTAR" class="form-control" value="">
-												</td>
-												<td>
-													<input type="text" name="" id="PARA_BIRIMI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PRICEUNIT" data-isim="Para Birimi" class="form-control" value="{{@$kart_veri->TEKLIF_FIYAT_PB}}" readonly>
-												</td>
-												<td>
-													<input type="number" name="NETAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NETAGIRLIK" id="NETAGIRLIK" class="form-control" value="">
-												</td>
-												<td>
-													<input type="number" name="BRUTAGIRLIK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BRUTAGIRLIK" id="BRUTAGIRLIK" class="form-control" value="">
-												</td>
-												<td>
-													<input type="number" name="HACIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HACIM" id="HACIM" class="form-control" value="">
-												</td>
-												<td>
-													<input type="number" name="AMBALAJAGIRLIK"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBALAJ_AGIRLIGI" id="AMBALAJAGIRLIK" class="form-control" value="">
-												</td>
-												<td>
-													<input type="checkbox" name="AUTO" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_AUTOCALC" id="AUTO" class="form-control" value="">
-												</td>
-												<td>
-													<input type="number" name="STOKMIKTAR" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_STOK_MIKTAR" id="STOKMIKTAR" class="form-control" value="">
-												</td>
-												<td>
-													<input type="text" name="STOKTEMELBIRIM" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD_STOK00_IUNIT" id="STOKTEMELBIRIM" class="form-control" value="" readonly>
-												</td>
-											</tr>
-										</thead>
-										<tbody>
-
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-success" data-bs-dismiss="modal" id="uygula" style="margin-top: 15px;">Değişiklikleri Uygula</button>
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
-							</div>
-						</div>
-					</div>
-				</div> -->
 			</section>
 		</div>
 
@@ -1705,13 +1584,9 @@
 			$(document).on('focus', '.tutar-input,.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
 				$(this).select();
 			});
-			new AutoNumeric('.price', {
-				digitGroupSeparator: '.',
-				decimalCharacter: ',',
-				decimalPlaces: 2
-			});
-			// const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
-			// const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
+			
+			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
+			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
 
 			// function formatTR(value) {
 			//     if (value === '' || value === null || value === undefined) return '';
@@ -1771,11 +1646,11 @@
 			//     el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
 			// });
 
-			// $('#verilerForm').on('submit', function () {
-			//     $(this).find(DECIMAL_SELECTOR).each(function () {
-			//         this.value = this.value.replace(/\./g, '').replace(',', '.');
-			//     });
-			// });
+			$('#verilerForm').on('submit', function () {
+			    $(this).find(DECIMAL_SELECTOR).each(function () {
+			        this.value = this.value.replace(/\./g, '').replace(',', '.');
+			    });
+			});
 
 			let secimSirasi = [];
 
@@ -2132,6 +2007,16 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
+				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"]').each(function () {
+					if (!AutoNumeric.isManagedByAutoNumeric(this)) {
+						new AutoNumeric(this, {
+							digitGroupSeparator: '.',
+							decimalCharacter: ',',
+							decimalPlaces: 2
+						});
+					}
+				});
+
 				function updateOperationTabs() {
 					let OR_TRNUM = $('#OR_TRNUM').val();
 					const container = $('.row.g-2.OPRS_CONTAINER');
