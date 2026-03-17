@@ -40,14 +40,17 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
             T20t.TUTAR AS TTUTAR, 
             T20t.TERMIN_TARIHI AS TTERMIN_TARIHI, 
             T20t.ACIKLAMA AS TACIKLAMA
-        FROM tekl20t AS T20t
-        LEFT JOIN tekl20tı AS T20ti ON (
+        FROM {$firma}tekl20t AS T20t
+        LEFT JOIN {$firma}tekl20tı AS T20ti ON (
             T20ti.EVRAKNO = T20t.EVRAKNO 
             AND T20t.TRNUM = T20ti.OR_TRNUM
         )
-        LEFT JOIN GECOUST GC ON GC.EVRAKNO ='TEZGAHGK6' AND GC.KOD = T20Tİ.KOD
-        WHERE T20ti.EVRAKNO = $this->evrakno
-        ORDER BY T20ti.OR_TRNUM,GC.TRNUM ASC;");
+        LEFT JOIN {$firma}GECOUST AS GC ON (
+            GC.EVRAKNO = 'TEZGAHGK6' 
+            AND GC.KOD = T20ti.KOD
+        )
+        WHERE T20ti.EVRAKNO = ?
+        ORDER BY T20ti.OR_TRNUM, GC.TRNUM ASC", [$this->evrakno]);
 
         $sonuc = [];
 
