@@ -466,8 +466,8 @@ class stok20_controller extends Controller
 
             $mevcutMiktar = DB::table($firma.'mmps10e')
                 ->where('EVRAKNO', $IS_EMRI[$i])
-                ->value('SF_PAKETSAYISI');
-
+                ->value('SF_TOPLAMMIKTAR');
+                
             if ($toplamMiktar >= $mevcutMiktar) {
                 DB::table($firma.'mmps10e')
                     ->where('EVRAKNO', $IS_EMRI[$i])
@@ -557,7 +557,7 @@ class stok20_controller extends Controller
 
             $mevcutMiktar = DB::table($firma.'mmps10e')
                 ->where('EVRAKNO', $IS_EMRI[$i])
-                ->value('SF_PAKETSAYISI');
+                ->value('SF_TOPLAMMIKTAR');
 
             if ($toplamMiktar >= $mevcutMiktar) {
                 DB::table($firma.'mmps10e')

@@ -2084,6 +2084,35 @@
 																@endforeach
 															</tbody>
 														</table>
+
+														<table class="d-none" id="formMasrafTable">
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th style="display:none;">Sıra</th>
+																	<th>Açıklama</th>
+																	<th>Fiyat</th>
+																	<th>Para Birimi</th>
+																	<th>Teklif Tutarı</th>
+																	<th style="text-align:right;">#</th>
+																</tr>
+															</thead>
+
+															<tbody>
+																@php
+																	$M_VERI = DB::table($database.'tekl20tr')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+																@endphp
+																@foreach ($M_VERI as $VERI)
+																	<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='{{ $VERI->TRNUM }}'></td>
+																	<td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='M_OR_TRNUM[]' value='{{ $VERI->OR_TRNUM }}'></td>
+																	<td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
+																	<td><input type='text' class='form-control' name='M_ACIKLAMA[]' value='{{ $VERI->ACIKLAMA }}' ></td>
+																	<td><input type='text' class='form-control' name='M_FIYAT[]' value='{{ $VERI->FIYAT }}' readonly></td>
+																	<td><input type='text' class='form-control' name='M_TEKLIF_PB[]' value='{{ $VERI->TEKLIF_PB }}' readonly></td>
+																	<td><input type='text' class='form-control' name='M_TEKLIF[]' value='{{ $VERI->TEKLIF }}' readonly></td>
+																@endforeach
+															</tbody>
+														</table>
 													</div>
 												</div>
 											</div>
@@ -2174,6 +2203,7 @@
 
 			$('.satir_detay').on('click', function () {
 				aktifSatir = $(this).closest('tr');
+				let OR_TRNUM = $('#OR_TRNUM').val();
 				$('#OR_TRNUM').val($(this).data('trnum'));
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
@@ -2193,6 +2223,24 @@
 					
 				$('#uygula').prop('disabled',false);
 				}, 1500);
+
+				let DIGER_TOPLAM = 0;
+				$('#masrafTable tbody').empty();
+				$('#formMasrafTable tbody tr').each(function() {
+					let row = $(this);
+					let rowOR = row.find('input[name="M_OR_TRNUM[]"]').val();
+					
+					if (rowOR == OR_TRNUM) {
+						let cloneRow = row.clone();
+						$('#masrafTable tbody').append(cloneRow);
+
+						let val = parseFloat(row.find('input[name="M_TEKLIF[]"]').val()) || 0;
+						DIGER_TOPLAM += val;
+					}
+				});
+
+				$('#DIGER').val(DIGER_TOPLAM);
+				
 				$.ajax({
 					url: 'operasyon/get',
 					type: 'post',
@@ -2203,7 +2251,6 @@
 					},
 					success: function (res) {
 						let container = $('.row.g-2.OPRS_CONTAINER');
-						let OR_TRNUM = $('#OR_TRNUM').val();
 
 						secimSirasi = res.data.map(x => x.OPERASYON);
 
@@ -2227,7 +2274,7 @@
 						$('#maliyetDetayTable tbody tr:not(.group-footer)').each(function(rowIndex) {
 							let row = $(this);
 							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
-							console.log(rowOR, OR_TRNUM);
+							
 							if (rowOR != OR_TRNUM)
 							{
 								return;
@@ -2750,6 +2797,10 @@
 						}
 					});
 
+					$('#masrafTable tbody tr').each(function () {
+						$('#formMasrafTable tbody').append($(this));
+					});
+
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
 					aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
 					aktifSatir.find('input[name="KODADI[]"]').val($('#StokAdi').val());
@@ -2844,7 +2895,7 @@
 							<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-							<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
 						</tr>`;
 
 					$('#maliyetDetayTable tbody').append(htr);
@@ -2875,7 +2926,7 @@
 								<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
 								<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(MTUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
 								<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-								<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
 							</tr>`;
 
 						$('#maliyetDetayTable tbody').append(Mtr);
@@ -3312,6 +3363,7 @@
 			$("#addRow2").on('click', function () {
 				var satirEkleInputs = getInputs('satirEkle2');
 				var TRNUM_FILL = getTRNUM();
+				const OR_TRNUM = $('#OR_TRNUM').val();
 				var htmlCode = " ";
 
 				$.ajax({
@@ -3341,12 +3393,13 @@
 						htmlCode += " <tr> ";
 
 						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM2[]' value='" + TRNUM_FILL + "'></td> ";
+						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='M_OR_TRNUM[]' value='" + OR_TRNUM + "'></td> ";
 						// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 						htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='M_ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='M_FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='M_TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='M_TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
 
 
 						htmlCode += " </tr> ";

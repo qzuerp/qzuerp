@@ -135,12 +135,11 @@ class teklif_fiyat_analizV2 extends Controller
 
 
         // Masraf
-        $MASRAF_TURU = isset($request->MASRAF_TURU) ? $request->MASRAF_TURU : ' ';
-        $MASRAF_ACIKLAMASI = isset($request->MASRAF_ACIKLAMASI) ? $request->MASRAF_ACIKLAMASI : ' ';
-        $KATSAYI_TURU = isset($request->KATSAYI_TURU) ? $request->KATSAYI_TURU : ' ';
-        $KATSAYI_ACIKLAMASI = isset($request->KATSAYI_ACIKLAMASI) ? $request->KATSAYI_ACIKLAMASI : ' ';
-        $KATSAYI = isset($request->KATSAYI) ? $request->KATSAYI : ' ';
-        $MASRAF_TUTARI = isset($request->MASRAF_TUTARI) ? $request->MASRAF_TUTARI : ' ';
+        $M_ACIKLAMA = isset($request->M_ACIKLAMA) ? $request->M_ACIKLAMA : ' ';
+        $M_FIYAT = isset($request->M_FIYAT) ? $request->M_FIYAT : ' ';
+        $M_TEKLIF_PB = isset($request->M_TEKLIF_PB) ? $request->M_TEKLIF_PB : ' ';
+        $M_TEKLIF = isset($request->M_TEKLIF) ? $request->M_TEKLIF : ' ';
+        $M_OR_TRNUM = isset($request->M_OR_TRNUM) ? $request->M_OR_TRNUM : ' ';
         $TRNUM2 = isset($request->TRNUM2) ? $request->TRNUM2 : [];
 
         $TRNUM3 = isset($request->TRNUM3) ? $request->TRNUM3 : [];
@@ -366,6 +365,10 @@ class teklif_fiyat_analizV2 extends Controller
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('OR_TRNUM', $deleteTRNUM)
                         ->delete();
+                    DB::table($firma . 'tekl20tr')
+                        ->where('EVRAKNO', $EVRAKNO)
+                        ->where('OR_TRNUM', $deleteTRNUM)
+                        ->delete();
                     DB::table($firma . 'tekl20t')
                         ->where('EVRAKNO', $EVRAKNO)
                         ->where('TRNUM', $deleteTRNUM)
@@ -502,12 +505,11 @@ class teklif_fiyat_analizV2 extends Controller
                         // Yeni satır ekle
                         DB::table($firma . 'tekl20tr')->insert([
                             'EVRAKNO' => $EVRAKNO,
-                            'MASRAF_TURU' => $MASRAF_TURU[$i],
-                            'MASRAF_ACIKLAMASI' => $MASRAF_ACIKLAMASI[$i],
-                            'KATSAYI_TURU' => $KATSAYI_TURU[$i],
-                            'KATSAYI_ACIKLAMASI' => $KATSAYI_ACIKLAMASI[$i],
-                            'KATSAYI' => $KATSAYI[$i],
-                            'MASRAF_TUTARI' => $MASRAF_TUTARI[$i],
+                            'FIYAT' => $M_FIYAT[$i],
+                            'ACIKLAMA' => $M_ACIKLAMA[$i],
+                            'TEKLIF_PB' => $M_TEKLIF_PB[$i],
+                            'TEKLIF' => $M_TEKLIF[$i],
+                            'OR_TRNUM' => $M_OR_TRNUM[$i],
                             'TRNUM' => $TRNUM2[$i]
                         ]);
                     }
@@ -518,12 +520,13 @@ class teklif_fiyat_analizV2 extends Controller
                             ->where('EVRAKNO', $EVRAKNO)
                             ->where('TRNUM', $TRNUM2[$i])
                             ->update([
-                                'MASRAF_TURU' => $MASRAF_TURU[$i],
-                                'MASRAF_ACIKLAMASI' => $MASRAF_ACIKLAMASI[$i],
-                                'KATSAYI_TURU' => $KATSAYI_TURU[$i],
-                                'KATSAYI_ACIKLAMASI' => $KATSAYI_ACIKLAMASI[$i],
-                                'KATSAYI' => $KATSAYI[$i],
-                                'MASRAF_TUTARI' => $MASRAF_TUTARI[$i],
+                                'EVRAKNO' => $EVRAKNO,
+                                'FIYAT' => $M_FIYAT[$i],
+                                'ACIKLAMA' => $M_ACIKLAMA[$i],
+                                'TEKLIF_PB' => $M_TEKLIF_PB[$i],
+                                'TEKLIF' => $M_TEKLIF[$i],
+                                'OR_TRNUM' => $M_OR_TRNUM[$i],
+                                'TRNUM' => $TRNUM2[$i]
                             ]);
                     }
                 }
