@@ -1049,6 +1049,7 @@ class stok20_controller extends Controller
         $u = Auth::user();
       }
       $firma = trim($u->firma).'.dbo.';
+      $AMBCODE = $request->AMBCODE;
       $sql_sorgu = "
           SELECT 
               S20E.id,
@@ -1093,7 +1094,7 @@ class stok20_controller extends Controller
                             NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
                             LOCATION1, LOCATION2, LOCATION3, LOCATION4")
                 ->where('KOD',$stok_kod)
-                // ->where('AMBCODE',)
+                ->where('AMBCODE',$AMBCODE)
                 ->groupBy(
                     'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE',
                     'NUM1', 'NUM2', 'NUM3', 'NUM4',

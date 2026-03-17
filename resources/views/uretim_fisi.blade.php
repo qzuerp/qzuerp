@@ -1444,7 +1444,8 @@ if (isset($kart_veri)) {
             type: 'POST',
             data: {
                 ID: {{ $EVRAKNO }},
-                _token: $('meta[name="csrf-token"]').attr('content')
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
             },success: function(response) {
                 var htmlCode = "";
                 var index = 1;
@@ -1515,7 +1516,8 @@ if (isset($kart_veri)) {
             type: 'POST',
             data: {
                 ID: {{ $EVRAKNO }},
-                _token: $('meta[name="csrf-token"]').attr('content')
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
             },
             success: function(response) {
                 var htmlCode = "";

@@ -1052,7 +1052,6 @@
                       <th>Lok 2</th>
                       <th>Lok 3</th>
                       <th>Lok 4</th>
-                      <th>#</th>
                     </tr>
                   </tfoot>
 

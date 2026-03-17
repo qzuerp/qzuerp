@@ -2203,8 +2203,8 @@
 
 			$('.satir_detay').on('click', function () {
 				aktifSatir = $(this).closest('tr');
-				let OR_TRNUM = $('#OR_TRNUM').val();
 				$('#OR_TRNUM').val($(this).data('trnum'));
+				let OR_TRNUM = $('#OR_TRNUM').val();
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
