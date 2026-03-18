@@ -3014,6 +3014,10 @@
 					}
 				});
 
+				$('#teklif').on('change',function(){
+					
+				});
+
 				$('#HammadeKodu').select2({
 					placeholder: 'Stok kodu seç...',
 					dropdownParent: $('#satir_detay'),
