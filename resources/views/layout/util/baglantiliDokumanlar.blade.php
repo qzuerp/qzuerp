@@ -40,7 +40,7 @@
             <div class="col-md-3">
               <input type="text" maxlength="255" data-skip-tracking="true" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
               <input type="hidden" id="dosyaEvrakType" data-skip-tracking="true" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
-              <input type="hidden" id="dosyaEvrakNo" data-skip-tracking="true" name="dosyaEvrakNo" value="{{ $dosyaEvrakNo }}">
+              <input type="hidden" id="dosyaEvrakNo" data-skip-tracking="true" name="dosyaEvrakNo" value="{{ $EVRAKNO ?? $dosyaEvrakNo }}">
             </div>
             <div class="col-md-3">
               <input type="file" class="form-control" data-skip-tracking="true" id="dosyaFile" name="dosyaFile">
@@ -110,7 +110,7 @@
                             <i class="fa fa-trash"></i>
                         </button>
                         
-                        <a href="{{ route('dosya.indir', 'qzuerp/1765436576_chart.png') }}" 
+                        <a href="{{ route('dosya.indir', $veri->DOSYA) }}" 
                           class="btn btn-outline-primary download-link">
                             <i class="fa fa-download"></i>
                         </a>

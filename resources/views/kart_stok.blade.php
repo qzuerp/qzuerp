@@ -220,13 +220,7 @@
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#ozellikleri">Özellikleri</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#lokasyonu">Lokasyonu</a>
-									</li>
-									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#fiyatlari">Fiyatları</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#dgrozellikleri">Diğer Özellikleri</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#liste">Liste</a>
@@ -239,6 +233,7 @@
 										<i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar
 										</a>
 									</li>
+									<li id="bagliDokumanlarTab" class=""><a href="#bagliDokumanlar" id="bagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Bağlı Dokümanlar</a></li>
 								</ul>	
 
 
@@ -288,186 +283,265 @@
 									</div>
 
 									<div class=" tab-pane" id="ozellikleri">
-										<div class="row">
-											<div class="row">
-												<div class="row ">
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>En</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_EN" id="B_EN" step="0.01" value="{{ @$kart_veri->B_EN }}">
-													</div>
+										<div class="nav-tabs-custom">
+											<ul class="nav nav-tabs">
+												<li class="nav-item">
+													<a class="nav-link active" class="nav-link" data-bs-toggle="tab" href="#alt_ozellikler">Özellikler</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#alt_diger_ozellikler">Diğer Özellikleri</a>
+												</li>
+											</ul>
+											
+											<div class="tab-content">
+												<div class="active tab-pane overflow-hidden" id="alt_ozellikler">
+													<div class="row">
+														<div class="row">
+															<div class="row ">
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>En</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_EN" id="B_EN" step="0.01" value="{{ @$kart_veri->B_EN }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Boy</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_BOY" id="B_BOY" step="0.01" value="{{ @$kart_veri->B_BOY }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Boy</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_BOY" id="B_BOY" step="0.01" value="{{ @$kart_veri->B_BOY }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Yükseklik</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_YUKSEKLIK" id="B_YUKSEKLIK" step="0.01" value="{{ @$kart_veri->B_YUKSEKLIK }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Yükseklik</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_YUKSEKLIK" id="B_YUKSEKLIK" step="0.01" value="{{ @$kart_veri->B_YUKSEKLIK }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Hacim</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_HACIM" id="B_HACIM" step="0.01" value="{{ @$kart_veri->B_HACIM }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Hacim</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_HACIM" id="B_HACIM" step="0.01" value="{{ @$kart_veri->B_HACIM }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ağırlık</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_AGIRLIK" id="B_AGIRLIK" step="0.0001" value="{{ @$kart_veri->B_AGIRLIK }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ağırlık</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_AGIRLIK" id="B_AGIRLIK" step="0.0001" value="{{ @$kart_veri->B_AGIRLIK }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>İç Çap</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_ICCAP" id="B_ICCAP" step="0.01" value="{{ @$kart_veri->B_ICCAP }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>İç Çap</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_ICCAP" id="B_ICCAP" step="0.01" value="{{ @$kart_veri->B_ICCAP }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Dış Çap</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_CAP" id="B_CAP" step="0.01" value="{{ @$kart_veri->B_CAP }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Dış Çap</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_CAP" id="B_CAP" step="0.01" value="{{ @$kart_veri->B_CAP }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Yoğunluk</label>
-														<input type="number" class="form-control input-sm" maxlength="28" name="B_YOGUNLUK" id="B_YOGUNLUK" step="0.01" value="{{ @$kart_veri->B_YOGUNLUK }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Yoğunluk</label>
+																	<input type="number" class="form-control input-sm" maxlength="28" name="B_YOGUNLUK" id="B_YOGUNLUK" step="0.01" value="{{ @$kart_veri->B_YOGUNLUK }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Norm</label>
-														<input type="text" class="form-control input-sm" name="NORM" id="NORM" value="{{ @$kart_veri->NORM }}">
-													</div>
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Norm</label>
+																	<input type="text" class="form-control input-sm" name="NORM" id="NORM" value="{{ @$kart_veri->NORM }}">
+																</div>
 
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Müşteri/Üretici Kodu</label>
-														<input type="text" class="form-control input-sm" name="SUPPLIERCODE" id="SUPPLIERCODE" value="{{ @$kart_veri->SUPPLIERCODE }}">
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Müşteri/Üretici Kodu</label>
+																	<input type="text" class="form-control input-sm" name="SUPPLIERCODE" id="SUPPLIERCODE" value="{{ @$kart_veri->SUPPLIERCODE }}">
+																</div>
+															</div>
+
+															<div class="row ">
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 1</label>
+																	<input type="text" class="form-control input-sm" name="L1" id="L1" value="{{ @$kart_veri->L1 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 2</label>
+																	<input type="text" class="form-control input-sm" name="L2" id="L2" value="{{ @$kart_veri->L2 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>ölçüm 3 </label>
+																	<input type="text" class="form-control input-sm" name="L3" id="L3" value="{{ @$kart_veri->L3 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 4</label>
+																	<input type="text" class="form-control input-sm" name="L4" id="L4" value="{{ @$kart_veri->L4 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 5</label>
+																	<input type="text" class="form-control input-sm" name="L5" id="L5" value="{{ @$kart_veri->L5 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 6</label>
+																	<input type="text" class="form-control input-sm" name="L6" id="L6" value="{{ @$kart_veri->L6 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 7</label>
+																	<input type="text" class="form-control input-sm" name="L7" id="L7" value="{{ @$kart_veri->L7 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 8</label>
+																	<input type="text" class="form-control input-sm" name="L8" id="L8" value="{{ @$kart_veri->L8 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 9</label>
+																	<input type="text" class="form-control input-sm" name="L9" id="L9" value="{{ @$kart_veri->L9 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 10</label>
+																	<input type="text" class="form-control input-sm" name="L10" id="L10" value="{{ @$kart_veri->L10 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 11</label>
+																	<input type="text" class="form-control input-sm" name="L11" id="L11" value="{{ @$kart_veri->L11 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 12</label>
+																	<input type="text" class="form-control input-sm" name="L12" id="L12" value="{{ @$kart_veri->L12 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 13</label>
+																	<input type="text" class="form-control input-sm" name="L13" id="L13" value="{{ @$kart_veri->L13 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 14</label>
+																	<input type="text" class="form-control input-sm" name="L14" id="L14" value="{{ @$kart_veri->L14 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 15</label>
+																	<input type="text" class="form-control input-sm" name="L15" id="L15" value="{{ @$kart_veri->L15 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 16</label>
+																	<input type="text" class="form-control input-sm" name="L16" id="L16" value="{{ @$kart_veri->L16 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 17</label>
+																	<input type="text" class="form-control input-sm" name="L17" id="L17" value="{{ @$kart_veri->L17 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 18</label>
+																	<input type="text" class="form-control input-sm" name="L18" id="L18" value="{{ @$kart_veri->L18 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 19</label>
+																	<input type="text" class="form-control input-sm" name="L19" id="L19" value="{{ @$kart_veri->L19 }}">
+																</div>
+
+																<div class="col-md-2 col-xs-6  col-sm-4">
+																	<label>Ölçüm 20</label>
+																	<input type="text" class="form-control input-sm" name="L20" id="L20" value="{{ @$kart_veri->L20 }}">
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 
-												<div class="row ">
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 1</label>
-														<input type="text" class="form-control input-sm" name="L1" id="L1" value="{{ @$kart_veri->L1 }}">
+												<div class="tab-pane overflow-hidden" id="alt_diger_ozellikler">
+													<div class="row">
+														<div class="row">
+															
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Güvenlik Stoğu</label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_GUVENLIKSTOGU" id="B_GUVENLIKSTOGU" value="{{ @$kart_veri->B_GUVENLIKSTOGU }}">
+															</div>
+															
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Max Stok Miktarı</label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_MAXENVANTERMIKTARI" id="B_MAXENVANTERMIKTARI" value="{{ @$kart_veri->B_MAXENVANTERMIKTARI }}">
+															</div>
+															
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Min Sipariş Miktarı</label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_MINIMUMSIPMIKTARI" id="B_MINIMUMSIPMIKTARI" value="{{ @$kart_veri->B_MINIMUMSIPMIKTARI }}">
+															</div>
+															
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Min Parti Büyüklüğü </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_MINPARTIBUYUKLUGU" id="B_MINPARTIBUYUKLUGU" value="{{ @$kart_veri->B_MINPARTIBUYUKLUGU }}">
+															</div>
+															
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Ort Temin Süresi </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_ORTTEMINSURES" id="B_ORTTEMINSURES" value="{{ @$kart_veri->B_ORTTEMINSURES }}">
+															</div>
+															
+															<div class="col-md-3 col-xs-3  col-sm-4">
+																<label>Üretici Görüntü Süresi </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_URETICI_GRNT_SURE" id="B_URETICI_GRNT_SURE" value="{{ @$kart_veri->B_URETICI_GRNT_SURE }}">
+															</div>
+
+															<div class="col-md-2 col-xs-6  col-sm-4">
+																<label>Satış Görüntü Süresi </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="B_SATIS_GRNT_SURE" id="B_SATIS_GRNT_SURE" value="{{ @$kart_veri->B_SATIS_GRNT_SURE }}">
+															</div>
+															<br><br><br><br>
+														</div>
+
+														<div class="row">
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Dönüşümü 1 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_1" id="CONVUNITS_COEF_1" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Çarpan 1 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_1" id="CONVUNITS_1" value="{{ @$kart_veri->CONVUNITS_1 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label> Birimi 1 </label>
+																<input type="text" class="form-control" maxlength="28" name="UNITS_1" id="UNITS_1" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Dönüşümü 2 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_2" id="CONVUNITS_COEF_2" value="{{ @$kart_veri->CONVUNITS_COEF_2 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Çarpan 2 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_2" id="CONVUNITS_2" value="{{ @$kart_veri->CONVUNITS_2 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label> Birimi 2 </label>
+																<input type="text" class="form-control" maxlength="28" name="UNITS_2" id="UNITS_2" value="{{ @$kart_veri->UNITS_2 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Dönüşümü 3 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_3" id="CONVUNITS_COEF_3" value="{{ @$kart_veri->CONVUNITS_COEF_3 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label>Birim Çarpan 3 </label>
+																<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_3" id="CONVUNITS_3" value="{{ @$kart_veri->CONVUNITS_3 }}">
+															</div>
+
+															<div class="col-md-4 col-xs-6 col-sm-4">
+																<label> Birimi 3 </label>
+																<input type="text" class="form-control" maxlength="28" name="UNITS_3" id="UNITS_3" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
+															</div>
+														</div>
 													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 2</label>
-														<input type="text" class="form-control input-sm" name="L2" id="L2" value="{{ @$kart_veri->L2 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>ölçüm 3 </label>
-														<input type="text" class="form-control input-sm" name="L3" id="L3" value="{{ @$kart_veri->L3 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 4</label>
-														<input type="text" class="form-control input-sm" name="L4" id="L4" value="{{ @$kart_veri->L4 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 5</label>
-														<input type="text" class="form-control input-sm" name="L5" id="L5" value="{{ @$kart_veri->L5 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 6</label>
-														<input type="text" class="form-control input-sm" name="L6" id="L6" value="{{ @$kart_veri->L6 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 7</label>
-														<input type="text" class="form-control input-sm" name="L7" id="L7" value="{{ @$kart_veri->L7 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 8</label>
-														<input type="text" class="form-control input-sm" name="L8" id="L8" value="{{ @$kart_veri->L8 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 9</label>
-														<input type="text" class="form-control input-sm" name="L9" id="L9" value="{{ @$kart_veri->L9 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 10</label>
-														<input type="text" class="form-control input-sm" name="L10" id="L10" value="{{ @$kart_veri->L10 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 11</label>
-														<input type="text" class="form-control input-sm" name="L11" id="L11" value="{{ @$kart_veri->L11 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 12</label>
-														<input type="text" class="form-control input-sm" name="L12" id="L12" value="{{ @$kart_veri->L12 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 13</label>
-														<input type="text" class="form-control input-sm" name="L13" id="L13" value="{{ @$kart_veri->L13 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 14</label>
-														<input type="text" class="form-control input-sm" name="L14" id="L14" value="{{ @$kart_veri->L14 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 15</label>
-														<input type="text" class="form-control input-sm" name="L15" id="L15" value="{{ @$kart_veri->L15 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 16</label>
-														<input type="text" class="form-control input-sm" name="L16" id="L16" value="{{ @$kart_veri->L16 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 17</label>
-														<input type="text" class="form-control input-sm" name="L17" id="L17" value="{{ @$kart_veri->L17 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 18</label>
-														<input type="text" class="form-control input-sm" name="L18" id="L18" value="{{ @$kart_veri->L18 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 19</label>
-														<input type="text" class="form-control input-sm" name="L19" id="L19" value="{{ @$kart_veri->L19 }}">
-													</div>
-
-													<div class="col-md-2 col-xs-6  col-sm-4">
-														<label>Ölçüm 20</label>
-														<input type="text" class="form-control input-sm" name="L20" id="L20" value="{{ @$kart_veri->L20 }}">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class=" tab-pane" id="lokasyonu">
-										<div class="row">
-											<div class="row">
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>L1</label>
-													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION1" id="DEFAULT_LOCATION1" value="{{ @$kart_veri->DEFAULT_LOCATION1 }}">
-												</div>
-
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>L2</label>
-													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION2" id="DEFAULT_LOCATION2" value="{{ @$kart_veri->DEFAULT_LOCATION2 }}">
-												</div>
-
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>L3</label>
-													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION3" id="DEFAULT_LOCATION3" value="{{ @$kart_veri->DEFAULT_LOCATION3 }}">
-												</div>
-
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>L4</label>
-													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION4" id="DEFAULT_LOCATION4" value="{{ @$kart_veri->DEFAULT_LOCATION4 }}">
 												</div>
 											</div>
 										</div>
@@ -497,93 +571,27 @@
 												</div>
 											</div>
 										</div>
-									</div>
 
-									<div class=" tab-pane" id="dgrozellikleri">
 										<div class="row">
 											<div class="row">
-												
 												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Güvenlik Stoğu</label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_GUVENLIKSTOGU" id="B_GUVENLIKSTOGU" value="{{ @$kart_veri->B_GUVENLIKSTOGU }}">
-												</div>
-												
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Max Stok Miktarı</label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_MAXENVANTERMIKTARI" id="B_MAXENVANTERMIKTARI" value="{{ @$kart_veri->B_MAXENVANTERMIKTARI }}">
-												</div>
-												
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Min Sipariş Miktarı</label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_MINIMUMSIPMIKTARI" id="B_MINIMUMSIPMIKTARI" value="{{ @$kart_veri->B_MINIMUMSIPMIKTARI }}">
-												</div>
-												
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Min Parti Büyüklüğü </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_MINPARTIBUYUKLUGU" id="B_MINPARTIBUYUKLUGU" value="{{ @$kart_veri->B_MINPARTIBUYUKLUGU }}">
-												</div>
-												
-												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Ort Temin Süresi </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_ORTTEMINSURES" id="B_ORTTEMINSURES" value="{{ @$kart_veri->B_ORTTEMINSURES }}">
-												</div>
-												
-												<div class="col-md-3 col-xs-3  col-sm-4">
-													<label>Üretici Görüntü Süresi </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_URETICI_GRNT_SURE" id="B_URETICI_GRNT_SURE" value="{{ @$kart_veri->B_URETICI_GRNT_SURE }}">
+													<label>L1</label>
+													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION1" id="DEFAULT_LOCATION1" value="{{ @$kart_veri->DEFAULT_LOCATION1 }}">
 												</div>
 
 												<div class="col-md-2 col-xs-6  col-sm-4">
-													<label>Satış Görüntü Süresi </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="B_SATIS_GRNT_SURE" id="B_SATIS_GRNT_SURE" value="{{ @$kart_veri->B_SATIS_GRNT_SURE }}">
-												</div>
-												<br><br><br><br>
-											</div>
-
-											<div class="row">
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Dönüşümü 1 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_1" id="CONVUNITS_COEF_1" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
+													<label>L2</label>
+													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION2" id="DEFAULT_LOCATION2" value="{{ @$kart_veri->DEFAULT_LOCATION2 }}">
 												</div>
 
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Çarpan 1 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_1" id="CONVUNITS_1" value="{{ @$kart_veri->CONVUNITS_1 }}">
+												<div class="col-md-2 col-xs-6  col-sm-4">
+													<label>L3</label>
+													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION3" id="DEFAULT_LOCATION3" value="{{ @$kart_veri->DEFAULT_LOCATION3 }}">
 												</div>
 
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label> Birimi 1 </label>
-													<input type="text" class="form-control" maxlength="28" name="UNITS_1" id="UNITS_1" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Dönüşümü 2 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_2" id="CONVUNITS_COEF_2" value="{{ @$kart_veri->CONVUNITS_COEF_2 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Çarpan 2 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_2" id="CONVUNITS_2" value="{{ @$kart_veri->CONVUNITS_2 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label> Birimi 2 </label>
-													<input type="text" class="form-control" maxlength="28" name="UNITS_2" id="UNITS_2" value="{{ @$kart_veri->UNITS_2 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Dönüşümü 3 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_COEF_3" id="CONVUNITS_COEF_3" value="{{ @$kart_veri->CONVUNITS_COEF_3 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label>Birim Çarpan 3 </label>
-													<input type="number" class="form-control input-sm" maxlength="28" name="CONVUNITS_3" id="CONVUNITS_3" value="{{ @$kart_veri->CONVUNITS_3 }}">
-												</div>
-
-												<div class="col-md-4 col-xs-6 col-sm-4">
-													<label> Birimi 3 </label>
-													<input type="text" class="form-control" maxlength="28" name="UNITS_3" id="UNITS_3" value="{{ @$kart_veri->CONVUNITS_COEF_1 }}">
+												<div class="col-md-2 col-xs-6  col-sm-4">
+													<label>L4</label>
+													<input type="text" class="form-control input-sm" maxlength="3" name="DEFAULT_LOCATION4" id="DEFAULT_LOCATION4" value="{{ @$kart_veri->DEFAULT_LOCATION4 }}">
 												</div>
 											</div>
 										</div>
@@ -1310,7 +1318,75 @@
 									<div class="tab-pane" id="baglantiliDokumanlar">
 										@include('layout.util.baglantiliDokumanlar')
 									</div>
+									
+									<div class="tab-pane" id="bagliDokumanlar">
+										@php
+											$mamul = @$kart_veri->KOD;
+											$dosyalar = DB::table($database.'dosyalar00')->where('EVRAKNO', $mamul)->get();
+										@endphp
 
+										<div class="card shadow-sm mt-4">
+											<div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+												<h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
+											</div>
+											<div class="card-body">
+												<table class="table table-hover align-middle text-center" id="baglantiliDokumanlarTable">
+													<thead class="table-light">
+													<tr>
+														<th style="width: 15%">Tür</th>
+														<th style="width: 45%">Açıklama</th>
+														<th style="width: 25%">Yüklenme Tarihi</th>
+														<th style="width: 15%">İşlem</th>
+													</tr>
+													</thead>
+													<tfoot>
+													<tr>
+														<th style="width: 15%">Tür</th>
+														<th style="width: 45%">Açıklama</th>
+														<th style="width: 25%">Yüklenme Tarihi</th>
+														<th style="width: 15%">İşlem</th>
+													</tr>
+													</tfoot>
+													<tbody>
+														@foreach ($dosyalar as $veri)
+															@php 
+																$fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null;
+																$extension = strtolower(pathinfo($veri->DOSYA, PATHINFO_EXTENSION));
+																$isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+															@endphp
+															<tr id="dosya_{{ $veri->id }}">
+																<td>{{ $veri->DOSYATURU }}</td>
+																<td>{{ $veri->ACIKLAMA }}</td>
+																<td>{{ $veri->created_at }}</td>
+																<td>
+																	@if ($fileUrl)
+																		@if ($isImage)
+																			<button type="button"
+																					data-bs-toggle="modal"
+																					data-bs-target="#dokuman_modal"
+																					class="btn btn-outline-primary btn-preview"
+																					data-url="{{ $fileUrl }}">
+																				<i class="fa fa-image"></i>
+																			</button>
+																		@else
+																			<a href="{{ $fileUrl }}" target="_blank" class="btn btn-outline-primary">
+																				<i class="fa fa-file"></i>
+																			</a>
+																		@endif
+																	@endif
+																	
+																	<a href="{{ route('dosya.indir', $veri->DOSYA) }}" 
+																		class="btn btn-outline-primary download-link">
+																		<i class="fa fa-download"></i>
+																	</a>
+																</td>
+															</tr>
+														@endforeach
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

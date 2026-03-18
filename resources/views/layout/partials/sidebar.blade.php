@@ -289,7 +289,7 @@
           <li><a href="calismaTakvimi"><i class='bx bx-list-check'></i>Çalışma Takvimi</a></li>
         @endif
         @if (in_array('musteri_form', $kullanici_read_yetkileri))
-          <li><a href="musteri_form"><i class="fa-solid fa-file"></i>Müşteri Formu</a></li>
+          <li><a href="musteri_form"><i class="fa-solid fa-file"></i>Servis Formu</a></li>
         @endif
         @if (in_array('PRMTR', $kullanici_read_yetkileri))
           <li><a href="parametreler"><i class='bx bx-slider'></i>Parametreler</a></li>

@@ -66,9 +66,9 @@ class MaliyetDetayExport implements FromArray, WithHeadings, WithStyles, ShouldA
                     'REVİZYON' => $r->TBIRIM,
                     'TERMİN' => isset($r->TTERMIN_TARIHI) ? $r->TTERMIN_TARIHI . ' Gün' : '',
                     'AÇIKLAMA' => $r->TACIKLAMA,
-                    'FIYAT' => $r->TFIYAT,
-                    'DOLAR FIYATI' => $r->TFIYAT2,
-                    'TUTAR' => $r->TTUTAR,
+                    'FIYAT'        => number_format($r->TFIYAT, 2, ',', '.'),
+                    'DOLAR FIYATI' => number_format($r->TFIYAT2, 2, ',', '.'),
+                    'TUTAR'        => number_format($r->TTUTAR, 2, ',', '.'),
                 ];
             }
 

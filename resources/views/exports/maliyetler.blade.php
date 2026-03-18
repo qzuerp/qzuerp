@@ -3,7 +3,7 @@
     {{-- Başlık --}}
     <tr>
         <th colspan="9" style="font-weight: bold; font-size: 16px; text-align: center; background-color: #1F4E79; color: #FFFFFF; border: 1px solid #000000; height: 35px;">
-            TEKLİF FİYAT ANALİZİ
+            YÜKSEL CNC FİYAT TEKLİFİ
         </th>
     </tr>
     <tr><td colspan="9" style="height: 5px;"></td></tr>
@@ -11,7 +11,9 @@
     {{-- Bilgi Alanı --}}
     <tr>
         <th colspan="2" style="font-weight: bold; background-color: #D6E4F0; border: 1px solid #9BC2E6; padding: 4px;">Tarih:</th>
-        <td colspan="6" style="border: 1px solid #9BC2E6; padding: 4px;">{{ $master->TARIH }}</td>
+        <td colspan="6" style="border: 1px solid #9BC2E6; padding: 4px;">
+            {{ \Carbon\Carbon::parse($master->TARIH)->format('d.m.Y') }}
+        </td>
     </tr>
     <tr>
         <th colspan="2" style="font-weight: bold; background-color: #D6E4F0; border: 1px solid #9BC2E6; padding: 4px;">Gönderen Firma:</th>
@@ -68,9 +70,9 @@
             <td style="border: 1px solid #9BC2E6; padding: 4px; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->STOK_AD1 }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->SF_MIKTAR }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->SF_SF_UNIT }}</td>
-            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT, 2, ',', '.') }}</td>
-            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->FIYAT2, 2, ',', '.') }}</td>
-            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ number_format($detay->TUTAR, 2, ',', '.') }}</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">₺{{ number_format($detay->FIYAT, 2, ',', '.') }}</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">${{ number_format($detay->FIYAT2, 2, ',', '.') }}</td>
+            <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: right; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">₺{{ number_format($detay->TUTAR, 2, ',', '.') }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ isset($detay->TERMIN_TARIHI) ? $detay->TERMIN_TARIHI.' Gün' : '' }}</td>
             <td style="border: 1px solid #9BC2E6; padding: 4px; text-align: center; {{ $index % 2 == 1 ? 'background-color: #EDF4FB;' : '' }}">{{ $detay->ACIKLAMA }}</td>
         </tr>
@@ -79,7 +81,7 @@
     <tfoot>
         <tr>
             <td colspan="6" style="border: 1px solid #1F4E79; font-weight: bold; text-align: right; background-color: #1F4E79; color: #FFFFFF; padding: 6px;">TOPLAM:</td>
-            <td style="border: 1px solid #1F4E79; font-weight: bold; text-align: right; background-color: #1F4E79; color: #FFFFFF; padding: 6px;">{{ number_format($detaylar->sum('TUTAR'), 2, ',', '.') }}</td>
+            <td style="border: 1px solid #1F4E79; font-weight: bold; text-align: right; background-color: #1F4E79; color: #FFFFFF; padding: 6px;">₺{{ number_format($detaylar->sum('TUTAR'), 2, ',', '.') }}</td>
             <td style="border: 1px solid #1F4E79; background-color: #1F4E79;"></td>
             <td style="border: 1px solid #1F4E79; background-color: #1F4E79;"></td>
         </tr>

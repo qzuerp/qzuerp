@@ -35,7 +35,12 @@ else{
 }
 
 $kart_veri = DB::table($ekranTableE)->where('EVRAKNO',$sonID)->first();
-$t_kart_veri=DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+$t_kart_veri = DB::table($ekranTableT . ' as t') // İşte o kritik 'as t' burada!
+    ->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
+    ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+    ->orderBy('t.id', 'ASC')
+    ->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')
+    ->get();
   
 $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 $stok00_evraklar=DB::table('stok00')->limit(50)->get();
@@ -193,6 +198,7 @@ if (isset($kart_veri)) {
                         <th style="display:none;">Sıra</th>
                         <th>Stok Kodu</th>
                         <th>Stok Adı</th>
+                        <th>Birim</th>
                         
                         <th>Fiyat.</th>
                         <th>Para Br.</th>
@@ -239,6 +245,9 @@ if (isset($kart_veri)) {
                         <td style="min-width: 150px">
                           <input data-max style="color: red" type="text" name="STOK_ADI_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="STOK_ADI" id="STOK_ADI_SHOW" class="form-control STOK_ADI" disabled>
                           <input data-max style="color: red" type="hidden" name="STOK_ADI_FILL" id="STOK_ADI_FILL" class="form-control">
+                        </td>
+                        <td style="min-width: 150px">
+                          <input id="SF_SF_UNIT_SHOW" type="text" class="form-control" disabled>
                         </td>
                         
                         <td style="min-width: 150px">
@@ -321,6 +330,7 @@ if (isset($kart_veri)) {
                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
                         <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                         <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
+                        <td><input type="text" class="form-control" value="{{ $veri->SF_SF_UNIT }}" disabled></td>
                         <td><input type="number" class="form-control PRICE" name="SF_MIKTAR[]" value="{{ $veri->PRICE }}"></td>
                         <td><input type="text" class="form-control PRICE_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->PRICE_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->PRICE_UNIT }}"></td>
                         <td><input type="text" class="form-control PRICE2" name="SF_BAKIYE[]" value="{{ $veri->PRICE2 }}"></td>

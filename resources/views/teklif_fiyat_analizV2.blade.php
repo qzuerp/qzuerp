@@ -2987,6 +2987,7 @@
 					$('.SOKTAK_TUTAR').val('').trigger('change');
 					$('.TOPLANICAK').val('').trigger('change');
 					$('.TOTAL').val('').trigger('change');
+					$('.T_NOT').val('').trigger('change');
 				}
 
 				$('.delete-row').on('click',function(){

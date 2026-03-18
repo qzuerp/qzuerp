@@ -5,13 +5,19 @@
     <title>Teklif Formu</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #222; font-size: 13px; background: #fff; padding: 20px; }
-        .invoice-box { max-width: 900px; margin: auto; border: 1px solid #ccc; padding: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #222; font-size: 13px; background: #fff; padding: 10mm; }
+        .invoice-box { max-width: 190mm; width: 100%; margin: auto; border: 1px solid #ccc; padding: 20px; }
+
+        @media print {
+            @page { size: A4; margin: 10mm; }
+            body { padding: 0; }
+            .invoice-box { max-width: 100%; width: 100%; border: 1px solid #ccc; padding: 15px; }
+        }
 
         /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .header .logo { font-size: 22px; font-weight: bold; }
-        .header .title { font-size: 18px; font-weight: bold;  letter-spacing: 1px; }
+        .header .title { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
 
         /* Info Grid */
         .info-grid { border: 1px solid #999; border-collapse: collapse; width: 100%; margin-bottom: 14px; }
@@ -20,11 +26,21 @@
         .info-grid td.right-label { font-weight: bold; width: 80px; }
 
         /* Main Table */
-        .main-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .main-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
         .main-table th { background: #f0f0f0; border: 1px solid #999; padding: 5px 6px; text-align: center; font-size: 12px; font-weight: bold; }
-        .main-table td { border: 1px solid #999; padding: 4px 6px; text-align: center; font-size: 12px; height: 20px; }
+        .main-table td { border: 1px solid #999; padding: 4px 6px; text-align: center; font-size: 12px; height: 20px; overflow: hidden; }
         .main-table td.sira { width: 30px; }
-        .main-table td.parca-adi { text-align: left; }
+        .main-table td.parca-adi { text-align: left; word-break: break-word; }
+
+        /* Column widths */
+        .main-table .col-sira    { width: 30px; }
+        .main-table .col-parca   { width: auto; }   /* takes remaining space */
+        .main-table .col-kod     { width: 100px; }
+        .main-table .col-adet    { width: 40px; }
+        .main-table .col-fiyat   { width: 75px; }
+        .main-table .col-toplam  { width: 85px; }
+        .main-table .col-termin  { width: 60px; }
+        .main-table .col-not     { width: 65px; }
 
         /* Note row */
         .note-row td { background: #f9f9f9; font-weight: bold; font-size: 12px; text-align: center; border: 1px solid #999; padding: 5px; }
@@ -71,7 +87,9 @@
             <td class="label">Alıcı</td>
             <td class="value" colspan="3">{{ $cari->AD }}</td>
             <td class="right-label">Tarih</td>
-            <td class="right-value">{{ $data['TARIH'] }}</td>
+            <td class="right-value">
+                {{ $data['TARIH'] ? \Carbon\Carbon::parse($data['TARIH'])->format('d.m.Y') : '-' }}
+            </td>
         </tr>
         <tr>
             <td class="label">İlgili</td>
@@ -87,16 +105,26 @@
 
     <!-- MAIN TABLE -->
     <table class="main-table">
+        <colgroup>
+            <col class="col-sira">
+            <col class="col-parca">
+            <col class="col-kod">
+            <col class="col-adet">
+            <col class="col-fiyat">
+            <col class="col-toplam">
+            <col class="col-termin">
+            <col class="col-not">
+        </colgroup>
         <thead>
             <tr>
-                <th style="width:35px;">Sıra</th>
+                <th>Sıra</th>
                 <th>PARÇA ADI</th>
-                <th style="width:110px;">PARÇA KODU</th>
-                <th style="width:45px;">ADET</th>
-                <th style="width:80px;">FİYATI</th>
-                <th style="width:90px;">TOP.TUTAR</th>
-                <th style="width:70px;">TERMİN</th>
-                <th style="width:70px;">NOT</th>
+                <th>PARÇA KODU</th>
+                <th>ADET</th>
+                <th>FİYATI</th>
+                <th>TOP.TUTAR</th>
+                <th>TERMİN</th>
+                <th>NOT</th>
             </tr>
         </thead>
         <tbody>
@@ -106,8 +134,8 @@
                 <td class="parca-adi">{{ $data['STOK_AD1'][$i] }}</td>
                 <td>{{ $data['KOD'][$i] }}</td>
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
-                <td>{{ $data['FIYAT'][$i] }}</td>
-                <td>{{ $data['TUTAR'][$i] }}</td>
+                <td>{{ number_format($data['FIYAT'][$i], 2, ',', '.') }}</td>
+                <td>{{ number_format($data['TUTAR'][$i], 2, ',', '.') }}</td>
                 <td>{{ isset($data['TERMIN_TAR'][$i]) ? $data['TERMIN_TAR'][$i].' Gün' : '' }}</td>
                 <td>{{ $data['ACIKLAMA'][$i] ?? '' }}</td>
             </tr>
@@ -133,7 +161,7 @@
     <!-- FOOTER NOTES -->
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
-        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren 30 gün</div>
+        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren <b>{{ $data['NOTES_2'] }}</b> gün</div>
         <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }}</div>
     </div>
 

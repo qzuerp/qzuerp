@@ -9,7 +9,7 @@
     $database = trim($kullanici_veri->firma).".dbo.";
 
     $ekran = "musteri_form";
-    $ekranAdi = "Müşteri Form"; 
+    $ekranAdi = "Servis Formu"; 
     $ekranLink = "musteri_form";
     $ekranTableE = $database."srv00";
     $ekranKayitSatirKontrol = "false";
