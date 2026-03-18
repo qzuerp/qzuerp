@@ -182,7 +182,7 @@ class calisma_bildirimi_controller extends Controller
     $ISLEM_TURU = $request->ISLEM_TURU;
     $dosyaEvrakType = $request->dosyaEvrakType;
 
-    $EVRAKNO = $request->input('dosyaEvrakNo');
+    $EVRAKNO = $request->input('EVRAKNO_E');
     $AP10 = $request->input('AP10');
     $SAAT = $request->input('SAAT');
     // $SERINO = $request->input('SERINO');

@@ -5,7 +5,7 @@
   $database = $firma . ".dbo.";
   $dosyaTuruKodlari = DB::table($database.'gecoust')->where('EVRAKNO','DOSYATURLERI')->get();
   $dosyaEvrakNo = $kart_veri->EVRAKNO ?? $kart_veri->KOD ?? $kullanici_veri->id;
-  $dosyalarVeri = DB::table($database.'dosyalar00')->where('EVRAKNO', $dosyaEvrakNo)->where('EVRAKTYPE', $ekranRumuz)->get();
+  $dosyalarVeri = DB::table($database.'dosyalar00')->where('EVRAKNO', $dosyaEVRAKNO ?? $dosyaEvrakNo)->where('EVRAKTYPE', $ekranRumuz)->get();
 @endphp
 
 <div class="container-fluid">
@@ -40,7 +40,7 @@
             <div class="col-md-3">
               <input type="text" maxlength="255" data-skip-tracking="true" class="form-control" placeholder="Açıklama..." id="dosyaAciklama" name="dosyaAciklama">
               <input type="hidden" id="dosyaEvrakType" data-skip-tracking="true" name="dosyaEvrakType" value="{{ $ekranRumuz }}">
-              <input type="hidden" id="dosyaEvrakNo" data-skip-tracking="true" name="dosyaEvrakNo" value="{{ $EVRAKNO ?? $dosyaEvrakNo }}">
+              <input type="hidden" id="dosyaEvrakNo" data-skip-tracking="true" name="dosyaEvrakNo" value="{{ $dosyaEVRAKNO ?? $dosyaEvrakNo }}">
             </div>
             <div class="col-md-3">
               <input type="file" class="form-control" data-skip-tracking="true" id="dosyaFile" name="dosyaFile">

@@ -165,6 +165,7 @@
                       @endphp
                     </select>
                     <input type="hidden" value="{{ @$kart_veri->ID }}" name="ID_TO_REDIRECT" id="ID_TO_REDIRECT">
+                    <input type="hidden" value="{{ @$kart_veri->EVRAKNO }}" name="EVRAKNO_E">
                   </div>
 
                   <div class="col-md-2 col-xs-2">
@@ -669,7 +670,9 @@
                                   </td>                            
                                  
                                   <td>
-                                    <input type="text" id="HATALI_KOD" class="form-control" readonly value="{{ @$kart_veri->STOK_CODE }}">
+                                    <select id="HATALI_KOD" class="form-control select2">
+                                      <option value="{{ @$kart_veri->STOK_CODE }}" selected>{{ @$kart_veri->STOK_CODE }}</option>
+                                    </select>
                                   </td>
 
                                   <td>

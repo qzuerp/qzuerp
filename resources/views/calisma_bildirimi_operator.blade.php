@@ -168,6 +168,7 @@
                       @endphp
                     </select>
                     <input type="hidden" value="{{ @$kart_veri->ID }}" name="ID_TO_REDIRECT" id="ID_TO_REDIRECT">
+                    <input type="hidden" value="{{ @$kart_veri->EVRAKNO }}" name="EVRAKNO_E">
                   </div>
 
                   <div class="col-md-2 col-xs-2">
@@ -660,16 +661,8 @@
                                   </td>
                                 
                                   <td>
-                                    <select class="form-control select2"  id="HATALI_KOD">
-                                      @php
-                                       $parcalar = DB::table($database.'mmps10t')
-                                       ->where('EVRAKNO', @$kart_veri->MPSNO)
-                                       ->where('R_KAYNAKTYPE', 'H')
-                                       ->get();
-                                      @endphp
-                                      @foreach ($parcalar as $parca)
-                                        <option value="{{ $parca->R_KAYNAKKODU }}">{{ $parca->R_KAYNAKKODU }} - {{ $parca->KAYNAK_AD }}</option>
-                                      @endforeach
+                                    <select id="HATALI_KOD" class="form-control select2">
+                                      <option value="{{ @$kart_veri->STOK_CODE }}" selected>{{ @$kart_veri->STOK_CODE }}</option>
                                     </select>
                                   </td>
                                   <td>
@@ -920,7 +913,7 @@
                       <div class="row">
                         <div class="row">
                           <div class="row ">
-                            @include('layout.util.baglantiliDokumanlar')
+                            @include('layout.util.baglantiliDokumanlar',['dosyaEVRAKNO' => @$kart_veri->STOK_CODE])
                           </div>                    
                         </div>
                       </div>
@@ -2376,8 +2369,8 @@
         else {
           $("#veriTable > tbody").append(htmlCode);
           updateLastTRNUM(TRNUM_FILL);
-
-          emptyInputs('satirEkle');
+          $('#ADET').val('');
+          $('#HATA_SEBEBI').val('').trigger('change');
         }
       });
       function ozelInput() {
