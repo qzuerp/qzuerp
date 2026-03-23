@@ -2594,7 +2594,7 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
-				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"], input[name="FIYAT2[]"],input[name="TUTAR2[]"]').each(function () {
+				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"]').each(function () {
 					if (!AutoNumeric.isManagedByAutoNumeric(this)) {
 						new AutoNumeric(this, {
 							digitGroupSeparator: '.',
@@ -2905,7 +2905,7 @@
 							<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-								<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
+							<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
 						</tr>`;
 
 					$('#maliyetDetayTable tbody').append(htr);

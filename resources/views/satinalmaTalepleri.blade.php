@@ -206,9 +206,10 @@
                 <div class="active tab-pane" id="siparisler">
                   <div class="row">
                     <div class="col my-2">
-                      <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus"
-                          style="color: red"></i>Seçili Satırları Sil</button>
-                      <button type="button" class="btn btn-success" onclick="exportTableToExcel('veriTable')">Excel'e Aktar</button>
+                      <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
+                      <a href="{{ route('excel_export_talep', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
+                        <i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
+                      </a>
                     </div>
 
                     <table class="table table-bordered text-center" id="veriTable"
@@ -227,7 +228,7 @@
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
                           <!-- <th>Fiyat</th>
-                                              <th style="min-width: 120px;">Para Birimi</th> -->
+                          <th style="min-width: 120px;">Para Birimi</th> -->
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
                           <!-- <th>Süre (dk)</th> -->
@@ -451,13 +452,7 @@
                             <td><input type="text" class="form-control" name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
                             </td>
                             <td><input type="text" class="form-control" name="SERINO[]" value="{{ $veri->SERINO }}"></td>
-                            <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}">
-                            </td>
-                            <!-- <td><input type="number" class="form-control" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-                                                                        <td>
-                                                                          <input type="text" data-name="FIYAT_PB[]" name="FIYAT_PB[]" class="form-control" readonly
-                                                                            value="{{ $veri->FIYAT_PB }}" id="">
-                                                                        </td> -->
+                            <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T"
                                 value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control"
                                 data-name="SF_SF_UNIT[]" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
@@ -467,20 +462,6 @@
                             </td>
                             <td><input type="text" class="form-control" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
                             <td>
-                              <!-- <select name="MPS_KODU[]" id="MPS_KODU" class="form-control select2 " style="width: 100%; border-radius: 5px;">
-                                                                              <option value=" ">Seç</option>
-                                                                                @php
-                                                                                $kur_veri = DB::table($database.'mmps10e')->get();
-                                                                                foreach ($kur_veri as $key => $value) {
-                                                                                  if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
-                                                                                    echo "<option value='".$value->MAMULSTOKKODU."' selected>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                                                                  } else {
-                                                                                    echo "<option value='".$value->MAMULSTOKKODU."'>".$value->MAMULSTOKKODU .'-'. $value->MAMULSTOKADI."</option>";
-                                                                                  }
-                                                                                }
-
-                                                                                @endphp
-                                                                            </select> -->
                               <input type="text" name="MPS_KODU[]" class="form-control" value="{{ $veri->MPS_KODU }}"
                                 readonly>
                             </td>

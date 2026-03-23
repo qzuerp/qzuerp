@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseOrderEmail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TalepExport;
 
 class stok47_controller extends Controller
 {
@@ -40,7 +42,15 @@ class stok47_controller extends Controller
 
     return json_encode($veri);
   }
-
+  public function excel_export_talep(Request $request)
+  {
+      if(Auth::check()) {
+          $u = Auth::user();
+      }
+      $firma = trim($u->firma).'.dbo.';
+      $evrakno = $request->input('EVRAKNO');
+      return Excel::download(new TalepExport($evrakno), 'Satın Alma Talebi.xlsx');
+  }
   public function islemler(Request $request)
   {
     // dd(request()->all());

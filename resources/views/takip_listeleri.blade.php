@@ -563,43 +563,33 @@
             $('.veriTable tbody').empty();
         }
         $(document).ready(function () {
-            // Form değişikliği yönetimi
             $('#FORM').on('change', function () {
                 const selectedForm = $(this).val();
                 
-                // Loading göster
                 $('#loadingOverlay').css('display', 'flex');
                 
                 setTimeout(() => {
-                    // Tüm formları gizle
                     $('.form').fadeOut(200);
                     
-                    // Seçili formu göster
                     if (selectedForm) {
                         $('#' + selectedForm).fadeIn(400);
                     }
                     
-                    // Loading gizle
                     $('#loadingOverlay').fadeOut(300);
                 }, 300);
             });
 
-            // Sayfa yüklendiğinde form durumunu kontrol et
             $('#FORM').trigger('change');
 
-            // Accordion işlevselliği
             $(document).on('click', '.accordion-button', function() {
                 const $this = $(this);
                 const $collapse = $this.next('.accordion-collapse');
                 
-                // Toggle active class
                 $this.toggleClass('active');
                 
-                // Toggle collapse
                 $collapse.toggleClass('show');
             });
 
-            // === Containment Ekle ===
             $("#addContainment").on("click", function () {
                 const value = $("#containmentInput").val().trim();
                 if (!value) {
@@ -620,7 +610,6 @@
                 $("#containmentInput").val("").focus();
             });
 
-            // === Corrective Action Ekle ===
             $("#addCA").on("click", function () {
                 const action = $("#caAction").val().trim();
                 const due = $("#caDue").val();
@@ -646,7 +635,6 @@
                 $("#caDue").val("");
             });
 
-            // === Dinamik Eleman Silme ===
             $(document).on("click", ".remove-item", function () {
                 const $item = $(this).closest('.dynamic-item');
                 $item.fadeOut(300, function() {
@@ -654,7 +642,6 @@
                 });
             });
 
-            // Enter tuşu ile ekleme
             $("#containmentInput").on("keypress", function(e) {
                 if (e.which === 13) {
                     e.preventDefault();
@@ -669,7 +656,6 @@
                 }
             });
 
-            // Form submit öncesi validasyon
             $("#verilerForm").on("submit", function(e) {
                 const selectedForm = $("#FORM").val();
                 if (!selectedForm) {

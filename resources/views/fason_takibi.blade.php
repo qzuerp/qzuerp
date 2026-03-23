@@ -233,9 +233,9 @@
                                 <h4 class="mb-1"><i class="fas fa-boxes mr-2"></i>Fason Takibi Listesi</h4>
                                 <p class="mb-0 opacity-75">Toplam kayıt</p>
                             </div>
-                            <button class="export-btn" onclick="exportToExcel()">
+                            <a class="export-btn">
                                 <i class="fas fa-file-excel"></i>Excel'e Aktar
-                            </button>
+                            </a>
                         </div>
                         
                         <div style="overflow-x: auto; padding: 20px;">

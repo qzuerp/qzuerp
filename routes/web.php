@@ -64,6 +64,7 @@ use App\Http\Controllers\srvbs0_controller;
 use App\Http\Controllers\takvim0_controller;
 use App\Http\Controllers\api_controller;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FasonTakibi;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -237,6 +238,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('satinalmaTalepleri', [stok47_controller::class, 'index'])->name('satinalmaTalepleri');
     Route::post('stok47_islemler', [stok47_controller::class, 'islemler']);
     Route::post('price_list', [stok47_controller::class, 'price_list']);
+    Route::get('/excel-export-talep', [stok47_controller::class, 'excel_export_talep'])->name('excel_export_talep');
 
     // Stok48 - Fiyat Listesi
     Route::get('fiyat_listesi', [stok48_controller::class, 'index'])->name('fiyat_listesi');
@@ -585,6 +587,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/calismaTakvimi', function(){ return view('calisma_takvimi'); })->name('calismaTakvimi');
     Route::post('/calisma-takvimi/kaydet', [takvim0_controller::class, 'kaydet'])->name('calismaTakvimi.kaydet');
     Route::post('/calisma-takvimi/sil', [takvim0_controller::class, 'sil'])->name('calismaTakvimi.sil');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fason takibi
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/fason_takibi_export', [FasonTakibi::class, 'export'])->name('fason_takibi_export');
 
     /*
     |--------------------------------------------------------------------------
