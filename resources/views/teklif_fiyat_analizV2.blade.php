@@ -2200,7 +2200,7 @@
 				$(this).select();
 			});
 			
-			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]','FIYAT2[]','TUTAR2[]'];
+			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
 			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
 
 			$('#verilerForm').on('submit', function () {
@@ -2594,7 +2594,7 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
-				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"]').each(function () {
+				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"], input[name="TUTAR2[]"], input[name="FIYAT2[]"]').each(function () {
 					if (!AutoNumeric.isManagedByAutoNumeric(this)) {
 						new AutoNumeric(this, {
 							digitGroupSeparator: '.',
@@ -2978,7 +2978,7 @@
 							<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
 							<td><input type="text" name="NOTT[]" value="${NOT}" class="form-control" readonly></td>
 							<td class="text-end"><input type="text" name="FIYAT2[]" value="${total}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="FIYAT_2[]" value="${FIYAT2 ?? ''}" class="form-control number"></td>
+							<td class="text-end"><input type="text" name="FIYAT_2[]" value="${String(FIYAT2) ?? ''}" class="form-control number"></td>
 							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(total * SF_MIKTAR)}" class="form-control number" readonly></td>
 							<td><input type="text" name="PARA_BIRIMI2[]" value="${OParaBirimi || TEKLIF_PB}" class="form-control" readonly></td>
 							<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
