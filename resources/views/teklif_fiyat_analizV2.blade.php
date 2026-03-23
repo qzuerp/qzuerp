@@ -1323,11 +1323,10 @@
 																	placeholder="0.00">
 																<select class="birim-select form-select p-1"
 																	style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
-																	<option selected>Seç</option>
 																	@php
 																		foreach ($kur_veri as $veri) {
 																			$selected = ($veri->KOD == @$kart_veri->TEKLIF_FIYAT_PB) ? 'selected' : '';
-																			echo "<option value='{$veri->KOD}'>{$veri->KOD} - {$veri->AD}</option>";
+																			echo "<option {$selected} value='{$veri->KOD}'>{$veri->KOD} - {$veri->AD}</option>";
 																		}
 																	@endphp
 																</select>
@@ -1891,6 +1890,7 @@
 															</tbody>
 														</table>
 													</div>
+
 													<style>
 														.table-scroll-area {
 															max-height: 600px;
@@ -1914,7 +1914,6 @@
 															padding: 10px 5px;
 															white-space: nowrap;
 															border: 1px solid #dee2e6;
-															/* Sticky yerine JS ile transform kullanacağız */
 														}
 
 														#maliyetDetayTable td {
@@ -1926,6 +1925,15 @@
 															background-color: #f8f9fa !important;
 															font-weight: bold;
 														}
+
+														#maliyetLoadingWrap {
+															padding: 6px 0;
+														}
+
+														#maliyetLoadingWrap .progress {
+															height: 6px;
+															border-radius: 4px;
+														}
 													</style>
 
 													<div class="tab-pane" id="tab_3">
@@ -1934,6 +1942,14 @@
 															target="_blank" class="btn btn-success">
 																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
 															</a>
+														</div>
+
+														{{-- Loading bar --}}
+														<div id="maliyetLoadingWrap">
+															<div class="progress">
+																<div id="maliyetProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 0%"></div>
+															</div>
+															<small class="text-muted" id="maliyetLoadingText">Yükleniyor...</small>
 														</div>
 
 														<div class="table-scroll-area" id="maliyetScrollArea">
@@ -1958,99 +1974,151 @@
 																		<th>İşlem</th>
 																	</tr>
 																</thead>
-																<tbody>
-																@php
-																	$sorgu = "
-																		SELECT 
-																			TI.*, 
-																			TT.KOD as TT_KOD, 
-																			TT.STOK_AD1 AS TT_STOK_AD1
-																		FROM {$database}tekl20tı TI
-																		OUTER APPLY (
-																			SELECT TOP 1 * 
-																			FROM {$database}tekl20t
-																			WHERE TRNUM = TI.OR_TRNUM
-    																		AND EVRAKNO = TI.EVRAKNO
-																		) TT
-																		WHERE TI.EVRAKNO = :evrakno
-																		ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
-																	";
+																<tbody id="maliyetTbody">
+																	@php
+																		$sorgu = "
+																			SELECT 
+																				TI.*, 
+																				TT.KOD as TT_KOD, 
+																				TT.STOK_AD1 AS TT_STOK_AD1
+																			FROM {$database}tekl20tı TI
+																			OUTER APPLY (
+																				SELECT TOP 1 * 
+																				FROM {$database}tekl20t
+																				WHERE TRNUM = TI.OR_TRNUM
+																				AND EVRAKNO = TI.EVRAKNO
+																			) TT
+																			WHERE TI.EVRAKNO = :evrakno
+																			ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
+																		";
 
-																	$hamVeri = DB::select($sorgu, ['evrakno' => $evrakno]);
-																	
-																	$veri = collect($hamVeri)->groupBy('OR_TRNUM');
-																@endphp
+																		$hamVeri = DB::select($sorgu, ['evrakno' => $evrakno]);
+																		
+																		$veri = collect($hamVeri)->groupBy('OR_TRNUM');
+																	@endphp
 
-																@if($veri->isNotEmpty())
-																	@foreach ($veri as $orTrnum => $grupVeri)
-																		@foreach ($grupVeri as $key => $satir)
-																			<tr>
-																				<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																				<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																				<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR ?? 0}}">
-
-																				<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																				<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																				<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																				<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																				<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
-																				<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																				<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																				<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																				<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																				<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																				<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																				<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																				<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																				<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																				<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																				<td>
-																					<button type='button' class='btn btn-default delete-row'>
-																						<i class='fa fa-minus' style='color: red'></i>
-																					</button>
+																	@if($veri->isNotEmpty())
+																		@foreach ($veri as $orTrnum => $grupVeri)
+																			@php 
+																				$ilkSatir = $grupVeri->first(); 
+																			@endphp
+																			<tr class="group-footer mt-2" style="background-color: #f9f9f9;">
+																				<td colspan="12" class="text-right">
+																					<strong>{{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}</strong>
 																				</td>
+																				<td>
+																					<strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong>
+																				</td>
+																				<td colspan="3"></td>
 																			</tr>
-																		@endforeach
+																			@foreach ($grupVeri as $key => $satir)
+																				<tr>
+																					<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
+																					<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
+																					<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR ?? 0}}">
 
-																		@php 
-																			$ilkSatir = $grupVeri->first(); 
-																		@endphp
-																		<tr class="group-footer" style="background-color: #f9f9f9;">
-																			<td colspan="12" class="text-right">
-																				<strong>{{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}</strong>
-																			</td>
-																			<td>
-																				<strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong>
-																			</td>
-																			<td colspan="3"></td>
-																		</tr>
-																	@endforeach
-																@endif
-															</tbody>
+																					<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
+																					<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
+																					<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
+																					<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
+																					<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
+																					<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
+																					<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
+																					<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
+																					<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
+																					<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
+																					<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
+																					<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
+																					<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
+																					<td>
+																						<button type='button' class='btn btn-default delete-row'>
+																							<i class='fa fa-minus' style='color: red'></i>
+																						</button>
+																					</td>
+																				</tr>
+																			@endforeach
+																		@endforeach
+																	@endif
+																</tbody>
 															</table>
 														</div>
 													</div>
 
 													<script>
-														(function () {
-															const scrollArea = document.getElementById('maliyetScrollArea');
-															const thead = document.getElementById('maliyetThead');
+													(function () {
+														// ── Sticky thead ──────────────────────────────────────────────
+														const scrollArea = document.getElementById('maliyetScrollArea');
+														const thead      = document.getElementById('maliyetThead');
 
-															if (!scrollArea || !thead) return;
-
-															// Scroll ettikçe thead'i aşağı kaydır — parent overflow/transform ne olursa olsun çalışır
+														if (scrollArea && thead) {
 															scrollArea.addEventListener('scroll', function () {
 																thead.style.transform = 'translateY(' + scrollArea.scrollTop + 'px)';
 															});
 
-															// Tab değişiminde de sıfırla (Bootstrap tab show event)
 															document.querySelectorAll('[data-bs-toggle="tab"], [data-toggle="tab"]').forEach(function (tab) {
 																tab.addEventListener('shown.bs.tab', function () {
 																	thead.style.transform = 'translateY(0px)';
 																});
 															});
-														})();
+														}
+
+														// ── Chunk render ──────────────────────────────────────────────
+														const tbody      = document.getElementById('maliyetTbody');
+														const progressBar  = document.getElementById('maliyetProgressBar');
+														const loadingText  = document.getElementById('maliyetLoadingText');
+														const loadingWrap  = document.getElementById('maliyetLoadingWrap');
+
+														if (!tbody) return;
+
+														// Tüm satırları al, tbody'yi temizle
+														const tumSatirlar = Array.from(tbody.children);
+														const toplam      = tumSatirlar.length;
+
+														if (toplam === 0) {
+															loadingWrap.style.display = 'none';
+															return;
+														}
+
+														tbody.innerHTML = '';
+
+														const CHUNK = 100; // Her frame'de kaç satır eklensin
+														let eklenen = 0;
+
+														function renderChunk() {
+															const parcaS = tumSatirlar.splice(0, CHUNK);
+															
+															// DocumentFragment ile tek seferde DOM'a ekle (daha hızlı)
+															const fragment = document.createDocumentFragment();
+															parcaS.forEach(function (satir) {
+																fragment.appendChild(satir);
+															});
+															tbody.appendChild(fragment);
+
+															eklenen += parcaS.length;
+
+															// Progress güncelle
+															const yuzde = Math.round((eklenen / toplam) * 100);
+															progressBar.style.width = yuzde + '%';
+															loadingText.textContent = eklenen + ' / ' + toplam + ' satır yüklendi';
+
+															if (tumSatirlar.length > 0) {
+																// Sonraki frame'e bırak — browser donmasın
+																requestAnimationFrame(renderChunk);
+															} else {
+																// Bitti
+																loadingWrap.style.display = 'none';
+
+																// Render tamamlandığında diğer JS kodlarının tetiklenmesi gerekiyorsa buradan event at
+																document.dispatchEvent(new CustomEvent('maliyetTablosuHazir'));
+															}
+														}
+
+														requestAnimationFrame(renderChunk);
+													})();
 													</script>
+
 													<div class="tab-pane" id="tab_4">
 														<div class="row mb-2">
 															<div class="col-md-3">
@@ -2132,66 +2200,8 @@
 				$(this).select();
 			});
 			
-			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
+			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]','FIYAT2[]','TUTAR2[]'];
 			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
-
-			// function formatTR(value) {
-			//     if (value === '' || value === null || value === undefined) return '';
-
-			//     let str = String(value).replace(',', '.');
-			//     const parts = str.split('.');
-			//     let intPart = parts[0];
-			//     let decPart = parts.length > 1 ? parts[1] : null;
-
-			//     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-			//     return decPart !== null ? intPart + ',' + decPart : intPart;
-			// }
-
-			// function initDecimalInput(el) {
-			//     $(el).attr('type', 'text').removeClass('decimal');
-			//     const val = $(el).val();
-			//     if (val !== '') $(el).val(formatTR(val));
-			// }
-
-			// $(document).ready(function () {
-			//     $(DECIMAL_SELECTOR).each(function () {
-			//         initDecimalInput(this);
-			//     });
-
-			//     const observer = new MutationObserver(function (mutations) {
-			//         mutations.forEach(function (mutation) {
-			//             mutation.addedNodes.forEach(function (node) {
-			//                 $(node).find('input[type="number"]').addBack('input[type="number"]').each(function () {
-			//                     initDecimalInput(this);
-			//                 });
-			//             });
-			//         });
-			//     });
-
-			//     observer.observe(document.body, { childList: true, subtree: true });
-			// });
-
-			// $(document).on('input', DECIMAL_SELECTOR, function () {
-			//     const el = this;
-			//     const cursorPos = el.selectionStart;
-			//     const prevLen = el.value.length;
-
-			//     let clean = el.value.replace(/[^0-9,]/g, '');
-
-			//     const parts = clean.split(',');
-			//     let intPart = parts[0];
-			//     let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
-
-			//     if (intPart.length > 1 && intPart.startsWith('0')) {
-			//         intPart = intPart.replace(/^0+/, '') || '0';
-			//     }
-			//     const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-			//     el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
-
-			//     const newLen = el.value.length;
-			//     el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
-			// });
 
 			$('#verilerForm').on('submit', function () {
 			    $(this).find(DECIMAL_SELECTOR).each(function () {
@@ -2502,7 +2512,7 @@
 				if (codeFrom === "USD") {
 					$("input[name='FIYAT[]']").each(function () {
 						const base = parseFloat($(this).val()) || 0;
-						$(this).closest("tr").find("input[name='DOLAR_FIYAT[]']").val(round(base / kurDeger, 3));
+						AutoNumeric.set($(this).closest("tr").find("input[name='DOLAR_FIYAT[]']")[0], (round(base / kurDeger, 3)));
 					});
 				}
 
@@ -2517,7 +2527,7 @@
 						}
 					});
 
-					$(this).closest("tr").find("input[name='FIYAT_2[]']").val(round(base / kur));
+					AutoNumeric.set($(this).closest("tr").find("input[name='FIYAT_2[]']")[0], (round(base / kur)));
 				});
 			});
 
@@ -2584,7 +2594,7 @@
 			var aktifSatir = null;
 
 			$(document).ready(function () {
-				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"]').each(function () {
+				$('input[name="FIYAT[]"], input[name="DOLAR_FIYAT[]"], input[name="TUTAR[]"], input[name="FIYAT2[]"],input[name="TUTAR2[]"]').each(function () {
 					if (!AutoNumeric.isManagedByAutoNumeric(this)) {
 						new AutoNumeric(this, {
 							digitGroupSeparator: '.',
@@ -2808,7 +2818,7 @@
 					aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val($('#SF_IUNIT').val());
 
 					let fiyat = parseFloat($('#FIYAT').val().replace('.', ',')) || 0;
-					console.log(fiyat);
+					
 					let miktar = parseFloat($('#SF_MIKTAR').val()) || 0;
 
 					let dolarFiyat = round(fiyat / dolarKur.data.KURS_1);
@@ -3014,8 +3024,52 @@
 					}
 				});
 
-				$('#teklif').on('change',function(){
-					
+				const TARIH = '{{ @$kart_veri->TARIH }}';
+				const INPUTS = 'input[name="FIYAT[]"], input[name="TUTAR[]"], input[name="FIYAT2[]"], input[name="TUTAR2[]"]';
+
+				let currentCurrency = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
+
+				$(INPUTS).each(function () {
+					let value = AutoNumeric.getNumber(this);
+					$(this).data('originalValue', value);
+					$(this).data('originalCurrency', currentCurrency);
+				});
+
+				$('#teklif').on('change', async function () {
+					let newCurrency = $(this).val();
+
+					$(INPUTS).each(async function () {
+						let originalValue    = $(this).data('originalValue');
+						let originalCurrency = $(this).data('originalCurrency');
+
+						let converted;
+
+						try {
+							if (originalCurrency === newCurrency) {
+								converted = originalValue;
+
+							} else if (originalCurrency === 'TL') {
+								let kur2 = await getCachedKur(TARIH, newCurrency);
+								converted = originalValue / kur2.data.KURS_1;
+
+							} else if (newCurrency === 'TL') {
+								let kur1 = await getCachedKur(TARIH, originalCurrency);
+								converted = originalValue * kur1.data.KURS_1;
+
+							} else {
+								let kur1 = await getCachedKur(TARIH, originalCurrency);
+								let kur2 = await getCachedKur(TARIH, newCurrency);
+								converted = (originalValue * kur1.data.KURS_1) / kur2.data.KURS_1;
+							}
+
+							AutoNumeric.set(this, Math.round(converted * 100) / 100);
+
+						} catch (e) {
+							console.error('Kur dönüşüm hatası:', originalCurrency, '->', newCurrency, e);
+						}
+					});
+
+					currentCurrency = newCurrency;
 				});
 
 				$('#HammadeKodu').select2({

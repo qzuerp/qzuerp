@@ -1,114 +1,63 @@
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+<table>
+    <thead>
+        {{-- Başlıkları biraz daha profesyonel gösterelim --}}
+        <tr style="background-color: #1f4e78; color: #ffffff;">
+            <th width="15">Kaynak Tipi</th>
+            <th width="20">Stok Kodu</th>
+            <th width="40">Stok Adı</th>
+            <th width="15">İşlem Miktarı</th>
+            <th width="15">Birim Fiyatı</th>
+            <th width="10">Ayar</th>
+            <th width="10">İşleme</th>
+            <th width="10">Sök-Tak</th>
+            <th width="10">Revizyon</th>
+            <th width="30">Not</th>
+            <th width="15">Fiyat</th>
+            <th width="15">Fiyat 2</th>
+            <th width="15">Tutar</th>
+            <th width="10">PB</th>
+            <th width="25">Hammadde Ölçüsü</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($veri as $orTrnum => $grupVeri)
+            @php $ilkSatir = $grupVeri->first(); @endphp
+            
+            {{-- Grup Başlığı: 3000 satırda hayat kurtarır --}}
+            <tr style="background-color: #d9e1f2;">
+                <td colspan="12" style="font-weight: bold; border-top: 2px solid #000000;">
+                    GRUP: {{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}
+                </td>
+                <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
+                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}
+                </td>
+                <td colspan="2" style="border-top: 2px solid #000000;"></td>
+            </tr>
 
-    .tablo-kapsayici {
-        font-family: 'IBM Plex Sans', sans-serif;
-        margin: 2rem;
-        background: #0f1117;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 24px 48px rgba(0,0,0,0.4);
-    }
-
-    .tablo-baslik {
-        padding: 1rem 1.5rem;
-        background: linear-gradient(135deg, #1a1d2e 0%, #161824 100%);
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .tablo-baslik span {
-        width: 10px; height: 10px; border-radius: 50%;
-    }
-    .tablo-baslik span:nth-child(1) { background: #ff5f57; }
-    .tablo-baslik span:nth-child(2) { background: #febc2e; }
-    .tablo-baslik span:nth-child(3) { background: #28c840; }
-
-    .tablo-sarici {
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    thead tr {
-        background: #1a1d2e;
-    }
-
-    thead th {
-        padding: 0.85rem 1.25rem;
-        text-align: left;
-        font-family: 'IBM Plex Mono', monospace;
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: #6c7aad;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        white-space: nowrap;
-    }
-
-    tbody tr {
-        border-bottom: 1px solid rgba(255,255,255,0.04);
-        transition: background 0.15s ease;
-    }
-
-    tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    tbody tr:hover {
-        background: rgba(108, 122, 173, 0.07);
-    }
-
-    tbody tr:nth-child(even) {
-        background: rgba(255,255,255,0.015);
-    }
-
-    tbody tr:nth-child(even):hover {
-        background: rgba(108, 122, 173, 0.07);
-    }
-
-    tbody td {
-        padding: 0.8rem 1.25rem;
-        font-size: 0.875rem;
-        color: #c9cfe8;
-        white-space: nowrap;
-    }
-
-    tbody td:first-child {
-        font-family: 'IBM Plex Mono', monospace;
-        font-size: 0.8rem;
-        color: #7c8cc8;
-    }
-</style>
-
-<div class="tablo-kapsayici">
-    <div class="tablo-baslik">
-        <span></span><span></span><span></span>
-    </div>
-    <div class="tablo-sarici">
-        <table>
-            <thead>
+            @foreach ($grupVeri as $satir)
                 <tr>
-                    @foreach($kolonlar as $k)
-                        <th>{{ $k }}</th>
-                    @endforeach
+                    <td style="color: #555555;">{{ $satir->KAYNAKTYPE }}</td>
+                    <td style="font-family: 'Courier New';">{{ $satir->KOD }}</td>
+                    <td>{{ $satir->STOK_AD1 }}</td>
+                    <td style="text-align: center;">{{ intval($satir->SF_MIKTAR) }}</td>
+                    <td style="text-align: right;">{{ number_format($satir->BIRIM_FIYAT, 4, ',', '.') }}</td>
+                    <td style="text-align: center;">{{ $satir->AYAR }} Saat</td>
+                    <td style="text-align: center;">{{ $satir->ISLEME }} Dakkika</td>
+                    <td style="text-align: center;">{{ $satir->SOKTAK }} Dakkika</td>
+                    <td>{{ $satir->SF_SF_UNIT }}</td>
+                    <td style="font-style: italic; color: #808080;">{{ $satir->NOT }}</td>
+                    <td style="text-align: right;">{{ number_format($satir->FIYAT, 2, ',', '.') }}</td>
+                    <td style="text-align: right;">{{ number_format($satir->FIYAT2, 2, ',', '.') }}</td>
+                    <td style="text-align: right; font-weight: bold;">{{ number_format($satir->TUTAR, 2, ',', '.') }}</td>
+                    <td style="text-align: center;">{{ $satir->PRICEUNIT }}</td>
+                    <td>{{ $satir->OLCU }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($sonuc as $row)
-                    <tr>
-                        @foreach($kolonlar as $k)
-                            <td>{{ $row[$k] ?? '' }}</td>
-                        @endforeach
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+            @endforeach
+            
+            {{-- Gruplar arası bir boşluk bırak ki nefes alsın --}}
+            <tr style="height: 10px;">
+                <td colspan="15"></td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
