@@ -25,11 +25,15 @@
             
             {{-- Grup Başlığı: 3000 satırda hayat kurtarır --}}
             <tr style="background-color: #d9e1f2;">
-                <td colspan="12" style="font-weight: bold; border-top: 2px solid #000000;">
+                <td colspan="10" style="font-weight: bold; border-top: 2px solid #000000;">
                     GRUP: {{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}
                 </td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}
+                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} B
+                </td>
+                <td style="border-top: 2px solid #000000;"></td>
+                <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
+                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} T
                 </td>
                 <td colspan="2" style="border-top: 2px solid #000000;"></td>
             </tr>
@@ -42,8 +46,8 @@
                     <td style="text-align: center;">{{ intval($satir->SF_MIKTAR) }}</td>
                     <td style="text-align: right;">{{ number_format($satir->BIRIM_FIYAT, 4, ',', '.') }}</td>
                     <td style="text-align: center;">{{ $satir->AYAR }} Saat</td>
-                    <td style="text-align: center;">{{ $satir->ISLEME }} Dakkika</td>
-                    <td style="text-align: center;">{{ $satir->SOKTAK }} Dakkika</td>
+                    <td style="text-align: center;">{{ $satir->ISLEME }} Dakika</td>
+                    <td style="text-align: center;">{{ $satir->SOKTAK }} Dakika</td>
                     <td>{{ $satir->SF_SF_UNIT }}</td>
                     <td style="font-style: italic; color: #808080;">{{ $satir->NOT }}</td>
                     <td style="text-align: right;">{{ number_format($satir->FIYAT, 2, ',', '.') }}</td>

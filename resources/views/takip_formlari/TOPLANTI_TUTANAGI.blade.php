@@ -40,7 +40,7 @@
     <!-- ===== KARARLAR ===== -->
     <h6>Toplantı Kararları</h6>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered veriTable">
         <thead>
             <tr>
             <th style="width:50px">#</th>
@@ -62,7 +62,7 @@
     <!-- ===== KATILIMCILAR ===== -->
     <h6>Katılımcılar</h6>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered veriTable">
         <thead>
             <tr>
             <th style="width:50px">#</th>

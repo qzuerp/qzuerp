@@ -559,6 +559,9 @@
     </div>
 
     <script>
+        function ozelInput(){
+            $('.veriTable tbody').empty();
+        }
         $(document).ready(function () {
             // Form değişikliği yönetimi
             $('#FORM').on('change', function () {
