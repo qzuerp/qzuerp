@@ -834,15 +834,17 @@
                           @endphp
 											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
                           @php
-                          $q = DB::table(DB::raw('(
-                              SELECT S47T.*,S47E.CARIHESAPCODE,S00.AD,S00.IUNIT,
-                              (SELECT MAX(EVRAKNO) 
-                              FROM STOK46T 
-                              WHERE STOK46T.TALEP_ARTNO = S47T.ARTNO) AS SIPARISNO
-                              FROM stok47ti S47T
-                              LEFT JOIN STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
-                              LEFT JOIN STOK00 S00 ON S00.KOD = S47T.KOD
-                          ) as T1'));
+                          $q = DB::table(DB::raw("(
+                              SELECT S47T.*, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT,
+                              (
+                                  SELECT MAX(EVRAKNO) 
+                                  FROM {$database}STOK46T 
+                                  WHERE {$database}STOK46T.TALEP_ARTNO = S47T.ARTNO
+                              ) AS SIPARISNO
+                              FROM {$database}stok47ti S47T
+                              LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
+                              LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
+                          ) as T1"));
 
                           if ($SIPARIS_DURUM === 'olanlar') {
                               $q->whereNotNull('SIPARISNO');
