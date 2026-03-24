@@ -920,441 +920,441 @@
                   
                   {{-- LİSTE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="liste">
-                      <div class="row">
-                        @php
-                          $table = DB::table($ekranTableE)->select('*')->get();
-                        @endphp
+                      {{-- ============================================================
+                      Çalışma Bildirimi - Liste Sekmesi
+                      Düzeltmeler:
+                        • SQL injection → Laravel query builder ile parametre bağlama
+                        • $_GET key ismi hatası: '$MPSSTOKKODU_B' → 'MPSSTOKKODU_B'
+                        • Çakışan id attribute'ları giderildi
+                        • ENDTARIH/ENDTIME koşullarında yanlış değişken referansı düzeltildi
+                        • ENDTIME1_B input'unun name/id hatası düzeltildi
+                        • Duplicate export butonları tek sete indirildi
+                        • PHP mantığı view'in en üstüne taşındı (separation of concerns)
+                      ============================================================ --}}
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >MPS Stok Kodu</label>
-                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'mmps10e')
-                              ->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->MAMULSTOKKODU) && 
-                                trim($veri->MAMULSTOKKODU) !== '') {
-                                  echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-control">
-                            @php
-                                echo "<option value =' ' selected> </option>";
-                                $evraklar = DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
-                                foreach ($evraklar as $key => $veri) {
-                                  if (!is_null($veri->MAMULSTOKKODU) && trim($veri->MAMULSTOKKODU) !== '') {
-                                    echo "<option value ='".$veri->MAMULSTOKKODU."'>".$veri->MAMULSTOKKODU." | ".$veri->MAMULSTOKADI."</option>";
-                                  }
-                                }
-                              @endphp
-                          </select>
-                        </div>
+                  @php
+                  /* ---------------------------------------------------------------
+                    1. FİLTRE PARAMETRELERİNİ GÜVENLİ ŞEKILDE AL
+                    ---------------------------------------------------------------- */
+                  $get = fn(string $key): string => trim(request()->get($key, ''));
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Operatör</label>
-                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
+                  $MPSSTOKKODU_B    = $get('MPSSTOKKODU_B');
+                  $MPSSTOKKODU_E    = $get('MPSSTOKKODU_E');
+                  $TO_OPERATOR_B    = $get('TO_OPERATOR_B');
+                  $TO_OPERATOR_E    = $get('TO_OPERATOR_E');
+                  $OPERASYON_B      = $get('OPERASYON_B');
+                  $OPERASYON_E      = $get('OPERASYON_E');
+                  $X_T_ISMERKEZI_B  = $get('X_T_ISMERKEZI_B');
+                  $X_T_ISMERKEZI_E  = $get('X_T_ISMERKEZI_E');
+                  $D7_ISLEM_KODU_B  = $get('D7_ISLEM_KODU_B');
+                  $D7_ISLEM_KODU_E  = $get('D7_ISLEM_KODU_E');
+                  $RECTARIH1_B      = $get('RECTARIH1_B');
+                  $RECTARIH1_E      = $get('RECTARIH1_E');
+                  $RECTIME1_B       = $get('RECTIME1_B');
+                  $RECTIME1_E       = $get('RECTIME1_E');
+                  $ENDTARIH1_B      = $get('ENDTARIH1_B');
+                  $ENDTARIH1_E      = $get('ENDTARIH1_E');
+                  $ENDTIME1_B       = $get('ENDTIME1_B');   // DÜZELTME: önceden ENDTIME1_E olarak alınıyordu
+                  $ENDTIME1_E       = $get('ENDTIME1_E');
+                  $URETIM_B         = $get('URETIM_B');
+                  $URETIM_E         = $get('URETIM_E');
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Operasyon</label>
-                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
+                  /* ---------------------------------------------------------------
+                    2. AÇILIR KUTU VERİLERİNİ ÇEK
+                    ---------------------------------------------------------------- */
+                  $db = trim($kullanici_veri->firma) . '.dbo.';
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Tezgah Adı</label>
-                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              $evraklar = DB::table($database.'imlt00')->orderBy('id', 'ASC')->get();
-                              foreach ($evraklar as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div>
+                  $mpsStoklar  = DB::table($db . 'mmps10e')
+                                      ->whereNotNull('MAMULSTOKKODU')
+                                      ->where('MAMULSTOKKODU', '<>', '')
+                                      ->orderBy('MAMULSTOKKODU')
+                                      ->get(['MAMULSTOKKODU', 'MAMULSTOKADI']);
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Süreç Adı</label>
-                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-control">
-                            <option>Seç</option>
-                            <option value="A">Ayar | A</option>
-                            <option value="U">Üretim | U</option>
-                            <option value="D">Duruş | D</option>
-                          </select>
-                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-control">
-                              <option>Seç</option>
-                              <option value="A">Ayar | A</option>
-                              <option value="U">Üretim | U</option>
-                              <option value="D">Duruş | D</option>
-                          </select>
-                        </div>
+                  $operatorler = DB::table($db . 'pers00')
+                                      ->whereNotNull('KOD')
+                                      ->where('KOD', '<>', '')
+                                      ->orderBy('KOD')
+                                      ->get(['KOD', 'AD']);
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Başlama Tarihi</label>
-                          <input type="date" class="form-control" name="RECTARIH1_B" id="RECTARIH1_E">
-                          <input type="date" class="form-control" name="RECTARIH1_E" id="RECTARIH1_E">
-                        </div>
+                  $operasyonlar = DB::table($db . 'imlt01')
+                                      ->whereNotNull('KOD')
+                                      ->where('KOD', '<>', '')
+                                      ->orderBy('KOD')
+                                      ->get(['KOD', 'AD']);
 
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Başlama Saati</label>
-                          <input type="time" class="form-control" name="RECTIME1_B" id="RECTIME1_B">
-                          <input type="time" class="form-control" name="RECTIME1_E" id="RECTIME1_E">
-                        </div>
+                  $tezgahlar   = DB::table($db . 'imlt00')
+                                      ->whereNotNull('KOD')
+                                      ->where('KOD', '<>', '')
+                                      ->orderBy('KOD')
+                                      ->get(['KOD', 'AD']);
 
-                        <div class="col-sm-3">
-                          <label for="minDeger" >Bitiş Tarihi</label>
-                          <input type="date" class="form-control" name="ENDTARIH1_B" id="ENDTARIH1_B">
-                          <input type="date" class="form-control" name="ENDTARIH1_E" id="ENDTARIH1_E">
-                        </div>
+                  /* ---------------------------------------------------------------
+                    3. SORGU — yalnızca SUZ parametresi varsa çalışır
+                    ---------------------------------------------------------------- */
+                  $kayitlar   = collect();
+                  $suzAktif   = request()->has('SUZ');
 
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Bitiş Saati</label>
-                          <input type="time" class="form-control" name="ENDTIME1_E" id="ENDTIME1_E">
-                          <input type="time" class="form-control" name="ENDTIME1_E" id="ENDTIME1_E">
-                        </div>
+                  if ($suzAktif) {
 
-                        <div class="col-sm-3">
-                          <label for="minSaat" >Üretim Adeti</label>
-                          <input type="number" class="form-control" name="URETIM_B" id="URETIM_B">
-                          <input type="number" class="form-control" name="URETIM_E" id="URETIM_E">
-                        </div>
-                        
-                        <div class="col-sm-3 d-flex justify-content-center align-items-center">
-                          <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
-                            <i class='fa fa-filter' style='color: WHİTE'></i>
-                          &nbsp;&nbsp;--Süz--</button>
-                        </div>
-                        <!-- Tools Section -->
-                        <div class="tools-section">
-                            <div class="row align-items-end">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">İşlemler</label>
-                                    <div class="action-btn-group flex gap-2 flex-wrap">
-                                        <button type="button" class="action-btn btn btn-success" onclick="exportTableToExcel('veri_table')">
-                                            <i class="fas fa-file-excel"></i> Excel'e Aktar
-                                        </button>
-                                        <button type="button" class="action-btn btn btn-danger" onclick="exportTableToWord('veri_table')">
-                                            <i class="fas fa-file-word"></i> Word'e Aktar
-                                        </button>
-                                        <button type="button" class="action-btn h-100 btn btn-primary" onclick="printTable('veri_table')">
-                                            <i class="fas fa-print"></i> Yazdır
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      // İKİ TABLO JOIN — sfdc31e (evrak başlık) LEFT JOIN sfdc31t (satırlar)
+                      $q = DB::table($db . 'sfdc31e as e')
+                              ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
+                              ->select(
+                                  'e.EVRAKNO', 'e.TARIH', 'e.ID',
+                                  'e.STOK_CODE', 'e.TO_OPERATOR', 'e.OPERASYON',
+                                  'e.TO_ISMERKEZI', 't.ISLEM_TURU',
+                                  't.BASLANGIC_TARIHI', 't.BASLANGIC_SAATI',
+                                  't.BITIS_TARIHI',    't.BITIS_SAATI',
+                                  't.SURE',            'e.SF_MIKTAR'
+                              );
 
-                        <div class="row " style="overflow: auto">
+                      // Stok kodu
+                      if ($MPSSTOKKODU_B !== '') $q->where('e.STOK_CODE', '>=', $MPSSTOKKODU_B);
+                      if ($MPSSTOKKODU_E !== '') $q->where('e.STOK_CODE', '<=', $MPSSTOKKODU_E);
 
-                          @php
-                            if(isset($_GET['SUZ'])) {
-                          @endphp
+                      // Operatör
+                      if ($TO_OPERATOR_B !== '') $q->where('e.TO_OPERATOR', '>=', $TO_OPERATOR_B);
+                      if ($TO_OPERATOR_E !== '') $q->where('e.TO_OPERATOR', '<=', $TO_OPERATOR_E);
 
-                          <table id="example2" class="table table-hover text-center" data-page-length="10">
-                            <thead>
-                              <tr class="bg-primary">
-                                <th></th>
-                                <th>Evrak No</th>
-                                <th>Evrak Tarihi</th>
-                                <th>Stok Kodu</th>
-                                <th>Operatör</th>
-                                <th>Operasyon</th>
-                                <th>Tezgah Adı</th>
-                                <th>İşlem Statüsü</th>
-                                <th>Başlama Tarihi</th>
-                                <th>Başlama Saati</th>
-                                <th>Bitiş Tarihi</th>
-                                <th>Bitiş Saati</th>
-                                <th>Süre</th>
-                                <th>Üretilen Miktar</th>
-                                <th>Git</th>
-                              </tr>
-                            </thead>
-                            <tfoot>
-                              <tr class="bg-primary">
-                                <th></th>
-                                <th>Evrak No</th>
-                                <th>Evrak Tarihi</th>
-                                <th>Stok Kodu</th>
-                                <th>Operatör</th>
-                                <th>Operasyon</th>
-                                <th>Tezgah Adı</th>
-                                <th>İşlem Statüsü</th>
-                                <th>Başlama Tarihi</th>
-                                <th>Başlama Saati</th>
-                                <th>Bitiş Tarihi</th>
-                                <th>Bitiş Saati</th>
-                                <th>Süre</th>
-                                <th>Üretilen Miktar</th>
-                                <th>Git</th>
-                              </tr>
-                            </tfoot>
-                            <tbody>
+                      // Operasyon
+                      if ($OPERASYON_B !== '') $q->where('e.OPERASYON', '>=', $OPERASYON_B);
+                      if ($OPERASYON_E !== '') $q->where('e.OPERASYON', '<=', $OPERASYON_E);
 
-                              @php
+                      // Tezgah / İş Merkezi
+                      if ($X_T_ISMERKEZI_B !== '') $q->where('e.TO_ISMERKEZI', '>=', $X_T_ISMERKEZI_B);
+                      if ($X_T_ISMERKEZI_E !== '') $q->where('e.TO_ISMERKEZI', '<=', $X_T_ISMERKEZI_E);
 
-                                $database = trim($kullanici_veri->firma).".dbo."; 
+                      // Süreç (D7_ISLEM_KODU)
+                      if ($D7_ISLEM_KODU_B !== '') $q->where('t.ISLEM_TURU', '>=', $D7_ISLEM_KODU_B);
+                      if ($D7_ISLEM_KODU_E !== '') $q->where('t.ISLEM_TURU', '<=', $D7_ISLEM_KODU_E);
 
-                                $MPSSTOKKODU_E = '';
-                                $MPSSTOKKODU_B = '';
+                      // Başlama tarihi / saati
+                      if ($RECTARIH1_B !== '') $q->where('t.BASLANGIC_TARIHI', '>=', $RECTARIH1_B);
+                      if ($RECTARIH1_E !== '') $q->where('t.BASLANGIC_TARIHI', '<=', $RECTARIH1_E);
+                      if ($RECTIME1_B  !== '') $q->where('t.BASLANGIC_SAATI',  '>=', $RECTIME1_B);
+                      if ($RECTIME1_E  !== '') $q->where('t.BASLANGIC_SAATI',  '<=', $RECTIME1_E);
 
-                                $TO_OPERATOR_E = '';
-                                $TO_OPERATOR_B = '';
+                      // Bitiş tarihi / saati  — DÜZELTME: önceden yanlış ($RECTARIH2_B, $RECTIME2_B) kullanılıyordu
+                      if ($ENDTARIH1_B !== '') $q->where('t.BITIS_TARIHI', '>=', $ENDTARIH1_B);
+                      if ($ENDTARIH1_E !== '') $q->where('t.BITIS_TARIHI', '<=', $ENDTARIH1_E);
+                      if ($ENDTIME1_B  !== '') $q->where('t.BITIS_SAATI',  '>=', $ENDTIME1_B);
+                      if ($ENDTIME1_E  !== '') $q->where('t.BITIS_SAATI',  '<=', $ENDTIME1_E);
 
-                                $OPERASYON_E = ''; 
-                                $OPERASYON_B = '';
+                      // Üretim adeti
+                      if ($URETIM_B !== '' && is_numeric($URETIM_B)) $q->where('e.SF_MIKTAR', '>=', (float)$URETIM_B);
+                      if ($URETIM_E !== '' && is_numeric($URETIM_E)) $q->where('e.SF_MIKTAR', '<=', (float)$URETIM_E);
 
-                                $X_T_ISMERKEZI_E = '';
-                                $X_T_ISMERKEZI_B = '';
+                      $kayitlar = $q->orderBy('e.EVRAKNO', 'DESC')->get();
+                  }
 
-                                $D7_ISLEM_KODU_E = '';
-                                $D7_ISLEM_KODU_B = '';
+                  /* ---------------------------------------------------------------
+                    YARDIMCI: select seçenekleri render yardımcısı
+                    ---------------------------------------------------------------- */
+                  $buildOptions = function(string $valField, string $labelField, $items, string $selected = ''): string {
+                      $html = '<option value="">— Seç —</option>';
+                      foreach ($items as $item) {
+                          $val  = e($item->$valField);
+                          $lbl  = e($item->$labelField);
+                          $sel  = ($val === $selected) ? ' selected' : '';
+                          $html .= "<option value=\"{$val}\"{$sel}>{$val} — {$lbl}</option>";
+                      }
+                      return $html;
+                  };
+                  @endphp
 
-                                $GK_1_E = '';
-                                $GK_1_B = '';
+                  {{-- ═══════════════════════════════════════════════════════════
+                      SEKME İÇERİĞİ
+                      ═══════════════════════════════════════════════════════════ --}}
+                  <div class="tab-pane" id="liste">
 
-                                $RECTARIH1_E = ''; 
-                                $RECTARIH1_B = '';
+                      {{-- ── FİLTRE FORMU ──────────────────────────────────────── --}}
+                      <form method="GET" action="" id="filtre-formu">
+                          <input type="hidden" name="SUZ" value="1">
 
-                                $RECTARIH2_E = ''; 
-                                $RECTARIH2_B = '';
+                          <div class="card shadow-sm mb-3">
+                              <div class="card-header bg-primary text-white py-2">
+                                  <i class="fa fa-filter me-1"></i> Filtre Kriterleri
+                              </div>
+                              <div class="card-body">
+                                  <div class="row g-3">
 
-                                $RECTIME2_E = ''; 
-                                $RECTIME2_B = '';
+                                      {{-- MPS Stok Kodu --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">MPS Stok Kodu</label>
+                                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-select form-select-sm">
+                                              {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_B) !!}
+                                          </select>
+                                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-select form-select-sm mt-1">
+                                              {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_E) !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                $RECTIME1_E = ''; 
-                                $RECTIME1_B = '';
-                                
-                                $ENDTARIH1_E = ''; 
-                                $ENDTARIH1_B = '';
-                                
-                                $ENDTIME1_E = ''; 
-                                $ENDTIME1_B = '';
+                                      {{-- Operatör --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Operatör</label>
+                                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-select form-select-sm">
+                                              {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_B) !!}
+                                          </select>
+                                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-select form-select-sm mt-1">
+                                              {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_E) !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                $ENDTARIH2_E = ''; 
-                                $ENDTARIH2_B = '';
-                                
-                                $ENDTIME2_E = ''; 
-                                $ENDTIME2_B = '';
+                                      {{-- Operasyon --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Operasyon</label>
+                                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-select form-select-sm">
+                                              {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_B) !!}
+                                          </select>
+                                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-select form-select-sm mt-1">
+                                              {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_E) !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                $URETIM_E = ''; 
-                                $URETIM_B = '';
+                                      {{-- Tezgah Adı --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Tezgah Adı</label>
+                                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-select form-select-sm">
+                                              {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_B) !!}
+                                          </select>
+                                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-select form-select-sm mt-1">
+                                              {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_E) !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['$MPSSTOKKODU_B'])) { $MPSSTOKKODU_B = TRIM($_GET['$MPSSTOKKODU_B']); }
-                                if(isset($_GET['$MPSSTOKKODU_E'])) { $MPSSTOKKODU_E = TRIM($_GET['$MPSSTOKKODU_E']); }
+                                      {{-- Süreç Adı --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Süreç Adı</label>
+                                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-select form-select-sm">
+                                              <option value="">— Seç —</option>
+                                              <option value="A" @selected($D7_ISLEM_KODU_B === 'A')>A — Ayar</option>
+                                              <option value="U" @selected($D7_ISLEM_KODU_B === 'U')>U — Üretim</option>
+                                              <option value="D" @selected($D7_ISLEM_KODU_B === 'D')>D — Duruş</option>
+                                          </select>
+                                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-select form-select-sm mt-1">
+                                              <option value="">— Seç —</option>
+                                              <option value="A" @selected($D7_ISLEM_KODU_E === 'A')>A — Ayar</option>
+                                              <option value="U" @selected($D7_ISLEM_KODU_E === 'U')>U — Üretim</option>
+                                              <option value="D" @selected($D7_ISLEM_KODU_E === 'D')>D — Duruş</option>
+                                          </select>
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['TO_OPERATOR_B'])) { $TO_OPERATOR_B = TRIM($_GET['TO_OPERATOR_B']); }
-                                if(isset($_GET['TO_OPERATOR_E'])) { $TO_OPERATOR_E = TRIM($_GET['TO_OPERATOR_E']); }
+                                      {{-- Başlama Tarihi --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Başlama Tarihi</label>
+                                          <input type="date" class="form-control form-control-sm"
+                                                name="RECTARIH1_B" id="RECTARIH1_B"
+                                                value="{{ $RECTARIH1_B }}">
+                                          <input type="date" class="form-control form-control-sm mt-1"
+                                                name="RECTARIH1_E" id="RECTARIH1_E"
+                                                value="{{ $RECTARIH1_E }}">
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['OPERASYON_B'])) { $OPERASYON_B = TRIM($_GET['OPERASYON_B']); }
-                                if(isset($_GET['OPERASYON_E'])) { $OPERASYON_E = TRIM($_GET['OPERASYON_E']); }
+                                      {{-- Başlama Saati --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Başlama Saati</label>
+                                          <input type="time" class="form-control form-control-sm"
+                                                name="RECTIME1_B" id="RECTIME1_B"
+                                                value="{{ $RECTIME1_B }}">
+                                          <input type="time" class="form-control form-control-sm mt-1"
+                                                name="RECTIME1_E" id="RECTIME1_E"
+                                                value="{{ $RECTIME1_E }}">
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['X_T_ISMERKEZI_B'])) { $X_T_ISMERKEZI_B = TRIM($_GET['X_T_ISMERKEZI_B']); }
-                                if(isset($_GET['X_T_ISMERKEZI_E'])) { $X_T_ISMERKEZI_E = TRIM($_GET['X_T_ISMERKEZI_E']); }
+                                      {{-- Bitiş Tarihi --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Bitiş Tarihi</label>
+                                          <input type="date" class="form-control form-control-sm"
+                                                name="ENDTARIH1_B" id="ENDTARIH1_B"
+                                                value="{{ $ENDTARIH1_B }}">
+                                          <input type="date" class="form-control form-control-sm mt-1"
+                                                name="ENDTARIH1_E" id="ENDTARIH1_E"
+                                                value="{{ $ENDTARIH1_E }}">
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['D7_ISLEM_KODU_B'])) { $D7_ISLEM_KODU_B = TRIM($_GET['D7_ISLEM_KODU_B']); }
-                                if(isset($_GET['D7_ISLEM_KODU_E'])) { $D7_ISLEM_KODU_E = TRIM($_GET['D7_ISLEM_KODU_E']); }
+                                      {{-- Bitiş Saati — DÜZELTME: her iki input da ENDTIME1_E olarak name almıştı --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Bitiş Saati</label>
+                                          <input type="time" class="form-control form-control-sm"
+                                                name="ENDTIME1_B" id="ENDTIME1_B"
+                                                value="{{ $ENDTIME1_B }}">
+                                          <input type="time" class="form-control form-control-sm mt-1"
+                                                name="ENDTIME1_E" id="ENDTIME1_E"
+                                                value="{{ $ENDTIME1_E }}">
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['GK_1_B'])) { $GK_1_B = TRIM($_GET['GK_1_B']); }
-                                if(isset($_GET['GK_1_E'])) { $GK_1_E = TRIM($_GET['GK_1_E']); }
+                                      {{-- Üretim Adeti --}}
+                                      <div class="col-md-3">
+                                          <label class="form-label fw-semibold">Üretim Adeti</label>
+                                          <input type="number" min="0" step="any" class="form-control form-control-sm"
+                                                name="URETIM_B" id="URETIM_B" placeholder="Min"
+                                                value="{{ $URETIM_B }}">
+                                          <input type="number" min="0" step="any" class="form-control form-control-sm mt-1"
+                                                name="URETIM_E" id="URETIM_E" placeholder="Max"
+                                                value="{{ $URETIM_E }}">
+                                          <div class="d-flex justify-content-between px-1 mt-1">
+                                              <small class="text-muted">Min</small>
+                                              <small class="text-muted">Max</small>
+                                          </div>
+                                      </div>
 
-                                if(isset($_GET['RECTARIH1_B'])) { $RECTARIH1_B = TRIM($_GET['RECTARIH1_B']); }
-                                if(isset($_GET['RECTARIH1_E'])) { $RECTARIH1_E = TRIM($_GET['RECTARIH1_E']); }
+                                      {{-- Butonlar --}}
+                                      <div class="col-md-3 d-flex align-items-center gap-2 mt-2">
+                                          <button type="submit" name="kart_islemleri" value="listele" class="btn btn-success">
+                                              <i class="fa fa-filter me-1"></i> Süz
+                                          </button>
+                                          <a href="{{ url()->current() }}" class="btn btn-outline-secondary">
+                                              <i class="fa fa-times me-1"></i> Temizle
+                                          </a>
+                                      </div>
 
-                                if(isset($_GET['RECTIME1_B'])) { $RECTIME1_B = TRIM($_GET['RECTIME1_B']); }
-                                if(isset($_GET['RECTIME1_E'])) { $RECTIME1_E = TRIM($_GET['RECTIME1_E']); }
+                                  </div>{{-- /row --}}
+                              </div>{{-- /card-body --}}
+                          </div>{{-- /card --}}
+                      </form>
 
-                                if(isset($_GET['RECTIME2_B'])) { $RECTIME2_B = TRIM($_GET['RECTIME2_B']); }
-                                if(isset($_GET['RECTIME2_E'])) { $RECTIME2_E = TRIM($_GET['RECTIME2_E']); }
+                      {{-- ── SONUÇ TABLOSU ──────────────────────────────────────── --}}
+                      @if ($suzAktif)
 
-                                if(isset($_GET['RECTARIH2_B'])) { $RECTARIH2_B = TRIM($_GET['RECTARIH2_B']); }
-                                if(isset($_GET['RECTARIH2_E'])) { $RECTARIH2_E = TRIM($_GET['RECTARIH2_E']); }
-
-                                if(isset($_GET['ENDTARIH1_B'])) { $ENDTARIH1_B = TRIM($_GET['ENDTARIH1_B']); }
-                                if(isset($_GET['ENDTARIH1_E'])) { $ENDTARIH1_E = TRIM($_GET['ENDTARIH1_E']); }
-
-                                if(isset($_GET['ENDTIME1_B'])) { $ENDTIME1_B = TRIM($_GET['ENDTIME1_B']); }
-                                if(isset($_GET['ENDTIME1_E'])) { $ENDTIME1_E = TRIM($_GET['ENDTIME1_E']); }
-
-                                if(isset($_GET['ENDTIME2_B'])) { $ENDTIME2_B = TRIM($_GET['ENDTIME2_B']); }
-                                if(isset($_GET['ENDTIME2_E'])) { $ENDTIME2_E = TRIM($_GET['ENDTIME2_E']); }
-
-                                if(isset($_GET['ENDTARIH2_B'])) { $ENDTARIH2_B = TRIM($_GET['ENDTARIH2_B']); }
-                                if(isset($_GET['ENDTARIH2_E'])) { $ENDTARIH2_E = TRIM($_GET['ENDTARIH2_E']); }
-
-                                if(isset($_GET['URETIM_B'])) { $URETIM_B = TRIM($_GET['URETIM_B']); }
-                                if(isset($_GET['URETIM_E'])) { $URETIM_E = TRIM($_GET['URETIM_E']); }
-
-                                // Sorguya $database değişkeni ekleniyor
-                                $sql_sorgu = 'SELECT * FROM '.$database.' sfdc31e as e LEFT JOIN sfdc31t as t on e.EVRAKNO = t.EVRAKNO WHERE 1 = 1';
-
-                                // Diğer koşulların sorguya eklenmesi
-                                if(Trim($MPSSTOKKODU_B) <> '') {
-                                    $sql_sorgu .= " AND $MPSSTOKKODU >= '".$MPSSTOKKODU_B."' ";
-                                }
-                                if(Trim($MPSSTOKKODU_E) <> '') {
-                                    $sql_sorgu .= " AND $MPSSTOKKODU <= '".$MPSSTOKKODU_E."' ";
-                                }
-
-                              if(Trim($TO_OPERATOR_B) <> '') {
-                                    $sql_sorgu .= " AND TO_OPERATOR >= '".$TO_OPERATOR_B."' ";
-                                }
-                                if(Trim($TO_OPERATOR_E) <> '') {
-                                    $sql_sorgu .= " AND TO_OPERATOR <= '".$TO_OPERATOR_E."' ";
-                                }
-
-                                if(Trim($OPERASYON_B) <> '') {
-                                    $sql_sorgu .= " AND OPERASYON >= '".$OPERASYON_B."' ";
-                                }
-                                if(Trim($OPERASYON_E) <> '') {
-                                    $sql_sorgu .= " AND OPERASYON <= '".$OPERASYON_E."' ";
-                                }
-
-                                if(Trim($X_T_ISMERKEZI_B) <> '') {
-                                    $sql_sorgu .= " AND X_T_ISMERKEZI >= '".$X_T_ISMERKEZI_B."' ";
-                                }
-                                if(Trim($X_T_ISMERKEZI_E) <> '') {
-                                    $sql_sorgu .= " AND X_T_ISMERKEZI <= '".$X_T_ISMERKEZI_E."' ";
-                                }
-
-                                if(Trim($GK_1_B) <> '') {
-                                    $sql_sorgu .= " AND GK_1 >= '".$GK_1_B."' ";
-                                }
-                                if(Trim($GK_1_E) <> '') {
-                                    $sql_sorgu .= " AND GK_1 <= '".$GK_1_E."' ";
-                                }
-
-                                if(Trim($RECTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND BASLANGIC_TARIHI >= '".$RECTARIH1_B."' ";
-                                }
-                                if(Trim($RECTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND BASLANGIC_TARIHI <= '".$RECTARIH1_E."' ";
-                                }
-
-                                if(Trim($RECTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND BASLANGIC_SAATI >= '".$RECTIME1_B."' ";
-                                }
-                                if(Trim($RECTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND BASLANGIC_SAATI <= '".$RECTIME1_E."' ";
-                                }
-
-                                if(Trim($ENDTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND BITIS_TARIHI >= '".$RECTARIH2_B."' ";
-                                }
-                                if(Trim($ENDTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND BITIS_TARIHI <= '".$RECTARIH2_E."' ";
-                                }
-
-                                if(Trim($ENDTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND BITIS_SAATI >= '".$RECTIME2_B."' ";
-                                }
-                                if(Trim($ENDTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND BITIS_SAATI <= '".$RECTIME2_E."' ";
-                                }
-
-                                if(Trim($URETIM_E) <> '' && is_numeric($URETIM_E)) {
-                                    $sql_sorgu .= " AND SF_MIKTAR <= ".$URETIM_E." ";
-                                }
-                                if(Trim($URETIM_B) <> '') {
-                                    $sql_sorgu .= " AND SF_MIKTAR >= '".$URETIM_B."' ";
-                                }
-                                
-
-                                $table = DB::select($sql_sorgu);                           
-
-                                foreach ($table as $table) {
-                                  echo "<tr>";
-                                  echo "<td></td>";
-                                  echo "<td><b>".$table->EVRAKNO."</b></td>";
-                                  echo "<td><b>".$table->TARIH."</b></td>";
-                                  echo "<td><b>".$table->STOK_CODE."</b></td>";
-                                  echo "<td><b>".$table->TO_OPERATOR."</b></td>";
-                                  echo "<td><b>".$table->OPERASYON."</b></td>";
-                                  echo "<td><b>".$table->TO_ISMERKEZI."</b></td>";
-                                  echo "<td><b>".$table->ISLEM_TURU."</b></td>";
-                                  echo "<td><b>".$table->BASLANGIC_TARIHI."</b></td>";
-                                  echo "<td><b>".$table->BASLANGIC_SAATI."</b></td>";
-                                  echo "<td><b>".$table->BITIS_TARIHI."</b></td>";
-                                  echo "<td><b>".$table->BITIS_SAATI."</b></td>";
-                                  echo "<td><b>".$table->SURE."</b></td>";
-                                  echo "<td><b>".floor($table->SF_MIKTAR)."</b></td>";
-                                  echo "<td><b><a class='btn btn-primary' href='calisma_bildirimi?ID=".$table->ID."'><i class='fa fa-chevron-circle-right'></i></a></b></td>";
-                                  echo "</tr>";
-                                }
-                              @endphp                          
-
-                            </tbody>
-
-                          </table>
-                          <div class="mt-3">
-                            <button type="button" class="btn btn-success" type="button" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
-                            <button type="button" class="btn btn-danger" type="button" onclick="exportTableToWord('example2')">Word'e Aktar</button>
-                            <button type="button" class="btn btn-primary" type="button" onclick="printTable('example2')">Yazdır</button>
+                          {{-- Aktar araç çubuğu --}}
+                          <div class="d-flex gap-2 mb-2">
+                              <button type="button" class="btn btn-sm btn-success" onclick="exportTableToExcel('liste_tablo')">
+                                  <i class="fas fa-file-excel me-1"></i> Excel'e Aktar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-danger" onclick="exportTableToWord('liste_tablo')">
+                                  <i class="fas fa-file-word me-1"></i> Word'e Aktar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-primary" onclick="printTable('liste_tablo')">
+                                  <i class="fas fa-print me-1"></i> Yazdır
+                              </button>
+                              <span class="ms-auto text-muted small align-self-center">
+                                  {{ $kayitlar->count() }} kayıt bulundu
+                              </span>
                           </div>
-                          @php
-                            }
-                          @endphp
 
-                        </div>
-                      </div>
+                          <div style="overflow-x: auto;">
+                              <table id="liste_tablo"
+                                    class="table table-hover table-bordered text-center align-middle"
+                                    data-page-length="25">
+                                  <thead class="table-primary">
+                                      <tr>
+                                          <th>#</th>
+                                          <th>Evrak No</th>
+                                          <th>Evrak Tarihi</th>
+                                          <th>Stok Kodu</th>
+                                          <th>Operatör</th>
+                                          <th>Operasyon</th>
+                                          <th>Tezgah Adı</th>
+                                          <th>İşlem Statüsü</th>
+                                          <th>Başlama Tarihi</th>
+                                          <th>Başlama Saati</th>
+                                          <th>Bitiş Tarihi</th>
+                                          <th>Bitiş Saati</th>
+                                          <th>Süre</th>
+                                          <th>Üretilen Miktar</th>
+                                          <th></th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      @forelse ($kayitlar as $i => $r)
+                                          <tr>
+                                              <td class="text-muted small">{{ $i + 1 }}</td>
+                                              <td><strong>{{ $r->EVRAKNO }}</strong></td>
+                                              <td>{{ $r->TARIH }}</td>
+                                              <td>{{ $r->STOK_CODE }}</td>
+                                              <td>{{ $r->TO_OPERATOR }}</td>
+                                              <td>{{ $r->OPERASYON }}</td>
+                                              <td>{{ $r->TO_ISMERKEZI }}</td>
+                                              <td>
+                                                  @php
+                                                      $badge = match($r->ISLEM_TURU) {
+                                                          'A' => ['bg-warning text-dark', 'Ayar'],
+                                                          'U' => ['bg-success',           'Üretim'],
+                                                          'D' => ['bg-danger',            'Duruş'],
+                                                          default => ['bg-secondary',     $r->ISLEM_TURU ?? '—'],
+                                                      };
+                                                  @endphp
+                                                  <span class="badge {{ $badge[0] }}">{{ $badge[1] }}</span>
+                                              </td>
+                                              <td>{{ $r->BASLANGIC_TARIHI }}</td>
+                                              <td>{{ $r->BASLANGIC_SAATI }}</td>
+                                              <td>{{ $r->BITIS_TARIHI }}</td>
+                                              <td>{{ $r->BITIS_SAATI }}</td>
+                                              <td>{{ $r->SURE }}</td>
+                                              <td>{{ floor($r->SF_MIKTAR) }}</td>
+                                              <td>
+                                                  <a class="btn btn-sm btn-primary"
+                                                    href="{{ url('calisma_bildirimi') }}?ID={{ $r->ID }}"
+                                                    title="Detay">
+                                                      <i class="fa fa-chevron-circle-right"></i>
+                                                  </a>
+                                              </td>
+                                          </tr>
+                                      @empty
+                                          <tr>
+                                              <td colspan="15" class="text-center text-muted py-4">
+                                                  <i class="fa fa-inbox fa-2x mb-2 d-block"></i>
+                                                  Filtreye uygun kayıt bulunamadı.
+                                              </td>
+                                          </tr>
+                                      @endforelse
+                                  </tbody>
+                                  @if ($kayitlar->isNotEmpty())
+                                  <tfoot class="table-primary">
+                                      <tr>
+                                          <th colspan="13" class="text-end">Toplam Üretilen:</th>
+                                          <th>{{ number_format($kayitlar->sum(fn($r) => floor($r->SF_MIKTAR))) }}</th>
+                                          <th></th>
+                                      </tr>
+                                  </tfoot>
+                                  @endif
+                              </table>
+                          </div>
+
+                      @elseif (!$suzAktif)
+                          <div class="alert alert-info">
+                              <i class="fa fa-info-circle me-1"></i>
+                              Filtreleri doldurup <strong>Süz</strong> butonuna basın.
+                          </div>
+                      @endif
+
+                  </div>{{-- /tab-pane#liste --}}
                     </div>
                   {{-- LİSTE BİTİŞ --}}
                   
