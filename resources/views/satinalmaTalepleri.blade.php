@@ -502,7 +502,7 @@
                             @php
                               $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
                               foreach ($evraklar as $key => $veri) {
-                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "|||" . $veri->LOTNUMBER . "|||" . $veri->NOT1 . "'>" . $veri->KOD . " - " . $veri->STOK_ADI . "</option>";
+                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "|||" . $veri->LOTNUMBER . "|||" . $veri->NOT1 . "|||" . $veri->SF_MIKTAR . "'>" . $veri->KOD . " - " . $veri->STOK_ADI . "</option>";
                               }
                             @endphp
                           </select>
@@ -1151,6 +1151,7 @@
         $('#TI_ARTNO').val(veriler[1]);
         $('#TI_LOTNUMBER_FILL').val(veriler[2]);
         $('#TI_NOT1_FILL').val(veriler[3]);
+        $('#SATIN_ALINACAK_MIK_FILL').val(veriler[4]);
       }
       function stokAdiGetirName2(veri) {
         const veriler = veri.split("|||");
