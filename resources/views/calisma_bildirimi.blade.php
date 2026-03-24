@@ -1081,10 +1081,10 @@
                                       {{-- MPS Stok Kodu --}}
                                       <div class="col-md-3">
                                           <label class="form-label fw-semibold">MPS Stok Kodu</label>
-                                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-select form-select-sm">
+                                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-select form-select-sm select2">
                                               {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_B) !!}
                                           </select>
-                                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-select form-select-sm mt-1">
+                                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-select form-select-sm mt-1 select2">
                                               {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_E) !!}
                                           </select>
                                           <div class="d-flex justify-content-between px-1 mt-1">
@@ -1096,10 +1096,10 @@
                                       {{-- Operatör --}}
                                       <div class="col-md-3">
                                           <label class="form-label fw-semibold">Operatör</label>
-                                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-select form-select-sm">
+                                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-select form-select-sm select2">
                                               {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_B) !!}
                                           </select>
-                                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-select form-select-sm mt-1">
+                                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-select form-select-sm mt-1 select2">
                                               {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_E) !!}
                                           </select>
                                           <div class="d-flex justify-content-between px-1 mt-1">
@@ -1111,10 +1111,10 @@
                                       {{-- Operasyon --}}
                                       <div class="col-md-3">
                                           <label class="form-label fw-semibold">Operasyon</label>
-                                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-select form-select-sm">
+                                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-select form-select-sm select2">
                                               {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_B) !!}
                                           </select>
-                                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-select form-select-sm mt-1">
+                                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-select form-select-sm mt-1 select2">
                                               {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_E) !!}
                                           </select>
                                           <div class="d-flex justify-content-between px-1 mt-1">
@@ -1126,10 +1126,10 @@
                                       {{-- Tezgah Adı --}}
                                       <div class="col-md-3">
                                           <label class="form-label fw-semibold">Tezgah Adı</label>
-                                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-select form-select-sm">
+                                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-select form-select-sm select2">
                                               {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_B) !!}
                                           </select>
-                                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-select form-select-sm mt-1">
+                                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-select form-select-sm mt-1 select2">
                                               {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_E) !!}
                                           </select>
                                           <div class="d-flex justify-content-between px-1 mt-1">
@@ -1141,13 +1141,13 @@
                                       {{-- Süreç Adı --}}
                                       <div class="col-md-3">
                                           <label class="form-label fw-semibold">Süreç Adı</label>
-                                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-select form-select-sm">
+                                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-select form-select-sm select2">
                                               <option value="">— Seç —</option>
                                               <option value="A" @selected($D7_ISLEM_KODU_B === 'A')>A — Ayar</option>
                                               <option value="U" @selected($D7_ISLEM_KODU_B === 'U')>U — Üretim</option>
                                               <option value="D" @selected($D7_ISLEM_KODU_B === 'D')>D — Duruş</option>
                                           </select>
-                                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-select form-select-sm mt-1">
+                                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-select form-select-sm mt-1 select2">
                                               <option value="">— Seç —</option>
                                               <option value="A" @selected($D7_ISLEM_KODU_E === 'A')>A — Ayar</option>
                                               <option value="U" @selected($D7_ISLEM_KODU_E === 'U')>U — Üretim</option>
@@ -1269,7 +1269,7 @@
                           </div>
 
                           <div style="overflow-x: auto;">
-                              <table id="liste_tablo"
+                              <table id="listeleTable"
                                     class="table table-hover table-bordered text-center align-middle"
                                     data-page-length="25">
                                   <thead class="table-primary">
@@ -1291,6 +1291,25 @@
                                           <th></th>
                                       </tr>
                                   </thead>
+                                  <tfoot class="table-primary">
+                                      <tr>
+                                          <th>#</th>
+                                          <th>Evrak No</th>
+                                          <th>Evrak Tarihi</th>
+                                          <th>Stok Kodu</th>
+                                          <th>Operatör</th>
+                                          <th>Operasyon</th>
+                                          <th>Tezgah Adı</th>
+                                          <th>İşlem Statüsü</th>
+                                          <th>Başlama Tarihi</th>
+                                          <th>Başlama Saati</th>
+                                          <th>Bitiş Tarihi</th>
+                                          <th>Bitiş Saati</th>
+                                          <th>Süre</th>
+                                          <th>Üretilen Miktar</th>
+                                          <th></th>
+                                      </tr>
+                                  </tfoot>
                                   <tbody>
                                       @forelse ($kayitlar as $i => $r)
                                           <tr>
@@ -1336,13 +1355,13 @@
                                       @endforelse
                                   </tbody>
                                   @if ($kayitlar->isNotEmpty())
-                                  <tfoot class="table-primary">
+                                  <div class="table-primary">
                                       <tr>
                                           <th colspan="13" class="text-end">Toplam Üretilen:</th>
                                           <th>{{ number_format($kayitlar->sum(fn($r) => floor($r->SF_MIKTAR))) }}</th>
                                           <th></th>
                                       </tr>
-                                  </tfoot>
+                                  </div>
                                   @endif
                               </table>
                           </div>

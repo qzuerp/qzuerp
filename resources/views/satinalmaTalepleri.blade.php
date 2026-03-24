@@ -685,160 +685,221 @@
                   </div>
                 </div>
 
-                <div class="tab-pane" id="liste">
-                  @php
-                    $stok00 = DB::table($database . 'stok00')->select('*')->get();
-                    $cari00 = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
+                @php
+                  /* ── FİLTRE PARAMETRELERİ ───────────────────────────────────── */
+                  $fp = function($key, $default = '') { return trim(request()->get($key, $default)); };
+
+                  $KOD_B        = $fp('KOD_B');
+                  $KOD_E        = $fp('KOD_E');
+                  $TEDARIKCI_B  = $fp('TEDARIKCI_B');
+                  $TEDARIKCI_E  = $fp('TEDARIKCI_E');
+                  $TARIH_B      = $fp('TARIH_B');
+                  $TARIH_E      = $fp('TARIH_E');
+                  $DURUM        = request()->has('DURUM');
+                  $SIPARIS_DURUM = $fp('SIPARIS_DURUM');
+
+                  /* ── AÇILIR KUTU VERİLERİ ───────────────────────────────────── */
+                  $stok00 = DB::table($database.'stok00')->select('*')->get();
+                  $cari00 = DB::table($database.'cari00')->orderBy('id','ASC')->get();
+
+                  /* ── YARDIMCI ───────────────────────────────────────────────── */
+                  $buildOptions = function($valField, $labelField, $items, $selected = '', $sep = ' | ') {
+                      $html = '<option value="">— Seç —</option>';
+                      foreach ($items as $item) {
+                          $val  = htmlspecialchars($item->$valField,   ENT_QUOTES);
+                          $lbl  = htmlspecialchars($item->$labelField, ENT_QUOTES);
+                          $sel  = ($val === $selected) ? ' selected' : '';
+                          $html .= "<option value=\"{$val}\"{$sel}>{$val}{$sep}{$lbl}</option>";
+                      }
+                      return $html;
+                  };
                   @endphp
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single"
-                      style=" height: 30PX">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
+                  <div class="tab-pane" id="liste">
+
+                      <form method="GET" action="" id="filtre-formu">
+                          <input type="hidden" name="SUZ" value="1">
+
+                          <div class="card shadow-sm mb-3">
+                              <div class="card-header bg-primary text-white py-2">
+                                  <i class="fa fa-filter me-1"></i> Filtre Kriterleri
+                              </div>
+                              <div class="card-body">
+                                  <div class="row g-3 align-items-end">
+
+                                      {{-- Stok Kodu --}}
+                                      <div class="col-md-4">
+                                          <label class="form-label fw-semibold">Stok Kodu</label>
+                                          <select name="KOD_B" id="KOD_B" class="form-select form-select-sm select2 js-example-basic-single">
+                                              {!! $buildOptions('KOD','AD',$stok00,$KOD_B,' - ') !!}
+                                          </select>
+                                          <select name="KOD_E" id="KOD_E" class="form-select form-select-sm select2 js-example-basic-single mt-1">
+                                              {!! $buildOptions('KOD','AD',$stok00,$KOD_E,' - ') !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
+
+                                      {{-- Müşteri Kodu --}}
+                                      <div class="col-md-4">
+                                          <label class="form-label fw-semibold">Müşteri Kodu</label>
+                                          <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-select form-select-sm select2 js-example-basic-single">
+                                              {!! $buildOptions('KOD','AD',$cari00,$TEDARIKCI_B,' | ') !!}
+                                          </select>
+                                          <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-select form-select-sm select2 js-example-basic-single mt-1">
+                                              {!! $buildOptions('KOD','AD',$cari00,$TEDARIKCI_E,' | ') !!}
+                                          </select>
+                                          <div class="d-flex justify-content-between mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
+
+                                      {{-- Tarih --}}
+                                      <div class="col-md-4">
+                                          <label class="form-label fw-semibold">Tarih</label>
+                                          <input type="date" class="form-control form-control-sm"
+                                                name="TARIH_B" id="TARIH_B" value="{{ $TARIH_B }}">
+                                          <input type="date" class="form-control form-control-sm mt-1"
+                                                name="TARIH_E" id="TARIH_E" value="{{ $TARIH_E }}">
+                                          <div class="d-flex justify-content-between mt-1">
+                                              <small class="text-muted">Başlangıç</small>
+                                              <small class="text-muted">Bitiş</small>
+                                          </div>
+                                      </div>
+
+                                      {{-- Aktif/Pasif --}}
+                                      <!-- <div class="col-md-4">
+                                          <div class="form-check form-switch">
+                                              <input class="form-check-input" type="checkbox"
+                                                    name="DURUM" id="DURUM" role="switch"
+                                                    {{ $DURUM ? 'checked' : '' }}>
+                                              <label class="form-check-label fw-semibold" for="DURUM">
+                                                  Sadece Aktif Kayıtlar
+                                              </label>
+                                          </div>
+                                      </div> -->
+
+                                      {{-- Sipariş Durumu --}}
+                                      <div class="col-md-5">
+                                          <label class="form-label fw-semibold d-block">Sipariş Durumu</label>
+                                          <div class="d-flex gap-3">
+                                              <div class="form-check">
+                                                  <input class="form-check-input" type="radio"
+                                                        name="SIPARIS_DURUM" id="rd_tumu" value="tumu"
+                                                        {{ $SIPARIS_DURUM === 'tumu' ? 'checked' : '' }}>
+                                                  <label class="form-check-label" for="rd_tumu">
+                                                      <span class="badge bg-secondary">Tümü</span>
+                                                  </label>
+                                              </div>
+                                              <div class="form-check">
+                                                  <input class="form-check-input" type="radio"
+                                                        name="SIPARIS_DURUM" id="rd_olanlar" value="olanlar"
+                                                        {{ $SIPARIS_DURUM === 'olanlar' ? 'checked' : '' }}>
+                                                  <label class="form-check-label" for="rd_olanlar">
+                                                      <span class="badge bg-success">Siparişi Olanlar</span>
+                                                  </label>
+                                              </div>
+                                              <div class="form-check">
+                                                  <input class="form-check-input" type="radio"
+                                                        name="SIPARIS_DURUM" id="rd_olmayanlar" value="olmayanlar"
+                                                        {{ $SIPARIS_DURUM === 'olmayanlar' ? 'checked' : '' }}>
+                                                  <label class="form-check-label" for="rd_olmayanlar">
+                                                      <span class="badge bg-danger">Siparişi Olmayanlar</span>
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      {{-- Butonlar --}}
+                                      <div class="col-md-3 d-flex gap-2">
+                                          <button type="submit" name="kart_islemleri" value="listele" class="btn btn-success">
+                                              <i class="fa fa-filter me-1"></i> Süz
+                                          </button>
+                                          <a href="{{ url()->current() }}" class="btn btn-outline-secondary">
+                                              <i class="fa fa-times me-1"></i> Temizle
+                                          </a>
+                                      </div>
+
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+
+                      <div class="row" style="overflow: auto">
+                        @php
+                        if (isset($_GET['SUZ'])) {
+                          @endphp
+											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+                          @php
+                          $q = DB::table(DB::raw('(
+                              SELECT S47T.*,S47E.CARIHESAPCODE,S00.AD,S00.IUNIT,
+                              (SELECT MAX(EVRAKNO) 
+                              FROM STOK46T 
+                              WHERE STOK46T.TALEP_ARTNO = S47T.ARTNO) AS SIPARISNO
+                              FROM stok47ti S47T
+                              LEFT JOIN STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
+                              LEFT JOIN STOK00 S00 ON S00.KOD = S47T.KOD
+                          ) as T1'));
+
+                          if ($SIPARIS_DURUM === 'olanlar') {
+                              $q->whereNotNull('SIPARISNO');
+                          } elseif ($SIPARIS_DURUM === 'olmayanlar') {
+                              $q->whereNull('SIPARISNO');
                           }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single"
-                      style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
+
+                          $veriler = $q->get();
+                        @endphp
+
+                          <table class="table table-hover table-bordered text-center align-middle" id="example2">
+                              <thead class="table-primary">
+                                  <tr>
+                                      <th>Cari Kod</th>
+                                      <th>Stok Kod</th>
+                                      <th>Stok Adı</th>
+                                      <th>Birim</th>
+                                      <th>Miktar</th>
+                                      <th>Fiyat</th>
+                                      <th>Para Birimi</th>
+                                      <th>Termin Tarihi</th>
+                                  </tr>
+                              </thead>
+                              <tfoot class="table-primary">
+                                  <tr>
+                                      <th>Cari Kod</th>
+                                      <th>Stok Kod</th>
+                                      <th>Stok Adı</th>
+                                      <th>Birim</th>
+                                      <th>Miktar</th>
+                                      <th>Fiyat</th>
+                                      <th>Para Birimi</th>
+                                      <th>Termin Tarihi</th>
+                                  </tr>
+                              </tfoot>
+                              <tbody>
+                                  @foreach($veriler as $row)
+                                      <tr>
+                                          <td>{{ $row->CARIHESAPCODE }}</td>
+                                          <td>{{ $row->KOD }}</td>
+                                          <td>{{ $row->AD }}</td>
+                                          <td>{{ $row->IUNIT }}</td>
+                                          <td>{{ $row->SF_MIKTAR }}</td>
+                                          <td>{{ $row->FIYAT }}</td>
+                                          <td>{{ $row->FIYAT_PB }}</td>
+                                          <td>{{ $row->TERMIN_TAR }}</td>
+                                      </tr>
+                                  @endforeach
+                              </tbody>
+                          </table>
+
+                          @php
                           }
-                        }
+                          @endphp
+                      </div>
 
-                      @endphp
-                    </select>
-                  </div>
-                  </br></br>
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Müşteri Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control select2 js-example-basic-single"
-                      style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-
-                        foreach ($cari00 as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                            echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                          } else {
-                            echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control select2 js-example-basic-single"
-                      style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-
-                        foreach ($cari00 as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                            echo "<option value ='>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                          } else {
-                            echo "<option value =''>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div></br></br>
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Tarih</label>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_B" id="TARIH_B">
-                  </div>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_E" id="TARIH_E">
-                  </div><br><br>
-
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Aktif/Pasif</label>
-                  <div class="col-sm-3">
-                    <input type="checkbox" class="" name="DURUM" id="DURUM">
-                  </div><br><br>
-
-                  <div class="col-sm-3">
-                    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele"
-                      value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
-                  </div>
-
-                  <div class="row " style="overflow: auto">
-
-                    @php
-                      if (isset($_GET['SUZ'])) {
-                        $veriler = DB::table($database . 'stok47ti as ti')
-                          ->join($database . 'stok47e as S47E', 'ti.EVRAKNO', '=', 'S47E.EVRAKNO')
-                          ->join($database . 'stok00 as s', 'ti.KOD', '=', 's.KOD')
-                          ->select(
-                            'ti.*',
-                            's.AD as STOK_AD',
-                            's.IUNIT',
-                            'S47E.AK',
-                          )
-                          ->get();
-                    @endphp
-                    <table class="table table-bordered" id="example2">
-                      <thead>
-                        <tr>
-                          <th>Cari Kod</th>
-                          <th>Stok Kod</th>
-                          <th>Stok Adı</th>
-                          <th>Birim</th>
-                          <th>Miktar</th>
-                          <th>Fiyat</th>
-                          <th>Para Birimi</th>
-                          <th>Termin Tarihi</th>
-                          <th>A/K</th>
-                        </tr>
-                      </thead>
-                      <tfoot>
-                        <tr>
-                          <th>Cari Kod</th>
-                          <th>Stok Kod</th>
-                          <th>Stok Adı</th>
-                          <th>Birim</th>
-                          <th>Miktar</th>
-                          <th>Fiyat</th>
-                          <th>Para Birimi</th>
-                          <th>Termin Tarihi</th>
-                          <th>A/K</th>
-                        </tr>
-                      </tfoot>
-                      <tbody>
-                        @foreach($veriler as $row)
-                          <tr>
-                            <td>{{ $row->CARI_KODU }}</td>
-                            <td>{{ $row->KOD }}</td>
-                            <td>{{ $row->STOK_AD }}</td>
-                            <td>{{ $row->IUNIT }}</td>
-                            <td>{{ $row->SF_MIKTAR }}</td>
-                            <td>{{ $row->FIYAT }}</td>
-                            <td>{{ $row->FIYAT_PB }}</td>
-                            <td>{{ $row->TERMIN_TAR }}</td>
-                            <td>{{ $row->AK }}</td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                    @php
-                      }
-                    @endphp
-                  </div>
-                </div>
+                    </div>
 
                 <div class="tab-pane" id="baglantiliDokumanlar">
                   @include('layout.util.baglantiliDokumanlar')
@@ -1218,19 +1279,19 @@
         });
 
         $('#create_order').on('click', function (e) {
-          if (evrakDegisti) {
-            e.preventDefault();
-            e.stopPropagation();
+          // if (evrakDegisti) {
+          //   e.preventDefault();
+          //   e.stopPropagation();
 
-            Swal.fire({
-              icon: 'warning',
-              title: 'Evrak Kaydedilmeli!',
-              text: 'Siparişleri oluşturmak için önce evrakı kaydetmelisiniz.',
-              confirmButtonText: 'Tamam'
-            });
+          //   Swal.fire({
+          //     icon: 'warning',
+          //     title: 'Evrak Kaydedilmeli!',
+          //     text: 'Siparişleri oluşturmak için önce evrakı kaydetmelisiniz.',
+          //     confirmButtonText: 'Tamam'
+          //   });
 
-            return false;
-          }
+          //   return false;
+          // }
           $('#veriTable2 tbody tr').each(function () {
             const checked = $(this).find('input[type="checkbox"]').is(':checked');
 

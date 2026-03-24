@@ -95,6 +95,7 @@ class stok47_controller extends Controller
     $TI_LOTNUMBER = $request->TI_LOTNUMBER;
     $TI_NOT1 = $request->TI_NOT1;
     $T_AK = $request->T_AK;
+    $SIPARIS_DURUM = $request->SIPARIS_DURUM;
 
     if ($KOD == null) {
       $satir_say = 0;
@@ -128,6 +129,7 @@ class stok47_controller extends Controller
           'TARIH_B' => $TARIH_B,
           'TARIH_E' => $TARIH_E,
           'DURUM' => $DURUM,
+          'SIPARIS_DURUM'=> $SIPARIS_DURUM,
           'firma' => $firma  // $firma değişkeni burada eklendi
         ]);
 
@@ -575,6 +577,7 @@ class stok47_controller extends Controller
             'SF_SF_UNIT' => $STOK->IUNIT,
             // 'ARTNO' => $request->TI_ARTNO[$i],
             'TALEP_EVRAKNO' => $EVRAKNO,
+            'TALEP_ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
             'LOTNUMBER' => $TI_LOTNUMBER[$i],
             'NOT1' => $TI_NOT1[$i],
             'AK' => 'A'

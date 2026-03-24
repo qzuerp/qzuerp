@@ -850,8 +850,11 @@ class teklif_fiyat_analizV2 extends Controller
             ->where('T20O.OR_TRNUM', $request->TRNUM)
             ->orderBy('T20O.SIRA','asc')
             ->get(['T20O.OPERASYON','I00.GK_1']);
+
+        $rows_TI = DB::table($firma.'tekl20tı')->where('EVRAKNO',$evrakno)->where('OR_TRNUM',$request->TRNUM)->get();
         return response()->json([
-            'data' => $results
+            'data' => $results,
+            'rows' => $rows_TI
         ]);
     }
     public function malzeme_get(Request $request)

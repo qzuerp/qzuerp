@@ -78,701 +78,697 @@
 			transform: rotate(-15deg);
 		}
 
-/* =====================================================
-   SATIR DETAY MODALİ — SOFT & PROFESSIONAL REDESIGN
-   ===================================================== */
-
-	#satir_detay *,
-	#satir_detay *::before,
-	#satir_detay *::after {
-		box-sizing: border-box;
-	}
-
-	/* ── MODAL SHELL ── */
-	#satir_detay .modal-content {
-		border: none;
-		border-radius: 16px;
-		overflow: hidden;
-		box-shadow: 0 24px 64px rgba(15, 23, 42, 0.14), 0 4px 16px rgba(15, 23, 42, 0.06);
-		background: #f8f9fc;
-	}
-
-	/* ── MODAL HEADER ── */
-	#satir_detay .modal-header {
-		background: #ffffff;
-		border-bottom: 1px solid #eef0f6;
-		padding: 14px 24px;
-		backdrop-filter: blur(12px);
-	}
-
-	#satir_detay .modal-title {
-		font-size: 14px;
-		font-weight: 600;
-		color: #1e293b;
-		letter-spacing: -0.01em;
-	}
-
-	#satir_detay .modal-title i {
-		color: #6366f1;
-		margin-right: 6px;
-	}
-
-	#satir_detay .btn-close {
-		width: 28px;
-		height: 28px;
-		background-color: #f1f5f9;
-		border-radius: 8px;
-		opacity: 0.7;
-		transition: all 0.18s ease;
-	}
-
-	#satir_detay .btn-close:hover {
-		background-color: #e2e8f0;
-		opacity: 1;
-	}
-
-	/* ── TABS ── */
-	#satir_detay .nav-tabs {
-		background: #ffffff;
-		border-bottom: 1px solid #eef0f6;
-		padding: 0 20px;
-		gap: 2px;
-	}
-
-	#satir_detay .nav-tabs .nav-link {
-		font-size: 12.5px;
-		font-weight: 500;
-		color: #64748b;
-		padding: 10px 16px;
-		border: none;
-		border-bottom: 2px solid transparent;
-		border-radius: 0;
-		transition: all 0.18s ease;
-		margin-bottom: -1px;
-		background: transparent;
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		white-space: nowrap;
-	}
-
-	#satir_detay .nav-tabs .nav-link i {
-		font-size: 11px;
-		opacity: 0.7;
-	}
-
-	#satir_detay .nav-tabs .nav-link:hover {
-		color: #4f46e5;
-		background: #f5f3ff;
-		border-radius: 8px 8px 0 0;
-	}
-
-	#satir_detay .nav-tabs .nav-link.active {
-		color: #4f46e5;
-		border-bottom-color: #4f46e5;
-		font-weight: 600;
-		background: transparent;
-	}
-
-	#satir_detay .nav-tabs .nav-link.active i {
-		opacity: 1;
-	}
-
-	/* ── TAB CONTENT ── */
-	#satir_detay .tab-content {
-		padding: 24px !important;
-		background: #f8f9fc;
-		min-height: 420px;
-	}
-
-	/* ── FORM LABELS ── */
-	#satir_detay .form-label {
-		font-size: 11.5px;
-		font-weight: 600;
-		color: #475569;
-		letter-spacing: 0.02em;
-		margin-bottom: 5px;
-		text-transform: uppercase;
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
-
-	#satir_detay .form-label i {
-		font-size: 10px;
-		color: #94a3b8;
-	}
-
-	/* ── FORM CONTROLS ── */
-	#satir_detay .form-control {
-		border: 1.5px solid #e2e8f0;
-		border-radius: 8px;
-		font-size: 13px;
-		font-weight: 400;
-		color: #1e293b;
-		background: #ffffff;
-		padding: 8px 12px;
-		transition: all 0.18s ease;
-		height: auto;
-		box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-	}
-
-	#satir_detay .form-control::placeholder {
-		color: #c1c9d8;
-		font-weight: 300;
-	}
-
-	#satir_detay .form-control:focus {
-		border-color: #818cf8;
-		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-		background: #fff;
-		outline: none;
-	}
-
-	#satir_detay . {
-		font-size: 12.5px;
-		padding: 6px 10px;
-		border-radius: 7px;
-	}
-
-	#satir_detay .input-group-text {
-		background: #f1f5f9;
-		border: 1.5px solid #e2e8f0;
-		border-left: none;
-		border-radius: 0 8px 8px 0;
-		color: #64748b;
-		font-size: 9px;
-		font-weight: 600;
-		padding: 0 2px;
-	}
-
-	/* ── SELECT (native) ── */
-	#satir_detay select.form-control {
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
-		background-repeat: no-repeat;
-		background-position: right 12px center;
-		padding-right: 32px;
-		-webkit-appearance: none;
-		appearance: none;
-	}
-
-	/* ── GENEL TAB — CARDS ── */
-	#satir_detay #genel .col-md-4,
-	#satir_detay #genel .col-md-6,
-	#satir_detay #genel .col-4 {
-		position: relative;
-	}
-
-	#satir_detay #genel .row {
-		background: #ffffff;
-		border-radius: 12px;
-		padding: 20px;
-		border: 1px solid #eef0f6;
-		box-shadow: 0 1px 4px rgba(15,23,42,0.04);
-	}
-
-	/* ── OPERASYON SEÇ TAB ── */
-	#satir_detay #operasyonSec h6 {
-		font-size: 13px;
-		font-weight: 600;
-		color: #1e293b;
-	}
-
-	#satir_detay #operasyonSec hr {
-		border-color: #eef0f6;
-		opacity: 1;
-	}
-
-	#satir_detay #selectAll,
-	#satir_detay #deselectAll {
-		font-size: 11.5px;
-		font-weight: 500;
-		border-radius: 7px;
-		padding: 5px 12px;
-		transition: all 0.18s;
-	}
-
-	#satir_detay #selectAll {
-		background: #4f46e5;
-		border-color: #4f46e5;
-		color: #fff;
-	}
-
-	#satir_detay #selectAll:hover {
-		background: #3730a3;
-		border-color: #3730a3;
-	}
-
-	#satir_detay #deselectAll {
-		background: #f1f5f9;
-		border-color: #e2e8f0;
-		color: #64748b;
-	}
-
-	#satir_detay #deselectAll:hover {
-		background: #e2e8f0;
-		color: #334155;
-	}
-
-	/* ── OPERATION CARDS ── */
-	.operation-card {
-		position: relative;
-		width: 100%;
-		user-select: none;
-	}
-
-	.checkbox-input {
-		position: absolute;
-		opacity: 0;
-		cursor: pointer;
-	}
-
-	.operation-label {
-		display: flex;
-		align-items: center;
-		padding: 9px 11px;
-		border: 1.5px solid #e8eaf2;
-		border-radius: 10px;
-		cursor: pointer;
-		transition: all 0.18s ease;
-		background: #ffffff;
-		gap: 8px;
-		box-shadow: 0 1px 3px rgba(15,23,42,0.04);
-	}
-
-	.operation-label:hover {
-		border-color: #a5b4fc;
-		box-shadow: 0 2px 8px rgba(99,102,241,0.1);
-		transform: translateY(-1px);
-	}
-
-	.checkbox-input:checked + .operation-label {
-		border-color: #6366f1;
-		background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
-		box-shadow: 0 2px 8px rgba(99,102,241,0.15);
-	}
-
-	.operation-icon {
-		flex-shrink: 0;
-		width: 30px;
-		height: 30px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: #f1f5f9;
-		border-radius: 7px;
-		color: #94a3b8;
-		font-size: 12px;
-		font-weight: 700;
-		font-family: 'DM Mono', monospace;
-		transition: all 0.18s;
-	}
-
-	.checkbox-input:checked + .operation-label .operation-icon {
-		background: #6366f1;
-		color: #fff;
-	}
-
-	.operation-content {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-		min-width: 0;
-	}
-
-	.operation-name {
-		font-weight: 600;
-		color: #1e293b;
-		font-size: 12px;
-		line-height: 1.3;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.operation-code {
-		font-size: 10.5px;
-		color: #94a3b8;
-		line-height: 1.1;
-		font-family: 'DM Mono', monospace;
-	}
-
-	.operation-check {
-		flex-shrink: 0;
-		width: 18px;
-		height: 18px;
-		border: 1.5px solid #cbd5e1;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.18s;
-	}
-
-	.operation-check i {
-		font-size: 9px;
-		opacity: 0;
-		transition: opacity 0.18s;
-	}
-
-	.checkbox-input:checked + .operation-label .operation-check {
-		background: #6366f1;
-		border-color: #6366f1;
-	}
-
-	.checkbox-input:checked + .operation-label .operation-check i {
-		color: #fff;
-		opacity: 1;
-	}
-
-	.checkbox-input:focus + .operation-label {
-		outline: 2px solid #6366f1;
-		outline-offset: 2px;
-	}
-
-	/* ── HAMMADDE PANELİ — REDESIGN ── */
-	.hammadde-panel {
-		border: 1.5px solid #fde68a;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 2px 12px rgba(245,158,11,0.08), 0 1px 4px rgba(0,0,0,0.04);
-		background: #fff;
-	}
-
-	.hammadde-panel-header {
-		background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-		border-bottom: 1.5px solid #fde68a;
-		padding: 12px 18px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.hammadde-icon-wrap {
-		width: 36px;
-		height: 36px;
-		background: #f59e0b;
-		border-radius: 9px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: #fff;
-		font-size: 16px;
-		flex-shrink: 0;
-		box-shadow: 0 2px 6px rgba(245,158,11,0.3);
-	}
-
-	.hammadde-title {
-		display: block;
-		font-size: 13px;
-		font-weight: 700;
-		color: #78350f;
-		line-height: 1.3;
-	}
-
-	.hammadde-subtitle {
-		display: block;
-		font-size: 11px;
-		color: #a16207;
-		font-weight: 400;
-	}
-
-	.hammadde-badge {
-		background: #f59e0b;
-		color: #fff;
-		font-size: 10.5px;
-		font-weight: 600;
-		padding: 3px 10px;
-		border-radius: 20px;
-		letter-spacing: 0.2px;
-		box-shadow: 0 1px 4px rgba(245,158,11,0.25);
-	}
-
-	.hammadde-panel-body {
-		padding: 18px;
-		background: #fffcf0;
-	}
-
-	.hammadde-input {
-		border-color: #fcd34d !important;
-	}
-
-	.hammadde-input:focus {
-		border-color: #f59e0b !important;
-		box-shadow: 0 0 0 3px rgba(245,158,11,0.12) !important;
-	}
-
-	/* ── OPERASYON DETAY KARTLARI ── */
-	.operation-detail-card {
-		border: 1.5px solid rgb(194, 194, 194);
-		border-radius: 10px;
-		overflow: hidden;
-		height: 100%;
-		background: #ffffff;
-		box-shadow: 0 1px 4px rgba(15,23,42,0.04);
-		transition: box-shadow 0.18s;
-	}
-
-	.operation-detail-card:hover {
-		box-shadow: 0 4px 12px rgba(15,23,42,0.08);
-	}
-
-	.operation-detail-card .card-header {
-		background: #f8f9fc;
-		color: #334155;
-		padding: 8px 12px;
-		font-size: 12px;
-		font-weight: 600;
-		border-bottom: 1px solid #eef0f6;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.operation-detail-card .card-header button {
-		width: 22px;
-		height: 22px;
-		border: none;
-		outline: none;
-		background: #e8eaf2;
-		border-radius: 6px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		transition: all 0.15s;
-		padding: 0;
-	}
-
-	.operation-detail-card .card-header button:hover {
-		background: #6366f1;
-		color: #fff;
-	}
-
-	.operation-detail-card .card-header button i {
-		font-size: 10px;
-		color: inherit;
-	}
-
-	.operation-detail-card .card-body {
-		padding: 10px;
-		background: #fff;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	.form-label-sm {
-		font-size: 10.5px;
-		font-weight: 600;
-		color: #64748b;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-		margin-bottom: 3px;
-		display: block;
-	}
-
-	/* ── MASTAR TAB ── */
-	#satir_detay #mastar .form-label {
-		text-transform: none;
-		font-size: 12.5px;
-	}
-
-	#satir_detay #masrafTable {
-		font-size: 12.5px;
-		border-radius: 8px;
-		overflow: hidden;
-		border: 1.5px solid #eef0f6;
-	}
-
-	#satir_detay #masrafTable thead tr:first-child th {
-		background: #f8f9fc;
-		color: #475569;
-		font-size: 11px;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		padding: 8px 12px;
-		border-color: #eef0f6;
-	}
-
-	#satir_detay #masrafTable .satirEkle2 {
-		background: #f5f3ff !important;
-	}
-
-	#satir_detay #masrafTable .satirEkle2 td {
-		padding: 6px;
-		border-color: #e8eaf2;
-	}
-
-	#satir_detay #masrafTable tbody tr td {
-		padding: 7px 12px;
-		vertical-align: middle;
-		border-color: #eef0f6;
-	}
-
-	/* ── FSN SATIR GRUBU ── */
-	.satir-grubu {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-	}
-
-	.satir-grubu label {
-		font-size: 10.5px;
-		font-weight: 600;
-		color: #64748b;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.satir-grubu .birim-select {
-		font-size: 10px;
-		padding: 0 4px;
-		max-width: 40px;
-		border-left: none;
-		border-radius: 0 8px 8px 0;
-		background: #f8f9fc;
-		color: #475569;
-	}
-
-	.satir-grubu .bol,
-	.satir-grubu .geri {
-		font-size: 11px;
-		padding: 4px 10px;
-		border-radius: 7px;
-		border: none;
-		font-weight: 500;
-		transition: all 0.15s;
-	}
-
-	.satir-grubu .bol {
-		background: #eef2ff;
-		color: #4f46e5;
-	}
-
-	.satir-grubu .bol:hover {
-		background: #4f46e5;
-		color: #fff;
-	}
-
-	.satir-grubu .geri {
-		background: #f8f9fc;
-		color: #64748b;
-	}
-
-	.satir-grubu .geri:hover {
-		background: #e2e8f0;
-		color: #334155;
-	}
-
-	/* ── MODAL FOOTER ── */
-	#satir_detay .modal-footer {
-		background: #ffffff;
-		border-top: 1px solid #eef0f6;
-		padding: 12px 20px;
-		justify-content: space-between !important;
-	}
-
-	#satir_detay #TOPLANICAK_LABEL,
-	#satir_detay #LABEL_SF_MIKTAR {
-		font-size: 12.5px;
-		font-weight: 700;
-		color: #dc2626;
-		font-family: 'DM Mono', monospace;
-	}
-
-	#satir_detay .modal-footer .btn-secondary {
-		background: #f1f5f9;
-		border: 1.5px solid #e2e8f0;
-		color: #475569;
-		border-radius: 8px;
-		font-size: 13px;
-		font-weight: 500;
-		padding: 7px 18px;
-		transition: all 0.18s;
-	}
-
-	#satir_detay .modal-footer .btn-secondary:hover {
-		background: #e2e8f0;
-		color: #1e293b;
-	}
-
-	#satir_detay .modal-footer .btn-success {
-		background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-		border: none;
-		color: #fff;
-		border-radius: 8px;
-		font-size: 13px;
-		font-weight: 600;
-		padding: 7px 20px;
-		transition: all 0.2s;
-		box-shadow: 0 2px 8px rgba(99,102,241,0.25);
-	}
-
-	#satir_detay .modal-footer .btn-success:hover {
-		transform: translateY(-1px);
-		box-shadow: 0 4px 14px rgba(99,102,241,0.35);
-		background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%);
-	}
-
-	#satir_detay .modal-footer .btn-success:active {
-		transform: translateY(0);
-	}
-
-	/* ── DRAG OVERLAY ── */
-	#drag-overlay {
-		position: fixed;
-		inset: 0;
-		background: rgba(15, 23, 42, 0.82);
-		backdrop-filter: blur(6px);
-		display: none;
-		align-items: center;
-		justify-content: center;
-		z-index: 999999;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	#drag-overlay.active {
-		display: flex;
-	}
-
-	#drag-overlay .text {
-		color: #fff;
-		font-size: 28px;
-		font-weight: 600;
-		pointer-events: none;
-		font-family: 'DM Sans', sans-serif;
-		letter-spacing: -0.02em;
-	}
-
-	#drag-overlay .text i {
-		font-size: 56px;
-		transform: rotate(-12deg);
-		display: block;
-		margin-bottom: 8px;
-		color: #818cf8;
-	}
-
-	/* ── RESPONSIVE ── */
-	@media (max-width: 768px) {
+		#satir_detay *,
+		#satir_detay *::before,
+		#satir_detay *::after {
+			box-sizing: border-box;
+		}
+
+		/* ── MODAL SHELL ── */
+		#satir_detay .modal-content {
+			border: none;
+			border-radius: 16px;
+			overflow: hidden;
+			box-shadow: 0 24px 64px rgba(15, 23, 42, 0.14), 0 4px 16px rgba(15, 23, 42, 0.06);
+			background: #f8f9fc;
+		}
+
+		/* ── MODAL HEADER ── */
+		#satir_detay .modal-header {
+			background: #ffffff;
+			border-bottom: 1px solid #eef0f6;
+			padding: 14px 24px;
+			backdrop-filter: blur(12px);
+		}
+
+		#satir_detay .modal-title {
+			font-size: 14px;
+			font-weight: 600;
+			color: #1e293b;
+			letter-spacing: -0.01em;
+		}
+
+		#satir_detay .modal-title i {
+			color: #6366f1;
+			margin-right: 6px;
+		}
+
+		#satir_detay .btn-close {
+			width: 28px;
+			height: 28px;
+			background-color: #f1f5f9;
+			border-radius: 8px;
+			opacity: 0.7;
+			transition: all 0.18s ease;
+		}
+
+		#satir_detay .btn-close:hover {
+			background-color: #e2e8f0;
+			opacity: 1;
+		}
+
+		/* ── TABS ── */
+		#satir_detay .nav-tabs {
+			background: #ffffff;
+			border-bottom: 1px solid #eef0f6;
+			padding: 0 20px;
+			gap: 2px;
+		}
+
+		#satir_detay .nav-tabs .nav-link {
+			font-size: 12.5px;
+			font-weight: 500;
+			color: #64748b;
+			padding: 10px 16px;
+			border: none;
+			border-bottom: 2px solid transparent;
+			border-radius: 0;
+			transition: all 0.18s ease;
+			margin-bottom: -1px;
+			background: transparent;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			white-space: nowrap;
+		}
+
+		#satir_detay .nav-tabs .nav-link i {
+			font-size: 11px;
+			opacity: 0.7;
+		}
+
+		#satir_detay .nav-tabs .nav-link:hover {
+			color: #4f46e5;
+			background: #f5f3ff;
+			border-radius: 8px 8px 0 0;
+		}
+
+		#satir_detay .nav-tabs .nav-link.active {
+			color: #4f46e5;
+			border-bottom-color: #4f46e5;
+			font-weight: 600;
+			background: transparent;
+		}
+
+		#satir_detay .nav-tabs .nav-link.active i {
+			opacity: 1;
+		}
+
+		/* ── TAB CONTENT ── */
 		#satir_detay .tab-content {
-			padding: 14px !important;
+			padding: 24px !important;
+			background: #f8f9fc;
+			min-height: 420px;
 		}
-		.operation-label {
-			padding: 8px 10px;
-		}
-		.operation-name {
+
+		/* ── FORM LABELS ── */
+		#satir_detay .form-label {
 			font-size: 11.5px;
+			font-weight: 600;
+			color: #475569;
+			letter-spacing: 0.02em;
+			margin-bottom: 5px;
+			text-transform: uppercase;
+			display: flex;
+			align-items: center;
+			gap: 5px;
 		}
-		#satir_detay .modal-footer {
+
+		#satir_detay .form-label i {
+			font-size: 10px;
+			color: #94a3b8;
+		}
+
+		/* ── FORM CONTROLS ── */
+		#satir_detay .form-control {
+			border: 1.5px solid #e2e8f0;
+			border-radius: 8px;
+			font-size: 13px;
+			font-weight: 400;
+			color: #1e293b;
+			background: #ffffff;
+			padding: 8px 12px;
+			transition: all 0.18s ease;
+			height: auto;
+			box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+		}
+
+		#satir_detay .form-control::placeholder {
+			color: #c1c9d8;
+			font-weight: 300;
+		}
+
+		#satir_detay .form-control:focus {
+			border-color: #818cf8;
+			box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+			background: #fff;
+			outline: none;
+		}
+
+		#satir_detay . {
+			font-size: 12.5px;
+			padding: 6px 10px;
+			border-radius: 7px;
+		}
+
+		#satir_detay .input-group-text {
+			background: #f1f5f9;
+			border: 1.5px solid #e2e8f0;
+			border-left: none;
+			border-radius: 0 8px 8px 0;
+			color: #64748b;
+			font-size: 9px;
+			font-weight: 600;
+			padding: 0 2px;
+		}
+
+		/* ── SELECT (native) ── */
+		#satir_detay select.form-control {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 12px center;
+			padding-right: 32px;
+			-webkit-appearance: none;
+			appearance: none;
+		}
+
+		/* ── GENEL TAB — CARDS ── */
+		#satir_detay #genel .col-md-4,
+		#satir_detay #genel .col-md-6,
+		#satir_detay #genel .col-4 {
+			position: relative;
+		}
+
+		#satir_detay #genel .row {
+			background: #ffffff;
+			border-radius: 12px;
+			padding: 20px;
+			border: 1px solid #eef0f6;
+			box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+		}
+
+		/* ── OPERASYON SEÇ TAB ── */
+		#satir_detay #operasyonSec h6 {
+			font-size: 13px;
+			font-weight: 600;
+			color: #1e293b;
+		}
+
+		#satir_detay #operasyonSec hr {
+			border-color: #eef0f6;
+			opacity: 1;
+		}
+
+		#satir_detay #selectAll,
+		#satir_detay #deselectAll {
+			font-size: 11.5px;
+			font-weight: 500;
+			border-radius: 7px;
+			padding: 5px 12px;
+			transition: all 0.18s;
+		}
+
+		#satir_detay #selectAll {
+			background: #4f46e5;
+			border-color: #4f46e5;
+			color: #fff;
+		}
+
+		#satir_detay #selectAll:hover {
+			background: #3730a3;
+			border-color: #3730a3;
+		}
+
+		#satir_detay #deselectAll {
+			background: #f1f5f9;
+			border-color: #e2e8f0;
+			color: #64748b;
+		}
+
+		#satir_detay #deselectAll:hover {
+			background: #e2e8f0;
+			color: #334155;
+		}
+
+		/* ── OPERATION CARDS ── */
+		.operation-card {
+			position: relative;
+			width: 100%;
+			user-select: none;
+		}
+
+		.checkbox-input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.operation-label {
+			display: flex;
+			align-items: center;
+			padding: 9px 11px;
+			border: 1.5px solid #e8eaf2;
+			border-radius: 10px;
+			cursor: pointer;
+			transition: all 0.18s ease;
+			background: #ffffff;
+			gap: 8px;
+			box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+		}
+
+		.operation-label:hover {
+			border-color: #a5b4fc;
+			box-shadow: 0 2px 8px rgba(99,102,241,0.1);
+			transform: translateY(-1px);
+		}
+
+		.checkbox-input:checked + .operation-label {
+			border-color: #6366f1;
+			background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+			box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+		}
+
+		.operation-icon {
+			flex-shrink: 0;
+			width: 30px;
+			height: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #f1f5f9;
+			border-radius: 7px;
+			color: #94a3b8;
+			font-size: 12px;
+			font-weight: 700;
+			font-family: 'DM Mono', monospace;
+			transition: all 0.18s;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-icon {
+			background: #6366f1;
+			color: #fff;
+		}
+
+		.operation-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 1px;
+			min-width: 0;
+		}
+
+		.operation-name {
+			font-weight: 600;
+			color: #1e293b;
+			font-size: 12px;
+			line-height: 1.3;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.operation-code {
+			font-size: 10.5px;
+			color: #94a3b8;
+			line-height: 1.1;
+			font-family: 'DM Mono', monospace;
+		}
+
+		.operation-check {
+			flex-shrink: 0;
+			width: 18px;
+			height: 18px;
+			border: 1.5px solid #cbd5e1;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.18s;
+		}
+
+		.operation-check i {
+			font-size: 9px;
+			opacity: 0;
+			transition: opacity 0.18s;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-check {
+			background: #6366f1;
+			border-color: #6366f1;
+		}
+
+		.checkbox-input:checked + .operation-label .operation-check i {
+			color: #fff;
+			opacity: 1;
+		}
+
+		.checkbox-input:focus + .operation-label {
+			outline: 2px solid #6366f1;
+			outline-offset: 2px;
+		}
+
+		/* ── HAMMADDE PANELİ — REDESIGN ── */
+		.hammadde-panel {
+			border: 1.5px solid #fde68a;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 2px 12px rgba(245,158,11,0.08), 0 1px 4px rgba(0,0,0,0.04);
+			background: #fff;
+		}
+
+		.hammadde-panel-header {
+			background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+			border-bottom: 1.5px solid #fde68a;
+			padding: 12px 18px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.hammadde-icon-wrap {
+			width: 36px;
+			height: 36px;
+			background: #f59e0b;
+			border-radius: 9px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #fff;
+			font-size: 16px;
+			flex-shrink: 0;
+			box-shadow: 0 2px 6px rgba(245,158,11,0.3);
+		}
+
+		.hammadde-title {
+			display: block;
+			font-size: 13px;
+			font-weight: 700;
+			color: #78350f;
+			line-height: 1.3;
+		}
+
+		.hammadde-subtitle {
+			display: block;
+			font-size: 11px;
+			color: #a16207;
+			font-weight: 400;
+		}
+
+		.hammadde-badge {
+			background: #f59e0b;
+			color: #fff;
+			font-size: 10.5px;
+			font-weight: 600;
+			padding: 3px 10px;
+			border-radius: 20px;
+			letter-spacing: 0.2px;
+			box-shadow: 0 1px 4px rgba(245,158,11,0.25);
+		}
+
+		.hammadde-panel-body {
+			padding: 18px;
+			background: #fffcf0;
+		}
+
+		.hammadde-input {
+			border-color: #fcd34d !important;
+		}
+
+		.hammadde-input:focus {
+			border-color: #f59e0b !important;
+			box-shadow: 0 0 0 3px rgba(245,158,11,0.12) !important;
+		}
+
+		/* ── OPERASYON DETAY KARTLARI ── */
+		.operation-detail-card {
+			border: 1.5px solid rgb(194, 194, 194);
+			border-radius: 10px;
+			overflow: hidden;
+			height: 100%;
+			background: #ffffff;
+			box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+			transition: box-shadow 0.18s;
+		}
+
+		.operation-detail-card:hover {
+			box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+		}
+
+		.operation-detail-card .card-header {
+			background: #f8f9fc;
+			color: #334155;
+			padding: 8px 12px;
+			font-size: 12px;
+			font-weight: 600;
+			border-bottom: 1px solid #eef0f6;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.operation-detail-card .card-header button {
+			width: 22px;
+			height: 22px;
+			border: none;
+			outline: none;
+			background: #e8eaf2;
+			border-radius: 6px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: all 0.15s;
+			padding: 0;
+		}
+
+		.operation-detail-card .card-header button:hover {
+			background: #6366f1;
+			color: #fff;
+		}
+
+		.operation-detail-card .card-header button i {
+			font-size: 10px;
+			color: inherit;
+		}
+
+		.operation-detail-card .card-body {
+			padding: 10px;
+			background: #fff;
+			display: flex;
 			flex-direction: column;
 			gap: 8px;
-			align-items: stretch !important;
 		}
-	}
+
+		.form-label-sm {
+			font-size: 10.5px;
+			font-weight: 600;
+			color: #64748b;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+			margin-bottom: 3px;
+			display: block;
+		}
+
+		/* ── MASTAR TAB ── */
+		#satir_detay #mastar .form-label {
+			text-transform: none;
+			font-size: 12.5px;
+		}
+
+		#satir_detay #masrafTable {
+			font-size: 12.5px;
+			border-radius: 8px;
+			overflow: hidden;
+			border: 1.5px solid #eef0f6;
+		}
+
+		#satir_detay #masrafTable thead tr:first-child th {
+			background: #f8f9fc;
+			color: #475569;
+			font-size: 11px;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+			padding: 8px 12px;
+			border-color: #eef0f6;
+		}
+
+		#satir_detay #masrafTable .satirEkle2 {
+			background: #f5f3ff !important;
+		}
+
+		#satir_detay #masrafTable .satirEkle2 td {
+			padding: 6px;
+			border-color: #e8eaf2;
+		}
+
+		#satir_detay #masrafTable tbody tr td {
+			padding: 7px 12px;
+			vertical-align: middle;
+			border-color: #eef0f6;
+		}
+
+		/* ── FSN SATIR GRUBU ── */
+		.satir-grubu {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.satir-grubu label {
+			font-size: 10.5px;
+			font-weight: 600;
+			color: #64748b;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+		}
+
+		.satir-grubu .birim-select {
+			font-size: 10px;
+			padding: 0 4px;
+			max-width: 40px;
+			border-left: none;
+			border-radius: 0 8px 8px 0;
+			background: #f8f9fc;
+			color: #475569;
+		}
+
+		.satir-grubu .bol,
+		.satir-grubu .geri {
+			font-size: 11px;
+			padding: 4px 10px;
+			border-radius: 7px;
+			border: none;
+			font-weight: 500;
+			transition: all 0.15s;
+		}
+
+		.satir-grubu .bol {
+			background: #eef2ff;
+			color: #4f46e5;
+		}
+
+		.satir-grubu .bol:hover {
+			background: #4f46e5;
+			color: #fff;
+		}
+
+		.satir-grubu .geri {
+			background: #f8f9fc;
+			color: #64748b;
+		}
+
+		.satir-grubu .geri:hover {
+			background: #e2e8f0;
+			color: #334155;
+		}
+
+		/* ── MODAL FOOTER ── */
+		#satir_detay .modal-footer {
+			background: #ffffff;
+			border-top: 1px solid #eef0f6;
+			padding: 12px 20px;
+			justify-content: space-between !important;
+		}
+
+		#satir_detay #TOPLANICAK_LABEL,
+		#satir_detay #LABEL_SF_MIKTAR {
+			font-size: 12.5px;
+			font-weight: 700;
+			color: #dc2626;
+			font-family: 'DM Mono', monospace;
+		}
+
+		#satir_detay .modal-footer .btn-secondary {
+			background: #f1f5f9;
+			border: 1.5px solid #e2e8f0;
+			color: #475569;
+			border-radius: 8px;
+			font-size: 13px;
+			font-weight: 500;
+			padding: 7px 18px;
+			transition: all 0.18s;
+		}
+
+		#satir_detay .modal-footer .btn-secondary:hover {
+			background: #e2e8f0;
+			color: #1e293b;
+		}
+
+		#satir_detay .modal-footer .btn-success {
+			background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+			border: none;
+			color: #fff;
+			border-radius: 8px;
+			font-size: 13px;
+			font-weight: 600;
+			padding: 7px 20px;
+			transition: all 0.2s;
+			box-shadow: 0 2px 8px rgba(99,102,241,0.25);
+		}
+
+		#satir_detay .modal-footer .btn-success:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+			background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%);
+		}
+
+		#satir_detay .modal-footer .btn-success:active {
+			transform: translateY(0);
+		}
+
+		/* ── DRAG OVERLAY ── */
+		#drag-overlay {
+			position: fixed;
+			inset: 0;
+			background: rgba(15, 23, 42, 0.82);
+			backdrop-filter: blur(6px);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 999999;
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		#drag-overlay.active {
+			display: flex;
+		}
+
+		#drag-overlay .text {
+			color: #fff;
+			font-size: 28px;
+			font-weight: 600;
+			pointer-events: none;
+			font-family: 'DM Sans', sans-serif;
+			letter-spacing: -0.02em;
+		}
+
+		#drag-overlay .text i {
+			font-size: 56px;
+			transform: rotate(-12deg);
+			display: block;
+			margin-bottom: 8px;
+			color: #818cf8;
+		}
+
+		/* ── RESPONSIVE ── */
+		@media (max-width: 768px) {
+			#satir_detay .tab-content {
+				padding: 14px !important;
+			}
+			.operation-label {
+				padding: 8px 10px;
+			}
+			.operation-name {
+				font-size: 11.5px;
+			}
+			#satir_detay .modal-footer {
+				flex-direction: column;
+				gap: 8px;
+				align-items: stretch !important;
+			}
+		}
 	</style>
 
 	<div id="drag-overlay">
@@ -2230,8 +2226,7 @@
 
 				$('#uygula').prop('disabled',true);
 				setTimeout(() => {
-					
-				$('#uygula').prop('disabled',false);
+					$('#uygula').prop('disabled',false);
 				}, 1500);
 
 				let DIGER_TOPLAM = 0;
@@ -2260,7 +2255,7 @@
 						_token: '{{ csrf_token() }}',
 					},
 					success: function (res) {
-						let container = $('.row.g-2.OPRS_CONTAINER');
+						let container = $('.row.g-2.OPRS_CONTAINER');	
 
 						secimSirasi = res.data.map(x => x.OPERASYON);
 
@@ -2281,36 +2276,29 @@
 
 						let operasyonSayac = {};
 
-						$('#maliyetDetayTable tbody tr:not(.group-footer)').each(function(rowIndex) {
-							let row = $(this);
-							let rowOR = row.find('input[name="OR_TRNUM[]"]').val();
-							
-							if (rowOR != OR_TRNUM)
-							{
-								return;
-							}
-
-							let tip = row.find('input[name="KAYNAKTYPE2[]"]').val();
+						res.rows.forEach(function(row) {
+							console.log(row.KAYNAKTYPE);
+							let tip = row.KAYNAKTYPE;
 
 							if (tip === 'H') {
-								let kod = row.find('input[name="KOD2[]"]').val();
+								let kod = row.KOD;
 								$mc.val(kod);
 								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
-								$('#MALZEME_TUTARI').val(row.find('input[name="FIYAT2[]"]').val());
-								$('#OLCU1').val(row.find('input[name="H_OLCU[]"]').val()).trigger('change');
+								$('#MALZEME_TUTARI').val(row.FIYAT);
+								$('#OLCU1').val(row.OLCU).trigger('change');
 								return;
 							}
 
 							if (tip === 'M') {
-								let kod = row.find('input[name="KOD2[]"]').val();
+								let kod = row.KOD;
 								$('#mastarSelect').val(kod).trigger('change');
-								$('#mastarD').val(row.find('input[name="FIYAT2[]"]').val());
+								$('#mastarD').val(row.FIYAT);
 								return;
 							}
 
 							if (tip !== 'I') return;
 
-							let k = row.find('input[name="KOD2[]"]').val();
+							let k = row.KOD;
 
 							operasyonSayac[k] = (operasyonSayac[k] || 0);
 							let kartIndex = operasyonSayac[k];
@@ -2322,15 +2310,15 @@
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
 							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
 
-							let ayar       = parseFloat(row.find('input[name="AYAR[]"]').val()) || 0;
-							let isleme     = parseFloat(row.find('input[name="ISLEME[]"]').val()) || 0;
-							let soktak     = parseFloat(row.find('input[name="SOKTAK[]"]').val()) || 0;
-							let fiyat      = parseFloat(row.find('input[name="FIYAT2[]"]').val()) || 0;
-							let fiyat2     = parseFloat(row.find('input[name="FIYAT_2[]"]').val()) || 0;
-							let paraBirimi = row.find('input[name="PARA_BIRIMI2[]"]').val() || '';
-							let birimFiyat = row.find('input[name="BIRIM_FIYAT[]"]').val();
-							let not        = row.find('input[name="NOTT[]"]').val() || '';
-							let ad        = row.find('input[name="KODADI2[]"]').val() || '';
+							let ayar       = parseFloat(row.AYAR) || 0;
+							let isleme     = parseFloat(row.ISLEME) || 0;
+							let soktak     = parseFloat(row.SOKTAK) || 0;
+							let fiyat      = parseFloat(row.FIYAT) || 0;
+							let fiyat2     = parseFloat(row.FIYAT2) || 0;
+							let paraBirimi = row.PRICEUNIT || '';
+							let birimFiyat = row.BIRIM_FIYAT;
+							let not        = row.NOT || '';
+							let ad        = row.STOK_AD1 || '';
 
 							
 
@@ -2871,13 +2859,9 @@
 				});
 
 				function operasyonlariTabloyaBas(){
-
 					let OR_TRNUM = $('#OR_TRNUM').val();
 
-					$('#maliyetDetayTable tbody tr:not(.group-footer').each(function(){
-						let val = $(this).find('input[name="OR_TRNUM[]"]').val();
-						if(val == OR_TRNUM) $(this).remove();
-					});
+					$.ajax
 
 					let HKOD = $('#MALZEME_CINSI').val();
 					let SF_IUNIT = $('#SF_IUNIT').val() || 0;
