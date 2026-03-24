@@ -1673,7 +1673,7 @@
 						htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='" + setValueOfJsonObject(kartVerisi2.STOK_ADI) + "' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='" + setValueOfJsonObject(kartVerisi2.STOK_ADI) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + setValueOfJsonObject(kartVerisi2.LOTNUMBER) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly></td> ";
-						htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='" + setValueOfJsonObject(kartVerisi2.SF_BAKIYE) + "'></td> ";
+						htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='" + setValueOfJsonObject(kartVerisi2.SF_MIKTAR) + "'></td> ";
 						htmlCode += " input type='hidden' class='form-control' name='FIYAT[]' value='" + setValueOfJsonObject(kartVerisi2.FIYAT) + "'></td> ";
 						htmlCode += " input type='hidden' class='form-control' name='FIYAT_PB[]' value='" + setValueOfJsonObject(kartVerisi2.FIYAT_PB) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='" + setValueOfJsonObject(kartVerisi2.SF_SF_UNIT) + "' readonly><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='" + setValueOfJsonObject(kartVerisi2.SF_SF_UNIT) + "'></td> ";
