@@ -609,7 +609,7 @@ class stok29_controller extends Controller
           'TARIH' => $TARIH,
           'KOD' => $KOD,
           'STOK_ADI' => $STOK_ADI,
-          'LOTNUMBER' => $LOTNUMBER,
+          'LOTNO' => $LOTNUMBER,
           'SERINO' => $SERINO_ETIKET,
           'MPS_BILGISI' => $MPS_BILGISI,
           'MIKTAR' => $SF_MIKTAR,
