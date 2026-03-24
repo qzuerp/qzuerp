@@ -62,7 +62,7 @@ h1 {
 
 .logo-container {
   width: 100%;
-  height: 6mm;
+  height: 4mm;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,8 +113,8 @@ h1 {
       </div>
       
       <div class="text-content">
-        <h2>{{ $data['KOD'][$i] ?? '' }}</h2>
-        <h2>{{ $data['LOTNO'][$i] ?? '' }}</h2>
+        <h3>{{ $data['KOD'][$i] ?? '' }}</h3>
+        <h4>{{ $data['LOTNO'][$i] ?? '' }}</h4>
       </div>
 
       <svg class="barcode" data-value="{{ $barcodeVal }}"></svg>
