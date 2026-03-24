@@ -113,7 +113,7 @@ h1 {
       </div>
       
       <div class="text-content">
-        <h1 class="m-0 p-0">{{ $data['KOD'][$i] ?? '' }}</h1>
+        <h3 class="m-0 p-0">{{ $data['KOD'][$i] ?? '' }}</h3>
         <h3 class="m-0 p-0">{{ $data['LOTNO'][$i] ?? '' }}</h3>
       </div>
 
