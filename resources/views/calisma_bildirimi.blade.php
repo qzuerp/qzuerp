@@ -1114,7 +1114,7 @@
                                 <th></th>
                                 <th>Evrak No</th>
                                 <th>Evrak Tarihi</th>
-                                <th>MPS No</th>
+                                <th>Stok Kodu</th>
                                 <th>Operatör</th>
                                 <th>Operasyon</th>
                                 <th>Tezgah Adı</th>
@@ -1133,7 +1133,7 @@
                                 <th></th>
                                 <th>Evrak No</th>
                                 <th>Evrak Tarihi</th>
-                                <th>MPS No</th>
+                                <th>Stok Kodu</th>
                                 <th>Operatör</th>
                                 <th>Operasyon</th>
                                 <th>Tezgah Adı</th>
@@ -1283,57 +1283,31 @@
                                 }
 
                                 if(Trim($RECTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH1 >= '".$RECTARIH1_B."' ";
+                                    $sql_sorgu .= " AND BASLANGIC_TARIHI >= '".$RECTARIH1_B."' ";
                                 }
                                 if(Trim($RECTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH1 <= '".$RECTARIH1_E."' ";
+                                    $sql_sorgu .= " AND BASLANGIC_TARIHI <= '".$RECTARIH1_E."' ";
                                 }
 
                                 if(Trim($RECTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND RECTIME1 >= '".$RECTIME1_B."' ";
+                                    $sql_sorgu .= " AND BASLANGIC_SAATI >= '".$RECTIME1_B."' ";
                                 }
                                 if(Trim($RECTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND RECTIME1 <= '".$RECTIME1_E."' ";
-                                }
-
-                                if(Trim($RECTARIH2_B) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH2 >= '".$RECTARIH2_B."' ";
-                                }
-                                if(Trim($RECTARIH2_E) <> '') {
-                                    $sql_sorgu .= " AND RECTARIH2 <= '".$RECTARIH2_E."' ";
-                                }
-
-                                if(Trim($RECTIME2_B) <> '') {
-                                    $sql_sorgu .= " AND RECTIME2 >= '".$RECTIME2_B."' ";
-                                }
-                                if(Trim($RECTIME2_E) <> '') {
-                                    $sql_sorgu .= " AND RECTIME2 <= '".$RECTIME2_E."' ";
+                                    $sql_sorgu .= " AND BASLANGIC_SAATI <= '".$RECTIME1_E."' ";
                                 }
 
                                 if(Trim($ENDTARIH1_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH1 >= '".$ENDTARIH1_B."' ";
+                                    $sql_sorgu .= " AND BITIS_TARIHI >= '".$RECTARIH2_B."' ";
                                 }
                                 if(Trim($ENDTARIH1_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH1 <= '".$ENDTARIH1_E."' ";
-                                }
-                                if(Trim($ENDTIME1_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME1 >= '".$ENDTIME1_B."' ";
-                                }
-                                if(Trim($ENDTIME1_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME1 <= '".$ENDTIME1_E."' ";
+                                    $sql_sorgu .= " AND BITIS_TARIHI <= '".$RECTARIH2_E."' ";
                                 }
 
-                                if(Trim($ENDTARIH2_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH2 >= '".$ENDTARIH2_B."' ";
+                                if(Trim($ENDTIME1_B) <> '') {
+                                    $sql_sorgu .= " AND BITIS_SAATI >= '".$RECTIME2_B."' ";
                                 }
-                                if(Trim($ENDTARIH2_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTARIH2 <= '".$ENDTARIH2_E."' ";
-                                }
-                                if(Trim($ENDTIME2_B) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME2 >= '".$ENDTIME2_B."' ";
-                                }
-                                if(Trim($ENDTIME2_E) <> '') {
-                                    $sql_sorgu .= " AND ENDTIME2 <= '".$ENDTIME2_E."' ";
+                                if(Trim($ENDTIME1_E) <> '') {
+                                    $sql_sorgu .= " AND BITIS_SAATI <= '".$RECTIME2_E."' ";
                                 }
 
                                 if(Trim($URETIM_E) <> '' && is_numeric($URETIM_E)) {

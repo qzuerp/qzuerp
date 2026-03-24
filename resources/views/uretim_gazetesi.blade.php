@@ -149,7 +149,7 @@ SELECT
     S00.AD AS mamul_ad,
     M10E.MUSTERIKODU AS musteri_kod,
     C00.AD AS musteri_ad,
-    M10E.SIPNO AS sip_no,
+    S40E.CHSIPNO AS sip_no,
     M10E.SIPARTNO AS sip_art_no,
     S40T.SF_MIKTAR AS sip_miktar,
     M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
@@ -191,7 +191,7 @@ SELECT
     S002.AD AS mamul_ad,
     S40E2.CARIHESAPCODE AS musteri_kod,
     C002.AD AS musteri_ad,
-    S40.EVRAKNO AS sip_no,
+    S40E2.CHSIPNO AS sip_no,
     S40.ARTNO AS sip_art_no,
     S40.SF_MIKTAR AS sip_miktar,
     S40.URETILEN_MIKTARI AS uretilen_miktar,
@@ -219,7 +219,7 @@ SELECT
     S00.AD AS mamul_ad,
     M10E.MUSTERIKODU AS musteri_kod,
     C00.AD AS musteri_ad,
-    M10E.SIPNO AS sip_no,
+    S40E.CHSIPNO AS sip_no,
     M10E.SIPARTNO AS sip_art_no,
     S40T.SF_MIKTAR AS sip_miktar,
     M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
@@ -292,6 +292,8 @@ foreach ($rows as $r) {
             'sip_bakiye' => is_null($r['sip_bakiye']) ? null : (float)$r['sip_bakiye'],
             'fason_depo' => is_null($r['FASON_DEPO']) ? null : $r['FASON_DEPO'],
             'fason' => $r['FASON_SEVK'] .' / ' . $r['FASON_GELEN'],
+            'FASON_SEVK' => $r['FASON_SEVK'],
+            'FASON_GELEN' => $r['FASON_GELEN'],
             'DOSYA' => $r['DOSYA'] ,
             'ops' => []
         ];
@@ -922,7 +924,7 @@ usort($groups, function($a, $b) {
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
-                                <td><?= htmlspecialchars($g['fason_depo'] ?? '') ?></td>
+                                <td><?= $g['FASON_SEVK'] == $g['FASON_GELEN'] ? '' : htmlspecialchars($g['fason_depo'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {

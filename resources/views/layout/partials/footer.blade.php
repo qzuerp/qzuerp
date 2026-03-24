@@ -204,7 +204,26 @@
   </script>
 @endif
 
-
+@if($errors->has('stok_hatasi'))
+  <script>
+    iziToast.success({
+      // title: 'Başarılı!',
+      message: '{{ $errors->first('stok_hatasi') }}',
+      position: 'topRight',
+      timeout: 5000,
+      progressBar: true,
+      transitionIn: 'fadeInUp',
+      transitionOut: 'fadeOut',
+      close: true,
+      backgroundColor: '#f9f9f9',
+      titleColor: '#333',
+      messageColor: '#555',
+      progressBarColor: '#4CAF50',
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845648.png',
+      closeOnEscape: true
+    });
+  </script>
+@endif
 
 @if (session('error'))
   <script>

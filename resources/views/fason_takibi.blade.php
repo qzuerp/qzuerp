@@ -233,7 +233,7 @@
                                 <h4 class="mb-1"><i class="fas fa-boxes mr-2"></i>Fason Takibi Listesi</h4>
                                 <p class="mb-0 opacity-75">Toplam kayıt</p>
                             </div>
-                            <a class="export-btn">
+                            <a class="export-btn" href="{{ route('fason_takibi_export') }}">
                                 <i class="fas fa-file-excel"></i>Excel'e Aktar
                             </a>
                         </div>

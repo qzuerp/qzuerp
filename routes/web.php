@@ -265,6 +265,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Fason Takibi 
     Route::get('fason_takibi',function () { return view('fason_takibi'); });
+    
 
     // Stok69 - Geçerli Lokasyonlar
     Route::get('gecerlilokasyonlar', [stok69_controller::class, 'index'])->name('gecerlilokasyonlar');
