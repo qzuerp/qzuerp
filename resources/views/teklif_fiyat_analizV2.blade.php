@@ -2861,127 +2861,158 @@
 				function operasyonlariTabloyaBas(){
 					let OR_TRNUM = $('#OR_TRNUM').val();
 
-					$.ajax
 
-					let HKOD = $('#MALZEME_CINSI').val();
-					let SF_IUNIT = $('#SF_IUNIT').val() || 0;
-					let StokAdi  = $('#StokAdi').val() || 0;
+					let HKOD      = $('#MALZEME_CINSI').val();
+					let SF_IUNIT  = $('#SF_IUNIT').val() || 0;
+					let StokAdi   = $('#StokAdi').val() || 0;
 					let SF_MIKTAR = $('#SF_MIKTAR').val() || 0;
-					let TUTAR = $('#MALZEME_TUTARI').val();
-					let TEKLIF_PB =  '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
-					let OLCU1 = $('#OLCU1').val();
-					let HTRNUM = getTRNUM();
+					let TUTAR     = $('#MALZEME_TUTARI').val();
+					let TEKLIF_PB = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
+					let OLCU1     = $('#OLCU1').val();
+					let HTRNUM    = getTRNUM();
+
 					let htr = `
 						<tr>
-							<input type="hidden" name="TRNUM3[]" value="${HTRNUM}">
-							<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
-							<td><input type="text" name="KAYNAKTYPE2[]" value="H" class="form-control" readonly></td> 
-							<td><input type="text" name="KOD2[]" value="${HKOD}" class="form-control" readonly></td> 
-							<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
-							<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="AYAR[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="ISLEME[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="SOKTAK[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
-							<td><input type="text" name="NOTT[]" value="" class="form-control" readonly></td>
-							<td class="text-end"><input type="text" name="FIYAT2[]" value="${TUTAR}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
-							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-							<td><input type="text" name="H_OLCU[]" value="${OLCU1}" class="form-control" readonly></td>
+							<input type="hidden" name="TRNUM3[]"         value="${HTRNUM}">
+							<input type="hidden" name="OR_TRNUM[]"       value="${OR_TRNUM}">
+							<td><input type="text" name="KAYNAKTYPE2[]"  value="H"                         class="form-control" readonly></td>
+							<td><input type="text" name="KOD2[]"         value="${HKOD}"                   class="form-control" readonly></td>
+							<td><input type="text" name="KODADI2[]"      value=""                           class="form-control"></td>
+							<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"            class="form-control number"></td>
+							<td><input type="text" name="BIRIM_FIYAT[]"  value=""                           class="form-control number"></td>
+							<td><input type="text" name="AYAR[]"         value=""                           class="form-control number"></td>
+							<td><input type="text" name="ISLEME[]"       value=""                           class="form-control number"></td>
+							<td><input type="text" name="SOKTAK[]"       value=""                           class="form-control number"></td>
+							<td><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}"              class="form-control" readonly></td>
+							<td><input type="text" name="NOTT[]"         value=""                           class="form-control" readonly></td>
+							<td><input type="text" name="FIYAT2[]"       value="${TUTAR}"                  class="form-control number"></td>
+							<td><input type="text" name="FIYAT_2[]"      value=""                           class="form-control number"></td>
+							<td><input type="text" name="TUTAR2[]"       value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
+							<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}"              class="form-control" readonly></td>
+							<td><input type="text" name="H_OLCU[]"       value="${OLCU1}"                  class="form-control" readonly></td>
 						</tr>`;
-
 					$('#maliyetDetayTable tbody').append(htr);
-
 					updateLastTRNUM(HTRNUM);
 
 					let MTUTAR = $('#mastarD').val();
-
-					if (!isNaN(parseFloat(MTUTAR))) 
-					{
-						let MKOD = $('#mastarSelect').val();
+					if (!isNaN(parseFloat(MTUTAR))) {
+						let MKOD   = $('#mastarSelect').val();
 						let MTRNUM = getTRNUM();
 						let Mtr = `
 							<tr>
-								<input type="hidden" name="TRNUM3[]" value="${MTRNUM}">
-								<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
-								<td><input type="text" name="KAYNAKTYPE2[]" value="M" class="form-control" readonly></td> 
-								<td><input type="text" name="KOD2[]" value="${MKOD}" class="form-control" readonly></td> 
-								<td class="text-end"><input type="text" name="KODADI2[]" value="" class="form-control"></td>
-								<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="AYAR[]" value="" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="ISLEME[]" value="" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="SOKTAK[]" value="" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
-								<td><input type="text" name="NOTT[]" value="" class="form-control" readonly></td>
-								<td class="text-end"><input type="text" name="FIYAT2[]" value="${MTUTAR}" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="FIYAT_2[]" value="" class="form-control number"></td>
-								<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(MTUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
-								<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}" class="form-control" readonly></td>
-								<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
+								<input type="hidden" name="TRNUM3[]"         value="${MTRNUM}">
+								<input type="hidden" name="OR_TRNUM[]"       value="${OR_TRNUM}">
+								<td><input type="text" name="KAYNAKTYPE2[]"  value="M"                          class="form-control" readonly></td>
+								<td><input type="text" name="KOD2[]"         value="${MKOD}"                    class="form-control" readonly></td>
+								<td><input type="text" name="KODADI2[]"      value=""                            class="form-control"></td>
+								<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"             class="form-control number"></td>
+								<td><input type="text" name="BIRIM_FIYAT[]"  value=""                            class="form-control number"></td>
+								<td><input type="text" name="AYAR[]"         value=""                            class="form-control number"></td>
+								<td><input type="text" name="ISLEME[]"       value=""                            class="form-control number"></td>
+								<td><input type="text" name="SOKTAK[]"       value=""                            class="form-control number"></td>
+								<td><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}"               class="form-control" readonly></td>
+								<td><input type="text" name="NOTT[]"         value=""                            class="form-control" readonly></td>
+								<td><input type="text" name="FIYAT2[]"       value="${MTUTAR}"                  class="form-control number"></td>
+								<td><input type="text" name="FIYAT_2[]"      value=""                            class="form-control number"></td>
+								<td><input type="text" name="TUTAR2[]"       value="${round(MTUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
+								<td><input type="text" name="PARA_BIRIMI2[]" value="${TEKLIF_PB}"               class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]"       value=""                            class="form-control" readonly></td>
 							</tr>`;
-
 						$('#maliyetDetayTable tbody').append(Mtr);
 						updateLastTRNUM(MTRNUM);
 					}
 
 					$('.operation-detail-card').not(':last').each(function(){
 						let $parent = $(this).parent();
-						
-						if ($parent.css('display') !== 'block') {
-							return true;
-						}
+						if ($parent.css('display') !== 'block') return true;
 
-						let kart = $(this);
-						let kod   = kart.find('.OPERASYON_KOD').text();
-						let ad   = kart.find('.OPERASYON_AD').text();
-						let total = kart.find('.TOTAL').val() || 0;
-						let ayar = kart.find('.TIME').val() || 0;
-						let ISLEME = kart.find('.PTIME').val() || 0;
-						let SOKTAK = kart.find('.STIME').val() || 0;
+						let kart        = $(this);
+						let kod         = kart.find('.OPERASYON_KOD').text();
+						let ad          = kart.find('.OPERASYON_AD').text();
+						let total       = kart.find('.TOTAL').val()       || 0;
+						let ayar        = kart.find('.TIME').val()        || 0;
+						let ISLEME      = kart.find('.PTIME').val()       || 0;
+						let SOKTAK      = kart.find('.STIME').val()       || 0;
 						let OParaBirimi = kart.find('.birim-select').val();
-						let FIYAT2 = kart.find('.tutar-input').val() || 0;
-						let BIRIM_FIYAT = kart.find('.PRICE').val() || 0;
-						let NOT = kart.find('.T_NOT').val() || '';
-						let TRNUM = getTRNUM();
+						let FIYAT2      = kart.find('.tutar-input').val() || 0;
+						let BIRIM_FIYAT = kart.find('.PRICE').val()       || 0;
+						let NOT         = kart.find('.T_NOT').val()       || '';
+						let TRNUM       = getTRNUM();
 
 						let tr = `
-						<tr>
-							<input type="hidden" name="TRNUM3[]" value="${TRNUM}">
-							<input type="hidden" name="OR_TRNUM[]" value="${OR_TRNUM}">
-							<td><input type="text" name="KAYNAKTYPE2[]" value="I" class="form-control" readonly></td> 
-							<td><input type="text" name="KOD2[]" value="${kod}" class="form-control" readonly></td> 
-							<td class="text-end"><input type="text" name="KODADI2[]" value="${ad}" class="form-control"></td>
-							<td class="text-end"><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="BIRIM_FIYAT[]" value="${BIRIM_FIYAT}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="AYAR[]" value="${ayar}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="ISLEME[]" value="${ISLEME}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="SOKTAK[]" value="${SOKTAK}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}" class="form-control" readonly></td>
-							<td><input type="text" name="NOTT[]" value="${NOT}" class="form-control" readonly></td>
-							<td class="text-end"><input type="text" name="FIYAT2[]" value="${total}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="FIYAT_2[]" value="${String(FIYAT2) ?? ''}" class="form-control number"></td>
-							<td class="text-end"><input type="text" name="TUTAR2[]" value="${round(total * SF_MIKTAR)}" class="form-control number" readonly></td>
-							<td><input type="text" name="PARA_BIRIMI2[]" value="${OParaBirimi || TEKLIF_PB}" class="form-control" readonly></td>
-							<td><input type="text" name="H_OLCU[]" value="" class="form-control" readonly></td>
-						</tr>`;
-
+							<tr>
+								<input type="hidden" name="TRNUM3[]"         value="${TRNUM}">
+								<input type="hidden" name="OR_TRNUM[]"       value="${OR_TRNUM}">
+								<td><input type="text" name="KAYNAKTYPE2[]"  value="I"                        class="form-control" readonly></td>
+								<td><input type="text" name="KOD2[]"         value="${kod}"                   class="form-control" readonly></td>
+								<td><input type="text" name="KODADI2[]"      value="${ad}"                    class="form-control"></td>
+								<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"          class="form-control number"></td>
+								<td><input type="text" name="BIRIM_FIYAT[]"  value="${BIRIM_FIYAT}"          class="form-control number"></td>
+								<td><input type="text" name="AYAR[]"         value="${ayar}"                  class="form-control number"></td>
+								<td><input type="text" name="ISLEME[]"       value="${ISLEME}"                class="form-control number"></td>
+								<td><input type="text" name="SOKTAK[]"       value="${SOKTAK}"                class="form-control number"></td>
+								<td><input type="text" name="ISLEM_BIRIMI2[]" value="${SF_IUNIT}"            class="form-control" readonly></td>
+								<td><input type="text" name="NOTT[]"         value="${NOT}"                   class="form-control" readonly></td>
+								<td><input type="text" name="FIYAT2[]"       value="${total}"                 class="form-control number"></td>
+								<td><input type="text" name="FIYAT_2[]"      value="${String(FIYAT2) ?? ''}" class="form-control number"></td>
+								<td><input type="text" name="TUTAR2[]"       value="${round(total * SF_MIKTAR)}" class="form-control number" readonly></td>
+								<td><input type="text" name="PARA_BIRIMI2[]" value="${OParaBirimi || TEKLIF_PB}" class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]"       value=""                         class="form-control" readonly></td>
+							</tr>`;
 						$('#maliyetDetayTable tbody').append(tr);
-
 						updateLastTRNUM(TRNUM);
 					});
-					$('.tutar-input').val('').trigger('change');
-					$('.TIME').val('').trigger('change');
-					$('.PTIME').val('').trigger('change');
-					$('.STIME').val('').trigger('change');
-					$('.AYAR_TUTAR').val('').trigger('change');
-					$('.ISLEM_TUTAR').val('').trigger('change');
-					$('.SOKTAK_TUTAR').val('').trigger('change');
-					$('.TOPLANICAK').val('').trigger('change');
-					$('.TOTAL').val('').trigger('change');
-					$('.T_NOT').val('').trigger('change');
+
+					['.tutar-input','.TIME','.PTIME','.STIME','.AYAR_TUTAR',
+					'.ISLEM_TUTAR','.SOKTAK_TUTAR','.TOPLANICAK','.TOTAL','.T_NOT']
+						.forEach(sel => $(sel).val('').trigger('change'));
+
+					gonderTabloVerisi(OR_TRNUM);
+				}
+
+				function gonderTabloVerisi(OR_TRNUM) {
+					let satirlar = [];
+
+					$('#maliyetDetayTable tbody tr').each(function(){
+						let $tr = $(this);
+						satirlar.push({
+							TRNUM3         : $tr.find('input[name="TRNUM3[]"]').val(),
+							OR_TRNUM       : $tr.find('input[name="OR_TRNUM[]"]').val(),
+							KAYNAKTYPE2    : $tr.find('input[name="KAYNAKTYPE2[]"]').val(),
+							KOD2           : $tr.find('input[name="KOD2[]"]').val(),
+							KODADI2        : $tr.find('input[name="KODADI2[]"]').val(),
+							ISLEM_MIKTARI2 : $tr.find('input[name="ISLEM_MIKTARI2[]"]').val(),
+							BIRIM_FIYAT    : $tr.find('input[name="BIRIM_FIYAT[]"]').val(),
+							AYAR           : $tr.find('input[name="AYAR[]"]').val(),
+							ISLEME         : $tr.find('input[name="ISLEME[]"]').val(),
+							SOKTAK         : $tr.find('input[name="SOKTAK[]"]').val(),
+							ISLEM_BIRIMI2  : $tr.find('input[name="ISLEM_BIRIMI2[]"]').val(),
+							NOTT           : $tr.find('input[name="NOTT[]"]').val(),
+							FIYAT2         : $tr.find('input[name="FIYAT2[]"]').val(),
+							FIYAT_2        : $tr.find('input[name="FIYAT_2[]"]').val(),
+							TUTAR2         : $tr.find('input[name="TUTAR2[]"]').val(),
+							PARA_BIRIMI2   : $tr.find('input[name="PARA_BIRIMI2[]"]').val(),
+							H_OLCU         : $tr.find('input[name="H_OLCU[]"]').val(),
+						});
+					});
+
+					$.ajax({
+						type    : 'POST',
+						url     : 'V2_teklif_fiyat_analiz/detay/kaydet',
+						contentType : 'application/json',
+						data    : JSON.stringify({ OR_TRNUM: OR_TRNUM, satirlar: satirlar,EVRAKNO:'{{ @$kart_veri->EVRAKNO }}' }),
+						success : function(res){
+							if(res.success){
+								mesaj('Kayıt başarılı.','success');
+							} else {
+								mesaj('Hata: ' + (res.message || 'Bilinmeyen hata'),'error');
+							}
+							$('#maliyetDetayTable tbody').empty();
+						},
+						error: function(){
+							mesaj('Sunucu hatası.','error');
+						}
+					});
 				}
 
 				$('.delete-row').on('click',function(){

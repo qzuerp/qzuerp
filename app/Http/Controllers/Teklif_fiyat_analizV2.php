@@ -684,7 +684,6 @@ class teklif_fiyat_analizV2 extends Controller
                 break;
         }
     }
-
     public function doviz_kur_getir(Request $request)
     {
         try {
@@ -695,7 +694,6 @@ class teklif_fiyat_analizV2 extends Controller
             $tarih = $request->input('tarih');
             $para_birimi = strtoupper(trim($request->input('parabirimi')));
 
-            /* ---------------- TL ise direkt 1 dön ---------------- */
 
             if (in_array($para_birimi, ['TL', 'TRY', ''])) {
 
@@ -711,19 +709,15 @@ class teklif_fiyat_analizV2 extends Controller
                 ], 200);
             }
 
-            /* ---------------- tarih parse ---------------- */
 
             $istenenTarih = Carbon::createFromFormat('Y-m-d', $tarih)->startOfDay();
             $tarihSQL = $istenenTarih->format('Y/m/d');
 
-            /* ---------------- önce o günün kuru ---------------- */
 
             $veri = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $para_birimi)
                 ->where('EVRAKNOTARIH', $tarihSQL)
                 ->first();
-
-            /* ---------------- yoksa geçmişe bak ---------------- */
 
             if (!$veri) {
 
@@ -733,8 +727,6 @@ class teklif_fiyat_analizV2 extends Controller
                     ->orderBy('EVRAKNOTARIH', 'desc')
                     ->first();
             }
-
-            /* ---------------- hiç yoksa fallback 1 ---------------- */
 
             if (!$veri) {
 
@@ -749,8 +741,6 @@ class teklif_fiyat_analizV2 extends Controller
                     ]
                 ], 200);
             }
-
-            /* ---------------- normal dönüş ---------------- */
 
             return response()->json([
                 'success' => true,
@@ -770,7 +760,6 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
-
     public function getDovizKuru(Request $request)
     {
         $user = Auth::user();
@@ -809,7 +798,6 @@ class teklif_fiyat_analizV2 extends Controller
         $TEKLIFNO = DB::table($firma.'tekl20e')->where('EVRAKNO',$evrakno)->value('MUSTERI_TEKLIF_NO');
         return Excel::download(new MaliyetlerExport($evrakno),  $TEKLIFNO.' - ' . $evrakno . '.xlsx');
     }
-
     public function excel_export_maliyetler_detay(Request $request)
     {
         if(Auth::check()) {
@@ -820,7 +808,57 @@ class teklif_fiyat_analizV2 extends Controller
         $TEKLIFNO = DB::table($firma.'tekl20e')->where('EVRAKNO',$evrakno)->value('MUSTERI_TEKLIF_NO');
         return Excel::download(new MaliyetDetayExport($evrakno), $TEKLIFNO.' detayı - ' . $evrakno . '.xlsx');
     }
+    public function detayKaydet(Request $request)
+    {
+        $data     = $request->json()->all();
+        $OR_TRNUM = $data['OR_TRNUM'] ?? null;
+        $satirlar = $data['satirlar']  ?? [];
 
+        if (!$OR_TRNUM) {
+            return response()->json(['success' => false, 'message' => 'OR_TRNUM eksik']);
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('tekl20tı')
+                ->where('OR_TRNUM', $OR_TRNUM)
+                ->delete();
+
+            $insert = [];
+            foreach ($satirlar as $satir) {
+                $insert[] = [
+                    'TRNUM'         => $satir['TRNUM3']         ?? null,
+                    'OR_TRNUM'       => $OR_TRNUM,
+                    'KAYNAKTYPE'    => $satir['KAYNAKTYPE2']    ?? null,
+                    'KOD'           => $satir['KOD2']           ?? null,
+                    'STOK_AD1'        => $satir['KODADI2']        ?? null,
+                    'SF_MIKTAR' => $satir['ISLEM_MIKTARI2'] ?? 0,
+                    'BIRIM_FIYAT'    => $satir['BIRIM_FIYAT']   ?? 0,
+                    'AYAR'           => $satir['AYAR']           ?? 0,
+                    'ISLEME'         => $satir['ISLEME']         ?? 0,
+                    'SOKTAK'         => $satir['SOKTAK']         ?? 0,
+                    'SF_SF_UNIT'  => $satir['ISLEM_BIRIMI2'] ?? null,
+                    'NOT'           => $satir['NOTT']           ?? null,
+                    'FIYAT'         => $satir['FIYAT2']         ?? 0,
+                    'FIYAT2'        => $satir['FIYAT_2']        ?? 0,
+                    'TUTAR'         => $satir['TUTAR2']         ?? 0,
+                    'PRICEUNIT'   => $satir['PARA_BIRIMI2']  ?? null,
+                    'OLCU'         => $satir['H_OLCU']         ?? null,
+                ];
+            }
+
+            if (!empty($insert)) {
+                DB::table('tekl20tı')->insert($insert);
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
     public function oprt_save(Request $request)
     {
         $user = Auth::user();

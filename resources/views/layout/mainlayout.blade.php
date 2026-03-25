@@ -392,78 +392,11 @@
         this.value = val;
     });
 
-    // function formatTR(value) {
-    //     if (value === '' || value === null || value === undefined) return '';
-
-    //     let str = String(value).replace(',', '.');
-    //     const parts = str.split('.');
-    //     let intPart = parts[0];
-    //     let decPart = parts.length > 1 ? parts[1] : null;
-
-    //     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-    //     return decPart !== null ? intPart + ',' + decPart : intPart;
-    // }
-
-    // function initDecimalInput(el) {
-    //     $(el).attr('type', 'text').addClass('decimal');
-    //     const val = $(el).val();
-    //     if (val !== '') $(el).val(formatTR(val));
-    // }
-
-    // $(document).ready(function () {
-    //     $('input[type="number"]').each(function () {
-    //         initDecimalInput(this);
-    //     });
-
-    //     const observer = new MutationObserver(function (mutations) {
-    //         mutations.forEach(function (mutation) {
-    //             mutation.addedNodes.forEach(function (node) {
-    //                 $(node).find('input[type="number"]').addBack('input[type="number"]').each(function () {
-    //                     initDecimalInput(this);
-    //                 });
-    //             });
-    //         });
-    //     });
-
-    //     observer.observe(document.body, { childList: true, subtree: true });
-    // });
-
-    // $(document).on('input', '.decimal', function () {
-    //     const el = this;
-    //     const cursorPos = el.selectionStart;
-    //     const prevLen = el.value.length;
-
-    //     let clean = el.value.replace(/[^0-9,]/g, '');
-
-    //     const parts = clean.split(',');
-    //     let intPart = parts[0];
-    //     let decPart = parts.length > 1 ? parts.slice(1).join('') : null;
-
-    //     if (intPart.length > 1 && intPart.startsWith('0')) {
-    //         intPart = intPart.replace(/^0+/, '') || '0';
-    //     }
-    //     const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    //     el.value = decPart !== null ? formattedInt + ',' + decPart : formattedInt;
-
-    //     // Cursor pozisyonunu koru
-    //     const newLen = el.value.length;
-    //     el.setSelectionRange(cursorPos + (newLen - prevLen), cursorPos + (newLen - prevLen));
-    // });
-
-    // $('#verilerForm').on('submit', function () {
-    //     $(this).find('.decimal').each(function () {
-    //         this.value = this.value.replace(/\./g, '').replace(',', '.');
-    //     });
-    // });
-
-
     $(document).on('click', '.delete-row', function() {
       $(this).closest('tr').remove();
       checkTableChanges();
     });
 
-    // Tooltip yönetimi - optimize edilmiş
     const initTooltips = debounce(() => {
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
         const inst = bootstrap.Tooltip.getInstance(el);
@@ -476,7 +409,6 @@
       flatpickr.localize(flatpickr.l10ns.tr);
       initTooltips();
 
-      // Flatpickr için optimize edilmiş init
       $("input[type='date'], input[type='time']").each(function() {
         const $el = $(this);
         const isTime = $el.attr('type') === 'time';
@@ -537,7 +469,6 @@
       });
     });
 
-    // Recent page tracking
     const saveRecentPage = (title, url, icon = 'fa-file') => {
       if (url === 'index') return;
       
@@ -549,11 +480,11 @@
 
     saveRecentPage('{{ $ekranAdi ?? "" }}', '{{ $ekranLink ?? "" }}');
 
-    // Nav tabs activation
     document.querySelectorAll('.nav-tabs').forEach(ul => {
       const firstLink = ul.querySelector('.nav-link');
       if (firstLink) firstLink.classList.add('active');
     });
+
   </script>
 
   @if(isset($ekranTableE))

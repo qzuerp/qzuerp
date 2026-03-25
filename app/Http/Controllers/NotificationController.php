@@ -10,29 +10,27 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    // Alternatif: Polling yaklaşımı (Daha verimli)
     public function poll(Request $request)
     {
-        if (!$request->ajax()) {
-            return redirect('/');
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
-        if(Auth::check()) {
-            $u = Auth::user();
-        }
-        $firma = trim($u->firma).'.dbo.';
-
-        $user = auth()->user();
+    
+        $user = Auth::user();
+        $firma = trim($user->firma) . '.dbo.';
         $lastId = (int) $request->query('lastId', 0);
-
-        $notifications = DB::table($firma.'notifications')
-            ->where('read', 0)
+    
+        $notifications = DB::table($firma . 'notifications')
+            ->select('id', 'title', 'message', 'created_at')
             ->where('target_user_id', $user->id)
+            ->where('read', 0)
             ->where('id', '>', $lastId)
             ->orderBy('id', 'desc')
-            ->limit(10)
+                    ->limit(10)
             ->get();
-
+    
         return response()->json([
+            'status' => 'active',
             'notifications' => $notifications,
             'lastId' => $notifications->first()->id ?? $lastId,
             'count' => $notifications->count()

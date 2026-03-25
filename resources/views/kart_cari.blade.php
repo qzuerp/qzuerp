@@ -1026,6 +1026,7 @@
 													<th>GK_8</th>
 													<th>GK_9</th>
 													<th>GK_10</th>
+													<th>Aktif/Pasif</th>
 													<th>#</th>
 												</tr>
 											</thead>
@@ -1044,6 +1045,7 @@
 													<th>GK_8</th>
 													<th>GK_9</th>
 													<th>GK_10</th>
+													<th>Aktif/Pasif</th>
 													<th>#</th>
 												</tr>
 											</tfoot></br></br></br>
@@ -1187,6 +1189,7 @@
 												echo "<td><b>".$table->GK_8."</b></td>";
 												echo "<td><b>".$table->GK_9."</b></td>";
 												echo "<td><b>".$table->GK_10."</b></td>";
+												echo "<td><b>".$table->AP10."</b></td>";
 												echo "<td><a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 												echo "</tr>";
 												}

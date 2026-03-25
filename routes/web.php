@@ -488,6 +488,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/malzeme/get', [Teklif_fiyat_analizV2::class, 'malzeme_get']);
     Route::post('/mastar/get', [Teklif_fiyat_analizV2::class, 'master_get']);
     Route::post('/digerFiyatHesapla', [Teklif_fiyat_analizV2::class, 'digerFiyatHesapla']);
+    Route::post('/V2_teklif_fiyat_analiz/detay/kaydet', [Teklif_fiyat_analizV2::class, 'detayKaydet']);
     Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler'])->name('V2_excel_export_maliyetler');
     Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler_detay', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler_detay'])->name('V2_excel_export_maliyetler_detay');
 
@@ -601,6 +602,7 @@ Route::group(['middleware' => ['auth']], function() {
     | Api Paneli
     |--------------------------------------------------------------------------
     */
+
     Route::get('/api', [api_controller::class, 'index'])->name('api');
     Route::post('/api_islemler', [api_controller::class, 'islemler'])->name('api_islemler');
     Route::get('/parasut-test', function(){

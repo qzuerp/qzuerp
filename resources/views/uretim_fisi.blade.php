@@ -1549,7 +1549,7 @@ if (isset($kart_veri)) {
                             <td><input type='text' class='form-control' name='TI_KARSISERINO[]' value='${row.TI_KARSISERINO ?? ""}'></td>
                             <td><input type='number' class='form-control' name='TI_KARSISF_MIKTAR[]' value='${row.TI_KARSISF_MIKTAR ?? ""}'></td>
                             <td><input type='checkbox' name='' ${row.STOKTAN_DUS ? '' : 'checked'} value='${row.STOKTAN_DUS ? null : 'E'}'> <input type='hidden' class='form-control' name='BILGISATIRIE[]' value='${row.STOKTAN_DUS ? '' : 'E'}'></td>
-                            <td><input type='text' class='form-control' name='TI_KOD[]' value='${row.TI_KOD ?? ""}' readonly></td>
+                            <td><input type='text' class='form-control' name='TI_KOD[]' value='${(row.BOMREC_YMAMULCODE ? row.TI_KOD : row.BOMREC_YMAMULCODE) ?? row.TI_KOD}' readonly></td>
                             <td><input type='text' class='form-control' name='TI_STOK_ADI[]' value='${row.TI_STOK_ADI ?? ""}' readonly></td>
                             <td><input type='number' class='form-control' name='TI_SF_MIKTAR[]' value='${row.TI_SF_MIKTAR ?? ""}'></td>
                             <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' readonly value='${row.TI_SF_SF_UNIT ?? ""}'></td>
