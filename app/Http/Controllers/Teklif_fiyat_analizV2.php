@@ -810,6 +810,10 @@ class teklif_fiyat_analizV2 extends Controller
     }
     public function detayKaydet(Request $request)
     {
+        if(Auth::check()) {
+         $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
         $data     = $request->json()->all();
         $OR_TRNUM = $data['OR_TRNUM'] ?? null;
         $satirlar = $data['satirlar']  ?? [];
@@ -820,13 +824,14 @@ class teklif_fiyat_analizV2 extends Controller
 
         DB::beginTransaction();
         try {
-            DB::table('tekl20tı')
+            DB::table($firma.'tekl20tı')
                 ->where('OR_TRNUM', $OR_TRNUM)
                 ->delete();
 
             $insert = [];
             foreach ($satirlar as $satir) {
                 $insert[] = [
+                    'EVRAKNO'         => $request->EVRAKNO         ?? null,
                     'TRNUM'         => $satir['TRNUM3']         ?? null,
                     'OR_TRNUM'       => $OR_TRNUM,
                     'KAYNAKTYPE'    => $satir['KAYNAKTYPE2']    ?? null,
@@ -848,7 +853,7 @@ class teklif_fiyat_analizV2 extends Controller
             }
 
             if (!empty($insert)) {
-                DB::table('tekl20tı')->insert($insert);
+                DB::table($firma.'tekl20tı')->insert($insert);
             }
 
             DB::commit();

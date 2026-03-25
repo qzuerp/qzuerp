@@ -1687,7 +1687,7 @@
 												<ul class="nav nav-tabs">
 													<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
 													<!-- <li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a> -->
-													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a></li>
+													<!-- <li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a></li> -->
 													<li><a href="#tab_4" class="nav-link" data-bs-toggle="tab">Döviz Kurları</a></li>
 												</ul>
 
@@ -1696,6 +1696,9 @@
 														<div class="d-flex justify-content-end mb-2">
 															<a href="{{ route('V2_excel_export_maliyetler', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
 																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
+															</a>
+															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" target="_blank" class="btn btn-success">
+																<i class="fa-solid fa-file-excel me-1"></i> Detayı Excel'e Aktar
 															</a>
 														</div>
 														<table class="table table-bordered text-center" id="veriTable">
@@ -1971,72 +1974,7 @@
 																	</tr>
 																</thead>
 																<tbody id="maliyetTbody">
-																	@php
-																		$sorgu = "
-																			SELECT 
-																				TI.*, 
-																				TT.KOD as TT_KOD, 
-																				TT.STOK_AD1 AS TT_STOK_AD1
-																			FROM {$database}tekl20tı TI
-																			OUTER APPLY (
-																				SELECT TOP 1 * 
-																				FROM {$database}tekl20t
-																				WHERE TRNUM = TI.OR_TRNUM
-																				AND EVRAKNO = TI.EVRAKNO
-																			) TT
-																			WHERE TI.EVRAKNO = :evrakno
-																			ORDER BY TI.OR_TRNUM ASC, TI.TRNUM ASC
-																		";
-
-																		$hamVeri = DB::select($sorgu, ['evrakno' => $evrakno]);
-																		
-																		$veri = collect($hamVeri)->groupBy('OR_TRNUM');
-																	@endphp
-
-																	@if($veri->isNotEmpty())
-																		@foreach ($veri as $orTrnum => $grupVeri)
-																			@php 
-																				$ilkSatir = $grupVeri->first(); 
-																			@endphp
-																			<tr class="group-footer mt-2" style="background-color: #f9f9f9;">
-																				<td colspan="12" class="text-right">
-																					<strong>{{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}</strong>
-																				</td>
-																				<td>
-																					<strong>{{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }}</strong>
-																				</td>
-																				<td colspan="3"></td>
-																			</tr>
-																			@foreach ($grupVeri as $key => $satir)
-																				<tr>
-																					<input type="hidden" name="TRNUM3[]" value="{{$satir->TRNUM}}">
-																					<input type="hidden" name="OR_TRNUM[]" value="{{$satir->OR_TRNUM}}">
-																					<input type="hidden" name="TOPLAM_TUTAR" id="TOPLAM_TUTAR_{{$key}}" value="{{$kart_veri->TEKLIF_TUTAR ?? 0}}">
-
-																					<td><input type="text" name="KAYNAKTYPE2[]" value="{{$satir->KAYNAKTYPE}}" class="form-control" readonly></td>
-																					<td><input type="text" name="KOD2[]" value="{{$satir->KOD}}" class="form-control" readonly></td>
-																					<td><input type="text" name="KODADI2[]" value="{{$satir->STOK_AD1}}" class="form-control" readonly></td>
-																					<td><input type="text" name="ISLEM_MIKTARI2[]" value="{{ intval($satir->SF_MIKTAR) }}" class="form-control number"></td>
-																					<td><input type="text" name="BIRIM_FIYAT[]" value="{{$satir->BIRIM_FIYAT}}" class="form-control number"></td>
-																					<td><input type="text" name="AYAR[]" value="{{ $satir->AYAR }}" class="form-control number"></td>
-																					<td><input type="text" name="ISLEME[]" value="{{ $satir->ISLEME }}" class="form-control number"></td>
-																					<td><input type="text" name="SOKTAK[]" value="{{ $satir->SOKTAK }}" class="form-control number"></td>
-																					<td><input type="text" name="ISLEM_BIRIMI2[]" value="{{$satir->SF_SF_UNIT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="NOTT[]" value="{{$satir->NOT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="FIYAT2[]" value="{{$satir->FIYAT}}" class="form-control number"></td>
-																					<td><input type="text" name="FIYAT_2[]" value="{{$satir->FIYAT2}}" class="form-control number"></td>
-																					<td><input type="text" name="TUTAR2[]" value="{{$satir->TUTAR}}" class="form-control number" readonly></td>
-																					<td><input type="text" name="PARA_BIRIMI2[]" value="{{$satir->PRICEUNIT}}" class="form-control" readonly></td>
-																					<td><input type="text" name="H_OLCU[]" value="{{$satir->OLCU}}" class="form-control" readonly></td>
-																					<td>
-																						<button type='button' class='btn btn-default delete-row'>
-																							<i class='fa fa-minus' style='color: red'></i>
-																						</button>
-																					</td>
-																				</tr>
-																			@endforeach
-																		@endforeach
-																	@endif
+																	
 																</tbody>
 															</table>
 														</div>
@@ -2044,7 +1982,6 @@
 
 													<script>
 													(function () {
-														// ── Sticky thead ──────────────────────────────────────────────
 														const scrollArea = document.getElementById('maliyetScrollArea');
 														const thead      = document.getElementById('maliyetThead');
 
@@ -2060,7 +1997,6 @@
 															});
 														}
 
-														// ── Chunk render ──────────────────────────────────────────────
 														const tbody      = document.getElementById('maliyetTbody');
 														const progressBar  = document.getElementById('maliyetProgressBar');
 														const loadingText  = document.getElementById('maliyetLoadingText');
