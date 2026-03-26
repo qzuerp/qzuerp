@@ -1624,10 +1624,10 @@
 											placeholder="Not 1" value="{{ @$kart_veri->NOTES_1 }}">
 									</div>
 									<div class="col-md-3">
-										<label for="not_2">Not 2</label>
+										<label for="not_2">Ödeme</label>
 										<input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
 											data-bs-title="NOTES_2" name="NOT_2" id="NOT_2" class="form-control"
-											placeholder="Not 2" value="{{ @$kart_veri->NOTES_2 }}">
+											placeholder="Gün giriniz" value="{{ @$kart_veri->NOTES_2 }}">
 									</div>
 									<div class="col-md-3">
 										<label for="mtn">Müşteri Teklif No</label>

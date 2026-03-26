@@ -29,11 +29,11 @@
                     GRUP: {{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}
                 </td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} B
+                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} 
                 </td>
                 <td style="border-top: 2px solid #000000;"></td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} T
+                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} 
                 </td>
                 <td colspan="2" style="border-top: 2px solid #000000;"></td>
             </tr>
