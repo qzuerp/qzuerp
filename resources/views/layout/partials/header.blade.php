@@ -680,7 +680,12 @@
                         location.href = '/login';
                     }
 
-                    if (!response.ok) throw new Error('Network error');
+                    if (!response.ok)
+                    {
+                        location.href = '/login';
+                        throw new Error('Network error');
+                    } 
+                        
 
                     const data = await response.json();
 

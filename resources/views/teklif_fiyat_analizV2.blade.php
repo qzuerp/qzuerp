@@ -2084,30 +2084,33 @@
 				$('#OR_TRNUM').val($(this).data('trnum'));
 				let OR_TRNUM = $('#OR_TRNUM').val();
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());
-				$('#StokKodu_label').text(aktifSatir.find('input[name="KOD[]"]').val() +' - '+aktifSatir.find('input[name="KODADI[]"]').val());
+				$('#StokKodu_label').text(aktifSatir.find('input[name="KOD[]"]').val() + ' - ' + aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#StokAdi').val(aktifSatir.find('input[name="KODADI[]"]').val());
 				$('#SF_MIKTAR').val(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val());
 				$('#LABEL_SF_MIKTAR').html(aktifSatir.find('input[name="ISLEM_MIKTARI[]"]').val() + ' Adet');
 				$('#SF_IUNIT').val(aktifSatir.find('input[name="ISLEM_BIRIMI[]"]').val());
-				$('#FIYAT').val(aktifSatir.find('input[name="FIYAT[]"]').val());
-				$('#TUTAR').val(aktifSatir.find('input[name="TUTAR[]"]').val());
+				safeSet(document.getElementById('FIYAT'), safeGet(aktifSatir.find('input[name="FIYAT[]"]')[0]));
+				safeSet(document.getElementById('TUTAR'), safeGet(aktifSatir.find('input[name="TUTAR[]"]')[0]));
 
 				$('.TIME').val('');
 				$('.PTIME').val('');
 				$('.STIME').val('');
-				$('.TOPLANICAK').val('');
 
-				$('#uygula').prop('disabled',true);
+				$('.TOPLANICAK').each(function () {
+					safeSet(this, 0);
+				});
+
+				$('#uygula').prop('disabled', true);
 				setTimeout(() => {
-					$('#uygula').prop('disabled',false);
+					$('#uygula').prop('disabled', false);
 				}, 1500);
 
 				let DIGER_TOPLAM = 0;
 				$('#masrafTable tbody').empty();
-				$('#formMasrafTable tbody tr').each(function() {
+				$('#formMasrafTable tbody tr').each(function () {
 					let row = $(this);
 					let rowOR = row.find('input[name="M_OR_TRNUM[]"]').val();
-					
+
 					if (rowOR == OR_TRNUM) {
 						let cloneRow = row.clone();
 						$('#masrafTable tbody').append(cloneRow);
@@ -2118,7 +2121,7 @@
 				});
 
 				$('#DIGER').val(DIGER_TOPLAM);
-				
+
 				$.ajax({
 					url: 'operasyon/get',
 					type: 'post',
@@ -2128,7 +2131,7 @@
 						_token: '{{ csrf_token() }}',
 					},
 					success: function (res) {
-						let container = $('.row.g-2.OPRS_CONTAINER');	
+						let container = $('.row.g-2.OPRS_CONTAINER');
 
 						secimSirasi = res.data.map(x => x.OPERASYON);
 
@@ -2136,7 +2139,7 @@
 						$('.COPRS').hide();
 						container.find('.dynamic-card').remove();
 
-						secimSirasi.forEach(function(k, index) {
+						secimSirasi.forEach(function (k, index) {
 							$('#' + k).prop('checked', true);
 							$('#T' + k).text(index + 1);
 						});
@@ -2144,20 +2147,20 @@
 						let $mc = $('#MALZEME_CINSI');
 						$mc.val('');
 						if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
-						$('#MALZEME_TUTARI').val(0);
+						safeSet(document.getElementById('MALZEME_TUTARI'), 0);
+
 						$('#OLCU1').val('');
 
 						let operasyonSayac = {};
 
-						res.rows.forEach(function(row) {
-							console.log(row.KAYNAKTYPE);
+						res.rows.forEach(function (row) {
 							let tip = row.KAYNAKTYPE;
 
 							if (tip === 'H') {
 								let kod = row.KOD;
 								$mc.val(kod);
 								if ($mc.hasClass('select2-hidden-accessible')) $mc.trigger('change');
-								$('#MALZEME_TUTARI').val(row.FIYAT);
+								safeSet(document.getElementById('MALZEME_TUTARI'), parseFloat(row.FIYAT) || 0);
 								$('#OLCU1').val(row.OLCU).trigger('change');
 								return;
 							}
@@ -2165,7 +2168,7 @@
 							if (tip === 'M') {
 								let kod = row.KOD;
 								$('#mastarSelect').val(kod).trigger('change');
-								$('#mastarD').val(row.FIYAT);
+								safeSet(document.getElementById('mastarD'), parseFloat(row.FIYAT) || 0);
 								return;
 							}
 
@@ -2177,24 +2180,20 @@
 							let kartIndex = operasyonSayac[k];
 							operasyonSayac[k]++;
 
-							let kartId = `DC${k}_${OR_TRNUM}_${kartIndex}`;
-
+							let kartId     = `DC${k}_${OR_TRNUM}_${kartIndex}`;
 							let teklif_pb  = '{{ $kart_veri->TEKLIF_FIYAT_PB }}';
 							let operasyon  = res.data.find(x => x.OPERASYON == k);
 							let isFSN      = operasyon ? operasyon.GK_1 === 'FSN' : false;
 
-							let ayar       = parseFloat(row.AYAR) || 0;
-							let isleme     = parseFloat(row.ISLEME) || 0;
-							let soktak     = parseFloat(row.SOKTAK) || 0;
-							let fiyat      = parseFloat(row.FIYAT) || 0;
-							let fiyat2     = parseFloat(row.FIYAT2) || 0;
-							let paraBirimi = row.PRICEUNIT || '';
-							let birimFiyat = row.BIRIM_FIYAT;
-							let not        = row.NOT || '';
-							let ad        = row.STOK_AD1 || '';
-
-							
-
+							let ayar       = parseFloat(row.AYAR)       || 0;
+							let isleme     = parseFloat(row.ISLEME)     || 0;
+							let soktak     = parseFloat(row.SOKTAK)     || 0;
+							let fiyat      = parseFloat(row.FIYAT)      || 0;
+							let fiyat2     = parseFloat(row.FIYAT2)     || 0;
+							let paraBirimi = row.PRICEUNIT               || '';
+							let birimFiyat = parseFloat(row.BIRIM_FIYAT) || 0;
+							let not        = row.NOT                     || '';
+							let ad         = row.STOK_AD1               || '';
 
 							let cardHtml = '';
 
@@ -2211,18 +2210,18 @@
 											<div>
 												<label class="form-label-sm fw-bold">Birim Fiyat</label>
 												<div class="input-group">
-													<input type="text" class="form-control text-end  PRICE"
-														value="${round(birimFiyat, 2)}" placeholder="0.00">
+													<input type="text" class="form-control text-end PRICE"
+														value="${birimFiyat}" placeholder="0.00">
 													<span class="input-group-text">${teklif_pb}</span>
 												</div>
 											</div>
 											<div class="mb-2">
 												<label class="form-label-sm fw-bold">Ayar</label>
 												<div class="d-flex gap-1">
-													<input type="text" class="form-control  TIME"
+													<input type="text" class="form-control TIME"
 														value="${ayar}" placeholder="0.00">
 													<div class="input-group">
-														<input type="text" class="form-control text-end  AYAR_TUTAR" placeholder="0.00">
+														<input type="text" class="form-control text-end AYAR_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2231,11 +2230,11 @@
 												<label class="form-label-sm fw-bold">İşleme</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="text" class="form-control  PTIME"
+														<input type="text" class="form-control PTIME"
 															value="${isleme}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="text" class="form-control text-end  PTIME ISLEM_TUTAR" placeholder="0.00">
+														<input type="text" class="form-control text-end ISLEM_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2244,11 +2243,11 @@
 												<label class="form-label-sm fw-bold">Sök-Tak</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="text" class="form-control  STIME"
+														<input type="text" class="form-control STIME"
 															value="${soktak}" placeholder="0.00">
 													</div>
 													<div class="input-group">
-														<input type="text" class="form-control text-end  STIME SOKTAK_TUTAR" placeholder="0.00">
+														<input type="text" class="form-control text-end SOKTAK_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2257,8 +2256,8 @@
 												<label class="form-label-sm fw-bold">Tutar</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="text" class="form-control text-end  TOTAL TOPLANICAK"
-															value="${round(fiyat, 2)}" placeholder="0.00">
+														<input type="text" class="form-control text-end TOTAL TOPLANICAK"
+															value="${fiyat}" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
 													</div>
 												</div>
@@ -2285,8 +2284,8 @@
 												<label class="form-label-sm fw-bold">Tutar</label>
 												<div class="d-flex gap-1">
 													<div class="input-group">
-														<input type="text" class="tutar-input form-control text-end "
-															value="${round(fiyat2, 2)}" placeholder="0.00">
+														<input type="text" class="tutar-input form-control text-end"
+															value="${fiyat2}" placeholder="0.00">
 														<select class="birim-select form-select p-1"
 															style="font-size: 10px; --bs-form-select-bg-img: url(); max-width: 35px;">
 															${kurOptions}
@@ -2295,10 +2294,10 @@
 												</div>
 												<label>Çevirilmiş Tutar</label>
 												<input type="text"
-													class="form-control text-end  RES_TOTAL TOTAL TOPLANICAK"
-													value="${round(fiyat, 2)}" placeholder="0.00">
+													class="form-control text-end RES_TOTAL TOTAL TOPLANICAK"
+													value="${fiyat}" placeholder="0.00">
 												<label>Not</label>
-												<input type="text" class="form-control T_NOT "
+												<input type="text" class="form-control T_NOT"
 													value="${not}" placeholder="Not">
 												<div class="d-flex gap-3">
 													<button class="bol btn btn-sm btn-primary mt-2 h-25">Adetle Böl</button>
@@ -2317,13 +2316,23 @@
 								container.append(cardHtml);
 							}
 
-							// Trigger hesaplamalar
 							let $newCard = container.find('#' + kartId);
-							$newCard.find('.TIME').trigger('input');
-							$newCard.find('.PTIME').trigger('input');
-							$newCard.find('.STIME').trigger('input');
-							$newCard.find('.PRICE').trigger('input');
-							$newCard.find('.TOPLANICAK').trigger('input');
+
+							
+
+							setTimeout(() => {
+								$newCard.find('.TIME').trigger('input');
+								$newCard.find('.PTIME').trigger('input');
+								$newCard.find('.STIME').trigger('input');
+								
+								// ['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
+								// '.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
+								// 	$newCard.find(cls).each(function () {
+								// 		safeSet(this, parseFloat(this.value) || 0);
+								// 	});
+								// });
+							}, 500);
+							
 						});
 
 						hesapla();
@@ -2399,7 +2408,7 @@
 				var TIME  = parseFloat(card.find('.TIME').val())  || 0;
 				var PTIME = parseFloat(card.find('.PTIME').val()) || 0;
 				var STIME = parseFloat(card.find('.STIME').val()) || 0;
-				var PRICE = AutoNumeric.getNumber(card.find('.PRICE')[0]) || 0;
+				var PRICE = safeGet(card.find('.PRICE')[0]);
 				var QTY   = parseFloat($('#SF_MIKTAR').val()) || 1;
 
 				var ayar    = (TIME * PRICE) / QTY;
@@ -2407,10 +2416,12 @@
 				var s_islem = STIME * (PRICE / 60);
 				var total   = ayar + islem + s_islem;
 
-				AutoNumeric.getAutoNumericElement(card.find('.AYAR_TUTAR')[0]).set(round(ayar, 2));
-				AutoNumeric.getAutoNumericElement(card.find('.ISLEM_TUTAR')[0]).set(round(islem, 2));
-				AutoNumeric.getAutoNumericElement(card.find('.SOKTAK_TUTAR')[0]).set(round(s_islem, 2));
-				AutoNumeric.getAutoNumericElement(card.find('.TOTAL')[0]).set(round(total, 2));
+				safeSet(card.find('.AYAR_TUTAR')[0], round(ayar, 2));
+				safeSet(card.find('.ISLEM_TUTAR')[0], round(islem, 2));
+				safeSet(card.find('.SOKTAK_TUTAR')[0], round(s_islem, 2));
+				safeSet(card.find('.TOTAL')[0], round(total, 2));
+
+				hesapla();
 			});
 
 			$(document).on('input change', '.tutar-input, .birim-select', async function() {
@@ -2435,6 +2446,14 @@
 					an.set(value);
 				} else {
 					console.warn('AutoNumeric bulunamadı:', el);
+				}
+			}
+			function safeGet(el) {
+				if (!el) return 0;
+				try {
+					return AutoNumeric.getNumber(el) || 0;
+				} catch (e) {
+					return parseFloat($(el).val()) || 0;
 				}
 			}
 			function hesapla() {
@@ -2782,12 +2801,13 @@
 
 				function operasyonlariTabloyaBas(){
 					let OR_TRNUM = $('#OR_TRNUM').val();
+					$('#maliyetDetayTable tbody').empty();
 
 					let HKOD      = $('#MALZEME_CINSI').val();
 					let SF_IUNIT  = $('#SF_IUNIT').val() || 0;
 					let StokAdi   = $('#StokAdi').val() || 0;
 					let SF_MIKTAR = parseFloat($('#SF_MIKTAR').val()) || 0;
-					let TUTAR     = AutoNumeric.getNumber(document.getElementById('MALZEME_TUTARI')) || 0;
+					let TUTAR     = safeGet(document.getElementById('MALZEME_TUTARI'));
 					let TEKLIF_PB = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
 					let OLCU1     = $('#OLCU1').val();
 					let HTRNUM    = getTRNUM();
@@ -2796,48 +2816,48 @@
 						<tr>
 							<input type="hidden" name="TRNUM3[]"           value="${HTRNUM}">
 							<input type="hidden" name="OR_TRNUM[]"         value="${OR_TRNUM}">
-							<td><input type="text" name="KAYNAKTYPE2[]"    value="H"                              class="form-control" readonly></td>
-							<td><input type="text" name="KOD2[]"           value="${HKOD}"                        class="form-control" readonly></td>
-							<td><input type="text" name="KODADI2[]"        value=""                               class="form-control"></td>
-							<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"                   class="form-control number"></td>
-							<td><input type="text" name="BIRIM_FIYAT[]"    value=""                               class="form-control number"></td>
-							<td><input type="text" name="AYAR[]"           value=""                               class="form-control number"></td>
-							<td><input type="text" name="ISLEME[]"         value=""                               class="form-control number"></td>
-							<td><input type="text" name="SOKTAK[]"         value=""                               class="form-control number"></td>
-							<td><input type="text" name="ISLEM_BIRIMI2[]"  value="${SF_IUNIT}"                    class="form-control" readonly></td>
-							<td><input type="text" name="NOTT[]"           value=""                               class="form-control" readonly></td>
-							<td><input type="text" name="FIYAT2[]"         value="${TUTAR}"                       class="form-control number"></td>
-							<td><input type="text" name="FIYAT_2[]"        value=""                               class="form-control number"></td>
-							<td><input type="text" name="TUTAR2[]"         value="${round(TUTAR * SF_MIKTAR)}"    class="form-control number" readonly></td>
-							<td><input type="text" name="PARA_BIRIMI2[]"   value="${TEKLIF_PB}"                   class="form-control" readonly></td>
-							<td><input type="text" name="H_OLCU[]"         value="${OLCU1}"                       class="form-control" readonly></td>
+							<td><input type="text" name="KAYNAKTYPE2[]"    value="H"                           class="form-control" readonly></td>
+							<td><input type="text" name="KOD2[]"           value="${HKOD}"                     class="form-control" readonly></td>
+							<td><input type="text" name="KODADI2[]"        value=""                            class="form-control"></td>
+							<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"                class="form-control number"></td>
+							<td><input type="text" name="BIRIM_FIYAT[]"    value=""                            class="form-control number"></td>
+							<td><input type="text" name="AYAR[]"           value=""                            class="form-control number"></td>
+							<td><input type="text" name="ISLEME[]"         value=""                            class="form-control number"></td>
+							<td><input type="text" name="SOKTAK[]"         value=""                            class="form-control number"></td>
+							<td><input type="text" name="ISLEM_BIRIMI2[]"  value="${SF_IUNIT}"                 class="form-control" readonly></td>
+							<td><input type="text" name="NOTT[]"           value=""                            class="form-control" readonly></td>
+							<td><input type="text" name="FIYAT2[]"         value="${TUTAR}"                    class="form-control number"></td>
+							<td><input type="text" name="FIYAT_2[]"        value=""                            class="form-control number"></td>
+							<td><input type="text" name="TUTAR2[]"         value="${round(TUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
+							<td><input type="text" name="PARA_BIRIMI2[]"   value="${TEKLIF_PB}"                class="form-control" readonly></td>
+							<td><input type="text" name="H_OLCU[]"         value="${OLCU1}"                    class="form-control" readonly></td>
 						</tr>`;
 					$('#maliyetDetayTable tbody').append(htr);
 					updateLastTRNUM(HTRNUM);
 
-					let MTUTAR = AutoNumeric.getNumber(document.getElementById('mastarD'));
-					if (!isNaN(parseFloat(MTUTAR)) && MTUTAR) {
+					let MTUTAR = safeGet(document.getElementById('mastarD'));
+					if (MTUTAR) {
 						let MKOD   = $('#mastarSelect').val();
 						let MTRNUM = getTRNUM();
 						let Mtr = `
 							<tr>
 								<input type="hidden" name="TRNUM3[]"           value="${MTRNUM}">
 								<input type="hidden" name="OR_TRNUM[]"         value="${OR_TRNUM}">
-								<td><input type="text" name="KAYNAKTYPE2[]"    value="M"                              class="form-control" readonly></td>
-								<td><input type="text" name="KOD2[]"           value="${MKOD}"                        class="form-control" readonly></td>
-								<td><input type="text" name="KODADI2[]"        value=""                               class="form-control"></td>
-								<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"                   class="form-control number"></td>
-								<td><input type="text" name="BIRIM_FIYAT[]"    value=""                               class="form-control number"></td>
-								<td><input type="text" name="AYAR[]"           value=""                               class="form-control number"></td>
-								<td><input type="text" name="ISLEME[]"         value=""                               class="form-control number"></td>
-								<td><input type="text" name="SOKTAK[]"         value=""                               class="form-control number"></td>
-								<td><input type="text" name="ISLEM_BIRIMI2[]"  value="${SF_IUNIT}"                    class="form-control" readonly></td>
-								<td><input type="text" name="NOTT[]"           value=""                               class="form-control" readonly></td>
-								<td><input type="text" name="FIYAT2[]"         value="${MTUTAR}"                      class="form-control number"></td>
-								<td><input type="text" name="FIYAT_2[]"        value=""                               class="form-control number"></td>
-								<td><input type="text" name="TUTAR2[]"         value="${round(MTUTAR * SF_MIKTAR)}"   class="form-control number" readonly></td>
-								<td><input type="text" name="PARA_BIRIMI2[]"   value="${TEKLIF_PB}"                   class="form-control" readonly></td>
-								<td><input type="text" name="H_OLCU[]"         value=""                               class="form-control" readonly></td>
+								<td><input type="text" name="KAYNAKTYPE2[]"    value="M"                           class="form-control" readonly></td>
+								<td><input type="text" name="KOD2[]"           value="${MKOD}"                     class="form-control" readonly></td>
+								<td><input type="text" name="KODADI2[]"        value=""                            class="form-control"></td>
+								<td><input type="text" name="ISLEM_MIKTARI2[]" value="${SF_MIKTAR}"                class="form-control number"></td>
+								<td><input type="text" name="BIRIM_FIYAT[]"    value=""                            class="form-control number"></td>
+								<td><input type="text" name="AYAR[]"           value=""                            class="form-control number"></td>
+								<td><input type="text" name="ISLEME[]"         value=""                            class="form-control number"></td>
+								<td><input type="text" name="SOKTAK[]"         value=""                            class="form-control number"></td>
+								<td><input type="text" name="ISLEM_BIRIMI2[]"  value="${SF_IUNIT}"                 class="form-control" readonly></td>
+								<td><input type="text" name="NOTT[]"           value=""                            class="form-control" readonly></td>
+								<td><input type="text" name="FIYAT2[]"         value="${MTUTAR}"                   class="form-control number"></td>
+								<td><input type="text" name="FIYAT_2[]"        value=""                            class="form-control number"></td>
+								<td><input type="text" name="TUTAR2[]"         value="${round(MTUTAR * SF_MIKTAR)}" class="form-control number" readonly></td>
+								<td><input type="text" name="PARA_BIRIMI2[]"   value="${TEKLIF_PB}"                class="form-control" readonly></td>
+								<td><input type="text" name="H_OLCU[]"         value=""                            class="form-control" readonly></td>
 							</tr>`;
 						$('#maliyetDetayTable tbody').append(Mtr);
 						updateLastTRNUM(MTRNUM);
@@ -2850,14 +2870,14 @@
 						let kart        = $(this);
 						let kod         = kart.find('.OPERASYON_KOD').text();
 						let ad          = kart.find('.OPERASYON_AD').text();
-						let total       = AutoNumeric.getNumber(kart.find('.TOTAL')[0])       || 0;
-						let ayar        = parseFloat(kart.find('.TIME').val())                || 0;
-						let ISLEME      = parseFloat(kart.find('.PTIME').val())               || 0;
-						let SOKTAK      = parseFloat(kart.find('.STIME').val())               || 0;
+						let total       = safeGet(kart.find('.TOTAL')[0]);
+						let ayar        = parseFloat(kart.find('.TIME').val())  || 0;
+						let ISLEME      = parseFloat(kart.find('.PTIME').val()) || 0;
+						let SOKTAK      = parseFloat(kart.find('.STIME').val()) || 0;
 						let OParaBirimi = kart.find('.birim-select').val();
-						let FIYAT2      = AutoNumeric.getNumber(kart.find('.tutar-input')[0]) || 0;
-						let BIRIM_FIYAT = AutoNumeric.getNumber(kart.find('.PRICE')[0])       || 0;
-						let NOT         = kart.find('.T_NOT').val()                           || '';
+						let FIYAT2      = safeGet(kart.find('.tutar-input')[0]);
+						let BIRIM_FIYAT = safeGet(kart.find('.PRICE')[0]);
+						let NOT         = kart.find('.T_NOT').val() || '';
 						let TRNUM       = getTRNUM();
 
 						let tr = `
@@ -2884,11 +2904,11 @@
 						updateLastTRNUM(TRNUM);
 					});
 
-					const anSelectors = ['.tutar-input', '.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR', '.TOPLANICAK', '.TOTAL'];
+					const anSelectors  = ['.tutar-input', '.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR', '.TOPLANICAK', '.TOTAL'];
 					const rawSelectors = ['.TIME', '.PTIME', '.STIME', '.T_NOT'];
 
 					$(anSelectors.join(', ')).each(function() {
-						AutoNumeric.getAutoNumericElement(this).set(0);
+						safeSet(this, 0);
 					});
 					$(rawSelectors.join(', ')).val('').trigger('input');
 
