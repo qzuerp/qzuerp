@@ -136,7 +136,7 @@
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
                 <td>{{ number_format($data['FIYAT'][$i], 2, ',', '.') }}</td>
                 <td>{{ number_format($data['TUTAR'][$i], 2, ',', '.') }}</td>
-                <td>{{ isset($data['TERMIN_TAR'][$i]) ? $data['TERMIN_TAR'][$i].' Gün' : '' }}</td>
+                <td>{{ $data['TERMIN_TAR'][$i] }}</td>
                 <td>{{ $data['ACIKLAMA'][$i] ?? '' }}</td>
             </tr>
             @endfor
@@ -161,7 +161,7 @@
     <!-- FOOTER NOTES -->
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
-        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren <b>{{ $data['NOTES_2'] }}</b> </div>
+        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren {{ $data['NOTES_2'] }} </div>
         <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }}</div>
     </div>
 
