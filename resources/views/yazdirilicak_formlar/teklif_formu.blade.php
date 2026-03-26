@@ -6,7 +6,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #222; font-size: 13px; background: #fff; padding: 10mm; }
-        .invoice-box { max-width: 190mm; width: 100%; margin: auto; border: 1px solid #ccc; padding: 20px; }
+        .invoice-box {  width: 100%; margin: auto; border: 1px solid #ccc; padding: 20px; }
 
         @media print {
             @page { size: A4; margin: 10mm; }
@@ -22,7 +22,7 @@
         /* Info Grid */
         .info-grid { border: 1px solid #999; border-collapse: collapse; width: 100%; margin-bottom: 14px; }
         .info-grid td { border: 1px solid #999; padding: 4px 8px; }
-        .info-grid td.label { font-weight: bold; width: 80px; }
+        .info-grid td.label { font-weight: bold; width: 100px; }
         .info-grid td.right-label { font-weight: bold; width: 80px; }
 
         /* Main Table */
