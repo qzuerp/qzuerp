@@ -751,8 +751,11 @@
 			margin-bottom: 8px;
 			color: #818cf8;
 		}
-		tr .active{
-			box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5); 
+		
+		tr.active td {
+			background-color:rgb(118, 255, 152) !important;
+			color: #31708f;
+			transition: background 0.3s ease;
 		}
 
 		@media (max-width: 768px) {
@@ -2081,6 +2084,7 @@
 			$('.satir_detay').on('click', function () {
 				aktifSatir = $(this).closest('tr');
 				aktifSatir.addClass('active');
+
 				$('#OR_TRNUM').val($(this).data('trnum'));
 				let OR_TRNUM = $('#OR_TRNUM').val();
 				$('#StokKodu').val(aktifSatir.find('input[name="KOD[]"]').val());

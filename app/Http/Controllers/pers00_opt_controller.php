@@ -97,6 +97,15 @@ class pers00_opt_controller extends Controller
     $ACIKLAMA = $request->ACIKLAMA;
     $TRNUM = $request->TRNUM;
 
+    if(!isset($TRNUM))
+    {
+      $sayac = 0;
+    }
+    else
+    {
+      $sayac = count($TRNUM);
+    }
+
     switch($islem_turu) {
 
       case 'listele':
@@ -225,7 +234,7 @@ class pers00_opt_controller extends Controller
       'created_at' => date('Y-m-d H:i:s'),
       'LAST_TRNUM' => $request->LAST_TRNUM
       ]);
-      for ($i=0; $i < count($TRNUM); $i++) { 
+      for ($i=0; $i < $sayac; $i++) { 
         DB::table($firma.'pers00z')->insert([
           'KOD' => $KODZ[$i],
           'AD' => $ADZ[$i],
