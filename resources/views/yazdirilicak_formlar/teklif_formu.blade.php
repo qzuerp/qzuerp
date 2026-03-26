@@ -161,7 +161,7 @@
     <!-- FOOTER NOTES -->
     <div class="footer">
         <div><span>Not:</span> Fiyatlarımız kdv hariçtir.</div>
-        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren <b>{{ $data['NOTES_2'] }}</b> gün</div>
+        <div><span>Ödeme :</span> &nbsp;Fatura tarihinden itibaren <b>{{ $data['NOTES_2'] }}</b> </div>
         <div><span>Teklif geçerlilik Tarihi :</span> {{ $data['GECERLILIK_TARIHI'] }}</div>
     </div>
 
