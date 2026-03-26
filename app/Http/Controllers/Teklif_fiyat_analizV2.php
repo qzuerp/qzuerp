@@ -380,104 +380,6 @@ class teklif_fiyat_analizV2 extends Controller
                 }
 
 
-                $currentTRNUMS3 = [];
-                $liveTRNUMS3 = [];
-
-                $currentTRNUMSObj3 = DB::table($firma . 'tekl20tı')
-                    ->where('EVRAKNO', $EVRAKNO)
-                    ->select('TRNUM')
-                    ->get();
-
-                foreach ($currentTRNUMSObj3 as $veri) {
-                    array_push($currentTRNUMS3, $veri->TRNUM);
-                }
-
-                foreach ($TRNUM3 as $veri) {
-                    array_push($liveTRNUMS3, $veri);
-                }
-
-                $deleteTRNUMS3 = array_diff($currentTRNUMS3, $liveTRNUMS3);
-                $newTRNUMS3 = array_diff($liveTRNUMS3, $currentTRNUMS3);
-                $updateTRNUMS3 = array_intersect($currentTRNUMS3, $liveTRNUMS3);
-
-                // dd($currentTRNUMS3,$liveTRNUMS3,$deleteTRNUMS3,$newTRNUMS3,$updateTRNUMS3);
-                // Satırları güncelle veya yeni satır ekle
-                for ($i = 0; $i < count($TRNUM3); $i++) {
-                    $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
-
-                    if (in_array($TRNUM3[$i], $newTRNUMS3)) {
-                        // Yeni satır ekle
-                        DB::table($firma . 'tekl20tı')->insert([
-                            'EVRAKNO' => $EVRAKNO,
-                            'KAYNAKTYPE' => $KAYNAK_TIPI2[$i],
-                            'KOD' => $KOD2[$i],
-                            'STOK_AD1' => $KODADI2[$i],
-                            'SF_MIKTAR' => $ISLEM_MIKTARI2[$i],
-                            'SF_SF_UNIT' => $ISLEM_BIRIMI2[$i],
-                            'FIYAT' => $FIYAT2[$i] ?? 0,
-                            'TUTAR' => $TUTAR2[$i] ?? 0,
-                            'PRICEUNIT' => $PARA_BIRIMI2[$i],
-                            'TRNUM' => $TRNUM3[$i],
-                            'OR_TRNUM' => $OR_TRNUM[$i],
-                            'AYAR' => $AYAR[$i],
-                            'ISLEME' => $ISLEME[$i],
-                            'SOKTAK' => $SOKTAK[$i],
-                            'FIYAT2' => $FIYAT_2[$i],
-                            'NOT' => $NOTT[$i],
-                            'OLCU' => $H_OLCU[$i] ?? 0,
-                            'BIRIM_FIYAT' => $BIRIM_FIYAT[$i] ?? 0,
-                            // 'NETAGIRLIK' => $NETAGIRLIK[$i],
-                            // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
-                            // 'HACIM' => $HACIM[$i],
-                            // 'AMBALAJ_AGIRLIGI' => $AMBALAJAGIRLIK[$i],
-                            // 'SF_AUTOCALC' => $AUTO[$i],
-                            // 'SF_STOK_MIKTAR' => $STOKMIKTAR[$i],
-                            // 'KOD_STOK00_IUNIT' => $STOKTEMELBIRIM[$i]
-                        ]);
-                    }
-
-                    if (in_array($TRNUM3[$i], $updateTRNUMS3)) {
-                        // Mevcut satırı güncelle
-                        DB::table($firma . 'tekl20tı')
-                            ->where('EVRAKNO', $EVRAKNO)
-                            ->where('TRNUM', $TRNUM3[$i])
-                            ->update([
-                                'KAYNAKTYPE' => $KAYNAK_TIPI2[$i],
-                                'KOD' => $KOD2[$i],
-                                'STOK_AD1' => $KODADI2[$i],
-                                'SF_MIKTAR' => $ISLEM_MIKTARI2[$i] ?? 0,
-                                'SF_SF_UNIT' => $ISLEM_BIRIMI2[$i],
-                                'FIYAT' => $FIYAT2[$i] ?? 0,
-                                'TUTAR' => $TUTAR2[$i] ?? 0,
-                                'PRICEUNIT' => $PARA_BIRIMI2[$i],
-                                'OR_TRNUM' => $OR_TRNUM[$i],
-                                'TRNUM' => $TRNUM3[$i],
-                                'AYAR' => $AYAR[$i],
-                                'ISLEME' => $ISLEME[$i],
-                                'SOKTAK' => $SOKTAK[$i],
-                                'FIYAT2' => $FIYAT_2[$i],
-                                'NOT' => $NOTT[$i],
-                                'OLCU' => $H_OLCU[$i] ?? 0,
-                                'BIRIM_FIYAT' => $BIRIM_FIYAT[$i] ?? 0,
-                                // 'NETAGIRLIK' => $NETAGIRLIK[$i],
-                                // 'BRUTAGIRLIK' => $BRUTAGIRLIK[$i],
-                                // 'HACIM' => $HACIM[$i],
-                                // 'AMBALAJ_AGIRLIGI' => $AMBALAJAGIRLIK[$i],
-                                // 'SF_AUTOCALC' => $AUTO[$i],
-                                // 'SF_STOK_MIKTAR' => $STOKMIKTAR[$i],
-                                // 'KOD_STOK00_IUNIT' => $STOKTEMELBIRIM[$i]
-                            ]);
-                    }
-                }
-
-                // Silinen satırları kaldır
-                foreach ($deleteTRNUMS3 as $deleteTRNUM) {
-                    DB::table($firma . 'tekl20tı')
-                        ->where('EVRAKNO', $EVRAKNO)
-                        ->where('TRNUM', $deleteTRNUM)
-                        ->delete();
-                }
-
                 $currentTRNUMS2 = [];
                 $liveTRNUMS2 = [];
 
@@ -814,8 +716,10 @@ class teklif_fiyat_analizV2 extends Controller
          $u = Auth::user();
         }
         $firma = trim($u->firma).'.dbo.';
+
         $data     = $request->json()->all();
         $OR_TRNUM = $data['OR_TRNUM'] ?? null;
+        $EVRAKNO = $data['EVRAKNO'] ?? null;
         $satirlar = $data['satirlar']  ?? [];
 
         if (!$OR_TRNUM) {
@@ -831,22 +735,22 @@ class teklif_fiyat_analizV2 extends Controller
             $insert = [];
             foreach ($satirlar as $satir) {
                 $insert[] = [
-                    'EVRAKNO'         => $request->EVRAKNO         ?? null,
+                    'EVRAKNO'         => $EVRAKNO        ?? null,
                     'TRNUM'         => $satir['TRNUM3']         ?? null,
                     'OR_TRNUM'       => $OR_TRNUM,
                     'KAYNAKTYPE'    => $satir['KAYNAKTYPE2']    ?? null,
                     'KOD'           => $satir['KOD2']           ?? null,
                     'STOK_AD1'        => $satir['KODADI2']        ?? null,
-                    'SF_MIKTAR' => $satir['ISLEM_MIKTARI2'] ?? 0,
-                    'BIRIM_FIYAT'    => $satir['BIRIM_FIYAT']   ?? 0,
-                    'AYAR'           => $satir['AYAR']           ?? 0,
-                    'ISLEME'         => $satir['ISLEME']         ?? 0,
-                    'SOKTAK'         => $satir['SOKTAK']         ?? 0,
-                    'SF_SF_UNIT'  => $satir['ISLEM_BIRIMI2'] ?? null,
+                    'SF_MIKTAR'     => $satir['ISLEM_MIKTARI2'] ?? 0,
+                    'BIRIM_FIYAT'    => (float)$satir['BIRIM_FIYAT']   ?? 0,
+                    'AYAR'           => (float)$satir['AYAR']           ?? 0,
+                    'ISLEME'         => (float)$satir['ISLEME']         ?? 0,
+                    'SOKTAK'         => (float)$satir['SOKTAK']         ?? 0,
+                    'SF_SF_UNIT'    => $satir['ISLEM_BIRIMI2'] ?? null,
                     'NOT'           => $satir['NOTT']           ?? null,
-                    'FIYAT'         => $satir['FIYAT2']         ?? 0,
-                    'FIYAT2'        => $satir['FIYAT_2']        ?? 0,
-                    'TUTAR'         => $satir['TUTAR2']         ?? 0,
+                    'FIYAT'         => (float)$satir['FIYAT2']         ?? 0,
+                    'FIYAT2'        => (float)$satir['FIYAT_2']        ?? 0,
+                    'TUTAR'         => (float)$satir['TUTAR2']         ?? 0,
                     'PRICEUNIT'   => $satir['PARA_BIRIMI2']  ?? null,
                     'OLCU'         => $satir['H_OLCU']         ?? null,
                 ];

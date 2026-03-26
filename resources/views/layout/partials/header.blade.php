@@ -675,6 +675,10 @@
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
                         signal: AbortSignal.timeout(8000) // 8 saniye timeout
                     });
+                    if(response.message == 'Unauthenticated')
+                    {
+                        location.href = '/login';
+                    }
 
                     if (!response.ok) throw new Error('Network error');
 
