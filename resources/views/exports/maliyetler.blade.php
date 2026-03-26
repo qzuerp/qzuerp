@@ -43,10 +43,10 @@
         <th colspan="2" style="font-weight: bold; background-color: #D6E4F0; border: 1px solid #9BC2E6; padding: 4px;">Müşteri Teklif No:</th>
         <td colspan="6" style="border: 1px solid #9BC2E6; padding: 4px;">{{ $master->MUSTERI_TEKLIF_NO }}</td>
     </tr>
-    <tr>
+    <!-- <tr>
         <th colspan="2" style="font-weight: bold; background-color: #D6E4F0; border: 1px solid #9BC2E6; padding: 4px;">Müşteri Teklif Tarihi:</th>
-        <td colspan="6" style="border: 1px solid #9BC2E6; padding: 4px;">{{ $master->MUSTERI_TEKLIF_TARIHI }}</td>
-    </tr>
+        <td colspan="6" style="border: 1px solid #9BC2E6; padding: 4px;">{{ \Carbon\Carbon::parse($master->MUSTERI_TEKLIF_TARIHI)->format('d.m.Y') }}</td>
+    </tr> -->
 
     <tr><td colspan="8" style="height: 5px;"></td></tr>
 
