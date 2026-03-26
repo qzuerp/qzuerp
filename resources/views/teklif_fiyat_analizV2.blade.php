@@ -2325,12 +2325,12 @@
 								$newCard.find('.PTIME').trigger('input');
 								$newCard.find('.STIME').trigger('input');
 								
-								// ['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
-								// '.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
-								// 	$newCard.find(cls).each(function () {
-								// 		safeSet(this, parseFloat(this.value) || 0);
-								// 	});
-								// });
+								['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
+								'.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
+									$newCard.find(cls).each(function () {
+										safeSet(this, this.value || 0);
+									});
+								});
 							}, 500);
 							
 						});
@@ -2781,7 +2781,7 @@
 					
 					clone.find('.AYAR_TUTAR, .ISLEM_TUTAR, .SOKTAK_TUTAR, .TOPLANICAK, .tutar-input')
 						.each(function() {
-							AutoNumeric.getAutoNumericElement(this).set(0);
+							safeSet(this, 0);
 						});
 
 					clone.find('.TIME, .PTIME, .STIME').val('').trigger('change');
