@@ -663,7 +663,7 @@ class mmps10_controller extends Controller
       // break;
 
       case 'yazdir':
-        return view('Etiketler.mps_yazdir', compact('EVRAKNO'));
+        return view('Etiketler.tanitimEtiketiMPS', compact('EVRAKNO'));
 
     }
 

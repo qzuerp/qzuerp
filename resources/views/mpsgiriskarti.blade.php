@@ -110,7 +110,9 @@
 		{
 			min-width: 200px;
 		}
-
+		#yazdir{
+			display:block !important;
+		}
 	</style>
 	<div class="content-wrapper ">
 
@@ -220,8 +222,14 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Proje Kodu</label>
-											<input type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PROJEKODU" class="PROJEKODU form-control" data-max 
-												name="PROJEKODU" id="PROJEKODU" value="{{ @$kart_veri->PROJEKODU }}">
+											<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PROJEKODU" class="PROJEKODU select2 form-control" name="PROJEKODU" id="PROJEKODU">
+												@php
+													$proje = DB::table($database.'gecoust')->where('EVRAKNO','MPSJOD')->get();
+												@endphp
+												@foreach ($proje as $p)
+												<option value="{{ $p->KOD }}" {{ $p->KOD == @$kart_veri->PROJEKODU ? 'selected' : '' }}>{{ $p->KOD }} - {{ $p->AD }}</option>
+												@endforeach
+											</select>
 										</div>
 									</div>
 								</div>

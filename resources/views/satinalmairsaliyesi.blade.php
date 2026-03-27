@@ -265,7 +265,7 @@
 																<th>İşlem Mik.</th>
 																<th>İşlem Br.</th>
 																<th>Not</th>
-																<th style="min-width: 120px;">MPS Kodu</th>
+																<th style="min-width: 220px;">MPS Kodu</th>
 																<th>Lokasyon 1</th>
 																<th>Lokasyon 2</th>
 																<th>Lokasyon 3</th>
@@ -377,7 +377,7 @@
 																		@php
 																			$kod_veri = DB::table($database . 'mmps10e')->get();
 																			foreach ($kod_veri as $key => $veri) {
-																				echo "<option value='" . $veri->MAMULSTOKKODU . "'>" . $veri->MAMULSTOKKODU . " - " . $veri->MAMULSTOKADI . "</option>";
+																				echo "<option value='" . $veri->EVRAKNO . "'>" . $veri->EVRAKNO . " - " . $veri->MAMULSTOKKODU . " - " . $veri->MAMULSTOKADI . "</option>";
 																			}
 																		@endphp
 																	</select>
@@ -525,9 +525,9 @@
 																				$kur_veri = DB::table($database . 'mmps10e')->get();
 																				foreach ($kur_veri as $key => $value) {
 																					if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
-																						echo "<option value='" . $value->MAMULSTOKKODU . "' selected>" . $value->MAMULSTOKKODU . '-' . $value->MAMULSTOKADI . "</option>";
+																						echo "<option value='" . $value->EVRAKNO . "'>" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
 																					} else {
-																						echo "<option value='" . $value->MAMULSTOKKODU . "'>" . $value->MAMULSTOKKODU . '-' . $value->MAMULSTOKADI . "</option>";
+																						echo "<option value='" . $value->EVRAKNO . "'>" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
 																					}
 																				}
 
