@@ -383,7 +383,7 @@
 												echo "<td>".$suzVeri->KOD."</td>";
 												echo "<td>".$suzVeri->LOTNUMBER."</td>";
 												echo "<td>".$suzVeri->SERINO."</td>";
-												echo "<td>"."<a class='btn btn-info' href='giris_kalite_kontrol?id=".$suzVeri->ID."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+												echo "<td>"."<a class='btn btn-info' href='giris_kalite_kontrol?ID=".$suzVeri->ID."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 											echo "</tr>";
 
 										}

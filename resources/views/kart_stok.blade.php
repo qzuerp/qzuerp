@@ -965,7 +965,13 @@
 										<div class="row " style="overflow: auto">
 											@php
 												if(isset($_GET['SUZ'])) {
+												
 											@endphp
+											<div class="d-flex gap-3 mt-3">
+												<button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+												<button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
+												<button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+											</div>
 											<table id="example2" class="table table-hover text-center" data-page-length="10">
 												<thead>
 													<tr class="bg-primary">
@@ -1146,9 +1152,7 @@
 													@endphp
 												</tbody>
 											</table>
-											<button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
-											<button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
-											<button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+											
 											@php
 												}
 											@endphp

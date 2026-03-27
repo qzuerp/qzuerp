@@ -212,15 +212,14 @@
         <main class="main-body">
             
             <div class="data-grid">
-                
-                <div class="data-row">
-                    <div class="data-label">Malzeme Adı</div>
-                    <div class="data-value">{{ $veriE->MAMULSTOKADI }}</div>
-                </div>
-                
                 <div class="data-row">
                     <div class="data-label">Malzeme Kodu</div>
                     <div class="data-value">{{ $veriE->MAMULSTOKKODU }}</div>
+                </div>
+
+                <div class="data-row">
+                    <div class="data-label">Malzeme Adı</div>
+                    <div class="data-value">{{ $veriE->MAMULSTOKADI }}</div>
                 </div>
 
                 <div class="data-row">
