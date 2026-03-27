@@ -2414,14 +2414,14 @@
 
 				if (codeFrom === "USD") {
 					$("input[name='FIYAT[]']").each(function () {
-						const base = parseFloat($(this).val()) || 0;
+						const base = safeGet(this) || 0;
 						AutoNumeric.set($(this).closest("tr").find("input[name='DOLAR_FIYAT[]']")[0], (round(base / kurDeger, 3)));
 					});
 				}
 
 
 				$('input[name="FIYAT2[]"]').each(function(){
-					const base = parseFloat($(this).val()) || 0;
+					const base = safeGet(this) || 0;
 					const kurBirimi = $(this).closest("tr").find("input[name='PARA_BIRIMI2[]']").val();
 					let kur = 0;
 					$('input[name="CODEFROM[]"]').each(function () {
