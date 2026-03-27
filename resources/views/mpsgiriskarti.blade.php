@@ -223,6 +223,7 @@
 										<div class="form-group">
 											<label>Proje Kodu</label>
 											<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PROJEKODU" class="PROJEKODU select2 form-control" name="PROJEKODU" id="PROJEKODU">
+												<option value="">Seç</option>
 												@php
 													$proje = DB::table($database.'gecoust')->where('EVRAKNO','MPSJOD')->get();
 												@endphp
