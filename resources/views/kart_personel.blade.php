@@ -2409,6 +2409,11 @@ if (isset($kart_veri)) {
               @php
                 if(isset($_GET['SUZ'])) {
               @endphp
+              <div class="d-flex gap-3 mt-3">
+                <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+                <button class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
+                <button class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+              </div>
               <table id="example2" class="table table-hover text-center" data-page-length="10">
                 <thead>
                   <tr class="bg-primary">
@@ -2424,6 +2429,18 @@ if (isset($kart_veri)) {
                     <th>GK_8</th>
                     <th>GK_9</th>
                     <th>GK_10</th>
+                    <th>Aders</th>
+                    <th>Telefon</th>
+                    <th>E-posta</th>
+                    <th>TC</th>
+                    <th>Doğum Tarihi</th>
+                    <th>Kan grubu</th>
+                    <th>Sağlık durumu</th>
+                    <th>Eğitim Durumu</th>
+                    <th>Giysi Bedeni</th>
+                    <th>Giriş Tarihi</th>
+                    <th>Çıkış Tarihi</th>
+                    <th>Açık / Kapalı</th>
                     <th>#</th>
                   </tr>
                 </thead>
@@ -2442,6 +2459,18 @@ if (isset($kart_veri)) {
                     <th>GK_8</th>
                     <th>GK_9</th>
                     <th>GK_10</th>
+                    <th style="min-width:250px;">Aders</th>
+                    <th>Telefon</th>
+                    <th>E-posta</th>
+                    <th>TC</th>
+                    <th>Doğum Tarihi</th>
+                    <th>Kan grubu</th>
+                    <th>Sağlık durumu</th>
+                    <th>Eğitim Durumu</th>
+                    <th>Giysi Bedeni</th>
+                    <th>Giriş Tarihi</th>
+                    <th>Çıkış Tarihi</th>
+                    <th>Açık / Kapalı</th>
                     <th>#</th>
                   </tr>
                 </tfoot>
@@ -2588,6 +2617,18 @@ if (isset($kart_veri)) {
                       echo "<td><b>".$table->GK_8."</b></td>";
                       echo "<td><b>".$table->GK_9."</b></td>";
                       echo "<td><b>".$table->GK_10."</b></td>";
+                      echo "<td><b>".$table->ADRES_1."</b></td>";
+                      echo "<td><b>".$table->TELEFONNO_1."</b></td>";
+                      echo "<td><b>".$table->EMAIL."</b></td>";
+                      echo "<td><b>".$table->TC_KIMLIK_NO."</b></td>";
+                      echo "<td><b>".$table->DOGUM_TARIHI."</b></td>";
+                      echo "<td><b>".$table->KAN_GRUBU."</b></td>";
+                      echo "<td><b>".$table->SAGLIK_DURUMU."</b></td>";
+                      echo "<td><b>".$table->EGITIM_DURUMU."</b></td>";
+                      echo "<td><b>".$table->GIYSI_BEDENI."</b></td>";
+                      echo "<td><b>".$table->START_DATE."</b></td>";
+                      echo "<td><b>".$table->END_DATE."</b></td>";
+                      echo "<td><b>".$table->AP10."</b></td>";
                       
                       echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                       echo "</tr>";
