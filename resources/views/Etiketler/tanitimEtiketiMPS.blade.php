@@ -15,8 +15,9 @@
     ->where('M10E.EVRAKNO', $EVRAKNO)
     ->first();
     
+    $firmaBilgisi = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($u->firma))->first();
 
-    $veriT = DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->get();
+    $veriT = DB::table($firma.'mmps10t')->where('R_KAYNAKTYPE','I')->where('EVRAKNO',$EVRAKNO)->get();
 @endphp
 <!DOCTYPE html>
 <html lang="tr">
@@ -158,7 +159,8 @@
     /* Operasyonlar Tablosu (Zirve Burası) */
     .operations-table {
         display: grid;
-        grid-template-columns: repeat(11, 1fr); /* 1.OP'dan 10.OP'a + Etiket */
+        /* İlk kolon 'Toplam Operasyon' için, diğerleri dinamik operasyon sayısı kadar */
+        grid-template-columns: 100px repeat({{ $veriT->count() }}, 1fr); 
         text-align: center;
         border-bottom: 1px solid var(--border);
     }
@@ -200,10 +202,10 @@
         
         <header class="header">
             <div class="logo-container">
-                <img src="path/to/your/yuksel_logo.png" alt="YÜKSEL CNC Logo"> </div>
+                <img src="{{ asset($firmaBilgisi->LOGO_URL) }}" alt="YÜKSEL CNC Logo"> </div>
             <div class="title-container">
                 <h1 class="main-title">TANITIM ETİKETİ</h1>
-                <p class="sub-title">ENDÜSTRİ VE MAKİNA SANAYİ TİC. LTD. ŞTİ.</p>
+                <p class="sub-title">{{ $firmaBilgisi->FIRMA_ADI }}</p>
             </div>
             </header>
 
@@ -262,31 +264,19 @@
         <footer class="footer">
             
 
-            <div class="operations-table">
-                <div class="total-ops">Toplam Operasyon Sayısı</div>
-                
-                <div class="op-cell op-header">1.OP</div>
-                <div class="op-cell op-header">2.OP</div>
-                <div class="op-cell op-header">3.OP</div>
-                <div class="op-cell op-header">4.OP</div>
-                <div class="op-cell op-header">5.OP</div>
-                <div class="op-cell op-header">6.OP</div>
-                <div class="op-cell op-header">7.OP</div>
-                <div class="op-cell op-header">8.OP</div>
-                <div class="op-cell op-header">9.OP</div>
-                <div class="op-cell op-header">10.OP</div>
+        <div class="operations-table">
+            <div class="total-ops">Operasyonlar</div>
 
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-                <div class="op-cell"></div>
-            </div>
+            @foreach ($veriT as $index => $veri)
+                <div class="op-cell op-header">{{ $index + 1 }}.OP</div>
+            @endforeach
+
+            @foreach ($veriT as $veri)
+                <div class="op-cell">
+                    <div style="font-size: 8px; line-height: 1;">{{ $veri->KAYNAK_AD }}</div>
+                </div>
+            @endforeach
+        </div>
 
             <div class="footer-section" style="border-left: 1px solid var(--border); border-right: none;">
                 </div>
