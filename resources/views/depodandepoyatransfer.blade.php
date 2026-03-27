@@ -31,7 +31,7 @@
   }
   else
   {
-    $sonID = DB::table($ekranTableE)->min('id');
+    $sonID = DB::table($ekranTableE)->max('id');
   }
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();

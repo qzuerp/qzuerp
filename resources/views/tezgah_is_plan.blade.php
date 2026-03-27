@@ -26,7 +26,7 @@
     $sonID = $_GET['ID'];
   }
   else {
-    $sonID = DB::table($ekranTableE)->min('id');
+    $sonID = DB::table($ekranTableE)->max('id');
   }
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
   $t_kart_veri=DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();

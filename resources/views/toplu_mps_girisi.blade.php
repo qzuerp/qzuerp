@@ -35,7 +35,7 @@
   }
   else
   {
-    $sonID = DB::table($ekranTableE)->min('id');
+    $sonID = DB::table($ekranTableE)->max('id');
   }
 
  // Bu kısım ihtiyaçlara göre düzenlenebilir. Eklemeler çıkarmalar yapılabilir.

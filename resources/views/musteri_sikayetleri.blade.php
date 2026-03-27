@@ -24,7 +24,7 @@
         $sonID = $_GET['ID'];
     }
     else{
-        $sonID = DB::table($ekranTableE)->min('ID');
+        $sonID = DB::table($ekranTableE)->max('id');
     }
     $sonID = intval($sonID);
     $kart_veri = DB::table($ekranTableE)

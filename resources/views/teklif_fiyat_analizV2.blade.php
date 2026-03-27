@@ -751,11 +751,39 @@
 			margin-bottom: 8px;
 			color: #818cf8;
 		}
-		
+		table { border-collapse: separate; border-spacing: 0; }
+
+		tbody tr td {
+			position: relative;
+			transition: background-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+		}
+
+		tbody tr td:first-child::before {
+			content: '' !important;
+			position: absolute !important;
+			left: 0; top: 0; bottom: 0 !important;
+			width: 3px !important;
+			border-radius: 0 2px 2px 0 !important;
+			background: #6366f1 !important;
+			transform: scaleY(0) !important;
+			transform-origin: center !important;
+			opacity: 0 !important;
+			transition: transform 0.28s ease, opacity 0.28s ease !important;
+		}
+
 		tr.active td {
-			background-color:rgb(118, 255, 152) !important;
-			color: #31708f;
-			transition: background 0.3s ease;
+			background-color: #eef2ff !important;
+			color: #1e1b4b !important;
+			border-bottom-color: transparent !important;
+			box-shadow:
+				0 -1px 0 0 #c7d2fe,
+				0  1px 0 0 #c7d2fe,
+				0 4px 16px -2px rgba(99,102,241,.18);
+		}
+
+		tr.active td:first-child::before {
+			transform: scaleY(1);
+			opacity: 1;
 		}
 
 		@media (max-width: 768px) {
