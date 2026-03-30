@@ -571,7 +571,6 @@
                     $cari00 = DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
                   @endphp
 
-                  {{-- FİLTRE KARTI --}}
                   <div style="background: #fff; border: 0.5px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
                     <p style="font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9ca3af; margin-bottom: 1rem;">Filtrele</p>
 
@@ -622,10 +621,10 @@
                         <i class="fa fa-filter"></i>&nbsp; Süz
                       </button>
                       <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
-                        <i class="fa fa-file-excel-o"></i>&nbsp; Excel
+                        <i class="fa-solid fa-file-excel"></i>&nbsp; Excel
                       </button>
                       <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')" style="font-size:13px; height:34px; padding: 0 16px;">
-                        <i class="fa fa-file-word-o"></i>&nbsp; Word
+                       <i class="fa-solid fa-file-word"></i>&nbsp; Word
                       </button>
                       <button type="button" class="btn btn-secondary" onclick="printTable('example2')" style="font-size:13px; height:34px; padding: 0 16px;">
                         <i class="fa fa-print"></i>&nbsp; Yazdır
@@ -633,54 +632,18 @@
                     </div>
                   </div>
 
-                  {{-- TABLO --}}
                   @php if(isset($_GET['SUZ'])): @endphp
 
                   <style>
-                    #example2 { border-collapse: separate; border-spacing: 0 3px; font-size: 13px; width: 100%; }
-                    #example2 thead th {
-                      font-size: 11px; font-weight: 600; letter-spacing: .05em;
-                      text-transform: uppercase; color: #6b7280;
-                      background: transparent; border: none;
-                      padding: 6px 12px; white-space: nowrap;
-                    }
-                    #example2 tbody tr td {
-                      background: #fff; border: none;
-                      padding: 10px 12px; vertical-align: middle;
-                      transition: background .12s;
-                    }
-                    #example2 tbody tr td:first-child { border-radius: 8px 0 0 8px; }
-                    #example2 tbody tr td:last-child  { border-radius: 0 8px 8px 0; }
-                    #example2 tbody tr:hover td { background: #f9fafb; }
-
-                    /* Aktif satır */
-                    #example2 tr.active td { background: #4F46E5; color: #fff; }
-                    #example2 tr.active td:first-child { position: relative; padding-left: 20px; }
-                    #example2 tr.active td:first-child::before {
-                      content: ''; position: absolute; left: 6px; top: 50%;
-                      transform: translateY(-50%); width: 3px; height: 60%;
-                      background: rgba(255,255,255,.5); border-radius: 2px;
-                    }
-
-                    /* Seçili satır */
-                    #example2 tr.current td { background: #EEF2FF; color: #3730A3; }
-
-                    /* Termin badge */
                     .badge-gecmis  { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
                     .badge-yakin   { background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin2   { background:#fceeb5.90%); color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin3   { background:#ffc485; color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
                     .badge-normal  { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
                     .badge-bos     { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
 
-                    /* Açık/Kapalı badge */
                     .badge-acik   { background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
                     .badge-kapali { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
-
-                    #example2 tfoot th {
-                      font-size: 11px; font-weight: 600; letter-spacing: .04em;
-                      text-transform: uppercase; color: #6b7280;
-                      background: #F9FAFB; border-top: 1px solid #e5e7eb;
-                      padding: 8px 12px;
-                    }
                   </style>
 
                   <div style="overflow-x: auto; border-radius: 12px; border: 0.5px solid #e5e7eb; background:#fff; padding: 1rem;">
@@ -700,6 +663,7 @@
                           <th>Termin Tar.</th>
                           <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
+                          <th>MPS Kodu</th>
                         </tr>
                       </thead>
                       <tfoot>
@@ -717,6 +681,7 @@
                           <th>Termin Tar.</th>
                           <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
+                          <th>MPS Kodu</th>
                         </tr>
                       </tfoot>
                       <tbody>
@@ -728,10 +693,11 @@
                           $TARIH_B = isset($_GET['TARIH_B']) ? trim($_GET['TARIH_B']) : '';
                           $TARIH_E = isset($_GET['TARIH_E']) ? trim($_GET['TARIH_E']) : '';
 
-                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*
+                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO
                             FROM '.$database.'STOK40E S40E
                             LEFT JOIN '.$database.'cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
                             LEFT JOIN '.$database.'STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
+                            LEFT JOIN '.$database.'mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO
                             WHERE 1=1';
 
                           if ($KOD_B !== '')       $sql_sorgu .= " AND S40T.KOD >= '".$KOD_B."'";
@@ -752,37 +718,44 @@
                             if (!empty($row->TERMIN_TAR)) {
                               try {
                                 $termin = \Carbon\Carbon::parse($row->TERMIN_TAR);
-                                $fark = $bugun->diffInDays($termin, false); // negatif = geçmiş
+                                $fark = $bugun->diffInDays($termin, false);
 
                                 if ($fark < 0) {
-                                  $terminBadge = '<span class="badge-gecmis">⚠ '.abs($fark).' gün geçti</span>';
-                                } elseif ($fark <= 7) {
-                                  $terminBadge = '<span class="badge-yakin">⏳ '.$fark.' gün kaldı</span>';
-                                } else {
-                                  $terminBadge = '<span class="badge-normal">✓ '.$fark.' gün kaldı</span>';
+                                  $terminBadge = '<span class="badge-gecmis"> '.abs($fark).' gün geçti</span>';
+                                } elseif ($fark <= 10) {
+                                  $terminBadge = '<span class="badge-yakin"> '.$fark.' gün kaldı</span>';
+                                }
+                                elseif ($fark <= 20) {
+                                  $terminBadge = '<span class="badge-yakin2"> '.$fark.' gün kaldı</span>';
+                                }
+                                elseif ($fark <= 30) {
+                                  $terminBadge = '<span class="badge-yakin3"> '.$fark.' gün kaldı</span>';
+                                }
+                                else {
+                                  $terminBadge = '<span class="badge-normal"> '.$fark.' gün kaldı</span>';
                                 }
                               } catch (\Exception $e) {}
                             }
 
-                            // Açık/Kapalı badge
                             $akBadge = (!empty($row->AK) && $row->AK === 'K')
                               ? '<span class="badge-kapali">Kapalı</span>'
                               : '<span class="badge-acik">Açık</span>';
 
                             echo "<tr>";
-                            echo "<td><b>".$row->EVRAKNO."</b></td>";
-                            echo "<td>".$row->TEDARIKCI."</td>";
-                            echo "<td>".$row->CHSIPNO."</td>";
-                            echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
-                            echo "<td>".$row->STOK_ADI."</td>";
-                            echo "<td>".($row->LOTNUMBER ?? '—')."</td>";
-                            echo "<td>".($row->SERINO ?? '—')."</td>";
-                            echo "<td style='text-align:right'>".$row->SF_MIKTAR."</td>";
-                            echo "<td>".$row->SF_SF_UNIT."</td>";
-                            echo "<td style='text-align:right'>".$row->SF_BAKIYE."</td>";
-                            echo "<td style='white-space:nowrap'>".($row->TERMIN_TAR ?? '—')."</td>";
-                            echo "<td>".$terminBadge."</td>";
-                            echo "<td>".$akBadge."</td>";
+                              echo "<td><b>".$row->EVRAKNO."</b></td>";
+                              echo "<td>".$row->TEDARIKCI."</td>";
+                              echo "<td>".$row->CHSIPNO."</td>";
+                              echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
+                              echo "<td>".$row->STOK_ADI."</td>";
+                              echo "<td>".($row->LOTNUMBER ?? '—')."</td>";
+                              echo "<td>".($row->SERINO ?? '—')."</td>";
+                              echo "<td style='text-align:right'>".$row->SF_MIKTAR."</td>";
+                              echo "<td>".$row->SF_SF_UNIT."</td>";
+                              echo "<td style='text-align:right'>".$row->SF_BAKIYE."</td>";
+                              echo "<td style='white-space:nowrap'>".($row->TERMIN_TAR ?? '—')."</td>";
+                              echo "<td>".$terminBadge."</td>";
+                              echo "<td>".$akBadge."</td>";
+                              echo "<td>".$row->MPS_EVRAKNO."</td>";
                             echo "</tr>";
                           }
                         @endphp
