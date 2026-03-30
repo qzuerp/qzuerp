@@ -210,7 +210,7 @@
 										<ul class="nav nav-tabs">
 											<li class="nav-item" ><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Ürün Bilgileri</a></li>
 											<li class="nav-item" ><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Takımlar</a></li>
-											<li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+											<li class="" ><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 											<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 										</ul>
 

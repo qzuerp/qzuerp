@@ -15,8 +15,6 @@
             <th width="15">Birim Fiyat</th>
             <th width="15">Dolar Birim Fiyat</th>
             <th width="15">Toplam Tutar</th>
-            <th width="15">Açıklama</th>
-            <th width="15">Termin Tarihi</th>
         </tr>
     </thead>
     <tbody>
@@ -57,7 +55,7 @@
             @endforeach
             
             <tr style="height: 10px;">
-                <td>{{ $ilkSatir->TT_ACIKLAMA }}</td>
+                <td colspan="15">{{ $ilkSatir->TT_ACIKLAMA }} - {{ $ilkSatir->TT_TERMIN }}</td>
             </tr>
         @endforeach
     </tbody>

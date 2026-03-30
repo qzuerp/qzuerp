@@ -418,7 +418,7 @@
 												<li class=""><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Diğer Bilgiler</a></li>
 												<li class=""><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Mps tezgah ve operasyonlar</a></li>
 												<li class=""><a href="#maliyet" class="nav-link" data-bs-toggle="tab">Maliyet</a></li>
-												<li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+												<li class=""><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 												<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 												<li id="bagliDokumanlarTab" class=""><a href="#bagliDokumanlar" id="bagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Bağlı Dokümanlar</a></li>
 											</ul>

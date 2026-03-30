@@ -228,7 +228,7 @@
                         <li class="nav-item"><a href="#toplumpsgirisi" id="toplumpsgirisiTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color:black;"></i>&nbsp;&nbsp;Toplu MPS Girişi</a></li>
                         <li class="" >
                           <a href="#uretimEmirlerilistesi" id="uretimEmirlerilistesiTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue;"></i>&nbsp;Üretim Emirleri Listesi</a></li>
-                        <li class=""><a href="#liste" id="listeTab" class="nav-link" data-bs-toggle="tab">&nbsp;Liste</a></li>
+                        <li class=""><a href="#liste" id="liste-tab" id="listeTab" class="nav-link" data-bs-toggle="tab">&nbsp;Liste</a></li>
                         <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                       </ul>
 

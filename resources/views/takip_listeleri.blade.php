@@ -431,7 +431,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#liste" class="nav-link" data-bs-toggle="tab">
+                                        <a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">
                                             <i class="fa-solid fa-clipboard-list"></i> Raporlama
                                         </a>
                                     </li>

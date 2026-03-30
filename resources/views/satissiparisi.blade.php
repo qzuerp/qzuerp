@@ -192,7 +192,7 @@
                 <li class="nav-item" ><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Satış Sipariş</a></li>
                 <li class="nav-item {{ in_array('SSF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
                 <li class="nav-item" ><a href="#ihtiyac" class="nav-link" data-bs-toggle="tab">Sipariş ihtiyaçları</a></li>
-                <li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                <li class="" ><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
               </ul>
               <div class="tab-content">
@@ -635,12 +635,12 @@
                   @php if(isset($_GET['SUZ'])): @endphp
 
                   <style>
-                    .badge-gecmis  { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-                    .badge-yakin   { background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-                    .badge-yakin2   { background:#fceeb5.90%); color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-                    .badge-yakin3   { background:#ffc485; color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-                    .badge-normal  { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-                    .badge-bos     { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-gecmis { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin  { background: #FED7AA; color: #9A3412; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin2 { background: #FEF08A; color: #854D0E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin3 { background: #FEF9C3; color: #854D0E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-normal { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-bos    { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
 
                     .badge-acik   { background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
                     .badge-kapali { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
@@ -753,7 +753,7 @@
                               echo "<td>".$row->SF_SF_UNIT."</td>";
                               echo "<td style='text-align:right'>".$row->SF_BAKIYE."</td>";
                               echo "<td style='white-space:nowrap'>".($row->TERMIN_TAR ?? '—')."</td>";
-                              echo "<td>".$terminBadge."</td>";
+                              echo "<td data-order='".$fark."'>".$terminBadge."</td>";
                               echo "<td>".$akBadge."</td>";
                               echo "<td>".$row->MPS_EVRAKNO."</td>";
                             echo "</tr>";

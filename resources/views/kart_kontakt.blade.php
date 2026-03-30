@@ -156,7 +156,7 @@
 											data-bs-toggle="tab">Şirket Bilgileri</a></li>
 									<li class=""><a href="#grupkodu" class="nav-link" data-bs-toggle="tab">Grup Kodları</a>
 									</li>
-									<li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+									<li class=""><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 									<li class=""><a href="#baglantiliDokumanlar" class="nav-link" data-bs-toggle="tab"><i
 												style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a>
 									</li>

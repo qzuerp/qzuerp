@@ -1141,36 +1141,87 @@ input[type="checkbox"]:focus {
   color: #fff !important;
 }
 
-#example2 { border-collapse: separate; border-spacing: 0 3px; font-size: 13px; width: 100%; }
+#example2 { 
+  border-collapse: separate !important; 
+  border-spacing: 0 3px !important; 
+  font-size: 13px !important; 
+  width: 100% !important; 
+}
+
+#example2 thead tr.bg-primary {
+  background-color: #fff !important;
+}
+
 #example2 thead th {
-  font-size: 11px; font-weight: 600; letter-spacing: .05em;
-  text-transform: uppercase; color: #6b7280;
-  background: transparent; border: none;
-  padding: 6px 12px; white-space: nowrap;
+  font-size: 11px !important; 
+  font-weight: 600 !important; 
+  letter-spacing: .05em !important;
+  text-transform: uppercase !important; 
+  color: #6b7280 !important;
+  background: transparent !important; 
+  border: none !important;
+  padding: 6px 12px !important; 
+  white-space: nowrap !important;
 }
+
 #example2 tbody tr td {
-  background: #fff; border: none;
-  padding: 10px 12px; vertical-align: middle;
-  transition: background .12s;
+  background: #fff !important; 
+  border: none !important;
+  padding: 10px 12px !important; 
+  vertical-align: middle !important;
+  transition: background .12s !important;
 }
-#example2 tbody tr td:first-child { border-radius: 8px 0 0 8px; }
-#example2 tbody tr td:last-child  { border-radius: 0 8px 8px 0; }
-#example2 tbody tr:hover td { background: #f9fafb; }
 
-#example2 tr.active td { background: #4F46E5; color: #fff; }
-#example2 tr.active td:first-child { position: relative; padding-left: 20px; }
+#example2 tbody tr td:first-child { 
+  border-radius: 8px 0 0 8px !important; 
+}
+
+#example2 tbody tr td:last-child { 
+  border-radius: 0 8px 8px 0 !important; 
+}
+
+#example2 tbody tr:hover td { 
+  background: #f9fafb !important; 
+}
+
+/* ACTIVE DURUMU: Koyu Indigo/Beyaz */
+#example2 tr.active td { 
+  background: #4F46E5 !important; 
+  color: #fff !important; 
+}
+
+#example2 tr.active td:first-child { 
+  position: relative !important; 
+  padding-left: 20px !important; 
+}
+
 #example2 tr.active td:first-child::before {
-  content: ''; position: absolute; left: 6px; top: 50%;
-  transform: translateY(-50%); width: 3px; height: 60%;
-  background: rgba(255,255,255,.5); border-radius: 2px;
+  content: '' !important; 
+  position: absolute !important; 
+  left: 6px !important; 
+  top: 50% !important;
+  transform: translateY(-50%) !important; 
+  width: 3px !important; 
+  height: 60% !important;
+  background: rgba(255,255,255,.5) !important; 
+  border-radius: 2px !important;
 }
 
-#example2 tr.current td { background: #EEF2FF; color: #3730A3; }
+/* CURRENT DURUMU: Açık Mavi/Lacivert */
+#example2 tr.current td { 
+  background: #EEF2FF !important; 
+  color: #3730A3 !important; 
+}
+
 #example2 tfoot th {
-  font-size: 11px; font-weight: 600; letter-spacing: .04em;
-  text-transform: uppercase; color: #6b7280;
-  background: #F9FAFB; border-top: 1px solid #e5e7eb;
-  padding: 8px 12px;
+  font-size: 11px !important; 
+  font-weight: 600 !important; 
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important; 
+  color: #6b7280 !important;
+  background: #F9FAFB !important; 
+  border-top: 1px solid #e5e7eb !important;
+  padding: 8px 12px !important;
 }
 
 /* Danger */

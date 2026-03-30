@@ -339,6 +339,19 @@ function yeniEvrakNo(pageTable) {
   });
 
 }
+
+$(document).ready(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('SUZ')) {
+      var listeTabEl = document.querySelector('#liste-tab');
+      if (listeTabEl) {
+          var tab = new bootstrap.Tab(listeTabEl);
+          tab.show();
+      }
+  }
+});
+
 $(document).on('click', '.kopyalaBtn', function () {
   const btn = $(this);
   const icon = btn.find('i');

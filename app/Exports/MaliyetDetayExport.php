@@ -29,7 +29,8 @@ class MaliyetDetayExport implements FromView
                 TT.FIYAT AS TT_FIYAT,
                 TT.FIYAT2 AS TT_FIYAT2,
                 TT.TUTAR AS TT_TUTAR,
-                TT.ACIKLAMA AS TT_ACIKLAMA
+                TT.ACIKLAMA AS TT_ACIKLAMA,
+                TT.TERMIN_TARIHI AS TT_TERMIN
             FROM {$firma}tekl20tı TI
             OUTER APPLY (
                 SELECT TOP 1 * 

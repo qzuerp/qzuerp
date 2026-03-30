@@ -206,7 +206,7 @@
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="nav-item"><a href="#maliyet" class="nav-link" data-bs-toggle="tab">Maliyet</a></li>
-                            <li><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                            <li><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                             <li><a href="#baglantiliDokumanlar" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text text-warning"></i> Bağlantılı Dokümanlar</a></li>
                         </ul>
                     </div>

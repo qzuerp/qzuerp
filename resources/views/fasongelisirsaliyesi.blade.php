@@ -226,7 +226,7 @@
                     <div class="nav-tabs-custom">
                     	<ul class="nav nav-tabs">
                     		<li class="nav-item"><a href="#irsaliye" id="irsaliyeTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
-                        <li class="" ><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                        <li class="" ><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                         <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                     	</ul>
 

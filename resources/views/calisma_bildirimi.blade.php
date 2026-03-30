@@ -289,7 +289,7 @@
                   <li class="" id="surec_bi"><a href="#surec_bilgileri" class="nav-link" data-bs-toggle="tab">Süreç Bilgileri</a></li>
                   <li class=""><a href="#hatalar" class="nav-link" data-bs-toggle="tab">Hatalar</a></li>
                   <li class=""><a href="#hammade" class="nav-link" data-bs-toggle="tab">Kullanılan Hammade / Diğer Malzemeler</a></li>
-                  <li class=""><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                  <li class=""><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                   <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                 </ul>
 

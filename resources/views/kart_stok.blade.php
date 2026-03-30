@@ -223,7 +223,7 @@
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#fiyatlari">Fiyatları</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#liste">Liste</a>
+										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#liste" id="liste-tab">Liste</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#ders">Öğrenilmiş Dersler</a>
@@ -1585,7 +1585,7 @@
 				@if(!isset($kart_veri))
 					$('#KOD_ALANI').removeAttr('readonly');
 				@endif
-				
+
 				function turkishNormalize(str) {
 					if (!str) return '';
 					

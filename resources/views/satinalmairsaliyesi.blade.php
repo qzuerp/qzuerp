@@ -238,7 +238,7 @@
 															
 												<li class="nav-item {{ in_array('SAIF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
 												<li class="nav-item"><a href="#siparis" id="siparisTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
-												<li class="nav-item"><a href="#liste" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+												<li class="nav-item"><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
 												<li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
 											</ul>
 
