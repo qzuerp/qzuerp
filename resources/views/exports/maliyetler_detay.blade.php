@@ -15,6 +15,8 @@
             <th width="15">Birim Fiyat</th>
             <th width="15">Dolar Birim Fiyat</th>
             <th width="15">Toplam Tutar</th>
+            <th width="15">Açıklama</th>
+            <th width="15">Termin Tarihi</th>
         </tr>
     </thead>
     <tbody>
@@ -27,11 +29,11 @@
                     GRUP: {{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}
                 </td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} TL
+                    {{ number_format($ilkSatir->TT_FIYAT, 2, ',', '.') }} TL
                 </td>
-                <td style="border-top: 2px solid #000000;">{{ number_format($grupVeri->sum('FIYAT2'), 2, ',', '.') }} TL</td>
+                <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">{{ number_format($ilkSatir->TT_FIYAT2, 2, ',', '.') }} USD</td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} TL
+                    {{ number_format($ilkSatir->TT_TUTAR, 2, ',', '.') }} TL
                 </td>
                 <td colspan="2" style="border-top: 2px solid #000000;"></td>
             </tr>
@@ -51,12 +53,11 @@
                     <td style="text-align: right;">{{ number_format($satir->FIYAT, 2, ',', '.') }} TL</td>
                     <td style="text-align: right;">{{ number_format($satir->FIYAT2, 2, ',', '.') }} {{ $satir->PRICEUNIT }}</td>
                     <td style="text-align: right; font-weight: bold;">{{ number_format($satir->TUTAR, 2, ',', '.') }} TL</td>
-                    <td style="text-align: right; font-weight: bold;">{{ $satir-> }}</td>
                 </tr>
             @endforeach
             
             <tr style="height: 10px;">
-                <td colspan="15"></td>
+                <td>{{ $ilkSatir->TT_ACIKLAMA }}</td>
             </tr>
         @endforeach
     </tbody>
