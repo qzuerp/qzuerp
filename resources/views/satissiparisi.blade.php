@@ -568,101 +568,128 @@
                 <div class="tab-pane" id="liste">
                   @php
                     $stok00 = DB::table($database.'stok00')->get();
-                    $cari00=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
+                    $cari00 = DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
                   @endphp
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="KOD_B" id="KOD_B" class="form-control "  style=" height: 30PX" >
-                      @php
-                      echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+                  {{-- FİLTRE KARTI --}}
+                  <div style="background: #fff; border: 0.5px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+                    <p style="font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9ca3af; margin-bottom: 1rem;">Filtrele</p>
+
+                    <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                      <label style="font-size: 13px; font-weight: 500; color: #374151;">Stok Kodu</label>
+                      <select name="KOD_B" id="KOD_B" class="form-control" style="height:34px; font-size:13px;">
+                        @php echo "<option value=' '>Başlangıç</option>";
+                          foreach ($stok00 as $veri) {
+                            if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
                           }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="KOD_E" id="KOD_E" class="form-control "  style="height: 30px;">
-                      @php
-                      echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='".$veri->KOD."' >".$veri->KOD." - ".$veri->AD."</option>";
+                        @endphp
+                      </select>
+                      <select name="KOD_E" id="KOD_E" class="form-control" style="height:34px; font-size:13px;">
+                        @php echo "<option value=' '>Bitiş</option>";
+                          foreach ($stok00 as $veri) {
+                            if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
                           }
-                        }
-
-                      @endphp
-                    </select>
-                  </div> 
-                  </br></br>
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Müşteri Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control js-example-basic-single"  style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-
-                        foreach ($cari00 as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control js-example-basic-single select2-hidden-accessibl"  style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-
-                        foreach ($cari00 as $key => $veri) {
-
-                          if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-                            echo "<option value ='>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                          else {
-                            echo "<option value =''>".$veri->KOD." | ".$veri->AD."</option>";
-                          }
-                        }
-                      @endphp
-                    </select>
-                  </div></br></br>
-
-                  <label for="minDeger" class="col-sm-2 col-form-label">Tarih</label>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_B" id="TARIH_B">
-                  </div>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_E" id="TARIH_E">
-                  </div><br><br>
-
-                  <div class="col-sm-3">
-                    <button type="submit" class="btn btn-success" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style="color: white"></i>&nbsp;&nbsp;--Süz--</button>        
-                  </div>
-                      <div class="mt-3">
-                      <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2', 'tablo_excel')">Excel'e Aktar</button>
-                      <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2', 'tablo_word')">Word'e Aktar</button>
-                      <button type="button" class="btn btn-primary" onclick="printTable('example2')">Yazdır</button>
+                        @endphp
+                      </select>
                     </div>
-                  <div class="row " style="overflow: auto">
 
-                    @php
-                      if(isset($_GET['SUZ'])) {
-                    @endphp
-              
-                    <table id="example2" class="table table-hover text-center" data-page-length="500" style="font-size: 0.75em">
+                    <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                      <label style="font-size: 13px; font-weight: 500; color: #374151;">Müşteri Kodu</label>
+                      <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php echo "<option value=' '>Başlangıç</option>";
+                          foreach ($cari00 as $veri)
+                            echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                        @endphp
+                      </select>
+                      <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php echo "<option value=' '>Bitiş</option>";
+                          foreach ($cari00 as $veri)
+                            echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                        @endphp
+                      </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 1.25rem;">
+                      <label style="font-size: 13px; font-weight: 500; color: #374151;">Tarih</label>
+                      <input type="date" class="form-control" name="TARIH_B" id="TARIH_B" style="height:34px; font-size:13px;">
+                      <input type="date" class="form-control" name="TARIH_E" id="TARIH_E" style="height:34px; font-size:13px;">
+                    </div>
+
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                      <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele" style="font-size:13px; height:34px; padding: 0 16px;">
+                        <i class="fa fa-filter"></i>&nbsp; Süz
+                      </button>
+                      <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
+                        <i class="fa fa-file-excel-o"></i>&nbsp; Excel
+                      </button>
+                      <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')" style="font-size:13px; height:34px; padding: 0 16px;">
+                        <i class="fa fa-file-word-o"></i>&nbsp; Word
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="printTable('example2')" style="font-size:13px; height:34px; padding: 0 16px;">
+                        <i class="fa fa-print"></i>&nbsp; Yazdır
+                      </button>
+                    </div>
+                  </div>
+
+                  {{-- TABLO --}}
+                  @php if(isset($_GET['SUZ'])): @endphp
+
+                  <style>
+                    #example2 { border-collapse: separate; border-spacing: 0 3px; font-size: 13px; width: 100%; }
+                    #example2 thead th {
+                      font-size: 11px; font-weight: 600; letter-spacing: .05em;
+                      text-transform: uppercase; color: #6b7280;
+                      background: transparent; border: none;
+                      padding: 6px 12px; white-space: nowrap;
+                    }
+                    #example2 tbody tr td {
+                      background: #fff; border: none;
+                      padding: 10px 12px; vertical-align: middle;
+                      transition: background .12s;
+                    }
+                    #example2 tbody tr td:first-child { border-radius: 8px 0 0 8px; }
+                    #example2 tbody tr td:last-child  { border-radius: 0 8px 8px 0; }
+                    #example2 tbody tr:hover td { background: #f9fafb; }
+
+                    /* Aktif satır */
+                    #example2 tr.active td { background: #4F46E5; color: #fff; }
+                    #example2 tr.active td:first-child { position: relative; padding-left: 20px; }
+                    #example2 tr.active td:first-child::before {
+                      content: ''; position: absolute; left: 6px; top: 50%;
+                      transform: translateY(-50%); width: 3px; height: 60%;
+                      background: rgba(255,255,255,.5); border-radius: 2px;
+                    }
+
+                    /* Seçili satır */
+                    #example2 tr.current td { background: #EEF2FF; color: #3730A3; }
+
+                    /* Termin badge */
+                    .badge-gecmis  { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-yakin   { background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-normal  { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    .badge-bos     { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+
+                    /* Açık/Kapalı badge */
+                    .badge-acik   { background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
+                    .badge-kapali { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
+
+                    #example2 tfoot th {
+                      font-size: 11px; font-weight: 600; letter-spacing: .04em;
+                      text-transform: uppercase; color: #6b7280;
+                      background: #F9FAFB; border-top: 1px solid #e5e7eb;
+                      padding: 8px 12px;
+                    }
+                  </style>
+
+                  <div style="overflow-x: auto; border-radius: 12px; border: 0.5px solid #e5e7eb; background:#fff; padding: 1rem;">
+                    <table id="example2" data-page-length="500">
                       <thead>
-                        <tr class="bg-primary">
+                        <tr>
                           <th>Sipariş No</th>
                           <th>Tedarikçi</th>
-                          <th>Müşteri Sipariş No</th>
+                          <th>Müş. Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Lot No</th>
@@ -670,17 +697,16 @@
                           <th>İşlem Mik.</th>
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
-                          <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
                         </tr>
                       </thead>
-
                       <tfoot>
-                        <tr class="bg-info">
-                        <th>Sipariş No</th>
+                        <tr>
+                          <th>Sipariş No</th>
                           <th>Tedarikçi</th>
-                          <th>Müşteri Sipariş No</th>
+                          <th>Müş. Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
                           <th>Lot No</th>
@@ -688,83 +714,83 @@
                           <th>İşlem Mik.</th>
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
-                          <!-- <th>Süre (dk)</th> -->
                           <th>Termin Tar.</th>
+                          <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
                         </tr>
                       </tfoot>
-
                       <tbody>
                         @php
+                          $KOD_B = isset($_GET['KOD_B']) ? trim($_GET['KOD_B']) : '';
+                          $KOD_E = isset($_GET['KOD_E']) ? trim($_GET['KOD_E']) : '';
+                          $TEDARIKCI_B = isset($_GET['TEDARIKCI_B']) ? trim($_GET['TEDARIKCI_B']) : '';
+                          $TEDARIKCI_E = isset($_GET['TEDARIKCI_E']) ? trim($_GET['TEDARIKCI_E']) : '';
+                          $TARIH_B = isset($_GET['TARIH_B']) ? trim($_GET['TARIH_B']) : '';
+                          $TARIH_E = isset($_GET['TARIH_E']) ? trim($_GET['TARIH_E']) : '';
 
-                          $KOD_B = '';
-                          $KOD_E = '';
-                          $TEDARIKCI_B = '';
-                          $TEDARIKCI_E = '';
-                          $TARIH_B = '';
-                          $TARIH_E = '';
-
-                          if (isset($_GET['KOD_B'])) {$KOD_B = TRIM($_GET['KOD_B']);}
-                          if (isset($_GET['KOD_E'])) {$KOD_E = TRIM($_GET['KOD_E']);}
-                          if (isset($_GET['TEDARIKCI_B'])) {$TEDARIKCI_B = TRIM($_GET['TEDARIKCI_B']);}
-                          if (isset($_GET['TEDARIKCI_E'])) {$TEDARIKCI_E = TRIM($_GET['TEDARIKCI_E']);}
-                          if (isset($_GET['TARIH_B'])) {$TARIH_B = TRIM($_GET['TARIH_B']);}
-                          if (isset($_GET['TARIH_E'])) {$TARIH_E = TRIM($_GET['TARIH_E']);}
-
-                          $sql_sorgu = ' SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.* FROM ' . $database . ' STOK40E S40E
-                            LEFT JOIN ' . $database . ' cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
-                            LEFT JOIN ' . $database . '  STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
+                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*
+                            FROM '.$database.'STOK40E S40E
+                            LEFT JOIN '.$database.'cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
+                            LEFT JOIN '.$database.'STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
                             WHERE 1=1';
 
-                          if (Trim($KOD_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40T.KOD >= '" . $KOD_B . "' ";
-                          }
-                          if (Trim($KOD_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40T.KOD <= '" . $KOD_E . "' ";
-                          }
-                          if (Trim($TEDARIKCI_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40E.CARIHESAPCODE >= '" . $TEDARIKCI_B . "' ";
-                          }
-                          if (Trim($TEDARIKCI_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40E.CARIHESAPCODE <= '" . $TEDARIKCI_E . "' ";
-                          }
-                          if (Trim($TARIH_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40T.TERMIN_TAR >= '" . $TARIH_B . "' ";
-                          }
-                          if (Trim($TARIH_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . " AND S40T.TERMIN_TAR <= '" . $TARIH_E . "' ";
-                          }
-                          $sql_sorgu = $sql_sorgu . " AND S40E.AK != 'K' ";
+                          if ($KOD_B !== '')       $sql_sorgu .= " AND S40T.KOD >= '".$KOD_B."'";
+                          if ($KOD_E !== '')       $sql_sorgu .= " AND S40T.KOD <= '".$KOD_E."'";
+                          if ($TEDARIKCI_B !== '') $sql_sorgu .= " AND S40E.CARIHESAPCODE >= '".$TEDARIKCI_B."'";
+                          if ($TEDARIKCI_E !== '') $sql_sorgu .= " AND S40E.CARIHESAPCODE <= '".$TEDARIKCI_E."'";
+                          if ($TARIH_B !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR >= '".$TARIH_B."'";
+                          if ($TARIH_E !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR <= '".$TARIH_E."'";
+
+                          $sql_sorgu .= " AND S40E.AK != 'K'";
                           $table = DB::select($sql_sorgu);
 
-                          $KOD = DB::table($database.'stok40t')->get();
-                          foreach ($table as $table) {
+                          $bugun = \Carbon\Carbon::today();
+
+                          foreach ($table as $row) {
+                            // Termin durumu hesapla
+                            $terminBadge = '<span class="badge-bos">—</span>';
+                            if (!empty($row->TERMIN_TAR)) {
+                              try {
+                                $termin = \Carbon\Carbon::parse($row->TERMIN_TAR);
+                                $fark = $bugun->diffInDays($termin, false); // negatif = geçmiş
+
+                                if ($fark < 0) {
+                                  $terminBadge = '<span class="badge-gecmis">⚠ '.abs($fark).' gün geçti</span>';
+                                } elseif ($fark <= 7) {
+                                  $terminBadge = '<span class="badge-yakin">⏳ '.$fark.' gün kaldı</span>';
+                                } else {
+                                  $terminBadge = '<span class="badge-normal">✓ '.$fark.' gün kaldı</span>';
+                                }
+                              } catch (\Exception $e) {}
+                            }
+
+                            // Açık/Kapalı badge
+                            $akBadge = (!empty($row->AK) && $row->AK === 'K')
+                              ? '<span class="badge-kapali">Kapalı</span>'
+                              : '<span class="badge-acik">Açık</span>';
+
                             echo "<tr>";
-                            echo "<td><b>" . $table->EVRAKNO . "</b></td>";
-                            echo "<td><b>" . $table->TEDARIKCI . "</b></td>";
-                            echo "<td><b>" . $table->CHSIPNO . "</b></td>";
-                            echo "<td><b>" . $table->KOD . "</b></td>";
-                            echo "<td><b>" . $table->STOK_ADI . "</b></td>";
-                            echo "<td><b>" . $table->LOTNUMBER . "</b></td>";
-                            echo "<td><b>" . $table->SERINO . "</b></td>";
-                            echo "<td><b>" . $table->SF_MIKTAR . "</b></td>";
-                            echo "<td><b>" . $table->SF_SF_UNIT . "</b></td>";
-                            echo "<td><b>" . $table->SF_BAKIYE . "</b></td>";
-                            echo "<td><b>" . $table->TERMIN_TAR . "</b></td>";
-                            echo "<td><b>" . (!empty($table->AK) ? ($table->AK === 'K' ? 'Kapalı' : $table->AK) : 'Açık') . "</b></td>";
+                            echo "<td><b>".$row->EVRAKNO."</b></td>";
+                            echo "<td>".$row->TEDARIKCI."</td>";
+                            echo "<td>".$row->CHSIPNO."</td>";
+                            echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
+                            echo "<td>".$row->STOK_ADI."</td>";
+                            echo "<td>".($row->LOTNUMBER ?? '—')."</td>";
+                            echo "<td>".($row->SERINO ?? '—')."</td>";
+                            echo "<td style='text-align:right'>".$row->SF_MIKTAR."</td>";
+                            echo "<td>".$row->SF_SF_UNIT."</td>";
+                            echo "<td style='text-align:right'>".$row->SF_BAKIYE."</td>";
+                            echo "<td style='white-space:nowrap'>".($row->TERMIN_TAR ?? '—')."</td>";
+                            echo "<td>".$terminBadge."</td>";
+                            echo "<td>".$akBadge."</td>";
                             echo "</tr>";
                           }
-
                         @endphp
-
                       </tbody>
-
                     </table>
-                    
-                    @php
-                      }
-                    @endphp
                   </div>
+
+                  @php endif; @endphp
                 </div>
 
                 <div class="tab-pane" id="baglantiliDokumanlar">
