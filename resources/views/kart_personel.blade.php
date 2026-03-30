@@ -2630,7 +2630,7 @@ if (isset($kart_veri)) {
                       echo "<td><b>".$table->END_DATE."</b></td>";
                       echo "<td><b>".$table->AP10."</b></td>";
                       
-                      echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+                      echo "<td>"."<a class='btn btn-info' href='kart_personel?ID'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                       echo "</tr>";
                     }
 

@@ -251,7 +251,7 @@
 
                 <div class="data-row">
                     <div class="data-label">İrsaliye No / Tarih</div>
-                    <div class="data-value">123456 / 24.03.2026</div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none;"/></div>
                 </div>
 
             </div>

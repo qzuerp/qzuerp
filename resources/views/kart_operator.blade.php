@@ -129,7 +129,7 @@
                             ->get();
 
                           foreach ($kullanicilar as $key => $veri) {
-                            if ($veri->id == $kart_veri->bagli_hesap) {
+                            if ($veri->id == @$kart_veri->bagli_hesap) {
                               echo "<option value ='" . $veri->id . "' selected>" . $veri->email . "</option>";
                             } else {
                               echo "<option value ='" . $veri->id . "'>" . $veri->email . "</option>";

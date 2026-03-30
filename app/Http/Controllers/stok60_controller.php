@@ -67,7 +67,7 @@ class stok60_controller extends Controller
     $SF_SF_UNIT = $request->SF_SF_UNIT;
     $LOTNUMBER = $request->LOTNUMBER;
     $SERINO = $request->SERINO;
-    $AMBCODE_T = $request->AMBCODE;
+    $AMBCODE_T = $request->AMBCODE_E;
     $SIPNO = $request->SIPNO;
     $SIPARTNO = $request->SIPARTNO;
     $LOCATION1 = $request->LOCATION1;
@@ -197,13 +197,13 @@ class stok60_controller extends Controller
         for ($i = 0; $i < $satir_say; $i++) 
         {
 
-          // if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) 
+          // if ($AMBCODE_T== " " || $AMBCODE_T== "" || $AMBCODE_T== null) 
           // {
           //   $AMBCODE_SEC = $AMBCODE;
           // }
           // else 
           // {
-          //   $AMBCODE_SEC = $AMBCODE_T[$i];
+          //   $AMBCODE_SEC = $AMBCODE_T;
           // }
 
           DB::table($firma.'stok40t')->where('ARTNO',$SIPNO)->update([
@@ -218,7 +218,7 @@ class stok60_controller extends Controller
                 ->where('KOD',$KOD[$i])
                 ->where('LOTNUMBER',$LOTNUMBER[$i])
                 ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T[$i])
+                ->where('AMBCODE',$AMBCODE_T)
                 ->where('NUM1',$NUM1[$i])
                 ->where('NUM2',$NUM2[$i])
                 ->where('NUM3',$NUM3[$i])
@@ -237,7 +237,7 @@ class stok60_controller extends Controller
                 ->where('KOD',$KOD[$i])
                 ->where('LOTNUMBER',$LOTNUMBER[$i])
                 ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T[$i])
+                ->where('AMBCODE',$AMBCODE_T)
                 ->where('NUM1',$NUM1[$i])
                 ->where('NUM2',$NUM2[$i])
                 ->where('NUM3',$NUM3[$i])
@@ -262,7 +262,7 @@ class stok60_controller extends Controller
             //   "s2" => $s2,
             //   "Kontrol" => $kontrol,
             //   "Miktar" => $SF_MIKTAR[$i],
-            //   'Depo' => $AMBCODE_T[$i],
+            //   'Depo' => $AMBCODE_T,
             //   'all' => $request->all()
             // ]);
 
@@ -281,7 +281,7 @@ class stok60_controller extends Controller
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
-              'AMBCODE' => $AMBCODE_T[$i],
+              'AMBCODE' => $AMBCODE_T,
               'SIPNO' => $SIPNO[$i],
               // 'SIPARTNO' => $SIPARTNO[$i],
               'LOCATION1' => $LOCATION1[$i],
@@ -399,7 +399,7 @@ class stok60_controller extends Controller
                 ->where('KOD',$KOD[$i])
                 ->where('LOTNUMBER',$LOTNUMBER[$i])
                 ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T[$i])
+                ->where('AMBCODE',$AMBCODE_T)
                 ->where('NUM1',$NUM1[$i])
                 ->where('NUM2',$NUM2[$i])
                 ->where('NUM3',$NUM3[$i])
@@ -418,7 +418,7 @@ class stok60_controller extends Controller
                 ->where('KOD',$KOD[$i])
                 ->where('LOTNUMBER',$LOTNUMBER[$i])
                 ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T[$i])
+                ->where('AMBCODE',$AMBCODE_T)
                 ->where('NUM1',$NUM1[$i])
                 ->where('NUM2',$NUM2[$i])
                 ->where('NUM3',$NUM3[$i])
@@ -432,7 +432,7 @@ class stok60_controller extends Controller
                 ->where('LOCATION3',$LOCATION3[$i])
                 ->where('LOCATION4',$LOCATION4[$i])
                 ->where('EVRAKNO',$EVRAKNO)
-                ->where('EVRAKTIPI','STOK60T')
+                // ->where('EVRAKTIPI','STOK60T')
                 ->where('TRNUM',$TRNUM[$i])
                 ->sum('SF_MIKTAR');
             
@@ -443,7 +443,7 @@ class stok60_controller extends Controller
             //   "s2" => $s2,
             //   "Kontrol" => $kontrol,
             //   "Miktar" => $SF_MIKTAR[$i],
-            //   'Depo' => $AMBCODE_T[$i],
+            //   'Depo' => $AMBCODE_T,
             //   'all' => $request->all()
             // ]);
 
@@ -462,7 +462,7 @@ class stok60_controller extends Controller
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
-              'AMBCODE' => $AMBCODE_T[$i],
+              'AMBCODE' => $AMBCODE_T,
               'SIPNO' => $SIPNO[$i],
               // 'SIPARTNO' => $SIPARTNO[$i],
               'LOCATION1' => $LOCATION1[$i],
@@ -523,7 +523,7 @@ class stok60_controller extends Controller
                     ->where('KOD',$KOD[$i])
                     ->where('LOTNUMBER',$LOTNUMBER[$i])
                     ->where('SERINO',$SERINO[$i])
-                    ->where('AMBCODE',$AMBCODE_T[$i])
+                    ->where('AMBCODE',$AMBCODE_T)
                     ->where('NUM1',$NUM1[$i])
                     ->where('NUM2',$NUM2[$i])
                     ->where('NUM3',$NUM3[$i])
@@ -590,7 +590,7 @@ class stok60_controller extends Controller
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
               'SERINO' => $SERINO[$i],
-              'AMBCODE' => $AMBCODE_T[$i],
+              'AMBCODE' => $AMBCODE_T,
               'SIPNO' => $SIPNO[$i],
               'SIPARTNO' => $SIPARTNO,
               'LOCATION1' => $LOCATION1[$i],

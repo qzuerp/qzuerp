@@ -2495,7 +2495,7 @@
 			        $SRNUM = DB::table($database . 'mmps10t')->orderBy('id', 'ASC')->get();
 			        $MAMULSTOKKODU = DB::table($database . 'mmps10e')->orderBy('id', 'ASC')->get();
 			        $STOK_ADI = DB::table($database . 'mmps10e')->orderBy('id', 'ASC')->get();
-
+					$sonID = isset($sonID) ? $sonID : 0;
 			        $sql_sorgu = "SELECT 
 								m10e.EVRAKNO, 
 								B01T.*,

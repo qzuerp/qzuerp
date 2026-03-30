@@ -111,14 +111,14 @@ class FunctionHelpers
         Config::set('mail.default', 'smtp');
 
         Config::set('mail.mailers.smtp.transport', 'smtp');
-        Config::set('mail.mailers.smtp.host', $s->host);
-        Config::set('mail.mailers.smtp.port', $s->port);
-        Config::set('mail.mailers.smtp.encryption', $s->encryption);
-        Config::set('mail.mailers.smtp.username', $s->username);
-        Config::set('mail.mailers.smtp.password', $s->password);
+        Config::set('mail.mailers.smtp.host', $s->host ?? '');
+        Config::set('mail.mailers.smtp.port', $s->port ?? '');
+        Config::set('mail.mailers.smtp.encryption', $s->encryption ?? '');
+        Config::set('mail.mailers.smtp.username', $s->username ?? '');
+        Config::set('mail.mailers.smtp.password', $s->password ?? '');
 
-        Config::set('mail.from.address', $s->username);
-        Config::set('mail.from.name', $s->FIRMA_ADI);
+        Config::set('mail.from.address', $s->username ?? '');
+        Config::set('mail.from.name', $s->FIRMA_ADI ?? '');
 
         return $s;
     }

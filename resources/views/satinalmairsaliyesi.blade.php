@@ -345,19 +345,19 @@
 																		class="form-control SERINO">
 																</td>
 																<td style="min-width: 150px">
-																	<input tmaxlength="28" style="color: red" type="number"
+																	<input maxlength="28" style="color: red" type="number"
 																		data-name="SF_MIKTAR" name="SF_MIKTAR_FILL"
 																		id="SF_MIKTAR_FILL" data-bs-toggle="tooltip"
 																		data-bs-placement="top" data-bs-title="SF_MIKTAR"
 																		class="form-control number SF_MIKTAR">
 																</td>
 																<td style="min-width: 150px">
-																	<input maxlength="6 " style="color: red" type="text"
+																	<input maxlength="6" style="color: red" type="text"
 																		name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW"
 																		data-bs-toggle="tooltip" data-bs-placement="top"
 																		data-bs-title="SF_SF_UNIT"
 																		class="form-control SF_SF_UNIT" disabled>
-																	<input maxlength="6 " style="color: red" type="hidden"
+																	<input maxlength="6" style="color: red" type="hidden"
 																		name="SF_SF_UNIT_FILL" id="SF_SF_UNIT_FILL"
 																		class="form-control">
 																</td>
@@ -517,20 +517,16 @@
 																	<td><input type="text" class="form-control" name="NOT1[]"
 																			value="{{ $veri->NOT1 }}"></td>
 																	<td>
-																		<select name="MPS_KODU[]" id="MPS_KODU"
-																			class="form-control js-example-basic-single select2 "
+																		<select name="MPS_KODU[]"
+																			class="form-control js-example-basic-single select2"
 																			style="width: 100%; border-radius: 5px;">
 																			<option value=" ">Seç</option>
 																			@php
 																				$kur_veri = DB::table($database . 'mmps10e')->get();
 																				foreach ($kur_veri as $key => $value) {
-																					if ($value->MAMULSTOKKODU == @$veri->MPS_KODU) {
-																						echo "<option value='" . $value->EVRAKNO . "'>" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
-																					} else {
-																						echo "<option value='" . $value->EVRAKNO . "'>" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
-																					}
+																					$selected = ($value->MAMULSTOKKODU == @$veri->MPS_KODU) ? " selected" : "";
+																					echo "<option value='" . $value->EVRAKNO . "'" . $selected . ">" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
 																				}
-
 																			@endphp
 																		</select>
 																	</td>
@@ -567,15 +563,14 @@
 																	<td style="display: none;"><input type="text"
 																			class="form-control" name="SIPARTNO[]"
 																			value="{{ $veri->SIPARTNO }}" hidden></td>
-																	<td><button type="button" class="btn btn-default delete-row"
-																			id="deleteSingleRow"><i class="fa fa-minus"
+																	<td><button type="button" class="btn btn-default delete-single-row"><i class="fa fa-minus"
 																				style="color: red"></i></button></td>
 																</tr>
 															@endforeach
 														</tbody>
 													</table>
 												</div>
-												<div id="fiyatlar" style="display:none;" class="tab_pane">
+												<div id="fiyatlar" class="tab-pane">
 													<table class="table table-bordered text-center" id="fiyat_table"
 														style="overflow:visible;border-radius:10px">
 														<thead>
@@ -615,18 +610,15 @@
 																	<td><input type="number" class="form-control number"
 																			name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
 																	<td>
-																		<select name="FIYAT_PB[]" id="FIYAT_PB"
-																			class="form-control js-example-basic-single select2 "
+																		<select name="FIYAT_PB[]"
+																			class="form-control js-example-basic-single select2"
 																			style="width: 100%; border-radius: 5px;">
 																			<option value=" ">Seç</option>
 																			@php
 																				$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
 																				foreach ($kur_veri as $key => $value) {
-																					if ($value->KOD == @$veri->FIYAT_PB) {
-																						echo "<option value='" . $value->KOD . "' selected>" . $value->KOD . " - " . $value->AD . "</option>";
-																					} else {
-																						echo "<option value='" . $value->KOD . "'>" . $value->KOD . " - " . $value->AD . "</option>";
-																					}
+																					$selected = ($value->KOD == @$veri->FIYAT_PB) ? " selected" : "";
+																					echo "<option value='" . $value->KOD . "'" . $selected . ">" . $value->KOD . " - " . $value->AD . "</option>";
 																				}
 																			@endphp
 																		</select>
@@ -642,6 +634,7 @@
 														</tbody>
 													</table>
 												</div>
+
 												<div class="tab-pane" id="siparis">
 													<div class="row mb-2">
 														<div class="col-md-4">
@@ -654,23 +647,27 @@
 																<span class="d-flex">
 																	<button class="d-none btn btn-primary input-group-text"
 																		style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
-																		id="basic-addon1" data-bs-toggle="modal"
+																		id="SIP_NO_SEC_BTN"
+																		name="SIP_NO_SEC_BTN"
+																		data-bs-toggle="modal"
 																		data-bs-target="#modal_popupSelectModal2"
-																		type="button" id="SIP_NO_SEC_BTN"
-																		name="SIP_NO_SEC_BTN" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled
-																		@endif><span class="fa-solid fa-magnifying-glass">
-																		</span></button>
+																		type="button"
+																		@if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
+																		<span class="fa-solid fa-magnifying-glass"></span>
+																	</button>
 																</span>
 																<select class="form-control select2 js-example-basic-single"
 																	style="width: 100%; border-top-left-radius: 8px !important; border-bottom-left-radius: 8px !important;" onchange="stokAdiGetir(this.value)"
-																	name="SIP_NO_SEC" id="SIP_NO_SEC" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
+																	name="SIP_NO_SEC" id="SIP_NO_SEC"
+																	@if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
 																	<option value=" ">Sipariş seç...</option>
 																</select>
 																<button type="button" class="btn btn-default pull-right"
 																	id="siparisSuz" name="siparisSuz"
-																	onclick="siparisleriGetir()" @if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif><i
-																		class="fa fa-filter"
-																		style="color: blue"></i></button>
+																	onclick="siparisleriGetir()"
+																	@if (@$kart_veri->CARIHESAPCODE == "" || @$kart_veri->CARIHESAPCODE == " " || @$kart_veri->CARIHESAPCODE == null) disabled @endif>
+																	<i class="fa fa-filter" style="color: blue"></i>
+																</button>
 															</div>
 														</div>
 													</div>
@@ -761,14 +758,9 @@
 															style="height: 30px;">
 															@php
 																echo "<option value =' ' selected> </option>";
-
 																foreach ($cari00 as $key => $veri) {
-
-																	if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-																		echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-																	} else {
-																		echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-																	}
+																	$selected = ($veri->KOD == @$kart_veri->CARIHESAPCODE) ? " selected" : "";
+																	echo "<option value='" . $veri->KOD . "'" . $selected . ">" . $veri->KOD . " | " . $veri->AD . "</option>";
 																}
 															@endphp
 														</select>
@@ -779,14 +771,8 @@
 															style="height: 30px;">
 															@php
 																echo "<option value =' ' selected> </option>";
-
 																foreach ($cari00 as $key => $veri) {
-
-																	if ($veri->KOD == @$kart_veri->CARIHESAPCODE) {
-																		echo "<option value ='>" . $veri->KOD . " | " . $veri->AD . "</option>";
-																	} else {
-																		echo "<option value =''>" . $veri->KOD . " | " . $veri->AD . "</option>";
-																	}
+																	echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
 																}
 															@endphp
 														</select>
@@ -848,75 +834,60 @@
 
 															<tbody>
 																@php
-
-																	$KOD_B = '';
-																	$KOD_E = '';
-																	$TEDARIKCI_B = '';
-																	$TEDARIKCI_E = '';
-																	$TARIH_B = '';
-																	$TARIH_E = '';
-
-																	if (isset($_GET['KOD_B'])) {
-																		$KOD_B = TRIM($_GET['KOD_B']);
-																	}
-																	if (isset($_GET['KOD_E'])) {
-																		$KOD_E = TRIM($_GET['KOD_E']);
-																	}
-																	if (isset($_GET['TEDARIKCI_B'])) {
-																		$TEDARIKCI_B = TRIM($_GET['TEDARIKCI_B']);
-																	}
-																	if (isset($_GET['TEDARIKCI_E'])) {
-																		$TEDARIKCI_E = TRIM($_GET['TEDARIKCI_E']);
-																	}
-																	if (isset($_GET['TARIH_B'])) {
-																		$TARIH_B = TRIM($_GET['TARIH_B']);
-																	}
-																	if (isset($_GET['TARIH_E'])) {
-																		$TARIH_E = TRIM($_GET['TARIH_E']);
-																	}
+																	$bindings = [];
+																	$KOD_B       = trim($_GET['KOD_B'] ?? '');
+																	$KOD_E       = trim($_GET['KOD_E'] ?? '');
+																	$TEDARIKCI_B = trim($_GET['TEDARIKCI_B'] ?? '');
+																	$TEDARIKCI_E = trim($_GET['TEDARIKCI_E'] ?? '');
+																	$TARIH_B     = trim($_GET['TARIH_B'] ?? '');
+																	$TARIH_E     = trim($_GET['TARIH_E'] ?? '');
 
 																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
-																										LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S29E.CARIHESAPCODE
-																										LEFT JOIN ' . $database . 'STOK46T S29T ON S29T.EVRAKNO = S29E.EVRAKNO
-																										WHERE 1 = 1';
+																		LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S29E.CARIHESAPCODE
+																		LEFT JOIN ' . $database . 'STOK46T S29T ON S29T.EVRAKNO = S29E.EVRAKNO
+																		WHERE 1 = 1';
 
-																	if (Trim($KOD_B) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29T.KOD >= '" . $KOD_B . "' ";
+																	if ($KOD_B !== '') {
+																		$sql_sorgu .= " AND S29T.KOD >= ?";
+																		$bindings[] = $KOD_B;
 																	}
-																	if (Trim($KOD_E) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29T.KOD <= '" . $KOD_E . "' ";
+																	if ($KOD_E !== '') {
+																		$sql_sorgu .= " AND S29T.KOD <= ?";
+																		$bindings[] = $KOD_E;
 																	}
-																	if (Trim($TEDARIKCI_B) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29E.CARIHESAPCODE >= '" . $TEDARIKCI_B . "' ";
+																	if ($TEDARIKCI_B !== '') {
+																		$sql_sorgu .= " AND S29E.CARIHESAPCODE >= ?";
+																		$bindings[] = $TEDARIKCI_B;
 																	}
-																	if (Trim($TEDARIKCI_E) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29E.CARIHESAPCODE <= '" . $TEDARIKCI_E . "' ";
+																	if ($TEDARIKCI_E !== '') {
+																		$sql_sorgu .= " AND S29E.CARIHESAPCODE <= ?";
+																		$bindings[] = $TEDARIKCI_E;
 																	}
-																	if (Trim($TARIH_B) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29T.TERMIN_TAR >= '" . $TARIH_B . "' ";
+																	if ($TARIH_B !== '') {
+																		$sql_sorgu .= " AND S29T.TERMIN_TAR >= ?";
+																		$bindings[] = $TARIH_B;
 																	}
-																	if (Trim($TARIH_E) <> '') {
-																		$sql_sorgu = $sql_sorgu . " AND S29T.TERMIN_TAR <= '" . $TARIH_E . "' ";
+																	if ($TARIH_E !== '') {
+																		$sql_sorgu .= " AND S29T.TERMIN_TAR <= ?";
+																		$bindings[] = $TARIH_E;
 																	}
 
-																	$table = DB::select($sql_sorgu);
+																	$tableResults = DB::select($sql_sorgu, $bindings);
 
-																	foreach ($table as $table) {
+																	foreach ($tableResults as $row) {
 																		echo "<tr>";
-																		echo "<td><b>" . $table->SIPNUM . "</b></td>";
-																		echo "<td><b>" . $table->TEDARIKCI . "</b></td>";
-																		echo "<td><b>" . $table->KOD . "</b></td>";
-																		echo "<td><b>" . $table->STOK_ADI . "</b></td>";
-																		echo "<td><b>" . $table->LOTNUMBER . "</b></td>";
-																		echo "<td><b>" . $table->SERINO . "</b></td>";
-																		echo "<td><b>" . $table->SF_MIKTAR . "</b></td>";
-																		echo "<td><b>" . $table->SF_SF_UNIT . "</b></td>";
-																		echo "<td><b>" . $table->SF_BAKIYE . "</b></td>";
-																		echo "<td><b>" . $table->TERMIN_TAR . "</b></td>";
-																		// echo "<td><a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
+																		echo "<td><b>" . e($row->SIPNUM) . "</b></td>";
+																		echo "<td><b>" . e($row->TEDARIKCI) . "</b></td>";
+																		echo "<td><b>" . e($row->KOD) . "</b></td>";
+																		echo "<td><b>" . e($row->STOK_ADI) . "</b></td>";
+																		echo "<td><b>" . e($row->LOTNUMBER) . "</b></td>";
+																		echo "<td><b>" . e($row->SERINO) . "</b></td>";
+																		echo "<td><b>" . e($row->SF_MIKTAR) . "</b></td>";
+																		echo "<td><b>" . e($row->SF_SF_UNIT) . "</b></td>";
+																		echo "<td><b>" . e($row->SF_BAKIYE) . "</b></td>";
+																		echo "<td><b>" . e($row->TERMIN_TAR) . "</b></td>";
 																		echo "</tr>";
 																	}
-
 																@endphp
 
 															</tbody>

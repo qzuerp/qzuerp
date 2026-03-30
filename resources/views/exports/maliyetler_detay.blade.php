@@ -4,7 +4,7 @@
         <tr style="background-color: #1f4e78; color: #ffffff;">
             <th width="15">Kaynak Tipi</th>
             <th width="20">Stok Kodu</th>
-            <th width="40">Stok Adı</th>
+            <th width="25">Hammadde Ölçüsü</th>
             <th width="15">İşlem Miktarı</th>
             <th width="15">Birim Fiyatı</th>
             <th width="10">Ayar</th>
@@ -12,11 +12,9 @@
             <th width="10">Sök-Tak</th>
             <th width="10">Revizyon</th>
             <th width="30">Not</th>
-            <th width="15">Fiyat</th>
-            <th width="15">Fiyat 2</th>
-            <th width="15">Tutar</th>
-            <th width="10">PB</th>
-            <th width="25">Hammadde Ölçüsü</th>
+            <th width="15">Birim Fiyat</th>
+            <th width="15">Dolar Birim Fiyat</th>
+            <th width="15">Toplam Tutar</th>
         </tr>
     </thead>
     <tbody>
@@ -29,11 +27,11 @@
                     GRUP: {{ $ilkSatir->TT_KOD }} - {{ $ilkSatir->TT_STOK_AD1 }}
                 </td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} 
+                    {{ number_format($grupVeri->sum('FIYAT'), 2, ',', '.') }} TL
                 </td>
-                <td style="border-top: 2px solid #000000;"></td>
+                <td style="border-top: 2px solid #000000;">{{ number_format($grupVeri->sum('FIYAT2'), 2, ',', '.') }} TL</td>
                 <td style="font-weight: bold; border-top: 2px solid #000000; text-align: right;">
-                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} 
+                    {{ number_format($grupVeri->sum('TUTAR'), 2, ',', '.') }} TL
                 </td>
                 <td colspan="2" style="border-top: 2px solid #000000;"></td>
             </tr>
@@ -42,7 +40,7 @@
                 <tr>
                     <td style="color: #555555;">{{ $satir->KAYNAKTYPE }}</td>
                     <td style="font-family: 'Courier New';">{{ $satir->KOD }}</td>
-                    <td>{{ $satir->STOK_AD1 }}</td>
+                    <td>{{ $satir->OLCU }}</td>
                     <td style="text-align: center;">{{ intval($satir->SF_MIKTAR) }}</td>
                     <td style="text-align: right;">{{ number_format($satir->BIRIM_FIYAT, 4, ',', '.') }}</td>
                     <td style="text-align: center;">{{ $satir->AYAR }} Saat</td>
@@ -50,15 +48,13 @@
                     <td style="text-align: center;">{{ $satir->SOKTAK }} Dakika</td>
                     <td>{{ $satir->SF_SF_UNIT }}</td>
                     <td style="font-style: italic; color: #808080;">{{ $satir->NOT }}</td>
-                    <td style="text-align: right;">{{ number_format($satir->FIYAT, 2, ',', '.') }}</td>
-                    <td style="text-align: right;">{{ number_format($satir->FIYAT2, 2, ',', '.') }}</td>
-                    <td style="text-align: right; font-weight: bold;">{{ number_format($satir->TUTAR, 2, ',', '.') }}</td>
-                    <td style="text-align: center;">{{ $satir->PRICEUNIT }}</td>
-                    <td>{{ $satir->OLCU }}</td>
+                    <td style="text-align: right;">{{ number_format($satir->FIYAT, 2, ',', '.') }} TL</td>
+                    <td style="text-align: right;">{{ number_format($satir->FIYAT2, 2, ',', '.') }} {{ $satir->PRICEUNIT }}</td>
+                    <td style="text-align: right; font-weight: bold;">{{ number_format($satir->TUTAR, 2, ',', '.') }} TL</td>
+                    <td style="text-align: right; font-weight: bold;">{{ $satir-> }}</td>
                 </tr>
             @endforeach
             
-            {{-- Gruplar arası bir boşluk bırak ki nefes alsın --}}
             <tr style="height: 10px;">
                 <td colspan="15"></td>
             </tr>

@@ -92,8 +92,8 @@
 										<select id="evrakSec" class="form-control" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" >
 											@php
 											  $evraklar=DB::table($ekranTableE)->where('id',@$kart_veri->id)->first();
-											  if ($evraklar->id == @$kart_veri->id) {
-										          echo "<option value ='".$evraklar->id."' selected>".$evraklar->KOD." - ".$evraklar->AD."</option>";
+											  if (@$evraklar->id == @$kart_veri->id) {
+										          echo "<option value ='".@$evraklar->id."' selected>".@$evraklar->KOD." - ".@$evraklar->AD."</option>";
 										      }
 											@endphp
 										</select>
@@ -266,7 +266,7 @@
 															@foreach($$variable as $veri)
 																<option
 																	value="{{ $veri->KOD }}"
-																	{{ $veri->KOD == ($kart_veri->{'GK_'.$i} ?? null) ? 'selected' : '' }}
+																	{{ $veri->KOD == (@$kart_veri->{'GK_'.$i} ?? null) ? 'selected' : '' }}
 																>
 																	{{ $veri->KOD }} - {{ $veri->AD }}
 																</option>
@@ -1582,6 +1582,10 @@
 
 			$(document).ready(function() {
 
+				@if(!isset($kart_veri))
+					$('#KOD_ALANI').removeAttr('readonly');
+				@endif
+				
 				function turkishNormalize(str) {
 					if (!str) return '';
 					

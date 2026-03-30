@@ -751,39 +751,41 @@
 			margin-bottom: 8px;
 			color: #818cf8;
 		}
-		table { border-collapse: separate; border-spacing: 0; }
-
-		tbody tr td {
-			position: relative;
-			transition: background-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
-		}
-
-		tbody tr td:first-child::before {
-			content: '' !important;
-			position: absolute !important;
-			left: 0; top: 0; bottom: 0 !important;
-			width: 3px !important;
-			border-radius: 0 2px 2px 0 !important;
-			background: #6366f1 !important;
-			transform: scaleY(0) !important;
-			transform-origin: center !important;
-			opacity: 0 !important;
-			transition: transform 0.28s ease, opacity 0.28s ease !important;
+		tr.active td {
+			border:none !important;
 		}
 
 		tr.active td {
-			background-color: #eef2ff !important;
-			color: #1e1b4b !important;
-			border-bottom-color: transparent !important;
-			box-shadow:
-				0 -1px 0 0 #c7d2fe,
-				0  1px 0 0 #c7d2fe,
-				0 4px 16px -2px rgba(99,102,241,.18);
+			background: #eef2ff !important;
+			color: #4338ca !important;
+			font-weight: 700;
+			border-top: 0.5px solid rgb(222, 230, 255) !important;
+			border-bottom: 0.5px solid rgb(222, 230, 255) !important;
+			position: relative;
 		}
 
-		tr.active td:first-child::before {
-			transform: scaleY(1);
-			opacity: 1;
+		tr.active td:first-child {
+			border-left: 6px solid #4f46e5 !important;
+		}
+
+		tr.current td {
+			background: #f0fdf4 !important;
+			color: #15803d !important;
+			font-weight: 600;
+			border-top: 0.5px solid #86efac !important;
+			border-bottom: 0.5px solid #86efac !important;
+		}
+
+		tr.current td:first-child {
+			border-left: 6px solid #22c55e !important;
+		}
+
+		tr.active td, tr.current td {
+			box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05) !important;
+		}
+
+		tr:hover:not(.active):not(.current) td {
+			background-color: #f8fafc !important;
 		}
 
 		@media (max-width: 768px) {
@@ -2112,6 +2114,8 @@
 			$('.satir_detay').on('click', function () {
 				aktifSatir = $(this).closest('tr');
 				aktifSatir.addClass('active');
+				$('#veriTable tbody tr').removeClass('current');
+				aktifSatir.addClass('current');
 
 				$('#OR_TRNUM').val($(this).data('trnum'));
 				let OR_TRNUM = $('#OR_TRNUM').val();
@@ -2356,6 +2360,7 @@
 								$newCard.find('.TIME').trigger('input');
 								$newCard.find('.PTIME').trigger('input');
 								$newCard.find('.STIME').trigger('input');
+
 								
 								['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
 								'.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
@@ -2488,7 +2493,7 @@
 					return parseFloat($(el).val()) || 0;
 				}
 			}
-			function hesapla() {
+			async function hesapla() {
 				let toplam = 0;
 				$(".TOPLANICAK").each(function () {
 					let val = AutoNumeric.getNumber(this);
@@ -2504,8 +2509,16 @@
 				if (!isNaN(miktar) && miktar !== 0) {
 					safeSet(document.querySelector('.HESAPLANAN_TUTAR'), round(toplam * miktar, 2));
 				}
+				var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}', 'USD');
 
-				$('#TOPLANICAK_LABEL').text('Toplam Tutar: ' + round(toplam, 2) + ' ' + $('#teklif').val());
+				if (dolarKur && dolarKur.data.KURS_1 > 0) {
+					let dolarToplam = round(toplam / dolarKur.data.KURS_1, 2);
+					let birim = $('#teklif').val();
+					
+					$('#TOPLANICAK_LABEL').text(`Toplam Tutar: ${round(toplam, 2)} ${birim} | ${dolarToplam} USD`);
+				} else {
+					$('#TOPLANICAK_LABEL').text('Toplam Tutar: ' + round(toplam, 2) + ' ' + $('#teklif').val());
+				}
 			}
 
 			var aktifSatir = null;
@@ -2752,7 +2765,6 @@
 				});
 
 				$('#uygula').on('click', async function () {
-					aktifSatir.removeClass('active');
 					const OR_TRNUM = $('#OR_TRNUM').val();
 					if (!OR_TRNUM) return;
 
@@ -2773,6 +2785,8 @@
 					$('#masrafTable tbody tr').each(function () {
 						$('#formMasrafTable tbody').append($(this));
 					});
+					
+					$('#OPRSEC').trigger('click');
 
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
 					aktifSatir.find('input[name="KOD[]"]').val($('#StokKodu').val());
@@ -2789,7 +2803,6 @@
 					AutoNumeric.set(aktifSatir.find('input[name="FIYAT[]"]')[0], fiyat);
 					AutoNumeric.set(aktifSatir.find('input[name="DOLAR_FIYAT[]"]')[0], dolarFiyat);
 					AutoNumeric.set(aktifSatir.find('input[name="TUTAR[]"]')[0], tutar);
-					$('#OPRSEC').trigger('click');
 					operasyonlariTabloyaBas();
 				});
 				
@@ -2938,6 +2951,7 @@
 
 					const anSelectors  = ['.tutar-input', '.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR', '.TOPLANICAK', '.TOTAL'];
 					const rawSelectors = ['.TIME', '.PTIME', '.STIME', '.T_NOT'];
+					$('.birim-select').val('{{ @$kart_veri->TEKLIF_FIYAT_PB }}').trigger('change');
 
 					$(anSelectors.join(', ')).each(function() {
 						safeSet(this, 0);

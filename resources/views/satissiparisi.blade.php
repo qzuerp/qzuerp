@@ -476,7 +476,7 @@
                           HammaddeKodu;
 
                       ";
-                      $sonuc = DB::select($sql, [$kart_veri->EVRAKNO]);
+                      $sonuc = DB::select($sql, [@$kart_veri->EVRAKNO]);
                   @endphp
 
                   <table class="table table-bordered" id="ihtiyac_table">

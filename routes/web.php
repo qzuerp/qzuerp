@@ -605,20 +605,28 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/api', [api_controller::class, 'index'])->name('api');
     Route::post('/api_islemler', [api_controller::class, 'islemler'])->name('api_islemler');
-    Route::get('/parasut-test', function(){
 
-        $token = Http::asForm()->post(
-        'https://api.parasut.com/oauth/token',
-        [
-        'grant_type'=>'client_credentials',
-        'client_id'=>'_24I8-6R70MM4-q6rCU9regwuPxXxjHIpwsbZCwwxhc',
-        'client_secret'=>'I7KOVBtL7TpIcKlEmon8xVT7GZzG20ewumj7FCGFjUA'
-        ])->json()['access_token'];
-
+    Route::get('/parasut-test', function() {
+        $response = Http::asForm()->post('https://api.parasut.com/oauth/token', [
+            'grant_type'    => 'password',
+            'client_id'     => '_24I8-6R70MM4-q6rCU9regwuPxXxjHIpwsbZCwwxhc',
+            'client_secret' => 'I7KOVBtL7TpIcKlEmon8xVT7GZzG20ewumj7FCGFjUA',
+            'username'      => 'eren@yukselcnc.com',
+            'password'      => 'Eren1180',
+            'redirect_uri'  => 'urn:ietf:wg:oauth:2.0:oob'
+        ]);
+    
+        $data = $response->json();
+    
+        if (!isset($data['access_token'])) {
+            return response()->json(['hata' => 'Token alınamadı!', 'detay' => $data], 401);
+        }
+    
+        $token = $data['access_token'];
+    
         return Http::withToken($token)
-        ->get('https://api.parasut.com/v4/791329/products')
-        ->json();
-
+            ->get('https://api.parasut.com/v4/791329/products')
+            ->json();
     });
     // Route::get('/parasut-test', function(){
 
@@ -631,7 +639,7 @@ Route::group(['middleware' => ['auth']], function() {
     //     ])->json()['access_token'];
 
     //     return Http::withToken($token)
-    //     ->get('https://api.parasut.com/v4/791329/me')
+    //     ->get('https://api.parasut.com/v4/791329/products')
     //     ->json();
 
     // });
