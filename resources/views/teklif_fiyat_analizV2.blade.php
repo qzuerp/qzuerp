@@ -1062,7 +1062,10 @@
 									</h6>
 									<div>
 										<button type="button" class="btn btn-sm btn-primary me-2" id="selectAll">
-											<i class="fa-solid fa-check-double"></i> Tümünü Seç
+											<i class="fa-solid fa-check-double" style="color: #ffffff !important;"></i> Tümünü Seç
+										</button>
+										<button type="button" class="btn btn-sm btn-primary me-2" id="">
+											<i class="fa-solid fa-check-double"></i> Standart Operasyonları Seç
 										</button>
 										<button type="button" class="btn btn-sm btn-secondary" id="deselectAll">
 											<i class="fa-solid fa-xmark"></i> Tümünü Kaldır
@@ -1723,7 +1726,7 @@
 													<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
 													<!-- <li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a> -->
 													<li><a href="#tab_4" class="nav-link" data-bs-toggle="tab">Döviz Kurları</a></li>
-													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Standart Operasyon Seçim Paneli</a></li>
+													<li><a href="#tab_5" class="nav-link" data-bs-toggle="tab">Standart Operasyon Seçim Paneli</a></li>
 												</ul>
 
 												<div class="tab-content">
@@ -1930,7 +1933,13 @@
 													</div>
 
 													<div class="tab-pane" id="tab_3">
-														
+														<div class="d-flex justify-content-end mb-2">
+															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" 
+															target="_blank" class="btn btn-success">
+																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
+															</a>
+														</div>
+
 														{{-- Loading bar --}}
 														<div id="maliyetLoadingWrap">
 															<div class="progress">
@@ -2030,6 +2039,28 @@
 																@endforeach
 															</tbody>
 														</table>
+													</div>
+
+													<div class="tab-pane" id="tab_5">
+														<div class="row g-3 ">
+															@foreach($OPERASON_VERILERI as $OPERASYON)
+																<div class="col-lg-2 col-md-3 col-sm-5">
+																	<div class="operation-card">
+																		<input type="checkbox" id="S{{ $OPERASYON->KOD }}" name="OPRS_DEFAULT[]"
+																			class="d-none checkbox-input" value="{{ $OPERASYON->KOD }}">
+																		<label class="operation-label" for="S{{ $OPERASYON->KOD }}">
+																			<div class="operation-content">
+																				<span class="operation-name">{{ $OPERASYON->AD }}</span>
+																				<span class="operation-code">{{ $OPERASYON->KOD }}</span>
+																			</div>
+																			<div class="operation-check">
+																				<i class="fa-solid fa-check"></i>
+																			</div>
+																		</label>
+																	</div>
+																</div>
+															@endforeach
+														</div>
 													</div>
 												</div>
 											</div>
