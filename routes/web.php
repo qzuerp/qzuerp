@@ -628,19 +628,16 @@ Route::group(['middleware' => ['auth']], function() {
             ->get('https://api.parasut.com/v4/791329/products')
             ->json();
     });
-    // Route::get('/parasut-test', function(){
 
-    //     $token = Http::asForm()->post(
-    //     'https://api.parasut.com/oauth/token',
-    //     [
-    //     'grant_type'=>'client_credentials',
-    //     'client_id'=>'_24I8-6R70MM4-q6rCU9regwuPxXxjHIpwsbZCwwxhc',
-    //     'client_secret'=>'I7KOVBtL7TpIcKlEmon8xVT7GZzG20ewumj7FCGFjUA'
-    //     ])->json()['access_token'];
-
-    //     return Http::withToken($token)
-    //     ->get('https://api.parasut.com/v4/791329/products')
-    //     ->json();
-
-    // });
+    Route::get('/test/cariler/{firmaId}', function (string $firmaId) {
+        $manager = app(\App\Services\AccountingManager::class);
+        $provider = $manager->getProvider($firmaId);
+        return $provider->getContacts();
+    });
+    
+    Route::get('/test/urunler/{firmaId}', function (string $firmaId) {
+        $manager = app(\App\Services\AccountingManager::class);
+        $provider = $manager->getProvider($firmaId);
+        return $provider->getProducts();
+    });
 });

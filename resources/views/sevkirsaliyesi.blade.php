@@ -1121,8 +1121,6 @@
       });
 
         $('#STOK_KODU_SHOW').on('change', function() {
-
-            console.log('Seçilen' + $(this).val());
             
             let secilenDeger = $(this).val().split("|||")[0];
             $.ajax({
@@ -1232,9 +1230,9 @@
         var htmlCode = " ";
         htmlCode += "<tr>";
         // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
-        htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+        htmlCode += detayBtnForJS(KOD_PARCA[0]);
         htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
-        htmlCode += "<td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_SHOW+"' readonly></td>";
+        htmlCode += "<td><input type='text' class='form-control' name='KOD[]' value='"+KOD_PARCA[0]+"' readonly></td>";
         htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI' value='"+satirEkleInputs.STOK_ADI_SHOW+"' readonly></td> ";
         htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";

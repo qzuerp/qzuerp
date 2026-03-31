@@ -23,10 +23,14 @@ class api_controller extends Controller
             'APP_TYPE' => $request->APP_TYPE,
             'CLIENT_ID' => $request->CLIENT_ID,
             'CLIENT_SECRET' => $request->CLIENT_SECRET,
+            'username' => $request->USERNAME,
+            'password' => $request->PASSWORD,
+            'company_id' => $request->company_id,
+            'firma' => trim($u->firma)
         ];
 
-        DB::table($firma.'tabl91t')->updateOrInsert(
-            ['APP_TYPE' => $request->APP_TYPE],
+        DB::table('tabl91t')->updateOrInsert(
+            ['firma' => trim($u->firma)],
             $data
         );
 

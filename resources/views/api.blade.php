@@ -12,17 +12,18 @@
     $ekranRumuz = "APIPANEL";
     $ekranAdi = "API Panelleri";
     $ekranLink = "api";
-    $ekranTableE = $database . "api";
+    $ekranTableE = $database . "tabl91t";
     $ekranKayitSatirKontrol = "false";
 
     $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
     $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
     $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-    $kart_veri = DB::table($database.'tabl91t')->where('APP_TYPE', 'parasut')->first();
+    $kart_veri = DB::table($ekranTableE)->where('firma', trim($kullanici_veri->firma))->first();
 
     $FORM_TURLERI = [
-        'parasut' => 'Paraşüt'
+        'parasut' => 'Paraşüt',
+        'makro' => 'Makro',
     ];
 @endphp
 
@@ -77,19 +78,15 @@
             $('#APP_TYPE').on('change', function () {
                 const selectedForm = $(this).val();
                 
-                // Loading göster
                 $('#loadingOverlay').css('display', 'flex');
                 
                 setTimeout(() => {
-                    // Tüm formları gizle
                     $('.form').fadeOut(200);
                     
-                    // Seçili formu göster
                     if (selectedForm) {
                         $('#' + selectedForm).fadeIn(400);
                     }
                     
-                    // Loading gizle
                     $('#loadingOverlay').fadeOut(300);
                 }, 300);
             });

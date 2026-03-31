@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
 
+use App\Services\AccountingManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class stok60_controller extends Controller
 {
+  protected AccountingManager $accounting;
+
+  public function __construct(AccountingManager $accounting)
+  {
+      $this->accounting = $accounting;
+  }
+
   public function index()
   {
     $sonID=DB::table('stok60e')->min('id');
 
     return view('sevkirsaliyesi')->with('sonID', $sonID);
   }
-
   public function kartGetir(Request $request)
   {
     $id = $request->id;
@@ -89,6 +96,10 @@ class stok60_controller extends Controller
     $FIYAT_PB = $request->FIYAT_PB;
     $IRSALIYE_NO = $request->IRSALIYE_NO;
     
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+
     if ($KOD == null) 
     {
       $satir_say = 0;
@@ -395,24 +406,64 @@ class stok60_controller extends Controller
 
           if (in_array($TRNUM[$i],$newTRNUMS)) 
           { 
-              $s1 = DB::table($firma.'stok10a')
-                ->where('KOD',$KOD[$i])
-                ->where('LOTNUMBER',$LOTNUMBER[$i])
-                ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T)
-                ->where('NUM1',$NUM1[$i])
-                ->where('NUM2',$NUM2[$i])
-                ->where('NUM3',$NUM3[$i])
-                ->where('NUM4',$NUM4[$i])
-                ->where('TEXT1',$TEXT1[$i])
-                ->where('TEXT2',$TEXT2[$i])
-                ->where('TEXT3',$TEXT3[$i])
-                ->where('TEXT4',$TEXT4[$i])
-                ->where('LOCATION1',$LOCATION1[$i])
-                ->where('LOCATION2',$LOCATION2[$i])
-                ->where('LOCATION3',$LOCATION3[$i])
-                ->where('LOCATION4',$LOCATION4[$i])
-                ->sum('SF_MIKTAR');
+            // $lines = [
+            //   [
+            //       'product_id'  => $KOD[$i],
+            //       'quantity'    => $SF_MIKTAR[$i],
+            //       'product_name' => $STOK_ADI[$i],
+            //       'description' => $SF_SF_UNIT[$i],
+            //   ]
+            // ];
+            // try {
+            //   $provider = $this->accounting->getProvider(trim($u->firma));
+              
+            //   $sonuc = $provider->createInvoice([
+            //     'contact_id'    => '1044973731',
+            //     'issue_date'    => date('Y-m-d'),
+            //     'shipment_date' => date('Y-m-d'),
+            //     'description'   => 'ERP TEST IRSALIYE',
+            //     'lines'         => $lines,
+            //   ]);
+  
+            //   if (isset($sonuc['errors'])) {
+            //       return response()->json([
+            //           'basari' => false,
+            //           'mesaj'  => 'Paraşüt hatası',
+            //           'detay'  => $sonuc['errors'],
+            //       ], 422);
+            //   }
+  
+            //   return response()->json([
+            //       'basari'      => true,
+            //       'parasut_id'  => $sonuc['data']['id'] ?? null,
+            //       'veri'        => $sonuc,
+            //   ]);
+    
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'basari' => false,
+            //         'mesaj'  => $e->getMessage(),
+            //     ], 500);
+            // }
+
+            $s1 = DB::table($firma.'stok10a')
+              ->where('KOD',$KOD[$i])
+              ->where('LOTNUMBER',$LOTNUMBER[$i])
+              ->where('SERINO',$SERINO[$i])
+              ->where('AMBCODE',$AMBCODE_T)
+              ->where('NUM1',$NUM1[$i])
+              ->where('NUM2',$NUM2[$i])
+              ->where('NUM3',$NUM3[$i])
+              ->where('NUM4',$NUM4[$i])
+              ->where('TEXT1',$TEXT1[$i])
+              ->where('TEXT2',$TEXT2[$i])
+              ->where('TEXT3',$TEXT3[$i])
+              ->where('TEXT4',$TEXT4[$i])
+              ->where('LOCATION1',$LOCATION1[$i])
+              ->where('LOCATION2',$LOCATION2[$i])
+              ->where('LOCATION3',$LOCATION3[$i])
+              ->where('LOCATION4',$LOCATION4[$i])
+              ->sum('SF_MIKTAR');
 
             $s2 = DB::table($firma.'stok10a')
                 ->where('KOD',$KOD[$i])
