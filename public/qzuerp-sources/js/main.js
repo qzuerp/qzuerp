@@ -345,7 +345,18 @@ $(document).ready(function() {
 
   if (urlParams.has('SUZ')) {
       var listeTabEl = document.querySelector('#liste-tab');
+      
       if (listeTabEl) {
+          listeTabEl.addEventListener('shown.bs.tab', function () {
+              const element = document.getElementById("example2");
+              if (element) {
+                  element.scrollIntoView({ 
+                      behavior: "smooth",
+                      block: "start"
+                  });
+              }
+          }, { once: true });
+
           var tab = new bootstrap.Tab(listeTabEl);
           tab.show();
       }
