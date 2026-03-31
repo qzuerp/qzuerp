@@ -308,7 +308,7 @@ class takip_controller extends Controller
                         
                     'ich_updates' => is_array($ich_updates)
                         ? json_encode($ich_updates, JSON_UNESCAPED_UNICODE)
-                        : $ich_updates,44
+                        : $ich_updates,
 
                     'ich_part_name' => $ich_part_name,
                     'ich_part_code' => $ich_part_code,

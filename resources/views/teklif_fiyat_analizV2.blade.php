@@ -1722,8 +1722,8 @@
 												<ul class="nav nav-tabs">
 													<li class="nav-item"><a href="#tab_1" class="nav-link" data-bs-toggle="tab">Maliyetler</a></li>
 													<!-- <li><a href="#tab_2" class="nav-link" data-bs-toggle="tab">Masraflar</a> -->
-													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Detayı</a></li>
 													<li><a href="#tab_4" class="nav-link" data-bs-toggle="tab">Döviz Kurları</a></li>
+													<li><a href="#tab_3" class="nav-link" data-bs-toggle="tab">Standart Operasyon Seçim Paneli</a></li>
 												</ul>
 
 												<div class="tab-content">
@@ -1929,59 +1929,8 @@
 														</table>
 													</div>
 
-													<style>
-														.table-scroll-area {
-															max-height: 600px;
-															overflow-y: auto;
-															overflow-x: auto;
-															border: 1px solid #dee2e6;
-															border-radius: 4px;
-															position: relative;
-														}
-
-														#maliyetDetayTable {
-															border-collapse: collapse;
-															width: 100%;
-															margin-bottom: 0;
-														}
-
-														#maliyetDetayTable thead th {
-															background-color: #ffffff;
-															z-index: 10;
-															position: relative;
-															padding: 10px 5px;
-															white-space: nowrap;
-															border: 1px solid #dee2e6;
-														}
-
-														#maliyetDetayTable td {
-															border: 1px solid #dee2e6;
-															padding: 6px 4px;
-														}
-
-														.group-footer {
-															background-color: #f8f9fa !important;
-															font-weight: bold;
-														}
-
-														#maliyetLoadingWrap {
-															padding: 6px 0;
-														}
-
-														#maliyetLoadingWrap .progress {
-															height: 6px;
-															border-radius: 4px;
-														}
-													</style>
-
 													<div class="tab-pane" id="tab_3">
-														<div class="d-flex justify-content-end mb-2">
-															<a href="{{ route('V2_excel_export_maliyetler_detay', ['EVRAKNO' => @$kart_veri->EVRAKNO]) }}" 
-															target="_blank" class="btn btn-success">
-																<i class="fa-solid fa-file-excel me-1"></i> Excel'e Aktar
-															</a>
-														</div>
-
+														
 														{{-- Loading bar --}}
 														<div id="maliyetLoadingWrap">
 															<div class="progress">
@@ -2785,7 +2734,7 @@
 					$('#masrafTable tbody tr').each(function () {
 						$('#formMasrafTable tbody').append($(this));
 					});
-					
+
 					$('#OPRSEC').trigger('click');
 
 					var dolarKur = await getCachedKur('{{ @$kart_veri->TARIH }}','USD');
