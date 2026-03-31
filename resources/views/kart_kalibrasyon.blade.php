@@ -362,197 +362,130 @@
                       $table = DB::table($database . 'SRVKC0')->select('*')->get();
                     @endphp
 
-                    <div class="container-fluid"><!-- container açılış -->
-                      <div class="row"><!-- row açılış -->
+                    <div style="background: #fff; border: 0.5px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+                      <p style="font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9ca3af; margin-bottom: 1rem;">Filtrele</p>
 
-                        <!-- Stok Kodu -->
-                        <div class="col-sm-3"><!-- col açılış -->
-                          <label for="KOD_B" class="col-form-label">Stok Kodu</label>
-                          <select name="KOD_B" id="KOD_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($table as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-
-                          <select name="KOD_E" id="KOD_E" class="form-control mt-2">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($table as $key => $veri) {
-                                if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div><!-- col kapanış -->
-
-                        <!-- GK_1 -->
-                        <div class="col-sm-3"><!-- col açılış -->
-                          <label for="GK_1_B" class="col-form-label">GK_1</label>
-                          <select name="GK_1_B" id="GK_1_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK1_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_1) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-
-                          <select name="GK_1_E" id="GK_1_E" class="form-control mt-2">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK1_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_1) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div><!-- col kapanış -->
-
-                        <!-- GK_2 -->
-                        <div class="col-sm-3"><!-- col açılış -->
-                          <label for="GK_2_B" class="col-form-label">GK_2</label>
-                          <select name="GK_2_B" id="GK_2_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK2_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_2) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-
-                          <select name="GK_2_E" id="GK_2_E" class="form-control mt-2">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK2_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_2) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div><!-- col kapanış -->
-
-                        <!-- GK_3 -->
-                        <div class="col-sm-3"><!-- col açılış -->
-                          <label for="GK_3_B" class="col-form-label">GK_3</label>
-                          <select name="GK_3_B" id="GK_3_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK3_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_3) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-
-                          <select name="GK_3_E" id="GK_3_E" class="form-control mt-2">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK3_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_3) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div><!-- col kapanış -->
-
-                        <!-- GK_4 -->
-                        <div class="col-sm-3"><!-- col açılış -->
-                          <label for="GK_4_B" class="col-form-label">GK_4</label>
-                          <select name="GK_4_B" id="GK_4_B" class="form-control">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK4_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_4) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-
-                          <select name="GK_4_E" id="GK_4_E" class="form-control mt-2">
-                            @php
-                              echo "<option value =' ' selected> </option>";
-                              foreach ($GK3_veri as $key => $veri) {
-                                if ($veri->KOD == @$kart_veri->GK_3) {
-                                  echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                } else {
-                                  echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
-                                }
-                              }
-                            @endphp
-                          </select>
-                        </div><!-- col kapanış -->
-
-                      </div><!-- row kapanış -->
-
-
-                    </div><!-- container kapanış -->
-                    <br>
-
-
-                    <div class="col-sm-3">
-                      <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele"
-                        value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
-                    </div>
-
-
-                    <div class="row " style="overflow: auto">
-
-                      @php
-                        if (isset($_GET['SUZ'])) {
-                      @endphp
-
-                      <div class="row align-items-end">
-                        <div class="col-md-12">
-                          <label class="form-label fw-bold">İşlemler</label>
-                          <div class="action-btn-group flex gap-2 flex-wrap">
-                            <button type="button" class="action-btn btn btn-success" type="button"
-                              onclick="exportTableToExcel('example2')">
-                              <i class="fas fa-file-excel"></i> Excel'e Aktar
-                            </button>
-                            <button type="button" class="action-btn btn btn-danger" type="button"
-                              onclick="exportTableToWord('example2')">
-                              <i class="fas fa-file-word"></i> Word'e Aktar
-                            </button>
-                            <button type="button" class="action-btn btn btn-primary" type="button"
-                              onclick="printTable('example2')">
-                              <i class="fas fa-print"></i> Yazdır
-                            </button>
-                          </div>
-                        </div>
+                      {{-- Stok Kodu --}}
+                      <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <label style="font-size: 13px; font-weight: 500; color: #374151;">Stok Kodu</label>
+                        <select name="KOD_B" id="KOD_B" class="form-control" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Başlangıç</option>";
+                            foreach ($table as $veri) {
+                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                                echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                            }
+                          @endphp
+                        </select>
+                        <select name="KOD_E" id="KOD_E" class="form-control" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Bitiş</option>";
+                            foreach ($table as $veri) {
+                              if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                                echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                            }
+                          @endphp
+                        </select>
                       </div>
 
+                      {{-- GK_1 --}}
+                      <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <label style="font-size: 13px; font-weight: 500; color: #374151;">GK_1</label>
+                        <select name="GK_1_B" id="GK_1_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Başlangıç</option>";
+                            foreach ($GK1_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                        <select name="GK_1_E" id="GK_1_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Bitiş</option>";
+                            foreach ($GK1_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                      </div>
+
+                      {{-- GK_2 --}}
+                      <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <label style="font-size: 13px; font-weight: 500; color: #374151;">GK_2</label>
+                        <select name="GK_2_B" id="GK_2_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Başlangıç</option>";
+                            foreach ($GK2_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                        <select name="GK_2_E" id="GK_2_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Bitiş</option>";
+                            foreach ($GK2_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                      </div>
+
+                      {{-- GK_3 --}}
+                      <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <label style="font-size: 13px; font-weight: 500; color: #374151;">GK_3</label>
+                        <select name="GK_3_B" id="GK_3_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Başlangıç</option>";
+                            foreach ($GK3_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                        <select name="GK_3_E" id="GK_3_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Bitiş</option>";
+                            foreach ($GK3_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                      </div>
+
+                      {{-- GK_4 --}}
+                      <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 1.25rem;">
+                        <label style="font-size: 13px; font-weight: 500; color: #374151;">GK_4</label>
+                        <select name="GK_4_B" id="GK_4_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Başlangıç</option>";
+                            foreach ($GK4_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                        <select name="GK_4_E" id="GK_4_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                          @php echo "<option value=' '>Bitiş</option>";
+                            foreach ($GK4_veri as $veri)
+                              echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
+                          @endphp
+                        </select>
+                      </div>
+
+                      {{-- Butonlar --}}
+                      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele" style="font-size:13px; height:34px; padding: 0 16px;">
+                          <i class="fa fa-filter"></i>&nbsp; Süz
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
+                          <i class="fa-solid fa-file-excel"></i>&nbsp; Excel
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')" style="font-size:13px; height:34px; padding: 0 16px;">
+                          <i class="fa-solid fa-file-word"></i>&nbsp; Word
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="printTable('example2')" style="font-size:13px; height:34px; padding: 0 16px;">
+                          <i class="fa fa-print"></i>&nbsp; Yazdır
+                        </button>
+                      </div>
+                    </div>
+
+                    @php if(isset($_GET['SUZ'])): @endphp
+
+                    <style>
+                      .badge-gecmis { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                      .badge-yakin  { background: #FED7AA; color: #9A3412; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                      .badge-yakin2 { background: #FEF08A; color: #854D0E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                      .badge-yakin3 { background: #FEF9C3; color: #854D0E; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                      .badge-normal { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                      .badge-bos    { background: #F3F4F6; color: #6B7280; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+                    </style>
+
+                    <div style="overflow-x: auto; border-radius: 12px; border: 0.5px solid #e5e7eb; background:#fff; padding: 1rem;">
                       <table id="example2" class="table table-hover text-center" data-page-length="10">
                         <thead>
-                          <tr class="bg-primary">
+                          <tr>
                             <th>Marka</th>
                             <th>Model</th>
                             <th>Kod</th>
@@ -561,15 +494,14 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
-                            <th>Bir sonraki Kalibrasyon Tarihi</th>
-                            <th>Bir Sonraki Kalibrasyona kalan gün</th>
+                            <th>Bir Sonraki Kalibrasyon Tarihi</th>
+                            <th>Kalan Gün</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
                         </thead>
-
                         <tfoot>
-                          <tr class="bg-info">
+                          <tr>
                             <th>Marka</th>
                             <th>Model</th>
                             <th>Kod</th>
@@ -578,216 +510,95 @@
                             <th>Özellik 2</th>
                             <th>Özellik 3</th>
                             <th>Kalibrasyon Bakım Tarihi</th>
-                            <th>Bir sonraki Kalibrasyon Tarihi</th>
-                            <th>Bir Sonraki Kalibrasyona kalan gün</th>
+                            <th>Bir Sonraki Kalibrasyon Tarihi</th>
+                            <th>Kalan Gün</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
                         </tfoot>
-
                         <tbody>
                           @php
+                            $database = trim($kullanici_veri->firma).".dbo.";
 
-                            $database = trim($kullanici_veri->firma) . ".dbo.";
-                            $KOD_B = '';
-                            $KOD_E = '';
-                            $GK_1_B = '';
-                            $GK_1_E = '';
-                            $GK_2_B = '';
-                            $GK_2_E = '';
-                            $GK_3_B = '';
-                            $GK_3_E = '';
-                            $GK_4_B = '';
-                            $GK_4_E = '';
-                            $GK_5_B = '';
-                            $GK_5_E = '';
-                            $GK_6_B = '';
-                            $GK_6_E = '';
-                            $GK_7_B = '';
-                            $GK_7_E = '';
-                            $GK_8_B = '';
-                            $GK_8_E = '';
-                            $GK_9_B = '';
-                            $GK_9_E = '';
-                            $GK_10_B = '';
-                            $GK_10_E = '';
+                            $KOD_B   = isset($_GET['KOD_B'])   ? trim($_GET['KOD_B'])   : '';
+                            $KOD_E   = isset($_GET['KOD_E'])   ? trim($_GET['KOD_E'])   : '';
+                            $GK_1_B  = isset($_GET['GK_1_B'])  ? trim($_GET['GK_1_B'])  : '';
+                            $GK_1_E  = isset($_GET['GK_1_E'])  ? trim($_GET['GK_1_E'])  : '';
+                            $GK_2_B  = isset($_GET['GK_2_B'])  ? trim($_GET['GK_2_B'])  : '';
+                            $GK_2_E  = isset($_GET['GK_2_E'])  ? trim($_GET['GK_2_E'])  : '';
+                            $GK_3_B  = isset($_GET['GK_3_B'])  ? trim($_GET['GK_3_B'])  : '';
+                            $GK_3_E  = isset($_GET['GK_3_E'])  ? trim($_GET['GK_3_E'])  : '';
+                            $GK_4_B  = isset($_GET['GK_4_B'])  ? trim($_GET['GK_4_B'])  : '';
+                            $GK_4_E  = isset($_GET['GK_4_E'])  ? trim($_GET['GK_4_E'])  : '';
 
+                            $sql_sorgu = 'SELECT * FROM '.$database.'SRVKC0 WHERE 1=1';
 
-                            if (isset($_GET['KOD_B'])) {
-                              $KOD_B = TRIM($_GET['KOD_B']);
-                            }
-                            if (isset($_GET['KOD_E'])) {
-                              $KOD_E = TRIM($_GET['KOD_E']);
-                            }
-                            if (isset($_GET['GK_1_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_1_B']);
-                            }
-                            if (isset($_GET['GK_1_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_1_E']);
-                            }
-                            if (isset($_GET['GK_2_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_2_B']);
-                            }
-                            if (isset($_GET['GK_2_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_2_E']);
-                            }
-                            if (isset($_GET['GK_3_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_3_B']);
-                            }
-                            if (isset($_GET['GK_3_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_3_E']);
-                            }
-                            if (isset($_GET['GK_4_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_4_B']);
-                            }
-                            if (isset($_GET['GK_4_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_4_E']);
-                            }
-                            if (isset($_GET['GK_5_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_5_B']);
-                            }
-                            if (isset($_GET['GK_5_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_5_E']);
-                            }
-                            if (isset($_GET['GK_6_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_6_B']);
-                            }
-                            if (isset($_GET['GK_6_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_6_E']);
-                            }
-                            if (isset($_GET['GK_7_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_7_B']);
-                            }
-                            if (isset($_GET['GK_7_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_7_E']);
-                            }
-                            if (isset($_GET['GK_8_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_8_B']);
-                            }
-                            if (isset($_GET['GK_8_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_8_E']);
-                            }
-                            if (isset($_GET['GK_9_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_9_B']);
-                            }
-                            if (isset($_GET['GK_9_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_9_E']);
-                            }
-                            if (isset($_GET['GK_10_B'])) {
-                              $GK_1_B = TRIM($_GET['GK_10_B']);
-                            }
-                            if (isset($_GET['GK_10_E'])) {
-                              $GK_1_E = TRIM($_GET['GK_10_E']);
-                            }
+                            if ($KOD_B  !== '') $sql_sorgu .= " AND KOD  >= '".$KOD_B."'";
+                            if ($KOD_E  !== '') $sql_sorgu .= " AND KOD  <= '".$KOD_E."'";
+                            if ($GK_1_B !== '') $sql_sorgu .= " AND GK_1 >= '".$GK_1_B."'";
+                            if ($GK_1_E !== '') $sql_sorgu .= " AND GK_1 <= '".$GK_1_E."'";
+                            if ($GK_2_B !== '') $sql_sorgu .= " AND GK_2 >= '".$GK_2_B."'";
+                            if ($GK_2_E !== '') $sql_sorgu .= " AND GK_2 <= '".$GK_2_E."'";
+                            if ($GK_3_B !== '') $sql_sorgu .= " AND GK_3 >= '".$GK_3_B."'";
+                            if ($GK_3_E !== '') $sql_sorgu .= " AND GK_3 <= '".$GK_3_E."'";
+                            if ($GK_4_B !== '') $sql_sorgu .= " AND GK_4 >= '".$GK_4_B."'";
+                            if ($GK_4_E !== '') $sql_sorgu .= " AND GK_4 <= '".$GK_4_E."'";
 
-                            $sql_sorgu = 'SELECT * FROM ' . $database . 'SRVKC0 WHERE 1 = 1';
-                            if (Trim($KOD_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND KOD >= '" . $KOD_B . "' ";
-                            }
-                            if (Trim($KOD_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND KOD <= '" . $KOD_E . "' ";
-                            }
-                            if (Trim($GK_1_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_1 >= '" . $GK_1_B . "' ";
-                            }
-                            if (Trim($GK_1_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_1 <= '" . $GK_1_E . "' ";
-                            }
-                            if (Trim($GK_2_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_2 >= '" . $GK_2_B . "' ";
-                            }
-                            if (Trim($GK_2_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_2 <= '" . $GK_2_E . "' ";
-                            }
-                            if (Trim($GK_3_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_3 >= '" . $GK_3_B . "' ";
-                            }
-                            if (Trim($GK_3_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_3 <= '" . $GK_3_E . "' ";
-                            }
-                            if (Trim($GK_4_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_4 >= '" . $GK_4_B . "' ";
-                            }
-                            if (Trim($GK_4_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_4 <= '" . $GK_4_E . "' ";
-                            }
-                            if (Trim($GK_5_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_5 >= '" . $GK_5_B . "' ";
-                            }
-                            if (Trim($GK_5_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_5 <= '" . $GK_5_E . "' ";
-                            }
-                            if (Trim($GK_6_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_6 >= '" . $GK_6_B . "' ";
-                            }
-                            if (Trim($GK_6_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_6 <= '" . $GK_6_E . "' ";
-                            }
-                            if (Trim($GK_7_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_7 >= '" . $GK_7_B . "' ";
-                            }
-                            if (Trim($GK_7_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_7 <= '" . $GK_7_E . "' ";
-                            }
-                            if (Trim($GK_8_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_8 >= '" . $GK_8_B . "' ";
-                            }
-                            if (Trim($GK_8_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_8 <= '" . $GK_8_E . "' ";
-                            }
-                            if (Trim($GK_9_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_9 >= '" . $GK_9_B . "' ";
-                            }
-                            if (Trim($GK_9_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_9 <= '" . $GK_9_E . "' ";
-                            }
-                            if (Trim($GK_10_B) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_10 >= '" . $GK_10_B . "' ";
-                            }
-                            if (Trim($GK_10_E) <> '') {
-                              $sql_sorgu = $sql_sorgu . "AND GK_10 <= '" . $GK_10_E . "'";
-                            }
-                            
-                            if (isset($_GET['tarih']) && $_GET['tarih'] == '1') {
-                                $sql_sorgu .= "AND BIRSONRAKIKALIBRASYONTARIHI IS NOT NULL 
-                                              AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) <= 7 ";
-                            }
+                            if (isset($_GET['tarih']) && $_GET['tarih'] == '1')
+                              $sql_sorgu .= " AND BIRSONRAKIKALIBRASYONTARIHI IS NOT NULL
+                                              AND DATEDIFF(day, GETDATE(), BIRSONRAKIKALIBRASYONTARIHI) <= 7";
 
-                            $sql_sorgu .= "AND DURUM != 'ISKARTA'";
-                            $sql_sorgu .= "AND DURUM != 'YEDEK'";
-                            $sql_sorgu .= "AND DURUM != 'GOVDE'";
-                            
-                            $table = DB::select($sql_sorgu);
-                            
-                            \Carbon\Carbon::setLocale('tr');
-                            foreach ($table as $table) {
-                              $hedefTarih = \Carbon\Carbon::parse($table->BIRSONRAKIKALIBRASYONTARIHI);
-                              $bugun = now();
-                              $kalanGun = $bugun->diffInDays($hedefTarih, false);
+                            $sql_sorgu .= " AND DURUM != 'ISKARTA'";
+                            $sql_sorgu .= " AND DURUM != 'YEDEK'";
+                            $sql_sorgu .= " AND DURUM != 'GOVDE'";
+
+                            $rows = DB::select($sql_sorgu);
+                            $bugun = now();
+
+                            foreach ($rows as $row) {
+                              $kalanGun = null;
+                              $kalanBadge = '<span class="badge-bos">—</span>';
+
+                              if (!empty($row->BIRSONRAKIKALIBRASYONTARIHI)) {
+                                try {
+                                  $hedef = \Carbon\Carbon::parse($row->BIRSONRAKIKALIBRASYONTARIHI);
+                                  $kalanGun = $bugun->diffInDays($hedef, false);
+
+                                  if ($kalanGun < 0) {
+                                    $kalanBadge = '<span class="badge-gecmis">'.abs($kalanGun).' gün geçti</span>';
+                                  } elseif ($kalanGun <= 10) {
+                                    $kalanBadge = '<span class="badge-yakin">'.$kalanGun.' gün kaldı</span>';
+                                  } elseif ($kalanGun <= 20) {
+                                    $kalanBadge = '<span class="badge-yakin2">'.$kalanGun.' gün kaldı</span>';
+                                  } elseif ($kalanGun <= 30) {
+                                    $kalanBadge = '<span class="badge-yakin3">'.$kalanGun.' gün kaldı</span>';
+                                  } else {
+                                    $kalanBadge = '<span class="badge-normal">'.$kalanGun.' gün kaldı</span>';
+                                  }
+                                } catch (\Exception $e) {}
+                              }
+
                               echo "<tr>";
-                              echo "<td><b>" . $table->URETICIFIRMA . "</b></td>";
-                              echo "<td><b>" . $table->MODEL . "</b></td>";
-                              echo "<td><b>" . $table->KOD . "</b></td>";
-                              echo "<td><b>" . $table->AD . "</b></td>";
-                              echo "<td><b>" . $table->OZELLIK1 . "</b></td>";
-                              echo "<td><b>" . $table->OLCUM_ARALIGI . "</b></td>";
-                              echo "<td><b>" . $table->OZELLIK3 . "</b></td>";
-                              echo "<td><b>" . $table->KALIBRASYONBAKIMTARIHI . "</b></td>";
-                              echo "<td><b>" . $table->BIRSONRAKIKALIBRASYONTARIHI . "</b></td>";
-                              echo "<td><b>" . $kalanGun . "</b></td>";
-                              echo "<td><b>" . $table->DURUM . "</b></td>";
-
-                              echo "<td>" . "<a class='btn btn-info' href='kart_kalibrasyon?ID='{{$table->id}}><i class='fa fa-chevron-circle-right' style='color: white'></i></a>" . "</td>";
+                                echo "<td>".$row->URETICIFIRMA."</td>";
+                                echo "<td>".$row->MODEL."</td>";
+                                echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
+                                echo "<td>".$row->AD."</td>";
+                                echo "<td>".$row->OZELLIK1."</td>";
+                                echo "<td>".$row->OLCUM_ARALIGI."</td>";
+                                echo "<td>".$row->OZELLIK3."</td>";
+                                echo "<td style='white-space:nowrap'>".($row->KALIBRASYONBAKIMTARIHI ?? '—')."</td>";
+                                echo "<td style='white-space:nowrap'>".($row->BIRSONRAKIKALIBRASYONTARIHI ?? '—')."</td>";
+                                echo "<td data-order='".$kalanGun."'>".$kalanBadge."</td>";
+                                echo "<td>".$row->DURUM."</td>";
+                                echo "<td><a class='btn btn-info btn-sm' href='kart_kalibrasyon?ID=".$row->id."'><i class='fa fa-chevron-circle-right' style='color:white'></i></a></td>";
                               echo "</tr>";
                             }
-
                           @endphp
                         </tbody>
                       </table>
-                      @php
-                        }
-                      @endphp
                     </div>
+
+                    @php endif; @endphp
                   </div>
 
                   <div class="tab-pane" id="baglantiliDokumanlar">

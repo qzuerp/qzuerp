@@ -2,6 +2,7 @@
 
     @php
         $ich_fault_types = json_decode(@$kart_veri->ich_fault_types ?? '[]', true);
+        $ich_updates = json_decode(@$kart_veri->ich_updates ?? '[]', true);
     @endphp
 
     <div class="row g-3">
@@ -52,6 +53,34 @@
                    data-bs-title="ich_order_no"
                    name="ich_order_no"
                    value="{{ @$kart_veri->ich_order_no ?? '' }}">
+        </div>
+
+        <hr class="my-4">
+
+        <h4>Güncellenen Dökümanlar</h4>
+
+        <div class="col-md-12 d-flex flex-wrap gap-3">
+
+            @php
+                $ich_updatesList = [
+                    "8D Açıldı mı","Akış Şeması","Kontrol Planı","FMEA","Prsd / Tal / Süreç",
+                    "APQP","PPAP","Teknik Resim","Form / Liste","Kontrol Ekipmanı","Kalıp, Aparat","ERP","Diğer"
+                ];
+            @endphp
+
+            @foreach($ich_updatesList as $u)
+                <div>
+                    <input type="checkbox"
+                           class="ich_fault_types"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           data-bs-title="ich_updates"
+                           name="ich_updates[]"
+                           value="{{ $u }}"
+                           {{ in_array($u, $ich_updates) ? 'checked' : '' }}>
+                    {{ $u }}
+                </div>
+            @endforeach
         </div>
 
         <hr class="my-4">

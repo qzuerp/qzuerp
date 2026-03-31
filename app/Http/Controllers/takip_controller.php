@@ -79,6 +79,7 @@ class takip_controller extends Controller
         $ich_order_no = $request->ich_order_no;
 
         $ich_fault_types = $request->ich_fault_types;
+        $ich_updates = $request->ich_updates;
 
         $ich_part_name = $request->ich_part_name;
         $ich_part_code = $request->ich_part_code;
@@ -304,6 +305,10 @@ class takip_controller extends Controller
                     'ich_fault_types' => is_array($ich_fault_types)
                         ? json_encode($ich_fault_types, JSON_UNESCAPED_UNICODE)
                         : $ich_fault_types,
+                        
+                    'ich_updates' => is_array($ich_updates)
+                        ? json_encode($ich_updates, JSON_UNESCAPED_UNICODE)
+                        : $ich_updates,44
 
                     'ich_part_name' => $ich_part_name,
                     'ich_part_code' => $ich_part_code,
