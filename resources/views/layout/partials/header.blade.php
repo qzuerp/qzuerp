@@ -54,7 +54,10 @@
     <!-- DataTables - Kritik -->
     <script src="{{ asset('qzuerp-sources/js/dataTables-1.13.6.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/dataTables-bootstrap-1.13.6.js') }}" defer></script>
-
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/clusterize.js/clusterize.css">
+    <script
+    src="https://cdn.jsdelivr.net/npm/clusterize.js/clusterize.min.js"></script>
     <!-- iziToast -->
     <script src="{{ asset('qzuerp-sources/js/izitoast-1.4.0.js') }}"></script>
 
@@ -82,6 +85,7 @@
     <script src="{{ asset('qzuerp-sources/js/solid-gauge.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/accessibility.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" defer></script>
 {{-- JS Bitiş --}}
 <style>
     :root {

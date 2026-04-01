@@ -341,294 +341,85 @@
 @endif
 
 <script>
-  // Setup - add a text input to each footer cell
-  $('#evrakSuzTable tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
+(function () { // ← her şeyi bu wrapper'ın içine al
+
+function initFooter(tableId) {
+  $('#' + tableId + ' tfoot th').each(function () {
+    if ($(this).text() === '#') {
       $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
-
-  $('#evrakSuzTable2 tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-
-  });
-
-  $('#popupSelect tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    } else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size:10px;width:100%" placeholder="🔍" />');
     }
   });
+}
 
-  $('#popupSelect2 tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
+function debounce(fn, delay) {
+  var timer;
+  return function () {
+    var ctx = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () { fn.apply(ctx, args); }, delay);
+  };
+}
 
-  $('#popupInfo tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
-
-  $('#example2 tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
-
-  $('#listeleTable tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
-
-  $('#seriNoSec tfoot th').each(function () {
-    var title = $(this).text();
-    if (title == "#") {
-      $(this).html('<b>Git</b>');
-    }
-    else {
-      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-    }
-  });
-
-  $(document).ready(function () {
-    var table = $('#seriNoSec').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
+function bindColumnSearch(dtInstance) {
+  dtInstance.columns().every(function () {
+    var col = this;
+    $('input', col.footer()).on('keyup change clear', debounce(function () {
+      if (col.search() !== this.value) {
+        col.search(this.value).draw();
       }
-    });
-    // DataTable
-    var table = $('#evrakSuzTable').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-
-    var table = $('#listeleTable').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'brtip',
-      buttons: ['copy', 'excel', 'print'],
-      paging: false,
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-
-    var table = $('#evrakSuzTable2').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-
-    if ($.fn.DataTable.isDataTable('#popupSelect')) {
-      $('#popupSelect').DataTable().destroy();
-    }
-
-    if ($.fn.DataTable.isDataTable('#example2')) {
-      $('#example2').DataTable().destroy();
-    }
-
-    if ($.fn.DataTable.isDataTable('#popupInfo')) {
-      $('#popupInfo').DataTable().destroy();
-    }
-
-    if ($.fn.DataTable.isDataTable('#popupSelect2') && !$('#popupSelect2')) {
-      $('#popupSelect2').DataTable().destroy();
-    }
-
-    var table = $('#popupSelect').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-    var table = $('#example2').DataTable({
-      order: [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      paging: false, // << bu olacak
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that.search(this.value).draw();
-            }
-          });
-        });
-      }
-    });
-
-
-    var table = $('#popupInfo').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-
-
-    var table = $('#popupSelect2').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      }
-    });
-
-    refreshBaglantiliDokumanlarTable();
-
+    }, 300));
   });
+}
+
+var tableIds = [
+  'evrakSuzTable', 'evrakSuzTable2', 'popupSelect', 'popupSelect2',
+  'popupInfo', 'example2', 'listeleTable', 'seriNoSec'
+];
+tableIds.forEach(initFooter);
+
+var baseConfig = {
+  order: [[0, 'desc']],
+  dom: 'rtip',
+  deferRender: true,
+  processing: true,
+  buttons: ['copy', 'excel', 'print'],
+  language: { url: '{{ asset("tr.json") }}' },
+  initComplete: function () {
+    bindColumnSearch(this.api());
+  }
+};
+
+$(document).ready(function () {
+
+  ['popupSelect', 'popupSelect2', 'example2', 'popupInfo'].forEach(function (id) {
+    if ($.fn.DataTable.isDataTable('#' + id)) {
+      $('#' + id).DataTable().destroy();
+    }
+  });
+
+  $('#seriNoSec').DataTable(baseConfig);
+  $('#evrakSuzTable').DataTable(baseConfig);
+  $('#evrakSuzTable2').DataTable(baseConfig);
+
+  $('#listeleTable').DataTable($.extend({}, baseConfig, {
+    dom: 'brtip',
+    paging: false
+  }));
+
+  $('#popupSelect').DataTable(baseConfig);
+
+  $('#example2').DataTable($.extend({}, baseConfig, {
+    paging: false
+  }));
+
+  $('#popupInfo').DataTable(baseConfig);
+  $('#popupSelect2').DataTable(baseConfig);
+
+  refreshBaglantiliDokumanlarTable();
+});
+
+})(); // ← IIFE kapanışı
 
 </script>

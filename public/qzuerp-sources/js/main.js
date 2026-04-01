@@ -341,6 +341,42 @@ function yeniEvrakNo(pageTable) {
 }
 
 $(document).ready(function() {
+
+  document.querySelectorAll('#veriTable').forEach((table) => {
+
+    const thead = table.querySelector('thead tr');
+
+    new Sortable(thead, {
+        animation: 150,
+        handle: 'th',
+        onEnd: function (evt) {
+            const oldIndex = evt.oldIndex;
+            const newIndex = evt.newIndex;
+
+            if (oldIndex === newIndex) return;
+
+            // Sadece tbody ve diğer satırları işle, thead'i atla
+            // çünkü SortableJS thead'deki th'yi zaten taşıdı
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = Array.from(row.children);
+                if (cells.length > 0) {
+                    if (newIndex >= cells.length) {
+                        row.appendChild(cells[oldIndex]);
+                    } else {
+                        row.insertBefore(
+                            cells[oldIndex],
+                            cells[newIndex > oldIndex ? newIndex + 1 : newIndex]
+                        );
+                    }
+                }
+            });
+
+            console.log(`Sütun ${oldIndex}'den ${newIndex}'e taşındı!`);
+        }
+    });
+  });
+
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('SUZ')) {
