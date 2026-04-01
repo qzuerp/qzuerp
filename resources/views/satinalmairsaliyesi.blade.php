@@ -522,9 +522,8 @@
 																			style="width: 100%; border-radius: 5px;">
 																			<option value=" ">Seç</option>
 																			@php
-																				$kur_veri = DB::table($database . 'mmps10e')->get();
-																				foreach ($kur_veri as $key => $value) {
-																					$selected = ($value->MAMULSTOKKODU == @$veri->MPS_KODU) ? " selected" : "";
+																				foreach ($kod_veri as $key => $value) {
+																					$selected = ($value->EVRAKNO == @$veri->MPS_KODU) ? " selected" : "";
 																					echo "<option value='" . $value->EVRAKNO . "'" . $selected . ">" . $value->EVRAKNO . " - " . $value->MAMULSTOKKODU . " - " . $value->MAMULSTOKADI . "</option>";
 																				}
 																			@endphp

@@ -65,6 +65,7 @@ class stok29_controller extends Controller
 
   public function islemler(Request $request)
   {
+    // dd($request->all());
     $islem_turu = $request->kart_islemleri;
     $firma = $request->firma.'.dbo.';
     $EVRAKNO = $request->input('EVRAKNO_E');

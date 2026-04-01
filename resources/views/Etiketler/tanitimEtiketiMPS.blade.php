@@ -7,6 +7,8 @@
     ->leftJoin($firma.'stok40t as S40T', 'M10E.SIPARTNO', '=', 'S40T.ARTNO')
     ->leftJoin($firma.'stok40e as S40E', 'S40T.EVRAKNO', '=', 'S40E.EVRAKNO')
     ->leftJoin($firma.'cari00 as C00', 'C00.KOD', '=', 'M10E.MUSTERIKODU')
+    ->leftJoin($firma.'stok29t as S29T','S29T.MPS_KODU','=','M10E.EVRAKNO')
+    ->leftJoin($firma.'stok29e as S29E','S29E.EVRAKNO','=','S29T.EVRAKNO')
     ->leftJoin($firma.'dosyalar00 as D00', function($join) {
         $join->on('D00.EVRAKNO', '=', 'M10E.MAMULSTOKKODU')
             ->on('D00.EVRAKTYPE', '=', DB::raw("'STOK00'"))
@@ -251,7 +253,7 @@
 
                 <div class="data-row">
                     <div class="data-label">İrsaliye No / Tarih</div>
-                    <div class="data-value"><input style="background:transparant; border:none; outline:none;"/></div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->IRSALIYENO }} - {{ $veriE->IRSALIYE_SERINO }}"/></div>
                 </div>
 
             </div>
