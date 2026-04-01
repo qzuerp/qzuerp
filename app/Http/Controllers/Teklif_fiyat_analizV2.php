@@ -245,6 +245,21 @@ class teklif_fiyat_analizV2 extends Controller
 
             case 'kart_duzenle':
                 FunctionHelpers::Logla('TEKL20', $EVRAKNO, 'W', $TARIH);
+
+                DB::table($firma . 'tekl20d')->delete();
+
+                $oprs = $request->OPRS_DEFAULT;
+
+                if (!empty($oprs)) {
+                    $insertData = [];
+                    foreach ($oprs as $kod) {
+                        $insertData[] = [
+                            'OPRKOD' => $kod
+                        ];
+                    }
+                    DB::table($firma . 'tekl20d')->insert($insertData);
+                }
+
                 // E tablosunu güncelle
                 DB::table($firma . 'tekl20e')->where('EVRAKNO', $EVRAKNO)->update([
                     'TARIH' => $TARIH,
@@ -265,6 +280,8 @@ class teklif_fiyat_analizV2 extends Controller
                     'SIRKET_EMAIL_1' => $SIRKET_EMAIL_1,
                     'LAST_TRNUM' => $request->LAST_TRNUM
                 ]);
+
+
 
                 DB::table($firma . 'tekl20x')->where('EVRAKNO', $EVRAKNO)->delete();
                 if (is_array($KURTRNUM)) {

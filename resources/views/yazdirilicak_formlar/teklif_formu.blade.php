@@ -37,10 +37,10 @@
         .main-table .col-parca   { width: auto; }   /* takes remaining space */
         .main-table .col-kod     { width: 100px; }
         .main-table .col-adet    { width: 40px; }
-        .main-table .col-fiyat   { width: 75px; }
-        .main-table .col-toplam  { width: 85px; }
+        .main-table .col-fiyat   { width: 125px; }
+        .main-table .col-toplam  { width: 155px; }
         .main-table .col-termin  { width: 60px; }
-        .main-table .col-not     { width: 65px; }
+        .main-table .col-not     { width: 165px; }
 
         /* Note row */
         .note-row td { background: #f9f9f9; font-weight: bold; font-size: 12px; text-align: center; border: 1px solid #999; padding: 5px; }
@@ -134,8 +134,8 @@
                 <td class="parca-adi">{{ $data['STOK_AD1'][$i] }}</td>
                 <td>{{ $data['KOD'][$i] }}</td>
                 <td>{{ $data['SF_MIKTAR'][$i] }}</td>
-                <td>{{ number_format($data['FIYAT'][$i], 2, ',', '.') }}</td>
-                <td>{{ number_format($data['TUTAR'][$i], 2, ',', '.') }}</td>
+                <td>{{ number_format($data['FIYAT'][$i], 2, ',', '.') }} {{ $data['TEKLIF_FIYAT_PB'] }}</td>
+                <td>{{ number_format($data['TUTAR'][$i], 2, ',', '.') }} {{ $data['TEKLIF_FIYAT_PB'] }}</td>
                 <td>{{ $data['TERMIN_TAR'][$i] }}</td>
                 <td>{{ $data['ACIKLAMA'][$i] ?? '' }}</td>
             </tr>
@@ -147,13 +147,16 @@
         </tr>
         <!-- TOPLAM satırı -->
         <tr class="total-row">
-            <td colspan="6"></td>
-            <td class="total-label">TOPLAM</td>
-            <td class="total-value">
-                @php
-                    $toplam = array_sum(array_map('floatval', $data['TUTAR']));
-                @endphp
-                {{ number_format($toplam, 2, ',', '.') }}
+            <td colspan="8">
+                <div style="display:flex; gap:5px; align-items:center; justify-content:end;">
+                    <div class="total-label">TOPLAM</div>
+                    <div class="total-value">
+                        @php
+                            $toplam = array_sum(array_map('floatval', $data['TUTAR']));
+                        @endphp
+                        <b>{{ number_format($toplam, 2, ',', '.') }} {{ $data['TEKLIF_FIYAT_PB'] }}</b>
+                    </div>
+                </div>
             </td>
         </tr>
     </table>

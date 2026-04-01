@@ -253,7 +253,7 @@
 
                 <div class="data-row">
                     <div class="data-label">İrsaliye No / Tarih</div>
-                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->IRSALIYENO }} - {{ $veriE->IRSALIYE_SERINO }}"/></div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->IRSALIYENO }} - {{ $veriE->IRSALIYE_SERINO }} - {{ $veriE->LOTNUMBER }}"/></div>
                 </div>
 
             </div>

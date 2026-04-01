@@ -1064,7 +1064,7 @@
 										<button type="button" class="btn btn-sm btn-primary me-2" id="selectAll">
 											<i class="fa-solid fa-check-double" style="color: #ffffff !important;"></i> Tümünü Seç
 										</button>
-										<button type="button" class="btn btn-sm btn-primary me-2" id="">
+										<button type="button" class="btn btn-sm btn-primary me-2" id="check_default">
 											<i class="fa-solid fa-check-double"></i> Standart Operasyonları Seç
 										</button>
 										<button type="button" class="btn btn-sm btn-secondary" id="deselectAll">
@@ -2043,11 +2043,19 @@
 
 													<div class="tab-pane" id="tab_5">
 														<div class="row g-3 ">
+															@php
+															$defaultKodlar = DB::table($database.'tekl20d')->pluck('OPRKOD')->toArray();
+															@endphp
 															@foreach($OPERASON_VERILERI as $OPERASYON)
 																<div class="col-lg-2 col-md-3 col-sm-5">
 																	<div class="operation-card">
-																		<input type="checkbox" id="S{{ $OPERASYON->KOD }}" name="OPRS_DEFAULT[]"
-																			class="d-none checkbox-input" value="{{ $OPERASYON->KOD }}">
+																		<input type="checkbox" 
+																			{{ in_array($OPERASYON->KOD, $defaultKodlar) ? 'checked' : '' }} 
+																			id="S{{ $OPERASYON->KOD }}" 
+																			name="OPRS_DEFAULT[]"
+																			class="d-none checkbox-input" 
+																			value="{{ $OPERASYON->KOD }}">
+																		
 																		<label class="operation-label" for="S{{ $OPERASYON->KOD }}">
 																			<div class="operation-content">
 																				<span class="operation-name">{{ $OPERASYON->AD }}</span>
@@ -2617,6 +2625,14 @@
 					updateOperationTabs();
 				});
 
+				$('#check_default').on('click',function () {
+					let DEFAULTS = @json($defaultKodlar);
+
+					DEFAULTS.forEach(element => {
+						$('#'+element).click();
+					});
+				});
+
 				$('#MALZEME_CINSI').on('change',function(){
 					if($(this).val() == '' || $(this).val() == ' ')
 						return;
@@ -3011,22 +3027,25 @@
 				});
 
 				const TARIH = '{{ @$kart_veri->TARIH }}';
-				const INPUTS = 'input[name="FIYAT[]"], input[name="TUTAR[]"], input[name="FIYAT2[]"], input[name="TUTAR2[]"]';
 
 				let currentCurrency = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
 
-				$(INPUTS).each(function () {
-					let value = AutoNumeric.getNumber(this);
-					$(this).data('originalValue', value);
+				$('input[name="FIYAT[]"]').each(function () {
+					$(this).data('originalValue',    AutoNumeric.getNumber(this));
 					$(this).data('originalCurrency', currentCurrency);
 				});
 
 				$('#teklif').on('change', async function () {
 					let newCurrency = $(this).val();
 
-					$(INPUTS).each(async function () {
-						let originalValue    = $(this).data('originalValue');
-						let originalCurrency = $(this).data('originalCurrency');
+					let fiyatInputs  = $('input[name="FIYAT[]"]');
+					let miktarInputs = $('input[name="ISLEM_MIKTARI[]"]');
+					let tutarInputs  = $('input[name="TUTAR[]"]');
+
+					for (let i = 0; i < fiyatInputs.length; i++) {
+						let input            = fiyatInputs[i];
+						let originalValue    = $(input).data('originalValue');
+						let originalCurrency = $(input).data('originalCurrency');
 
 						let converted;
 
@@ -3035,12 +3054,12 @@
 								converted = originalValue;
 
 							} else if (originalCurrency === 'TL') {
-								let kur2 = await getCachedKur(TARIH, newCurrency);
-								converted = originalValue / kur2.data.KURS_1;
+								let kur = await getCachedKur(TARIH, newCurrency);
+								converted = originalValue / kur.data.KURS_1;
 
 							} else if (newCurrency === 'TL') {
-								let kur1 = await getCachedKur(TARIH, originalCurrency);
-								converted = originalValue * kur1.data.KURS_1;
+								let kur = await getCachedKur(TARIH, originalCurrency);
+								converted = originalValue * kur.data.KURS_1;
 
 							} else {
 								let kur1 = await getCachedKur(TARIH, originalCurrency);
@@ -3048,12 +3067,16 @@
 								converted = (originalValue * kur1.data.KURS_1) / kur2.data.KURS_1;
 							}
 
-							AutoNumeric.set(this, Math.round(converted * 100) / 100);
+							let finalValue = Math.round(converted * 100) / 100;
+							let miktar     = parseFloat($(miktarInputs[i]).val()) || 0;
+
+							AutoNumeric.set(input,           finalValue);
+							AutoNumeric.set(tutarInputs[i],  Math.round(finalValue * miktar * 100) / 100);
 
 						} catch (e) {
 							console.error('Kur dönüşüm hatası:', originalCurrency, '->', newCurrency, e);
 						}
-					});
+					}
 
 					currentCurrency = newCurrency;
 				});
