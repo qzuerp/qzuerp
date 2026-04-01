@@ -371,8 +371,6 @@ $(document).ready(function() {
                     }
                 }
             });
-
-            console.log(`Sütun ${oldIndex}'den ${newIndex}'e taşındı!`);
         }
     });
   });
