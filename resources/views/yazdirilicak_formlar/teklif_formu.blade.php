@@ -33,14 +33,14 @@
         .main-table td.parca-adi { text-align: left; word-break: break-word; }
 
         /* Column widths */
-        .main-table .col-sira    { width: 30px; }
-        .main-table .col-parca   { width: auto; }   /* takes remaining space */
-        .main-table .col-kod     { width: 100px; }
-        .main-table .col-adet    { width: 40px; }
-        .main-table .col-fiyat   { width: 125px; }
-        .main-table .col-toplam  { width: 155px; }
-        .main-table .col-termin  { width: 60px; }
-        .main-table .col-not     { width: 165px; }
+        .main-table .col-sira    { width: auto; }
+        .main-table .col-parca   { width: auto; }
+        .main-table .col-kod     { width: auto; }
+        .main-table .col-adet    { width: auto; }
+        .main-table .col-fiyat   { width: auto; }
+        .main-table .col-toplam  { width: auto; }
+        .main-table .col-termin  { width: auto; }
+        .main-table .col-not     { width: auto; }
 
         /* Note row */
         .note-row td { background: #f9f9f9; font-weight: bold; font-size: 12px; text-align: center; border: 1px solid #999; padding: 5px; }
