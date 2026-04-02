@@ -257,7 +257,7 @@ class stok29_controller extends Controller
             'TRNUM' => $TRNUM[$i],
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
-            // 'LOTNUMBER' => $LOTNUMBER[$i],
+            'LOTNUMBER' => $LOTNUMBER[$i],
             'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'LOCATION1' => $LOCATION1[$i],
@@ -277,7 +277,7 @@ class stok29_controller extends Controller
             'EVRAKTIPI' => 'STOK29T',
             'STOK_MIKTAR' => $SF_MIKTAR[$i],
             'AMBCODE' => $AMBCODE,
-            // 'SERINO' => $SERINO[$i],
+            'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
 
@@ -492,7 +492,7 @@ class stok29_controller extends Controller
               'TARIH' => $TARIH,
               'STOK_MIKTAR' => $SF_MIKTAR[$i],
               'AMBCODE' => $AMBCODE,
-              // 'SERINO' => $SERINO[$i],
+              'SERINO' => $SERINO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
           }
