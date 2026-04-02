@@ -76,11 +76,7 @@ class ParasutService implements AccountingInterface
         $response = Http::withToken($this->token)
         ->post($this->baseUrl . $this->companyId . '/shipment_documents', $payload);
 
-        dd([
-            'status'  => $response->status(),
-            'body'    => $response->json(),
-            'payload' => $payload,
-        ]);
+        return $response;
     }
 
     public function createContact(array $data)

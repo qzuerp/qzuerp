@@ -409,6 +409,15 @@
                                       </button>
                                     </span>
                                   </td>
+                                  <td class="d-flex ">
+                                    <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
+                                    <span class="d-flex -btn">
+                                      <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip('{{ $veri->TRNUM }}')" data-bs-target="#modal_popupSelectModal5" type="button">
+                                        <span class="fa-solid fa-magnifying-glass"  >
+                                        </span>
+                                      </button>
+                                    </span>
+                                  </td>
                                   <td><input type="text" id='depo-{{ $veri->id }}-CAM' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}-CAM' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text" readonly class="form-control MPSNO" name="JOBNO[]" value="{{ @$veri->MPSNO }}"></td>
                                   <td><input type="text" class="form-control LOCATION1" id="lok1-{{$veri->id}}-CAM" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}-CAM" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
@@ -1091,7 +1100,7 @@
           }
         });
       }
-
+      
       function addRowHandlers2() {
         var table = document.getElementById("popupSelect2");
         var rows = table.getElementsByTagName("tr");

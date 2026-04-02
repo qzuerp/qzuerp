@@ -257,7 +257,7 @@ class stok63_controller extends Controller
             'NUM3' => $NUM3[$i],
             'NUM4' => $NUM4[$i],
             'TERMIN_TAR' => $TERMIN_TAR[$i],
-            'SIPARTNO' => $SIPARTNO[$i],
+            'SIPARTNO' => $SIPARTNO[$i] ?? '',
             'created_at' => date('Y-m-d H:i:s'),
 
           ]);
@@ -470,7 +470,7 @@ class stok63_controller extends Controller
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
               'TERMIN_TAR' => $TERMIN_TAR[$i],
-              'SIPARTNO' => $SIPARTNO[$i],
+              'SIPARTNO' => $SIPARTNO[$i] ?? '',
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -690,7 +690,7 @@ class stok63_controller extends Controller
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
               'TERMIN_TAR' => $TERMIN_TAR[$i],
-              'SIPARTNO' => $SIPARTNO[$i],
+              'SIPARTNO' => $SIPARTNO[$i] ?? '',
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
