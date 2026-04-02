@@ -406,46 +406,6 @@ class stok60_controller extends Controller
 
           if (in_array($TRNUM[$i],$newTRNUMS)) 
           { 
-            // $lines = [
-            //   [
-            //       'product_id'  => $KOD[$i],
-            //       'quantity'    => $SF_MIKTAR[$i],
-            //       'product_name' => $STOK_ADI[$i],
-            //       'description' => $SF_SF_UNIT[$i],
-            //   ]
-            // ];
-            // try {
-            //   $provider = $this->accounting->getProvider(trim($u->firma));
-              
-            //   $sonuc = $provider->createInvoice([
-            //     'contact_id'    => '1044973731',
-            //     'issue_date'    => date('Y-m-d'),
-            //     'shipment_date' => date('Y-m-d'),
-            //     'description'   => 'ERP TEST IRSALIYE',
-            //     'lines'         => $lines,
-            //   ]);
-  
-            //   if (isset($sonuc['errors'])) {
-            //       return response()->json([
-            //           'basari' => false,
-            //           'mesaj'  => 'Paraşüt hatası',
-            //           'detay'  => $sonuc['errors'],
-            //       ], 422);
-            //   }
-  
-            //   return response()->json([
-            //       'basari'      => true,
-            //       'parasut_id'  => $sonuc['data']['id'] ?? null,
-            //       'veri'        => $sonuc,
-            //   ]);
-    
-            // } catch (Exception $e) {
-            //     return response()->json([
-            //         'basari' => false,
-            //         'mesaj'  => $e->getMessage(),
-            //     ], 500);
-            // }
-
             $s1 = DB::table($firma.'stok10a')
               ->where('KOD',$KOD[$i])
               ->where('LOTNUMBER',$LOTNUMBER[$i])
@@ -566,6 +526,46 @@ class stok60_controller extends Controller
 
           if (in_array($TRNUM[$i],$updateTRNUMS)) 
           { 
+            // $lines = [
+            //   [
+            //       'product_id'  => $KOD[$i],
+            //       'quantity'    => $SF_MIKTAR[$i],
+            //       'product_name' => $STOK_ADI[$i],
+            //       'description' => $SF_SF_UNIT[$i],
+            //   ]
+            // ];
+            // try {
+            //   $provider = $this->accounting->getProvider(trim($u->firma));
+              
+            //   $sonuc = $provider->createInvoice([
+            //     'contact_id'    => '1044973731',
+            //     'issue_date'    => date('Y-m-d'),
+            //     'shipment_date' => date('Y-m-d'),
+            //     'description'   => 'ERP TEST IRSALIYE',
+            //     'lines'         => $lines,
+            //   ]);
+  
+            //   if (isset($sonuc['errors'])) {
+            //       return response()->json([
+            //           'basari' => false,
+            //           'mesaj'  => 'Paraşüt hatası',
+            //           'detay'  => $sonuc['errors'],
+            //       ], 422);
+            //   }
+  
+            //   return response()->json([
+            //       'basari'      => true,
+            //       'parasut_id'  => $sonuc['data']['id'] ?? null,
+            //       'veri'        => $sonuc,
+            //   ]);
+    
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'basari' => false,
+            //         'mesaj'  => $e->getMessage(),
+            //     ], 500);
+            // }
+
             $KAYITLI_SF_MIKTAR = DB::table($firma.'stok60t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
 
             if($KAYITLI_SF_MIKTAR != $SF_MIKTAR[$i])
