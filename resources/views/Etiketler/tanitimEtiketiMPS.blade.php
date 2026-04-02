@@ -53,9 +53,9 @@
     }
 
     .etiket {
-        width: 200mm;
+        width: 210mm;
         background: var(--card);
-        border: 1px solid var(--border);
+        border: 1px solid rgb(144, 137, 137);
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
@@ -159,7 +159,7 @@
 
     @media print {
         body { background: white; padding: 0; }
-        .etiket { box-shadow: none; border-radius: 0; border: none; }
+        .etiket { box-shadow: none; }
     }
 </style>
 </head>
