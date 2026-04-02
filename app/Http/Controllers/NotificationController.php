@@ -21,7 +21,7 @@ class NotificationController extends Controller
         $lastId = (int) $request->query('lastId', 0);
     
         $notifications = DB::table($firma . 'notifications')
-            ->select('id', 'title', 'message', 'created_at')
+            ->select('*')
             ->where('target_user_id', $user->id)
             ->where('read', 0)
             ->where('id', '>', $lastId)
