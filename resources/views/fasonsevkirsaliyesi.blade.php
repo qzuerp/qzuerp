@@ -429,9 +429,9 @@ if (isset($kart_veri)) {
                           <td><input type="text" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                           <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $veri->MPSNO }}"></td>
                           <td class="d-flex ">
-                            <input type="text" class="form-control" id='SIPARTNO' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
+                            <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
                             <span class="d-flex -btn">
-                              <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip()" data-bs-target="#modal_popupSelectModal5" type="button">
+                              <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip('{{ $veri->TRNUM }}')" data-bs-target="#modal_popupSelectModal5" type="button">
                                 <span class="fa-solid fa-magnifying-glass"  >
                                 </span>
                               </button>
@@ -917,7 +917,7 @@ if (isset($kart_veri)) {
           </div>
         {{-- Seri no finish --}}
 
-        {{-- Seri no start --}}
+        {{-- Sipart no start --}}
           <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal5" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -927,17 +927,17 @@ if (isset($kart_veri)) {
                 </div>
                 <div class="modal-body">
                   <div class="row" style="overflow:auto;">
-                    <table id="sipSec" class="table table-hover text-center" data-page-length="10">
+                    <table id="popupSelect" data-trnum="" class="table table-hover text-center" data-page-length="10">
                       <thead>
                         <tr class="bg-primary">
-                          <th>Kod</th>
-                          <th>Ad</th>
-                          <th>Miktar</th>
-                          <th>Lot</th>
-                          <th>Seri No</th>
-                          <th>Termin Tarihi</th>
-                          <th>Not</th>
-                          <th>Artno</th>
+                          <th style="min-width:100px;">Kod</th>
+                          <th style="min-width:100px;">Ad</th>
+                          <th style="min-width:100px;">Miktar</th>
+                          <th style="min-width:100px;">Lot</th>
+                          <th style="min-width:100px;">Seri No</th>
+                          <th style="min-width:100px;">Termin Tarihi</th>
+                          <th style="min-width:100px;">Not</th>
+                          <th style="min-width:100px;">Artno</th>
                         </tr>
                       </thead>
 
@@ -956,7 +956,7 @@ if (isset($kart_veri)) {
 
                       <tbody>
                         @php
-                          $siparisler = DB::table($database.'stok40t')->where('AK','A')->get();
+                          $siparisler = DB::table($database.'stok46t')->where('AK','A')->get();
                         @endphp
                         @foreach ($siparisler as $siparis)
                           <tr>
@@ -966,7 +966,7 @@ if (isset($kart_veri)) {
                             <td>{{ $siparis->LOTNUMBER }}</td>
                             <td>{{ $siparis->SERINO }}</td>
                             <td>{{ $siparis->TERMIN_TAR }}</td>
-                            <td>{{ $siparis->NOT }}</td>
+                            <td>{{ $siparis->NOT1 }}</td>
                             <td>{{ $siparis->ARTNO }}</td>
                           </tr>
                         @endforeach
@@ -980,7 +980,7 @@ if (isset($kart_veri)) {
               </div>
             </div>
           </div>
-        {{-- Seri no finish --}}
+        {{-- Sipart no finish --}}
 
         {{-- Fason Seç start --}}
           <div class="modal fade bd-example-modal-lg" id="modal_fason" tabindex="-1" role="dialog" aria-labelledby="modal_fason">
@@ -1208,80 +1208,19 @@ function printTable(tableId)
   }
   window.onload = addRowHandlers2();
 
-$('#sipSec tbody tr').on
+  $('#popupSelect tbody tr').on('click',function(){
+    let secilenDeger = $(this).find('td').eq(7).text().trim();
+    let TRNUM = $('#popupSelect').data('trnum');
 
-function addRowHandlers() {
-  var table = document.getElementById("popupSelect");
-  var rows = table.getElementsByTagName("tr");
-  for (i = 0; i < rows.length; i++) {
-    var currentRow = table.rows[i];
-    var createClickHandler = function(row) {
-      return function() {
-        var KOD = row.getElementsByTagName("td")[0].innerHTML;
-        var AD = row.getElementsByTagName("td")[1].innerHTML;
-        var SF_MIKTAR = row.getElementsByTagName("td")[2].innerHTML;
-        var SF_SF_UNIT = row.getElementsByTagName("td")[3].innerHTML;
-        var LOTNUMBER = row.getElementsByTagName("td")[4].innerHTML;
-        var SERINO = row.getElementsByTagName("td")[5].innerHTML;
-        var AMBCODE = row.getElementsByTagName("td")[6].innerHTML;
-        var LOCATION1 = row.getElementsByTagName("td")[7].innerHTML;
-        var LOCATION2 = row.getElementsByTagName("td")[8].innerHTML;
-        var LOCATION3 = row.getElementsByTagName("td")[9].innerHTML;
-        var LOCATION4 = row.getElementsByTagName("td")[10].innerHTML;
-        var TEXT1 = row.getElementsByTagName("td")[11].innerHTML;
-        var TEXT2 = row.getElementsByTagName("td")[12].innerHTML;
-        var TEXT3 = row.getElementsByTagName("td")[13].innerHTML;
-        var TEXT4 = row.getElementsByTagName("td")[14].innerHTML;
-        var NUM1 = row.getElementsByTagName("td")[15].innerHTML;
-        var NUM2 = row.getElementsByTagName("td")[16].innerHTML;
-        var NUM3 = row.getElementsByTagName("td")[17].innerHTML;
-        var NUM4 = row.getElementsByTagName("td")[18].innerHTML;
+    $('#SIPARTNO-'+TRNUM).val(secilenDeger);
 
-        $('#STOK_KODU_SHOW').val(KOD+'|||'+AD+'|||'+SF_SF_UNIT).change();
-        $('#STOK_KODU_FILL').val(KOD);
-        $('#STOK_ADI_SHOW').val(AD);
-        $('#STOK_ADI_FILL').val(AD);
-        $('#SF_SF_UNIT_SHOW').val(SF_SF_UNIT);
-        $('#SF_SF_UNIT_FILL').val(SF_SF_UNIT);
-        $('#LOTNUMBER_FILL').val(LOTNUMBER);
-        $('#SERINO_FILL').val(SERINO);
-        $('#LOTNUMBER_SHOW').val(LOTNUMBER);
-        $('#SERINO_SHOW').val(SERINO);
-        $('#AMBCODE_FILL').val(AMBCODE);
-        $('#AMBCODE_SHOW').val(AMBCODE);
-        $('#LOCATION1_FILL').val(LOCATION1);
-        $('#LOCATION2_FILL').val(LOCATION2);
-        $('#LOCATION3_FILL').val(LOCATION3);
-        $('#LOCATION4_FILL').val(LOCATION4);
-        $('#LOCATION1_SHOW').val(LOCATION1);
-        $('#LOCATION2_SHOW').val(LOCATION2);
-        $('#LOCATION3_SHOW').val(LOCATION3);
-        $('#LOCATION4_SHOW').val(LOCATION4);
-        $('#TEXT1_FILL').val(TEXT1);
-        $('#TEXT2_FILL').val(TEXT2);
-        $('#TEXT3_FILL').val(TEXT3);
-        $('#TEXT4_FILL').val(TEXT4);
-        $('#TEXT1_SHOW').val(TEXT1);
-        $('#TEXT2_SHOW').val(TEXT2);
-        $('#TEXT3_SHOW').val(TEXT3);
-        $('#TEXT4_SHOW').val(TEXT4);
-        $('#NUM1_FILL').val(NUM1);
-        $('#NUM2_FILL').val(NUM2);
-        $('#NUM3_FILL').val(NUM3);
-        $('#NUM4_FILL').val(NUM4);
-        $('#NUM1_SHOW').val(NUM1);
-        $('#NUM2_SHOW').val(NUM2);
-        $('#NUM3_SHOW').val(NUM3);
-        $('#NUM4_SHOW').val(NUM4);
+    $('#modal_popupSelectModal5').modal('hide');
+  });
 
-        $('#modal_popupSelectModal').modal('toggle');
-      };
-    };
-    currentRow.onclick = createClickHandler(currentRow);
+  function getSip(TRNUM)
+  {
+    $('#popupSelect').attr('data-trnum', TRNUM);
   }
-}
-window.onload = addRowHandlers();
-
 </script>
 
 <script>

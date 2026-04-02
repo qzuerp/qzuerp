@@ -342,39 +342,71 @@ function yeniEvrakNo(pageTable) {
 
 $(document).ready(function() {
 
-  document.querySelectorAll('#veriTable').forEach((table) => {
+  const STORAGE_KEY = 'veriTable_columnOrder';
+  const table = document.querySelector('#veriTable');
+  const thead = table.querySelector('thead tr');
 
-    const thead = table.querySelector('thead tr');
+  Array.from(thead.children).forEach((th, i) => th.dataset.col = i);
 
-    new Sortable(thead, {
-        animation: 150,
-        handle: 'th',
-        onEnd: function (evt) {
-            const oldIndex = evt.oldIndex;
-            const newIndex = evt.newIndex;
+  function applyOrder(order) {
+      const allRows = [
+          thead,
+          table.querySelector('thead tr.satirEkle'),
+          ...table.querySelectorAll('tbody tr')
+      ];
 
-            if (oldIndex === newIndex) return;
+      allRows.forEach(row => {
+          if (!row) return;
+          const cells = Array.from(row.children);
+          order.forEach(colIndex => {
+              const cell = cells.find(c =>
+                  (c.dataset.col !== undefined ? +c.dataset.col : cells.indexOf(c)) === colIndex
+              );
+              if (cell) row.appendChild(cell);
+          });
+      });
+  }
 
-            // Sadece tbody ve diğer satırları işle, thead'i atla
-            // çünkü SortableJS thead'deki th'yi zaten taşıdı
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const cells = Array.from(row.children);
-                if (cells.length > 0) {
-                    if (newIndex >= cells.length) {
-                        row.appendChild(cells[oldIndex]);
-                    } else {
-                        row.insertBefore(
-                            cells[oldIndex],
-                            cells[newIndex > oldIndex ? newIndex + 1 : newIndex]
-                        );
-                    }
-                }
-            });
-        }
-    });
+  function saveOrder() {
+      const order = Array.from(thead.children).map(th => +th.dataset.col);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+  }
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) applyOrder(JSON.parse(saved));
+
+  new Sortable(thead, {
+      animation: 150,
+      handle: 'th',
+      onEnd: function (evt) {
+          const oldIndex = evt.oldIndex;
+          const newIndex = evt.newIndex;
+
+          if (oldIndex === newIndex) return;
+
+          const allRows = [
+              table.querySelector('thead tr.satirEkle'),
+              ...table.querySelectorAll('tbody tr')
+          ];
+
+          allRows.forEach(row => {
+              if (!row) return;
+              const cells = Array.from(row.children);
+              if (cells.length > 0) {
+                  if (newIndex >= cells.length) {
+                      row.appendChild(cells[oldIndex]);
+                  } else {
+                      row.insertBefore(
+                          cells[oldIndex],
+                          cells[newIndex > oldIndex ? newIndex + 1 : newIndex]
+                      );
+                  }
+              }
+          });
+
+          saveOrder();
+      }
   });
-
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('SUZ')) {
