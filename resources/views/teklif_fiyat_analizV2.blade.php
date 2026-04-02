@@ -30,7 +30,7 @@
 		if (isset($_GET['ID'])) {
 			$sonID = $_GET['ID'];
 		} else {
-			$sonID = DB::table($ekranTableE)->min('EVRAKNO');
+			$sonID = DB::table($ekranTableE)->max('EVRAKNO');
 		}
 
 		$kart_veri = DB::table($ekranTableE)->where('EVRAKNO', $sonID)->first();

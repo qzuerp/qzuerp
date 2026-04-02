@@ -760,10 +760,8 @@
             }
         };
 
-        // Event handlers
         const EventHandlers = {
             init() {
-                // Bildirime tıklama - event delegation
                 document.addEventListener('click', (e) => {
                     const item = e.target.closest('.alarm-item');
                     if (!item) return;
@@ -780,7 +778,6 @@
                     NotificationAPI.markAsRead([notificationId]);
                 });
 
-                // Tümünü okundu işaretle
                 NotificationState.elements.markAllRead?.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -800,7 +797,6 @@
                     }
                 });
 
-                // Visibility change
                 document.addEventListener('visibilitychange', () => {
                     if (!document.hidden) {
                         Utils.stopTitleNotification();
@@ -808,14 +804,12 @@
                     }
                 });
 
-                // Window focus
                 window.addEventListener('focus', () => {
                     Utils.stopTitleNotification();
                 });
             }
         };
 
-        // Polling scheduler
         const PollingScheduler = {
             start() {
                 this.scheduleNext();
@@ -840,18 +834,15 @@
             }
         };
 
-        // Ana initialization
         document.addEventListener('DOMContentLoaded', () => {
             NotificationState.init();
             EventHandlers.init();
             Utils.toggleEmptyState();
             
-            // İlk polling
             NotificationAPI.poll();
             PollingScheduler.start();
         });
 
-        // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             PollingScheduler.stop();
             Utils.stopTitleNotification();

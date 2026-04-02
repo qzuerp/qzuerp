@@ -28,174 +28,139 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tanıtım Etiketi</title>
 <style>
-    /* 1. MİMARİ VE TEMEL STİLLER */
     :root {
-        --primary: #1a1f3a;      /* Derin Gece Mavisi (Şirket markası için) */
-        --accent: #ca1a2a;       /* Şirket Kırmızısı */
-        --bg: #f8fafc;          /* Çok Açık Gri (Dashboard Arkaplanı) */
-        --card: #ffffff;        /* Kart Arkaplanı */
-        --border: #e2e8f0;      /* Modern Çerçeve Rengi */
-        --text-primary: #1e293b;/* Koyu Yazı */
-        --text-secondary: #64748b; /* Hafif Yazı */
+        --primary: #1a1f3a;
+        --accent: #ca1a2a;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
     }
 
     * { box-sizing: border-box; }
 
     body {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif; /* Modern, temiz font */
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background-color: var(--bg);
         color: var(--text-primary);
-        display: flex; justify-content: center; align-items: center;
-        min-height: 100vh; margin: 0; padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 10px;
     }
 
-    /* 2. ETİKET KONTEYNERİ (Elevated SaaS Card Style) */
     .etiket {
-        width: 900px;
+        width: 200mm;
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 12px;
-        overflow: hidden; /* Kenar yuvarlamalarını koru */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02); /* Hafif modern gölge */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
 
-    /* 3. HEADER (Logo ve Başlık Bölümü) */
     .header {
         display: grid;
-        grid-template-columns: 200px 1fr 150px; /* Logo, Başlık, Boşluk/Görsel */
+        grid-template-columns: 160px 1fr 120px;
         border-bottom: 2px solid var(--border);
         align-items: center;
     }
 
     .logo-container {
-        padding: 15px;
+        padding: 10px;
         border-right: 1px solid var(--border);
     }
-    .logo-container img {
-        max-width: 100%;
-        height: auto;
-    }
+    .logo-container img { max-width: 100%; height: auto; }
 
     .title-container {
         text-align: center;
         text-transform: uppercase;
-        letter-spacing: 0.15em;
-        padding: 20px;
+        letter-spacing: 0.12em;
+        padding: 12px;
     }
-    .main-title {
-        font-size: 24px; font-weight: 800; color: var(--primary);
-        margin: 0;
-    }
-    .sub-title {
-        font-size: 10px; font-weight: 500; color: var(--text-secondary);
-        margin-top: 4px;
-    }
+    .main-title  { font-size: 18px; font-weight: 800; color: var(--primary); margin: 0; }
+    .sub-title   { font-size: 9px;  font-weight: 500; color: var(--text-secondary); margin-top: 3px; }
 
-    /* 4. VERİ BÖLÜMÜ (Grid Layout with Images) */
     .main-body {
         display: grid;
-        grid-template-columns: 1fr 280px; /* Veri Paneli | Görsel Paneli */
+        grid-template-columns: 555px 200px;
         border-bottom: 2px solid var(--border);
     }
 
     .data-grid {
         display: grid;
-        grid-template-columns: 140px 1fr; /* Etiket | Değer */
-        gap: 0; /* Aradaki boşluğu kapatıyoruz, çizgili yapacağız */
+        grid-template-columns: 120px 1fr;
+        gap: 0;
         border-right: 1px solid var(--border);
     }
 
-    .data-row {
-        display: contents; /* Grid layout'u korumak için */
-    }
+    .data-row { display: contents; }
 
     .data-label, .data-value {
-        padding: 12px 16px; /* Daha ferah padding */
+        padding: 8px 12px;
         border-bottom: 1px solid var(--border);
-        display: flex; align-items: center;
+        display: flex;
+        align-items: center;
     }
 
     .data-label {
-        font-weight: 600; font-size: 11px;
+        font-weight: 600; font-size: 10px;
         color: var(--text-secondary); text-transform: uppercase;
         border-right: 1px solid var(--border);
     }
 
-    .data-value {
-        font-weight: 500; font-size: 13px;
-        color: var(--text-primary);
-    }
+    .data-value { font-weight: 500; font-size: 12px; color: var(--text-primary); }
 
-    /* Görsel Alanı (Gereksiz tablolar uçtu, temiz layout) */
     .visual-area {
-        padding: 20px;
+        padding: 12px;
         display: flex; justify-content: center; align-items: center;
-        background-color: var(--bg); /* Hafif ayırmak için */
+        background-color: var(--bg);
     }
-    .parts-view {
-        max-width: 100%; height: auto;
-        border-radius: 8px; /* Resmi de modernleştir */
-        /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-    }
+    .parts-view { max-width: 100%; height: auto; border-radius: 6px; }
 
-    /* 5. OPERASYON VE TARİH BÖLÜMÜ (The Modern Operasyon Tablosu) */
     .footer {
         display: grid;
-        grid-template-columns: 100px 1fr 1fr; /* Üretim | Operasyonlar | Boşluk */
+        grid-template-columns: 80px 1fr 1fr;
     }
 
-    /* Üretim Tarihi Bölümü */
     .footer-section {
         border-right: 1px solid var(--border);
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        padding: 15px;
-        text-align: center;
+        padding: 10px; text-align: center;
     }
-    .footer-label {
-        font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);
-    }
-    .footer-value {
-        font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: 4px;
-    }
+    .footer-label { font-size: 9px;  font-weight: 700; text-transform: uppercase; color: var(--text-secondary); }
+    .footer-value { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-top: 3px; }
 
-    /* Operasyonlar Tablosu (Zirve Burası) */
     .operations-table {
         display: grid;
-        /* İlk kolon 'Toplam Operasyon' için, diğerleri dinamik operasyon sayısı kadar */
-        grid-template-columns: 100px repeat({{ $veriT->count() }}, 1fr); 
+        grid-template-columns: 80px repeat({{ $veriT->count() }}, 1fr);
         text-align: center;
         border-bottom: 1px solid var(--border);
     }
 
     .op-cell {
-        padding: 10px 5px; font-size: 11px; font-weight: 600; color: var(--text-secondary);
+        padding: 8px 4px; font-size: 10px; font-weight: 600; color: var(--text-secondary);
         border-right: 1px solid var(--border);
     }
     .op-cell:last-child { border-right: none; }
 
-    .op-header {
-        background-color: #f1f5f9; /* Hafif bir başlık rengi */
-        font-weight: 700; color: var(--primary);
-    }
+    .op-header { background-color: #f1f5f9; font-weight: 700; color: var(--primary); }
 
     .total-ops {
-        grid-row: span 2; /* 1. ve 2. satırı kaplasın */
+        grid-row: span 2;
         writing-mode: vertical-rl; text-transform: uppercase; letter-spacing: 1px;
         transform: rotate(180deg);
         display: flex; align-items: center; justify-content: center;
-        padding: 10px; font-size: 10px; font-weight: 600; color: var(--primary);
+        padding: 8px; font-size: 9px; font-weight: 600; color: var(--primary);
         background-color: #e2e8f0;
     }
 
-    .final-kontol, .km-sunum {
-        font-size: 9px; font-weight: 600; padding: 5px;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        line-height: 1.2;
+    @media print {
+        body { background: white; padding: 0; }
+        .etiket { box-shadow: none; border-radius: 0; border: none; }
     }
-    
-    .final-kontol { color: #065f46; background-color: #ecfdf5; } /* Hafif Yeşil */
-    .km-sunum { color: #1e3a8a; background-color: #eff6ff; } /* Hafif Mavi */
-
 </style>
 </head>
 <body>
@@ -286,5 +251,8 @@
 
     </div>
 
+<script>
+    window.addEventListener('load', () => window.print());
+</script>
 </body>
 </html>

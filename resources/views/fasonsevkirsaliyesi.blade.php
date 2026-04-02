@@ -272,6 +272,7 @@ if (isset($kart_veri)) {
                           <th>Seri No</th>
                           <th>Depo</th>
                           <th>MPS numarası</th>
+                          <th>Sipariş Art No</th>
                           <th>Lokasyon 1</th>
                           <th>Lokasyon 2</th>
                           <th>Lokasyon 3</th>
@@ -344,6 +345,9 @@ if (isset($kart_veri)) {
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="SIP_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPSNO" id="SIP_SHOW" class="SIP form-control" disabled>
                             <input data-max type="hidden" name="SIP_FILL" id="SIP_FILL" class="form-control">
+                          </td> 
+                          <td style="min-width: 150px">
+                            <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="SIPARTNO form-control" disabled>
                           </td> 
                           <td style="min-width: 150px">
                             <input maxlength="50 "style="color: red" type="text" name="LOCATION1_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" id="LOCATION1_SHOW" class="LOCATION1 form-control" disabled>
@@ -424,6 +428,15 @@ if (isset($kart_veri)) {
                           </td>
                           <td><input type="text" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                           <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $veri->MPSNO }}"></td>
+                          <td class="d-flex ">
+                            <input type="text" class="form-control" id='SIPARTNO' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
+                            <span class="d-flex -btn">
+                              <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip()" data-bs-target="#modal_popupSelectModal5" type="button">
+                                <span class="fa-solid fa-magnifying-glass"  >
+                                </span>
+                              </button>
+                            </span>
+                          </td>
                           <td><input type="text" class="form-control" id="lok1-{{$veri->id}}" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" disabled><input id="lok1-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}"></td>
                           <td><input type="text" class="form-control" id="lok2-{{$veri->id}}" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" disabled><input id="lok2-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}"></td>
                           <td><input type="text" class="form-control" id="lok3-{{$veri->id}}" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" disabled><input id="lok3-{{$veri->id}}" type="hidden" class="form-control" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}"></td>
@@ -904,6 +917,71 @@ if (isset($kart_veri)) {
           </div>
         {{-- Seri no finish --}}
 
+        {{-- Seri no start --}}
+          <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal5" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row" style="overflow:auto;">
+                    <table id="sipSec" class="table table-hover text-center" data-page-length="10">
+                      <thead>
+                        <tr class="bg-primary">
+                          <th>Kod</th>
+                          <th>Ad</th>
+                          <th>Miktar</th>
+                          <th>Lot</th>
+                          <th>Seri No</th>
+                          <th>Termin Tarihi</th>
+                          <th>Not</th>
+                          <th>Artno</th>
+                        </tr>
+                      </thead>
+
+                      <tfoot>
+                        <tr class="bg-info">
+                          <th>Kod</th>
+                          <th>Ad</th>
+                          <th>Miktar</th>
+                          <th>Lot</th>
+                          <th>Seri No</th>
+                          <th>Termin Tarihi</th>
+                          <th>Not</th>
+                          <th>Artno</th>
+                        </tr>
+                      </tfoot>
+
+                      <tbody>
+                        @php
+                          $siparisler = DB::table($database.'stok40t')->where('AK','A')->get();
+                        @endphp
+                        @foreach ($siparisler as $siparis)
+                          <tr>
+                            <td>{{ $siparis->KOD }}</td>
+                            <td>{{ $siparis->STOK_ADI }}</td>
+                            <td>{{ $siparis->SF_MIKTAR }}</td>
+                            <td>{{ $siparis->LOTNUMBER }}</td>
+                            <td>{{ $siparis->SERINO }}</td>
+                            <td>{{ $siparis->TERMIN_TAR }}</td>
+                            <td>{{ $siparis->NOT }}</td>
+                            <td>{{ $siparis->ARTNO }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{-- Seri no finish --}}
+
         {{-- Fason Seç start --}}
           <div class="modal fade bd-example-modal-lg" id="modal_fason" tabindex="-1" role="dialog" aria-labelledby="modal_fason">
             <div class="modal-dialog modal-lg">
@@ -1129,6 +1207,8 @@ function printTable(tableId)
     }
   }
   window.onload = addRowHandlers2();
+
+$('#sipSec tbody tr').on
 
 function addRowHandlers() {
   var table = document.getElementById("popupSelect");
