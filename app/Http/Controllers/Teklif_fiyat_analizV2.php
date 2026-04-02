@@ -746,6 +746,7 @@ class teklif_fiyat_analizV2 extends Controller
         DB::beginTransaction();
         try {
             DB::table($firma.'tekl20tı')
+                ->where('EVRAKNO',$EVRAKNO)
                 ->where('OR_TRNUM', $OR_TRNUM)
                 ->delete();
 
