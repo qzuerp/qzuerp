@@ -44,6 +44,11 @@
 			$oncekiEvrak = DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
 		}
 		$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+		$t_kart_veri = DB::table($ekranTableT . ' as t')
+			->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
+			->where('EVRAKNO', @$kart_veri->EVRAKNO)
+			->orderBy('TRNUM', 'ASC')
+			->select('t.*')->get();
 	@endphp
 	<style>
 		#yazdir {
@@ -788,6 +793,37 @@
 			background-color: #f8fafc !important;
 		}
 
+		#copy_loader {
+			position: fixed;
+			inset: 0;
+			background: rgba(241, 245, 249, 0.9);
+			backdrop-filter: blur(4px);
+			z-index: 9999;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 16px;
+		}
+
+		.cl-ring {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			border: 2px solid #e2e8f0;
+			border-top-color: #94a3b8;
+			animation: cl-spin 0.8s linear infinite;
+		}
+
+		.cl-text {
+			margin: 0;
+			font-family: 'Inter', system-ui, sans-serif;
+			font-size: 12px;
+			color: #94a3b8;
+		}
+
+		@keyframes cl-spin { to { transform: rotate(360deg); } }
+
 		@media (max-width: 768px) {
 			#satir_detay .tab-content {
 				padding: 14px !important;
@@ -809,6 +845,11 @@
 	<div id="drag-overlay">
 		<div class="text"><i class="fa-solid fa-file-excel"></i></div>
 		<div class="text">Exceli aktarmak için bırak</div>
+	</div>
+	
+	<div id="copy_loader" style="display:none;">
+		<div class="cl-ring"></div>
+		<p class="cl-text">Kopyalanıyor...</p>
 	</div>
 
 	<div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog"
@@ -1048,6 +1089,21 @@
 								<div class="col-4">
 									<label>Müşteri ile anlaşılan Tutar</label>
 									<input type="text" class="form-control ANLASILAN_TUTAR" placeholder="0.00">
+								</div>
+							</div>
+
+							<div class="row g-3 mt-3">
+								<h6 class="text-muted">Başka Satırdan Kopyala</h6>
+								<div class="col-11">
+									<select class="select2" id="COPY_ROW" data-modal="satir_detay">
+										<option value="">Seç</option>
+										@foreach ($t_kart_veri as $veri)
+											<option value="{{ $veri->TRNUM }}">{{ $veri->KOD }} - {{ $veri->STOK_AD1 }}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-1">
+									<button id="COPY_ROWBTN" class="btn btn-success">Kopyala</button>
 								</div>
 							</div>
 						</div>
@@ -1856,11 +1912,6 @@
 															</thead>
 															<tbody>
 																@php
-																	$t_kart_veri = DB::table($ekranTableT . ' as t')
-																		->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
-																		->where('EVRAKNO', @$kart_veri->EVRAKNO)
-																		->orderBy('TRNUM', 'ASC')
-																		->select('t.*')->get();
 																	$siraNo = 0;
 																	if (!$t_kart_veri->isEmpty()) {
 																		foreach ($t_kart_veri as $key => $veri) {
@@ -3136,6 +3187,29 @@
 				});
 			});
 
+			$('#COPY_ROWBTN').on('click',function(){
+				$('#copy_loader').fadeIn(300);
+				let OR_TRNUM = $('#OR_TRNUM').val();
+				let COPY_TRNUM = $('#COPY_ROW').val();
+
+				$.ajax({
+					url:'copy/row',
+					type:'post',
+					data:{
+						OR_TRNUM,
+						COPY_TRNUM,
+						EVRAKNO: {{ @$kart_veri->EVRAKNO }}
+					},
+					success:function(res){
+						$('#satir_detay').modal('hide');
+						setTimeout(function() {
+							$('.satir_detay[data-trnum="'+OR_TRNUM+'"]').trigger('click');
+							$('#copy_loader').fadeOut(600);
+						}, 300);
+					}
+				});
+			});
+
 			const kurCache = new Map();
 			function getCachedKur(tarih, parabirimi) {
 				const key = `${tarih}-${parabirimi}`;
@@ -3154,6 +3228,7 @@
 				}
 				return kurCache.get(key);
 			}
+
 			$('#DOVIZ_TARIHI').change(function () {
 				var tarih = $(this).val();
 				$.ajax({

@@ -682,6 +682,53 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
+    public function copy(Request $request)
+    {
+        $u = Auth::user();
+        $firma = trim($u->firma).'.dbo.';
+
+        $datas = DB::table($firma.'tekl20tı')
+            ->where('EVRAKNO', $request->EVRAKNO)
+            ->where('OR_TRNUM', $request->COPY_TRNUM)
+            ->get();
+
+        if ($datas->isNotEmpty()) {
+            $insertData = [];
+
+            foreach ($datas as $data) {
+                $temp = (array) $data;
+
+                unset($temp['id']); 
+
+                $temp['OR_TRNUM'] = $request->OR_TRNUM;
+
+                $insertData[] = $temp;
+            }
+
+            DB::table($firma.'tekl20tı')->insert($insertData);
+        }
+
+        $datas2 = DB::table($firma.'tekl20o')
+            ->where('EVRAKNO', $request->EVRAKNO)
+            ->where('OR_TRNUM', $request->COPY_TRNUM)
+            ->get();
+
+        if ($datas2->isNotEmpty()) {
+            $insertData = [];
+
+            foreach ($datas2 as $data) {
+                $temp = (array) $data;
+
+                unset($temp['ID']); 
+
+                $temp['OR_TRNUM'] = $request->OR_TRNUM;
+
+                $insertData[] = $temp;
+            }
+
+            DB::table($firma.'tekl20o')->insert($insertData);
+        }
+    }
     public function getDovizKuru(Request $request)
     {
         $user = Auth::user();
