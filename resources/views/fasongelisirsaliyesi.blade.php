@@ -410,7 +410,7 @@
                                     </span>
                                   </td>
                                   <td class="d-flex ">
-                                    <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
+                                    <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="" readonly>
                                     <span class="d-flex -btn">
                                       <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip('{{ $veri->TRNUM }}')" data-bs-target="#modal_popupSelectModal5" type="button">
                                         <span class="fa-solid fa-magnifying-glass"  >
@@ -1100,7 +1100,7 @@
           }
         });
       }
-      
+
       function addRowHandlers2() {
         var table = document.getElementById("popupSelect2");
         var rows = table.getElementsByTagName("tr");
