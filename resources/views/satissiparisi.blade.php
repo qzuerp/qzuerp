@@ -577,7 +577,7 @@
                     <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
                       <label style="font-size: 13px; font-weight: 500; color: #374151;">Stok Kodu</label>
                       <select name="KOD_B" id="KOD_B" class="form-control" style="height:34px; font-size:13px;">
-                        @php echo "<option value=' '>Başlangıç</option>";
+                        @php echo "<option value=''>Başlangıç</option>";
                           foreach ($stok00 as $veri) {
                             if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
                               echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
@@ -585,7 +585,7 @@
                         @endphp
                       </select>
                       <select name="KOD_E" id="KOD_E" class="form-control" style="height:34px; font-size:13px;">
-                        @php echo "<option value=' '>Bitiş</option>";
+                        @php echo "<option value=''>Bitiş</option>";
                           foreach ($stok00 as $veri) {
                             if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
                               echo "<option value='".$veri->KOD."'>".$veri->KOD." - ".$veri->AD."</option>";
@@ -597,13 +597,13 @@
                     <div style="display: grid; grid-template-columns: 120px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px;">
                       <label style="font-size: 13px; font-weight: 500; color: #374151;">Müşteri Kodu</label>
                       <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
-                        @php echo "<option value=' '>Başlangıç</option>";
+                        @php echo "<option value=''>Başlangıç</option>";
                           foreach ($cari00 as $veri)
                             echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
                         @endphp
                       </select>
                       <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
-                        @php echo "<option value=' '>Bitiş</option>";
+                        @php echo "<option value=''>Bitiş</option>";
                           foreach ($cari00 as $veri)
                             echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
                         @endphp
@@ -707,7 +707,9 @@
                           if ($TARIH_B !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR >= '".$TARIH_B."'";
                           if ($TARIH_E !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR <= '".$TARIH_E."'";
 
-                          $sql_sorgu .= " AND S40T.AK != 'K'";
+                          $sql_sorgu .= "AND S40E.AK != 'K'";
+                          $sql_sorgu .= "AND S40T.AK IS NULL";
+                          
                           $table = DB::select($sql_sorgu);
 
                           $bugun = \Carbon\Carbon::today();
