@@ -414,7 +414,7 @@
                                     </span>
                                   </td>
                                   <td>
-                                    <input type="text" class="form-control" id='SIPARTNO-{{$veri->id}}-CAM' name="SIPARTNO[]" value="" readonly>
+                                    <input type="text" class="form-control" id='SIPARTNO-{{$veri->id}}-CAM' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
                                   </td>
                                   <td><input type="text" id='depo-{{ $veri->id }}-CAM' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}-CAM' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text" readonly class="form-control MPSNO" name="JOBNO[]" value="{{ @$veri->MPSNO }}"></td>
@@ -1653,9 +1653,9 @@
           "</button>" +
           "</span>" +
           "</td>";
+          htmlCode += " <td><input type='text' id='SIPARTNO-"+TRNUM_FILL+"' class='form-control' name='SIPARTNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
           htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='JOBNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
-          htmlCode += " <td><input type='text' id='SIPARTNO-"+TRNUM_FILL+"' class='form-control' name='SIPARTNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
           htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' style='color:blue;' readonly></td> ";

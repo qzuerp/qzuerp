@@ -125,6 +125,7 @@ class stok68_controller extends Controller
     $LAST_TRNUM = $request->input('LAST_TRNUM');
     $TRNUM = $request->TRNUM;
     $JOBNO = $request->JOBNO;
+    $SIPARTNO = $request->SIPARTNO;
     
     if ($TRNUM == null) {
       $satir_say = 0;
@@ -133,7 +134,7 @@ class stok68_controller extends Controller
     else {
       $satir_say = count($TRNUM);
     }
-    // dd($request->all(),$satir_say);
+
     switch($islem_turu) {
 
       case 'listele':
@@ -293,7 +294,22 @@ class stok68_controller extends Controller
           ->first();
           $kontrol = $sorgu->MIKTAR ?? 0;
           
-          // dd($sorgu,$kontrol,$AMBCODE_SEC);
+          if (isset($SIPARTNO[$i]) && $SIPARTNO[$i]) {        
+            DB::table($firma . 'stok46t')
+                ->where('ARTNO', $SIPARTNO[$i])
+                ->update([
+                    'SF_BAKIYE' => DB::raw("SF_BAKIYE - $SF_MIKTAR[$i]")
+                ]);
+        
+            DB::table($firma . 'stok46t')
+                ->where('ARTNO', $SIPARTNO[$i])
+                ->where('SF_BAKIYE', '<=', 0)
+                ->update([
+                    'AK' => 'K',
+                    'SF_BAKIYE' => 0
+                ]);
+          }
+
           if($SF_MIKTAR[$i] > $kontrol)
           {
             return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
@@ -325,6 +341,7 @@ class stok68_controller extends Controller
             'NUM2' => $NUM2[$i],
             'NUM3' => $NUM3[$i],
             'NUM4' => $NUM4[$i],
+            'SIPARTNO' => $SIPARTNO[$i],
             'created_at' => date('Y-m-d H:i:s'),
 
           ]);
@@ -444,14 +461,26 @@ class stok68_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+
         for ($i = 0; $i < $satir_say; $i++) {
+          if ($SIPARTNO[$i]) {
+            DB::table($firma . 'stok46t')
+                ->where('ARTNO', $SIPARTNO[$i])
+                ->update([
+                    'SF_BAKIYE' => DB::raw("SF_BAKIYE - $SF_MIKTAR[$i]")
+                ]);
+        
+            DB::table($firma . 'stok46t')
+                ->where('ARTNO', $SIPARTNO[$i])
+                ->where('SF_BAKIYE', '<=', 0)
+                ->update([
+                    'AK' => 'K',
+                    'SF_BAKIYE' => 0
+                ]);
+          }
 
           $AMBCODE_SEC = $IMALATAMBCODE;
-          // if ($AMBCODE_T[$i]== " " || $AMBCODE_T[$i]== "" || $AMBCODE_T[$i]== null) {
-          // }
-          // else {
-          //   $AMBCODE_SEC = $AMBCODE_T[$i];
-          // }
+          
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
           // dd($satir_say,$i);
           if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
@@ -540,6 +569,7 @@ class stok68_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'SIPARTNO' => $SIPARTNO[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -696,6 +726,7 @@ class stok68_controller extends Controller
                   }
               }
             }
+
             DB::table($firma.'stok68t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
               'KOD' => $KOD[$i],
@@ -719,6 +750,7 @@ class stok68_controller extends Controller
               'NUM2' => $NUM2[$i],
               'NUM3' => $NUM3[$i],
               'NUM4' => $NUM4[$i],
+              'SIPARTNO' => $SIPARTNO[$i],
               'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
