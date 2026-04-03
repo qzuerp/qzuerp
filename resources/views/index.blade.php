@@ -101,6 +101,47 @@
             ? round(($fason_data['toplam'] - $fason_data['gecmis']) / $fason_data['toplam'] * 100)
             : 100;
 
+
+        // ── Satış Sipariş ─────────────────────────────────────────────
+        $SATISSIPARISLER = DB::table($database . 'stok40t')->get();
+
+        $siparis_data = [
+            'kritik' => 0, 'yakin' => 0, 'otuzgun' => 0,
+            'gecmis' => 0, 'normal' => 0, 'toplam' => $SATISSIPARISLER->count()
+        ];
+        $siparis_aralik         = ['Gecikmiş' => 0, '0-7 Gün' => 0, '8-15 Gün' => 0, '16-30 Gün' => 0, '>30 Gün' => 0];
+        $siparis_aylik_bekleyen = array_fill(0, 12, 0);
+        $siparis_aylik_geciken  = array_fill(0, 12, 0);
+        $siparis_aylik_zamaninda= array_fill(0, 12, 0);
+
+        // Kritik fason listesi
+        $kritik_siparis = [];
+
+        foreach ($SATISSIPARISLER as $f) {
+            $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($f->TERMIN_TAR), false);
+            $ay       = \Carbon\Carbon::parse($f->TERMIN_TAR)->month - 1;
+
+            if ($kalanGun < 0)       { $siparis_data['gecmis']++;  $siparis_aralik['Gecikmiş']++;   if($ay>=0&&$ay<12) $siparis_aylik_geciken[$ay]++; }
+            elseif ($kalanGun <= 7)  { $siparis_data['kritik']++;  $siparis_aralik['0-7 Gün']++;    if($ay>=0&&$ay<12) $siparis_aylik_bekleyen[$ay]++; }
+            elseif ($kalanGun <= 15) { $siparis_data['yakin']++;   $siparis_aralik['8-15 Gün']++;   if($ay>=0&&$ay<12) $siparis_aylik_bekleyen[$ay]++; }
+            elseif ($kalanGun <= 30) { $siparis_data['otuzgun']++; $siparis_aralik['16-30 Gün']++;  if($ay>=0&&$ay<12) $siparis_aylik_zamaninda[$ay]++; }
+            else                     { $siparis_data['normal']++;  $siparis_aralik['>30 Gün']++;     if($ay>=0&&$ay<12) $siparis_aylik_zamaninda[$ay]++; }
+
+            if ($kalanGun <= 7) {
+                $kritik_siparis[] = [
+                    'kod'   => $f->STOK_KODU ?? '—',
+                    'firma' => $f->FIRMA_ADI ?? '—',
+                    'gun'   => $kalanGun,
+                    'sinif' => $kalanGun < 0 ? 'gecmis' : 'kritik'
+                ];
+            }
+        }
+        usort($kritik_siparis, fn($a,$b) => $a['gun'] <=> $b['gun']);
+
+        $fason_zamaninda_oran = $siparis_data['toplam'] > 0
+            ? round(($siparis_data['toplam'] - $siparis_data['gecmis']) / $siparis_data['toplam'] * 100)
+            : 100;
+
         // ── İş Emirleri ───────────────────────────────────────────────
         try {
             $IS_EMIRLERI = DB::table($database . 'mmps10e')
@@ -665,7 +706,73 @@
             </div>
             @endif
 
-            {{-- ══ SATIR 4: Stok Kritik + OEE Gauge + Tedarikçi ══ --}}
+
+            {{-- ══ SATIR 5: Satış/Satın Alma + Son Kullanılanlar ══ --}}
+            <div class="grid-3-2 row-mb">
+                
+                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-boxes-stacked"></i> Açık Satış Siparişleri</h3>
+                    </div>
+                    <div class="chart-body">
+                        <div id="hc-acik-siparis" style="height:280px"></div>
+                    </div>
+                </div>
+                @endif
+
+                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-truck-clock"></i> Satış Sipariş Termin Durumu</h3>
+                            <span class="chart-badge" style="background:#faf5ff;color:#7c3aed">{{ $siparis_data['toplam'] }} sevk</span>
+                        </div>
+                        <div class="chart-body">
+                            <div id="sipDonut" style="height:260px"></div>
+                            <div class="mt-2 text-center">
+                                <a href="satissiparisi?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
+                                    <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{-- ══ SATIR 6: Açık Siparişler ══ --}}
+            <div class="grid-3-2 row-mb">
+                @if(in_array("SSF", $kullanici_read_yetkileri))
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-chart-area"></i> Satış / Satın Alma / Net Fark</h3>
+                        <div style="display:flex;gap:8px">
+                            <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Satış</span>
+                            <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Satın Alma</span>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div id="hc-siparis" style="height:300px"></div>
+                    </div>
+                </div>
+                @endif
+                <!-- Son Kullanılanlar -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Son Kullanılanlar</h3>
+                        <button onclick="clearRecentPages()" style="background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:4px 8px;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-3)'">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <div class="recent-list" id="recentList">
+                        <div class="empty-recent">
+                            <i class="fa-solid fa-inbox"></i>
+                            <p style="font-size:12px">Henüz sayfa ziyaret etmediniz</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ══ SATIR 4:  OEE Gauge + Tedarikçi ══ --}}
             <div class="grid-2 row-mb">
                 {{-- OEE / Üretim Verimliliği Gauge --}}
                 @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
@@ -726,54 +833,6 @@
                         @else
                             <div id="tedarikciChart" style="height:280px"></div>
                         @endif
-                    </div>
-                </div>
-                @endif
-            </div>
-
-            {{-- ══ SATIR 5: Satış/Satın Alma + Son Kullanılanlar ══ --}}
-            <div class="grid-3-2 row-mb">
-                
-                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-boxes-stacked"></i> Açık Satış Siparişleri</h3>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-acik-siparis" style="height:280px"></div>
-                    </div>
-                </div>
-                @endif
-
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Son Kullanılanlar</h3>
-                        <button onclick="clearRecentPages()" style="background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:4px 8px;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-3)'">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="recent-list" id="recentList">
-                        <div class="empty-recent">
-                            <i class="fa-solid fa-inbox"></i>
-                            <p style="font-size:12px">Henüz sayfa ziyaret etmediniz</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ══ SATIR 6: Açık Siparişler + Aktivite Akışı ══ --}}
-            <div class="grid-1 row-mb">
-                @if(in_array("SSF", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-area"></i> Satış / Satın Alma / Net Fark</h3>
-                        <div style="display:flex;gap:8px">
-                            <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Satış</span>
-                            <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Satın Alma</span>
-                        </div>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-siparis" style="height:300px"></div>
                     </div>
                 </div>
                 @endif
@@ -992,6 +1051,7 @@
         var kalAralik       = @json(array_values($kalibrasyon_aralik));
         var kalAylik        = @json(array_values($kalibrasyon_aylik));
         var fasonAralik     = @json(array_values($fason_aralik));
+        var siparisAralik     = @json(array_values($siparis_aralik));
         var fasonAylikBek   = @json(array_values($fason_aylik_bekleyen));
         var fasonAylikGec   = @json(array_values($fason_aylik_geciken));
         var fasonAylikZam   = @json(array_values($fason_aylik_zamaninda));
@@ -1037,6 +1097,20 @@
                 { name:'8-15 Gün',  y:fasonAralik[2], color:'#f59e0b' },
                 { name:'16-30 Gün', y:fasonAralik[3], color:'#3b82f6' },
                 { name:'>30 Gün',   y:fasonAralik[4], color:'#22c55e' }
+            ]}]
+        });
+
+        Highcharts.chart('sipDonut', {
+            chart:{ type:'pie', height:260 }, title:{ text:null }, credits:{ enabled:false },
+            tooltip:{ pointFormat:'<b>{point.y}</b> sevk ({point.percentage:.1f}%)' },
+            plotOptions:{ pie:{ innerSize:'62%', borderRadius:5, dataLabels:{ enabled:true, format:'{point.name}<br><b>{point.y}</b>', style:{fontSize:'11px',fontWeight:'600',textOutline:'none'} }, showInLegend:true } },
+            legend:{ align:'center', verticalAlign:'bottom', itemStyle:{fontSize:'11px',fontWeight:'600',color:'#374151'} },
+            series:[{ name:'Fason', colorByPoint:true, data:[
+                { name:'Gecikmiş',  y:siparisAralik[0], color:'#dc2626' },
+                { name:'0-7 Gün',   y:siparisAralik[1], color:'#ef4444' },
+                { name:'8-15 Gün',  y:siparisAralik[2], color:'#f59e0b' },
+                { name:'16-30 Gün', y:siparisAralik[3], color:'#3b82f6' },
+                { name:'>30 Gün',   y:siparisAralik[4], color:'#22c55e' }
             ]}]
         });
 

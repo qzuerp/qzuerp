@@ -516,7 +516,7 @@
                                                 @foreach($JOBS as $JOB)
                                                     <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" data-isno="{{ $JOB->JOBNO }}" data-rsira="{{ $JOB->R_SIRANO }}" data-sure="{{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }}" data-evrakno="{{ $JOB->EVRAKNO }}" data-operasyon="{{ $JOB->R_OPERASYON }}" data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
                                                         <span class="job-badge">{{ $JOB->R_SIRANO }}</span>
-                                                        <div class="job-title">{{ $JOB->JOBNO }}</div>
+                                                        <div class="job-title">{{ $JOB->R_KAYNAKKODU }}</div>
                                                         <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
                                                         <div class="job-meta">
                                                             <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }} s</span>
