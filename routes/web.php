@@ -262,6 +262,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('fasongelisirsaliyesi', [stok68_controller::class, 'index'])->name('fasongelisirsaliyesi');
     Route::post('stok68_islemler', [stok68_controller::class, 'islemler']);
     Route::post('/fason/getir', [stok68_controller::class, 'fason_getir']);
+    Route::get('mevcutVeriler/sip', [stok68_controller::class, 'mevcutVeriler'])->name('mevcutVerileriGetir');
 
     // Fason Takibi 
     Route::get('fason_takibi',function () { return view('fason_takibi'); });

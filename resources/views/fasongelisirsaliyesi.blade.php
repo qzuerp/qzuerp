@@ -413,14 +413,8 @@
                                       </button>
                                     </span>
                                   </td>
-                                  <td class="d-flex ">
-                                    <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="" readonly>
-                                    <span class="d-flex -btn">
-                                      <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip('{{ $veri->TRNUM }}')" data-bs-target="#modal_popupSelectModal5" type="button">
-                                        <span class="fa-solid fa-magnifying-glass"  >
-                                        </span>
-                                      </button>
-                                    </span>
+                                  <td>
+                                    <input type="text" class="form-control" id='SIPARTNO-{{$veri->id}}-CAM' name="SIPARTNO[]" value="" readonly>
                                   </td>
                                   <td><input type="text" id='depo-{{ $veri->id }}-CAM' class="form-control AMBCODE" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}-CAM' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                                   <td><input type="text" readonly class="form-control MPSNO" name="JOBNO[]" value="{{ @$veri->MPSNO }}"></td>
@@ -1006,6 +1000,7 @@
                       <th>Lok 2</th>
                       <th>Lok 3</th>
                       <th>Lok 4</th>
+                      <th>Sipariş No</th>
                     </tr>
                   </thead>
 
@@ -1031,6 +1026,7 @@
                       <th>Lok 2</th>
                       <th>Lok 3</th>
                       <th>Lok 4</th>
+                      <th>Sipariş No</th>
                     </tr>
                   </tfoot>
 
@@ -1155,6 +1151,7 @@
         var L2 = $cells.eq(17).text().trim();
         var L3 = $cells.eq(18).text().trim();
         var L4 = $cells.eq(19).text().trim();
+        var SIPNO = $cells.eq(20).text().trim();
 
         $('#serino-' + ID).val(SERINO);
         $('#Lot-' + ID).val(LOTNO);
@@ -1175,6 +1172,7 @@
         $('#lok2-' + ID).val(L2);
         $('#lok3-' + ID).val(L3);
         $('#lok4-' + ID).val(L4);
+        $('#SIPARTNO-' + ID).val(SIPNO);
 
         $("#modal_popupSelectModal4").modal('hide');
       });
@@ -1191,12 +1189,12 @@
         let table = $('#seriNoSec').DataTable();
 
         $.ajax({
-          url: '/mevcutVeriler',
+          url: '/mevcutVeriler/sip',
           type: 'get',
           data: { KOD: kod },
           success: function (res) {
 
-            table.clear(); // eski verileri temizle
+            table.clear();
 
             res.forEach((row) => {
               table.row.add([
@@ -1219,7 +1217,8 @@
                 row.LOCATION1 || '',
                 row.LOCATION2 || '',
                 row.LOCATION3 || '',
-                row.LOCATION4 || ''
+                row.LOCATION4 || '',
+                row.SIPARTNO || ''
               ]);
             });
 
@@ -1656,6 +1655,7 @@
           "</td>";
           htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='JOBNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
+          htmlCode += " <td><input type='text' id='SIPARTNO-"+TRNUM_FILL+"' class='form-control' name='SIPARTNO[]' value='"+satirEkleInputs.MPSNO+"'></td> ";
           htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"' style='color:blue;' readonly></td> ";
           htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"' style='color:blue;' readonly></td> ";

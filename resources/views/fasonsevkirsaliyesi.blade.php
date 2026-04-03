@@ -429,7 +429,7 @@ if (isset($kart_veri)) {
                           <td><input type="text" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" disabled><input type="hidden" id='depo-{{ $veri->id }}' class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
                           <td><input type="text" class="form-control" name="MPSNO[]" value="{{ $veri->MPSNO }}"></td>
                           <td class="d-flex ">
-                            <input type="text" class="form-control" id='SIPARTNO-' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
+                            <input type="text" class="form-control" id='SIPARTNO-{{ $veri->TRNUM }}' name="SIPARTNO[]" value="{{ $veri->SIPARTNO }}" readonly>
                             <span class="d-flex -btn">
                               <button class="btn btn-primary" data-bs-toggle="modal" onclick="getSip('{{ $veri->TRNUM }}')" data-bs-target="#modal_popupSelectModal5" type="button">
                                 <span class="fa-solid fa-magnifying-glass"  >

@@ -33,7 +33,53 @@ class stok68_controller extends Controller
 
       return json_encode($veri);
   }
+  public function mevcutVeriler(Request $request)
+  {
+    if(Auth::check()) {
+      $u = Auth::user();
+    }
+    $firma = trim($u->firma).'.dbo.';
+    $KOD = $request->KOD;
 
+    $res = DB::table($firma.'stok10a as s')
+    ->leftJoin($firma.'gdef00 as g', 'g.KOD', '=', 's.AMBCODE')
+    ->leftJoin($firma.'stok63t as S63T', 's.LOTNUMBER', '=', 'S63T.LOTNUMBER')
+    ->selectRaw('
+        ROW_NUMBER() OVER (ORDER BY s.KOD) AS id,
+        s.KOD,
+        s.STOK_ADI,
+        SUM(s.SF_MIKTAR) AS MIKTAR,
+        s.SF_SF_UNIT,
+        s.LOTNUMBER,
+        s.SERINO,
+        s.AMBCODE,
+        g.AD,
+        s.TEXT1, s.TEXT2, s.TEXT3, s.TEXT4,
+        s.NUM1, s.NUM2, s.NUM3, s.NUM4,
+        s.LOCATION1, s.LOCATION2, s.LOCATION3, s.LOCATION4,
+        S63T.SIPARTNO
+    ')
+    ->where('s.KOD', $KOD)
+    ->havingRaw('SUM(s.SF_MIKTAR) <> 0')
+    ->groupBy(
+        's.KOD',
+        's.STOK_ADI',
+        's.SF_SF_UNIT',
+        's.LOTNUMBER',
+        's.SERINO',
+        's.AMBCODE',
+        'g.AD',
+        's.TEXT1', 's.TEXT2', 's.TEXT3', 's.TEXT4',
+        's.NUM1', 's.NUM2', 's.NUM3', 's.NUM4',
+        's.LOCATION1', 's.LOCATION2', 's.LOCATION3', 's.LOCATION4',
+        'S63T.SIPARTNO'
+    )
+    ->get();
+
+
+
+    return $res;
+  }
   public function islemler(Request $request)
   {
     // dd(request()->all());

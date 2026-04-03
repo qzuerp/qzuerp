@@ -3147,6 +3147,7 @@
 							"_token": "{{ csrf_token() }}",
 							tarih,
 							parabirimi,
+							EVRAKNO:{{@$kart_veri->EVRAKNO}}
 						}
 					});
 					kurCache.set(key, response);

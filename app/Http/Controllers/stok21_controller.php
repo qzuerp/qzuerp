@@ -229,7 +229,7 @@ class stok21_controller extends Controller
           $AMBCODE_SEC = $AMBCODE_E;
       }
       else {
-          $AMBCODE_SEC = $AMBCODE[$i];
+          $AMBCODE_SEC = $AMBCODE_E;
       }
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
@@ -414,7 +414,7 @@ class stok21_controller extends Controller
         }
 
         else {
-            $AMBCODE_SEC = $AMBCODE[$i];
+            $AMBCODE_SEC = $AMBCODE_E;
         }
 
         $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);

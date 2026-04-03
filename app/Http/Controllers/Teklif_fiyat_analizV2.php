@@ -611,6 +611,7 @@ class teklif_fiyat_analizV2 extends Controller
             $firma = trim($user->firma) . '.dbo.';
 
             $tarih = $request->input('tarih');
+            $EVRAKNO = $request->input('EVRAKNO');
             $para_birimi = strtoupper(trim($request->input('parabirimi')));
 
 
@@ -636,6 +637,7 @@ class teklif_fiyat_analizV2 extends Controller
             $veri = DB::table($firma . 'tekl20x')
                 ->where('CODEFROM', $para_birimi)
                 ->where('EVRAKNOTARIH', $tarihSQL)
+                ->where('EVRAKNO', $EVRAKNO)
                 ->first();
 
             if (!$veri) {
@@ -643,6 +645,7 @@ class teklif_fiyat_analizV2 extends Controller
                 $veri = DB::table($firma . 'tekl20x')
                     ->where('CODEFROM', $para_birimi)
                     ->where('EVRAKNOTARIH', '<=', $tarihSQL)
+                    ->where('EVRAKNO', '<=', $EVRAKNO)
                     ->orderBy('EVRAKNOTARIH', 'desc')
                     ->first();
             }
