@@ -254,6 +254,7 @@
                                 <th>Ambalaj Tanımı</th>
                                 <th>Lot No</th>
                                 <th>Seri No</th>
+                                <th>Sipariş No</th>
                                 <th>Depo</th>
                                 <th>MPS numarası</th>
                                 <th>Lokasyon 1</th>
@@ -320,6 +321,9 @@
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" name="SERINO_SHOW" id="SERINO_SHOW" class="form-control SERINO" disabled>
                                   <input data-max type="hidden" name="SERINO_FILL" id="SERINO_FILL" class="form-control">
+                                </td>
+                                <td style="min-width: 150px">
+                                  <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SIPARTNO" class="form-control SIPARTNO" disabled>
                                 </td>
                                 <td style="min-width: 150px">
                                   <input maxlength="50 "style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" name="AMBCODE_SHOW" id="AMBCODE_SHOW" class="form-control AMBCODE" disabled>
