@@ -707,7 +707,7 @@
                           if ($TARIH_B !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR >= '".$TARIH_B."'";
                           if ($TARIH_E !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR <= '".$TARIH_E."'";
 
-                          $sql_sorgu .= " AND S40E.AK != 'K'";
+                          $sql_sorgu .= " AND S40T.AK != 'K'";
                           $table = DB::select($sql_sorgu);
 
                           $bugun = \Carbon\Carbon::today();
