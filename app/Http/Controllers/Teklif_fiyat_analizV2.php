@@ -645,7 +645,7 @@ class teklif_fiyat_analizV2 extends Controller
                 $veri = DB::table($firma . 'tekl20x')
                     ->where('CODEFROM', $para_birimi)
                     ->where('EVRAKNOTARIH', '<=', $tarihSQL)
-                    ->where('EVRAKNO', '<=', $EVRAKNO)
+                    ->where('EVRAKNO', '=', $EVRAKNO)
                     ->orderBy('EVRAKNOTARIH', 'desc')
                     ->first();
             }
