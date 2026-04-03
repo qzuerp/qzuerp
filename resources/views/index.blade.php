@@ -103,9 +103,7 @@
 
 
         // ── Satış Sipariş ─────────────────────────────────────────────
-        $SATISSIPARISLER = DB::table($database . 'stok40t')
-            ->whereIn('AK', [null, 'A'])
-            ->get();
+        $SATISSIPARISLER = DB::table($database . 'stok40t')->where('AK',NULL)->get();
 
         $siparis_data = [
             'kritik' => 0, 'yakin' => 0, 'otuzgun' => 0,
