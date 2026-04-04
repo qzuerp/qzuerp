@@ -144,7 +144,7 @@ class srvbs0_controller extends Controller
             ->leftJoin($firma.'imlt00 as I00', 'I00.KOD', '=', 'st.TEZGAH')
             ->where(function($query) use ($request) {
                 // Ana şart: Tezgah kodu tutmalı
-                $query->where('st.TEZGAH', $request->KOD);
+                $query->where('s.TEZGAH', $request->KOD);
                 
                 // VEYA diğer grup kodlarından herhangi biri kolon bazlı eşleşmeli
                 for ($i = 1; $i <= 10; $i++) {
