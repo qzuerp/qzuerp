@@ -149,20 +149,31 @@ class srvbs0_controller extends Controller
     {
         $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
-    
+
+        $hedefTezgah = DB::table($firma.'imlt00')
+            ->where('KOD', $request->KOD)
+            ->first();
+
+        if (!$hedefTezgah) {
+            return response()->json(['error' => 'Tezgah bulunamadı'], 404);
+        }
+
         $veri = DB::table($firma.'srvbs0 as s')
             ->leftJoin($firma.'srvbs0t as st', 's.EVRAKNO', '=', 'st.EVRAKNO')
-            ->leftJoin($firma.'imlt00 as I00', 'I00.KOD', '=', 's.TEZGAH')
-            ->where(function($query) use ($request) {
+            ->where(function($query) use ($request, $hedefTezgah) {
+                
                 $query->where('s.TEZGAH', $request->KOD);
                 
                 for ($i = 1; $i <= 10; $i++) {
-                    $query->orWhereColumn("s.GK_$i", "I00.GK_$i");
+                    $kolon = "GK_$i";
+                    if (!empty($hedefTezgah->$kolon)) {
+                        $query->orWhere("s.$kolon", $hedefTezgah->$kolon);
+                    }
                 }
             })
             ->select(['s.*', 'st.*'])
             ->get();
-    
+
         return $veri;
     }
 }

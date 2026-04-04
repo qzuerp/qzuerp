@@ -880,7 +880,7 @@ class stok20_controller extends Controller
             
             if($PM[$i] == '+')
             {
-              DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
+              DB::table($firma.'stok10a')->where('EVRAKTIPI','STOK20TI')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
                 'KOD' => $TI_KOD[$i],
                 'STOK_ADI' => $TI_STOK_ADI[$i],
                 'LOTNUMBER' => $TI_LOTNUMBER[$i],
