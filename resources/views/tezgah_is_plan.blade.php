@@ -514,7 +514,7 @@
                                                     ->leftJoin($database.'preplan_t as p', 'm.JOBNO', '=', 'p.JOBNO')
                                                     ->leftJoin($database.'mmps10e as m10e','m10e.EVRAKNO','=','m.EVRAKNO')
                                                     ->where('m.R_KAYNAKTYPE', 'I')
-                                                    ->where('m.R_ACIK_KAPALI', '!=','K')
+                                                    ->whereNull('m.R_ACIK_KAPALI')
                                                     ->whereNull('p.JOBNO')
                                                     ->select('m.*','m10e.MAMULSTOKKODU')
                                                     ->get();
