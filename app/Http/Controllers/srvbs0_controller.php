@@ -60,6 +60,17 @@ class srvbs0_controller extends Controller
         $data['TARIH'] = $request->TARIH;
         $data['TEZGAH'] = $request->TO_ISMERKEZI;
 
+        $data['GK_1'] = $request->GK_1;
+        $data['GK_2'] = $request->GK_1;
+        $data['GK_3'] = $request->GK_1;
+        $data['GK_4'] = $request->GK_1;
+        $data['GK_5'] = $request->GK_1;
+        $data['GK_6'] = $request->GK_1;
+        $data['GK_7'] = $request->GK_1;
+        $data['GK_8'] = $request->GK_1;
+        $data['GK_9'] = $request->GK_1;
+        $data['GK_10'] = $request->GK_1;
+
         switch ($islem_turu) {
             case 'kart_olustur':
                     $data['EVRAKNO'] = (DB::table($firma.'srvbs0')->max('EVRAKNO') ?? 0) + 1;
@@ -146,7 +157,7 @@ class srvbs0_controller extends Controller
                 $query->where('s.TEZGAH', $request->KOD);
                 
                 for ($i = 1; $i <= 10; $i++) {
-                    $query->orWhereColumn("st.GK_$i", "I00.GK_$i");
+                    $query->orWhereColumn("s.GK_$i", "I00.GK_$i");
                 }
             })
             ->select(['s.*', 'st.*'])
