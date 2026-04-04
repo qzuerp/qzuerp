@@ -39,7 +39,13 @@
   }
 
   $kart_veri = DB::table($ekranTableE)->where('id',$sonID)->first();
-  $t_kart_veri=DB::table($ekranTableT)->orderBy('id', 'ASC')->where('EVRAKNO',@$kart_veri->EVRAKNO)->get();
+  
+	$t_kart_veri = DB::table($ekranTableT . ' as t')
+		->leftJoin($database.'stok00 as s', 't.KOD', '=', 's.KOD')
+		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
+		->orderBy('t.id', 'ASC')
+		->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as STOK_BIRIM')
+		->get();
 
   $sevkirs_evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
   $cari_evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
@@ -390,7 +396,7 @@
                                         @endphp
                                     </select>
                                   </td>
-                                  <td><input type="text" class="form-control SF_SF_UNIT" id="birim-{{ $veri->id }}-CAM" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}" readonly></td>
+                                  <td><input type="text" class="form-control SF_SF_UNIT" id="birim-{{ $veri->id }}-CAM" name="SF_SF_UNIT[]" value="{{ $veri->STOK_BIRIM }}" readonly></td>
                                   <td><input type="text" class="form-control LOTNUMBER" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}" readonly></td>
                                   <td class="d-flex ">
                                     <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}" readonly>
@@ -1233,7 +1239,7 @@
         htmlCode += detayBtnForJS(KOD_PARCA[0]);
         htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
         htmlCode += "<td><input type='text' class='form-control' name='KOD[]' value='"+KOD_PARCA[0]+"' readonly></td>";
-        htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI' value='"+satirEkleInputs.STOK_ADI_SHOW+"' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_SHOW+"' readonly></td> ";
         htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
         htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
