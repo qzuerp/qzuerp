@@ -138,6 +138,7 @@
                                     <div class="col-3">
                                         <label>İş Merkezi</label>
                                         <select class="form-control select2 js-example-basic-single KOD" style="width: 100%;" name="TO_ISMERKEZI" id="X_T_ISMERKEZI">
+                                            <option value="">Seç</option>
                                             @php
                                                 $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
                                                 foreach ($imlt00_evraklar as $key => $veri) {
@@ -381,7 +382,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 1</label>
 
-                                    <select id="GK_1" name="GK_1" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_1" name="GK_1" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -404,7 +405,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 2</label>
 
-                                    <select id="GK_2" name="GK_2" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_2" name="GK_2" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -427,7 +428,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 3</label>
 
-                                    <select id="GK_3" name="GK_3" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_3" name="GK_3" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -450,7 +451,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 4</label>
 
-                                    <select id="GK_4" name="GK_4" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_4" name="GK_4" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -473,7 +474,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 5</label>
 
-                                    <select id="GK_5" name="GK_5" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_5" name="GK_5" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -496,7 +497,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 6</label>
 
-                                    <select id="GK_6" name="GK_6" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_6" name="GK_6" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -519,7 +520,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 7</label>
 
-                                    <select id="GK_7" name="GK_7" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_7" name="GK_7" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -542,7 +543,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 8</label>
 
-                                    <select id="GK_8" name="GK_8" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_8" name="GK_8" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -565,7 +566,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 9</label>
 
-                                    <select id="GK_9" name="GK_9" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_9" name="GK_9" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php
@@ -588,7 +589,7 @@
                                 <div class="col-md-2 col-xs-4  col-sm-4">
                                     <label>Grup Kodu 10</label>
 
-                                    <select id="GK_10" name="GK_10" class="form-control js-example-basic-single" style="width: 100%; data-modal="grupModal"">
+                                    <select id="GK_10" name="GK_10" class="form-control js-example-basic-single" style="width: 100%;" data-modal="grupModal">
                                         <option value=" ">Seç</option>
 
                                         @php

@@ -2272,7 +2272,7 @@
               {
                 $.ajax({
                   type:'POST',
-                  url:'/get_questions',
+                url:'/get_questions',
                   data:{KOD : $('#X_T_ISMERKEZI').val()},
                   success: function (res) {
                     if (res && res.length > 0) {
