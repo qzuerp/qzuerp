@@ -33,7 +33,12 @@
   $evraklar=DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
   $mmps_evraklar=DB::table($database.'mmps10t')->orderBy('id', 'ASC')->get();
 
-  $tezgahlar = DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
+  $tezgahlar = DB::table($database.'imlt00')
+  ->where('GK_7','CNC_5_FRZ')
+  ->orWhere('GK_7','KYR_OTM')
+  ->orWhere('GK_7','CT')
+  ->orWhere('GK_7','CD')
+  ->orderBy('KOD', 'ASC')->get();
 
     $tezgahIsler = [];
     foreach($tezgahlar as $tezgah) {
@@ -507,17 +512,19 @@
                                             @php
                                                 $JOBS = DB::table($database.'mmps10t as m')
                                                     ->leftJoin($database.'preplan_t as p', 'm.JOBNO', '=', 'p.JOBNO')
+                                                    ->leftJoin($database.'mmps10e as m10e','m10e.EVRAKNO','=','m.EVRAKNO')
                                                     ->where('m.R_KAYNAKTYPE', 'I')
+                                                    ->where('m.R_ACIK_KAPALI', '!=','K')
                                                     ->whereNull('p.JOBNO')
-                                                    ->select('m.*')
+                                                    ->select('m.*','m10e.MAMULSTOKKODU')
                                                     ->get();
                                             @endphp
                                             @if($JOBS->count() > 0)
                                                 @foreach($JOBS as $JOB)
                                                     <div class="job-card {{ $JOB->R_ACIK_KAPALI == 'K' ? 'done' : '' }}" data-isno="{{ $JOB->JOBNO }}" data-rsira="{{ $JOB->R_SIRANO }}" data-sure="{{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }}" data-evrakno="{{ $JOB->EVRAKNO }}" data-operasyon="{{ $JOB->R_OPERASYON }}" data-hedef="{{ $JOB->R_YMAMULMIKTAR }}">
                                                         <span class="job-badge">{{ $JOB->R_SIRANO }}</span>
-                                                        <div class="job-title">{{ $JOB->R_KAYNAKKODU }}</div>
-                                                        <div class="job-info">{{ $JOB->R_OPERASYON }} · Evrak: {{ $JOB->EVRAKNO }}</div>
+                                                        <div class="job-title">{{ $JOB->MAMULSTOKKODU }}</div>
+                                                        <div class="job-info">{{ $JOB->R_OPERASYON }} · {{ $JOB->R_KAYNAKKODU }}</div>
                                                         <div class="job-meta">
                                                             <span><i class="fa fa-clock-o"></i> {{ $JOB->R_MIKTART - $JOB->GERCEKLESEN_SURE }} s</span>
                                                             <span><i class="fa fa-bullseye"></i> {{ $JOB->R_YMAMULMIKTAR }}</span>
