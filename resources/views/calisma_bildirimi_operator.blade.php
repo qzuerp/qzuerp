@@ -2291,7 +2291,7 @@
                                 <input id="yes_${index}" type="radio" name="cevap_${index}" value="EVET">
                                 <label for="yes_${index}" class="radio-label">
                                   <span class="radio-icon"></span>
-                                  <span>Hayır</span>
+                                  <span>Evet</span>
                                 </label>
                               </label>
 
