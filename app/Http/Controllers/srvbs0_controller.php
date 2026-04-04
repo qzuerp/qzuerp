@@ -73,7 +73,7 @@ class srvbs0_controller extends Controller
                         ]);
                     }
 
-                    $sonID=DB::table($firma.'srvbs0')->max('ID');
+                    $sonID=DB::table($firma.'srvbs0')->max('id');
                     return redirect()->route('periyodikBakim', ['ID' => $sonID]);
                 break;
 

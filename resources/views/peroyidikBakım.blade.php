@@ -11,7 +11,7 @@
   $ekran = "PRYBKM";
   $ekranRumuz = "SRVBS0";
   $ekranAdi = "Peroyidik Bakım";
-  $ekranLink = "peroyidikBakim";
+  $ekranLink = "periyodikBakim";
   $ekranTableE = $database."srvbs0";
   $ekranTableT = $database."srvbs0t";
   $ekranKayitSatirKontrol = "true";
