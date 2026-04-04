@@ -61,15 +61,15 @@ class srvbs0_controller extends Controller
         $data['TEZGAH'] = $request->TO_ISMERKEZI;
 
         $data['GK_1'] = $request->GK_1;
-        $data['GK_2'] = $request->GK_1;
-        $data['GK_3'] = $request->GK_1;
-        $data['GK_4'] = $request->GK_1;
-        $data['GK_5'] = $request->GK_1;
-        $data['GK_6'] = $request->GK_1;
-        $data['GK_7'] = $request->GK_1;
-        $data['GK_8'] = $request->GK_1;
-        $data['GK_9'] = $request->GK_1;
-        $data['GK_10'] = $request->GK_1;
+        $data['GK_2'] = $request->GK_2;
+        $data['GK_3'] = $request->GK_3;
+        $data['GK_4'] = $request->GK_4;
+        $data['GK_5'] = $request->GK_5;
+        $data['GK_6'] = $request->GK_6;
+        $data['GK_7'] = $request->GK_7;
+        $data['GK_8'] = $request->GK_8;
+        $data['GK_9'] = $request->GK_9;
+        $data['GK_10'] = $request->GK_10;
 
         switch ($islem_turu) {
             case 'kart_olustur':
