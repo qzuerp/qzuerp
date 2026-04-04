@@ -136,27 +136,24 @@ class srvbs0_controller extends Controller
 
     public function sorulari_getir(Request $request)
     {
-        if(Auth::check()) {
-            $u = Auth::user();
-        }
-
+        $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
-
-        $veri = DB::table($firma.'srvbs0')->where('TEZGAH', $request->KOD)
-        ->leftJoin($firma.'srvbs0t','srvbs0.EVRAKNO','=','srvbs0t.EVRAKNO')
-        ->leftJoin($firma.'imlt00 as I00','I00.KOD','=','srvbs0t.TEZGAH')
-        ->where('GK_1', 'I00.GK_1')
-        ->orWhere('GK_2', 'I00.GK_2')
-        ->orWhere('GK_3', 'I00.GK_3')
-        ->orWhere('GK_4', 'I00.GK_4')
-        ->orWhere('GK_5', 'I00.GK_5')
-        ->orWhere('GK_6', 'I00.GK_6')
-        ->orWhere('GK_7', 'I00.GK_7')
-        ->orWhere('GK_8', 'I00.GK_8')
-        ->orWhere('GK_9', 'I00.GK_9')
-        ->orWhere('GK_10', 'I00.GK_10')
-        ->get(['srvbs0.*','srvbs0t.*']);
-
+    
+        $veri = DB::table($firma.'srvbs0 as s')
+            ->leftJoin($firma.'srvbs0t as st', 's.EVRAKNO', '=', 'st.EVRAKNO')
+            ->leftJoin($firma.'imlt00 as I00', 'I00.KOD', '=', 'st.TEZGAH')
+            ->where(function($query) use ($request) {
+                // Ana şart: Tezgah kodu tutmalı
+                $query->where('st.TEZGAH', $request->KOD);
+                
+                // VEYA diğer grup kodlarından herhangi biri kolon bazlı eşleşmeli
+                for ($i = 1; $i <= 10; $i++) {
+                    $query->orWhereColumn("st.GK_$i", "I00.GK_$i");
+                }
+            })
+            ->select(['s.*', 'st.*'])
+            ->get();
+    
         return $veri;
     }
 }
