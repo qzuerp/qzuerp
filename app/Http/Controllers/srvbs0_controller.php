@@ -141,12 +141,10 @@ class srvbs0_controller extends Controller
     
         $veri = DB::table($firma.'srvbs0 as s')
             ->leftJoin($firma.'srvbs0t as st', 's.EVRAKNO', '=', 'st.EVRAKNO')
-            ->leftJoin($firma.'imlt00 as I00', 'I00.KOD', '=', 'st.TEZGAH')
+            ->leftJoin($firma.'imlt00 as I00', 'I00.KOD', '=', 's.TEZGAH')
             ->where(function($query) use ($request) {
-                // Ana şart: Tezgah kodu tutmalı
                 $query->where('s.TEZGAH', $request->KOD);
                 
-                // VEYA diğer grup kodlarından herhangi biri kolon bazlı eşleşmeli
                 for ($i = 1; $i <= 10; $i++) {
                     $query->orWhereColumn("st.GK_$i", "I00.GK_$i");
                 }
