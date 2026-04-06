@@ -677,7 +677,7 @@
                 try {
                     const response = await fetch(`/notifications/poll?lastId=${NotificationState.lastId}`, {
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                        signal: AbortSignal.timeout(8000) // 8 saniye timeout
+                        signal: AbortSignal.timeout(8000)
                     });
                     if(response.message == 'Unauthenticated')
                     {

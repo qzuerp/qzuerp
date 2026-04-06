@@ -149,21 +149,29 @@ class srvbs0_controller extends Controller
     {
         $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
-
+    
+        $bugunKayitVarMi = DB::table($firma . 'srv_cevaplar')
+            ->where('TEZGAH', $request->KOD)
+            ->whereDate('TARIH', now()->format('Y-m-d'))
+            ->exists();
+    
+        if ($bugunKayitVarMi) {
+            return response()->json([]); 
+        }
+    
         $hedefTezgah = DB::table($firma.'imlt00')
             ->where('KOD', $request->KOD)
             ->first();
-
+    
         if (!$hedefTezgah) {
             return response()->json(['error' => 'Tezgah bulunamadı'], 404);
         }
-
+    
+        // 3. ADIM: Soruları Getir
         $veri = DB::table($firma.'srvbs0 as s')
             ->leftJoin($firma.'srvbs0t as st', 's.EVRAKNO', '=', 'st.EVRAKNO')
             ->where(function($query) use ($request, $hedefTezgah) {
-                
                 $query->where('s.TEZGAH', $request->KOD);
-                
                 for ($i = 1; $i <= 10; $i++) {
                     $kolon = "GK_$i";
                     if (!empty($hedefTezgah->$kolon)) {
@@ -173,7 +181,7 @@ class srvbs0_controller extends Controller
             })
             ->select(['s.*', 'st.*'])
             ->get();
-
+    
         return $veri;
     }
 }

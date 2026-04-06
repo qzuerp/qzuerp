@@ -558,11 +558,9 @@
             window.totalQuestions = $('.checklist-item').length;
             var answeredCount = 0;
             
-            // ESC tuşunu devre dışı bırak
             $(document).on('keydown', function(e) {
                 if (e.key === 'Escape') {
                     e.preventDefault();
-                    // Modal sallanma efekti
                     $('.modal-container').addClass('shake');
                     setTimeout(function() {
                         $('.modal-container').removeClass('shake');
@@ -570,11 +568,9 @@
                 }
             });
 
-            // Modal dışına tıklamayı engelle
             $('#checklistModal').on('click', function(e) {
                 if ($(e.target).is('#checklistModal')) {
                     e.preventDefault();
-                    // Modal sallanma efekti
                     $('.modal-container').addClass('shake');
                     setTimeout(function() {
                         $('.modal-container').removeClass('shake');
@@ -621,7 +617,6 @@
                 $('.progress-fill').css('width', progress + '%');
                 $('.progress-count').text(answeredCount + '/' + totalQuestions);
                 
-                // Tüm sorular cevaplanmışsa butonu aktif et
                 if (answeredCount === totalQuestions) {
                     $('#submitButton').prop('disabled', false).addClass('active');
                 } else {
@@ -629,19 +624,16 @@
                 }
             }
 
-            // Kaydet butonu
             $('#submitButton').on('click', function() {
                 if (!$(this).hasClass('active')) {
                     return;
                 }
 
-                // Cevapları topla
                 var formData = {};
                 $('input[type="radio"]:checked').each(function() {
                     formData[$(this).attr('name')] = $(this).val();
                 });
 
-                // Açıklamaları topla
                 var explanations = {};
                 $('.warning-message.show textarea').each(function() {
                     var questionNum = $(this).closest('.checklist-item').data('question');
@@ -651,24 +643,20 @@
                     }
                 });
 
-                console.log('Form Data:', formData);
-                console.log('Explanations:', explanations);
-
-                // Modal'ı kapat
                 $('#checklistModal').fadeOut(300, function() {
-                    // Eğer mesaj fonksiyonu varsa kullan
                     if (typeof mesaj === 'function') {
                         mesaj('Teşekkürler', 'success');
                     }
                     
-                    // AJAX ile gönder (opsiyonel)
-                    /*
                     $.ajax({
-                        url: 'submit-checklist.php',
+                        url: 'submit_checklist',
                         method: 'POST',
                         data: {
                             checklist: formData,
-                            explanations: explanations
+                            explanations: explanations,
+                            EVRAKNO: {{@$kart_veri->EVRAKNO}},
+                            PERSONEL: {{@$personel->KOD}},
+                            KOD: $('#X_T_ISMERKEZI').val()
                         },
                         success: function(response) {
                             console.log('Başarılı:', response);
@@ -677,7 +665,6 @@
                             console.error('Hata:', error);
                         }
                     });
-                    */
                 });
             });
 

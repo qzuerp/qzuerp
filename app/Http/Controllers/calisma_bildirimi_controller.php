@@ -827,4 +827,71 @@ class calisma_bildirimi_controller extends Controller
     }
     return redirect()->back()->with('success', 'Kayıt Başarılı');
   }
+
+  public function submit_checklist(Request $request)
+  {
+      $u = Auth::user();
+      $firma = trim($u->firma).'.dbo.';
+      
+      $checklists = $request->input('checklist');
+      $explanations = $request->input('explanations');
+      $evrakNo = $request->input('EVRAKNO');
+      $personel = $request->PERSONEL;
+
+      $hedefTezgah = DB::table($firma.'imlt00')
+          ->where('KOD', $request->KOD)
+          ->first();
+
+      if (!$hedefTezgah) {
+          return response()->json(['error' => 'Tezgah bulunamadı'], 404);
+      }
+
+      $veri = DB::table($firma.'srvbs0 as s')
+          ->leftJoin($firma.'srvbs0t as st', 's.EVRAKNO', '=', 'st.EVRAKNO')
+          ->where(function($query) use ($request, $hedefTezgah) {
+              
+              $query->where('s.TEZGAH', $request->KOD);
+              
+              for ($i = 1; $i <= 10; $i++) {
+                  $kolon = "GK_$i";
+                  if (!empty($hedefTezgah->$kolon)) {
+                      $query->orWhere("s.$kolon", $hedefTezgah->$kolon);
+                  }
+              }
+          })
+          ->select(['st.*'])
+          ->get();
+
+      $soruListesi = [];  
+      
+      foreach($veri as $soru)
+      {
+        $soruListesi[] = $soru->SORU;
+      }
+
+      $insertData = [];
+
+      foreach ($checklists as $key => $cevap) {
+          $soruId = str_replace('cevap_', '', $key); 
+          
+          $gercekSoruMetni = $soruListesi[$soruId] ?? "Tanımsız Soru (ID: $soruId)";
+          
+          $insertData[] = [
+              'EVRAKNO'   => $evrakNo,
+              'PERSONEL'  => $personel,
+              'SORU'      => $gercekSoruMetni,
+              'CEVAP'     => $cevap,
+              'TEZGAH'    => $request->KOD,
+              'ACIKLAMA'  => $explanations["question_$soruId"] ?? null,
+              'TARIH'     => now()
+          ];
+      }
+
+      if (!empty($insertData)) {
+          DB::table($firma.'srv_cevaplar')->insert($insertData);
+          return response()->json(['status' => 'success', 'message' => 'Sorular metin olarak kaydedildi!']);
+      }
+
+      return response()->json(['status' => 'error', 'message' => 'Veri yok Eren, boşuna basma!']);
+  }
 }

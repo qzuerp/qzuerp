@@ -1519,44 +1519,33 @@
     </script>
 
     <script>
-      // Üretim Arayüzü - Kullanışlı Versiyon
-
       let sonID = typeof window.initialSonID !== 'undefined' ? window.initialSonID : 1;
 
-      // DOM yüklendikten sonra
       document.addEventListener('DOMContentLoaded', function() {
-        initializeButtons();
+        // initializeButtons();
         initializeTableEdit();
       });
 
-      // Butonları başlat
-      function initializeButtons() {
-        // Ayar butonları
-        $("#button1").on('click', () => startProcess('A'));
-        $("#button2").on('click', () => endProcess('A'));
+      // function initializeButtons() {
+      //   $("#button1").on('click', () => startProcess('A'));
+      //   $("#button2").on('click', () => endProcess('A'));
         
-        // Üretim butonları
-        $("#button3").on('click', () => startProcess('U'));
-        $("#button4").on('click', () => endProcess('U'));
+      //   $("#button3").on('click', () => startProcess('U'));
+      //   $("#button4").on('click', () => endProcess('U'));
         
-        // Duruş butonları
-        $("#button5").on('click', () => startProcess('D'));
-        $("#button6").on('click', () => endProcess('D'));
-      }
+      //   $("#button5").on('click', () => startProcess('D'));
+      //   $("#button6").on('click', () => endProcess('D'));
+      // }
 
-      // Tablo satırlarını düzenlenebilir yap
       function initializeTableEdit() {
-        // Satıra tıklayınca düzenleme modalı aç
         $(document).on('click', '#veri_table tbody tr', function() {
           openEditModal($(this));
         });
       }
 
-      // İşlem başlat
       function startProcess(type) {
         const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
         
-        // Duruş için sebep kontrolü
         if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
           Swal.fire({
             icon: 'warning',
@@ -1566,7 +1555,6 @@
           return;
         }
         
-        // Önceki işlem kontrolü
         if (type === 'A') {
           const lastUretim = findLastRow('U');
           const lastDurus = findLastRow('D');
@@ -1630,7 +1618,6 @@
           }
         }
         
-        // Bu tip için tamamlanmamış işlem kontrolü
         const lastRow = findLastRow(type);
         if (lastRow && !isComplete(lastRow)) {
           Swal.fire({
@@ -1641,7 +1628,6 @@
           return;
         }
         
-        // Yeni satır ekle
         addNewRow(type);
       }
 
@@ -2270,84 +2256,89 @@
               }
               else
               {
-                $.ajax({
-                  type:'POST',
-                url:'/get_questions',
-                  data:{KOD : $('#X_T_ISMERKEZI').val()},
-                  success: function (res) {
-                    if (res && res.length > 0) {
-                      let questions = '';
-
-                      res.forEach((element, index) => {
-                        questions += `
-                          <div class="checklist-item" data-question="${index + 1}">
-                            <div class="question-header">
-                              <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
-                              <div class="question-text">${element.SORU}</div>
-                            </div>
-
-                            <div class="answer-options">
-                              <label class="radio-option yes">
-                                <input id="yes_${index}" type="radio" name="cevap_${index}" value="EVET">
-                                <label for="yes_${index}" class="radio-label">
-                                  <span class="radio-icon"></span>
-                                  <span>Evet</span>
-                                </label>
-                              </label>
-
-                              <label class="radio-option no">
-                                <input id="no_${index}" type="radio" name="cevap_${index}" value="HAYIR">
-                                <label for="no_${index}" class="radio-label">
-                                  <span class="radio-icon"></span>
-                                  <span>Hayır</span>
-                                </label>
-                              </label>
-                            </div>
-
-                            <div class="warning-message">
-                              <div class="warning-title">⚠ Dikkat</div>
-                              <textarea class="explanation-input" placeholder="Açıklama (opsiyonel)"></textarea>
-                            </div>
-                          </div>
-                        `;
-                      });
-                      
-                      $('#checkBody').html(questions);
-                      window.totalQuestions = res.length;
-                      $('.progress-count').text('0/' + window.totalQuestions);
-                    }
-                    else
-                    {
-                      $('#checkBody').html(`
-                        <div class="text-center p-4">
-                            <div class="mb-3">
-                                <i class="fa fa-info-circle text-secondary" style="font-size: 48px;"></i>
-                            </div>
-
-                            <h5 class="fw-bold mb-2">Sorular Bulunamadı</h5>
-
-                            <p class="text-muted mb-0">
-                                Bu işlem için tanımlı herhangi bir kontrol sorusu yok.
-                            </p>
-                        </div>
-                      `);
-                      $('#submitButton').prop('disabled', false).addClass('active');
-                    }
-                  }
-
-                });
-                $('.modal-overlay').fadeIn(200).css('display','flex');
+                
               }
 
             }
           })
       });
+
+      $('#button1,#button2,#button3,#button4,#button5,#button6').on('click', function(e) {
+        e.preventDefault();
+        
+        let $this = $(this);
+        let buttonId = $this.attr('id');
+        let ismerkezi = $('#X_T_ISMERKEZI').val();
+
+        $.ajax({
+          type: 'POST',
+          url: '/get_questions',
+          data: { 
+              KOD: ismerkezi,
+              _token: $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function (res) {
+              if (Array.isArray(res) && res.length > 0) {
+                  let questions = '';
+                  res.forEach((element, index) => {
+                      let sId = element.ID || index; 
+                      questions += `
+                        <div class="checklist-item" data-question-id="${sId}">
+                          <div class="question-header">
+                            <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
+                            <div class="question-text">${element.SORU || element.SORU_METNI}</div>
+                          </div>
+                          <div class="answer-options">
+                            <label class="radio-option yes">
+                              <input id="yes_${sId}" type="radio" name="cevap_${sId}" value="EVET">
+                              <label for="yes_${sId}" class="radio-label">
+                                <span class="radio-icon"></span><span>Evet</span>
+                              </label>
+                            </label>
+                            <label class="radio-option no">
+                              <input id="no_${sId}" type="radio" name="cevap_${sId}" value="HAYIR">
+                              <label for="no_${sId}" class="radio-label">
+                                <span class="radio-icon"></span><span>Hayır</span>
+                              </label>
+                            </label>
+                          </div>
+                          <div class="warning-message">
+                            <textarea class="explanation-input" name="explanation_${sId}" placeholder="Açıklama (opsiyonel)"></textarea>
+                          </div>
+                        </div>`;
+                  });
+
+                  $('#checkBody').html(questions);
+                  
+                  
+                  $('.modal-overlay').fadeIn(200).css('display', 'flex');
+              } 
+              else {
+                  executeMainAction(buttonId);
+              }
+          },
+          error: function() {
+              alert("Bağlantı hatası! Kontrol yapılamadı.");
+          }
+        });
+      });
+      function executeMainAction(buttonId) {
+        
+        switch(buttonId) {
+            case 'button1': startProcess('A'); break;
+            case 'button2': endProcess('A'); break;
+            case 'button3': startProcess('U'); break;
+            case 'button4': endProcess('U'); break;
+            case 'button5': startProcess('D'); break;
+            case 'button6': endProcess('D'); break;
+            default: console.warn("tanımlanmamış bir butona bastın!");
+        }
+      }
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
-      // Satır ekleme
       $('#addRow').on('click', function() {
         var TRNUM_FILL = getTRNUM();
 

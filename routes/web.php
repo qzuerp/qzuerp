@@ -320,6 +320,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('sfdc31_e_islemler', [calisma_bildirimi_controller::class, 'islemler']);
     Route::post('sfdc31_getMPSToEvrak', [calisma_bildirimi_controller::class, 'getMPSToEvrak']);
     Route::post('sfdc31_kalite_kontrolu', [calisma_bildirimi_controller::class, 'kalite_kontrolu']);
+    Route::post('submit_checklist', [calisma_bildirimi_controller::class, 'submit_checklist']);
 
     /*
     |--------------------------------------------------------------------------
