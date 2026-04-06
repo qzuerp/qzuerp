@@ -43,7 +43,7 @@ class ParasutService implements AccountingInterface
                     'description'   => $data['description'] ?? '',
                     'issue_date'    => $data['issue_date'],
                     'shipment_date' => $data['shipment_date'] ?? $data['issue_date'],
-                    'direction'     => 'outflow',
+                    'inflow'     => false,
                 ],
                 'relationships' => [
                     'contact' => [

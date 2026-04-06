@@ -1660,6 +1660,9 @@
 																				style="color: blue"></i></button>
 																	</td> -->
 																	<td>
+																		#
+																	</td>
+																	<td>
 																		Sıra No
 																	</td>
 																	<td>
@@ -1722,19 +1725,19 @@
 																			data-bs-title="TUTAR" class="form-control" value=""
 																			readonly>
 																	</td> -->
-																	<td>
+																	<!-- <td>
 																		<input type="hidden" name="" id="PARA_BIRIMI"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="PRICEUNIT" data-isim="Para Birimi"
 																			class="form-control"
 																			value="" readonly>
 
-																		<!-- <input type="text" name="" id="TERMIN_TAR"
+																		<input type="text" name="" id="TERMIN_TAR"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="TERMIN_TAR" data-isim="Termin Tarihi"
 																			class="form-control"
-																			value=""> -->
-																	</td>
+																			value="">
+																	</td> -->
 																	<td>
 																		<input type="text" name="" id="ACIKLAMA"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
@@ -1784,9 +1787,6 @@
 																	</td>
 																	
 																	
-																	// <td><input type="text" name="TERMIN_TARIHI[]"
-																	// 		value="{{$veri->TERMIN_TARIHI}}" class="form-control">
-																	// </td>
 																	<td>
 																		<input type="text" name="ACIKLAMA_T[]"
 																			value="{{$veri->ACIKLAMA}}" class="form-control">
