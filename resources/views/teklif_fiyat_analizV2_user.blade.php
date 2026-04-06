@@ -1648,8 +1648,8 @@
 																		Dolar Fiyatı</th>
 																	<th style="min-width:120px; font-size: 13px !important;">
 																		Tutar</th> -->
-																	<th style="min-width:170px; font-size: 13px !important;">
-																		Termin Tar.</th>
+																	<!-- <th style="min-width:170px; font-size: 13px !important;">
+																		Termin Tar.</th> -->
 																	<th style="min-width:170px; font-size: 13px !important;">
 																		Açıklama</th>
 																</tr>
@@ -1729,11 +1729,11 @@
 																			class="form-control"
 																			value="" readonly>
 
-																		<input type="text" name="" id="TERMIN_TAR"
+																		<!-- <input type="text" name="" id="TERMIN_TAR"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="TERMIN_TAR" data-isim="Termin Tarihi"
 																			class="form-control"
-																			value="">
+																			value=""> -->
 																	</td>
 																	<td>
 																		<input type="text" name="" id="ACIKLAMA"
@@ -1784,9 +1784,9 @@
 																	</td>
 																	
 																	
-																	<td><input type="text" name="TERMIN_TARIHI[]"
-																			value="{{$veri->TERMIN_TARIHI}}" class="form-control">
-																	</td>
+																	// <td><input type="text" name="TERMIN_TARIHI[]"
+																	// 		value="{{$veri->TERMIN_TARIHI}}" class="form-control">
+																	// </td>
 																	<td>
 																		<input type="text" name="ACIKLAMA_T[]"
 																			value="{{$veri->ACIKLAMA}}" class="form-control">
