@@ -476,6 +476,7 @@ Route::group(['middleware' => ['auth']], function() {
     |--------------------------------------------------------------------------
     */
     Route::get('V2_teklif_fiyat_analiz', [Teklif_fiyat_analizV2::class, 'index']);
+    Route::get('V2_teklif_fiyat_analiz_user', [Teklif_fiyat_analizV2::class, 'user_index']);
     Route::post('V2_maliyetlendire_islemler', [Teklif_fiyat_analizV2::class, 'islemler'])->name('V2_maliyetlendire_islemler');
     Route::post('V2_maliyetlendire_createKaynakKodSelect', [Teklif_fiyat_analizV2::class, 'createKaynakKodSelect']);
     Route::post('V2_maliyet_hesapla', [Teklif_fiyat_analizV2::class, 'maliyet_hesapla'])->name('V2_maliyet_hesapla');

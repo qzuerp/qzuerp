@@ -496,6 +496,7 @@
                             <th>Kalibrasyon Bakım Tarihi</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Kalan Gün</th>
+                            <th>Bakım periyodu</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
@@ -512,6 +513,7 @@
                             <th>Kalibrasyon Bakım Tarihi</th>
                             <th>Bir Sonraki Kalibrasyon Tarihi</th>
                             <th>Kalan Gün</th>
+                            <th>Bakım periyodu</th>
                             <th>Durum</th>
                             <th>#</th>
                           </tr>
@@ -589,6 +591,7 @@
                                 echo "<td style='white-space:nowrap'>".($row->KALIBRASYONBAKIMTARIHI ?? '—')."</td>";
                                 echo "<td style='white-space:nowrap'>".($row->BIRSONRAKIKALIBRASYONTARIHI ?? '—')."</td>";
                                 echo "<td data-order='".$kalanGun."'>".$kalanBadge."</td>";
+                                echo "<td>".$row->KALIBRASYONBAKIMPERIYODU." YIL</td>";
                                 echo "<td>".$row->DURUM."</td>";
                                 echo "<td><a class='btn btn-info btn-sm' href='kart_kalibrasyon?ID=".$row->id."'><i class='fa fa-chevron-circle-right' style='color:white'></i></a></td>";
                               echo "</tr>";

@@ -17,6 +17,10 @@ class teklif_fiyat_analizV2 extends Controller
     {
         return view('teklif_fiyat_analizV2');
     }
+    public function user_index()
+    {
+        return view('teklif_fiyat_analizV2_user');
+    }
     public function upload(Request $request)
     {
         if (Auth::check()) {
