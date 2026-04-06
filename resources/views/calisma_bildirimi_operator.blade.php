@@ -1522,20 +1522,20 @@
       let sonID = typeof window.initialSonID !== 'undefined' ? window.initialSonID : 1;
 
       document.addEventListener('DOMContentLoaded', function() {
-        // initializeButtons();
+        initializeButtons();
         initializeTableEdit();
       });
 
-      // function initializeButtons() {
-      //   $("#button1").on('click', () => startProcess('A'));
-      //   $("#button2").on('click', () => endProcess('A'));
+      function initializeButtons() {
+        $("#button1").on('click', () => startProcess('A'));
+        $("#button2").on('click', () => endProcess('A'));
         
-      //   $("#button3").on('click', () => startProcess('U'));
-      //   $("#button4").on('click', () => endProcess('U'));
+        $("#button3").on('click', () => startProcess('U'));
+        $("#button4").on('click', () => endProcess('U'));
         
-      //   $("#button5").on('click', () => startProcess('D'));
-      //   $("#button6").on('click', () => endProcess('D'));
-      // }
+        $("#button5").on('click', () => startProcess('D'));
+        $("#button6").on('click', () => endProcess('D'));
+      }
 
       function initializeTableEdit() {
         $(document).on('click', '#veri_table tbody tr', function() {
