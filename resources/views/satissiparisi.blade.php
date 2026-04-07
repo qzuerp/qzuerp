@@ -697,7 +697,7 @@
                             FROM '.$database.'STOK40E S40E
                             LEFT JOIN '.$database.'cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
                             LEFT JOIN '.$database.'STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
-                            LEFT JOIN '.$database.'mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO
+                            LEFT JOIN '.$database.'mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO AND M10E.KOD = S40T.KOD
                             WHERE 1=1';
 
                           if ($KOD_B !== '')       $sql_sorgu .= " AND S40T.KOD >= '".$KOD_B."'";
