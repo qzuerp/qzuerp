@@ -111,12 +111,10 @@
         ) S63T_MAX 
             ON S01.KOD = S63T_MAX.KOD  
             AND S63T_MAX.LOTNUMBER = S01.LOTNUMBER
-            AND S63T_MAX.SERINO = S01.SERINO
         Left Join {$database}stok63t S63T 
             ON S63T.KOD = S63T_MAX.KOD 
             AND S63T.EVRAKNO = S63T_MAX.EVRAKNO 
             AND S63T.LOTNUMBER = S01.LOTNUMBER
-            AND S63T.SERINO = S01.SERINO
         left join {$database}dosyalar00 D00 
             ON D00.EVRAKNO = S01.KOD 
             AND D00.EVRAKTYPE = 'STOK00' 
