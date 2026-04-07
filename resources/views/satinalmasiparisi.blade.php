@@ -541,7 +541,7 @@
                     {{-- Aktif/Pasif + Butonlar --}}
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                       <div style="">
-                        <input type="checkbox" name="DURUM" id="DURUM">
+                        <input type="checkbox" checked name="DURUM" id="DURUM">
                         <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Aktif</label>
                       </div>
 
