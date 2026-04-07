@@ -1221,7 +1221,7 @@ function printTable(tableId)
       let table = $('#popupSelect').DataTable();
       let rowData = table.row(this).data(); 
       
-      let secilenDeger = rowData ? rowData[7] : $(this).find('td').eq(7).text().trim();
+      let secilenDeger = rowData ? rowData[9] : $(this).find('td').eq(9).text().trim();
       
       let TRNUM = $('#popupSelect').attr('data-trnum');
 
