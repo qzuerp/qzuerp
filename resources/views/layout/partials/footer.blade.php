@@ -373,6 +373,8 @@
     }
   });
 
+  
+
   $('#popupSelect2 tfoot th').each(function () {
     var title = $(this).text();
     if (title == "#") {

@@ -1208,13 +1208,16 @@ function printTable(tableId)
   }
   window.onload = addRowHandlers2();
 
-  $('#popupSelect tbody tr').on('click',function(){
-    let secilenDeger = $(this).find('td').eq(7).text().trim();
-    let TRNUM = $('#popupSelect').data('trnum');
+  $('#popupSelect tbody').on('click', 'tr', function() {
+      let table = $('#popupSelect').DataTable();
+      let rowData = table.row(this).data(); 
+      
+      let secilenDeger = rowData ? rowData[7] : $(this).find('td').eq(7).text().trim();
+      
+      let TRNUM = $('#popupSelect').attr('data-trnum');
 
-    $('#SIPARTNO-'+TRNUM).val(secilenDeger);
-
-    $('#modal_popupSelectModal5').modal('hide');
+      $('#SIPARTNO-' + TRNUM).val(secilenDeger);
+      $('#modal_popupSelectModal5').modal('hide');
   });
 
   function getSip(TRNUM)
