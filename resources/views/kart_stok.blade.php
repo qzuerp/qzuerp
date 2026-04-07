@@ -821,6 +821,9 @@
 												<tr>
 												<th>Kod</th>
 												<th>Ad</th>
+												<th>Birim</th>
+												<th>Revizyon No</th>
+												<th>Revizyon Tarihi</th>
 												<th>GK_1</th>
 												<th>GK_2</th>
 												<th>GK_3</th>
@@ -837,6 +840,9 @@
 												<tr>
 												<th>Kod</th>
 												<th>Ad</th>
+												<th>Birim</th>
+												<th>Revizyon No</th>
+												<th>Revizyon Tarihi</th>
 												<th>GK_1</th>
 												<th>GK_2</th>
 												<th>GK_3</th>
@@ -907,6 +913,9 @@
 													echo "<tr>";
 													echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
 													echo "<td>".$row->AD."</td>";
+													echo "<td>".$row->IUNIT."</td>";
+													echo "<td>".$row->REVNO."</td>";
+													echo "<td>".$row->REVTAR."</td>";
 													echo "<td>".$row->GK_1."</td>";
 													echo "<td>".$row->GK_2."</td>";
 													echo "<td>".$row->GK_3."</td>";

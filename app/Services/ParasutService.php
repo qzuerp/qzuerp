@@ -96,59 +96,52 @@ class ParasutService implements AccountingInterface
             ->json();
     }
 
-    public function getProducts()
-    {
-        Cache::forget('parasut_all_products');
+public function getProducts()
+{
+    // EREN DİKKAT: Test aşamasında Cache'i devre dışı bırakmak için 
+    // Cache::forget('parasut_all_products'); satırını bir kere çalıştırabilirsin.
 
-        return Cache::remember('parasut_all_products', 3600, function () {
-            $allProducts = [];
-            $page = 1;
-            $pageSize = 50;
+    return Cache::remember('parasut_all_products', 3600, function () {
+        $allProducts = [];
+        $page = 1;
+        $pageSize = 50; // Paraşüt genelde max 50-100 izin verir
 
-            do {
-                $response = Http::withToken($this->token)
-                    ->get($this->baseUrl . $this->companyId . '/products', [
-                        'page[number]' => $page,
-                        'page[size]'   => $pageSize
-                    ]);
+        do {
+            $response = Http::withToken($this->token)
+                ->get($this->baseUrl . $this->companyId . '/products', [
+                    'page[number]' => $page,
+                    'page[size]'   => $pageSize
+                ]);
 
-                if (!$response->successful()) {
-                    \Log::error("Paraşüt Hatası: " . $response->body());
-                    break;
-                }
+            // Hata kontrolü yapmazsan kör uçuşu yaparsın Eren!
+            if (!$response->successful()) {
+                \Log::error("Paraşüt Hatası: " . $response->body());
+                break;
+            }
 
-                $data = $response->json();
-                $currentPageProducts = $data['data'] ?? [];
+            $data = $response->json();
+            $currentPageProducts = $data['data'] ?? [];
 
-                if (empty($currentPageProducts)) {
-                    break;
-                }
-
-                foreach ($currentPageProducts as $product) {
-                    $productId   = $product['id'] ?? null;
-                    $attributes  = $product['attributes'] ?? [];
-                    $stokKodu    = !empty($attributes['code']) ? $attributes['code'] : ('ID_' . $productId);
-
+            foreach ($currentPageProducts as $product) {
+                // Paraşüt'te 'code' alanı attributes içindedir
+                $stokKodu = $product['attributes']['code'] ?? null;
+                
+                if ($stokKodu) {
                     $allProducts[$stokKodu] = [
-                        'id'       => $productId,
-                        'name'     => $attributes['name'] ?? 'İsimsiz Ürün',
-                        'code'     => $attributes['code'] ?? null,
-                        'barcode'  => $attributes['barcode'] ?? null,
-                        'currency' => $attributes['currency'] ?? null,
-                        'vat_rate' => $attributes['vat_rate'] ?? null,
+                        'id'   => $product['id'], // '54321' gibi String döner
+                        'name' => $product['attributes']['name']
                     ];
                 }
+            }
 
-                \Log::info("Paraşüt: Sayfa {$page} çekildi, " . count($currentPageProducts) . " ürün geldi.");
+            $page++;
+            
+            // Toplam sayfa sayısını kontrol et (Meta verisinden çekebiliriz)
+            $totalPages = $data['meta']['total_pages'] ?? 0;
 
-                $totalPages = $data['meta']['total_pages'] ?? 1;
-                $page++;
+        } while ($page <= $totalPages && count($currentPageProducts) > 0);
 
-            } while ($page <= $totalPages && !empty($currentPageProducts));
-
-            \Log::info("Paraşüt: Toplam " . count($allProducts) . " ürün çekildi.");
-
-            return $allProducts;
-        });
-    }
+        return $allProducts;
+    });
+}
 }
