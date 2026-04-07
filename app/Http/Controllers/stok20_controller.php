@@ -202,6 +202,34 @@ class stok20_controller extends Controller
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
+          $barcode = $SERINO[$i] ?? '';
+          if($barcode === '' || DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist()) {
+            $lastId = DB::table($firma.'D7KIDSLB')->max('id') + 1;
+            $newSerial = str_pad($lastId, 12, '0', STR_PAD_LEFT);
+
+            DB::table($firma.'D7KIDSLB')->insert([
+                'KOD' => $KOD[$i],
+                'AD' => $STOK_ADI[$i],
+                'EVRAKTYPE' => 'STOK20T',
+                'EVRAKNO' => $EVRAKNO,
+                'TRNUM' => $TRNUM[$i],
+                'MPSNO' => $IS_EMRI[$i],
+                'VARYANT1' => $TEXT1[$i],
+                'VARYANT2' => $TEXT2[$i],
+                'VARYANT3' => $TEXT3[$i],
+                'VARYANT4' => $TEXT4[$i],
+                'LOCATION1' => $LOCATION1[$i],
+                'LOCATION2' => $LOCATION2[$i],
+                'LOCATION3' => $LOCATION3[$i],
+                'LOCATION4' => $LOCATION4[$i],
+                'NUM1' => $NUM1[$i],
+                'NUM2' => $NUM2[$i],
+                'NUM3' => $NUM3[$i],
+                'NUM4' => $NUM4[$i],
+                'BARCODE' => $newSerial,
+                'SF_MIKTAR' => $SF_MIKTAR[$i]
+            ]);
+          }
 
           DB::table($firma.'stok10a')->insert([
             'EVRAKNO' => $EVRAKNO,
@@ -210,7 +238,7 @@ class stok20_controller extends Controller
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
-            'SERINO' => $SERINO[$i],
+            'SERINO' => $newSerial,
             'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'TEXT1' => $TEXT1[$i],
@@ -236,7 +264,7 @@ class stok20_controller extends Controller
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
-            'SERINO' => $SERINO[$i],
+            'SERINO' => $newSerial,
             'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'SF_VRI_VR_R1' => $TEXT1[$i],
@@ -401,6 +429,35 @@ class stok20_controller extends Controller
 
           if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
 
+            $barcode = $SERINO[$i] ?? '';
+            if($barcode === '' || DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist()) {
+              $lastId = DB::table($firma.'D7KIDSLB')->max('id') + 1;
+              $newSerial = str_pad($lastId, 12, '0', STR_PAD_LEFT);
+
+              DB::table($firma.'D7KIDSLB')->insert([
+                  'KOD' => $KOD[$i],
+                  'AD' => $STOK_ADI[$i],
+                  'EVRAKTYPE' => 'STOK20T',
+                  'EVRAKNO' => $EVRAKNO,
+                  'TRNUM' => $TRNUM[$i],
+                  'MPSNO' => $IS_EMRI[$i],
+                  'VARYANT1' => $TEXT1[$i],
+                  'VARYANT2' => $TEXT2[$i],
+                  'VARYANT3' => $TEXT3[$i],
+                  'VARYANT4' => $TEXT4[$i],
+                  'LOCATION1' => $LOCATION1[$i],
+                  'LOCATION2' => $LOCATION2[$i],
+                  'LOCATION3' => $LOCATION3[$i],
+                  'LOCATION4' => $LOCATION4[$i],
+                  'NUM1' => $NUM1[$i],
+                  'NUM2' => $NUM2[$i],
+                  'NUM3' => $NUM3[$i],
+                  'NUM4' => $NUM4[$i],
+                  'BARCODE' => $newSerial,
+                  'SF_MIKTAR' => $SF_MIKTAR[$i]
+              ]);
+            }
+
             DB::table($firma.'stok20t')->insert([
               'EVRAKNO' => $EVRAKNO,
               'SRNUM' => $SRNUM,
@@ -408,7 +465,7 @@ class stok20_controller extends Controller
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
-              'SERINO' => $SERINO[$i],
+              'SERINO' => $newSerial,
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'SF_VRI_VR_R1' => $TEXT1[$i],
@@ -438,7 +495,7 @@ class stok20_controller extends Controller
               'KOD' => $KOD[$i],
               'STOK_ADI' => $STOK_ADI[$i],
               'LOTNUMBER' => $LOTNUMBER[$i],
-              'SERINO' => $SERINO[$i],
+              'SERINO' => $newSerial,
               'SF_MIKTAR' => $SF_MIKTAR[$i],
               'SF_SF_UNIT' => $SF_SF_UNIT[$i],
               'TEXT1' => $TEXT1[$i],
@@ -497,6 +554,25 @@ class stok20_controller extends Controller
           }
 
           if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
+
+            $barcode = $SERINO[$i] ?? '';
+            if(!$barcode === '' || !DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->doesntExist()) {
+              DB::table($firma.'D7KIDSLB')->where('BARCODE', $barcode)->update([
+                'VARYANT1' => $TEXT1[$i],
+                'VARYANT2' => $TEXT2[$i],
+                'VARYANT3' => $TEXT3[$i],
+                'VARYANT4' => $TEXT4[$i],
+                'LOCATION1' => $LOCATION1[$i],
+                'LOCATION2' => $LOCATION2[$i],
+                'LOCATION3' => $LOCATION3[$i],
+                'LOCATION4' => $LOCATION4[$i],
+                'NUM1' => $NUM1[$i],
+                'NUM2' => $NUM2[$i],
+                'NUM3' => $NUM3[$i],
+                'NUM4' => $NUM4[$i],
+                'SF_MIKTAR' => $SF_MIKTAR[$i]
+              ]);
+            }
 
             DB::table($firma.'stok20t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
