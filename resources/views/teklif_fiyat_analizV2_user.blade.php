@@ -869,10 +869,11 @@
 							<thead>
 								<tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
 									<th>Evrak No</th>
-									<th>Tarih</th>
-									<th>Fiyat Birimi</th>
-									<th>Müşteri</th>
-									<!-- <th>Tutar</th> -->
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Adet</th>
+									<th>Revizyon</th>
+									<th>Açıklama</th>
 									<th>#</th>
 								</tr>
 							</thead>
@@ -880,10 +881,11 @@
 							<tfoot>
 								<tr class="bg-info">
 									<th>Evrak No</th>
-									<th>Tarih</th>
-									<th>Fiyat Birimi</th>
-									<th>Müşteri</th>
-									<!-- <th>Tutar</th> -->
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Adet</th>
+									<th>Revizyon</th>
+									<th>Açıklama</th>
 									<th>#</th>
 								</tr>
 							</tfoot>
@@ -891,14 +893,15 @@
 							<tbody>
 
 								@php
-									$evraklar2 = DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+									$evraklar2 = DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->get();
 									foreach ($evraklar2 as $key => $suzVeri) {
-										$mus = DB::table($database . 'cari00')->where('KOD', $suzVeri->BASE_DF_CARIHESAP)->first();
 										echo "<tr>";
 										echo "<td>" . $suzVeri->EVRAKNO . "</td>";
-										echo "<td>" . $suzVeri->TARIH . "</td>";
-										echo "<td>" . $suzVeri->TEKLIF_FIYAT_PB . "</td>";
-										echo "<td>" . ($mus ? $mus->AD : $suzVeri->BASE_DF_CARIHESAP) . "</td>";
+										echo "<td>" . $suzVeri->KOD . "</td>";
+										echo "<td>" . $suzVeri->STOK_AD1 . "</td>";
+										echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
+										echo "<td>" . $suzVeri->SF_SF_UNIT . "</td>";
+										echo "<td>" . $suzVeri->ACIKLAMA . "</td>";
 										echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 										echo "</tr>";
 									}

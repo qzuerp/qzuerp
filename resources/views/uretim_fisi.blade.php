@@ -64,7 +64,7 @@ if (isset($kart_veri)) {
 
 <div class="content-wrapper">
 
-  <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+  <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
@@ -103,43 +103,42 @@ if (isset($kart_veri)) {
               <tbody>
 
                 @php
+                $evraklar2 = DB::table($ekranTableE)
+                  ->leftJoin($ekranTableT, "$ekranTableE.EVRAKNO", "=", "$ekranTableT.EVRAKNO")
+                  ->select("$ekranTableE.*", "$ekranTableT.KOD", "$ekranTableT.SF_MIKTAR", "$ekranTableT.ISEMRINO", "$ekranTableT.STOK_ADI")
+                  ->orderBy($ekranTableE . '.id', 'ASC')
+                  ->get();
 
-                $evraklar2=DB::table($ekranTableE)
-                ->leftJoin($ekranTableT, "$ekranTableE.EVRAKNO", "=", "$ekranTableT.EVRAKNO")
-                ->select("$ekranTableE.*", "$ekranTableT.KOD", "$ekranTableT.SF_MIKTAR","$ekranTableT.ISEMRINO","$ekranTableT.STOK_ADI")
-                ->orderBy($ekranTableE.'.id', 'ASC')
-                ->get();
-                              // dd($evraklar2);
                 foreach ($evraklar2 as $key => $suzVeri) {
-                  @endphp
-                  <tr>
-                    <td>{{$suzVeri->EVRAKNO}}</td>
-                    <td>{{$suzVeri->TARIH}}</td>
-                    <td>{{$suzVeri->AMBCODE}}</td>
-                    <td>{{$suzVeri->ISEMRINO}}</td>
-                    <td>{{$suzVeri->SF_MIKTAR}}</td>
-                    <td>{{$suzVeri->SF_MIKTAR}}</td>
-                    <td>{{$suzVeri->STOK_ADI}}</td>
-                    <td><a class='btn btn-info' href='{{$ekranLink.'?ID='.$suzVeri->EVRAKNO}}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
-                  </tr>
-                  @php
+                @endphp
+                <tr>
+                  <td>{{$suzVeri->EVRAKNO}}</td>
+                  <td>{{$suzVeri->TARIH}}</td>
+                  <td>{{$suzVeri->AMBCODE}}</td>
+                  <td>{{$suzVeri->ISEMRINO}}</td>
+                  <td>{{$suzVeri->SF_MIKTAR}}</td>  {{-- Miktar --}}
+                  <td>{{$suzVeri->STOK_ADI}}</td>   {{-- Stok adı ✅ --}}
+                  <td>{{$suzVeri->KOD}}</td>         {{-- Kod ✅ --}}
+                  <td><a class='btn btn-info' href='{{$ekranLink . "?ID=" . $suzVeri->EVRAKNO}}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
+                </tr>
+                @php
                 }
-
                 @endphp
 
               </tbody>
-
             </table>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
         </div>
+
       </div>
     </div>
   </div>
 
-  <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+
+  <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz2">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
@@ -164,8 +163,10 @@ if (isset($kart_veri)) {
 
               <tfoot>
                 <tr class="bg-info">
+                  <th>İş Emri</th>      {{-- ✅ Eksikler tamamlandı --}}
                   <th>Stok Kodu</th>
-                  <th>Lot No</th>
+                  <th>Stok Adı</th>     {{-- ✅ --}}
+                  <th>Lot No</th>       {{-- ✅ --}}
                   <th>Seri No</th>
                   <th>Miktar</th>
                   <th>Birim</th>
@@ -176,35 +177,32 @@ if (isset($kart_veri)) {
               <tbody>
 
                 @php
+                $evraklar2 = DB::table($ekranTableT)->get();
 
-                $evraklar2=DB::table($ekranTableT)
-                ->get();
-                              // dd($evraklar2);
                 foreach ($evraklar2 as $key => $suzVeri) {
-                  @endphp
-                  <tr>
-                    <td>{{$suzVeri->ISEMRINO}}</td>
-                    <td>{{$suzVeri->KOD}}</td>
-                    <td>{{$suzVeri->STOK_ADI}}</td>
-                    <td>{{$suzVeri->LOTNUMBER}}</td>
-                    <td>{{$suzVeri->SERINO}}</td>
-                    <td>{{$suzVeri->SF_MIKTAR}}</td>
-                    <td>{{$suzVeri->SF_SF_UNIT}}</td>
-                    <td><a class='btn btn-info' href='{{$ekranLink.'?ID='.$suzVeri->EVRAKNO}}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
-                  </tr>
-                  @php
+                @endphp
+                <tr>
+                  <td>{{$suzVeri->ISEMRINO}}</td>
+                  <td>{{$suzVeri->KOD}}</td>
+                  <td>{{$suzVeri->STOK_ADI}}</td>
+                  <td>{{$suzVeri->LOTNUMBER}}</td>
+                  <td>{{$suzVeri->SERINO}}</td>
+                  <td>{{$suzVeri->SF_MIKTAR}}</td>
+                  <td>{{$suzVeri->SF_SF_UNIT}}</td>
+                  <td><a class='btn btn-info' href='{{$ekranLink . "?ID=" . $suzVeri->EVRAKNO}}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
+                </tr>
+                @php
                 }
-
                 @endphp
 
               </tbody>
-
             </table>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
         </div>
+
       </div>
     </div>
   </div>
