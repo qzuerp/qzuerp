@@ -961,8 +961,8 @@ if (isset($kart_veri)) {
                       <tbody>
                         @php
                           $siparisler = DB::table($database.'stok46t as S46T')
-                          ->leftJoin('stok46e as S46E','S46T.EVRAKNO','=','S46E.EVRAKNO')
-                          ->leftJoin('cari00 as C00','S46E.CARIHESAPCODE','=','C00.KOD')
+                          ->leftJoin($database.'stok46e as S46E','S46T.EVRAKNO','=','S46E.EVRAKNO')
+                          ->leftJoin($database.'cari00 as C00','S46E.CARIHESAPCODE','=','C00.KOD')
                           ->where('S46T.AK','A')->get(['S46T.*','S46E.NOT','C00.AD AS CARIHESAPCODE']);
                         @endphp
                         @foreach ($siparisler as $siparis)
