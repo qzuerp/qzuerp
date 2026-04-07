@@ -933,6 +933,7 @@ if (isset($kart_veri)) {
                           <th style="min-width:100px;">Kod</th>
                           <th style="min-width:100px;">Ad</th>
                           <th style="min-width:100px;">Miktar</th>
+                          <th style="min-width:100px;">Tedariçi</th>
                           <th style="min-width:100px;">Lot</th>
                           <th style="min-width:100px;">Seri No</th>
                           <th style="min-width:100px;">Termin Tarihi</th>
@@ -946,6 +947,7 @@ if (isset($kart_veri)) {
                           <th>Kod</th>
                           <th>Ad</th>
                           <th>Miktar</th>
+                          <th>Tedariçi</th>
                           <th>Lot</th>
                           <th>Seri No</th>
                           <th>Termin Tarihi</th>
@@ -956,17 +958,21 @@ if (isset($kart_veri)) {
 
                       <tbody>
                         @php
-                          $siparisler = DB::table($database.'stok46t')->where('AK','A')->get();
+                          $siparisler = DB::table($database.'stok46t as S46T')
+                          ->leftJoin('stok46e as S46E','S46T.EVRAKNO','=','S46E.EVRAKNO')
+                          ->where('AK','A')->get(['S46T.*','S46E.NOT','S46E.CARIHESAPCODE']);
                         @endphp
                         @foreach ($siparisler as $siparis)
                           <tr>
                             <td>{{ $siparis->KOD }}</td>
                             <td>{{ $siparis->STOK_ADI }}</td>
                             <td>{{ $siparis->SF_MIKTAR }}</td>
+                            <td>{{ $siparis->CARIHESAPCODE }}</td>
                             <td>{{ $siparis->LOTNUMBER }}</td>
                             <td>{{ $siparis->SERINO }}</td>
                             <td>{{ $siparis->TERMIN_TAR }}</td>
                             <td>{{ $siparis->NOT1 }}</td>
+                            <td>{{ $siparis->NOT }}</td>
                             <td>{{ $siparis->ARTNO }}</td>
                           </tr>
                         @endforeach
@@ -1574,6 +1580,15 @@ $(document).ready(function() {
       "</td>";
     htmlCode += " <td><input type='text' readonly id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"' disabled><input type='hidden' class='form-control' name='MPSNO[]' value='"+satirEkleInputs.SIP_FILL+"'></td> ";
+    htmlCode += '<td class="d-flex">' +
+              '<input type="text" class="form-control" id="SIPARTNO-' + TRNUM_FILL + '" name="SIPARTNO[]" value="" readonly>' +
+              '<span class="d-flex -btn">' +
+                '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal5" ' +
+                'onclick="getSip(\'' + TRNUM_FILL + '\')" type="button">' +
+                  '<span class="fa-solid fa-magnifying-glass"></span>' +
+                '</button>' +
+              '</span>' +
+            '</td>';
     htmlCode += " <td><input type='text' readonly id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
     htmlCode += " <td><input type='text' readonly id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
     htmlCode += " <td><input type='text' readonly id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";

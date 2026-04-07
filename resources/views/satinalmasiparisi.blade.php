@@ -620,6 +620,7 @@
                           $TARIH_B     = trim($_GET['TARIH_B']     ?? '');
                           $TARIH_E     = trim($_GET['TARIH_E']     ?? '');
                           $DURUM       = isset($_GET['DURUM']) ? 'A' : 'K';
+                          
 
                           $bindings  = [];
                           $sql_sorgu = "SELECT S46E.AK, S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.*
