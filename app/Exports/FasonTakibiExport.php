@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class FasonTakibiExport implements FromView, WithDrawings, WithColumnWidths
+class FasonTakibiExport implements FromView, WithColumnWidths
 {
     protected $tumEvraklar;
 
@@ -24,22 +24,22 @@ class FasonTakibiExport implements FromView, WithDrawings, WithColumnWidths
         ]);
     }
 
-    public function drawings()
-    {
-        $drawings = [];
-        foreach ($this->tumEvraklar as $index => $item) {
-            if (isset($item->DOSYA) && file_exists(public_path('dosyalar/' . $item->DOSYA))) {
-                $drawing = new Drawing();
-                $drawing->setName($item->KOD);
-                $drawing->setDescription($item->STOK_ADI);
-                $drawing->setPath(public_path('dosyalar/' . $item->DOSYA));
-                $drawing->setHeight(80);
-                $drawing->setCoordinates('A' . ($index + 2)); 
-                $drawings[] = $drawing;
-            }
-        }
-        return $drawings;
-    }
+    // public function drawings()
+    // {
+    //     $drawings = [];
+    //     foreach ($this->tumEvraklar as $index => $item) {
+    //         if (isset($item->DOSYA) && file_exists(public_path('dosyalar/' . $item->DOSYA))) {
+    //             $drawing = new Drawing();
+    //             $drawing->setName($item->KOD);
+    //             $drawing->setDescription($item->STOK_ADI);
+    //             $drawing->setPath(public_path('dosyalar/' . $item->DOSYA));
+    //             $drawing->setHeight(80);
+    //             $drawing->setCoordinates('A' . ($index + 2)); 
+    //             $drawings[] = $drawing;
+    //         }
+    //     }
+    //     return $drawings;
+    // }
 
     public function columnWidths(): array
     {

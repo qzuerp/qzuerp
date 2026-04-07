@@ -29,7 +29,7 @@
     </thead>
     <tbody>
         @foreach ($tumEvraklar as $item)
-            <tr style="height: 65px;"> {{-- Resimler sığsın diye satırı yükselttik --}}
+            <tr> {{-- Resimler sığsın diye satırı yükselttik --}}
                 <!-- <td></td> -->
                 <td>{{ $item->KOD }}</td>
                 <td>{{ $item->STOK_ADI }}</td>

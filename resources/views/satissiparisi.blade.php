@@ -708,7 +708,7 @@
                           if ($TARIH_E !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR <= '".$TARIH_E."'";
 
                           $sql_sorgu .= "AND S40E.AK != 'K'";
-                          $sql_sorgu .= "AND S40T.AK IS NULL";
+                          $sql_sorgu .= "AND S40T.AK IS NOT NULL";
                           
                           $table = DB::select($sql_sorgu);
 

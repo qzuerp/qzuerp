@@ -484,185 +484,208 @@
                     $cari00 = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
                   @endphp
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Stok Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="KOD_B" id="KOD_B" class="form-control select2 js-example-basic-single" req
-                      style=" height: 30PX">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
+                  {{-- ── Filtre Kartı ── --}}
+                  <div style="background:#fff; border:0.5px solid #e5e7eb; border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:1.5rem;">
+                    <p style="font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9ca3af; margin-bottom:1rem;">Filtrele</p>
+
+                    {{-- Stok Kodu --}}
+                    <div style="display:grid; grid-template-columns:120px 1fr 1fr; gap:10px; align-items:center; margin-bottom:10px;">
+                      <label style="font-size:13px; font-weight:500; color:#374151;">Stok Kodu</label>
+                      <select name="KOD_B" id="KOD_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php
+                          echo "<option value=''>Başlangıç</option>";
+                          foreach ($stok00 as $veri) {
+                            if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                              echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
                           }
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="KOD_E" id="KOD_E" class="form-control select2 js-example-basic-single" req
-                      style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($stok00 as $key => $veri) {
-                          if (!is_null($veri->KOD) && trim($veri->KOD) !== '') {
-                            echo "<option value ='" . $veri->KOD . "' >" . $veri->KOD . " - " . $veri->AD . "</option>";
+                        @endphp
+                      </select>
+                      <select name="KOD_E" id="KOD_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php
+                          echo "<option value=''>Bitiş</option>";
+                          foreach ($stok00 as $veri) {
+                            if (!is_null($veri->KOD) && trim($veri->KOD) !== '')
+                              echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " - " . $veri->AD . "</option>";
                           }
-                        }
+                        @endphp
+                      </select>
+                    </div>
 
-                      @endphp
-                    </select>
+                    {{-- Müşteri Kodu --}}
+                    <div style="display:grid; grid-template-columns:120px 1fr 1fr; gap:10px; align-items:center; margin-bottom:10px;">
+                      <label style="font-size:13px; font-weight:500; color:#374151;">Müşteri Kodu</label>
+                      <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php
+                          echo "<option value=''>Başlangıç</option>";
+                          foreach ($cari00 as $veri) {
+                            $selected = ($veri->KOD == @$kart_veri->CARIHESAPCODE) ? " selected" : "";
+                            echo "<option value='" . $veri->KOD . "'" . $selected . ">" . $veri->KOD . " | " . $veri->AD . "</option>";
+                          }
+                        @endphp
+                      </select>
+                      <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
+                        @php
+                          echo "<option value=''>Bitiş</option>";
+                          foreach ($cari00 as $veri)
+                            echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
+                        @endphp
+                      </select>
+                    </div>
+
+                    {{-- Tarih --}}
+                    <div style="display:grid; grid-template-columns:120px 1fr 1fr; gap:10px; align-items:center; margin-bottom:1.25rem;">
+                      <label style="font-size:13px; font-weight:500; color:#374151;">Tarih</label>
+                      <input type="date" class="form-control" name="TARIH_B" id="TARIH_B" style="height:34px; font-size:13px;">
+                      <input type="date" class="form-control" name="TARIH_E" id="TARIH_E" style="height:34px; font-size:13px;">
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px; margin-right:4px;">
+                      <input type="checkbox" name="DURUM" id="DURUM">
+                      <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Aktif</label>
+                    </div>
+                    {{-- Aktif/Pasif + Butonlar --}}
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                      
+
+                      <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele"
+                        style="font-size:13px; height:34px; padding:0 16px;">
+                        <i class="fa fa-filter"></i>&nbsp; Süz
+                      </button>
+                      <button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')"
+                        style="font-size:13px; height:34px; padding:0 16px;">
+                        <i class="fa-solid fa-file-excel"></i>&nbsp; Excel
+                      </button>
+                      <button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')"
+                        style="font-size:13px; height:34px; padding:0 16px;">
+                        <i class="fa-solid fa-file-word"></i>&nbsp; Word
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="printTable('example2')"
+                        style="font-size:13px; height:34px; padding:0 16px;">
+                        <i class="fa fa-print"></i>&nbsp; Yazdır
+                      </button>
+                    </div>
                   </div>
-                  </br></br>
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Müşteri Kodu</label>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control select2 js-example-basic-single"
-                      req style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($cari00 as $key => $veri) {
-                          $selected = ($veri->KOD == @$kart_veri->CARIHESAPCODE) ? " selected" : "";
-                          echo "<option value='" . $veri->KOD . "'" . $selected . ">" . $veri->KOD . " | " . $veri->AD . "</option>";
-                        }
-                      @endphp
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <select name="TEDARIKCI_E" id="TEDARIKCI_E" class="form-control select2 js-example-basic-single"
-                      req style="height: 30px;">
-                      @php
-                        echo "<option value =' ' selected> </option>";
-                        foreach ($cari00 as $key => $veri) {
-                          echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                        }
-                      @endphp
-                    </select>
-                  </div></br></br>
+                  @php if (isset($_GET['SUZ'])): @endphp
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Tarih</label>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_B" id="TARIH_B">
-                  </div>
-                  <div class="col-sm-3">
-                    <input type="date" class="form-control" name="TARIH_E" id="TARIH_E">
-                  </div><br><br>
+                  <style>
+                    .badge-gecmis { background:#FEE2E2; color:#991B1B; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-yakin  { background:#FED7AA; color:#9A3412; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-yakin2 { background:#FEF08A; color:#854D0E; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-yakin3 { background:#FEF9C3; color:#854D0E; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-normal { background:#D1FAE5; color:#065F46; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-bos    { background:#F3F4F6; color:#6B7280; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+                    .badge-acik   { background:#DCFCE7; color:#166534; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; }
+                    .badge-kapali { background:#F3F4F6; color:#6B7280; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; }
+                  </style>
 
+                  <div style="overflow-x:auto; border-radius:12px; border:0.5px solid #e5e7eb; background:#fff; padding:1rem;">
+                    <table id="example2" class="table table-hover table-bordered text-center" data-page-length="500" style="font-size:0.75em;">
+                      <thead>
+                        <tr>
+                          <th>Sipariş No</th>
+                          <th>Tedarikçi</th>
+                          <th>Stok Kodu</th>
+                          <th>Stok Adı</th>
+                          <th>Lot No</th>
+                          <th>Seri No</th>
+                          <th>İşlem Mik.</th>
+                          <th>İşlem Br.</th>
+                          <th>Bakiye</th>
+                          <th>Termin Tar.</th>
+                          <th>Termin Durumu</th>
+                          <th>Açık/Kapalı</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>Sipariş No</th>
+                          <th>Tedarikçi</th>
+                          <th>Stok Kodu</th>
+                          <th>Stok Adı</th>
+                          <th>Lot No</th>
+                          <th>Seri No</th>
+                          <th>İşlem Mik.</th>
+                          <th>İşlem Br.</th>
+                          <th>Bakiye</th>
+                          <th>Termin Tar.</th>
+                          <th>Termin Durumu</th>
+                          <th>Açık/Kapalı</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        @php
+                          $KOD_B       = trim($_GET['KOD_B']       ?? '');
+                          $KOD_E       = trim($_GET['KOD_E']       ?? '');
+                          $TEDARIKCI_B = trim($_GET['TEDARIKCI_B'] ?? '');
+                          $TEDARIKCI_E = trim($_GET['TEDARIKCI_E'] ?? '');
+                          $TARIH_B     = trim($_GET['TARIH_B']     ?? '');
+                          $TARIH_E     = trim($_GET['TARIH_E']     ?? '');
+                          $DURUM       = isset($_GET['DURUM']) ? 'A' : 'K';
 
-                  <label for="minDeger" class="col-sm-2 col-form-label">Aktif/Pasif</label>
-                  <div class="col-sm-3">
-                    <input type="checkbox" class="" name="DURUM" id="DURUM">
-                  </div><br><br>
+                          $bindings  = [];
+                          $sql_sorgu = "SELECT S46E.AK, S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.*
+                                        FROM {$database}STOK46E S46E
+                                        LEFT JOIN {$database}cari00  C00  ON C00.KOD   = S46E.CARIHESAPCODE
+                                        LEFT JOIN {$database}STOK46T S46T ON S46T.EVRAKNO = S46E.EVRAKNO
+                                        WHERE 1 = 1";
 
-                  <div class="col-sm-3">
-                    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele"
-                      value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
-                  </div>
+                          if ($KOD_B       !== '') { $sql_sorgu .= " AND S46T.KOD            >= ?"; $bindings[] = $KOD_B; }
+                          if ($KOD_E       !== '') { $sql_sorgu .= " AND S46T.KOD            <= ?"; $bindings[] = $KOD_E; }
+                          if ($TEDARIKCI_B !== '') { $sql_sorgu .= " AND C00.KOD             >= ?"; $bindings[] = $TEDARIKCI_B; }
+                          if ($TEDARIKCI_E !== '') { $sql_sorgu .= " AND C00.KOD             <= ?"; $bindings[] = $TEDARIKCI_E; }
+                          if ($TARIH_B     !== '') { $sql_sorgu .= " AND S46E.TARIH          >= ?"; $bindings[] = $TARIH_B; }
+                          if ($TARIH_E     !== '') { $sql_sorgu .= " AND S46E.TARIH          <= ?"; $bindings[] = $TARIH_E; }
 
-                  <div class="table-responsive mb-4">
-                    @php
-                        if (isset($_GET['SUZ'])) {
-                    @endphp
-                    <button type="button" class="btn btn-success mb-2" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+                          $sql_sorgu .= " AND S46E.AK = ?";
+                          $bindings[] = $DURUM;
 
-                    <table id="example2" class="table table-hover table-bordered text-center" data-page-length="50" style="font-size: 0.75em">
-                        <thead>
-                            <tr class="bg-primary text-white">
-                                <th>Sipariş No</th>
-                                <th>Tedarikçi</th>
-                                <th>Stok Kodu</th>
-                                <th>Stok Adı</th>
-                                <th>Lot No</th>
-                                <th>Seri No</th>
-                                <th>İşlem Mik.</th>
-                                <th>İşlem Br.</th>
-                                <th>Bakiye</th>
-                                <th>Termin Tar.</th>
-                                <th>A/K</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr class="bg-info text-white">
-                                <th>Sipariş No</th>
-                                <th>Tedarikçi</th>
-                                <th>Stok Kodu</th>
-                                <th>Stok Adı</th>
-                                <th>Lot No</th>
-                                <th>Seri No</th>
-                                <th>İşlem Mik.</th>
-                                <th>İşlem Br.</th>
-                                <th>Bakiye</th>
-                                <th>Termin Tar.</th>
-                                <th>A/K</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @php
-                                $KOD_B       = trim($_GET['KOD_B'] ?? '');
-                                $KOD_E       = trim($_GET['KOD_E'] ?? '');
-                                $TEDARIKCI_B = trim($_GET['TEDARIKCI_B'] ?? '');
-                                $TEDARIKCI_E = trim($_GET['TEDARIKCI_E'] ?? '');
-                                $TARIH_B     = trim($_GET['TARIH_B'] ?? '');
-                                $TARIH_E     = trim($_GET['TARIH_E'] ?? '');
-                                $DURUM       = isset($_GET['DURUM']) ? 'A' : 'K';
+                          $results = DB::select($sql_sorgu, $bindings);
+                          $bugun   = \Carbon\Carbon::today();
 
-                                $bindings = [];
-                                $sql_sorgu = "SELECT S46E.AK, S46E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S46T.* FROM {$database}STOK46E S46E
-                                              LEFT JOIN {$database}cari00 C00 ON C00.KOD = S46E.CARIHESAPCODE
-                                              LEFT JOIN {$database}STOK46T S46T ON S46T.EVRAKNO = S46E.EVRAKNO
-                                              WHERE 1 = 1";
+                          foreach ($results as $row) {
 
-                                if ($KOD_B !== '') {
-                                    $sql_sorgu .= " AND S46T.KOD >= ?";
-                                    $bindings[] = $KOD_B;
-                                }
-                                if ($KOD_E !== '') {
-                                    $sql_sorgu .= " AND S46T.KOD <= ?";
-                                    $bindings[] = $KOD_E;
-                                }
-                                if ($TEDARIKCI_B !== '') {
-                                    $sql_sorgu .= " AND C00.KOD >= ?";
-                                    $bindings[] = $TEDARIKCI_B;
-                                }
-                                if ($TEDARIKCI_E !== '') {
-                                    $sql_sorgu .= " AND C00.KOD <= ?";
-                                    $bindings[] = $TEDARIKCI_E;
-                                }
-                                if ($TARIH_B !== '') {
-                                    $sql_sorgu .= " AND S46E.TARIH >= ?";
-                                    $bindings[] = $TARIH_B;
-                                }
-                                if ($TARIH_E !== '') {
-                                    $sql_sorgu .= " AND S46E.TARIH <= ?";
-                                    $bindings[] = $TARIH_E;
-                                }
+                            // ── Termin durumu badge ──────────────────────────────────────
+                            $terminBadge = '<span class="badge-bos">—</span>';
+                            $fark = null;
+                            if (!empty($row->TERMIN_TAR)) {
+                              try {
+                                $termin = \Carbon\Carbon::parse($row->TERMIN_TAR);
+                                $fark   = $bugun->diffInDays($termin, false);
 
-                                $sql_sorgu .= " AND S46E.AK = ?";
-                                $bindings[] = $DURUM;
+                                if      ($fark < 0)   $terminBadge = '<span class="badge-gecmis">'.abs($fark).' gün geçti</span>';
+                                elseif  ($fark <= 10) $terminBadge = '<span class="badge-yakin">'.$fark.' gün kaldı</span>';
+                                elseif  ($fark <= 20) $terminBadge = '<span class="badge-yakin2">'.$fark.' gün kaldı</span>';
+                                elseif  ($fark <= 30) $terminBadge = '<span class="badge-yakin3">'.$fark.' gün kaldı</span>';
+                                else                  $terminBadge = '<span class="badge-normal">'.$fark.' gün kaldı</span>';
+                              } catch (\Exception $e) {}
+                            }
 
-                                $results = DB::select($sql_sorgu, $bindings);
+                            // ── Açık / Kapalı badge ─────────────────────────────────────
+                            $akBadge = (!empty($row->AK) && $row->AK === 'K')
+                              ? '<span class="badge-kapali">Kapalı</span>'
+                              : '<span class="badge-acik">Açık</span>';
 
-                                foreach ($results as $row) {
-                                    echo "<tr>";
-                                    echo "<td>" . e($row->SIPNUM ?? '') . "</td>";
-                                    echo "<td>" . e($row->TEDARIKCI ?? '') . "</td>";
-                                    echo "<td>" . e($row->KOD ?? '') . "</td>";
-                                    echo "<td>" . e($row->STOK_ADI ?? '') . "</td>";
-                                    echo "<td>" . e($row->LOTNUMBER ?? '') . "</td>";
-                                    echo "<td>" . e($row->SERINO ?? '') . "</td>";
-                                    echo "<td>" . e($row->SF_MIKTAR ?? '') . "</td>";
-                                    echo "<td>" . e($row->SF_SF_UNIT ?? '') . "</td>";
-                                    echo "<td>" . e($row->SF_BAKIYE ?? '') . "</td>";
-                                    echo "<td>" . e($row->TERMIN_TAR ?? '') . "</td>";
-                                    echo "<td>" . e($row->AK ?? '') . "</td>";
-                                    echo "</tr>";
-                                }
-                            @endphp
-                        </tbody>
+                            echo "<tr>";
+                              echo "<td><b>" . e($row->SIPNUM    ?? '') . "</b></td>";
+                              echo "<td>"    . e($row->TEDARIKCI ?? '') . "</td>";
+                              echo "<td><code style='font-size:12px'>" . e($row->KOD      ?? '') . "</code></td>";
+                              echo "<td>"    . e($row->STOK_ADI  ?? '') . "</td>";
+                              echo "<td>"    . e($row->LOTNUMBER ?? '—') . "</td>";
+                              echo "<td>"    . e($row->SERINO    ?? '—') . "</td>";
+                              echo "<td style='text-align:right'>" . e($row->SF_MIKTAR   ?? '') . "</td>";
+                              echo "<td>"    . e($row->SF_SF_UNIT ?? '') . "</td>";
+                              echo "<td style='text-align:right'>" . e($row->SF_BAKIYE   ?? '') . "</td>";
+                              echo "<td style='white-space:nowrap'>" . e($row->TERMIN_TAR ?? '—') . "</td>";
+                              echo "<td data-order='" . ($fark ?? 9999) . "'>" . $terminBadge . "</td>";
+                              echo "<td>" . $akBadge . "</td>";
+                            echo "</tr>";
+                          }
+                        @endphp
+                      </tbody>
                     </table>
-                    @php
-                        }
-                    @endphp
-                </div>
+                  </div>
+
+                  @php endif; @endphp
                 </div>
 
                 <div class="tab-pane" id="baglantiliDokumanlar">
