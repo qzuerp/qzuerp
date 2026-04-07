@@ -542,7 +542,7 @@
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                       <div style="">
                         <input type="checkbox" checked name="DURUM" id="DURUM">
-                        <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Aktif</label>
+                        <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Açık/Kapalı</label>
                       </div>
 
                       <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele"
@@ -636,7 +636,7 @@
                           if ($TARIH_B     !== '') { $sql_sorgu .= " AND S46E.TARIH          >= ?"; $bindings[] = $TARIH_B; }
                           if ($TARIH_E     !== '') { $sql_sorgu .= " AND S46E.TARIH          <= ?"; $bindings[] = $TARIH_E; }
 
-                          $sql_sorgu .= " AND S46E.AK = ?";
+                          $sql_sorgu .= " AND S46T.AK = ?";
                           $bindings[] = $DURUM;
 
                           $results = DB::select($sql_sorgu, $bindings);
