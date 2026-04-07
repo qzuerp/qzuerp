@@ -1549,9 +1549,9 @@
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 							<i class="fa-solid fa-times me-1"></i> Kapat
 						</button>
-						<button type="button" class="btn btn-success" id="uygula" data-bs-dismiss="modal">
+						<!-- <button type="button" class="btn btn-success" id="uygula" data-bs-dismiss="modal">
 							<i class="fa-solid fa-save me-1"></i> Güncelle
-						</button>
+						</button> -->
 					</div>
 				</div>
 			</div>
