@@ -105,16 +105,18 @@
         Left Join {$database}STOK00 S00 ON S00.KOD = S01.KOD 
         Left Join {$database}GDEF00 GDF ON GDF.KOD = S01.AMBCODE 
         Left Join (
-            Select KOD,LOTNUMBER, created_at, MAX(EVRAKNO) AS EVRAKNO
+            Select KOD,LOTNUMBER, created_at, MAX(EVRAKNO) AS EVRAKNO,SERINO
             From {$database}stok63t
-            Group By KOD, created_at, EVRAKNO,LOTNUMBER
+            Group By KOD, created_at, EVRAKNO,LOTNUMBER,SERINO
         ) S63T_MAX 
             ON S01.KOD = S63T_MAX.KOD  
             AND S63T_MAX.LOTNUMBER = S01.LOTNUMBER
+            AND S63T_MAX.SERINO = S01.SERINO
         Left Join {$database}stok63t S63T 
             ON S63T.KOD = S63T_MAX.KOD 
             AND S63T.EVRAKNO = S63T_MAX.EVRAKNO 
             AND S63T.LOTNUMBER = S01.LOTNUMBER
+            AND S63T.SERINO = S01.SERINO
         left join {$database}dosyalar00 D00 
             ON D00.EVRAKNO = S01.KOD 
             AND D00.EVRAKTYPE = 'STOK00' 
