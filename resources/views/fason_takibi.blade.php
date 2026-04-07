@@ -139,23 +139,6 @@
             padding: 20px 25px;
         }
         
-        .export-btn {
-            padding: 5px 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .export-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .export-btn i {
-            margin-right: 8px;
-        }
-        
         #example2 {
             border-radius: 0 0 15px 15px;
             overflow: hidden;

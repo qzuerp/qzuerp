@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr style="background-color: #f2f2f2; font-weight: bold;">
-            <th>Resim</th>
+            <!-- <th>Resim</th> -->
             <th>Kod</th>
             <th>Stok Adı</th>
             <th>Stok Adı 2</th>
@@ -30,7 +30,7 @@
     <tbody>
         @foreach ($tumEvraklar as $item)
             <tr style="height: 65px;"> {{-- Resimler sığsın diye satırı yükselttik --}}
-                <td></td> {{-- Burası resim için boş kalmalı --}}
+                <!-- <td></td> -->
                 <td>{{ $item->KOD }}</td>
                 <td>{{ $item->STOK_ADI }}</td>
                 <td>{{ $item->STOK_ADI2 }}</td>
