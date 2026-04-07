@@ -18,7 +18,7 @@
 		$ekran = "teklif_fiyat_analiz";
 		$ekranRumuz = "TEKL21";
 		$ekranAdi = "Teklif Fiyat Analizi (Maliyetlendirme)";
-		$ekranLink = "V2_teklif_fiyat_analiz";
+		$ekranLink = "V2_teklif_fiyat_analiz_user";
 
 		$ekranTableE = $database . "tekl20e";
 		$ekranTableT = $database . "tekl20t";
