@@ -15,7 +15,7 @@
 		$kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
 		$kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
-		$ekran = "teklif_fiyat_analiz";
+		$ekran = "teklif_fiyat_analiz_user";
 		$ekranRumuz = "TEKL21";
 		$ekranAdi = "Teklif Fiyat Analizi (Maliyetlendirme)";
 		$ekranLink = "V2_teklif_fiyat_analiz_user";
