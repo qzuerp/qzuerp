@@ -938,6 +938,7 @@ if (isset($kart_veri)) {
                           <th style="min-width:100px;">Seri No</th>
                           <th style="min-width:100px;">Termin Tarihi</th>
                           <th style="min-width:100px;">Not</th>
+                          <th style="min-width:100px;">Not 2</th>
                           <th style="min-width:100px;">Artno</th>
                         </tr>
                       </thead>
@@ -952,6 +953,7 @@ if (isset($kart_veri)) {
                           <th>Seri No</th>
                           <th>Termin Tarihi</th>
                           <th>Not</th>
+                          <th>Not 2</th>
                           <th>Artno</th>
                         </tr>
                       </tfoot>
@@ -960,7 +962,8 @@ if (isset($kart_veri)) {
                         @php
                           $siparisler = DB::table($database.'stok46t as S46T')
                           ->leftJoin('stok46e as S46E','S46T.EVRAKNO','=','S46E.EVRAKNO')
-                          ->where('AK','A')->get(['S46T.*','S46E.NOT','S46E.CARIHESAPCODE']);
+                          ->leftJoin('cari00 as C00','S46E.CARIHESAPCODE','=','C00.KOD')
+                          ->where('S46T.AK','A')->get(['S46T.*','S46E.NOT','C00.AD AS CARIHESAPCODE']);
                         @endphp
                         @foreach ($siparisler as $siparis)
                           <tr>
