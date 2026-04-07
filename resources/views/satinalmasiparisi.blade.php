@@ -518,8 +518,7 @@
                         @php
                           echo "<option value=''>Başlangıç</option>";
                           foreach ($cari00 as $veri) {
-                            $selected = ($veri->KOD == @$kart_veri->CARIHESAPCODE) ? " selected" : "";
-                            echo "<option value='" . $veri->KOD . "'" . $selected . ">" . $veri->KOD . " | " . $veri->AD . "</option>";
+                            echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
                           }
                         @endphp
                       </select>
@@ -538,13 +537,13 @@
                       <input type="date" class="form-control" name="TARIH_B" id="TARIH_B" style="height:34px; font-size:13px;">
                       <input type="date" class="form-control" name="TARIH_E" id="TARIH_E" style="height:34px; font-size:13px;">
                     </div>
-                    <div style="display:flex; align-items:center; gap:6px; margin-right:4px;">
-                      <input type="checkbox" name="DURUM" id="DURUM">
-                      <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Aktif</label>
-                    </div>
+
                     {{-- Aktif/Pasif + Butonlar --}}
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                      
+                      <div style="">
+                        <input type="checkbox" name="DURUM" id="DURUM">
+                        <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Aktif</label>
+                      </div>
 
                       <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele"
                         style="font-size:13px; height:34px; padding:0 16px;">
