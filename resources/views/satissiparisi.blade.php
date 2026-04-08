@@ -618,6 +618,10 @@
                     </div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                      <div style="">
+                        <input type="checkbox" checked name="DURUM" id="DURUM">
+                        <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Açık/Kapalı</label>
+                      </div>
                       <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele" style="font-size:13px; height:34px; padding: 0 16px;">
                         <i class="fa fa-filter"></i>&nbsp; Süz
                       </button>
@@ -695,6 +699,7 @@
                           $TEDARIKCI_E = isset($_GET['TEDARIKCI_E']) ? trim($_GET['TEDARIKCI_E']) : '';
                           $TARIH_B = isset($_GET['TARIH_B']) ? trim($_GET['TARIH_B']) : '';
                           $TARIH_E = isset($_GET['TARIH_E']) ? trim($_GET['TARIH_E']) : '';
+                          $DURUM = isset($_GET['DURUM']) ? 'IS NULL' : "= 'K'";
 
                           $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO, S00.REVNO
                             FROM '.$database.'STOK40E S40E
@@ -712,7 +717,7 @@
                           if ($TARIH_E !== '')     $sql_sorgu .= " AND S40T.TERMIN_TAR <= '".$TARIH_E."'";
 
                           // $sql_sorgu .= "AND S40E.AK != 'K'";
-                          $sql_sorgu .= "AND S40T.AK IS NULL";
+                          $sql_sorgu .= "AND S40T.AK ".$DURUM."";
                           
                           $table = DB::select($sql_sorgu);
 

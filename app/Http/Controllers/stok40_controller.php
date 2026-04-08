@@ -158,6 +158,7 @@ class stok40_controller extends Controller
         $TEDARIKCI_E = $request->input('TEDARIKCI_E');
         $TARIH_B = $request->input('TARIH_B');
         $TARIH_E = $request->input('TARIH_E');
+        $DURUM = $request->input('DURUM');
         $sonID = DB::table($firma . 'stok40e')->max('id');
 
         return redirect()->route('satissiparisi', [
@@ -168,7 +169,8 @@ class stok40_controller extends Controller
           'TEDARIKCI_E' => $TEDARIKCI_E,
           'TARIH_B' => $TARIH_B,
           'TARIH_E' => $TARIH_E,
-          'firma' => $firma
+          'firma' => $firma,
+          'DURUM' => $DURUM
         ]);
 
         break;
