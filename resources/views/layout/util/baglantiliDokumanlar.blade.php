@@ -134,4 +134,22 @@
           $('#loader').fadeOut(500);
       }, 1000);
   });
+
+  $('#dosyaTuruKodu').on('change', function() {
+    let secim = $(this).val();
+    
+    localStorage.setItem('kayitliDosyaTuru', secim);
+  });
+
+  $(document).ready(function() {
+    let kaydedilenDeger = localStorage.getItem('kayitliDosyaTuru');
+
+    if (kaydedilenDeger) {
+        $('#dosyaTuruKodu').val(kaydedilenDeger).trigger('change');
+    }
+
+    $('#dosyaTuruKodu').on('change', function() {
+        localStorage.setItem('kayitliDosyaTuru', $(this).val());
+    });
+});
 </script>
