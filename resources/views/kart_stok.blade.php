@@ -1184,6 +1184,7 @@
 												$join->on('D00.EVRAKNO', '=', DB::raw('CAST(C70.EVRAKNO AS NVARCHAR(50))'));
 											})
 											->where('C70.sapma_parca_no', '=', $mamul)
+											->where('D00.EVRAKTYPE', '=', 'TAKIPLISTE')
 											->get();
 										@endphp
 
