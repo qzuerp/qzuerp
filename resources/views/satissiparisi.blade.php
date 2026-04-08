@@ -194,6 +194,7 @@
                 <li class="nav-item" ><a href="#ihtiyac" class="nav-link" data-bs-toggle="tab">Sipariş ihtiyaçları</a></li>
                 <li class="" ><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
+                <li id="sapmabagliDokumanlarTab" class=""><a href="#SapmabagliDokumanlar" id="sapmabagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Bağlı Dokümanlar</a></li>
               </ul>
               <div class="tab-content">
 
@@ -772,6 +773,80 @@
 
                   @include('layout.util.baglantiliDokumanlar')
 
+                </div>
+                <div class="tab-pane" id="SapmabagliDokumanlar">
+                  @php
+                    $KODLAR = $t_kart_veri->pluck('KOD')->toArray();
+
+                    $dosyalar = DB::table($database.'dosyalar00 as D00')
+                        ->leftJoin($database.'cgc70 as C70', function($join) {
+                            $join->on('D00.EVRAKNO', '=', DB::raw('CAST(C70.EVRAKNO AS NVARCHAR(50))'));
+                        })
+                        ->whereIn('C70.sapma_parca_no', $KODLAR)
+                        ->get();
+                  @endphp
+
+                  <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                      <h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
+                    </div>
+                    <div class="card-body">
+                      <table class="table table-hover align-middle text-center" id="baglantiliDokumanlarTable">
+                        <thead class="table-light">
+                        <tr>
+                          <th style="width: 15%">Tür</th>
+                          <th style="width: 45%">Açıklama</th>
+                          <th style="width: 25%">Yüklenme Tarihi</th>
+                          <th style="width: 15%">İşlem</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                          <th style="width: 15%">Tür</th>
+                          <th style="width: 45%">Açıklama</th>
+                          <th style="width: 25%">Yüklenme Tarihi</th>
+                          <th style="width: 15%">İşlem</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                          @foreach ($dosyalar as $veri)
+                            @php 
+                              $fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null;
+                              $extension = strtolower(pathinfo($veri->DOSYA, PATHINFO_EXTENSION));
+                              $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                            @endphp
+                            <tr id="dosya_{{ $veri->id }}">
+                              <td>{{ $veri->DOSYATURU }}</td>
+                              <td>{{ $veri->ACIKLAMA }}</td>
+                              <td>{{ $veri->created_at }}</td>
+                              <td>
+                                @if ($fileUrl)
+                                  @if ($isImage)
+                                    <button type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#dokuman_modal"
+                                        class="btn btn-outline-primary btn-preview"
+                                        data-url="{{ $fileUrl }}">
+                                      <i class="fa fa-image"></i>
+                                    </button>
+                                  @else
+                                    <a href="{{ $fileUrl }}" target="_blank" class="btn btn-outline-primary">
+                                      <i class="fa fa-file"></i>
+                                    </a>
+                                  @endif
+                                @endif
+                                
+                                <a href="{{ route('dosya.indir', $veri->DOSYA) }}" 
+                                  class="btn btn-outline-primary download-link">
+                                  <i class="fa fa-download"></i>
+                                </a>
+                              </td>
+                            </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

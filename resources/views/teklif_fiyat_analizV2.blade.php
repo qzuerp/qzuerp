@@ -3612,13 +3612,20 @@
 			});
 
 
-			$('#KISI').on('change',function () {
+			$('#KISI').on('change', function () {
 				var kisi = $(this).val();
-				if(kisi != ''){
+
+				// Sadece '' değil, null ve undefined kontrolü de yapıyoruz
+				if (kisi && kisi.includes('|||')) {
 					var kisi_array = kisi.split('|||');
-					$('#AD_SOYAD').val(kisi_array[0]);
-					$('#SIRKET_IS_TEL').val(kisi_array[1]);
-					$('#SIRKET_EMAIL_1').val(kisi_array[2]);
+					
+					// Veri eksik gelirse diye varsayılan değer (|| '') ekliyoruz
+					$('#AD_SOYAD').val(kisi_array[0]?.trim() || '');
+					$('#SIRKET_IS_TEL').val(kisi_array[1]?.trim() || '');
+					$('#SIRKET_EMAIL_1').val(kisi_array[2]?.trim() || '');
+				} else {
+					// Eğer kişi seçili değilse veya format hatalıysa alanları temizle
+					$('#AD_SOYAD, #SIRKET_IS_TEL, #SIRKET_EMAIL_1').val('');
 				}
 			});
 
