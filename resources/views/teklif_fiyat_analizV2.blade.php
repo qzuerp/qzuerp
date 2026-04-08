@@ -3583,13 +3583,13 @@
 
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
 				// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
-				// htmlCode += " <td><input type='text' class='form-control' name='KAYNAKTYPE[]' value='" + satirEkleInputs.KAYNAK_TIPI + "' readonly></td> ";
 				htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "' readonly></td> ";
+				htmlCode += " <td>-</td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KOD + "'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='KODADI[]' value='" + satirEkleInputs.KODADI + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";
-				htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='" + satirEkleInputs.ISLEM_BIRIMI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='" + satirEkleInputs.FIYAT + "' ></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='" + satirEkleInputs.ISLEM_BIRIMI + "'></td> ";
+				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='" + satirEkleInputs.FIYAT + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='DOLAR_FIYAT[]' value='" + satirEkleInputs.DOLAR_FIYAT + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='" + satirEkleInputs.TUTAR + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='TERMIN_TARIHI[]' value='" + satirEkleInputs.TERMIN_TAR + "'></td> ";

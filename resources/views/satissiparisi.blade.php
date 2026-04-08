@@ -656,6 +656,7 @@
                           <th>Müş. Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
+                          <th>Rev No</th>
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
@@ -674,6 +675,7 @@
                           <th>Müş. Sipariş No</th>
                           <th>Stok Kodu</th>
                           <th>Stok Adı</th>
+                          <th>Rev No</th>
                           <th>Lot No</th>
                           <th>Seri No</th>
                           <th>İşlem Mik.</th>
@@ -694,10 +696,11 @@
                           $TARIH_B = isset($_GET['TARIH_B']) ? trim($_GET['TARIH_B']) : '';
                           $TARIH_E = isset($_GET['TARIH_E']) ? trim($_GET['TARIH_E']) : '';
 
-                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO
+                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO, S00.REVNO
                             FROM '.$database.'STOK40E S40E
                             LEFT JOIN '.$database.'cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
                             LEFT JOIN '.$database.'STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
+                            LEFT JOIN '.$database.'stok00 S00 ON S00.KOD = S40T.KOD
                             LEFT JOIN '.$database.'mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO AND M10E.MAMULSTOKKODU = S40T.KOD
                             WHERE 1=1';
 
@@ -750,6 +753,7 @@
                               echo "<td>".$row->CHSIPNO."</td>";
                               echo "<td><code style='font-size:12px'>".$row->KOD."</code></td>";
                               echo "<td>".$row->STOK_ADI."</td>";
+                              echo "<td>".$row->REVNO."</td>";
                               echo "<td>".($row->LOTNUMBER ?? '—')."</td>";
                               echo "<td>".($row->SERINO ?? '—')."</td>";
                               echo "<td style='text-align:right'>".$row->SF_MIKTAR."</td>";
