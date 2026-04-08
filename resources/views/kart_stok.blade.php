@@ -216,24 +216,31 @@
 									<li class="nav-item">
 										<a class="nav-link active" class="nav-link" data-bs-toggle="tab" href="#grupkodu">Grup Kodları</a>
 									</li>
+
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#ozellikleri">Özellikleri</a>
 									</li>
-									<li class="nav-item">
+
+									<!-- <li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#fiyatlari">Fiyatları</a>
-									</li>
+									</li> -->
+
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#liste" id="liste-tab">Liste</a>
 									</li>
+
 									<li class="nav-item">
 										<a class="nav-link" class="nav-link" data-bs-toggle="tab" href="#ders">Öğrenilmiş Dersler</a>
 									</li>
+
 									<li class="nav-item" id="baglantiliDokumanlarTab">
 										<a class="nav-link" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab" href="#baglantiliDokumanlar">
 										<i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar
 										</a>
 									</li>
+
 									<li id="bagliDokumanlarTab" class=""><a href="#bagliDokumanlar" id="bagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Bağlı Dokümanlar</a></li>
+									<li id="sapmabagliDokumanlarTab" class=""><a href="#SapmabagliDokumanlar" id="sapmabagliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-link"></i> Sapma Bağlı Dokümanlar</a></li>
 								</ul>	
 
 
@@ -1104,6 +1111,80 @@
 										@php
 											$mamul = @$kart_veri->KOD;
 											$dosyalar = DB::table($database.'dosyalar00')->where('EVRAKNO', $mamul)->get();
+										@endphp
+
+										<div class="card shadow-sm mt-4">
+											<div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+												<h6 class="mb-0"><i class="fa fa-folder-open me-2"></i>Ekli Dosyalar</h6>
+											</div>
+											<div class="card-body">
+												<table class="table table-hover align-middle text-center" id="baglantiliDokumanlarTable">
+													<thead class="table-light">
+													<tr>
+														<th style="width: 15%">Tür</th>
+														<th style="width: 45%">Açıklama</th>
+														<th style="width: 25%">Yüklenme Tarihi</th>
+														<th style="width: 15%">İşlem</th>
+													</tr>
+													</thead>
+													<tfoot>
+													<tr>
+														<th style="width: 15%">Tür</th>
+														<th style="width: 45%">Açıklama</th>
+														<th style="width: 25%">Yüklenme Tarihi</th>
+														<th style="width: 15%">İşlem</th>
+													</tr>
+													</tfoot>
+													<tbody>
+														@foreach ($dosyalar as $veri)
+															@php 
+																$fileUrl = $veri->DOSYA ? asset('dosyalar/' . $veri->DOSYA) : null;
+																$extension = strtolower(pathinfo($veri->DOSYA, PATHINFO_EXTENSION));
+																$isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+															@endphp
+															<tr id="dosya_{{ $veri->id }}">
+																<td>{{ $veri->DOSYATURU }}</td>
+																<td>{{ $veri->ACIKLAMA }}</td>
+																<td>{{ $veri->created_at }}</td>
+																<td>
+																	@if ($fileUrl)
+																		@if ($isImage)
+																			<button type="button"
+																					data-bs-toggle="modal"
+																					data-bs-target="#dokuman_modal"
+																					class="btn btn-outline-primary btn-preview"
+																					data-url="{{ $fileUrl }}">
+																				<i class="fa fa-image"></i>
+																			</button>
+																		@else
+																			<a href="{{ $fileUrl }}" target="_blank" class="btn btn-outline-primary">
+																				<i class="fa fa-file"></i>
+																			</a>
+																		@endif
+																	@endif
+																	
+																	<a href="{{ route('dosya.indir', $veri->DOSYA) }}" 
+																		class="btn btn-outline-primary download-link">
+																		<i class="fa fa-download"></i>
+																	</a>
+																</td>
+															</tr>
+														@endforeach
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<div class="tab-pane" id="SapmabagliDokumanlar">
+										@php
+											$mamul = @$kart_veri->KOD;
+											$dosyalar = DB::table($database.'dosyalar00 as D00')
+											->leftJoin($database.'cgc70 as C70', function($join) {
+												$join->on('D00.EVRAKNO', '=', DB::raw('CAST(C70.EVRAKNO AS NVARCHAR(50))'));
+											})
+											->where('C70.sapma_parca_no', '=', $mamul)
+											->get();
 										@endphp
 
 										<div class="card shadow-sm mt-4">

@@ -90,9 +90,6 @@ class teklif_fiyat_analizV2 extends Controller
             $u = Auth::user();
         }
         $firma = trim($u->firma) . '.dbo.';
-        // $firma = $request->input('firma').'.dbo.';
-
-        // Header bilgileri
 
         $EVRAKNO = $request->input('evrakSec') ?? 1;
         $TARIH = $request->input('TARIH');
@@ -201,7 +198,7 @@ class teklif_fiyat_analizV2 extends Controller
                     'ESAS_MIKTAR' => $ESAS_MIKTAR,
                     'TEKLIF_TUTAR' => $TOPLAM_TUTAR,
                     'ENDEKS' => $ENDEKS,
-                    '$GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
+                    'GECERLILIK_TARIHI' => $GECERLILIK_TARIHI,
                     'MUSTERI_TEKLIF_TARIHI' => $MUSTERI_TEKLIF_TARIHI,
                     'MUSTERI_TEKLIF_NO' => $MUSTERI_TEKLIF_NO,
                     'STATUS' => $STATUS,

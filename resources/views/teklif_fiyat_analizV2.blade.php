@@ -1742,7 +1742,7 @@
 										<label>Kişiler</label>
 										<select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KISI"
 											id="KISI" class="form-control js-example-basic-single">
-											<option value=" ">Seç</option>
+											<option value="">Seç</option>
 											@php 
 												$kontaklar = DB::table($database . 'kontakt00')->get();
 											@endphp
@@ -1829,7 +1829,7 @@
 																		Sıra No
 																	</td>
 																	<td>
-																		<div class="d-flex" style="display: flex;">
+																		<!-- <div class="d-flex" style="display: flex;">
 																			<select class="STOK_KODU_SHOW form-control select2 txt-radius KOD"
 																				data-bs-toggle="tooltip" data-bs-placement="top"
 																				data-bs-title="KOD" data-name="KOD"
@@ -1848,15 +1848,15 @@
 																						class="fa-solid fa-magnifying-glass txt-radius"></span>
 																				</button>
 																			</span>
-																		</div>
-																		<input type="hidden" id="STOK_KOD">
+																		</div> -->
+																		<input type="text" class="form-control" id="STOK_KOD">
 																	</td>
 																	<td>
 																		<input type="text" class="form-control"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="STOK_AD1" data-isim="Kod Adı"
-																			maxlength="255" style="color: red" name=""
-																			id="KODADI" readonly>
+																			maxlength="255" style="color: red"
+																			id="KODADI">
 																	</td>
 																	<td>
 																		<input type="text" name="" id="ISLEM_MIKTARI"
@@ -1868,7 +1868,7 @@
 																		<input type="text" name="" id="ISLEM_BIRIMI"
 																			data-bs-toggle="tooltip" data-bs-placement="top"
 																			data-bs-title="SF_SF_UNIT" data-isim="İşlem Birimi"
-																			class="form-control" value="" readonly>
+																			class="form-control" value="">
 																	</td>
 																	<td>
 																		<input type="text" name="" id="FIYAT"
@@ -2567,7 +2567,8 @@
 					digitGroupSeparator: '.',
 					decimalCharacter: ',',
 					decimalPlaces: 2,
-					unformatOnSubmit: true
+					unformatOnSubmit: true,
+					wheelOn: 'none',
 				};
 
 				const selectorList = [
@@ -3343,8 +3344,12 @@
 				$('#TARIH').val(" ");
 				$('#UNVAN_1').val("");
 				$('#UNVAN_2').val("");
-				$('#NOT_1').val("");
-				$('#NOT_2').val("");
+				$('#NOTS_1').val("");
+				$('#NOTS_2').val("");
+				$('#GECERLILIK_TARIHI').val("");
+				$('#AD_SOYAD').val("");
+				$('#SIRKET_IS_TEL').val("");
+				$('#SIRKET_EMAIL_1').val("");
 
 				emptyInputs('satirEkle');
 			}
@@ -3358,7 +3363,6 @@
 					}
 				});
 
-				// Eksik alan varsa uyarı ver
 				if (missingFields.length > 0) {
 					Swal.fire({
 						icon: 'warning',
@@ -3589,15 +3593,15 @@
 				htmlCode += " <td><input type='text' class='form-control number' name='ISLEM_MIKTARI[]' value='" + satirEkleInputs.ISLEM_MIKTARI + "'></td>";
 				htmlCode += " <td><input type='text' class='form-control' name='ISLEM_BIRIMI[]' value='" + satirEkleInputs.ISLEM_BIRIMI + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number hesaplanacakFiyat' name='FIYAT[]' value='" + satirEkleInputs.FIYAT + "' ></td> ";
-				htmlCode += " <td><input type='text' class='form-control number' name='FIYAT2[]' value='" + satirEkleInputs.DOLAR_FIYAT + "' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control number' name='DOLAR_FIYAT[]' value='" + satirEkleInputs.DOLAR_FIYAT + "' readonly></td> ";
 				htmlCode += " <td><input type='text' class='form-control number hesaplanacakTutar' name='TUTAR[]' value='" + satirEkleInputs.TUTAR + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA_T[]' value='" + satirEkleInputs.ACIKLAMA + "' readonly> <input type='hidden' class='form-control' name='PARA_BIRIMI[]' value='" + satirEkleInputs.PARA_BIRIMI + "' readonly></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='TERMIN_TARIHI[]' value='" + satirEkleInputs.TERMIN_TARIHI + "' readonly></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='TERMIN_TARIHI[]' value='" + satirEkleInputs.TERMIN_TAR + "'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA_T[]' value='" + satirEkleInputs.ACIKLAMA + "'> <input type='hidden' class='form-control' name='PARA_BIRIMI[]' value='" + satirEkleInputs.PARA_BIRIMI + "' readonly></td> ";
 
 
 				htmlCode += " </tr> ";
 
-				if (satirEkleInputs.KOD == " " || satirEkleInputs.ISLEM_MIKTARI == "" || !validateNumbers()) {
+				if (satirEkleInputs.KOD == " " || satirEkleInputs.ISLEM_MIKTARI == "") {
 					eksikAlanAlert();
 				}
 				else {
@@ -3613,15 +3617,16 @@
 
 			$('#KISI').on('change',function () {
 				var kisi = $(this).val();
-				var kisi_array = kisi.split('|||');
-				$('#AD_SOYAD').val(kisi_array[0]);
-				$('#SIRKET_IS_TEL').val(kisi_array[1]);
-				$('#SIRKET_EMAIL_1').val(kisi_array[2]);
+				if(kisi != ''){
+					var kisi_array = kisi.split('|||');
+					$('#AD_SOYAD').val(kisi_array[0]);
+					$('#SIRKET_IS_TEL').val(kisi_array[1]);
+					$('#SIRKET_EMAIL_1').val(kisi_array[2]);
+				}
 			});
 
 			$('#teklif').change(function () {
 				teklif = $(this).val();
-				// $("#PARA_BIRIMI").val(teklif);
 				$("#veriTable tbody tr").each(function () {
 					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
 				});
