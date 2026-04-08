@@ -821,7 +821,7 @@
                             @endphp
                             <tr id="dosya_{{ $veri->id }}">
                               <td>{{ $veri->DOSYATURU }}</td>
-                              <td>{{ $veri->ACIKLAMA }}</td>
+                              <td>{{ $veri->ACIKLAMA }} - {{ $veri->sapma_parca_no }}</td>
                               <td>{{ $veri->created_at }}</td>
                               <td>
                                 @if ($fileUrl)
