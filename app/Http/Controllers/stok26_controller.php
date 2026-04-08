@@ -240,7 +240,7 @@ class stok26_controller extends Controller
           if ($AMBCODE[$i] == "" || $AMBCODE[$i] == null) {
             $AMBCODE_SEC = $AMBCODE_E;
           } else {
-            $AMBCODE_SEC = $AMBCODE[$i];
+            $AMBCODE_SEC = trim($AMBCODE[$i]);
           }
 
           $SF_MIKTAR_NEGATIVE = -$SF_MIKTAR[$i];
@@ -249,7 +249,7 @@ class stok26_controller extends Controller
             ->where('KOD', $KOD[$i])
             ->where('LOTNUMBER', $LOTNUMBER[$i])
             ->where('SERINO', $SERINO[$i])
-            ->where('AMBCODE', $AMBCODE[$i])
+            ->where('AMBCODE', $AMBCODE_SEC)
             ->where('NUM1', $NUM1[$i])
             ->where('NUM2', $NUM2[$i])
             ->where('NUM3', $NUM3[$i])
@@ -269,7 +269,7 @@ class stok26_controller extends Controller
             ->where('KOD', $KOD[$i])
             ->where('LOTNUMBER', $LOTNUMBER[$i])
             ->where('SERINO', $SERINO[$i])
-            ->where('AMBCODE', $AMBCODE[$i])
+            ->where('AMBCODE', $AMBCODE_SEC)
             ->where('NUM1', $NUM1[$i])
             ->where('NUM2', $NUM2[$i])
             ->where('NUM3', $NUM3[$i])
@@ -436,18 +436,13 @@ class stok26_controller extends Controller
 
         for ($i = 0; $i < $satir_say; $i++) {
           if ($AMBCODE[$i] == "" || $AMBCODE[$i] == null) {
-            $AMBCODE_SEC = $AMBCODE_E[$i];
+            $AMBCODE_SEC = $AMBCODE_E;
           } else {
-            $AMBCODE_SEC = $AMBCODE[$i];
+            $AMBCODE_SEC = trim($AMBCODE[$i]);
           }
 
           $SF_MIKTAR_NEGATIVE = -$SF_MIKTAR[$i];
 
-          // dd([
-          //   'All' => $request->all(),
-          //   'Depo' => $AMBCODE_SEC,
-          //   'Alan Depo' => $TARGETAMBCODE_E
-          // ]);
 
           $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
 
@@ -457,7 +452,7 @@ class stok26_controller extends Controller
               ->where('KOD', $KOD[$i])
               ->where('LOTNUMBER', $LOTNUMBER[$i])
               ->where('SERINO', $SERINO[$i])
-              ->where('AMBCODE', $AMBCODE[$i])
+              ->where('AMBCODE', $AMBCODE_SEC)
               ->where('NUM1', $NUM1[$i])
               ->where('NUM2', $NUM2[$i])
               ->where('NUM3', $NUM3[$i])
@@ -477,7 +472,7 @@ class stok26_controller extends Controller
               ->where('KOD', $KOD[$i])
               ->where('LOTNUMBER', $LOTNUMBER[$i])
               ->where('SERINO', $SERINO[$i])
-              ->where('AMBCODE', $AMBCODE[$i])
+              ->where('AMBCODE', $AMBCODE_SEC)
               ->where('NUM1', $NUM1[$i])
               ->where('NUM2', $NUM2[$i])
               ->where('NUM3', $NUM3[$i])
@@ -496,6 +491,13 @@ class stok26_controller extends Controller
               ->sum('SF_MIKTAR');
 
             $kontrol = $s1 + (-1 * $s2);
+
+            // dd([
+            //   'All' => $request->all(),
+            //   'Depo' => $AMBCODE_SEC,
+            //   'Alan Depo' => $TARGETAMBCODE_E,
+            //   'kontrol' => $kontrol
+            // ]);
 
             if ($SF_MIKTAR[$i] > $kontrol) {
               return redirect()->back()->with('error', 'Hata: ' . $KOD[$i] . ' || ' . $STOK_ADI[$i] . ' kodlu ürün için stok yetersiz. Depoda yeterli miktar bulunamadığı için işlem sonrasında stok (' . ($kontrol - $SF_MIKTAR[$i]) . ') adete düşerek eksiye geçecektir!');
@@ -601,7 +603,7 @@ class stok26_controller extends Controller
                 ->where('KOD', $KOD[$i])
                 ->where('LOTNUMBER', $LOTNUMBER[$i])
                 ->where('SERINO', $SERINO[$i])
-                ->where('AMBCODE', $AMBCODE[$i])
+                ->where('AMBCODE', $AMBCODE_SEC)
                 ->where('NUM1', $NUM1[$i])
                 ->where('NUM2', $NUM2[$i])
                 ->where('NUM3', $NUM3[$i])
@@ -621,7 +623,7 @@ class stok26_controller extends Controller
                 ->where('KOD', $KOD[$i])
                 ->where('LOTNUMBER', $LOTNUMBER[$i])
                 ->where('SERINO', $SERINO[$i])
-                ->where('AMBCODE', $AMBCODE[$i])
+                ->where('AMBCODE', $AMBCODE_SEC)
                 ->where('NUM1', $NUM1[$i])
                 ->where('NUM2', $NUM2[$i])
                 ->where('NUM3', $NUM3[$i])

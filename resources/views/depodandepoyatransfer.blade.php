@@ -287,23 +287,7 @@
                                 <input maxlength="6 "style="color: red" type="text" name="SF_SF_UNIT_SHOW" id="SF_SF_UNIT_SHOW" class="form-control" disabled>
                               </td>
                               <td style="min-width: 150px;">
-                                <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation1()" name="AMBCODE_FILL" id="AMBCODE_FILL">
-                                  <option value=" ">Seç</option>
-                                  @php
-                                    $evraklar=DB::table($database .'gdef00')->orderBy('id', 'ASC')->get();
-
-                                    foreach ($evraklar as $key => $veri) {
-
-                                      if ($veri->KOD == @$kart_veri->AMBCODE) {
-                                          echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
-                                      }
-                                      else {
-                                          echo "<option value ='".$veri->KOD."'>".$veri->KOD."|".$veri->AD."</option>";
-                                      }
-
-                                    }
-                                  @endphp
-                                </select>
+                                <input type="text" id="AMBCODE_FILL" class="form-control" readonly/>
                               </td>
                               <td style="min-width: 150px;">
                                   <select class="form-control select2 js-example-basic-single" style=" height: 30PX" onchange="getLocation2()" name="LOCATION1_FILL" id="LOCATION1_FILL">
@@ -1217,6 +1201,7 @@
               $('#serino-' + ID).val(SERINO);
               $('#Lot-' + ID).val(LOTNO);
               $('#depo-' + ID).val(DEPO);
+              $('#depo2-' + ID).val(DEPO.split('-')[0]);
               $('#miktar-' + ID).val(MIKTAR);
               $('#num1-' + ID).val(V1);
               $('#num2-' + ID).val(V2);
@@ -1314,7 +1299,7 @@
             htmlCode += "</td>";
           	htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' id='miktar-"+TRNUM_FILL+"'  value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
-            htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
+            htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE_SHOW_T' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' disabled><input type='hidden' id='depo2-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1_SHOW_T' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2_SHOW_T' value='"+satirEkleInputs.LOCATION2_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOCATION2_FILL+"'></td> ";
             htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3_SHOW_T' value='"+satirEkleInputs.LOCATION3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOCATION3_FILL+"'></td> ";
