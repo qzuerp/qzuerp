@@ -2568,7 +2568,7 @@
 					decimalCharacter: ',',
 					decimalPlaces: 2,
 					unformatOnSubmit: true,
-					wheelOn: 'none',
+					wheelOn: 'focus',
 				};
 
 				const selectorList = [
@@ -3344,12 +3344,8 @@
 				$('#TARIH').val(" ");
 				$('#UNVAN_1').val("");
 				$('#UNVAN_2').val("");
-				$('#NOTS_1').val("");
-				$('#NOTS_2').val("");
-				$('#GECERLILIK_TARIHI').val("");
-				$('#AD_SOYAD').val("");
-				$('#SIRKET_IS_TEL').val("");
-				$('#SIRKET_EMAIL_1').val("");
+				$('#NOT_1').val("");
+				$('#NOT_2').val("");
 
 				emptyInputs('satirEkle');
 			}
@@ -3363,6 +3359,7 @@
 					}
 				});
 
+				// Eksik alan varsa uyarı ver
 				if (missingFields.length > 0) {
 					Swal.fire({
 						icon: 'warning',
@@ -3627,6 +3624,7 @@
 
 			$('#teklif').change(function () {
 				teklif = $(this).val();
+				// $("#PARA_BIRIMI").val(teklif);
 				$("#veriTable tbody tr").each(function () {
 					$(this).find("input[name='PARA_BIRIMI[]']").val(teklif);
 				});
