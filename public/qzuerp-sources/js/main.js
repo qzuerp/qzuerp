@@ -380,7 +380,7 @@ $(document).ready(function() {
   //     handle: 'th',
   //     onEnd: function (evt) {
   //         const oldIndex = evt.oldIndex;
-  //         const newIndex = evt.newIndex;
+  //         const newIndex = evt.newIndex;e
 
   //         if (oldIndex === newIndex) return;
 
@@ -641,7 +641,7 @@ function inputTemizle2() {
 
 }
 function exportTableToExcel(table) {
-  $('#' + table + 'tfoot').remove();
+  $('#' + table + ' tfoot').remove();
   $("#" + table).table2excel({
     exclude: ".noExport",
     name: "Sayfa 1",
