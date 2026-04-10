@@ -790,7 +790,7 @@
                         <div class="chart-body">
                             <div id="sipDonut" style="height:260px"></div>
                             <div class="mt-2 text-center">
-                                <a href="satissiparisi?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
+                                <a href="satissiparisi?SUZ=SUZ&firma={{ $database }}&DURUM=on#liste" class="chart-action">
                                     <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
                                 </a>
                             </div>

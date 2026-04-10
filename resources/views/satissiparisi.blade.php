@@ -655,6 +655,7 @@
                     <table id="example2" data-page-length="500">
                       <thead>
                         <tr>
+                          <th>Görsel</th>
                           <th>Sipariş No</th>
                           <th>Tedarikçi</th>
                           <th>Müş. Sipariş No</th>
@@ -674,6 +675,7 @@
                       </thead>
                       <tfoot>
                         <tr>
+                          <th>Görsel</th>
                           <th>Sipariş No</th>
                           <th>Tedarikçi</th>
                           <th>Müş. Sipariş No</th>
@@ -701,13 +703,17 @@
                           $TARIH_E = isset($_GET['TARIH_E']) ? trim($_GET['TARIH_E']) : '';
                           $DURUM = isset($_GET['DURUM']) ? 'IS NULL' : "= 'K'";
 
-                          $sql_sorgu = 'SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO, S00.REVNO
-                            FROM '.$database.'STOK40E S40E
-                            LEFT JOIN '.$database.'cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
-                            LEFT JOIN '.$database.'STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
-                            LEFT JOIN '.$database.'stok00 S00 ON S00.KOD = S40T.KOD
-                            LEFT JOIN '.$database.'mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO AND M10E.MAMULSTOKKODU = S40T.KOD
-                            WHERE 1=1';
+                          $sql_sorgu = "SELECT S40E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, CHSIPNO, S40T.*, M10E.EVRAKNO AS MPS_EVRAKNO, S00.REVNO, D00.DOSYA
+                            FROM {$database}STOK40E S40E
+                            LEFT JOIN {$database}cari00 C00 ON C00.KOD = S40E.CARIHESAPCODE
+                            LEFT JOIN {$database}STOK40T S40T ON S40T.EVRAKNO = S40E.EVRAKNO
+                            LEFT JOIN {$database}stok00 S00 ON S00.KOD = S40T.KOD
+                            LEFT JOIN {$database}dosyalar00 D00 ON D00.EVRAKNO = S00.KOD 
+                                AND D00.EVRAKTYPE = 'STOK00' 
+                                AND D00.DOSYATURU = 'GORSEL'
+                            LEFT JOIN {$database}mmps10e M10E ON M10E.SIPARTNO = S40T.ARTNO 
+                                AND M10E.MAMULSTOKKODU = S40T.KOD
+                            WHERE 1=1";
 
                           if ($KOD_B !== '')       $sql_sorgu .= " AND S40T.KOD >= '".$KOD_B."'";
                           if ($KOD_E !== '')       $sql_sorgu .= " AND S40T.KOD <= '".$KOD_E."'";
@@ -753,6 +759,13 @@
                               : '<span class="badge-acik">Açık</span>';
 
                             echo "<tr>";
+                              echo "<td>";
+                              if (isset($row->DOSYA) && $row->DOSYA != '') {
+                                  echo "<img src='" . asset('dosyalar/' . $row->DOSYA) . "' alt='' id='kart_img' width='100'>";
+                              } else {
+                                  echo "Resim Yok";
+                              }
+                              echo "</td>";
                               echo "<td><b>".$row->EVRAKNO."</b></td>";
                               echo "<td>".$row->TEDARIKCI."</td>";
                               echo "<td>".$row->CHSIPNO."</td>";
