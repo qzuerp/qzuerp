@@ -344,7 +344,7 @@ class stok63_controller extends Controller
 
         for ($i = 0; $i < $satir_say; $i++) {
 
-          $KAYITLI_SF = DB::table($firma . 'stok26t')
+          $KAYITLI_SF = DB::table($firma . 'stok63t')
               ->where('EVRAKNO', $EVRAKNO)
               ->where('TRNUM', $TRNUM[$i])
               ->value('SF_MIKTAR');
