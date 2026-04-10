@@ -971,7 +971,9 @@
 
                         echo "
                         <td>
-                            <a href='{$ekranLink}?ID={$suzVeri->EVRAKID}&KOD={$suzVeri->KOD}' class='btn btn-info'>
+                            <a href='        if (session()->has('EKSILER')) {
+            return redirect()->back()->with('error_stock', session('EKSILER'));
+        }' class='btn btn-info'>
                                 <i class='fa fa-chevron-circle-right text-white'></i>
                             </a>
                         </td>";

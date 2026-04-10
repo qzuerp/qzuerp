@@ -902,7 +902,7 @@
 										echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
 										echo "<td>" . $suzVeri->SF_SF_UNIT . "</td>";
 										echo "<td>" . $suzVeri->ACIKLAMA . "</td>";
-										echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
+										echo "<td><a class='btn btn-info' href='{$ekranLink}?ID={$suzVeri->EVRAKNO}&KOD={$suzVeri->KOD}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 										echo "</tr>";
 									}
 								@endphp
@@ -1968,6 +1968,45 @@
 				$(this).select();
 			});
 
+			$(document).ready(function () {
+				const targetKod = '<?= @$_GET["KOD"] ?? "" ?>';
+				console.log('TargetKod:', targetKod);
+
+				if (targetKod) focusInputByKod(targetKod);
+			});
+
+			function focusInputByKod(targetKod) {
+				let firstFound = false;
+
+				$('input[name="KOD[]"]').each(function () {
+					const $input = $(this);
+					const val = $input.val().trim();
+
+					if (val === targetKod) {
+						$('input').css('background-color', '');
+
+						const matched = $(`input[name="KOD[]"]`).filter(function() {
+							return $(this).val().trim() === targetKod;
+						});
+
+						matched.css({
+							'background-color': '#cfe8ff',
+							'border': '1px solid #1c8aff',
+							'font-weight': '500',
+							'transition': 'all 0.3s ease'
+						});
+
+						if (!firstFound) {
+							firstFound = true;
+							setTimeout(() => $input.focus(), 200);
+							$('html, body').animate({
+								scrollTop: $input.offset().top - 100
+							}, 400);
+						}
+					}
+				});
+			}
+			
 			const DECIMAL_INPUTS = ['FIYAT[]', 'DOLAR_FIYAT[]', 'TUTAR[]'];
 			const DECIMAL_SELECTOR = DECIMAL_INPUTS.map(n => `input[name="${n}"]`).join(',');
 
@@ -2123,7 +2162,7 @@
 												<label class="form-label-sm fw-bold">Ayar</label>
 												<div class="d-flex gap-1">
 													<input type="text" class="form-control TIME"
-														value="${ayar}" placeholder="0.00">
+														value="${ayar} Saat" placeholder="0.00">
 													<div class="input-group">
 														<input type="text" class="form-control text-end AYAR_TUTAR" placeholder="0.00">
 														<span class="input-group-text">${teklif_pb}</span>
@@ -2135,7 +2174,7 @@
 												<div class="d-flex gap-1">
 													<div class="input-group">
 														<input type="text" class="form-control PTIME"
-															value="${isleme}" placeholder="0.00">
+															value="${isleme} Dakika" placeholder="0.00">
 													</div>
 													<div class="input-group">
 														<input type="text" class="form-control text-end ISLEM_TUTAR" placeholder="0.00">
@@ -2148,7 +2187,7 @@
 												<div class="d-flex gap-1">
 													<div class="input-group">
 														<input type="text" class="form-control STIME"
-															value="${soktak}" placeholder="0.00">
+															value="${soktak} Dakika" placeholder="0.00">
 													</div>
 													<div class="input-group">
 														<input type="text" class="form-control text-end SOKTAK_TUTAR" placeholder="0.00">

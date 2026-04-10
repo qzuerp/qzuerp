@@ -218,6 +218,12 @@ class bomu01_controller extends Controller
     } else {
       $satir_say = count($BOMREC_KAYNAKCODE);
     }
+
+    if(in_array($MAMULCODE,$BOMREC_KAYNAKCODE))
+    {
+      return redirect()->back()->with('error','Reçete ürün koduyla eşleşen satır bulundu.');
+    }
+
     // dd($satir_say);
     switch ($islem_turu) {
 

@@ -30,7 +30,6 @@
         $kalibrasyon_aylik = array_fill(0, 12, 0);
         $kalibrasyon_aralik = ['Geçmiş' => 0, '0-7 Gün' => 0, '8-15 Gün' => 0, '16-30 Gün' => 0, '>30 Gün' => 0];
 
-        // Kritik kalibrasyon listesi (acil liste için)
         $kritik_kalibrasyonlar = [];
 
         foreach ($KALIBRASYONLAR as $k) {
@@ -45,7 +44,6 @@
 
             if ($ay >= 0 && $ay < 12) $kalibrasyon_aylik[$ay]++;
 
-            // 30 güne kadar olanları listeye al
             if ($kalanGun <= 30) {
                 $kritik_kalibrasyonlar[] = [
                     'kod'     => $k->ALETNO   ?? '—',
@@ -73,7 +71,6 @@
         $fason_aylik_geciken  = array_fill(0, 12, 0);
         $fason_aylik_zamaninda= array_fill(0, 12, 0);
 
-        // Kritik fason listesi
         $kritik_fasonsevkler = [];
 
         foreach ($FASONSEVKLER as $f) {
@@ -101,7 +98,6 @@
             ? round(($fason_data['toplam'] - $fason_data['gecmis']) / $fason_data['toplam'] * 100)
             : 100;
 
-
         // ── Satış Sipariş ─────────────────────────────────────────────
         $SATISSIPARISLER = DB::table($database . 'stok40t')->where('AK',NULL)->get();
 
@@ -114,7 +110,6 @@
         $siparis_aylik_geciken  = array_fill(0, 12, 0);
         $siparis_aylik_zamaninda= array_fill(0, 12, 0);
 
-        // Kritik fason listesi
         $kritik_siparis = [];
 
         foreach ($SATISSIPARISLER as $f) {
@@ -313,7 +308,6 @@
         }
         .tb-btn:hover { background: #e0e7ff; border-color: #a5b4fc; color: var(--indigo); }
 
-
         .notif-badge {
             position: absolute; top: -4px; right: -4px;
             background: var(--red); color: white;
@@ -391,7 +385,6 @@
         .stat-progress-fill { height: 100%; border-radius: 3px; transition: width .8s ease; }
         .stat-progress-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-3); }
 
-        
         /* ── Chart Cards ── */
         .chart-card {
             background: var(--surface); border: 1px solid var(--border);
@@ -551,6 +544,49 @@
         }
         .chart-action:hover { background: var(--bg); color: var(--indigo); border-color: #a5b4fc; }
 
+        /* ══════════════════════════════════════════════
+           ── Drag & Drop ──
+        ══════════════════════════════════════════════ */
+        .drag-handle {
+            cursor: grab;
+            padding: 5px 7px;
+            border-radius: 6px;
+            color: var(--text-3);
+            transition: background .15s, color .15s;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .drag-handle:hover  { background: var(--bg); color: var(--text-2); }
+        .drag-handle:active { cursor: grabbing; }
+
+        /* Sürükleme sırasındaki hayalet (placeholder) */
+        .sortable-ghost {
+            opacity: .3;
+            background: #e0e7ff !important;
+            border: 2px dashed #6366f1 !important;
+            border-radius: var(--radius);
+        }
+
+        /* Seçili (kaldırılmış) eleman */
+        .sortable-chosen {
+            box-shadow: 0 12px 40px rgba(99,102,241,.22) !important;
+            outline: 2px solid #6366f1;
+            outline-offset: 2px;
+            z-index: 999;
+            border-radius: var(--radius);
+        }
+
+        /* Sürüklenen klon — tam opak kalmalı */
+        .sortable-drag { opacity: 1 !important; }
+
+        /* Hover'da satır hafif parlasın */
+        #sortable-dashboard > [data-id]:hover > .chart-card .drag-handle,
+        #sortable-dashboard > [data-id]:hover > * > .chart-card .drag-handle {
+            color: var(--indigo);
+        }
+
         /* ── Responsive ── */
         @media (max-width: 1200px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
@@ -593,13 +629,15 @@
                     <button class="tb-btn" onclick="refreshDashboard()">
                         <i class="fa-solid fa-rotate-right" id="refreshIcon"></i> Yenile
                     </button>
+                    <button class="tb-btn" onclick="resetDashboardOrder()" title="Kartları varsayılan sıraya döndür">
+                        <i class="fa-solid fa-table-layout"></i> Düzeni Sıfırla
+                    </button>
                     <button class="tb-btn" data-bs-toggle="modal" data-bs-target="#dogumGunuModal">
                         🎂 Doğum Günleri
                         @if($bugun_dogum_gunu > 0)
                             <span style="background:var(--green);color:white;border-radius:99px;padding:1px 6px;font-size:10px">{{ $bugun_dogum_gunu }}</span>
                         @endif
                     </button>
-
                 </div>
             </div>
 
@@ -620,112 +658,134 @@
                 </div>
             </div>
 
-            {{-- ══ KPI STAT CARDS ══ --}}
-            <div class="stats-grid row-mb">
-                @foreach($stats as $stat)
-                    <a href="{{ $stat['link'] ?? '#' }}" class="stat-card" style="--card-color: {{ $stat['color'] }}">
-                        <div class="stat-top">
-                            <div class="stat-icon"><i class="fa-solid {{ $stat['icon'] }}"></i></div>
-                            @if(isset($stat['progress']))
-                                <span class="stat-badge">%{{ $stat['progress'] }}</span>
-                            @endif
-                        </div>
-                        <div class="stat-value">{{ $stat['value'] }}</div>
-                        <div class="stat-title">{{ $stat['title'] }}</div>
-                        <div class="stat-sub">{{ $stat['sub'] }}</div>
-                        @if(isset($stat['progress']))
-                            <div class="stat-progress">
-                                <div class="stat-progress-bar">
-                                    <div class="stat-progress-fill" style="width:{{ $stat['progress'] }}%; background:{{ $stat['progress_color'] }}"></div>
-                                </div>
-                                <div class="stat-progress-label">
-                                    <span>{{ $stat['progress_label'] }}</span>
-                                    <span style="color:{{ $stat['progress_color'] }};font-weight:700">%{{ $stat['progress'] }}</span>
-                                </div>
+            {{-- ══════════════════════════════════════════
+                 SORTABLE DASHBOARD WRAPPER
+                 Her satıra benzersiz data-id veriyoruz.
+                 Sıralama localStorage'a kaydedilir.
+            ══════════════════════════════════════════ --}}
+            <div id="sortable-dashboard">
+
+                {{-- ══ KPI STAT CARDS ══ --}}
+                <div class="stats-grid row-mb" data-id="stats">
+                    @foreach($stats as $stat)
+                        <a href="{{ $stat['link'] ?? '#' }}" class="stat-card" style="--card-color: {{ $stat['color'] }}">
+                            <div class="stat-top">
+                                <div class="stat-icon"><i class="fa-solid {{ $stat['icon'] }}"></i></div>
+                                @if(isset($stat['progress']))
+                                    <span class="stat-badge">%{{ $stat['progress'] }}</span>
+                                @endif
                             </div>
-                        @endif
-                    </a>
-                @endforeach
-            </div>
+                            <div class="stat-value">{{ $stat['value'] }}</div>
+                            <div class="stat-title">{{ $stat['title'] }}</div>
+                            <div class="stat-sub">{{ $stat['sub'] }}</div>
+                            @if(isset($stat['progress']))
+                                <div class="stat-progress">
+                                    <div class="stat-progress-bar">
+                                        <div class="stat-progress-fill" style="width:{{ $stat['progress'] }}%; background:{{ $stat['progress_color'] }}"></div>
+                                    </div>
+                                    <div class="stat-progress-label">
+                                        <span>{{ $stat['progress_label'] }}</span>
+                                        <span style="color:{{ $stat['progress_color'] }};font-weight:700">%{{ $stat['progress'] }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
 
-            {{-- ══ SATIR 1: Kalibrasyon ══ --}}
-            @if(in_array("KLBRSYNKARTI", $kullanici_read_yetkileri))
-            <div class="grid-1-2 row-mb">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-circle-half-stroke"></i> Kalibrasyon Durum Dağılımı</h3>
-                        <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">{{ $kalibrasyon_data['toplam'] }} adet</span>
-                    </div>
-                    <div class="chart-body">
-                        <div id="kalibrasyonDonut" style="height:260px"></div>
-                        <div class="mt-2 text-center">
-                            <a href="kart_kalibrasyon?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
-                                <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
-                            </a>
+                {{-- ══ SATIR 1: Kalibrasyon ══ --}}
+                @if(in_array("KLBRSYNKARTI", $kullanici_read_yetkileri))
+                <div class="grid-1-2 row-mb" data-id="kalibrasyon">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-circle-half-stroke"></i> Kalibrasyon Durum Dağılımı</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">{{ $kalibrasyon_data['toplam'] }} adet</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <div id="kalibrasyonDonut" style="height:260px"></div>
+                            <div class="mt-2 text-center">
+                                <a href="kart_kalibrasyon?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
+                                    <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Aylık Kalibrasyon Yükü</h3>
-                        <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Tarihe göre dağılım</span>
-                    </div>
-                    <div class="chart-body">
-                        <div id="kalibrasyonAylikBar" style="height:260px"></div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            {{-- ══ SATIR 2: Fason ══ --}}
-            @if(in_array("FSNGLSIRS", $kullanici_read_yetkileri) && in_array("FSNSEVKIRS", $kullanici_read_yetkileri))
-            <div class="grid-1-2 row-mb">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-truck-clock"></i> Fason Termin Durumu</h3>
-                        <span class="chart-badge" style="background:#faf5ff;color:#7c3aed">{{ $fason_data['toplam'] }} sevk</span>
-                    </div>
-                    <div class="chart-body">
-                        <div id="fasonDonut" style="height:260px"></div>
-                        <div class="mt-2 text-center">
-                            <a href="fasonsevkirsaliyesi?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
-                                <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
-                            </a>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-calendar-days"></i> Aylık Kalibrasyon Yükü</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Tarihe göre dağılım</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-column"></i> Fason Aylık Termin Dağılımı</h3>
-                        <span class="chart-badge" style="background:#fff7ed;color:#c2410c">Stacked</span>
-                    </div>
-                    <div class="chart-body">
-                        <div id="fasonAylikStacked" style="height:260px"></div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-
-            {{-- ══ SATIR 5: Satış/Satın Alma + Son Kullanılanlar ══ --}}
-            <div class="grid-3-2 row-mb">
-                
-                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-boxes-stacked"></i> Açık Satış Siparişleri</h3>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-acik-siparis" style="height:280px"></div>
+                        <div class="chart-body">
+                            <div id="kalibrasyonAylikBar" style="height:260px"></div>
+                        </div>
                     </div>
                 </div>
                 @endif
 
-                @if(in_array("SATISSIP", $kullanici_read_yetkileri))
+                {{-- ══ SATIR 2: Fason ══ --}}
+                @if(in_array("FSNGLSIRS", $kullanici_read_yetkileri) && in_array("FSNSEVKIRS", $kullanici_read_yetkileri))
+                <div class="grid-1-2 row-mb" data-id="fason">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-truck-clock"></i> Fason Termin Durumu</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#faf5ff;color:#7c3aed">{{ $fason_data['toplam'] }} sevk</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <div id="fasonDonut" style="height:260px"></div>
+                            <div class="mt-2 text-center">
+                                <a href="fasonsevkirsaliyesi?SUZ=SUZ&firma={{ $database }}#liste" class="chart-action">
+                                    <i class="fa-solid fa-arrow-right"></i> Tümünü Görüntüle
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-chart-column"></i> Fason Aylık Termin Dağılımı</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#fff7ed;color:#c2410c">Stacked</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <div id="fasonAylikStacked" style="height:260px"></div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                {{-- ══ SATIR 5: Satış/Satın Alma + Son Kullanılanlar ══ --}}
+                <div class="grid-3-2 row-mb" data-id="satissiparis">
+
+                    @if(in_array("SATISSIP", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-boxes-stacked"></i> Açık Satış Siparişleri</h3>
+                            <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-acik-siparis" style="height:280px"></div>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(in_array("SATISSIP", $kullanici_read_yetkileri))
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3><i class="fa-solid fa-truck-clock"></i> Satış Sipariş Termin Durumu</h3>
-                            <span class="chart-badge" style="background:#faf5ff;color:#7c3aed">{{ $siparis_data['toplam'] }} sevk</span>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#faf5ff;color:#7c3aed">{{ $siparis_data['toplam'] }} sevk</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
                         </div>
                         <div class="chart-body">
                             <div id="sipDonut" style="height:260px"></div>
@@ -736,201 +796,219 @@
                             </div>
                         </div>
                     </div>
-                @endif
-            </div>
-
-            {{-- ══ SATIR 6: Açık Siparişler ══ --}}
-            <div class="grid-3-2 row-mb">
-                @if(in_array("SSF", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-area"></i> Satış / Satın Alma / Net Fark</h3>
-                        <div style="display:flex;gap:8px">
-                            <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Satış</span>
-                            <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Satın Alma</span>
-                        </div>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-siparis" style="height:300px"></div>
-                    </div>
+                    @endif
                 </div>
-                @endif
-                <!-- Son Kullanılanlar -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Son Kullanılanlar</h3>
-                        <button onclick="clearRecentPages()" style="background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:4px 8px;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-3)'">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="recent-list" id="recentList">
-                        <div class="empty-recent">
-                            <i class="fa-solid fa-inbox"></i>
-                            <p style="font-size:12px">Henüz sayfa ziyaret etmediniz</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            {{-- ══ SATIR 4:  OEE Gauge + Tedarikçi ══ --}}
-            <div class="grid-2 row-mb">
-                {{-- OEE / Üretim Verimliliği Gauge --}}
-                @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-pie"></i> OEE & Üretim KPI</h3>
-                        <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">Bu Ay</span>
-                    </div>
-                    <div class="chart-body">
-                        <div class="oee-wrap">
-                            <div id="oeeGauge" style="height:220px;width:100%"></div>
-                            <div class="oee-label">
-                                <span class="oee-legend"><span class="oee-dot" style="background:#22c55e"></span> Kullanılabilirlik</span>
-                                <span class="oee-legend"><span class="oee-dot" style="background:#3b82f6"></span> Performans</span>
-                                <span class="oee-legend"><span class="oee-dot" style="background:#f59e0b"></span> Kalite</span>
+                {{-- ══ SATIR 6: Açık Siparişler ══ --}}
+                <div class="grid-3-2 row-mb" data-id="satissatinalma">
+                    @if(in_array("SSF", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-chart-area"></i> Satış / Satın Alma / Net Fark</h3>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Satış</span>
+                                <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Satın Alma</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
                             </div>
                         </div>
-                        <div class="metric-mini-grid mt-3">
-                            <div class="metric-mini">
-                                <div class="metric-mini-val" id="oee-avail">—</div>
-                                <div class="metric-mini-unit">%</div>
-                                <div class="metric-mini-lbl">Kullanılabilirlik</div>
+                        <div class="chart-body">
+                            <div id="hc-siparis" style="height:300px"></div>
+                        </div>
+                    </div>
+                    @endif
+                    <!-- Son Kullanılanlar -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-clock-rotate-left"></i> Son Kullanılanlar</h3>
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <button onclick="clearRecentPages()" style="background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:4px 8px;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-3)'">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
                             </div>
-                            <div class="metric-mini">
-                                <div class="metric-mini-val" id="oee-perf">—</div>
-                                <div class="metric-mini-unit">%</div>
-                                <div class="metric-mini-lbl">Performans</div>
+                        </div>
+                        <div class="recent-list" id="recentList">
+                            <div class="empty-recent">
+                                <i class="fa-solid fa-inbox"></i>
+                                <p style="font-size:12px">Henüz sayfa ziyaret etmediniz</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endif
 
-                @if(in_array("CARIKART", $kullanici_read_yetkileri) && in_array("KNTKKART", $kullanici_read_yetkileri))
-                {{-- Tedarikçi Performansı --}}
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-handshake"></i> Tedarikçi Performansı</h3>
-                        <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Zamanında Teslim %</span>
+                {{-- ══ SATIR 4: OEE Gauge + Tedarikçi ══ --}}
+                <div class="grid-2 row-mb" data-id="oee-tedarikci">
+                    {{-- OEE / Üretim Verimliliği Gauge --}}
+                    @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-chart-pie"></i> OEE & Üretim KPI</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">Bu Ay</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <div class="oee-wrap">
+                                <div id="oeeGauge" style="height:220px;width:100%"></div>
+                                <div class="oee-label">
+                                    <span class="oee-legend"><span class="oee-dot" style="background:#22c55e"></span> Kullanılabilirlik</span>
+                                    <span class="oee-legend"><span class="oee-dot" style="background:#3b82f6"></span> Performans</span>
+                                    <span class="oee-legend"><span class="oee-dot" style="background:#f59e0b"></span> Kalite</span>
+                                </div>
+                            </div>
+                            <div class="metric-mini-grid mt-3">
+                                <div class="metric-mini">
+                                    <div class="metric-mini-val" id="oee-avail">—</div>
+                                    <div class="metric-mini-unit">%</div>
+                                    <div class="metric-mini-lbl">Kullanılabilirlik</div>
+                                </div>
+                                <div class="metric-mini">
+                                    <div class="metric-mini-val" id="oee-perf">—</div>
+                                    <div class="metric-mini-unit">%</div>
+                                    <div class="metric-mini-lbl">Performans</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="chart-body">
-                        @if($TEDARKCI_PERF->count() > 0)
-                            <div class="supplier-list">
-                                @foreach($TEDARKCI_PERF as $t)
-                                    @php
-                                        $skor = $t->ZAMANINDA_TESLIMAT ?? 0;
-                                        $renk = $skor >= 80 ? '#22c55e' : ($skor >= 60 ? '#f59e0b' : '#ef4444');
-                                    @endphp
-                                    <div class="supplier-item">
-                                        <span class="supplier-name" title="{{ $t->FIRMA_ADI }}">{{ Str::limit($t->FIRMA_ADI,18) }}</span>
-                                        <div class="supplier-bar-wrap">
-                                            <div class="supplier-bar-fill" style="width:{{ $skor }}%; background:{{ $renk }}"></div>
+                    @endif
+
+                    @if(in_array("CARIKART", $kullanici_read_yetkileri) && in_array("KNTKKART", $kullanici_read_yetkileri))
+                    {{-- Tedarikçi Performansı --}}
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-handshake"></i> Tedarikçi Performansı</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#f0fdf4;color:#15803d">Zamanında Teslim %</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            @if($TEDARKCI_PERF->count() > 0)
+                                <div class="supplier-list">
+                                    @foreach($TEDARKCI_PERF as $t)
+                                        @php
+                                            $skor = $t->ZAMANINDA_TESLIMAT ?? 0;
+                                            $renk = $skor >= 80 ? '#22c55e' : ($skor >= 60 ? '#f59e0b' : '#ef4444');
+                                        @endphp
+                                        <div class="supplier-item">
+                                            <span class="supplier-name" title="{{ $t->FIRMA_ADI }}">{{ Str::limit($t->FIRMA_ADI,18) }}</span>
+                                            <div class="supplier-bar-wrap">
+                                                <div class="supplier-bar-fill" style="width:{{ $skor }}%; background:{{ $renk }}"></div>
+                                            </div>
+                                            <span class="supplier-score" style="color:{{ $renk }}">%{{ $skor }}</span>
                                         </div>
-                                        <span class="supplier-score" style="color:{{ $renk }}">%{{ $skor }}</span>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
+                            @else
+                                <div id="tedarikciChart" style="height:280px"></div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- ══ SATIR 7: Kalite + Üretim ══ --}}
+                <div class="grid-2 row-mb" data-id="kalite-uretim">
+                    @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-shield-check"></i> Kalite Kontrol — Aylık Red Oranı</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Ret %</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
                             </div>
-                        @else
-                            <div id="tedarikciChart" style="height:280px"></div>
-                        @endif
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-kalite" style="height:280px"></div>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(in_array("MPSGRS", $kullanici_read_yetkileri))
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-industry"></i> Üretim Gerçekleşme Oranı</h3>
+                            <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-uretim" style="height:280px"></div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- ══ SATIR 8: Karlılık ══ --}}
+                @if(in_array("SSF", $kullanici_read_yetkileri) && in_array("URETIM_GAZETESI", $kullanici_read_yetkileri))
+                <div class="row-mb" data-id="karlilik">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-money-bill-trend-up"></i> Karlılık Analizi</h3>
+                            <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                        </div>
+                        <div class="chart-body">
+                            <div id="hc-karlilik" style="height:300px"></div>
+                        </div>
                     </div>
                 </div>
                 @endif
-            </div>
 
-            {{-- ══ SATIR 7: Kalite + Üretim ══ --}}
-            <div class="grid-2 row-mb">
-                @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-shield-check"></i> Kalite Kontrol — Aylık Red Oranı</h3>
-                        <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Ret %</span>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-kalite" style="height:280px"></div>
-                    </div>
-                </div>
-                @endif
-
+                {{-- ══ SATIR 9: İş Emirleri Kanban ══ --}}
                 @if(in_array("MPSGRS", $kullanici_read_yetkileri))
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-industry"></i> Üretim Gerçekleşme Oranı</h3>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-uretim" style="height:280px"></div>
+                <div class="row-mb" data-id="isemirleri">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fa-solid fa-table-columns"></i> İş Emirleri Durumu</h3>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">{{ $is_emirleri_toplam }} toplam</span>
+                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            @if($IS_EMIRLERI->count() > 0)
+                                <div class="kanban-grid">
+                                    @php
+                                        $STATUS = DB::table($database.'gecoust')->where('EVRAKNO','STATUS')->get();
+                                        $kanban_statusler = [];
+                                        foreach($STATUS as $s){
+                                            $kanban_statusler[] = [
+                                                'key' => $s->KOD,
+                                                'label' => $s->AD,
+                                                'bg' => '#fef2f2',
+                                                'color' => '#22c55e',
+                                            ];
+                                        }
+                                    @endphp
+                                    @foreach($kanban_statusler as $ks)
+                                        @php $grp = DB::table($database.'mmps10e')->where('STATUS', $ks['key'])->get(); @endphp
+                                        <div class="kanban-col" style="background:{{ $ks['bg'] }}">
+                                            <div class="kanban-col-title" style="color:{{ $ks['color'] }}">
+                                                {{ $ks['label'] }}
+                                                <span class="kanban-count" style="background:{{ $ks['color'] }}">{{ $grp->count() }}</span>
+                                            </div>
+                                            @forelse($grp as $ie)
+                                                <a href="mpsgiriskarti?ID={{ $ie->id }}" class="kanban-card" style="border-left-color:{{ $ks['color'] }}">
+                                                    <div class="kanban-card-ad">{{ $ie->MAMULSTOKKODU }}</div>
+                                                    <div class="kanban-card-mik">{{ number_format($ie->TAMAMLANAN_URETIM_FISI_MIKTARI,0,'.',',') }} adet</div>
+                                                </a>
+                                            @empty
+                                                <div class="kanban-empty">Kayıt yok</div>
+                                            @endforelse
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="empty-recent" style="padding:40px">
+                                    <i class="fa-solid fa-clipboard-list"></i>
+                                    <p style="font-size:12px">İş emri bulunamadı veya endpoint bağlanamadı</p>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 @endif
-            </div>
 
-            {{-- ══ SATIR 8: Karlılık ══ --}}
-            @if(in_array("SSF", $kullanici_read_yetkileri) && in_array("URETIM_GAZETESI", $kullanici_read_yetkileri))
-            <div class="row-mb">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-money-bill-trend-up"></i> Karlılık Analizi</h3>
-                    </div>
-                    <div class="chart-body">
-                        <div id="hc-karlilik" style="height:300px"></div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            {{-- ══ SATIR 9: İş Emirleri Kanban ══ --}}
-            @if(in_array("MPSGRS", $kullanici_read_yetkileri))
-            <div class="row-mb">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-table-columns"></i> İş Emirleri Durumu</h3>
-                        <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">{{ $is_emirleri_toplam }} toplam</span>
-                    </div>
-                    <div class="chart-body">
-                        @if($IS_EMIRLERI->count() > 0)
-                            <div class="kanban-grid">
-                                @php
-                                    $STATUS = DB::table($database.'gecoust')->where('EVRAKNO','STATUS')->get();
-
-
-                                    $kanban_statusler = [];
-                                    foreach($STATUS as $s){
-                                        $kanban_statusler[] = [
-                                            'key' => $s->KOD,
-                                            'label' => $s->AD,
-                                            'bg' => '#fef2f2',
-                                            'color' => '#22c55e',
-                                        ];
-                                    }
-                                @endphp
-                                @foreach($kanban_statusler as $ks)
-                                    @php $grp = DB::table($database.'mmps10e')->where('STATUS', $ks['key'])->get(); @endphp
-                                    <div class="kanban-col" style="background:{{ $ks['bg'] }}">
-                                        <div class="kanban-col-title" style="color:{{ $ks['color'] }}">
-                                            {{ $ks['label'] }}
-                                            <span class="kanban-count" style="background:{{ $ks['color'] }}">{{ $grp->count() }}</span>
-                                        </div>
-                                        @forelse($grp as $ie)
-                                            <a href="mpsgiriskarti?ID={{ $ie->id }}" class="kanban-card" style="border-left-color:{{ $ks['color'] }}">
-                                                <div class="kanban-card-ad">{{ $ie->MAMULSTOKKODU }}</div>
-                                                <div class="kanban-card-mik">{{ number_format($ie->TAMAMLANAN_URETIM_FISI_MIKTARI,0,'.',',') }} adet</div>
-                                            </a>
-                                        @empty
-                                            <div class="kanban-empty">Kayıt yok</div>
-                                        @endforelse
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="empty-recent" style="padding:40px">
-                                <i class="fa-solid fa-clipboard-list"></i>
-                                <p style="font-size:12px">İş emri bulunamadı veya endpoint bağlanamadı</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endif
+            </div>{{-- /#sortable-dashboard --}}
 
             {{-- ══ DOĞUM GÜNÜ MODAL ══ --}}
             <div class="modal fade" id="dogumGunuModal" tabindex="-1">
@@ -966,6 +1044,10 @@
     </div>
 
     {{-- ═══════════════════ SCRIPTS ═══════════════════ --}}
+
+    {{-- SortableJS CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
     <script>
     // ── Saat & Tarih ────────────────────────────────────────────────
     (function tickClock() {
@@ -988,8 +1070,6 @@
     const style = document.createElement('style');
     style.textContent = `@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`;
     document.head.appendChild(style);
-
-
 
     // ── Son Kullanılanlar ──────────────────────────────────────────
     function loadRecentPages() {
@@ -1035,8 +1115,94 @@
         });
     }
 
+    // ══════════════════════════════════════════════════════════════
+    // ── DRAG & DROP — SortableJS ──────────────────────────────────
+    // ══════════════════════════════════════════════════════════════
+
+    const STORAGE_KEY = 'dashboardOrder_v1';
+
+    /**
+     * localStorage'daki sırayı DOM'a uygula.
+     * Bilinmeyen data-id'ler göz ardı edilir; yeni eklenen satırlar en sona düşer.
+     */
+    function restoreDashboardOrder() {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        if (!saved.length) return;
+        const container = document.getElementById('sortable-dashboard');
+        if (!container) return;
+        // Mevcut elemanları id → eleman map'ine al
+        const map = {};
+        Array.from(container.children).forEach(el => {
+            if (el.dataset.id) map[el.dataset.id] = el;
+        });
+        // Kaydedilen sıra ile DOM'u yeniden düzenle
+        saved.forEach(id => {
+            if (map[id]) container.appendChild(map[id]);
+        });
+    }
+
+    /**
+     * Mevcut sırayı localStorage'a kaydet.
+     */
+    function saveDashboardOrder() {
+        const container = document.getElementById('sortable-dashboard');
+        if (!container) return;
+        const order = Array.from(container.children)
+            .map(el => el.dataset.id)
+            .filter(Boolean);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    /**
+     * Düzeni varsayılana döndür.
+     */
+    function resetDashboardOrder() {
+        Swal.fire({
+            title: 'Düzeni sıfırla?',
+            text: 'Tüm kartlar varsayılan sıraya döndürülecek.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6366f1',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Evet, Sıfırla',
+            cancelButtonText: 'İptal'
+        }).then(result => {
+            if (result.isConfirmed) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        });
+    }
+
     // ── DOMReady ────────────────────────────────────────────────────
     $(document).ready(function () {
+
+        // Önce sırayı geri yükle, ardından grafikleri çiz
+        restoreDashboardOrder();
+
+        // ── SortableJS Başlat ──────────────────────────────────────
+        const dashboardEl = document.getElementById('sortable-dashboard');
+        if (dashboardEl && typeof Sortable !== 'undefined') {
+            Sortable.create(dashboardEl, {
+                handle:      '.drag-handle',
+                animation:   240,
+                easing:      'cubic-bezier(.25,.8,.25,1)',
+                ghostClass:  'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                dragClass:   'sortable-drag',
+                onEnd: function () {
+                    saveDashboardOrder();
+                    if (typeof Highcharts !== 'undefined') {
+                        setTimeout(function () {
+                            Highcharts.charts.forEach(function (c) {
+                                if (c) c.reflow();
+                            });
+                        }, 50);
+                    }
+                }
+            });
+        }
+
         loadRecentPages();
 
         Highcharts.setOptions({
@@ -1051,7 +1217,7 @@
         var kalAralik       = @json(array_values($kalibrasyon_aralik));
         var kalAylik        = @json(array_values($kalibrasyon_aylik));
         var fasonAralik     = @json(array_values($fason_aralik));
-        var siparisAralik     = @json(array_values($siparis_aralik));
+        var siparisAralik   = @json(array_values($siparis_aralik));
         var fasonAylikBek   = @json(array_values($fason_aylik_bekleyen));
         var fasonAylikGec   = @json(array_values($fason_aylik_geciken));
         var fasonAylikZam   = @json(array_values($fason_aylik_zamaninda));
@@ -1100,12 +1266,13 @@
             ]}]
         });
 
+        // ── 3b. Sipariş Donut ──────────────────────────────────────
         Highcharts.chart('sipDonut', {
             chart:{ type:'pie', height:260 }, title:{ text:null }, credits:{ enabled:false },
             tooltip:{ pointFormat:'<b>{point.y}</b> sevk ({point.percentage:.1f}%)' },
             plotOptions:{ pie:{ innerSize:'62%', borderRadius:5, dataLabels:{ enabled:true, format:'{point.name}<br><b>{point.y}</b>', style:{fontSize:'11px',fontWeight:'600',textOutline:'none'} }, showInLegend:true } },
             legend:{ align:'center', verticalAlign:'bottom', itemStyle:{fontSize:'11px',fontWeight:'600',color:'#374151'} },
-            series:[{ name:'Fason', colorByPoint:true, data:[
+            series:[{ name:'Sipariş', colorByPoint:true, data:[
                 { name:'Gecikmiş',  y:siparisAralik[0], color:'#dc2626' },
                 { name:'0-7 Gün',   y:siparisAralik[1], color:'#ef4444' },
                 { name:'8-15 Gün',  y:siparisAralik[2], color:'#f59e0b' },
@@ -1136,7 +1303,6 @@
             document.getElementById('oee-perf').textContent  = oee.performans;
             renderOEE(oee);
         }).fail(function() {
-            // Demo
             var oee = { kullanilabilirlik:87, performans:78, kalite:94 };
             document.getElementById('oee-avail').textContent = oee.kullanilabilirlik;
             document.getElementById('oee-perf').textContent  = oee.performans;
@@ -1144,7 +1310,6 @@
         });
 
         function renderOEE(oee) {
-            var oeeVal = Math.round((oee.kullanilabilirlik/100)*(oee.performans/100)*(oee.kalite/100)*100);
             Highcharts.chart('oeeGauge', {
                 chart:{ type:'solidgauge', height:220, margin:[0,0,0,0] },
                 title:{ text:null }, credits:{ enabled:false },
@@ -1157,9 +1322,7 @@
                     ]
                 },
                 yAxis:{ min:0, max:100, lineWidth:0, tickPositions:[] },
-                plotOptions:{ solidgauge:{
-                    dataLabels:{ enabled:false }, linecap:'round', stickyTracking:false, rounded:true
-                }},
+                plotOptions:{ solidgauge:{ dataLabels:{ enabled:false }, linecap:'round', stickyTracking:false, rounded:true } },
                 tooltip:{ enabled:false },
                 series:[
                     { name:'Kullanılabilirlik', data:[{ color:'#22c55e', radius:'112%', innerRadius:'88%', y:oee.kullanilabilirlik }] },
@@ -1181,12 +1344,10 @@
                     series:[{ name:'Zamanında Teslimat', data:res.map(x=>({ y:x.skor, color:x.skor>=80?'#22c55e':x.skor>=60?'#f59e0b':'#ef4444' })), showInLegend:false }]
                 });
             }).fail(function() {
-                // Demo
                 var demoFirmalar = ['Tedarikçi A','Tedarikçi B','Tedarikçi C','Tedarikçi D','Tedarikçi E'];
                 var demoSkorlar  = [92, 78, 65, 88, 55];
                 Highcharts.chart('tedarikciChart', {
                     chart:{ type:'bar', height:280 }, title:{ text:null }, credits:{ enabled:false },
-                    subtitle:{ text:'', style:{color:'#94a3b8',fontSize:'10px'} },
                     xAxis:{ categories:demoFirmalar, labels:{style:{color:'#374151',fontSize:'11px'}} },
                     yAxis:{ title:{ text:null }, max:100, labels:{ formatter:function(){ return this.value+'%'; }, style:{color:'#6b7280',fontSize:'11px'} } },
                     plotOptions:{ bar:{ borderRadius:4, dataLabels:{ enabled:true, formatter:function(){ return '%'+this.y; }, style:{color:'#374151',fontSize:'10px',fontWeight:'700',textOutline:'none'} } } },
@@ -1246,13 +1407,12 @@
         @endif
 
         // ── 9. Kalite Kontrol ───────────────────────────────────────
-        var kaliteAylar = @json($KALITE_AYLIK->pluck('ay')->map(fn($a)=>$aylar[$a-1] ?? $a)->values());
+        var kaliteAylar  = @json($KALITE_AYLIK->pluck('ay')->map(fn($a)=>$aylar[$a-1] ?? $a)->values());
         var kaliteToplam = @json($KALITE_AYLIK->pluck('toplam')->values());
         var kaliteRed    = @json($KALITE_AYLIK->pluck('red')->values());
         var kaliteOran   = @json($KALITE_AYLIK->map(fn($r)=> $r->toplam > 0 ? round($r->red/$r->toplam*100,1) : 0)->values());
 
         if (kaliteAylar.length === 0) {
-            // Demo veri
             kaliteAylar  = ['Oca','Şub','Mar','Nis','May','Haz'];
             kaliteToplam = [120,135,118,142,130,125];
             kaliteRed    = [8,6,10,4,9,5];

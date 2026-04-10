@@ -20,7 +20,7 @@ class tmustr_controller extends Controller
             FROM $database.INFORMATION_SCHEMA.COLUMNS 
             WHERE TABLE_NAME = ?", [$tablo]);
 
-        $seciliAlanlar = DB::table('TMUSTRT')
+        $seciliAlanlar = DB::table($database.'.dbo.TMUSTRT')
             ->where('TABLO_KODU', $tablo)
             ->pluck('ALAN_ADI')
             ->toArray();

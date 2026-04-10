@@ -181,9 +181,97 @@
 
   document.title = '{{ $ekranAdi }} - {{ $firmaAdi }}';
 </script>
+@if(session('error_stock'))
+<script>
+$(function() {
+    const eksikStoklar = {!! json_encode(session('error_stock')) !!};
+    
+    // Stok listesini oluştur
+    let stokListesiHtml = `
+        <div style="background: #fff5f5; border: 1px solid #feb2b2; border-radius: 12px; padding: 15px; margin-top: 10px;">
+            <ul style="text-align: left; list-style: none; padding: 0; margin: 0;">
+                ${eksikStoklar.map(item => `
+                    <li style="padding: 8px 0; border-bottom: 1px dashed #fecaca; color: #c53030; display: flex; align-items: center;">
+                        <span style="margin-right: 10px;">🚫</span> 
+                        <strong>${item}</strong>
+                    </li>
+                `).join('')}
+            </ul>
+        </div>`;
+
+    Swal.fire({
+        title: '<span style="color: #c53030">Stok Yetersiz!</span>',
+        icon: 'error',
+        html: `
+            <p style="color: #4a5568; font-size: 15px;">İşlemi tamamlamak için mevcut stoklarınız yetersiz kalıyor:</p>
+            ${stokListesiHtml}
+        `,
+        showCancelButton: true,
+        cancelButtonText: 'Anladım',
+        confirmButtonText: '🔍 Neden',
+        confirmButtonColor: '#4a5568',
+        cancelButtonColor: '#d33',
+        reverseButtons: true,
+        footer: '<div style="color: #718096; font-size: 12px;">💡 İpucu: Depo seçimi veya miktarları kontrol edin.</div>'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            showStokBilgiModal();
+        }
+    });
+
+    function showStokBilgiModal() {
+      Swal.fire({
+        title: 'Stok Kontrol Mekanizması',
+        icon: 'info',
+        width: '600px',
+        html: `
+            <div style="text-align: left; font-size: 14px; color: #333; line-height: 1.6;">
+    
+              <div style="margin-bottom: 15px; padding: 12px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #007bff;">
+                  <strong>1. Çıkış Denetimi (Eksi Stok Engeli):</strong><br>
+                  Sistem, depoda fiziksel olarak bulunmayan bir ürünün çıkışına izin vermez.<br>
+                  Yani; satış, sevk veya fire işlemlerinde mevcut stok miktarından fazla ürün çıkışı yapamazsınız.<br><br>
+                  <strong>Özet:</strong> Elinde yoksa, sistem de yok sayar.
+              </div>
+
+              <div style="margin-bottom: 15px; padding: 12px; background: #fff9db; border-radius: 6px; border-left: 4px solid #fab005;">
+                  <strong>2. Revizyon Kontrolü (Sonradan Artış Kısıtı):</strong><br>
+                  Daha önce kaydedilmiş bir fişi güncellerken miktarı artırmak istiyorsanız,<br>
+                  artırdığınız fark kadar ürünün o anda depoda bulunması gerekir.<br><br>
+                  <strong>Örnek:</strong> 10 → 15 yaptın. O +5 gerçekten depoda olmak zorunda.
+              </div>
+
+              <div style="margin-bottom: 15px; padding: 12px; background: #fff5f5; border-radius: 6px; border-left: 4px solid #fa5252;">
+                  <strong>3. Silme Güvenliği (Veri Tutarlılığı):</strong><br>
+                  Bir giriş fişini silmek, stoktan ürün eksiltmek anlamına gelir.<br>
+                  Eğer bu işlem sonucunda stok eksiye düşecekse, sistem silmeye izin vermez.<br><br>
+                  <strong>Özet:</strong> Geçmişi silerek stok “yok edemezsin”.
+              </div>
+
+              <div style="padding: 12px; border: 1px dashed #dee2e6; border-radius: 6px; font-size: 13px; color: #555;">
+                  <strong>Genel Mantık:</strong><br>
+                  Sistem, stokları her zaman gerçek fiziksel durumla uyumlu tutar.<br>
+                  Kağıt üstünde oynama yaparak stok arttırma, azaltma veya sıfırlama yapılamaz.
+              </div>
+
+            </div>
+        `,
+        confirmButtonText: 'Anladım',
+        confirmButtonColor: '#007bff'
+      });
+    }
+});
+</script>
+@php
+ session()->forget('EKSILER'); 
+ session()->forget('error_stock');
+@endphp
+@endif
+
+
 @if (session('error_swal'))
   <script>
-  $(function() {   // ya da $(document).ready(function() {
+  $(function() {
       let errors = @json(session('error_swal') ?? []);
 
       if (errors && errors.length > 0) {
@@ -316,11 +404,11 @@
       transitionIn: 'fadeInUp',
       transitionOut: 'fadeOut',
       close: true,
-      backgroundColor: '#f9f9f9',  // Daha beyaz arka plan
-      titleColor: '#333',         // Başlık rengi koyu gri
-      messageColor: '#555',       // Mesaj rengi biraz koyu
-      progressBarColor: '#4CAF50',// Yeşil progress bar
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png', // Başarı ikonu
+      backgroundColor: '#f9f9f9', 
+      titleColor: '#333',         
+      messageColor: '#555',       
+      progressBarColor: '#4CAF50',
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/845/845646.png',
       closeOnEscape: true
     });
   </script>

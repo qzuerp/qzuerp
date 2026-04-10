@@ -133,9 +133,9 @@
 											<input type="text" class="form-control" data-max name="NAME2" id="NAME2"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NAME2" value="{{ @$kart_veri->NAME2 }}">
 										</div>
 
-										<div class="col-md-1 col-sm-1 col-xs-2">
+										<div class="col-md-2 col-sm-1 col-xs-2">
 											<label>Birimi</label>
-											<select class="form-control select2 input-sm" style="width:100%;"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IUNIT"  name="IUNIT" id="IUNIT" >
+											<select class="form-control select2 input-sm IUNIT" style="width:100%;"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="IUNIT"  name="IUNIT" id="IUNIT" >
 												<option value="">Seç...</option>
 												<option value="AD" @if (@$kart_veri->IUNIT == "AD") selected @endif>AD - ADET</option>
 												<option value="F" @if (@$kart_veri->IUNIT == "F") selected @endif>F - FANTOM</option>

@@ -123,6 +123,34 @@ class stok20_controller extends Controller
       case 'kart_sil':
         FunctionHelpers::Logla('STOK20',$EVRAKNO,'D',$TARIH);
 
+        $KONTROL_VERILERI = DB::table($firma . 'stok20t')->where('EVRAKNO', $EVRAKNO)->get();
+        foreach($KONTROL_VERILERI as $KONTROL_VERI)
+        {
+          FunctionHelpers::stokKontrol(
+            $KONTROL_VERI->KOD, $KONTROL_VERI->LOTNUMBER, $KONTROL_VERI->SERINO, $AMBCODE_E, 
+            $KONTROL_VERI->SF_VRI_NUM1, $KONTROL_VERI->SF_VRI_NUM2, $KONTROL_VERI->SF_VRI_NUM3, $KONTROL_VERI->SF_VRI_NUM4, 
+            $KONTROL_VERI->SF_VRI_VR_R1, $KONTROL_VERI->SF_VRI_VR_R2, $KONTROL_VERI->SF_VRI_VR_R3, $KONTROL_VERI->SF_VRI_VR_R4, 
+            $KONTROL_VERI->LOCATION1, $KONTROL_VERI->LOCATION2, $KONTROL_VERI->LOCATION3, $KONTROL_VERI->LOCATION4, 
+            $KONTROL_VERI->SF_MIKTAR
+          );
+        }
+
+        $KONTROL_VERILERI = DB::table($firma . 'stok20tı')->where('EVRAKNO', $EVRAKNO)->get();
+        foreach($KONTROL_VERILERI as $KONTROL_VERI)
+        {
+          FunctionHelpers::stokKontrol(
+            $KONTROL_VERI->KOD, $KONTROL_VERI->LOTNUMBER, $KONTROL_VERI->SERINO, $IMALATAMBCODE, 
+            $KONTROL_VERI->SF_VRI_NUM1, $KONTROL_VERI->SF_VRI_NUM2, $KONTROL_VERI->SF_VRI_NUM3, $KONTROL_VERI->SF_VRI_NUM4, 
+            $KONTROL_VERI->SF_VRI_VR_R1, $KONTROL_VERI->SF_VRI_VR_R2, $KONTROL_VERI->SF_VRI_VR_R3, $KONTROL_VERI->SF_VRI_VR_R4, 
+            $KONTROL_VERI->LOCATION1, $KONTROL_VERI->LOCATION2, $KONTROL_VERI->LOCATION3, $KONTROL_VERI->LOCATION4, 
+            $KONTROL_VERI->SF_MIKTAR
+          );
+        }
+
+        if (session()->has('EKSILER')) {
+            return redirect()->back()->with('error_stock', session('EKSILER'));
+        }
+
         DB::table($firma.'stok20e')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok20t')->where('EVRAKNO',$EVRAKNO)->delete();
         DB::table($firma.'stok20tı')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -407,6 +435,25 @@ class stok20_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
+
+        foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
+          $KONTROL_VERI = DB::table($firma . 'stok20t')
+              ->where('EVRAKNO', $EVRAKNO)
+              ->where('TRNUM', $deleteTRNUM)
+              ->first();
+
+          FunctionHelpers::stokKontrol(
+              $KONTROL_VERI->KOD, $KONTROL_VERI->LOTNUMBER, $KONTROL_VERI->SERINO, $IMALATAMBCODE,
+              $KONTROL_VERI->NUM1, $KONTROL_VERI->NUM2, $KONTROL_VERI->NUM3, $KONTROL_VERI->NUM4,
+              $KONTROL_VERI->SF_VRI_VR_R1, $KONTROL_VERI->SF_VRI_VR_R2, $KONTROL_VERI->SF_VRI_VR_R3, $KONTROL_VERI->SF_VRI_VR_R4,
+              $KONTROL_VERI->LOCATION1, $KONTROL_VERI->LOCATION2, $KONTROL_VERI->LOCATION3, $KONTROL_VERI->LOCATION4,
+              $KONTROL_VERI->SF_MIKTAR
+          );
+        }
+
+        if (session()->has('EKSILER')) {
+          return redirect()->back()->with('error_stock', session('EKSILER'));
+        }
 
         for ($i = 0; $i < $satir_say; $i++) {
 
@@ -984,7 +1031,7 @@ class stok20_controller extends Controller
             }
             else if((!isset($BILGISATIRIE[$i]) || $BILGISATIRIE[$i] != 'E'))
             {
-                DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
+                DB::table($firma.'stok10a')->where('EVRAKTIPI','STOK20TI')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TI_TRNUM[$i])->update([
                   'KOD' => $TI_KOD[$i],
                   'STOK_ADI' => $TI_STOK_ADI[$i],
                   'LOTNUMBER' => $TI_LOTNUMBER[$i],

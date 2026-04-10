@@ -8,35 +8,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 class FunctionHelpers
 {
-    public static function stokKontrol(
-        $KOD, $AD, $LOTNO, $SERINO, $SF_SF_UNIT, $AMBCODE,
-        $NUM1, $NUM2, $NUM3, $NUM4,
-        $TEXT1, $TEXT2, $TEXT3, $TEXT4,
-        $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4
-        ) {
-        return DB::table('stok10a')
-            ->selectRaw('KOD, STOK_ADI, LOTNUMBER, SERINO, SUM(SF_MIKTAR) AS MIKTAR, SF_SF_UNIT, AMBCODE, 
-                        NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
-                        LOCATION1, LOCATION2, LOCATION3, LOCATION4')
-            ->where('KOD', $KOD)
-            ->where('STOK_ADI', $AD)
-            ->where('LOTNUMBER', $LOTNO)
-            ->where('SERINO', $SERINO)
-            ->where('SF_SF_UNIT', $SF_SF_UNIT)
-            ->where('AMBCODE', $AMBCODE)
-            ->where('NUM1', $NUM1)
-            ->where('NUM2', $NUM2)
-            ->where('NUM3', $NUM3)
-            ->where('NUM4', $NUM4)
-            ->where('TEXT1', $TEXT1)
-            ->where('TEXT2', $TEXT2)
-            ->where('TEXT3', $TEXT3)
-            ->where('TEXT4', $TEXT4)
-            ->where('LOCATION1', $LOCATION1)
-            ->where('LOCATION2', $LOCATION2)
-            ->where('LOCATION3', $LOCATION3)
-            ->where('LOCATION4', $LOCATION4)
+    public static function stokKontrol($KOD, $LOTNO, $SERINO, $AMBCODE, $NUM1, $NUM2, $NUM3, $NUM4, $TEXT1, $TEXT2, $TEXT3, $TEXT4, $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, $ISLEM_MIK) {
+        $p = Auth::user();
+        if (!$p) return;
+    
+        $MEVCUT = DB::table(trim($p->firma).'.dbo.stok10a')
+            ->selectRaw('SUM(SF_MIKTAR) AS MIKTAR')
+            ->where([
+                ['KOD', $KOD], ['LOTNUMBER', $LOTNO], ['SERINO', $SERINO],
+                ['AMBCODE', $AMBCODE], ['NUM1', $NUM1], ['NUM2', $NUM2],
+                ['NUM3', $NUM3], ['NUM4', $NUM4], ['TEXT1', $TEXT1], ['TEXT2', $TEXT2],
+                ['TEXT3', $TEXT3], ['TEXT4', $TEXT4], ['LOCATION1', $LOCATION1],
+                ['LOCATION2', $LOCATION2], ['LOCATION3', $LOCATION3], ['LOCATION4', $LOCATION4]
+            ])
+            ->groupBy('KOD', 'LOTNUMBER', 'SERINO', 'AMBCODE', 'NUM1', 'NUM2', 'NUM3', 'NUM4', 'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4', 'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4')
             ->first();
+    
+        $mevcutMiktar = $MEVCUT ? $MEVCUT->MIKTAR : 0;
+    
+        if ($ISLEM_MIK > $mevcutMiktar) {
+            session()->push('EKSILER', $KOD.' (-'.($ISLEM_MIK - $mevcutMiktar).' Adet)');
+            return true;
+        }
     }
 
     public static function Logla($EVRAKTYPE,$EVRAKNO,$ISLEM,$TARIH = '')
