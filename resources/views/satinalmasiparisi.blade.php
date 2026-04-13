@@ -590,6 +590,7 @@
                           <th>İşlem Mik.</th>
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
+                          <th>Not</th>
                           <th>Termin Tar.</th>
                           <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
@@ -606,6 +607,7 @@
                           <th>İşlem Mik.</th>
                           <th>İşlem Br.</th>
                           <th>Bakiye</th>
+                          <th>Not</th>
                           <th>Termin Tar.</th>
                           <th>Termin Durumu</th>
                           <th>Açık/Kapalı</th>
@@ -675,6 +677,7 @@
                               echo "<td style='text-align:right'>" . e($row->SF_MIKTAR   ?? '') . "</td>";
                               echo "<td>"    . e($row->SF_SF_UNIT ?? '') . "</td>";
                               echo "<td style='text-align:right'>" . e($row->SF_BAKIYE   ?? '') . "</td>";
+                              echo "<td style='text-align:right'>" . e($row->NOT1   ?? '') . "</td>";
                               echo "<td style='white-space:nowrap'>" . e($row->TERMIN_TAR ?? '—') . "</td>";
                               echo "<td data-order='" . ($fark ?? 9999) . "'>" . $terminBadge . "</td>";
                               echo "<td>" . $akBadge . "</td>";
