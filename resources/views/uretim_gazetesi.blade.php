@@ -162,6 +162,7 @@ SELECT
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
     A2.gerceklesen_MIKTAR,
+    (SELECT MIN(created_at) FROM STOK63T WHERE LOTNUMBER = M10T.EVRAKNO) AS ILK_FASON,
     ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_DEPO, 
          ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
   ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_GELEN,
@@ -201,6 +202,7 @@ SELECT
     NULL AS R_OPERASYON,
     '999' AS R_SIRANO,
     NULL AS plan_sure,
+    NULL AS ILK_FASON,
     NULL AS plan_miktar,
     NULL AS gerceklenen_SURE,
     NULL AS gerceklesen_MIKTAR,
@@ -226,12 +228,13 @@ SELECT
     S40T.SF_BAKIYE AS sip_bakiye,
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
-    M10T.R_OPERASYON,4
+    M10T.R_OPERASYON,
     M10T.R_SIRANO,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
     A1.gerceklenen_SURE,
     A2.gerceklesen_MIKTAR,
+    (SELECT MIN(created_at) FROM STOK63T WHERE LOTNUMBER = M10T.EVRAKNO) AS ILK_FASON,
     ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_DEPO, 
          ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
   ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_GELEN,
@@ -292,6 +295,7 @@ foreach ($rows as $r) {
             'sip_bakiye' => is_null($r['sip_bakiye']) ? null : (float)$r['sip_bakiye'],
             'fason_depo' => is_null($r['FASON_DEPO']) ? null : $r['FASON_DEPO'],
             'fason' => $r['FASON_SEVK'] .' / ' . $r['FASON_GELEN'],
+            'ILK_FASON' => $r['ILK_FASON'],
             'FASON_SEVK' => $r['FASON_SEVK'],
             'FASON_GELEN' => $r['FASON_GELEN'],
             'DOSYA' => $r['DOSYA'] ,
@@ -876,6 +880,7 @@ usort($groups, function($a, $b) {
                         <th class="num">Sipariş Miktarı</th>
                         <th class="num">Üretilen Miktar</th>
                         <th class="num">Sipariş Bakiyesi</th>
+                        <th>Gidiş Tarihi</th>
                         <th>Fason Depo</th>
                         <th>Fason</th>
                         <?php if (isset($ops)): foreach ($ops as $op): ?>
@@ -924,6 +929,7 @@ usort($groups, function($a, $b) {
                                 <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
                                 <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td class="num"><?= $g['ILK_FASON'] ? $g['ILK_FASON'] : '—' ?></td>
                                 <td><?= $g['FASON_SEVK'] == $g['FASON_GELEN'] ? '' : htmlspecialchars($g['fason_depo'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
                                 <?php if (isset($ops)): foreach ($ops as $op): 
