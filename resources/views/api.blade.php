@@ -12,7 +12,7 @@
     $ekranRumuz = "APIPANEL";
     $ekranAdi = "API Panelleri";
     $ekranLink = "api";
-    $ekranTableE = $database . "tabl91t";
+    $ekranTableE = "tabl91t";
     $ekranKayitSatirKontrol = "false";
 
     $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
