@@ -45,21 +45,20 @@
     ->leftJoin($database.'stok00 as s', 't.R_KAYNAKKODU', '=', 's.KOD')
     ->leftJoin($database.'imlt00 as i', 't.R_KAYNAKKODU', '=', 'i.KOD')
     ->leftJoin($database.'stdm10e as mlie', 't.R_KAYNAKKODU', '=', 'mlie.TEZGAH_KODU')
-    ->leftJoin($database.'stdm10t as mlit', 'mlie.EVRAKNO', '=', 'mlit.EVRAKNO')
     ->leftJoin($database.'excratt as kur', function ($join) use ($kart_veri) {
-        $join->on('mlit.PARABIRIMI', '=', 'kur.CODEFROM')
-             ->on('kur.CODETO', '=', DB::raw("'TRY'"))
+        $join->on('mlie.PARA_BIRIMI', '=', 'kur.CODEFROM')
+             ->on('kur.CODETO', '=', DB::raw("'TL'"))
              ->on('kur.EVRAKNOTARIH', '=', DB::raw("'".date('Y/m/d', strtotime(@$kart_veri->KAPANIS_TARIHI))."'"));
     })
     ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
     ->selectRaw("
         
         case
-            when mlit.PARABIRIMI = 'TRY' then mlit.TUTAR
-            else mlit.TUTAR *
+            when mlie.PARA_BIRIMI = 'TL' then mlie.MALIYETT
+            else mlie.MALIYETT *
                 CAST(REPLACE(kur.KURS_1, ',', '.') AS decimal(18,6))
         end as TUTAR,
-        mlit.PARABIRIMI,
+        mlie.PARA_BIRIMI,
         kur.KURS_1,
         mlie.EVRAKNO,
         t.*,
