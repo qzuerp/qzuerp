@@ -268,19 +268,158 @@ class stok60_controller extends Controller
             
             $kontrol = $s1 + (-1 * $s2);
             
-            // dd([
-            //   "s1" => $s1,
-            //   "s2" => $s2,
-            //   "Kontrol" => $kontrol,
-            //   "Miktar" => $SF_MIKTAR[$i],
-            //   'Depo' => $AMBCODE_T,
-            //   'all' => $request->all()
-            // ]);
-
             if($SF_MIKTAR[$i] > $kontrol)
             {
               return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
             }
+
+            $provider = $this->accounting->getProvider(trim($u->firma));
+
+            $lines = [];
+            $cari_id = "";
+    
+            foreach($KOD as $key => $veri)
+            {
+              $API_ID = DB::table($firma.'stok00')->where('KOD',$veri)->value('API_ID');
+    
+              if(!$API_ID)
+              {
+                $GET_ID = $provider->getProducts($veri);
+    
+                DB::table($firma.'stok00')->where('KOD',$veri)->update([
+                  'API_ID' => $GET_ID['data'][0]['id']
+                ]);
+              }
+    
+              $lines[] = [
+                'product_id'   => $API_ID ?: $GET_ID['data'][0]['id'],
+                'quantity'     => $SF_MIKTAR[$key],
+                'product_name' => $STOK_ADI[$key],
+                'description'  => $SF_SF_UNIT[$key],
+              ];
+            }
+              
+    
+            $provider = $this->accounting->getProvider(trim($u->firma));
+
+              $lines   = [];
+              $cari_id = "";
+              $errors  = [];
+
+              foreach ($KOD as $key => $veri) {
+                  try {
+                      $API_ID = DB::table($firma . 'stok00')->where('KOD', $veri)->value('API_ID');
+
+                      if (!$API_ID) {
+                          $GET_ID = $provider->getProducts($veri);
+
+                          if (empty($GET_ID['data'][0]['id'])) {
+                              $errors[] = "Ürün bulunamadı: {$veri}";
+                              continue;
+                          }
+
+                          $API_ID = $GET_ID['data'][0]['id'];
+
+                          DB::table($firma . 'stok00')
+                              ->where('KOD', $veri)
+                              ->update(['API_ID' => $API_ID]);
+                      }
+
+                      $lines[] = [
+                          'product_id'   => $API_ID,
+                          'quantity'     => $SF_MIKTAR[$key],
+                          'product_name' => $STOK_ADI[$key],
+                          'description'  => $SF_SF_UNIT[$key],
+                      ];
+
+                  } catch (Exception $e) {
+                      $errors[] = "Ürün işlenirken hata ({$veri}): " . $e->getMessage();
+                      continue;
+                  }
+              }
+
+              if (empty($lines)) {
+                  return response()->json([
+                      'basari' => false,
+                      'mesaj'  => 'İrsaliyeye eklenecek geçerli ürün bulunamadı.',
+                      'hatalar' => $errors,
+                  ], 422);
+              }
+
+              try {
+                  $cari = DB::table($firma . 'cari00')->where('KOD', $CARIHESAPCODE)->first();
+
+                  if (!$cari) {
+                      return response()->json([
+                          'basari' => false,
+                          'mesaj'  => "Cari hesap bulunamadı: {$CARIHESAPCODE}",
+                      ], 422);
+                  }
+
+                  if ($cari->API_ID) {
+                      $cari_id = $cari->API_ID;
+                  } else {
+                      $GET_ID = $provider->getContacts($cari->AD);
+
+                      if (empty($GET_ID['data'][0]['id'])) {
+                          return response()->json([
+                              'basari' => false,
+                              'mesaj'  => "Muhasebe sisteminde cari bulunamadı: {$cari->AD}",
+                          ], 422);
+                      }
+
+                      $cari_id = $GET_ID['data'][0]['id'];
+
+                      DB::table($firma . 'cari00')
+                          ->where('KOD', $CARIHESAPCODE)
+                          ->update(['API_ID' => $cari_id]);
+                  }
+
+              } catch (Exception $e) {
+                  return response()->json([
+                      'basari' => false,
+                      'mesaj'  => 'Cari hesap sorgulanırken hata oluştu: ' . $e->getMessage(),
+                  ], 500);
+              }
+
+              try {
+                  $sonuc = $provider->createInvoice([
+                      'contact_id'    => $cari_id,
+                      'issue_date'    => date('Y-m-d'),
+                      'shipment_date' => date('Y-m-d'),
+                      'city'          => $cari->ADRES_2,
+                      'district'      => $cari->ADRES_3,
+                      'address'       => $cari->ADRES_1,
+                      'description'   => '',
+                      'lines'         => $lines,
+                  ]);
+
+                  if (isset($sonuc['errors'])) {
+                      return response()->json([
+                          'basari'  => false,
+                          'mesaj'   => 'Muhasebe servisi faturayı oluşturamadı.',
+                          'hatalar' => $sonuc['errors'],
+                      ], 422);
+                  }
+
+                  $response = [
+                      'basari'     => true,
+                      'parasut_id' => $sonuc['data']['id'] ?? null,
+                  ];
+
+                  if (!empty($errors)) {
+                      $response['uyarilar'] = $errors;
+                  }
+
+                  // return response()->json($response);
+
+              } catch (Exception $e) {
+                  return response()->json([
+                      'basari' => false,
+                      'mesaj'  => 'Fatura oluşturulurken beklenmedik bir hata oluştu: ' . $e->getMessage(),
+                  ], 500);
+              }
+
             //Yeni eklenen satirlar
             DB::table($firma.'stok60t')->insert([
               'EVRAKNO' => $EVRAKNO,
@@ -386,16 +525,7 @@ class stok60_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-        // dd(
-        //   [
-        //     "tr" => $TRNUM,
-        //     "c" => $currentTRNUMS,
-        //     "l" => $liveTRNUMS,
-        //     "d" => $deleteTRNUMS,
-        //     "n" => $newTRNUMS,
-        //     "u" => $updateTRNUMS
-        //   ]
-        // );
+        
         for ($i = 0; $i < $satir_say; $i++) 
         {
           DB::table($firma.'stok40t')->where('ARTNO',$SIPNO)->update([

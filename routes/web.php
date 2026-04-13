@@ -633,15 +633,15 @@ Route::group(['middleware' => ['auth']], function() {
             ->json();
     });
 
-    Route::get('/test/cariler/{firmaId}', function (string $firmaId) {
+    Route::get('/test/cariler/{firmaId}/{kod}', function (string $firmaId, string $kod) {
         $manager = app(\App\Services\AccountingManager::class);
         $provider = $manager->getProvider($firmaId);
-        return $provider->getContacts();
+        return $provider->getContacts($kod);
     });
     
-    Route::get('/test/urunler/{firmaId}', function (string $firmaId) {
+    Route::get('/test/urunler/{firmaId}/{kod}', function (string $firmaId, string $kod) {
         $manager = app(\App\Services\AccountingManager::class);
         $provider = $manager->getProvider($firmaId);
-        return $provider->getProducts();
+        return $provider->getProducts($kod);
     });
 });

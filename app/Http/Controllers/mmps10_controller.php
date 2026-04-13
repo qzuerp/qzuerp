@@ -157,7 +157,7 @@ class mmps10_controller extends Controller
         foreach ($STOK40_VERILER as $key => $veri) {
 
           $tabledata .= "<tr>";
-          $tabledata .= "<td>AAAA" . $veri->EVRAKNO . "ZZZZZZ</td>";
+          $tabledata .= "<td>" . $veri->EVRAKNO . "</td>";
           $tabledata .= "<td>" . $veri->ARTNO . "</td>";
           $tabledata .= "<td>" . $veri->KOD . "</td>";
           $tabledata .= "<td>" . $veri->STOK_ADI . "</td>";
@@ -346,11 +346,11 @@ class mmps10_controller extends Controller
       case 'kart_sil':
         FunctionHelpers::Logla('MMPS10', $EVRAKNO, 'D');
 
-        // $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t','stok48t','stok48e','stok63','stok63t']);
+        $msg = FunctionHelpers::KodKontrol($MAMULSTOKKODU,['mmps10e','mmps10t','bomu01e','bomu01t','stok60t','stok40t','stok48t','stok48e','stok68t','stok63t','stok46t','stdm10e']);
 
-        // if ($msg) {
-        //   return redirect()->back()->with('error_swal', $msg);
-        // }
+        if ($msg) {
+          return redirect()->back()->with('error_swal', $msg);
+        }
 
         DB::table($firma . 'mmps10e')->where('EVRAKNO', $EVRAKNO)->delete();
         DB::table($firma . 'mmps10t')->where('EVRAKNO', $EVRAKNO)->delete();
@@ -364,16 +364,14 @@ class mmps10_controller extends Controller
       // break;
       case 'kart_olustur':
         // dd($request->all());
-        $tarihKodu = date('ymd'); // Günün tarihi: 251105
-        $tipKodu = $request->MPSEVRAKTYPE; // U veya F
+        $tarihKodu = date('ymd');
+        $tipKodu = $request->MPSEVRAKTYPE;
 
-        // Bugünün tarih koduyla başlayan evrakları bul
         $sonEvrak = DB::table($firma . 'mmps10e')
           ->select(DB::raw('MAX(EVRAKNO) as EVRAKNO'))
           ->where('EVRAKNO', 'like', '%' . $tarihKodu . '-%')
           ->first();
 
-        // Bugün için varsa son numarayı al, yoksa 1'den başlat
         if ($sonEvrak && $sonEvrak->EVRAKNO) {
           $parca = explode('-', $sonEvrak->EVRAKNO);
           $sayac = isset($parca[1]) ? (int) $parca[1] + 1 : 1;

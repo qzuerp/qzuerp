@@ -334,7 +334,10 @@
         @if (in_array('INFO', $kullanici_read_yetkileri))
           <li><a href="{{ route('info') }}"><i class="fa-solid fa-info"></i> Ekran Tanıtım Kart</a></li>
         @endif
-         @if ($user->perm == "ADMIN")
+        @if (in_array('APIPANEL', $kullanici_read_yetkileri))
+          <li><a href="{{ route('api') }}"><i class="fa-brands fa-square-js"></i></i> API Paneli</a></li>
+        @endif
+        @if ($user->perm == "ADMIN")
           <li><a href="user"><i class='fa fa-users'></i>Kullanıcılar</a></li>
         @endif
         <li><a href="change_password"><i class='bx bx-key'></i>Şifre Değiştir</a></li>

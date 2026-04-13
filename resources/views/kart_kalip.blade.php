@@ -225,7 +225,7 @@ if (isset($kart_veri)) {
 									<label>Üretici Firma</label>
 									<select class="form-control js-example-basic-single URETICI_FIRMA" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="URETICI_FIRMA" style="width: 100%;" name="URETICI_FIRMA" id="URETICI_FIRMA">
 											@php
-												$evraklar=DB::table($database.'cari00')->where('AP10','1')->orderBy('KOD', 'ASC')->get();
+												$evraklar=DB::table($database.'cari00')->orderBy('KOD', 'ASC')->get();
 
 												foreach ($evraklar as $key => $veri) {
 												    if ($veri->KOD == @$kart_veri->URETICI_FIRMA) {
@@ -422,7 +422,7 @@ if (isset($kart_veri)) {
 												echo "<td>".$suzVeri->KOD."</td>";
 												echo "<td>".$suzVeri->AD."</td>";
 												echo "<td>".$suzVeri->STOK_KODU."</td>";
-												echo "<td>"."<a class='btn btn-info' href='kart_stok?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+												echo "<td>"."<a class='btn btn-info' href='kart_kalip?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
 												echo "</tr>";
 

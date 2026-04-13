@@ -44,6 +44,9 @@ class ParasutService implements AccountingInterface
                     'description'   => $data['description'] ?? '',
                     'issue_date'    => $data['issue_date'],
                     'shipment_date' => $data['shipment_date'] ?? $data['issue_date'],
+                    'city' => $data['city'],
+                    'district' => $data['district'],
+                    'address' => $data['address'],
                     'inflow'     => false,
                 ],
                 'relationships' => [
@@ -89,59 +92,21 @@ class ParasutService implements AccountingInterface
             ->json();
     }
 
-    public function getContacts()
+    public function getContacts($code)
     {
         return Http::withToken($this->token)
-            ->get($this->baseUrl . $this->companyId . '/contacts')
+            ->get($this->baseUrl . $this->companyId . '/contacts',[
+                'filter[name]' => trim($code)
+            ])
             ->json();
     }
 
-public function getProducts()
-{
-    // EREN DİKKAT: Test aşamasında Cache'i devre dışı bırakmak için 
-    // Cache::forget('parasut_all_products'); satırını bir kere çalıştırabilirsin.
-
-    return Cache::remember('parasut_all_products', 3600, function () {
-        $allProducts = [];
-        $page = 1;
-        $pageSize = 50; // Paraşüt genelde max 50-100 izin verir
-
-        do {
-            $response = Http::withToken($this->token)
-                ->get($this->baseUrl . $this->companyId . '/products', [
-                    'page[number]' => $page,
-                    'page[size]'   => $pageSize
-                ]);
-
-            // Hata kontrolü yapmazsan kör uçuşu yaparsın Eren!
-            if (!$response->successful()) {
-                \Log::error("Paraşüt Hatası: " . $response->body());
-                break;
-            }
-
-            $data = $response->json();
-            $currentPageProducts = $data['data'] ?? [];
-
-            foreach ($currentPageProducts as $product) {
-                // Paraşüt'te 'code' alanı attributes içindedir
-                $stokKodu = $product['attributes']['code'] ?? null;
-                
-                if ($stokKodu) {
-                    $allProducts[$stokKodu] = [
-                        'id'   => $product['id'], // '54321' gibi String döner
-                        'name' => $product['attributes']['name']
-                    ];
-                }
-            }
-
-            $page++;
-            
-            // Toplam sayfa sayısını kontrol et (Meta verisinden çekebiliriz)
-            $totalPages = $data['meta']['total_pages'] ?? 0;
-
-        } while ($page <= $totalPages && count($currentPageProducts) > 0);
-
-        return $allProducts;
-    });
-}
+    public function getProducts($code)
+    {
+        return Http::withToken($this->token)
+            ->get($this->baseUrl . $this->companyId . '/products', [
+                'filter[code]' => trim($code)
+            ])
+            ->json();
+    }
 }
