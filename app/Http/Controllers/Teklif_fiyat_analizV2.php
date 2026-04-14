@@ -841,6 +841,7 @@ class teklif_fiyat_analizV2 extends Controller
     {
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
+        $masraflar = $request->masraflar;
 
         $OPRS = $request->OPRS ?? [];
         DB::table($firma . 'tekl20o')->where('EVRAKNO', $request->EVRAKNO)->where('OR_TRNUM', $request->OR_TRNUM)->delete();
@@ -850,6 +851,20 @@ class teklif_fiyat_analizV2 extends Controller
                 'OR_TRNUM' => $request->OR_TRNUM,
                 'OPERASYON' => $operasyon,
                 'SIRA' => $index + 1
+            ]);
+        }
+
+        DB::table($firma.'tekl20tr')->where('EVRAKNO', $request->EVRAKNO)->where('OR_TRNUM', $request->OR_TRNUM)->delete();
+        foreach ($masraflar as $index => $veri) {
+            DB::table($firma.'tekl20tr')->insert([
+                'MASRAF_TURU' => $veri['TUR'],
+                'ACIKLAMA' => $veri['ACIKLAMA'],
+                'FIYAT' => $veri['FIYAT'],
+                'TEKLIF_PB' => $veri['PARA_BIRIMI'],
+                'TEKLIF' => $veri['TEKLIF'],
+                'EVRAKNO' => $request->EVRAKNO,
+                'OR_TRNUM' => $request->OR_TRNUM,
+                'TRNUM' => str_pad($index + 1, 6, '0', STR_PAD_LEFT)
             ]);
         }
     }

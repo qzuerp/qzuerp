@@ -1461,33 +1461,12 @@
 						</div>
 						<div id="mastar" class="tab-pane fade">
 							<div class="row">
-								<!-- Sol Kolon -->
-								<div class="col-md-6">
-									<label class="form-label fw-bold">Mastar Seç</label>
-									<select id="mastarSelect" class="select2" data-modal="satir_detay">
-										<option value="">Seçim Yap</option>
-										@php
-											$MASTARLAR = DB::table($database . 'stok00')->where('GK_1', '06')->get();
-										@endphp
-										@foreach($MASTARLAR as $MASTAR)
-											<option value="{{ $MASTAR->KOD }}">{{ $MASTAR->AD }}</option>
-										@endforeach
-									</select>
-								</div>
-
-								<!-- Sağ Kolon -->
-								<div class="col-md-6">
-									<label class="form-label fw-bold">Mastar Durumu / Fiyatı</label>
-									<input type="text" id="mastarD" class="form-control TOPLANICAK"
-										placeholder="Mastar Durumu">
-								</div>
-
 								<div class="col-12 mt-2">
 									<table class="table table-bordered text-center" id="masrafTable">
 										<thead>
 											<tr>
 												<th>#</th>
-												<th style="display:none;">Sıra</th>
+												<th>Tür</th>
 												<th>Açıklama</th>
 												<th>Fiyat</th>
 												<th>Para Birimi</th>
@@ -1500,13 +1479,32 @@
 													<button type="button" class="btn btn-default add-row" id="addRow2"><i
 															class="fa fa-plus" style="color: blue"></i></button>
 												</td>
-												<td style="min-width: 150px;">
-													<input data-max style="color: red" type="text" name="ACIKLAMA_FILL"
-														id="ACIKLAMA_FILL" class=" form-control">
+												<td>
+													<select id="tur" class="select2" data-modal="satir_detay">
+														<option value="Ek Ücret">Ek Ücret</option>
+														<option value="Mastar">Mastar</option>
+													</select>
 												</td>
 												<td style="min-width: 150px;">
-													<input data-max style="color: red" type="text" name="FIYAT_FILL"
-														id="FIYAT_FILL" class=" form-control">
+													<input type="hidden" name="kaynak_degeri" id="FINAL_SOURCE_VAL" value="">
+
+													<div id="mastarSelectContainer" style="display:none;">
+														<select id="mastarSelect" class="select2 form-control" data-modal="satir_detay">
+															<option value="">Seçim Yap</option>
+															@php
+																$MASTARLAR = DB::table($database . 'stok00')->where('GK_1', '06')->get();
+															@endphp
+															@foreach($MASTARLAR as $MASTAR)
+																<option value="{{ $MASTAR->KOD }}">{{ $MASTAR->AD }}</option>
+															@endforeach
+														</select>
+													</div>
+
+													<input type="text" id="ACIKLAMA_FILL" class="form-control" style="color: red;" placeholder="Açıklama giriniz...">
+												</td>
+												<td style="min-width: 150px;">
+													<input type="text" id="FIYAT_FILL" class="form-control TOPLANICAK"
+														placeholder="Mastar Durumu">
 												</td>
 												<td style="min-width: 150px;">
 													<select id="TEKLIF_PB_FILL" data-modal="satir_detay"
@@ -1533,7 +1531,7 @@
 										<tbody>
 
 										</tbody>
-									</table>
+									</table>			
 								</div>
 							</div>
 						</div>
@@ -2148,6 +2146,32 @@
 			    });
 			});
 
+			$(document).on('change', '#tur', function() {
+				let value = $(this).val();
+				let $selectCont = $('#mastarSelectContainer');
+				let $inputFill = $('#ACIKLAMA_FILL');
+				let $finalVal = $('#FINAL_SOURCE_VAL');
+
+				$finalVal.val('');
+				$selectCont.hide();
+				$inputFill.hide();
+
+				if (value === 'Ek Ücret') {
+					$inputFill.show().val('');
+				} else {
+					$selectCont.show();
+					$('#mastarSelect').val('').trigger('change');
+				}
+			});
+
+			$(document).on('change', '#mastarSelect', function() {
+				$('#FINAL_SOURCE_VAL').val($(this).val());
+			});
+
+			$(document).on('keyup', '#ACIKLAMA_FILL', function() {
+				$('#FINAL_SOURCE_VAL').val($(this).val());
+			});
+
 			let secimSirasi = [];
 
 			$('.satir_detay').on('click', function () {
@@ -2240,12 +2264,6 @@
 								return;
 							}
 
-							if (tip === 'M') {
-								let kod = row.KOD;
-								$('#mastarSelect').val(kod).trigger('change');
-								safeSet(document.getElementById('mastarD'), parseFloat(row.FIYAT) || 0);
-								return;
-							}
 
 							if (tip !== 'I') return;
 
@@ -2720,7 +2738,7 @@
 							TARIH:'{{ @$kart_veri->TARIH }}'
 						},
 						success: function(res){
-							AutoNumeric.getAutoNumericElement('#mastarD').set(res);
+							safeSet('#FIYAT_FILL',res);
 							hesapla();
 						}
 					});
@@ -2816,6 +2834,27 @@
 					const OR_TRNUM = $('#OR_TRNUM').val();
 					if (!OR_TRNUM) return;
 
+					let masraflar = [];
+
+					$('#masrafTable tbody tr').each(function () {
+						let satir = $(this);
+						
+						let fiyatiInput = satir.find('input[name="M_FIYAT[]"]');
+						// let teklifInput = satir.find('input[name="M_TEKLIF[]"]');
+
+						let veri = {
+							'TUR': satir.find('input[name="M_TUR[]"]').val() || '',
+							'ACIKLAMA': satir.find('input[name="M_ACIKLAMA[]"]').val() || '',
+							'FIYAT': (fiyatiInput.length > 0 && AutoNumeric.getAutoNumericElement(fiyatiInput[0])) 
+									? AutoNumeric.getAutoNumericElement(fiyatiInput[0]).getNumber() 
+									: 0,
+							'PARA_BIRIMI': satir.find('input[name="M_TEKLIF_PB[]"]').val() || 'TL',
+							'TEKLIF': satir.find('input[name="M_TEKLIF[]"]').val()
+						};
+						
+						masraflar.push(veri);
+					});
+
 					$.ajax({
 						url: "operasyon/kaydet",
 						type:'post',
@@ -2823,15 +2862,12 @@
 							OR_TRNUM:OR_TRNUM,
 							EVRAKNO: "{{ @$kart_veri->EVRAKNO }}",
 							_token:'{{ csrf_token() }}',
-							OPRS: secimSirasi
+							OPRS: secimSirasi,
+							masraflar: masraflar
 						},
 						success: function (response) {
 							secimSirasi = [];
 						}
-					});
-
-					$('#masrafTable tbody tr').each(function () {
-						$('#formMasrafTable tbody').append($(this));
 					});
 
 					$('#OPRSEC').trigger('click');
@@ -2928,7 +2964,7 @@
 					$('#maliyetDetayTable tbody').append(htr);
 					updateLastTRNUM(HTRNUM);
 
-					let MTUTAR = safeGet(document.getElementById('mastarD'));
+					let MTUTAR = safeGet(document.getElementById('FIYAT_FILL'));
 					if (MTUTAR) {
 						let MKOD   = $('#mastarSelect').val();
 						let MTRNUM = getTRNUM();
@@ -3510,14 +3546,14 @@
 				var TRNUM_FILL = getTRNUM();
 				const OR_TRNUM = $('#OR_TRNUM').val();
 				var htmlCode = " ";
-
+				
 				$.ajax({
 					url:'/digerFiyatHesapla',
 					type:'post',
 					data:{
 						'SATIR_TEKLIF': satirEkleInputs.TEKLIF_PB_FILL,
 						'TEKLIF_BIRIMI':'{{ @$kart_veri->TEKLIF_FIYAT_PB }}',
-						'FIYAT': satirEkleInputs.FIYAT_FILL,
+						'FIYAT': safeGet('#FIYAT_FILL'),
 						'TARIH':'{{ @$kart_veri->TARIH }}'
 					},
 					beforeSend:function(){
@@ -3541,37 +3577,55 @@
 						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='M_OR_TRNUM[]' value='" + OR_TRNUM + "'></td> ";
 						// htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
 						htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='M_ACIKLAMA[]' value='" + satirEkleInputs.ACIKLAMA_FILL + "' ></td> ";
-						htmlCode += " <td><input type='text' class='form-control' name='M_FIYAT[]' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> ";
+						htmlCode += " <td><input type='text' class='form-control' name='M_TUR[]' readonly value='" + satirEkleInputs.tur + "' ></td> ";
+						let readonly = '';
+						if(satirEkleInputs.tur == 'Mastar')
+						{
+							readonly = 'readonly';
+						}
+
+						htmlCode += " <td><input type='text' class='form-control' name='M_ACIKLAMA[]' "+ readonly +" value='" + satirEkleInputs.FINAL_SOURCE_VAL + "' ></td> ";
+						htmlCode += " <td><input type='text' class='form-control' value='" + satirEkleInputs.FIYAT_FILL + "' readonly></td> <input type='text' class='form-control' name='M_FIYAT[]' value='" + safeGet('#FIYAT_FILL') + "' readonly>";
 						htmlCode += " <td><input type='text' class='form-control' name='M_TEKLIF_PB[]' value='" + satirEkleInputs.TEKLIF_PB_FILL + "' readonly></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='M_TEKLIF[]' value='" + satirEkleInputs.TEKLIF_FILL + "' readonly></td> ";
 
 
 						htmlCode += " </tr> ";
 
-						if (!satirEkleInputs.ACIKLAMA_FILL || !satirEkleInputs.FIYAT_FILL || !satirEkleInputs.TEKLIF_PB_FILL) {
+						if (!satirEkleInputs.FIYAT_FILL || !satirEkleInputs.TEKLIF_PB_FILL) {
 							eksikAlanHataAlert2();
 						}
 						else {
 							$("#masrafTable > tbody").append(htmlCode);
 							updateLastTRNUM(TRNUM_FILL);
-
-							emptyInputs('satirEkle2');
-							let toplam = 0;
-
-							$('input[name="TEKLIF[]"]').each(function() {
-								let val = parseFloat($(this).val()) || 0;
-								toplam += val;
-							});
-
-							let diger = parseFloat($('#DIGER').val()) || 0;
-
-							$('#DIGER').val(diger + toplam);
-							hesapla();
+							
+							safeSet('#FIYAT_FILL',0);
+							$('#mastarSelect').val('').trigger('change');
+							$('#ACIKLAMA_FILL').val('');
 						}
 					}
 				});
 			});
+
+			const targetNode = document.querySelector('#masrafTable tbody');
+			const config = { childList: true };
+
+			const callback = function(mutationsList, observer) {
+				for(const mutation of mutationsList) {
+					if (mutation.type === 'childList') {
+						let total = 0;
+						$('input[name="M_TEKLIF[]"]').each(function(){
+							total += safeGet(this);
+						});
+
+						safeSet('#DIGER',total);
+						hesapla();
+					}
+				}
+			};
+
+			const observer2 = new MutationObserver(callback);
+			observer2.observe(targetNode, config);
 
 			$("#addRow").on('click', function () {
 				var satirEkleInputs = getInputs('satirEkle');
