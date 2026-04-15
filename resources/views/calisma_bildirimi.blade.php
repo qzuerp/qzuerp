@@ -954,7 +954,7 @@
                   $RECTIME1_E       = $get('RECTIME1_E');
                   $ENDTARIH1_B      = $get('ENDTARIH1_B');
                   $ENDTARIH1_E      = $get('ENDTARIH1_E');
-                  $ENDTIME1_B       = $get('ENDTIME1_B');   // DÜZELTME: önceden ENDTIME1_E olarak alınıyordu
+                  $ENDTIME1_B       = $get('ENDTIME1_B');
                   $ENDTIME1_E       = $get('ENDTIME1_E');
                   $URETIM_B         = $get('URETIM_B');
                   $URETIM_E         = $get('URETIM_E');

@@ -16,13 +16,13 @@
     $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
   }
 
-  $ilkEvrak = DB::table('users')->where('firma', '=', $kullanici_veri->firma)->min('id');
-  $sonEvrak = DB::table('users')->where('firma', '=', $kullanici_veri->firma)->max('id');
+  $ilkEvrak     = DB::table('users')->where('firma', '=', $kullanici_veri->firma)->min('id');
+  $sonEvrak     = DB::table('users')->where('firma', '=', $kullanici_veri->firma)->max('id');
   $sonrakiEvrak = DB::table('users')->where('id', '>', $sonID)->where('firma', '=', $kullanici_veri->firma)->min('id');
-  $oncekiEvrak = DB::table('users')->where('id', '<', $sonID)->where('firma', '=', $kullanici_veri->firma)->max('id');
+  $oncekiEvrak  = DB::table('users')->where('id', '<', $sonID)->where('firma', '=', $kullanici_veri->firma)->max('id');
 
-  $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
-  $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
+  $kullanici_read_yetkileri   = explode("|", $kullanici_veri->read_perm);
+  $kullanici_write_yetkileri  = explode("|", $kullanici_veri->write_perm);
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
   $yetkiler = [
@@ -106,7 +106,6 @@
     gap: 16px;
     flex-wrap: wrap;
   }
-
   .qz-topbar .qz-field-group {
     display: flex;
     flex-direction: column;
@@ -253,21 +252,23 @@
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
   }
+
+  /* ---- Search box ---- */
   .qz-search-wrap {
     position: relative;
     flex: 1;
-    min-width: 180px;
+    min-width: 200px;
   }
-  .qz-search-wrap i {
+  .qz-search-wrap .search-icon {
     position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-    color: var(--text-muted); font-size: 12px;
+    color: var(--text-muted); font-size: 12px; pointer-events: none;
+    transition: color var(--transition);
   }
   .qz-search-wrap input {
-    padding-left: 32px;
+    padding: 9px 36px 9px 32px;
     width: 100%;
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
-    padding-top: 8px; padding-bottom: 8px;
     font-size: 13px;
     background: #fff;
     color: var(--text-main);
@@ -278,7 +279,50 @@
     border-color: var(--blue);
     box-shadow: 0 0 0 3px rgba(74,124,246,.12);
   }
+  .qz-search-wrap input:focus + .search-icon { display: none; }
+  .qz-search-wrap input:focus ~ .search-focus-icon { display: block; }
+  /* Clear button */
+  .qz-search-clear {
+    position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--text-muted); color: #fff;
+    border: none; cursor: pointer; font-size: 10px;
+    display: none; align-items: center; justify-content: center;
+    transition: background var(--transition);
+  }
+  .qz-search-clear:hover { background: var(--red); }
+  .qz-search-wrap.has-value .qz-search-clear { display: flex; }
 
+  /* Search result badge */
+  .qz-search-meta {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 5px; min-height: 18px;
+  }
+  .qz-search-result-badge {
+    display: none;
+    align-items: center; gap: 5px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: var(--blue-light); color: var(--blue);
+    font-size: 11px; font-weight: 600;
+    animation: fadeIn .15s ease;
+  }
+  .qz-search-result-badge.visible { display: inline-flex; }
+  .qz-search-result-badge.zero {
+    background: var(--red-light); color: var(--red);
+  }
+  .qz-search-shortcut {
+    font-size: 10px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 3px;
+  }
+  .qz-search-shortcut kbd {
+    background: var(--border); border-radius: 3px;
+    padding: 1px 5px; font-family: monospace; font-size: 10px;
+    color: var(--text-sub);
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+
+  /* ---- Stat bar ---- */
   .qz-stat-bar {
     display: flex; gap: 16px; align-items: center;
     margin-bottom: 14px;
@@ -287,6 +331,7 @@
   .qz-stat-badge {
     display: inline-flex; align-items: center; gap: 5px;
     padding: 3px 10px; border-radius: 20px; font-weight: 600; font-size: 12px;
+    transition: all .2s;
   }
   .qz-stat-badge.read   { background: var(--blue-light);  color: var(--blue); }
   .qz-stat-badge.write  { background: var(--green-light); color: var(--green); }
@@ -335,9 +380,14 @@
   .qz-perm-group-header .g-count {
     font-size: 11px; background: var(--border); color: var(--text-sub);
     padding: 1px 7px; border-radius: 20px; font-weight: 600;
+    transition: all .2s;
+  }
+  .qz-perm-group-header .g-count.filtered {
+    background: var(--blue-light); color: var(--blue);
   }
   .qz-perm-group-header .g-chevron { margin-left: auto; color: var(--text-muted); font-size: 11px; transition: transform .2s; }
 
+  /* Permission table */
   .qz-perm-table { width: 100%; border-collapse: collapse; }
   .qz-perm-table thead th {
     background: #fcfcfd;
@@ -355,7 +405,43 @@
   .qz-perm-table tbody tr:last-child { border-bottom: none; }
   .qz-perm-table tbody tr:hover { background: var(--bg-subtle); }
   .qz-perm-table td { padding: 9px 16px; font-size: 13px; color: var(--text-main); text-align: center; }
-  .qz-perm-table td:first-child { text-align: left; color: var(--text-main); }
+  .qz-perm-table td:first-child { text-align: left; }
+
+  /* Row highlight on search match */
+  .yetki-satir.search-match { background: #fefce8 !important; }
+  .yetki-satir.search-match:hover { background: #fef9c3 !important; }
+
+  /* Search highlight mark */
+  mark.qz-hl {
+    background: #fef08a;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-weight: 700;
+    color: inherit;
+  }
+
+  /* Code badge in search */
+  .qz-code-badge {
+    display: inline-block;
+    font-size: 10px; font-family: monospace; font-weight: 600;
+    background: var(--border); color: var(--text-sub);
+    padding: 1px 6px; border-radius: 4px; margin-left: 6px;
+    vertical-align: middle;
+    transition: all .15s;
+  }
+  .search-match .qz-code-badge {
+    background: var(--blue-light); color: var(--blue);
+  }
+
+  /* No result state */
+  .qz-no-result {
+    display: none;
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .qz-no-result i { font-size: 28px; display: block; margin-bottom: 8px; opacity: .4; }
 
   /* Custom checkboxes */
   .qz-check { position: relative; width: 18px; height: 18px; cursor: pointer; display: inline-block; }
@@ -427,7 +513,7 @@
   /* Spinner */
   .spinner-border { width: 1rem; height: 1rem; border-width: .15em; vertical-align: middle; margin-left: 5px; }
 
-  /* Search hide */
+  /* Hide utilities */
   .yetki-satir.gizli { display: none !important; }
   .yetki-grup-panel.tum-gizli { display: none !important; }
 
@@ -591,6 +677,8 @@
           <div class="qz-pane" id="pane-yetkiler">
 
             <div class="qz-perm-toolbar">
+
+              {{-- Kullanıcı tipi --}}
               <div class="qz-field-group" style="flex:0 0 auto;min-width:160px;">
                 <label class="qz-form-label">Kullanıcı Tipi</label>
                 <select id="kullanici_yetki" class="select2 form-control" name="kullanici_yetki" style="min-width:160px;">
@@ -599,14 +687,30 @@
                 </select>
               </div>
 
-              <div class="qz-field-group" style="flex:1;min-width:180px;">
-                <label class="qz-form-label">Yetki Ara</label>
-                <div class="qz-search-wrap">
-                  <i class="fa fa-search"></i>
-                  <input type="text" id="searchBox" placeholder="Ekran adı ara...">
+              {{-- Gelişmiş arama --}}
+              <div class="qz-field-group" style="flex:1;min-width:220px;">
+                <label class="qz-form-label">
+                  Yetki Ara
+                  <span style="font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;">
+                    — ekran adı veya kod (örn: <code style="font-size:10px;background:var(--border);padding:1px 4px;border-radius:3px;">SATALMIRS</code>)
+                  </span>
+                </label>
+                <div class="qz-search-wrap" id="searchWrap">
+                  <i class="fa fa-search search-icon"></i>
+                  <input type="text" id="searchBox" placeholder="Ara... (Ctrl+F)">
+                  <button type="button" class="qz-search-clear" id="searchClear" title="Temizle">
+                    <i class="fa fa-xmark"></i>
+                  </button>
+                </div>
+                <div class="qz-search-meta">
+                  <span class="qz-search-result-badge" id="searchResultBadge"></span>
+                  <span class="qz-search-shortcut">
+                    <kbd>Ctrl</kbd>+<kbd>F</kbd> ile odaklan
+                  </span>
                 </div>
               </div>
 
+              {{-- Toplu seçim --}}
               <div class="qz-field-group">
                 <label class="qz-form-label">Toplu Seçim</label>
                 <div class="qz-bulk-btns">
@@ -617,12 +721,20 @@
                   <button type="button" class="qz-btn qz-btn-none"   id="bulk-none">  <i class="fa fa-xmark"></i> Temizle</button>
                 </div>
               </div>
+
             </div>
 
+            {{-- Stat bar --}}
             <div class="qz-stat-bar">
               <span class="qz-stat-badge read"><i class="fa fa-eye"></i> <span id="stat-read">0</span></span>
               <span class="qz-stat-badge write"><i class="fa fa-pen"></i> <span id="stat-write">0</span></span>
               <span class="qz-stat-badge delete"><i class="fa fa-trash"></i> <span id="stat-delete">0</span></span>
+            </div>
+
+            {{-- No result placeholder --}}
+            <div class="qz-no-result" id="noResultMsg">
+              <i class="fa fa-magnifying-glass"></i>
+              Arama sonucu bulunamadı
             </div>
 
             <div id="yetkiGruplar">
@@ -647,7 +759,7 @@
                 <div class="qz-perm-group-header" onclick="togglePanel({{ $gi }})">
                   <span class="g-icon"><i class="fa {{ $icon }}"></i></span>
                   <strong>{{ $grupAdi }}</strong>
-                  <span class="g-count">{{ count($grupYetkiler) }}</span>
+                  <span class="g-count" id="gcount-{{ $gi }}">{{ count($grupYetkiler) }}</span>
                   <i class="fa fa-chevron-down g-chevron panel-chevron-{{ $gi }}"></i>
                 </div>
 
@@ -664,8 +776,11 @@
                     <tbody>
                       @foreach($grupYetkiler as $yetki)
                       @php [$val, $label] = $yetki; @endphp
-                      <tr class="yetki-satir" data-name="{{ strtolower($label) }}">
-                        <td>{{ $label }}</td>
+                      <tr class="yetki-satir" data-name="{{ strtolower($label) }}" data-code="{{ strtolower($val) }}">
+                        <td>
+                          <span class="row-label">{{ $label }}</span>
+                          <span class="qz-code-badge">{{ $val }}</span>
+                        </td>
                         <td>
                           <label class="qz-check">
                             <input type="checkbox" class="yetki_read" name="yetki_read[]" value="{{ $val }}"
@@ -804,111 +919,199 @@
 </div>
 
 <script>
-  /* ---- Tab system ---- */
-  document.querySelectorAll('.qz-tabs a').forEach(function(tab) {
-    tab.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelectorAll('.qz-tabs a').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.qz-pane').forEach(p => p.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById('pane-' + this.dataset.tab).classList.add('active');
-    });
+/* ================================================================
+   TAB SİSTEMİ
+   ================================================================ */
+document.querySelectorAll('.qz-tabs a').forEach(function(tab) {
+  tab.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.qz-tabs a').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.qz-pane').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('pane-' + this.dataset.tab).classList.add('active');
+  });
+});
+
+/* ================================================================
+   ŞIFRE KONTROL
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  const form   = document.getElementById('yenikullaniciForm');
+  const pw     = document.getElementById('password-new');
+  const pwConf = document.getElementById('password-confirm-new');
+  const pwWarn = document.getElementById('sifreUyarisi');
+  let t = null;
+  pwConf.addEventListener('input', function() {
+    clearTimeout(t);
+    t = setTimeout(() => { pwWarn.style.display = pw.value !== pwConf.value ? 'block' : 'none'; }, 500);
+  });
+  form.addEventListener('submit', function(e) {
+    if (pw.value !== pwConf.value) { e.preventDefault(); pwWarn.style.display = 'block'; }
   });
 
-  /* ---- Şifre kontrol ---- */
-  document.addEventListener('DOMContentLoaded', function() {
-    const form   = document.getElementById('yenikullaniciForm');
-    const pw     = document.getElementById('password-new');
-    const pwConf = document.getElementById('password-confirm-new');
-    const pwWarn = document.getElementById('sifreUyarisi');
-    let t = null;
-    pwConf.addEventListener('input', function() {
-      clearTimeout(t);
-      t = setTimeout(() => { pwWarn.style.display = pw.value !== pwConf.value ? 'block' : 'none'; }, 500);
-    });
-    form.addEventListener('submit', function(e) {
-      if (pw.value !== pwConf.value) { e.preventDefault(); pwWarn.style.display = 'block'; }
-    });
-    updateStats();
-    // İlk grubu açık başlat
-    const fb = document.getElementById('panelBody-1');
-    const fc = document.querySelector('.panel-chevron-1');
-    if (fb) fb.style.display = 'block';
-    if (fc) fc.style.transform = 'rotate(180deg)';
-  });
+  updateStats();
 
-  /* ---- Email kontrol ---- */
-  $(document).ready(function() {
-    var emailExists = false;
-    $('#email').on('blur', function() {
-      var email = $(this).val().trim();
-      if (!email) return;
-      $.ajax({
-        url: '{{ route("kontrol-email") }}', type: 'POST',
-        data: { email: email, _token: $('input[name="_token"]').val() },
-        success: function(data) { emailExists = data.exists; $('#emailUyarisi').toggle(data.exists); }
-      });
-    });
-    $('#yenikullaniciForm').on('submit', function(e) {
-      if (emailExists) { e.preventDefault(); $('#emailUyarisi').show(); }
+  // İlk grubu açık başlat
+  var fb = document.getElementById('panelBody-1');
+  var fc = document.querySelector('.panel-chevron-1');
+  if (fb) fb.style.display = 'block';
+  if (fc) fc.style.transform = 'rotate(180deg)';
+});
+
+/* ================================================================
+   EMAIL KONTROL
+   ================================================================ */
+$(document).ready(function() {
+  var emailExists = false;
+  $('#email').on('blur', function() {
+    var email = $(this).val().trim();
+    if (!email) return;
+    $.ajax({
+      url: '{{ route("kontrol-email") }}', type: 'POST',
+      data: { email: email, _token: $('input[name="_token"]').val() },
+      success: function(data) { emailExists = data.exists; $('#emailUyarisi').toggle(data.exists); }
     });
   });
+  $('#yenikullaniciForm').on('submit', function(e) {
+    if (emailExists) { e.preventDefault(); $('#emailUyarisi').show(); }
+  });
+});
 
-  /* ---- Kullanıcı seç ---- */
-  function kullaniciGetir() {
-    window.location.href = "user?ID=" + document.getElementById("kullaniciSec").value;
+/* ================================================================
+   KULLANICI SEÇ
+   ================================================================ */
+function kullaniciGetir() {
+  window.location.href = "user?ID=" + document.getElementById("kullaniciSec").value;
+}
+
+/* ================================================================
+   ÇIKIŞ YAPTIR
+   ================================================================ */
+document.querySelectorAll('.userLogout').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var orig = this.innerHTML;
+    var ID   = this.dataset.userId;
+    this.disabled = true;
+    this.innerHTML = 'Çıkış Yapılıyor... <span class="spinner-border spinner-border-sm"></span>';
+    var self = this;
+    $.ajax({
+      url: 'logout_user', type: 'get', data: { userID: ID },
+      success: function() { self.innerHTML = 'Çıkış Yapıldı <i class="fa-solid fa-check"></i>'; },
+      error:   function() { self.disabled = false; self.innerHTML = orig; alert('Bir hata oluştu!'); }
+    });
+  });
+});
+
+/* ================================================================
+   ACCORDION
+   ================================================================ */
+function togglePanel(idx) {
+  var body    = document.getElementById('panelBody-' + idx);
+  var chevron = document.querySelector('.panel-chevron-' + idx);
+  var isOpen  = body.style.display !== 'none';
+  body.style.display      = isOpen ? 'none' : 'block';
+  chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+/* ================================================================
+   GELİŞMİŞ ARAMA
+   ================================================================ */
+(function() {
+  var searchBox    = document.getElementById('searchBox');
+  var searchWrap   = document.getElementById('searchWrap');
+  var searchClear  = document.getElementById('searchClear');
+  var resultBadge  = document.getElementById('searchResultBadge');
+  var noResultMsg  = document.getElementById('noResultMsg');
+
+  /* --- Ctrl+F ile Yetki sekmesindeyken odaklan --- */
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      var activePane = document.querySelector('.qz-pane.active');
+      if (activePane && activePane.id === 'pane-yetkiler') {
+        e.preventDefault();
+        searchBox.focus();
+        searchBox.select();
+      }
+    }
+  });
+
+  /* --- Metni güvenli escape --- */
+  function escapeReg(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  /* ---- Çıkış yaptır ---- */
-  document.querySelectorAll('.userLogout').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var orig = this.innerHTML;
-      var ID   = this.dataset.userId;
-      this.disabled = true;
-      this.innerHTML = 'Çıkış Yapılıyor... <span class="spinner-border spinner-border-sm"></span>';
-      var self = this;
-      $.ajax({
-        url: 'logout_user', type: 'get', data: { userID: ID },
-        success: function() { self.innerHTML = 'Çıkış Yapıldı <i class="fa-solid fa-check"></i>'; },
-        error:   function() { self.disabled = false; self.innerHTML = orig; alert('Bir hata oluştu!'); }
-      });
-    });
-  });
+  /* --- Highlight uygula / kaldır --- */
+  function applyHighlight(labelEl, codeEl, q) {
+    // Label
+    if (!labelEl._originalText) labelEl._originalText = labelEl.textContent;
+    // Code badge
+    if (!codeEl._originalText) codeEl._originalText = codeEl.textContent;
 
-  /* ---- Accordion ---- */
-  function togglePanel(idx) {
-    var body    = document.getElementById('panelBody-' + idx);
-    var chevron = document.querySelector('.panel-chevron-' + idx);
-    var isOpen  = body.style.display !== 'none';
-    body.style.display      = isOpen ? 'none' : 'block';
-    chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    if (!q) {
+      labelEl.textContent = labelEl._originalText;
+      codeEl.textContent  = codeEl._originalText;
+      return;
+    }
+    var re = new RegExp('(' + escapeReg(q) + ')', 'gi');
+    labelEl.innerHTML = labelEl._originalText.replace(re, '<mark class="qz-hl">$1</mark>');
+    codeEl.innerHTML  = codeEl._originalText.replace(re, '<mark class="qz-hl">$1</mark>');
   }
 
-  /* ---- Arama ---- */
-  document.getElementById('searchBox').addEventListener('keyup', function() {
-    var q = this.value.toLowerCase().trim();
+  /* --- Ana arama fonksiyonu --- */
+  function doSearch() {
+    var q = searchBox.value.toLowerCase().trim();
+    var totalVisible = 0;
+
+    // Clear butonunu göster/gizle
+    searchWrap.classList.toggle('has-value', q.length > 0);
+
     document.querySelectorAll('.yetki-grup-panel').forEach(function(panel, pi) {
-      var rows = panel.querySelectorAll('.yetki-satir');
+      var idx     = pi + 1;
+      var rows    = panel.querySelectorAll('.yetki-satir');
       var visible = 0;
+
       rows.forEach(function(row) {
-        var match = !q || row.dataset.name.includes(q);
+        var labelEl = row.querySelector('.row-label');
+        var codeEl  = row.querySelector('.qz-code-badge');
+        var name    = row.dataset.name  || '';
+        var code    = row.dataset.code  || '';
+        var match   = !q || name.includes(q) || code.includes(q);
+
         row.classList.toggle('gizli', !match);
+        row.classList.toggle('search-match', !!(match && q));
+        applyHighlight(labelEl, codeEl, q);
+
         if (match) visible++;
       });
+
+      totalVisible += visible;
+
+      var body    = document.getElementById('panelBody-' + idx);
+      var chevron = document.querySelector('.panel-chevron-' + idx);
+      var gcount  = document.getElementById('gcount-' + idx);
+
       if (q) {
-        var body    = panel.querySelector('[id^="panelBody-"]');
-        var chevron = panel.querySelector('[class*="panel-chevron-"]');
         if (visible > 0) {
           panel.classList.remove('tum-gizli');
           if (body) body.style.display = 'block';
           if (chevron) chevron.style.transform = 'rotate(180deg)';
+          if (gcount) {
+            gcount.textContent = visible + ' / ' + rows.length;
+            gcount.classList.add('filtered');
+          }
         } else {
           panel.classList.add('tum-gizli');
+          if (gcount) {
+            gcount.textContent = rows.length;
+            gcount.classList.remove('filtered');
+          }
         }
       } else {
         panel.classList.remove('tum-gizli');
-        var body    = panel.querySelector('[id^="panelBody-"]');
-        var chevron = panel.querySelector('[class*="panel-chevron-"]');
+        if (gcount) {
+          gcount.textContent = rows.length;
+          gcount.classList.remove('filtered');
+        }
         if (pi === 0) {
           if (body) body.style.display = 'block';
           if (chevron) chevron.style.transform = 'rotate(180deg)';
@@ -918,34 +1121,71 @@
         }
       }
     });
+
+    // Sonuç badge'i güncelle
+    if (q) {
+      resultBadge.classList.add('visible');
+      resultBadge.classList.toggle('zero', totalVisible === 0);
+      resultBadge.innerHTML = totalVisible === 0
+        ? '<i class="fa fa-xmark"></i> Sonuç bulunamadı'
+        : '<i class="fa fa-check"></i> ' + totalVisible + ' sonuç';
+    } else {
+      resultBadge.classList.remove('visible', 'zero');
+    }
+
+    // No-result mesajı
+    noResultMsg.style.display = (q && totalVisible === 0) ? 'block' : 'none';
+  }
+
+  searchBox.addEventListener('input', doSearch);
+
+  // Clear butonu
+  searchClear.addEventListener('click', function() {
+    searchBox.value = '';
+    doSearch();
+    searchBox.focus();
   });
 
-  /* ---- Toplu seçim ---- */
-  function toggleAll(cls, force) {
-    var checks = document.querySelectorAll('.' + cls);
-    var setTo  = (force !== undefined) ? force : ![...checks].every(c => c.checked);
-    checks.forEach(c => c.checked = setTo);
-    updateStats();
-  }
-  document.getElementById('bulk-read')  .onclick = function() { toggleAll('yetki_read'); };
-  document.getElementById('bulk-write') .onclick = function() { toggleAll('yetki_write'); };
-  document.getElementById('bulk-delete').onclick = function() { toggleAll('yetki_delete'); };
-  document.getElementById('bulk-all')   .onclick = function() { toggleAll('yetki_read',true); toggleAll('yetki_write',true); toggleAll('yetki_delete',true); };
-  document.getElementById('bulk-none')  .onclick = function() { toggleAll('yetki_read',false); toggleAll('yetki_write',false); toggleAll('yetki_delete',false); };
-
-  /* ---- Sayaçlar ---- */
-  function updateStats() {
-    document.getElementById('stat-read').textContent   = document.querySelectorAll('.yetki_read:checked').length;
-    document.getElementById('stat-write').textContent  = document.querySelectorAll('.yetki_write:checked').length;
-    document.getElementById('stat-delete').textContent = document.querySelectorAll('.yetki_delete:checked').length;
-  }
-  document.addEventListener('change', function(e) {
-    if (e.target.classList.contains('yetki_read') ||
-        e.target.classList.contains('yetki_write') ||
-        e.target.classList.contains('yetki_delete')) {
-      updateStats();
+  // Escape ile temizle
+  searchBox.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      this.value = '';
+      doSearch();
+      this.blur();
     }
   });
+})();
+
+/* ================================================================
+   TOPLU SEÇİM
+   ================================================================ */
+function toggleAll(cls, force) {
+  var checks = document.querySelectorAll('.' + cls);
+  var setTo  = (force !== undefined) ? force : ![...checks].every(c => c.checked);
+  checks.forEach(c => c.checked = setTo);
+  updateStats();
+}
+document.getElementById('bulk-read')  .onclick = function() { toggleAll('yetki_read'); };
+document.getElementById('bulk-write') .onclick = function() { toggleAll('yetki_write'); };
+document.getElementById('bulk-delete').onclick = function() { toggleAll('yetki_delete'); };
+document.getElementById('bulk-all')   .onclick = function() { toggleAll('yetki_read',true); toggleAll('yetki_write',true); toggleAll('yetki_delete',true); };
+document.getElementById('bulk-none')  .onclick = function() { toggleAll('yetki_read',false); toggleAll('yetki_write',false); toggleAll('yetki_delete',false); };
+
+/* ================================================================
+   SAYAÇLAR
+   ================================================================ */
+function updateStats() {
+  document.getElementById('stat-read').textContent   = document.querySelectorAll('.yetki_read:checked').length;
+  document.getElementById('stat-write').textContent  = document.querySelectorAll('.yetki_write:checked').length;
+  document.getElementById('stat-delete').textContent = document.querySelectorAll('.yetki_delete:checked').length;
+}
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('yetki_read') ||
+      e.target.classList.contains('yetki_write') ||
+      e.target.classList.contains('yetki_delete')) {
+    updateStats();
+  }
+});
 </script>
 
 @endsection
