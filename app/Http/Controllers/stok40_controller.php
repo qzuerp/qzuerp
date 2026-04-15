@@ -47,6 +47,7 @@ class stok40_controller extends Controller
     $TALEP_EDEN_KISI = $request->TALEP_EDEN_KISI;
     $SIP_EVRAKNO = $request->SIP_EVRAKNO;
     $TERMIN = $request->TERMIN;
+    $MPS_EVRAKNO = $request->MPS_EVRAKNO;
 
     if(Auth::check()) {
       $u = Auth::user();
@@ -91,6 +92,7 @@ class stok40_controller extends Controller
         'LOTNUMBER' => $MUSERI_KODU,
         'SF_MIKTAR' => $SF_MIKTAR[$i],
         'TERMIN_TAR' => $TERMIN[$i],
+        'MPS_KODU' => $MPS_EVRAKNO[$i],
         'created_at' => date('Y-m-d H:i:s'),
         'NETKAPANANMIK' => 0
       ]);

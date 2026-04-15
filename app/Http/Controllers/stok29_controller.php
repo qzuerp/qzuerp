@@ -325,7 +325,7 @@ class stok29_controller extends Controller
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
         
-        
+
         for ($i = 0; $i < $satir_say; $i++) {
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
@@ -653,6 +653,9 @@ class stok29_controller extends Controller
     $TEDARIKCI = $request->TEDARIKCI;
 
 
+    if(!isset($OR_TRNUM))
+      return redirect()->back()->with('error','Şablon bilgisi bulunamadı.');
+
     if(Auth::check()) {
       $u = Auth::user();
     }
@@ -697,6 +700,13 @@ class stok29_controller extends Controller
         'EVRAKTYPE' => 'STOK29'
       ]);
     }
+
+    for ($i = 0; $i < count($OR_TRNUM); $i++) {
+      DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM[$i])->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
+        'AKTIF_STOK' => '0'
+      ]);
+    }
+
     return redirect()->back()->with('success', 'Kayıt Başarılı');
   }
 }

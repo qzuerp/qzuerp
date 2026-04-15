@@ -447,6 +447,7 @@
                           SELECT
                               S40T.EVRAKNO AS SiparisEvrakNo,
                               S40T.KOD AS NihaiMamulKodu,
+                              S40T.ARTNO,
                               S40T.SF_MIKTAR AS NihaiMamulSiparisMiktari,
                               B01T.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
                               B01T.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
@@ -465,6 +466,7 @@
                           SELECT
                               RB.SiparisEvrakNo,
                               RB.NihaiMamulKodu,
+                              RB.ARTNO,
                               RB.NihaiMamulSiparisMiktari,
                               B01T_Alt.BOMREC_KAYNAKCODE,
                               B01T_Alt.BOMREC_KAYNAK0,
@@ -479,6 +481,7 @@
                         SELECT
                             ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
                             RB.SiparisEvrakNo,
+			                      RB.ARTNO,
                             RB.Seviye,
                             RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari,
@@ -486,14 +489,16 @@
                             RB.HM_YM_Kodu AS HammaddeKodu,
                             S00.AD AS HammaddeAdi,
                             S00.IUNIT AS HammaddeBirimi,
-                            SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
+                            SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari,
+                            M10E.EVRAKNO AS MPS_EVRAKNO
                         FROM RecursiveBOM RB
                         LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
+	                      LEFT JOIN {$database}mmps10e M10E ON M10E.SIPARTNO = RB.ARTNO
                         WHERE RB.SiparisEvrakNo = ?
                         GROUP BY
                             RB.SiparisEvrakNo, RB.Seviye, RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
-                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT
+                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, M10E.EVRAKNO, RB.ARTNO
                         ORDER BY
                             RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu;
                       ";
@@ -513,6 +518,7 @@
                         <th>Hammadde Adı</th>
                         <th style="width:120px; text-align:right">Toplam Miktar</th>
                         <th style="width:65px">Birim</th>
+                        <th style="width:65px">MPS Evrak No</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -550,6 +556,10 @@
                           <td>
                             <input type="hidden" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}">
                             {{ $satir->HammaddeBirimi }}
+                          </td>
+                          <td>
+                            <input type="hidden" name="MPS_EVRAKNO[]" value="{{ $satir->MPS_EVRAKNO }}">
+                            {{ $satir->MPS_EVRAKNO }}
                           </td>
                         </tr>
                       @endforeach
@@ -1320,10 +1330,12 @@
               var stokAdi = $(this).find('input[name="STOK_ADI_2[]"]').val();
               var birim = $(this).find('input[name="IUNIT[]"]').val();
               var miktar = $(this).find('input[name="ToplamHammaddeMiktari[]"]').val();
+              var MPS = $(this).find('input[name="MPS_EVRAKNO[]"]').val();
 
               var yeniSatir = `
                   <tr>
                     <input type='hidden' name='NIHAI_KOD[]' value='${nihaiKod}' class='form-control' readonly/>
+                    <input type='hidden' name='MPS_EVRAKNO[]' value='${MPS}' class='form-control'/>
                     <td><input type='text' name='STOK_KODU[]' value='${hammaddeKodu}' class='form-control' readonly/></td>
                     <td><input type='text' name='STOK_ADI[]' value='${stokAdi}' class='form-control' readonly/></td>
                     <td><input type='text' name='BIRIM[]' value='${birim}' class='form-control' readonly/></td>
@@ -1333,7 +1345,7 @@
               `;
 
               $("#modal_ihtiyac_table tbody").append(yeniSatir);
-              
+
               initFlatpickr();
           });
       });

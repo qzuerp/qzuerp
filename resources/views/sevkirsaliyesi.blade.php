@@ -572,7 +572,7 @@
                               <input type="date" class="form-control" name="TARIH_B" id="TARIH_B">
                             </div>
                             <div class="col-sm-3">
-                              <input type="date" class="form-control" name="TARIH_E" id="TARIH_E">
+                              <input type="date" class="form-control" name="TARIH_E">
                             </div><br><br>
 
                             <div class="col-sm-3">
@@ -1127,7 +1127,8 @@
       });
 
         $('#STOK_KODU_SHOW').on('change', function() {
-            
+            if($(this).val() != '' || $(this).val() == null)
+              return;
             let secilenDeger = $(this).val().split("|||")[0];
             $.ajax({
               url: '/sevkirsaliyesi_stokAdiGetir',
@@ -1154,6 +1155,7 @@
     {
       $('#CARIHESAPCODE_E').val('').trigger('change');
       $('#AMBCODE_E').val('').trigger('change');
+      $('#IRSALIYE_NO').val('');
     }
   </script>
 
@@ -1173,7 +1175,7 @@
               $('#CARIHESAPCODE_E').val(cari).trigger('change');
               setTimeout(() => {
                 $('#SIP_NO_SEC').val(EVRAKNO).trigger('change');
-              }, 1000);
+              }, 1500);
               $("#modal_popupSelectModal2").modal('hide');
             };
           };
@@ -1461,7 +1463,7 @@
 
             htmlCode += " <tr> ";
 
-              htmlCode += " <td><input type='checkbox' checked name='hepsinisec'><input type='hidden' name='D7[]' value=''></td> ";
+              htmlCode += " <td><input type='checkbox' name='hepsinisec'><input type='hidden' name='D7[]' value=''></td> ";
               htmlCode += " <td style='display: none;'><input type='hidden' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"' disabled><input type='hidden' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"' disabled><input type='hidden' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"'></td> ";
