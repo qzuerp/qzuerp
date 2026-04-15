@@ -404,45 +404,52 @@
         new bootstrap.Tooltip(el, { container: 'body', trigger: 'hover focus' });
       });
     }, 100);
+    
+    
+    function initFlatpickr(selector = "input[type='date'], input[type='time']") {
+        
+        $(selector).each(function() {
+            const $el = $(this);
+            
+            if ($el.hasClass('flatpickr-input') || $el.data('fp-ready')) return;
+
+            const isTime = $el.attr('type') === 'time';
+            
+            $el.wrap("<div class='input-icon'>");
+            $el.after(`<i class='fa-regular fa-${isTime ? 'clock' : 'calendar'}'></i>`);
+            
+            if (!$el.attr('placeholder')) {
+                $el.attr("placeholder", isTime ? "00:00" : "gg.aa.yyyy");
+            }
+
+            $el.flatpickr({
+                enableTime: isTime,
+                noCalendar: isTime,
+                dateFormat: isTime ? "H:i" : "Y-m-d",
+                altInput: !isTime,
+                altFormat: "d.m.Y",
+                time_24hr: true,
+                minuteIncrement: 15,
+                locale: "tr",
+                onReady: function(selectedDates, dateStr, instance) {
+                    const orig = instance.input || instance.element;
+                    const alt = instance.altInput || orig;
+                    
+                    Array.from(orig.attributes).forEach(attr => {
+                        if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
+                            alt.setAttribute(attr.name, attr.value);
+                        }
+                    });
+                    
+                    $el.data('fp-ready', true); 
+                    if (typeof initTooltips === "function") initTooltips();
+                }
+            });
+        });
+    }
 
     $(document).ready(function() {
-      flatpickr.localize(flatpickr.l10ns.tr);
-      initTooltips();
-
-      $("input[type='date'], input[type='time']").each(function() {
-        const $el = $(this);
-        const isTime = $el.attr('type') === 'time';
-        
-        $el.wrap("<div class='input-icon'>");
-        $el.after(`<i class='fa-regular fa-${isTime ? 'clock' : 'calendar'}'></i>`);
-        $el.attr("placeholder", isTime ? "00:00" : "gg.aa.yyyy");
-
-        $el.flatpickr({
-          enableTime: isTime,
-          noCalendar: isTime,
-          dateFormat: isTime ? "H:i" : "Y-m-d",
-          altInput: !isTime,
-          altFormat: "d.m.Y",
-          time_24hr: true,
-          minuteIncrement: 15,
-          locale: "tr",
-          onReady: function(selectedDates, dateStr, instance) {
-            const orig = instance.input || instance._input || instance.element;
-            const alt = instance.altInput || orig;
-            
-            Array.from(orig.attributes).forEach(attr => {
-              if (attr.name.startsWith('data-') || attr.name === 'title' || attr.name.startsWith('aria-')) {
-                try { alt.setAttribute(attr.name, attr.value); } catch(e) {}
-              }
-            });
-            
-            if (instance.altInput && orig.placeholder) {
-              alt.setAttribute('placeholder', orig.placeholder);
-            }
-            initTooltips();
-          }
-        });
-      });
+      initFlatpickr();
 
       // Select2 attribute kopyalama
       $('.select2').each(function() {

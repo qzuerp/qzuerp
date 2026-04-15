@@ -36,16 +36,22 @@ class stok40_controller extends Controller
 
   public function siparisten_talep_olustur(Request $request)
   {
+    $MUSERI_KODU = $request->MUSERI_KODU;
+
     $TALEP_EDEN = $request->TALEP_EDEN;
+    $NIHAI_KOD = $request->NIHAI_KOD;
     $STOK_KODU = $request->STOK_KODU;
     $STOK_ADI = $request->STOK_ADI;
     $BIRIM = $request->BIRIM;
     $SF_MIKTAR = $request->SF_MIKTAR;
+    $TALEP_EDEN_KISI = $request->TALEP_EDEN_KISI;
+    $SIP_EVRAKNO = $request->SIP_EVRAKNO;
+    $TERMIN = $request->TERMIN;
+
     if(Auth::check()) {
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
-
 
     
     $SON_EVRAK=DB::table($firma.'stok47e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
@@ -63,6 +69,8 @@ class stok40_controller extends Controller
         'EVRAKNO' => $EVRAKNO,
         'TARIH' => date('Y-m-d'),
         'CARIHESAPCODE' => $TALEP_EDEN,
+        'TALEP_EDEN_KISI' => $TALEP_EDEN_KISI,
+        'SIP_EVRAKNO' => $SIP_EVRAKNO,
         'created_at' => date('Y-m-d H:i:s'),
     ]);
 
@@ -79,7 +87,10 @@ class stok40_controller extends Controller
         'KOD' => $STOK_KODU[$i],
         'STOK_ADI' => $STOK_ADI[$i],
         'SF_SF_UNIT' => $BIRIM[$i],
+        'NOT1' => $NIHAI_KOD[$i],
+        'LOTNUMBER' => $MUSERI_KODU,
         'SF_MIKTAR' => $SF_MIKTAR[$i],
+        'TERMIN_TAR' => $TERMIN[$i],
         'created_at' => date('Y-m-d H:i:s'),
         'NETKAPANANMIK' => 0
       ]);

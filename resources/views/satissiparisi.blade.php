@@ -412,7 +412,35 @@
                 </div>
                   
                 <div class="tab-pane" id="ihtiyac">
-                  <button class="btn btn-default mb-2" id="satin_alma_olustur_btn" data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">Satın Alma Talebi oluştur</button>
+
+                  {{-- Toolbar --}}
+                  <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                    <button class="btn btn-primary btn-sm" id="satin_alma_olustur_btn"
+                            data-bs-toggle="modal" data-bs-target="#satin_alma_olustur" type="button">
+                      <i class="fa fa-plus me-1"></i> Satın Alma Talebi Oluştur
+                    </button>
+
+                    <div class="vr mx-1"></div>
+
+                    {{-- Tip filtresi --}}
+                    <div class="btn-group btn-group-sm" id="tipFilter">
+                      <button type="button" class="btn btn-outline-secondary active" data-tip="all">Tümü</button>
+                      <button type="button" class="btn btn-outline-success"          data-tip="H">Hammadde</button>
+                      <button type="button" class="btn btn-outline-warning"          data-tip="Y">Yarı Mamul</button>
+                    </div>
+
+                    <div class="vr mx-1"></div>
+
+                    {{-- Arama --}}
+                    <input type="text" id="ihtiyac_search" class="form-control form-control-sm"
+                          placeholder="Kod veya ad ara..." style="width:200px">
+
+                    {{-- Seçim sayacı --}}
+                    <span class="ms-auto badge bg-light text-dark border">
+                      Seçili: <strong id="secili_sayi">0</strong> / <strong id="toplam_sayi">0</strong>
+                    </span>
+                  </div>
+
                   @php
                       $sql = "
                         WITH RecursiveBOM AS (
@@ -438,74 +466,95 @@
                               RB.SiparisEvrakNo,
                               RB.NihaiMamulKodu,
                               RB.NihaiMamulSiparisMiktari,
-                              B01T_Alt.BOMREC_KAYNAKCODE AS HM_YM_Kodu,
-                              B01T_Alt.BOMREC_KAYNAK0 AS KaynakMiktarReçete,
-                              B01E_Alt.MAMUL_MIKTAR AS MamulMiktarReçete,
-                              (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
-                              (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END) AS KaynakTipi,
-                              RB.Seviye + 1 AS Seviye
+                              B01T_Alt.BOMREC_KAYNAKCODE,
+                              B01T_Alt.BOMREC_KAYNAK0,
+                              B01E_Alt.MAMUL_MIKTAR,
+                              (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR,
+                              (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END),
+                              RB.Seviye + 1
                           FROM RecursiveBOM RB
                           INNER JOIN {$database}BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
                           INNER JOIN {$database}BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
-                      )
-                      SELECT
-                          ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
-                          RB.SiparisEvrakNo,
-                          RB.Seviye,
-                          RB.NihaiMamulKodu,
-                          RB.NihaiMamulSiparisMiktari,
-                          RB.KaynakTipi,
-                          RB.HM_YM_Kodu AS HammaddeKodu,
-                          S00.AD AS HammaddeAdi,
-                          S00.IUNIT AS HammaddeBirimi,
-                          SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
-                      FROM RecursiveBOM RB
-                      LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
-                      WHERE RB.SiparisEvrakNo = ?
-                      GROUP BY
-                          RB.SiparisEvrakNo,
-                          RB.Seviye,
-                          RB.NihaiMamulKodu,
-                          RB.NihaiMamulSiparisMiktari,
-                          RB.KaynakTipi,
-                          RB.HM_YM_Kodu,
-                          S00.AD,
-                          S00.IUNIT
-                      ORDER BY
-                          RB.SiparisEvrakNo,
-                          RB.NihaiMamulKodu,
-                          HammaddeKodu;
-
+                        )
+                        SELECT
+                            ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
+                            RB.SiparisEvrakNo,
+                            RB.Seviye,
+                            RB.NihaiMamulKodu,
+                            RB.NihaiMamulSiparisMiktari,
+                            RB.KaynakTipi,
+                            RB.HM_YM_Kodu AS HammaddeKodu,
+                            S00.AD AS HammaddeAdi,
+                            S00.IUNIT AS HammaddeBirimi,
+                            SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari
+                        FROM RecursiveBOM RB
+                        LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
+                        WHERE RB.SiparisEvrakNo = ?
+                        GROUP BY
+                            RB.SiparisEvrakNo, RB.Seviye, RB.NihaiMamulKodu,
+                            RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
+                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT
+                        ORDER BY
+                            RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu;
                       ";
                       $sonuc = DB::select($sql, [@$kart_veri->EVRAKNO]);
                   @endphp
 
-                  <table class="table table-bordered" id="ihtiyac_table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="ihtiyac-"></th>
-                            <th style="max-width:75px !impportant; width:75px;">Seviye</th>
-                            <th>Nihai Mamul</th>
-                            <th>Hammadde Kodu</th>
-                            <th>Hammadde Adı</th>
-                            <th>Toplam Miktar</th>
-                            <th>Birim</th>
-                        </tr>
+                  <table class="table table-bordered table-hover table-sm" id="ihtiyac_table">
+                    <thead class="table-light">
+                      <tr>
+                        <th style="width:36px">
+                          <input type="checkbox" id="ihtiyac_select_all" title="Tümünü seç">
+                        </th>
+                        <th style="width:65px">Seviye</th>
+                        <th style="width:80px">Tip</th>
+                        <th>Nihai Mamul</th>
+                        <th>Hammadde Kodu</th>
+                        <th>Hammadde Adı</th>
+                        <th style="width:120px; text-align:right">Toplam Miktar</th>
+                        <th style="width:65px">Birim</th>
+                      </tr>
                     </thead>
                     <tbody>
-                        @foreach($sonuc as $satir)
-                          <tr>
-                              <td><input type="checkbox" class="ms-1 ihtiyac_check"></td>
-                              <td style="max-width:75px !impportant; width:75px;"><input type="text" name="Seviye[]" value="{{ $satir->Seviye }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="HammaddeKodu[]" value="{{ $satir->HammaddeKodu }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="STOK_ADI_2[]" value="{{ $satir->HammaddeAdi }}" class="form-control form-control-sm" readonly></td>
-                              <td><input type="text" name="ToplamHammaddeMiktari[]" value="{{ number_format($satir->ToplamHammaddeMiktari, 2) }}" class="form-control form-control-sm text-end" readonly></td>
-                              <td><input type="text" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}" class="form-control form-control-sm text-end" readonly></td>
-                          </tr>
-                        @endforeach
+                      @foreach($sonuc as $satir)
+                        <tr class="ihtiyac-row" data-tip="{{ $satir->KaynakTipi }}">
+                          <td>
+                            <input type="checkbox" class="ihtiyac_check">
+                          </td>
+                          <td class="text-center">
+                            <span class="badge bg-secondary">{{ $satir->Seviye }}</span>
+                          </td>
+                          <td>
+                            @if($satir->KaynakTipi === 'H')
+                              <span class="badge bg-success">Hammadde</span>
+                            @else
+                              <span class="badge bg-warning text-dark">Yarı Mamul</span>
+                            @endif
+                          </td>
+                          <td>
+                            <input type="hidden" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}">
+                            <small class="text-muted">{{ $satir->NihaiMamulKodu }}</small>
+                          </td>
+                          <td>
+                            <input type="hidden" name="HammaddeKodu[]" value="{{ $satir->HammaddeKodu }}">
+                            <code class="text-dark">{{ $satir->HammaddeKodu }}</code>
+                          </td>
+                          <td>
+                            <input type="hidden" name="STOK_ADI_2[]" value="{{ $satir->HammaddeAdi }}">
+                            {{ $satir->HammaddeAdi }}
+                          </td>
+                          <td class="text-end fw-semibold">
+                            <input type="hidden" name="ToplamHammaddeMiktari[]" value="{{ $satir->ToplamHammaddeMiktari }}">
+                            {{ number_format($satir->ToplamHammaddeMiktari, 2, ',', '.') }}
+                          </td>
+                          <td>
+                            <input type="hidden" name="IUNIT[]" value="{{ $satir->HammaddeBirimi }}">
+                            {{ $satir->HammaddeBirimi }}
+                          </td>
+                        </tr>
+                      @endforeach
                     </tbody>
-                </table>
+                  </table>
 
                 </div>
 
@@ -876,53 +925,89 @@
         </div>
       </form>
 
-      <div class="modal fade bd-example-modal-lg" id="satin_alma_olustur" tabindex="-1" role="dialog" aria-labelledby="satin_alma_olustur">
+      <div class="modal fade" id="satin_alma_olustur" tabindex="-1">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+              <h5 class="modal-title">
+                <i class="fa fa-shopping-cart me-2 text-primary"></i>Satın Alma Talebi Oluştur
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
               <form method="post" action="siparisten_talep_olustur" id="siparisten_talep_olustur">
                 @csrf
+                <input type="hidden" name="MUSERI_KODU" value="{{ $kart_veri->CHSIPNO }}">
+                <input type="hidden" name="SIP_EVRAKNO" value="{{ $kart_veri->EVRAKNO }}">
                 <div class="row mb-3">
-                  <div class="col-md-4 col-sm-4 col-xs-6">
-                      <label>Talep Eden</label>
-                      <select class="form-control select2 js-example-basic-single" style="width: 100%; height: 30PX"
-                        name="TALEP_EDEN" data-modal="satin_alma_olustur">
-                        @php
-                          $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO','TLPEDN')->get();
+                  <div class="col-md-4">
+                    <label>Talep Eden Bölüm</label>
+                    <select class="form-select form-select-sm select2" data-modal="satin_alma_olustur" name="TALEP_EDEN">
+                      @php
+                        $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO', 'PERSDEPARTMAN')->get();
+                        foreach ($evraklar as $veri) {
+                          echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
+                        }
+                      @endphp
+                    </select>
+                  </div>
 
-                          foreach ($evraklar as $key => $veri) {
+                  <div class="col-md-4">
+                    <label>Talep Eden Personel</label>
+                    <select class="form-control select2 TALEP_EDEN_KISI" data-bs-toggle="tooltip"
+                      data-bs-placement="top" data-modal="satin_alma_olustur" data-bs-title="TALEP_EDEN_KISI" name="TALEP_EDEN_KISI">
+                      <option>Seç</option>
+                      @php
+                        $pers00_evraklar = DB::table($database . 'pers00')->orderBy('id', 'ASC')->get();
+
+                        foreach ($pers00_evraklar as $key => $veri) {
+
+                          if ($veri->KOD == @$kart_veri->TALEP_EDEN_KISI) {
+                            echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
+                          } else {
                             echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
                           }
-                        @endphp
-                      </select>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <table class="table table-bordered" id="modal_ihtiyac_table">
-                      <thead>
-                          <tr>
-                              <th>Stok Kodu</th>
-                              <th>Stok Adı</th>
-                              <th>İşlem Br.</th>
-                              <th>İşlem Mik.</th>
-                              <!-- <th>TERMIN TAR.</th> -->
-                          </tr>
-                      </thead>
-                      <tbody>
-                        
-                      </tbody>
-                    </table>
+                        }
+                      @endphp
+                    </select>
+                  </div>
+
+                  <div class="col-md-4 d-flex align-items-end justify-content-end">
+                    <span class="text-muted small">
+                      <i class="fa fa-info-circle me-1"></i>
+                      Miktarları düzenleyebilirsiniz.
+                    </span>
                   </div>
                 </div>
+
+                <table class="table table-bordered table-sm" id="modal_ihtiyac_table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Stok Kodu</th>
+                      <th>Stok Adı</th>
+                      <th style="width:80px; text-align:center">Br.</th>
+                      <th style="width:130px; text-align:right">Miktar</th>
+                      <th style="width:130px; text-align:right">Termin Tarihi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{-- JS tarafından doldurulur --}}
+                  </tbody>
+                </table>
+
+                <div id="modal_bos_mesaj" class="text-center text-muted py-4" style="display:none">
+                  <i class="fa fa-exclamation-circle me-2"></i>
+                  Lütfen tablodan en az bir hammadde seçin.
+                </div>
+
               </form>
             </div>
             <div class="modal-footer">
-              <button type="submit" form="siparisten_talep_olustur" class="btn btn-success" data-bs-dismiss="modal" style="margin-top: 15px;">Satın Alma Siparişlerini Oluştur</button>
-              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+              <button type="submit" form="siparisten_talep_olustur"
+                      class="btn btn-success" id="talep_olustur_btn">
+                <i class="fa fa-check me-1"></i> Satın Alma Siparişlerini Oluştur
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
             </div>
           </div>
         </div>
@@ -1119,29 +1204,137 @@
       $('#SF_SF_UNIT_SHOW').val(veriler[2]);
       $('#SF_SF_UNIT_FILL').val(veriler[2]);
     }
-    $(document).ready(function() {
 
+    $(document).ready(function () {
+      $('#ihtiyac_select_all').on('change', function () {
+        $('.ihtiyac-row:visible .ihtiyac_check').prop('checked', $(this).is(':checked'));
+        updateCounter();
+      });
+
+      $(document).on('change', '.ihtiyac_check', function () {
+        updateCounter();
+      });
+
+      function updateCounter() {
+        const secili = $('.ihtiyac_check:checked').length;
+        const gorunen = $('.ihtiyac-row:visible').length;
+        $('#secili_sayi').text(secili);
+        $('#toplam_sayi').text(gorunen);
+      }
+
+      $('#tipFilter button').on('click', function () {
+        $('#tipFilter button').removeClass('active');
+        $(this).addClass('active');
+
+        const tip = $(this).data('tip');
+        $('.ihtiyac-row').each(function () {
+          const goster = tip === 'all' || $(this).data('tip') === tip;
+          $(this).toggle(goster);
+        });
+        updateCounter();
+      });
+
+      $('#ihtiyac_search').on('input', function () {
+        const q = $(this).val().toLowerCase();
+        $('.ihtiyac-row').each(function () {
+          $(this).toggle($(this).text().toLowerCase().includes(q));
+        });
+        updateCounter();
+      });
+
+      $('#satin_alma_olustur').on('show.bs.modal', function () {
+        const $tbody   = $('#modal_ihtiyac_table tbody');
+        const $bosMsj  = $('#modal_bos_mesaj');
+        const $olusBtn = $('#talep_olustur_btn');
+        $tbody.empty();
+
+        const $seciliSatirlar = $('.ihtiyac-row:has(.ihtiyac_check:checked)');
+
+        if ($seciliSatirlar.length === 0) {
+          $bosMsj.show();
+          $olusBtn.prop('disabled', true);
+          return;
+        }
+
+        $bosMsj.hide();
+        $olusBtn.prop('disabled', false);
+
+        $seciliSatirlar.each(function () {
+          const kod    = $(this).find('[name="HammaddeKodu[]"]').val();
+          const ad     = $(this).find('[name="STOK_ADI_2[]"]').val();
+          const birim  = $(this).find('[name="IUNIT[]"]').val();
+          const miktar = parseFloat($(this).find('[name="ToplamHammaddeMiktari[]"]').val()).toFixed(2);
+
+          const $tr = $(`
+            <tr>
+              <td class="text-center">
+                <button type="button" class="btn btn-link btn-sm text-danger p-0 modal-satir-sil" title="Kaldır">
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+              <td>
+                <input type="hidden" name="m_HammaddeKodu[]" value="${kod}">
+                <code>${kod}</code>
+              </td>
+              <td>
+                <input type="hidden" name="m_StokAdi[]" value="${ad}">
+                ${ad}
+              </td>
+              <td class="text-center">
+                <input type="hidden" name="m_Birim[]" value="${birim}">
+                ${birim}
+              </td>
+              <td class="text-end">
+                <input type="number" name="m_Miktar[]"
+                      value="${miktar}"
+                      step="0.01" min="0.01"
+                      class="form-control form-control-sm text-end"
+                      style="width:110px; margin-left:auto">
+              </td>
+            </tr>`);
+
+          $tbody.append($tr);
+        });
+      });
+
+      // ── Modal satır silme ────────────────────────────────────
+      $(document).on('click', '.modal-satir-sil', function () {
+        $(this).closest('tr').remove();
+
+        if ($('#modal_ihtiyac_table tbody tr').length === 0) {
+          $('#modal_bos_mesaj').show();
+          $('#talep_olustur_btn').prop('disabled', true);
+        }
+      });
+
+      updateCounter();
+      
       $('#satin_alma_olustur_btn').on('click', function() {
           $("#modal_ihtiyac_table tbody").empty();
           
-          var getSelectedRows = $('#ihtiyac_table input:checked').closest("tr");
+          var getSelectedRows = $('#ihtiyac_table tbody input:checked').closest("tr");
 
           getSelectedRows.each(function() {
+              var nihaiKod = $(this).find('input[name="NihaiMamulKodu[]"]').val();
               var hammaddeKodu = $(this).find('input[name="HammaddeKodu[]"]').val();
-              var stokAdi = $(this).find('input[name="STOK_ADI[]"]').val();
+              var stokAdi = $(this).find('input[name="STOK_ADI_2[]"]').val();
               var birim = $(this).find('input[name="IUNIT[]"]').val();
               var miktar = $(this).find('input[name="ToplamHammaddeMiktari[]"]').val();
 
               var yeniSatir = `
                   <tr>
-                      <td><input type='text' name='STOK_KODU[]' value='${hammaddeKodu}' class='form-control' readonly/></td>
-                      <td><input type='text' name='STOK_ADI[]' value='${stokAdi}' class='form-control' readonly/></td>
-                      <td><input type='text' name='BIRIM[]' value='${birim}' class='form-control' readonly/></td>
-                      <td><input type='text' name='SF_MIKTAR[]' value='${miktar}' class='form-control' readonly/></td>
+                    <input type='hidden' name='NIHAI_KOD[]' value='${nihaiKod}' class='form-control' readonly/>
+                    <td><input type='text' name='STOK_KODU[]' value='${hammaddeKodu}' class='form-control' readonly/></td>
+                    <td><input type='text' name='STOK_ADI[]' value='${stokAdi}' class='form-control' readonly/></td>
+                    <td><input type='text' name='BIRIM[]' value='${birim}' class='form-control' readonly/></td>
+                    <td><input type='text' name='SF_MIKTAR[]' value='${miktar}' class='form-control'/></td>
+                    <td><input type='date' name='TERMIN[]' value='' class='form-control'/></td>
                   </tr>
               `;
 
               $("#modal_ihtiyac_table tbody").append(yeniSatir);
+              
+              initFlatpickr();
           });
       });
 
