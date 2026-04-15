@@ -279,6 +279,7 @@ class stok29_controller extends Controller
             'AMBCODE' => $AMBCODE,
             'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
+            'AKTIF_STOK' => '1'
           ]);
 
         }
@@ -323,16 +324,8 @@ class stok29_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
-        // dd(
-        //   [
-        //     "c" => $currentTRNUMS,
-        //     "l" => $liveTRNUMS,
-        //     "d" => $deleteTRNUMS,
-        //     "n" => $newTRNUMS,
-        //     "u" => $updateTRNUMS,
-        //     't' => $TRNUM
-        //   ]
-        //   );
+        
+        
         for ($i = 0; $i < $satir_say; $i++) {
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
@@ -417,6 +410,7 @@ class stok29_controller extends Controller
             'AMBCODE' => $AMBCODE,
             'created_at' => date('Y-m-d H:i:s'),
             'SERINO' => $SERINO[$i],
+            'AKTIF_STOK' => '1'
           ]);
 
           }

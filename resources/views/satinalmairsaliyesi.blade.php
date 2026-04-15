@@ -35,6 +35,7 @@
 
 	$t_kart_veri = DB::table($database . $ekranTableT . ' as t')
 		->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
+		->leftJoin($database . 'stok10a as S10A', 't.TRNUM', '=', 'S10A.TRNUM AND S10A.EVRAKTIPI = '.'STOK29T')
 		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
 		->orderBy('t.id', 'ASC')
 		->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')

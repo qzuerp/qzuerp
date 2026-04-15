@@ -926,9 +926,9 @@ usort($groups, function($a, $b) {
                                     ?>
                                 </td>
                                 <td><?= isset($g['termin']) && $g['termin'] ? htmlspecialchars((new DateTime($g['termin']))->format('d.m.Y')) : '—' ?></td>
-                                <td class="num"><?= isset($sip_miktar) ? number_format($sip_miktar, 2, ',', '.') : '—' ?></td>
-                                <td class="num"><?= isset($uretilen) ? number_format($uretilen, 2, ',', '.') : '—' ?></td>
-                                <td class="num"><?= isset($bakiye) ? number_format($bakiye, 2, ',', '.') : '—' ?></td>
+                                <td class="num"><?= isset($sip_miktar) ? $sip_miktar : '—' ?></td>
+                                <td class="num"><?= isset($uretilen) ? $uretilen : '—' ?></td>
+                                <td class="num"><?= isset($bakiye) ? $bakiye : '—' ?></td>
                                 <td class="num"><?= $g['ILK_FASON'] ? $g['ILK_FASON'] : '—' ?></td>
                                 <td><?= $g['FASON_SEVK'] == $g['FASON_GELEN'] ? '' : htmlspecialchars($g['fason_depo'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
