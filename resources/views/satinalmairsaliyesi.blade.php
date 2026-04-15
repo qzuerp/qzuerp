@@ -34,12 +34,22 @@
 
 
 	$t_kart_veri = DB::table($database . $ekranTableT . ' as t')
-		->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
-		->leftJoin($database . 'stok10a as S10A', 't.TRNUM', '=', 'S10A.TRNUM AND S10A.EVRAKTIPI = '.'STOK29T')
-		->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-		->orderBy('t.id', 'ASC')
-		->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as SF_SF_UNIT')
-		->get();
+    ->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
+    ->leftJoin($database . 'stok10a as S10A', function($join) {
+        $join->on('t.TRNUM', '=', 'S10A.TRNUM')
+             ->where('S10A.EVRAKTIPI', '=', 'STOK29T')
+             ->whereColumn('S10A.EVRAKNO', '=', 't.EVRAKNO'); // İşte sihirli dokunuş
+    })
+    ->where('t.EVRAKNO', $kart_veri->EVRAKNO ?? null)
+    ->orderBy('t.id', 'ASC')
+    ->select([
+        't.*', // Hala t.* diyorsun Eren, hafıza bedava mı sanıyorsun?
+        's.AD as STOK_ADI', 
+        's.IUNIT as SF_SF_UNIT',
+        'S10A.AKTIF_STOK'
+    ])
+    ->get();
+
 
 	$evraklar = DB::table($database . $ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
 	$stok_evraklar = DB::table($database . 'stok00')->get();
@@ -484,11 +494,17 @@
 																	<td>
 																		@include('components.detayBtn', ['KOD' => $veri->KOD])
 																	</td>
+																
 																	<td><button type="button"
 																			class="btn btn-default border-0 sablonGetirBtn"
-																			data-kod="{{ $veri->KOD }}"><i
-																				class="fa-solid fa-clipboard-check"
-																				style="color: green;"></i></button></td>
+																			data-kod="{{ $veri->KOD }}">
+																			@if($veri->AKTIF_STOK == 1)
+																				<i class="fa-solid fa-clipboard-question fa-lg" style="color: red;"></i>
+																			@else
+																				<i class="fa-solid fa-clipboard-check fa-lg" style="color:green"></i>
+																			@endif
+																			</button>
+																		</td>
 																	<td style="display: none;"><input type="hidden"
 																			class="form-control" maxlength="6" name="TRNUM[]"
 																			value="{{ $veri->TRNUM }}"></td>

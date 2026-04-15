@@ -212,7 +212,7 @@ class stok26_controller extends Controller
         }
 
         if (session()->has('EKSILER')) {
-            return redirect()->back()->with('error_stock', session('EKSILER'));
+          return redirect()->back()->with('error_stock', session('EKSILER'));
         }
 
 

@@ -13,7 +13,7 @@ class FunctionHelpers
         if (!$p) return;
     
         $MEVCUT = DB::table(trim($p->firma).'.dbo.stok10a')
-            ->selectRaw('SUM(SF_MIKTAR) AS MIKTAR')
+            ->selectRaw('SUM(SF_MIKTAR) AS MIKTAR, MAX(AKTIF_STOK) AS AKTIF_STOK') // AKTIF_STOK'u buraya ekledik!
             ->where([
                 ['KOD', $KOD], ['LOTNUMBER', $LOTNO], ['SERINO', $SERINO],
                 ['AMBCODE', $AMBCODE], ['NUM1', $NUM1], ['NUM2', $NUM2],
@@ -21,13 +21,24 @@ class FunctionHelpers
                 ['TEXT3', $TEXT3], ['TEXT4', $TEXT4], ['LOCATION1', $LOCATION1],
                 ['LOCATION2', $LOCATION2], ['LOCATION3', $LOCATION3], ['LOCATION4', $LOCATION4]
             ])
-            ->groupBy('KOD', 'LOTNUMBER', 'SERINO', 'AMBCODE', 'NUM1', 'NUM2', 'NUM3', 'NUM4', 'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4', 'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4')
             ->first();
     
-        $mevcutMiktar = $MEVCUT ? $MEVCUT->MIKTAR : 0;
+        // 1. ADIM: Veri var mı kontrolü (Null Guard)
+        if (!$MEVCUT) {
+            session()->push('EKSILER', $KOD . ' için hiç stok kaydı bulunamadı!');
+            return true; 
+        }
     
+        // 2. ADIM: Aktiflik kontrolü (Eğer 1 olması "kapalı/yasak" demekse senin mantığın doğru)
+        if ($MEVCUT->AKTIF_STOK == 1) {
+            session()->push('EKSILER', $KOD . ' bu stok kullanılamaz veya hareket ettirilemez');
+            return true;
+        }
+    
+        // 3. ADIM: Miktar kontrolü
+        $mevcutMiktar = $MEVCUT->MIKTAR ?? 0;
         if ($ISLEM_MIK > $mevcutMiktar) {
-            session()->push('EKSILER', $KOD.' (-'.($ISLEM_MIK - $mevcutMiktar).' Adet)');
+            session()->push('EKSILER', $KOD . ' (-' . ($ISLEM_MIK - $mevcutMiktar) . ' Adet) eksiye düşecek');
             return true;
         }
     }
