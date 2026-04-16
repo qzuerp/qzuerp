@@ -54,7 +54,11 @@
 	$operasyon_evraklar=DB::table($database.'imlt01')->orderBy('id', 'ASC')->get();
   	$cari_evraklar=DB::table($database.'cari00')->orderBy('id', 'ASC')->get();
 @endphp
-
+<style>
+	#yazdir{
+		display:block !important;
+	}
+</style>
 @section('content')
 
 	<div class="content-wrapper" style="min-height: 822px;">

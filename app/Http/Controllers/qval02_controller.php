@@ -253,6 +253,9 @@ class qval02_controller extends Controller
                 $max_id = DB::table($firma.'QVAL02E')->max('EVRAKNO');
                 return redirect()->route('giris_kalite_kontrol', ['ID' => $max_id, 'silme' => 'ok']);
                 break;
+
+            case 'yazdir':
+                return view('yazdirilicak_formlar.GKK');
         }
     }
 
@@ -268,11 +271,11 @@ class qval02_controller extends Controller
         ->where('e.KRITERCODE_1', explode('|||', $request->KOD)[0]);
     
         if (!empty($request->KIRTER2)) {
-            $query->where('e.KRITERCODE_2', $request->KIRTER2);
+            $query->orWhere('e.KRITERCODE_2', $request->KIRTER2);
         }
         
         if (!empty($request->KIRTER3)) {
-            $query->where('e.KRITERCODE_3', $request->KIRTER3);
+            $query->orWhere('e.KRITERCODE_3', $request->KIRTER3);
         }
         
         return $query->get();

@@ -457,7 +457,7 @@
                               1 AS Seviye
                           FROM {$database}STOK40T S40T
                           LEFT JOIN {$database}BOMU01E B01E ON B01E.MAMULCODE = S40T.KOD AND B01E.AP10 = 1
-                          LEFT JOIN {$database}BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H', 'Y')
+                          LEFT JOIN {$database}BOMU01T B01T ON B01E.EVRAKNO = B01T.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('Y', 'H')
                           WHERE (S40T.AK IS NULL OR S40T.AK = 'A')
                             AND B01T.BOMREC_KAYNAKCODE IS NOT NULL
 
@@ -472,7 +472,7 @@
                               B01T_Alt.BOMREC_KAYNAK0,
                               B01E_Alt.MAMUL_MIKTAR,
                               (RB.HesaplananHM_YM_Miktar * B01T_Alt.BOMREC_KAYNAK0) / B01E_Alt.MAMUL_MIKTAR,
-                              (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'Y' ELSE B01T_Alt.BOMREC_INPUTTYPE END),
+                              (CASE WHEN RB.HM_YM_Kodu LIKE '151%' THEN 'H' ELSE B01T_Alt.BOMREC_INPUTTYPE END),
                               RB.Seviye + 1
                           FROM RecursiveBOM RB
                           INNER JOIN {$database}BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
@@ -498,7 +498,7 @@
                         GROUP BY
                             RB.SiparisEvrakNo, RB.Seviye, RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
-                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, M10E.EVRAKNO, RB.ARTNO
+                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, M10E.EVRAKNO, RB.ARTNO,RB.HesaplananHM_YM_Miktar
                         ORDER BY
                             RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu;
                       ";
