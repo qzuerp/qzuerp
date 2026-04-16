@@ -425,8 +425,8 @@
                     {{-- Tip filtresi --}}
                     <div class="btn-group btn-group-sm" id="tipFilter">
                       <button type="button" class="btn btn-outline-secondary active" data-tip="all">Tümü</button>
-                      <button type="button" class="btn btn-outline-success"          data-tip="H">Hammadde</button>
-                      <button type="button" class="btn btn-outline-warning"          data-tip="Y">Yarı Mamul</button>
+                      <button type="button" class="btn btn-outline-warning"          data-tip="Y">Hammadde</button>
+                      <button type="button" class="btn btn-outline-success"          data-tip="H">Yarı Mamul</button>
                     </div>
 
                     <div class="vr mx-1"></div>
