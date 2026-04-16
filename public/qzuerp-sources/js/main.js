@@ -1339,3 +1339,32 @@ function detayBtnForJS(KOD) {
       </div>
     </td>`;
 }
+
+
+$(document).ready(function() {
+  $(document).on("contextmenu", function(e) {
+      // if (!$(e.target).closest('tr').length) return;
+
+      e.preventDefault();
+
+      $("#custom-menu").finish().toggle(100)
+          .css({
+              top: e.pageY + "px",
+              left: e.pageX + "px"
+          });
+  });
+
+  $(document).on("mousedown", function(e) {
+      if (!$(e.target).parents("#custom-menu").length > 0) {
+          $("#custom-menu").hide(100);
+      }
+  });
+
+  $("#custom-menu ul li").on("click", function() {
+      let action = $(this).attr("data-action");
+      
+      window.location.href = action;
+      
+      $("#custom-menu").hide(100);
+  });
+});

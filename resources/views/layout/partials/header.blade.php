@@ -454,7 +454,53 @@
     .notif-btn:hover { background: #fef3c7; border-color: #fbbf24; color: #d97706; }
     .empty-recent { padding: 40px; text-align: center; color: #d1d5db; }
     .empty-recent i { font-size: 36px; display: block; margin-bottom: 8px; }
+
+    #custom-menu {
+        display: none;
+        position: absolute;
+        min-width: 180px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 5px 0;
+        z-index: 99999;
+    }
+
+    #custom-menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #custom-menu ul li {
+        padding: 10px 15px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    #custom-menu ul li:hover {
+        background-color: #f5f5f5;
+        color: #007bff;
+    }
+
+    #custom-menu ul li i { /* Eğer ikon eklersen diye */
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
 </style>
+<div id="custom-menu">
+    <ul>
+        <li data-action="mpsgiriskarti">MPS Giriş Kartı</li>
+        <li data-action="kart_stok">Stok Kartı</li>
+        <li data-action="stok_tv">Depo Mevcutları</li>
+        <li data-action="stok_hareketleri">Stok Hareketleri</li>
+    </ul>
+</div>
 <div class="wrapper">
     <header class="modern-header">
         <div class="header-container">

@@ -1119,7 +1119,7 @@
               },
               processResults: function (data) {
                   return {
-                      results: data.results
+                    results: data.results
                   };
               },
               cache: true
@@ -1175,15 +1175,13 @@
               $('#CARIHESAPCODE_E').val(cari).trigger('change');
               setTimeout(() => {
                 $('#SIP_NO_SEC').val(EVRAKNO).trigger('change');
-              }, 1500);
+              }, 2000);
               $("#modal_popupSelectModal2").modal('hide');
             };
           };
           currentRow.onclick = createClickHandler(currentRow);
         }
       }
-      // window.onload = addRowHandlers2();
-
       window.onload = function() {
         addRowHandlers2();
         addRowHandlers();
