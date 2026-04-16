@@ -531,7 +531,7 @@
                             <span class="badge bg-secondary">{{ $satir->Seviye }}</span>
                           </td>
                           <td>
-                            @if($satir->KaynakTipi === 'H')
+                            @if($satir->KaynakTipi != 'H')
                               <span class="badge bg-success">Hammadde</span>
                             @else
                               <span class="badge bg-warning text-dark">Yarı Mamul</span>
