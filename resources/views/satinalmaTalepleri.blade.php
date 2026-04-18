@@ -847,9 +847,9 @@
                           ) as T1"));
 
                           if ($SIPARIS_DURUM === 'olanlar') {
-                              $q->whereNotNull('SIPARISNO');
+                              $q->whereNotNull('ARTNO');
                           } elseif ($SIPARIS_DURUM === 'olmayanlar') {
-                              $q->whereNull('SIPARISNO');
+                              $q->whereNull('ARTNO');
                           }
 
                           $veriler = $q->get();
