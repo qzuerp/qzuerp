@@ -273,70 +273,70 @@ class stok60_controller extends Controller
               return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
             }
 
-            $provider = $this->accounting->getProvider(trim($u->firma));
+            // $provider = $this->accounting->getProvider(trim($u->firma));
 
-            $lines = [];
-            $cari_id = "";
+            // $lines = [];
+            // $cari_id = "";
     
-            foreach($KOD as $key => $veri)
-            {
-              $API_ID = DB::table($firma.'stok00')->where('KOD',$veri)->value('API_ID');
+            // foreach($KOD as $key => $veri)
+            // {
+            //   $API_ID = DB::table($firma.'stok00')->where('KOD',$veri)->value('API_ID');
     
-              if(!$API_ID)
-              {
-                $GET_ID = $provider->getProducts($veri);
+            //   if(!$API_ID)
+            //   {
+            //     $GET_ID = $provider->getProducts($veri);
     
-                DB::table($firma.'stok00')->where('KOD',$veri)->update([
-                  'API_ID' => $GET_ID['data'][0]['id']
-                ]);
-              }
+            //     DB::table($firma.'stok00')->where('KOD',$veri)->update([
+            //       'API_ID' => $GET_ID['data'][0]['id']
+            //     ]);
+            //   }
     
-              $lines[] = [
-                'product_id'   => $API_ID ?: $GET_ID['data'][0]['id'],
-                'quantity'     => $SF_MIKTAR[$key],
-                'product_name' => $STOK_ADI[$key],
-                'description'  => $SF_SF_UNIT[$key],
-              ];
-            }
+            //   $lines[] = [
+            //     'product_id'   => $API_ID ?: $GET_ID['data'][0]['id'],
+            //     'quantity'     => $SF_MIKTAR[$key],
+            //     'product_name' => $STOK_ADI[$key],
+            //     'description'  => $SF_SF_UNIT[$key],
+            //   ];
+            // }
               
     
-            $provider = $this->accounting->getProvider(trim($u->firma));
+            // $provider = $this->accounting->getProvider(trim($u->firma));
 
-              $lines   = [];
-              $cari_id = "";
-              $errors  = [];
+            //   $lines   = [];
+            //   $cari_id = "";
+            //   $errors  = [];
 
-              foreach ($KOD as $key => $veri) {
-                  try {
-                      $API_ID = DB::table($firma . 'stok00')->where('KOD', $veri)->value('API_ID');
+            //   foreach ($KOD as $key => $veri) {
+            //       try {
+            //           $API_ID = DB::table($firma . 'stok00')->where('KOD', $veri)->value('API_ID');
 
-                      if (!$API_ID) {
-                          $GET_ID = $provider->getProducts($veri);
+            //           if (!$API_ID) {
+            //               $GET_ID = $provider->getProducts($veri);
 
-                          if (empty($GET_ID['data'][0]['id'])) {
-                              $errors[] = "Ürün bulunamadı: {$veri}";
-                              continue;
-                          }
+            //               if (empty($GET_ID['data'][0]['id'])) {
+            //                   $errors[] = "Ürün bulunamadı: {$veri}";
+            //                   continue;
+            //               }
 
-                          $API_ID = $GET_ID['data'][0]['id'];
+            //               $API_ID = $GET_ID['data'][0]['id'];
 
-                          DB::table($firma . 'stok00')
-                              ->where('KOD', $veri)
-                              ->update(['API_ID' => $API_ID]);
-                      }
+            //               DB::table($firma . 'stok00')
+            //                   ->where('KOD', $veri)
+            //                   ->update(['API_ID' => $API_ID]);
+            //           }
 
-                      $lines[] = [
-                          'product_id'   => $API_ID,
-                          'quantity'     => $SF_MIKTAR[$key],
-                          'product_name' => $STOK_ADI[$key],
-                          'description'  => $SF_SF_UNIT[$key],
-                      ];
+            //           $lines[] = [
+            //               'product_id'   => $API_ID,
+            //               'quantity'     => $SF_MIKTAR[$key],
+            //               'product_name' => $STOK_ADI[$key],
+            //               'description'  => $SF_SF_UNIT[$key],
+            //           ];
 
-                  } catch (Exception $e) {
-                      $errors[] = "Ürün işlenirken hata ({$veri}): " . $e->getMessage();
-                      continue;
-                  }
-              }
+            //       } catch (Exception $e) {
+            //           $errors[] = "Ürün işlenirken hata ({$veri}): " . $e->getMessage();
+            //           continue;
+            //       }
+            //   }
 
               if (empty($lines)) {
                   return response()->json([

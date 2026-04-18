@@ -499,6 +499,9 @@
         <li data-action="kart_stok">Stok Kartı</li>
         <li data-action="stok_tv">Depo Mevcutları</li>
         <li data-action="stok_hareketleri">Stok Hareketleri</li>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 5px 0;">
+        <li data-action="copy">Kopyala</li>
+        <li data-action="pase">Yapıştır</li>
     </ul>
 </div>
 <div class="wrapper">

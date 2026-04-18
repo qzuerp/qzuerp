@@ -32,6 +32,7 @@ class MaliyetlerExport implements FromView
         $detaylar = DB::table($firma . 'tekl20t')
             ->select('KOD', 'STOK_AD1', 'SF_MIKTAR', 'SF_SF_UNIT', 'FIYAT', 'TUTAR', 'PRICEUNIT','FIYAT2','TERMIN_TARIHI','ACIKLAMA')
             ->where('EVRAKNO', $this->evrakno)
+            ->orderBy('TRNUM','ASC')
             ->get();
 
         return view('exports.maliyetler', [

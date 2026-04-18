@@ -823,7 +823,7 @@
                                     <div class="panel-body">
                                         <div id="unassigned" class="list connected">
                                         </div>
-                                        <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreJobs()"><i class="fa fa-chevron-down"></i> 10 daha göster</button>
+                                        <button class="load-more-btn" id="loadMoreBtn" type="button" onclick="loadMoreJobs()"><i class="fa fa-chevron-down"></i> 10 daha göster</button>
                                         <div id="empty-state-unassigned" class="empty-state" style="display: none;">
                                             <i class="fa fa-search"></i>
                                             <p>Eşleşen iş bulunamadı!</p>

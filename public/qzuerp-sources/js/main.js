@@ -1363,7 +1363,38 @@ $(document).ready(function() {
   $("#custom-menu ul li").on("click", function() {
       let action = $(this).attr("data-action");
       
-      window.location.href = action;
+      if(action == 'copy')
+      {
+        let selectedText = window.getSelection().toString();
+        let textArea = document.createElement("textarea");
+        textArea.value = selectedText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        
+        document.body.removeChild(textArea);
+      }
+      else if(action == 'pase')
+      {
+        navigator.clipboard.readText().then(text => {
+          // Metni nereye yapıştıracağız? 
+          // Eğer odaklanmış bir input/textarea varsa oraya basarız.
+          let activeElem = document.activeElement;
+          if (activeElem.tagName === 'INPUT' || activeElem.tagName === 'TEXTAREA') {
+              let start = activeElem.selectionStart;
+              let end = activeElem.selectionEnd;
+              let val = activeElem.value;
+              activeElem.value = val.slice(0, start) + text + val.slice(end);
+          } else {
+              alert("Yapıştıracak bir giriş alanı seçmedin Eren!");
+          }
+        });
+      }
+      else
+      {
+        window.location.href = action;
+      }
+
       
       $("#custom-menu").hide(100);
   });
