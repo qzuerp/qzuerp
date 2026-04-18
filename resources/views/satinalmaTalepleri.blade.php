@@ -855,13 +855,15 @@
                             $q->whereNotNull('ARTNO');
                           } elseif ($SIPARIS_DURUM === 'olmayanlar') {
                             $q = DB::table(DB::raw("(
-                              SELECT S47T.*, S47TI.ARTNO AS SIPNO, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT
+                              SELECT S47T.*, S47TI.ARTNO AS SIPNO, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT, S46T.EVRAKNO AS SIPARISNO
                               FROM {$database}stok47t S47T
                               LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO
                               LEFT JOIN {$database}STOK47ti S47TI ON S47T.TRNUM = S47TI.OR_TRNUM
+                              LEFT JOIN {$database}stok46t as S46T ON S46T.TALEP_ARTNO = S47TI.ARTNO
                               LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
                             ) as T1"));
                             $q->whereNull('SIPNO');
+                            $q->whereNull('AK');
                           }
 
                           $veriler = $q->get();
@@ -875,9 +877,13 @@
                                       <th>Stok Adı</th>
                                       <th>Birim</th>
                                       <th>Miktar</th>
+                                      <th>Not</th>
                                       <th>Fiyat</th>
                                       <th>Para Birimi</th>
                                       <th>Termin Tarihi</th>
+                                      <th>Talep Evrak No</th>
+                                      <th>Sipariş Evrak No</th>
+                                      <!-- <th>Sipariş'e Git</th> -->
                                   </tr>
                               </thead>
                               <tfoot class="table-primary">
@@ -887,9 +893,13 @@
                                       <th>Stok Adı</th>
                                       <th>Birim</th>
                                       <th>Miktar</th>
+                                      <th>Not</th>
                                       <th>Fiyat</th>
                                       <th>Para Birimi</th>
                                       <th>Termin Tarihi</th>
+                                      <th>Talep Evrak No</th>
+                                      <th>Sipariş Evrak No</th>
+                                      <!-- <th>Sipariş'e Git</th> -->
                                   </tr>
                               </tfoot>
                               <tbody>
@@ -900,9 +910,12 @@
                                           <td>{{ $row->AD }}</td>
                                           <td>{{ $row->IUNIT }}</td>
                                           <td>{{ $row->SF_MIKTAR }}</td>
+                                          <td>{{ $row->NOT1 }}</td>
                                           <td>{{ $row->FIYAT }}</td>
                                           <td>{{ $row->FIYAT_PB }}</td>
                                           <td>{{ $row->TERMIN_TAR }}</td>
+                                          <td>{{ $row->EVRAKNO }}</td>
+                                          <td>{{ $row->SIPARISNO }}</td>
                                       </tr>
                                   @endforeach
                               </tbody>
