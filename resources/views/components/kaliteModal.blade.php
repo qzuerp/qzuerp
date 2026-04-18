@@ -1,522 +1,500 @@
 <style>
-/* ═══════════════════════════════════════════════════════════════
-   SCROLL MİMARİSİ
-   Kural: her seviye flex column + overflow:hidden.
-   Sadece gerçekten scroll etmesi gereken iki yer var:
-     1. .gkk-item-list   (sol liste)
-     2. .gkk-measure-area / .gkk-tab2-scroll (sağ içerik)
-   Diğer her şey flex-shrink:0 ile sabit kalır.
-═══════════════════════════════════════════════════════════════ */
- 
-.gkk-wrap * { box-sizing: border-box; }
- 
-/* 1) Modal içeriği tam ekranı kaplar, kendisi scroll etmez */
-#modal_gkk .modal-content {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;      /* iOS adres çubuğunu hesaba katar */
-    overflow: hidden;
-    border-radius: 0;
-    border: none;
-}
- 
-/* 2) Form flex zincirini devralar, overflow:auto KALDIRILDI */
-#gkk_form {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-    min-height: 0;
-}
- 
-/* 3) Modal header: sabit, küçülmez */
-#modal_gkk .modal-header {
-    flex-shrink: 0;
-    padding: 8px 14px;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
- 
-/* Tablet'te hamburger butonu */
-.gkk-drawer-toggle {
-    display: none;          /* masaüstünde gizli */
-    width: 32px; height: 32px;
-    border: 1px solid #e5e7eb;
-    border-radius: 7px;
-    background: transparent;
-    color: #374151;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-}
- 
-/* 4) Split panel body: flex, kendisi scroll etmez */
-.gkk-wrap.modal-body {
-    display: flex;
-    flex: 1;
-    overflow: hidden;    /* KRİTİK — çocuklar scroll eder, bu değil */
-    min-height: 0;
-    padding: 0;
-}
- 
-/* ── Sol Panel ──────────────────────────────────────────────── */
-.gkk-left {
-    width: 230px;
-    min-width: 230px;
-    flex-shrink: 0;
-    border-right: 1px solid #e5e7eb;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;    /* kendi içinde flex zinciri */
-    background: #f9fafb;
-    transition: transform .22s ease;
-}
-.gkk-left-header {
-    padding: 14px 14px 10px;
-    border-bottom: 1px solid #e5e7eb;
-    flex-shrink: 0;      /* küçülmez */
-}
-.gkk-left-header h6 {
-    font-size: 12px; font-weight: 600; color: #374151;
-    text-transform: uppercase; letter-spacing: .05em; margin: 0 0 8px;
-}
-.gkk-search {
-    width: 100%; padding: 6px 10px; font-size: 12px;
-    border: 1px solid #d1d5db; border-radius: 7px;
-    background: #fff; color: #111827; outline: none;
-}
-.gkk-search:focus { border-color: #3b82f6; }
- 
-/* ★ Sadece bu scroll eder (sol) */
-.gkk-item-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 6px;
-    min-height: 0;
-}
- 
-.gkk-item {
-    padding: 10px 12px; border-radius: 8px; cursor: pointer;
-    margin-bottom: 4px; border: 1px solid transparent; transition: all .15s;
-}
-.gkk-item:hover  { background: #fff; border-color: #d1d5db; }
-.gkk-item.active { background: #fff; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.08); }
-.gkk-item-code   { font-size: 12px; font-weight: 600; color: #111827; }
-.gkk-item-name   { font-size: 11px; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gkk-item-meta   { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-.gkk-lot-badge   { font-size: 10px; color: #6b7280; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
-.gkk-dots        { display: flex; gap: 3px; }
-.gkk-dot         { width: 7px; height: 7px; border-radius: 50%; background: #d1d5db; }
-.gkk-dot.ok      { background: #10b981; }
-.gkk-dot.fail    { background: #ef4444; }
-.gkk-dot.warn    { background: #f59e0b; }
- 
-/* ── Sağ Panel ──────────────────────────────────────────────── */
-.gkk-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-width: 0;
-    min-height: 0;
-    background: #fff;
-}
- 
-/* nav-tabs-custom: flex zincirini devam ettirir */
-.nav-tabs-custom {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-    min-height: 0;
-}
- 
-/* Sabit barlar: flex-shrink:0 */
-.gkk-info-bar {
-    flex-shrink: 0;
-    display: flex; align-items: center; gap: 18px;
-    padding: 10px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    flex-wrap: wrap;
-}
-.gkk-info-group { display: flex; flex-direction: column; gap: 1px; }
-.gkk-info-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; }
-.gkk-info-value { font-size: 13px; font-weight: 600; color: #111827; }
-.gkk-info-sep   { width: 1px; height: 28px; background: #e5e7eb; flex-shrink: 0; }
- 
-.gkk-nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
-.gkk-nav-btn {
-    width: 30px; height: 30px; border: 1px solid #d1d5db; border-radius: 7px;
-    background: transparent; color: #6b7280; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 13px; transition: all .15s;
-}
-.gkk-nav-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
-.gkk-unsaved-dot { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; display: none; }
-.gkk-unsaved-dot.show { display: block; }
- 
-.gkk-stats-bar {
-    flex-shrink: 0;
-    display: flex; gap: 8px; align-items: center;
-    padding: 6px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    flex-wrap: wrap;
-}
-.gkk-pill {
-    font-size: 11px; padding: 3px 10px; border-radius: 20px;
-    display: flex; align-items: center; gap: 5px; font-weight: 500;
-}
-.gkk-pill-ok    { background: #d1fae5; color: #065f46; }
-.gkk-pill-fail  { background: #fee2e2; color: #991b1b; }
-.gkk-pill-warn  { background: #fef3c7; color: #92400e; }
-.gkk-pill-empty { background: #f3f4f6; color: #6b7280; }
- 
-.gkk-progress-wrap {
-    flex-shrink: 0;
-    padding: 6px 16px 8px;
-    border-bottom: 1px solid #e5e7eb;
-}
-.gkk-progress-bg   { height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
-.gkk-progress-fill { height: 100%; background: #10b981; border-radius: 2px; transition: width .35s ease; }
-.gkk-progress-lbl  { display: flex; justify-content: space-between; font-size: 11px; color: #9ca3af; margin-top: 4px; }
- 
-/* ★ Tab content: kalan tüm alanı alır, kendisi overflow:hidden */
-.tab-content {
-    flex: 1;
-    overflow: hidden;    /* pane'lar bu kutuyu taşamaz */
-    min-height: 0;
-}
- 
-/* Aktif pane tam yüksekliği doldurur */
-.tab-pane {
-    height: 100%;
-    display: none;
-    flex-direction: column;
-}
-.tab-pane.active.show {
-    display: flex;
-}
- 
-/* ★ Sadece bu scroll eder (sağ - tab1) */
-.gkk-measure-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-height: 0;
-}
- 
-/* ★ Tab2 scroll wrapper */
-.gkk-tab2-scroll {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: auto;
-    padding: 12px;
-    min-height: 0;
-}
- 
-.gkk-empty-msg {
-    display: flex; align-items: center; justify-content: center;
-    flex: 1; color: #9ca3af; font-size: 13px;
-}
- 
-/* Ölçüm kartı */
-.gkk-mcard {
-    border: 1px solid #e5e7eb; border-left: 3px solid #d1d5db;
-    border-radius: 8px; padding: 12px 14px; background: #fff; transition: border-color .2s;
-    flex-shrink: 0;
-}
-.gkk-mcard.valid   { border-left-color: #10b981; background: #f0fdf4; }
-.gkk-mcard.invalid { border-left-color: #ef4444; background: #fff5f5; }
-.gkk-mcard.warn    { border-left-color: #f59e0b; background: #fffbeb; }
- 
-.gkk-mcard-top    { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.gkk-mcard-num    { width: 24px; height: 24px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #6b7280; flex-shrink: 0; }
-.gkk-mcard-code   { font-size: 12px; font-weight: 600; color: #111827; }
-.gkk-mcard-type   { font-size: 11px; color: #9ca3af; }
-.gkk-req-badge    { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
-.gkk-req-yes      { background: #d1fae5; color: #065f46; }
-.gkk-req-no       { background: #f3f4f6; color: #6b7280; }
- 
-.gkk-mcard-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; align-items: end; }
-.gkk-field label  { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: 3px; }
-.gkk-field input,
-.gkk-field select { width: 100%; padding: 6px 8px; font-size: 12px; border: 1px solid #d1d5db; border-radius: 7px; background: #fff; color: #111827; outline: none; transition: border-color .15s; }
-.gkk-field input:focus,
-.gkk-field select:focus { border-color: #3b82f6; }
-.gkk-field input[readonly] { background: #f9fafb; color: #9ca3af; cursor: default; }
- 
-.gkk-res.ok   { border-color: #10b981 !important; background: #ecfdf5 !important; }
-.gkk-res.fail { border-color: #ef4444 !important; background: #fff5f5 !important; }
- 
-.gkk-mcard-foot { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb; }
-.gkk-mcard-foot select { padding: 4px 8px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 7px; background: #fff; color: #111827; outline: none; }
-.gkk-note-input { flex: 1; padding: 4px 8px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 7px; background: #fff; color: #111827; outline: none; }
-.gkk-note-input:focus { border-color: #3b82f6; }
-.gkk-del-btn { width: 26px; height: 26px; border: 1px solid #fca5a5; border-radius: 6px; background: transparent; color: #ef4444; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all .15s; flex-shrink: 0; }
-.gkk-del-btn:hover { background: #fee2e2; }
- 
-select.gkk-durum-kabul  { border-color: #10b981 !important; color: #065f46 !important; }
-select.gkk-durum-red    { border-color: #ef4444 !important; color: #991b1b !important; }
-select.gkk-durum-sartli { border-color: #f59e0b !important; color: #92400e !important; }
- 
-/* 5) Modal footer: sabit */
-#modal_gkk .modal-footer {
-    flex-shrink: 0;
-    padding: 8px 14px;
-    border-top: 1px solid #e5e7eb;
-    display: flex; align-items: center; gap: 8px;
-}
-.gkk-save-lbl { margin-left: auto; font-size: 11px; color: #9ca3af; }
- 
-/* ── Scrollbar ince ──────────────────────────────────────────── */
-.gkk-item-list::-webkit-scrollbar,
-.gkk-measure-area::-webkit-scrollbar,
-.gkk-tab2-scroll::-webkit-scrollbar { width: 4px; }
-.gkk-item-list::-webkit-scrollbar-track,
-.gkk-measure-area::-webkit-scrollbar-track,
-.gkk-tab2-scroll::-webkit-scrollbar-track { background: transparent; }
-.gkk-item-list::-webkit-scrollbar-thumb,
-.gkk-measure-area::-webkit-scrollbar-thumb,
-.gkk-tab2-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
- 
-/* ═══════════════════════════════════════════════════════════════
-   TABLET: ≤ 1023px
-   Sol panel drawer olarak açılır/kapanır.
-   Sağ panel tam genişliği kullanır.
-═══════════════════════════════════════════════════════════════ */
-@media (max-width: 1023px) {
-    .gkk-drawer-toggle {
-        display: flex;   /* görünür olur */
+    /* ── Genel reset / kapsayıcı ─────────────────────────────── */
+    .gkk-wrap *{ box-sizing: border-box; }
+    #modal_gkk .modal-content{
+        border-radius: 12px;
+        border: none;
+        display: flex;
+        flex-direction: column;
     }
  
+    /* ── Panel kapsayıcısı ───────────────────────────────────── */
+    .gkk-wrap {
+        display: flex;
+        flex: 1;
+        max-height: 90%;
+    }
+ 
+    /* ── Sol panel ───────────────────────────────────────────── */
     .gkk-left {
-        position: absolute;
-        top: 0; left: 0;
-        height: 100%;
-        z-index: 30;
-        transform: translateX(-100%);
-        box-shadow: none;
+        width: 230px;
+        min-width: 230px;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        background: #f9fafb;
+    }
+    .gkk-left-header {
+        padding: 14px 14px 10px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .gkk-left-header h6 {
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin: 0 0 8px;
+    }
+    .gkk-search {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: #fff;
+        color: #111827;
+        outline: none;
+    }
+    .gkk-search:focus { border-color: #3b82f6; }
+    .gkk-item-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 6px;
+    }
+    .gkk-item {
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 4px;
+        border: 1px solid transparent;
+        transition: all .15s;
+    }
+    .gkk-item:hover  { background: #fff; border-color: #d1d5db; }
+    .gkk-item.active { background: #fff; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.08); }
+    .gkk-item-code   { font-size: 12px; font-weight: 600; color: #111827; }
+    .gkk-item-name   { font-size: 11px; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gkk-item-meta   { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .gkk-lot-badge   { font-size: 10px; color: #6b7280; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+    .gkk-dots        { display: flex; gap: 3px; }
+    .gkk-dot         { width: 7px; height: 7px; border-radius: 50%; background: #d1d5db; }
+    .gkk-dot.ok      { background: #10b981; }
+    .gkk-dot.fail    { background: #ef4444; }
+    .gkk-dot.warn    { background: #f59e0b; }
+ 
+    /* ── Sağ panel ───────────────────────────────────────────── */
+    .gkk-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        background: #fff;
     }
  
-    .gkk-left.gkk-open {
-        transform: translateX(0);
-        box-shadow: 6px 0 24px rgba(0,0,0,.13);
+    /* Üst bilgi satırı */
+    .gkk-info-bar {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 12px 18px;
+        border-bottom: 1px solid #e5e7eb;
+        flex-wrap: wrap;
     }
+    .gkk-info-group { display: flex; flex-direction: column; gap: 1px; }
+    .gkk-info-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; }
+    .gkk-info-value { font-size: 13px; font-weight: 600; color: #111827; }
+    .gkk-info-sep   { width: 1px; height: 32px; background: #e5e7eb; }
  
-    /* Overlay */
-    .gkk-overlay {
+    /* Nav butonları */
+    .gkk-nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+    .gkk-nav-btn {
+        width: 30px; height: 30px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: transparent;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px;
+        transition: all .15s;
+    }
+    .gkk-nav-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
+ 
+    /* Kaydedilmemiş nokta */
+    .gkk-unsaved-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #f59e0b;
         display: none;
-        position: absolute;
-        inset: 0;
-        z-index: 29;
-        background: rgba(0,0,0,.35);
     }
-    .gkk-overlay.gkk-open { display: block; }
+    .gkk-unsaved-dot.show { display: block; }
  
-    /* Info bar tabletde küçük alanlarda özet gösterir */
-    .gkk-info-sep:nth-child(n+4),
-    .gkk-info-group:nth-child(n+5) { display: none; }
-}
+    /* İstatistik satırı */
+    .gkk-stats-bar {
+        display: flex;
+        gap: 8px;
+        padding: 8px 18px;
+        border-bottom: 1px solid #e5e7eb;
+        flex-wrap: wrap;
+    }
+    .gkk-pill {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+    }
+    .gkk-pill-ok    { background: #d1fae5; color: #065f46; }
+    .gkk-pill-fail  { background: #fee2e2; color: #991b1b; }
+    .gkk-pill-warn  { background: #fef3c7; color: #92400e; }
+    .gkk-pill-empty { background: #f3f4f6; color: #6b7280; }
  
-/* ── Küçük tablet / geniş telefon: ≤ 767px ────────────────── */
-@media (max-width: 767px) {
-    .gkk-info-bar { padding: 8px 10px; gap: 10px; }
-    .gkk-stats-bar { padding: 5px 10px; }
-    .gkk-progress-wrap { padding: 5px 10px 6px; }
-    .gkk-measure-area { padding: 8px 10px; }
+    /* Progress bar */
+    .gkk-progress-wrap {
+        padding: 6px 18px 10px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .gkk-progress-bg {
+        height: 4px; background: #e5e7eb;
+        border-radius: 2px; overflow: hidden;
+    }
+    .gkk-progress-fill {
+        height: 100%;
+        background: #10b981;
+        border-radius: 2px;
+        transition: width .35s ease;
+    }
+    .gkk-progress-lbl {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #9ca3af;
+        margin-top: 4px;
+    }
  
-    /* Pill'ler çok küçük ekranda sadece sayı gösterir */
-    .gkk-pill { font-size: 10px; padding: 2px 7px; }
+    /* Ölçüm kartları alanı */
+    .gkk-measure-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .gkk-empty-msg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #9ca3af;
+        font-size: 13px;
+    }
  
-    #modal_gkk .modal-footer .btn { font-size: 12px; padding: 4px 10px; }
-}
+    /* Ölçüm kartı */
+    .gkk-mcard {
+        border: 1px solid #e5e7eb;
+        border-left: 3px solid #d1d5db;
+        border-radius: 8px;
+        padding: 12px 14px;
+        background: #fff;
+        transition: border-color .2s;
+    }
+    .gkk-mcard.valid   { border-left-color: #10b981; background: #f0fdf4; }
+    .gkk-mcard.invalid { border-left-color: #ef4444; background: #fff5f5; }
+    .gkk-mcard.warn    { border-left-color: #f59e0b; background: #fffbeb; }
+ 
+    /* Kart başlığı */
+    .gkk-mcard-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .gkk-mcard-num {
+        width: 24px; height: 24px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11px; font-weight: 600; color: #6b7280;
+        flex-shrink: 0;
+    }
+    .gkk-mcard-code { font-size: 12px; font-weight: 600; color: #111827; }
+    .gkk-mcard-type { font-size: 11px; color: #9ca3af; }
+    .gkk-req-badge  {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+    .gkk-req-yes { background: #d1fae5; color: #065f46; }
+    .gkk-req-no  { background: #f3f4f6; color: #6b7280; }
+ 
+    /* Grid alanları */
+    .gkk-mcard-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 8px;
+        align-items: end;
+    }
+    .gkk-field label {
+        font-size: 10px;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        display: block;
+        margin-bottom: 3px;
+    }
+    .gkk-field input,
+    .gkk-field select {
+        width: 100%;
+        padding: 6px 8px;
+        font-size: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: #fff;
+        color: #111827;
+        outline: none;
+        transition: border-color .15s;
+    }
+    .gkk-field input:focus,
+    .gkk-field select:focus { border-color: #3b82f6; }
+    .gkk-field input[readonly] { background: #f9fafb; color: #9ca3af; cursor: default; }
+ 
+    /* Sonuç input renkleri */
+    .gkk-res.ok   { border-color: #10b981 !important; background: #ecfdf5 !important; }
+    .gkk-res.fail { border-color: #ef4444 !important; background: #fff5f5 !important; }
+ 
+    /* Kart footer */
+    .gkk-mcard-foot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .gkk-mcard-foot select {
+        padding: 4px 8px;
+        font-size: 11px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: #fff;
+        color: #111827;
+        outline: none;
+    }
+    .gkk-note-input {
+        flex: 1;
+        padding: 4px 8px;
+        font-size: 11px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: #fff;
+        color: #111827;
+        outline: none;
+    }
+    .gkk-note-input:focus { border-color: #3b82f6; }
+    .gkk-del-btn {
+        width: 26px; height: 26px;
+        border: 1px solid #fca5a5;
+        border-radius: 6px;
+        background: transparent;
+        color: #ef4444;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px;
+        transition: all .15s;
+        flex-shrink: 0;
+    }
+    .gkk-del-btn:hover { background: #fee2e2; }
+ 
+    /* Durum seçim renkleri */
+    select.gkk-durum-kabul  { border-color: #10b981 !important; color: #065f46 !important; }
+    select.gkk-durum-red    { border-color: #ef4444 !important; color: #991b1b !important; }
+    select.gkk-durum-sartli { border-color: #f59e0b !important; color: #92400e !important; }
+ 
+    /* Modal footer */
+    #modal_gkk .modal-footer {
+        padding: 10px 16px;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .gkk-save-lbl { margin-left: auto; font-size: 11px; color: #9ca3af; }
+ 
+    /* ── Scrollbar ince stil ─────────────────────────────────── */
+    .gkk-item-list::-webkit-scrollbar,
+    .gkk-measure-area::-webkit-scrollbar { width: 4px; }
+    .gkk-item-list::-webkit-scrollbar-track,
+    .gkk-measure-area::-webkit-scrollbar-track { background: transparent; }
+    .gkk-item-list::-webkit-scrollbar-thumb,
+    .gkk-measure-area::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
 </style>
- 
-{{-- ═════════════════════════════════════════════════════════
-     HTML — 3 değişiklik:
-     1. modal-dialog-scrollable KALDIRILDI
-     2. form'dan style="overflow:auto" KALDIRILDI
-     3. Hamburger toggle + overlay EKLENDİ
-     4. tab2 içindeki .p-3 → .gkk-tab2-scroll yapıldı
-════════════════════════════════════════════════════════════ --}}
+
 <div class="modal fade" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="gkk_modal_title">
-    <div class="modal-dialog modal-fullscreen">{{-- modal-dialog-scrollable KALDIRILDI --}}
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
         <div class="modal-content">
-            <form action="stok29_kalite_kontrolu" method="post" id="gkk_form">{{-- overflow:auto KALDIRILDI --}}
-                @csrf
-                <input type="hidden" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
- 
-                {{-- ── Modal Header ─────────────────────────── --}}
-                <div class="modal-header py-2 px-3">
-                    {{-- Tablet hamburger --}}
-                    <button type="button" class="gkk-drawer-toggle me-1" id="gkkDrawerToggle">
-                        <i class="fa fa-bars"></i>
-                    </button>
- 
-                    <h5 class="modal-title mb-0" id="gkk_modal_title" style="font-size:14px;font-weight:600;color:#111827;">
-                        <i class="fa fa-check-circle me-2" style="color:#3b82f6;"></i>Giriş Kalite Kontrol
-                    </h5>
-                    <button type="button" class="btn-close btn-sm ms-auto" data-bs-dismiss="modal" aria-label="Kapat"></button>
-                </div>
- 
-                {{-- ── Split Panel Body ─────────────────────── --}}
-                <div class="gkk-wrap modal-body">
- 
-                    {{-- Tablet overlay --}}
-                    <div class="gkk-overlay" id="gkkOverlay"></div>
- 
-                    {{-- Sol Panel --}}
-                    <div class="gkk-left" id="gkkLeft">
-                        <div class="gkk-left-header">
-                            <h6>Kontrol Listesi</h6>
-                            <input type="text" class="gkk-search" id="gkkSearch" placeholder="Kod veya ürün ara...">
+            {{-- ── Modal Header ──────────────────────────── --}}
+            <div class="modal-header py-2 px-3" style="border-bottom:1px solid #e5e7eb;">
+                <h5 class="modal-title mb-0" id="gkk_modal_title" style="font-size:14px;font-weight:600;color:#111827;">
+                    <i class="fa fa-check-circle me-2" style="color:#3b82f6;"></i>Giriş Kalite Kontrol
+                </h5>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="stok29_kalite_kontrolu" style="overflow:auto;" method="post" id="gkk_form">
+                    @csrf
+                    {{-- EVRAKNO — form genelinde bir kez yeterli --}}
+                    <input type="hidden" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
+    
+                    {{-- ── Split Panel Body ──────────────────────── --}}
+                    <div class="gkk-wrap ">
+    
+                        {{-- Sol Panel: Kalem Listesi --}}
+                        <div class="gkk-left">
+                            <div class="gkk-left-header">
+                                <h6>Kontrol Listesi</h6>
+                                <input type="text" class="gkk-search" id="gkkSearch" placeholder="Kod veya ürün ara...">
+                            </div>
+                            <div class="gkk-item-list" id="gkkItemList">
+                                {{-- JS ile doldurulur --}}
+                            </div>
                         </div>
-                        <div class="gkk-item-list" id="gkkItemList">
-                            {{-- JS ile doldurulur --}}
-                        </div>
-                    </div>
- 
-                    {{-- Sağ Panel --}}
-                    <div class="gkk-right">
-                        <div class="nav-tabs-custom">
- 
-                            <div class="gkk-info-bar" id="gkkInfoBar">
-                                <div class="gkk-info-group">
-                                    <span class="gkk-info-label">Kod</span>
-                                    <span class="gkk-info-value" id="gkkHKod">—</span>
-                                    <input type="hidden" id="ISLEM_KODU" name="ISLEM_KODU">
+    
+                        <div class="gkk-right">
+                            {{-- Sağ Panel --}}
+                            <div class="nav-tabs-custom">
+
+                                {{-- Seçili kalem bilgi satırı --}}
+                                <div class="gkk-info-bar" id="gkkInfoBar">
+                                    <div class="gkk-info-group">
+                                        <span class="gkk-info-label">Kod</span>
+                                        <span class="gkk-info-value" id="gkkHKod">—</span>
+                                        <input type="hidden" id="ISLEM_KODU" name="ISLEM_KODU">
+                                    </div>
+                                    <div class="gkk-info-sep"></div>
+                                    <div class="gkk-info-group">
+                                        <span class="gkk-info-label">Ürün Adı</span>
+                                        <span class="gkk-info-value" id="gkkHAd">—</span>
+                                        <input type="hidden" id="ISLEM_ADI" name="ISLEM_ADI">
+                                    </div>
+                                    <div class="gkk-info-sep"></div>
+                                    <div class="gkk-info-group">
+                                        <span class="gkk-info-label">Lot</span>
+                                        <span class="gkk-info-value" id="gkkHLot">—</span>
+                                        <input type="hidden" id="ISLEM_LOTU" name="ISLEM_LOTU">
+                                    </div>
+                                    <div class="gkk-info-sep"></div>
+                                    <div class="gkk-info-group">
+                                        <span class="gkk-info-label">Seri</span>
+                                        <span class="gkk-info-value" id="gkkHSeri">—</span>
+                                        <input type="hidden" id="ISLEM_SERI" name="ISLEM_SERI">
+                                    </div>
+                                    <div class="gkk-info-sep"></div>
+                                    <div class="gkk-info-group">
+                                        <span class="gkk-info-label">Miktar</span>
+                                        <span class="gkk-info-value" id="gkkHMiktar">—</span>
+                                        <input type="hidden" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI">
+                                    </div>
+                                    <input type="hidden" id="TEDARIKCI" name="TEDARIKCI">
+
+                                    {{-- Nav butonları --}}
+                                    <div class="gkk-nav">
+                                        <div class="gkk-unsaved-dot" id="gkkUnsavedDot" title="Kaydedilmemiş değişiklik var"></div>
+                                        <button type="button" class="gkk-nav-btn" id="gkkPrevBtn" title="Önceki kalem (↑)">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                        <button type="button" class="gkk-nav-btn" id="gkkNextBtn" title="Sonraki kalem (↓)">
+                                            <i class="fa fa-chevron-down"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="gkk-info-sep"></div>
-                                <div class="gkk-info-group">
-                                    <span class="gkk-info-label">Ürün Adı</span>
-                                    <span class="gkk-info-value" id="gkkHAd">—</span>
-                                    <input type="hidden" id="ISLEM_ADI" name="ISLEM_ADI">
+
+                                {{-- İstatistik satırı --}}
+                                <div class="gkk-stats-bar" id="gkkStatsBar">
+                                    <div class="gkk-pill gkk-pill-ok">
+                                        <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+                                        <span id="gkkCntOk">0</span> Geçti
+                                    </div>
+                                    <div class="gkk-pill gkk-pill-fail">
+                                        <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
+                                        <span id="gkkCntFail">0</span> Başarısız
+                                    </div>
+                                    <div class="gkk-pill gkk-pill-warn">
+                                        <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
+                                        <span id="gkkCntWarn">0</span> Uyarı
+                                    </div>
+                                    <div class="gkk-pill gkk-pill-empty">
+                                        <span style="width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;"></span>
+                                        <span id="gkkCntEmpty">0</span> Boş
+                                    </div>
+
+                                    <ul class="nav nav-tabs ms-auto mb-0">
+                                        <li class="nav-item">
+                                            <a href="#tab_1" class="nav-link active" data-bs-toggle="tab">Operasyonlar</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#tab_2" class="nav-link" data-bs-toggle="tab">Operasyon Detayları</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="gkk-info-sep"></div>
-                                <div class="gkk-info-group">
-                                    <span class="gkk-info-label">Lot</span>
-                                    <span class="gkk-info-value" id="gkkHLot">—</span>
-                                    <input type="hidden" id="ISLEM_LOTU" name="ISLEM_LOTU">
+
+                                {{-- Progress bar --}}
+                                <div class="gkk-progress-wrap">
+                                    <div class="gkk-progress-bg">
+                                        <div class="gkk-progress-fill" id="gkkProgressFill" style="width:0%"></div>
+                                    </div>
+                                    <div class="gkk-progress-lbl">
+                                        <span id="gkkProgressTxt">0 / 0 ölçüm tamamlandı</span>
+                                        <span id="gkkProgressPct">0%</span>
+                                    </div>
                                 </div>
-                                <div class="gkk-info-sep"></div>
-                                <div class="gkk-info-group">
-                                    <span class="gkk-info-label">Seri</span>
-                                    <span class="gkk-info-value" id="gkkHSeri">—</span>
-                                    <input type="hidden" id="ISLEM_SERI" name="ISLEM_SERI">
-                                </div>
-                                <div class="gkk-info-sep"></div>
-                                <div class="gkk-info-group">
-                                    <span class="gkk-info-label">Miktar</span>
-                                    <span class="gkk-info-value" id="gkkHMiktar">—</span>
-                                    <input type="hidden" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI">
-                                </div>
-                                <input type="hidden" id="TEDARIKCI" name="TEDARIKCI">
- 
-                                <div class="gkk-nav">
-                                    <div class="gkk-unsaved-dot" id="gkkUnsavedDot" title="Kaydedilmemiş değişiklik var"></div>
-                                    <button type="button" class="gkk-nav-btn" id="gkkPrevBtn" title="Önceki kalem (↑)">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </button>
-                                    <button type="button" class="gkk-nav-btn" id="gkkNextBtn" title="Sonraki kalem (↓)">
-                                        <i class="fa fa-chevron-down"></i>
-                                    </button>
-                                </div>
-                            </div>
- 
-                            <div class="gkk-stats-bar" id="gkkStatsBar">
-                                <div class="gkk-pill gkk-pill-ok">
-                                    <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>
-                                    <span id="gkkCntOk">0</span> Geçti
-                                </div>
-                                <div class="gkk-pill gkk-pill-fail">
-                                    <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
-                                    <span id="gkkCntFail">0</span> Başarısız
-                                </div>
-                                <div class="gkk-pill gkk-pill-warn">
-                                    <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
-                                    <span id="gkkCntWarn">0</span> Uyarı
-                                </div>
-                                <div class="gkk-pill gkk-pill-empty">
-                                    <span style="width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;"></span>
-                                    <span id="gkkCntEmpty">0</span> Boş
-                                </div>
- 
-                                <ul class="nav nav-tabs ms-auto mb-0">
-                                    <li class="nav-item">
-                                        <a href="#tab_1" class="nav-link active" data-bs-toggle="tab">Operasyonlar</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#tab_2" class="nav-link" data-bs-toggle="tab">Operasyon Detayları</a>
-                                    </li>
-                                </ul>
-                            </div>
- 
-                            <div class="gkk-progress-wrap">
-                                <div class="gkk-progress-bg">
-                                    <div class="gkk-progress-fill" id="gkkProgressFill" style="width:0%"></div>
-                                </div>
-                                <div class="gkk-progress-lbl">
-                                    <span id="gkkProgressTxt">0 / 0 ölçüm tamamlandı</span>
-                                    <span id="gkkProgressPct">0%</span>
-                                </div>
-                            </div>
- 
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="tab_1">
-                                    <div class="gkk-measure-area" id="gkkMeasureArea">
-                                        <div class="gkk-empty-msg" id="gkkEmptyMsg">
-                                            <span><i class="fa fa-arrow-left me-2" style="color:#d1d5db;"></i>Listeden bir kalem seçin</span>
+
+                                {{-- Tab İçerikleri --}}
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tab_1">
+                                        <div class="gkk-measure-area" id="gkkMeasureArea">
+                                            <div class="gkk-empty-msg" id="gkkEmptyMsg">
+                                                <span><i class="fa fa-arrow-left me-2" style="color:#d1d5db;"></i>Listeden bir kalem seçin</span>
+                                            </div>
+                                        </div>
+                                        <table id="gkk_table" style="display:none;"><tbody></tbody></table>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="tab_2">
+                                        <div class="p-3">
+                                            <table class="table table-bordered text-center" id="gkkTableBody">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Parametre</th>
+                                                        <th>Aralık</th>       <!-- YENİ -->
+                                                        <th>Ölçüm Sonucu</th>
+                                                        <th>Durum</th>
+                                                        <th>Not</th>
+                                                        <th>Onay Tarihi</th>
+                                                        <th></th>             <!-- Detay butonu için -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <table id="gkk_table" style="display:none;"><tbody></tbody></table>
-                                </div>
- 
-                                <div class="tab-pane fade" id="tab_2">
-                                    {{-- .p-3 yerine .gkk-tab2-scroll — scroll buraya taşındı --}}
-                                    <div class="gkk-tab2-scroll">
-                                        <table class="table table-bordered text-center" id="gkkTableBody">
-                                            <thead>
-                                                <tr>
-                                                    <th>Parametre</th>
-                                                    <th>Aralık</th>
-                                                    <th>Ölçüm Sonucu</th>
-                                                    <th>Durum</th>
-                                                    <th>Not</th>
-                                                    <th>Onay Tarihi</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
- 
-                        </div>
-                    </div>{{-- /gkk-right --}}
-                </div>{{-- /gkk-wrap --}}
- 
-                {{-- ── Modal Footer ─────────────────────────── --}}
-                <div class="modal-footer">
-                    <button type="submit" name="KARAR" value="KABUL"        class="btn btn-sm btn-success">
-                        <i class="fa-solid fa-check-double me-1"></i>Kabul
-                    </button>
-                    <button type="submit" name="KARAR" value="SARTLI_KABUL" class="btn btn-sm btn-warning">
-                        <i class="fa fa-check me-1"></i>Şartlı Kabul
-                    </button>
-                    <button type="submit" name="KARAR" value="RED"          class="btn btn-sm btn-danger">
-                        <i class="fa fa-circle-xmark me-1"></i>Red
-                    </button>
-                    <span class="gkk-save-lbl" id="gkkLastSaveLbl"></span>
-                </div>
- 
-            </form>
+                        </div>{{-- /gkk-right --}}
+                    </div>{{-- /gkk-wrap --}}
+    
+                </form>
+            </div>
+
+            {{-- ── Modal Footer ──────────────────────────── --}}
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-sm btn-success" id="gkkSaveBtn">
+                    <i class="fa-solid fa-check-double me-1"></i> Kabul
+                </button>
+                <button type="submit" class="btn btn-sm btn-warning" id="gkkSaveBtn">
+                <i class="fa fa-check me-1"></i>Şartlı Kabul
+                </button>
+                <button type="submit" class="btn btn-sm btn-danger" id="gkkSaveBtn">
+                    <i class="fa fa-circle-xmark me-1"></i>Red
+                </button>
+                <span class="gkk-save-lbl" id="gkkLastSaveLbl"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -938,6 +916,12 @@ select.gkk-durum-sartli { border-color: #f59e0b !important; color: #92400e !impo
                 e.preventDefault();
                 document.getElementById('gkkNextBtn').click();
             }
+        });
+    
+        /* ── 13. Kaydet butonu ───────────────────────────────────── */
+        document.getElementById('gkkSaveBtn').addEventListener('click', function () {
+            markSaved();
+            // Form submit devam eder (type="submit")
         });
     
         /* ── 14. .sablonGetirBtn tıklaması ───────────────────────── */
