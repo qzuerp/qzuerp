@@ -95,6 +95,8 @@ class stok47_controller extends Controller
     $TI_LOTNUMBER = $request->TI_LOTNUMBER;
     $TI_NOT1 = $request->TI_NOT1;
     $T_AK = $request->T_AK;
+    $OR_TRNUM = $request->OR_TRNUM;
+    $TI_MPS_KODU = $request->MPS_KODU;
     $SIPARIS_DURUM = $request->SIPARIS_DURUM;
 
     if ($KOD == null) {
@@ -413,6 +415,8 @@ class stok47_controller extends Controller
               'FIYAT_PB' => $FIYAT_PB[$i],
               'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
               'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'OR_TRNUM' => $OR_TRNUM[$i],
+              'MPS_KODU' => $TI_MPS_KODU[$i],
               'NOT1' => $TI_NOT1[$i]
             ]);
 
@@ -435,9 +439,10 @@ class stok47_controller extends Controller
               'FIYAT_PB' => $FIYAT_PB[$i],
               'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
               'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'OR_TRNUM' => $OR_TRNUM[$i],
+              'MPS_KODU' => $TI_MPS_KODU[$i],
               'NOT1' => $TI_NOT1[$i]
             ]);
-
           }
         }
 
@@ -496,6 +501,8 @@ class stok47_controller extends Controller
               'FIYAT_PB' => $FIYAT_PB[$i],
               'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
               'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'OR_TRNUM' => $OR_TRNUM[$i],
+              'MPS_KODU' => $TI_MPS_KODU[$i],
               'NOT1' => $TI_NOT1[$i]
             ]);
 
@@ -518,6 +525,8 @@ class stok47_controller extends Controller
               'FIYAT_PB' => $FIYAT_PB[$i],
               'ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
               'LOTNUMBER' => $TI_LOTNUMBER[$i],
+              'OR_TRNUM' => $OR_TRNUM[$i],
+              'MPS_KODU' => $TI_MPS_KODU[$i],
               'NOT1' => $TI_NOT1[$i]
             ]);
 
@@ -579,6 +588,7 @@ class stok47_controller extends Controller
             'TALEP_EVRAKNO' => $EVRAKNO,
             'TALEP_ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
             'LOTNUMBER' => $TI_LOTNUMBER[$i],
+            'MPS_KODU' => $TI_MPS_KODU[$i],
             'NOT1' => $TI_NOT1[$i],
             'AK' => 'A'
           ]);

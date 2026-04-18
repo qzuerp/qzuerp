@@ -502,7 +502,7 @@
                             @php
                               $evraklar = DB::table($database . 'stok47t')->where('EVRAKNO', @$kart_veri->EVRAKNO)->get();
                               foreach ($evraklar as $key => $veri) {
-                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "|||" . $veri->LOTNUMBER . "|||" . $veri->NOT1 . "|||" . $veri->SF_MIKTAR . "'>" . $veri->KOD . " - " . $veri->STOK_ADI . "</option>";
+                                echo "<option value ='" . $veri->KOD . "|||" . $veri->ARTNO . "|||" . $veri->LOTNUMBER . "|||" . $veri->NOT1 . "|||" . $veri->SF_MIKTAR . "|||" . $veri->TRNUM . "|||" . $veri->MPS_KODU . "'>" . $veri->KOD . " - " . $veri->STOK_ADI . "</option>";
                               }
                             @endphp
                           </select>
@@ -605,8 +605,10 @@
                             <td style="min-width: 150px">
                               <input maxlength="255" style="color: red" type="text" data-name="TI_NOT1_FILL"
                                 id="TI_NOT1_FILL" data-bs-toggle="tooltip" readonly
-                                data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">
+                                data-bs-placement="top" data-bs-title="NOT1" class="NOT1 form-control">           
                             </td>
+                            <input style="color: red" type="hidden" id="OR_TRNUM" class="form-control">
+                            <input style="color: red" type="hidden" id="TI_MPS_KODU" class="form-control">
                             <td>#</td>
 
                           </tr>
@@ -676,6 +678,10 @@
                                   <i class="fa fa-minus" style="color: red"></i>
                                 </button>
                               </td>
+                              <input type="hidden" class="form-control" name="OR_TRNUM[]"
+                              value="{{ $veri->OR_TRNUM }}" readonly>
+                              <input type="hidden" class="form-control" name="TI_MPS_KODU[]"
+                              value="{{ $veri->MPS_KODU }}" readonly>
                             </tr>
 
                           @endforeach
@@ -834,22 +840,28 @@
                           @endphp
 											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
                           @php
-                          $q = DB::table(DB::raw("(
-                              SELECT S47T.*, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT,
-                              (
-                                  SELECT MAX(EVRAKNO) 
-                                  FROM {$database}STOK46T 
-                                  WHERE {$database}STOK46T.TALEP_ARTNO = S47T.ARTNO
-                              ) AS SIPARISNO
-                              FROM {$database}stok47ti S47T
-                              LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
-                              LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
-                          ) as T1"));
-
                           if ($SIPARIS_DURUM === 'olanlar') {
-                              $q->whereNotNull('ARTNO');
+                            $q = DB::table(DB::raw("(
+                                SELECT S47T.*, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT,
+                                (
+                                    SELECT MAX(EVRAKNO) 
+                                    FROM {$database}STOK46T 
+                                    WHERE {$database}STOK46T.TALEP_ARTNO = S47T.ARTNO
+                                ) AS SIPARISNO
+                                FROM {$database}stok47ti S47T
+                                LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
+                                LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
+                            ) as T1"));
+                            $q->whereNotNull('ARTNO');
                           } elseif ($SIPARIS_DURUM === 'olmayanlar') {
-                              $q->whereNull('ARTNO');
+                            $q = DB::table(DB::raw("(
+                              SELECT S47T.*, S47TI.ARTNO AS SIPNO, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT
+                              FROM {$database}stok47t S47T
+                              LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO
+                              LEFT JOIN {$database}STOK47ti S47TI ON S47T.TRNUM = S47TI.OR_TRNUM
+                              LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
+                            ) as T1"));
+                            $q->whereNull('SIPNO');
                           }
 
                           $veriler = $q->get();
@@ -1147,11 +1159,14 @@
       }
       function veriGetir(veri) {
         const veriler = veri.split("|||");
+        console.log(veriler);
         $('#T_STOK_KODU').val(veriler[0]);
         $('#TI_ARTNO').val(veriler[1]);
         $('#TI_LOTNUMBER_FILL').val(veriler[2]);
         $('#TI_NOT1_FILL').val(veriler[3]);
         $('#SATIN_ALINACAK_MIK_FILL').val(veriler[4]);
+        $('#OR_TRNUM').val(veriler[5]);
+        $('#TI_MPS_KODU').val(veriler[6]);
       }
       function stokAdiGetirName2(veri) {
         const veriler = veri.split("|||");
@@ -1436,6 +1451,8 @@
           htmlCode += '<td><input type="checkbox" style="width:20px;height:20px;" class="row_check no-track"></td>';
           htmlCode += " <td><input type='text' class='form-control' name='T_STOK_KODU[]' value='" + TALEP_KODU + "' readonly></td> ";
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TI_TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
+          htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='OR_TRNUM[]' value='" + satirEkleInputs.OR_TRNUM + "'></td> ";
+          htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' name='TI_MPS_KODU[]' value='" + satirEkleInputs.TI_MPS_KODU + "'></td> ";
           htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]' value='" + ARTNO + "'></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='CARI_KOD[]' value='" + satirEkleInputs.CARIHESAPCODE_E_FILL + "' readonly></td> ";
           htmlCode += " <td><input type='text' class='form-control' name='CARI_AD[]' value='" + satirEkleInputs.CARI_ADI_FILL + "' readonly></td> ";
