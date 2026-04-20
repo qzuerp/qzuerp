@@ -321,6 +321,318 @@
     .gkk-measure-area::-webkit-scrollbar-track { background: transparent; }
     .gkk-item-list::-webkit-scrollbar-thumb,
     .gkk-measure-area::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+
+
+    /* ── Tab 2 Toolbar ───────────────────────────────── */
+    .gkk-tab2-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .gkk-tab2-summary {
+        font-family: 'DM Mono', monospace;
+        font-size: 12px;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .gkk-tab2-sep { color: #cbd5e1; }
+    .gkk-tab2-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #64748b;
+        cursor: pointer;
+        transition: all .15s;
+    }
+    .gkk-tab2-btn:hover {
+        background: #0f172a;
+        border-color: #0f172a;
+        color: #fff;
+    }
+    
+    /* ── Group Area ──────────────────────────────────── */
+    .gkk-group-area {
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    /* ── Empty State ─────────────────────────────────── */
+    .gkk-tab2-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        text-align: center;
+        color: #94a3b8;
+    }
+    .gkk-tab2-empty-icon {
+        width: 52px; height: 52px;
+        border-radius: 14px;
+        background: #f1f5f9;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px;
+        color: #cbd5e1;
+        margin-bottom: 12px;
+    }
+    .gkk-tab2-empty p {
+        font-size: 14px;
+        font-weight: 500;
+        color: #64748b;
+        margin: 0 0 4px;
+    }
+    .gkk-tab2-empty span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+    .gkk-tab2-empty strong {
+        font-family: 'DM Mono', monospace;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 4px;
+        padding: 0 5px;
+        color: #475569;
+    }
+    
+    /* ── Group Card ──────────────────────────────────── */
+    .gkk-group {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: box-shadow .2s;
+        animation: card-in .22s ease both;
+    }
+    .gkk-group:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+    
+    /* Group Header */
+    .gkk-group-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        cursor: pointer;
+        user-select: none;
+        background: #f8fafc;
+        border-bottom: 1px solid transparent;
+        transition: all .18s;
+    }
+    .gkk-group-header:hover { background: #f1f5f9; }
+    .gkk-group[data-open="true"] .gkk-group-header {
+        border-bottom-color: #e2e8f0;
+        background: #fff;
+    }
+    
+    .gkk-group-icon {
+        width: 32px; height: 32px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #1e293b, #334155);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        color: #94a3b8;
+        font-size: 13px;
+    }
+    
+    .gkk-group-info { flex: 1; min-width: 0; }
+    .gkk-group-title {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .gkk-group-meta {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 2px;
+    }
+    .gkk-group-meta-pill {
+        padding: 1px 7px;
+        border-radius: 4px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 10px;
+    }
+    
+    .gkk-group-count {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #0f172a;
+        color: #94a3b8;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    /* Status dots in header */
+    .gkk-group-status-dots {
+        display: flex;
+        gap: 3px;
+        flex-shrink: 0;
+    }
+    .gkk-group-stat-pill {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 4px;
+    }
+    .gkk-gsp-ok   { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .gkk-gsp-fail { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+    .gkk-gsp-warn { background: #fef9c3; color: #ca8a04; border: 1px solid #fde68a; }
+    .gkk-gsp-dot  { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    
+    .gkk-group-chevron {
+        font-size: 11px;
+        color: #94a3b8;
+        transition: transform .25s cubic-bezier(.4,0,.2,1);
+        flex-shrink: 0;
+    }
+    .gkk-group[data-open="true"] .gkk-group-chevron {
+        transform: rotate(180deg);
+    }
+    
+    /* Group Body */
+    .gkk-group-body {
+        display: none;
+    }
+    .gkk-group[data-open="true"] .gkk-group-body {
+        display: block;
+    }
+    
+    /* Detail Row */
+    .gkk-detail-row {
+        display: grid;
+        grid-template-columns: 90px 1fr 1fr 130px auto;
+        gap: 8px;
+        align-items: center;
+        padding: 9px 16px;
+        border-bottom: 1px solid #f8fafc;
+        transition: background .15s;
+    }
+    .gkk-detail-row:last-child { border-bottom: none; }
+    .gkk-detail-row:hover { background: #f8fafc; }
+    
+    .gkk-dr-range {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        color: #64748b;
+        line-height: 1.5;
+    }
+    .gkk-dr-range strong {
+        color: #0f172a;
+        font-weight: 500;
+    }
+    .gkk-dr-range .gkk-dr-sep {
+        color: #cbd5e1;
+        margin: 0 2px;
+    }
+    
+    .gkk-detail-row input[type="text"],
+    .gkk-detail-row input[type="date"] {
+        width: 100%;
+        padding: 5px 8px;
+        font-size: 12px;
+        font-family: 'DM Sans', sans-serif;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #0f172a;
+        outline: none;
+        transition: all .15s;
+    }
+    .gkk-detail-row input[type="text"]:focus,
+    .gkk-detail-row input[type="date"]:focus {
+        border-color: #3b82f6;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+    }
+    .gkk-detail-row input.res-ok   { border-color: #10b981 !important; background: #f0fdf4 !important; color: #065f46; }
+    .gkk-detail-row input.res-fail { border-color: #ef4444 !important; background: #fff5f5 !important; color: #991b1b; }
+    
+    .gkk-detail-row select {
+        width: 100%;
+        padding: 5px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #fff;
+        color: #0f172a;
+        outline: none;
+        cursor: pointer;
+        transition: all .15s;
+    }
+    .gkk-detail-row .gkk-durum-kabul  { border-color: #10b981 !important; color: #065f46 !important; background: #f0fdf4 !important; }
+    .gkk-detail-row .gkk-durum-red    { border-color: #ef4444 !important; color: #991b1b !important; background: #fff5f5 !important; }
+    .gkk-detail-row .gkk-durum-sartli { border-color: #f59e0b !important; color: #92400e !important; background: #fffbeb !important; }
+    
+    .gkk-dr-actions {
+        display: flex;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .gkk-dr-del {
+        width: 28px; height: 28px;
+        border: 1px solid #fecaca;
+        border-radius: 7px;
+        background: transparent;
+        color: #ef4444;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11px;
+        transition: all .15s;
+        flex-shrink: 0;
+    }
+    .gkk-dr-del:hover { background: #fee2e2; }
+    
+    /* Group footer (add more) */
+    .gkk-group-footer {
+        padding: 6px 16px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+    }
+    .gkk-group-info-txt {
+        font-family: 'DM Mono', monospace;
+        font-size: 10px;
+        color: #94a3b8;
+        flex: 1;
+    }
 </style>
 
 <div class="modal fade" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="gkk_modal_title">
@@ -456,24 +768,32 @@
                                     </div>
                                     
                                     <div class="tab-pane fade" id="tab_2">
-                                        <div class="p-3">
-                                            <table class="table table-bordered text-center" id="gkkTableBody">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Parametre</th>
-                                                        <th>Aralık</th>       <!-- YENİ -->
-                                                        <th>Ölçüm Sonucu</th>
-                                                        <th>Durum</th>
-                                                        <th>Not</th>
-                                                        <th>Onay Tarihi</th>
-                                                        <th></th>             <!-- Detay butonu için -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    
-                                                </tbody>
-                                            </table>
+                                        <div class="gkk-tab2-toolbar">
+                                            <div class="gkk-tab2-summary">
+                                                <span id="t2SumTotal">0 grup</span>
+                                                <span class="gkk-tab2-sep">·</span>
+                                                <span id="t2SumRows">0 kayıt</span>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="gkk-tab2-btn" id="t2ExpandAll">
+                                                    <i class="fa fa-expand-alt"></i> Tümünü Aç
+                                                </button>
+                                                <button type="button" class="gkk-tab2-btn" id="t2CollapseAll">
+                                                    <i class="fa fa-compress-alt"></i> Tümünü Kapat
+                                                </button>
+                                            </div>
                                         </div>
+                                    
+                                        <div id="gkkGroupArea" class="gkk-group-area">
+                                            <div class="gkk-tab2-empty" id="gkkTab2Empty">
+                                                <div class="gkk-tab2-empty-icon">
+                                                    <i class="fa fa-layer-group"></i>
+                                                </div>
+                                                <p>Henüz kayıt eklenmedi</p>
+                                                <span>Operasyonlar sekmesindeki <strong>+</strong> butonuna tıklayın</span>
+                                            </div>
+                                        </div>
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -684,13 +1004,15 @@
             const zorunlu    = isChecked;
             const rangeHint  = (minVal !== '' && maxVal !== '')
                             ? `${minVal} – ${maxVal} ${veri.QVALINPUTUNIT ?? ''}`
-                            : `Serbest${veri.QVALINPUTUNIT ? ' (' + veri.QVALINPUTUNIT + ')' : ''}`;
+                            : `1`;
     
             const card = document.createElement('div');
             card.className = getCardClass(value, minVal, maxVal);
             card.id = `gkkCard_${rowIndex}`;
             let rowTRNUM = $('#OR_TRNUM').val() ?? '';
             const today = new Date().toISOString().split('T')[0];
+            let Itype = '';
+            rangeHint == '1' ? Itype = 'checkbox' : Itype = 'text'
             card.innerHTML = `
                 {{-- Gizli form alanları --}}
                 <input type="hidden" name="TRNUM[${rowIndex}]"    value="${escHtml(TRNUM_FILL)}">
@@ -957,122 +1279,276 @@
         if (durum === 'ŞARTLI KABUL')  return 'gkk-durum-sartli';
         return '';
     }
-    $(document).on('click', '.add', function () {
+    function grpId(kod, olcumNo) {
+    return 'grp_' + String(kod).replace(/[^a-zA-Z0-9]/g, '_') + '_' + String(olcumNo).replace(/[^a-zA-Z0-9]/g, '_');
+}
+ 
+    /* Grup sayacını güncelle */
+    function updateGroupCount(groupId) {
+        const grp  = document.getElementById(groupId);
+        if (!grp) return;
+        const rows = grp.querySelectorAll('.gkk-detail-row');
+        const cnt  = grp.querySelector('.gkk-group-count');
+        if (cnt) cnt.textContent = rows.length + ' kayıt';
+        updateTab2Summary();
+        updateGroupStatusPills(groupId);
+    
+        /* Eğer hiç satır kalmadıysa grubu sil */
+        if (rows.length === 0) {
+            grp.remove();
+            updateTab2Summary();
+            checkTab2Empty();
+        }
+    }
+    
+    /* Grup durum pill'lerini güncelle */
+    function updateGroupStatusPills(groupId) {
+        const grp = document.getElementById(groupId);
+        if (!grp) return;
+        let ok = 0, fail = 0, warn = 0;
+        grp.querySelectorAll('select[name="DURUM[]"]').forEach(sel => {
+            const v = sel.value;
+            if (v === 'KABUL') ok++;
+            else if (v === 'RED') fail++;
+            else warn++;
+        });
+        const dotsEl = grp.querySelector('.gkk-group-status-dots');
+        if (!dotsEl) return;
+        let html = '';
+        if (ok)   html += `<span class="gkk-group-stat-pill gkk-gsp-ok"><span class="gkk-gsp-dot"></span>${ok}</span>`;
+        if (fail) html += `<span class="gkk-group-stat-pill gkk-gsp-fail"><span class="gkk-gsp-dot"></span>${fail}</span>`;
+        if (warn) html += `<span class="gkk-group-stat-pill gkk-gsp-warn"><span class="gkk-gsp-dot"></span>${warn}</span>`;
+        dotsEl.innerHTML = html;
+    }
+    
+    /* Üst toolbar sayacını güncelle */
+    function updateTab2Summary() {
+        const groups = document.querySelectorAll('#gkkGroupArea .gkk-group');
+        const rows   = document.querySelectorAll('#gkkGroupArea .gkk-detail-row');
+        document.getElementById('t2SumTotal').textContent = groups.length + ' grup';
+        document.getElementById('t2SumRows').textContent  = rows.length  + ' kayıt';
+    }
+    
+    /* Boş durum kontrolü */
+    function checkTab2Empty() {
+        const emptyEl = document.getElementById('gkkTab2Empty');
+        const groups  = document.querySelectorAll('#gkkGroupArea .gkk-group');
+        if (emptyEl) emptyEl.style.display = groups.length === 0 ? 'flex' : 'none';
+    }
+    
+    /* Sonuç input sınıf hesapla */
+    function resClass(v, min, max) {
+        if (v === '') return '';
+        if (min === '' || max === '') return 'res-ok';
+        const num = parseFloat(v);
+        if (isNaN(num)) return '';
+        return num >= parseFloat(min) && num <= parseFloat(max) ? 'res-ok' : 'res-fail';
+    }
+    
+    /* Grup header toggle */
+    function toggleGroup(groupId) {
+        const grp  = document.getElementById(groupId);
+        if (!grp) return;
+        const open = grp.dataset.open === 'true';
+        grp.dataset.open = open ? 'false' : 'true';
+    }
+    
+    /* Grubu oluştur veya mevcut grubu getir */
+    function getOrCreateGroup(data) {
+        const id = grpId(data.KOD, data.OLCUM_NO);
+        const area = document.getElementById('gkkGroupArea');
+    
+        /* Boş mesajı gizle */
+        const emptyEl = document.getElementById('gkkTab2Empty');
+        if (emptyEl) emptyEl.style.display = 'none';
+    
+        if (document.getElementById(id)) return id;
+    
+        /* Ölçüm tipi için ikon */
+        const iconMap = {
+            'UZUNLUK': 'fa-ruler', 'BOY': 'fa-ruler', 'GENISLIK': 'fa-ruler-horizontal',
+            'AGIRLIK': 'fa-weight', 'SICAKLIK': 'fa-thermometer-half',
+            'BASINC': 'fa-gauge', 'default': 'fa-vials'
+        };
+        const iconKey = Object.keys(iconMap).find(k => data.AD.toUpperCase().includes(k)) || 'default';
+        const icon = iconMap[iconKey];
+    
+        const unitStr    = data.OLCUM_BIRIMI ? data.OLCUM_BIRIMI : '—';
+        const rangeLabel = (data.MIN_DEGER && data.MAX_DEGER)
+            ? `${data.MIN_DEGER} – ${data.MAX_DEGER} ${unitStr}`
+            : `Serbest · ${unitStr}`;
+    
+        const div = document.createElement('div');
+        div.className   = 'gkk-group';
+        div.id          = id;
+        div.dataset.open = 'true';
+        div.dataset.kod  = data.KOD;
+        div.dataset.no   = data.OLCUM_NO;
+        div.dataset.min  = data.MIN_DEGER;
+        div.dataset.max  = data.MAX_DEGER;
+    
+        div.innerHTML = `
+            <div class="gkk-group-header" onclick="toggleGroup('${id}')">
+                <div class="gkk-group-icon"><i class="fa ${icon}"></i></div>
+                <div class="gkk-group-info">
+                    <span class="gkk-group-title">${data.AD}</span>
+                    <div class="gkk-group-meta">
+                        <span class="gkk-group-meta-pill">No: ${data.OLCUM_NO}</span>
+                        <span class="gkk-group-meta-pill">${unitStr}</span>
+                        <span style="color:#cbd5e1;">·</span>
+                        <span>${rangeLabel}</span>
+                    </div>
+                </div>
+                <div class="gkk-group-status-dots"></div>
+                <span class="gkk-group-count">0 kayıt</span>
+                <i class="fa fa-chevron-down gkk-group-chevron"></i>
+            </div>
+            <div class="gkk-group-body" id="${id}_body"></div>`;
+    
+        area.appendChild(div);
+        return id;
+    }
+    
+    
+    function addRowToGroup(groupId, data) {
+        const body = document.getElementById(groupId + '_body');
+        if (!body) return;
+    
+        const rowId = `dr_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
+        const min   = data.MIN || '';
+        const max   = data.MAKS || '';
+        
+        
+
+        const durumCls = getDurumClass(data.durum);
+        const hiddenFields = [
+            ['KOD',           data.KOD],
+            ['AD',            data.AD],
+            ['OLCUM_NO',      data.OLCUM_NO],
+            ['OLCUM_BIRIMI',  data.OLCUM_BIRIMI],
+            ['QVALINPUTTYPE', data.QVALINPUTTYPE],
+            ['QVALCHZTYPE',   data.QVALCHZTYPE],
+            ['MIN_DEGER',     data.MIN],
+            ['MAX_DEGER',     data.MAKS],
+            ['TRNUM',         data.TRNUM],
+            ['GECERLI_KOD',   data.GECERLI_KOD],
+        ].map(([n, v]) => `<input type="hidden" name="${n}[]" value="${v || ''}">`).join('');
+    
+        const row = document.createElement('div');
+        row.className = 'gkk-detail-row';
+        row.id = rowId;
+        row.innerHTML = `
+            ${hiddenFields}
+            <div class="gkk-dr-range">
+                <div><strong>${min || '—'}</strong><span class="gkk-dr-sep">/</span><strong>${max || '—'}</strong></div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:2px;">${data.OLCUM_BIRIMI || ''}</div>
+            </div>
+            <input type="text"
+                name="OLCUM_SONUC[]"
+                value="${data.res || ''}"
+                class="${resClass(data.res || '', min, max)}"
+                placeholder="${min && max ? min + ' – ' + max : 'Sonuç girin'}"
+                autocomplete="off">
+            <input type="text"
+                name="NOT[]"
+                value="${data.not || ''}"
+                placeholder="Not ekle...">
+            <select name="DURUM[]" class="${durumCls}" onchange="updateDurumClass(this); updateGroupStatusPills('${groupId}')">
+                <option value="KABUL"        ${data.durum === 'KABUL'        ? 'selected' : ''}>✓ Kabul</option>
+                <option value="RED"          ${data.durum === 'RED'          ? 'selected' : ''}>✗ Red</option>
+                <option value="ŞARTLI KABUL" ${data.durum === 'ŞARTLI KABUL' ? 'selected' : ''}>◎ Şartlı Kabul</option>
+            </select>
+            <div class="gkk-dr-actions">
+                <input type="date" name="ONAY_TARIH[]" value="${data.onayTarihi || ''}"
+                    style="width:120px;padding:5px 8px;font-size:11px;border:1px solid #e2e8f0;border-radius:7px;background:#f8fafc;outline:none;font-family:'DM Mono',monospace;">
+                <button type="button" class="gkk-dr-del" data-group="${groupId}" data-row="${rowId}" title="Kaydı sil">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>`;
+    
+        /* Sonuç input canlı doğrulama */
+        const resInput = row.querySelector('input[name="OLCUM_SONUC[]"]');
+        resInput.addEventListener('input', function () {
+            this.className = resClass(this.value, min, max);
+            updateGroupStatusPills(groupId);
+        });
+    
+        body.appendChild(row);
+        updateGroupCount(groupId);
+        if (typeof initFlatpickr === 'function') initFlatpickr();
+    }
+    
+    /* ── Yeni .add handler (eskisini kaldırın, bunu ekleyin) ── */
+    $(document).off('click', '.add').on('click', '.add', function () {
         const index = $(this).val();
         const card  = $(`#gkkCard_${index}`);
-
-        const $numElement = card.find('.num');
-
-        let NumIndex = ($numElement.data('index') || 0) + 1;
-
-        $numElement.data('index', NumIndex).text(NumIndex + ' Num.');
-
-
-        const get  = (name) => card.find(`input[name="${name}[${index}]"]`).val();
-        const uid  = `detail_${Date.now()}_${index}`;
-
-        const KOD           = get('KOD');
-        const AD            = get('AD');
-        const ZORUNLU       = get('GECERLI_KOD');
-        const OLCUM_NO      = get('OLCUM_NO');
-        const OLCUM_BIRIMI  = get('OLCUM_BIRIMI');
-        const QVALINPUTTYPE = get('QVALINPUTTYPE');
-        const QVALCHZTYPE   = get('QVALCHZTYPE');
-        const MIN_DEGER     = get('MIN_DEGER');
-        const MAX_DEGER     = get('MAX_DEGER');
-        const res           = get('OLCUM_SONUC');
-        const not           = get('NOT');
-        const onayTarihi    = get('ONAY_TARIH');
-        const durum         = card.find(`select[name="DURUM[${index}]"]`).val();
-        const TRNUM_FILL = getTRNUM();
-
-        const hiddenFields = [
-            { name: 'KOD',           value: KOD },
-            { name: 'AD',            value: AD },
-            { name: 'OLCUM_NO',      value: OLCUM_NO },
-            { name: 'OLCUM_BIRIMI',  value: OLCUM_BIRIMI },
-            { name: 'QVALINPUTTYPE', value: QVALINPUTTYPE },
-            { name: 'QVALCHZTYPE',   value: QVALCHZTYPE },
-            { name: 'MIN_DEGER',     value: MIN_DEGER },
-            { name: 'MAX_DEGER',     value: MAX_DEGER },
-            { name: 'TRNUM',     value: TRNUM_FILL },
-        ].map(({ name, value }) =>
-            `<input type="hidden" name="${name}[]" value="${value}">`
-        ).join('');
-
-        const meta = [
-            OLCUM_NO     ? `No: ${OLCUM_NO}`    : '',
-            OLCUM_BIRIMI ? `${OLCUM_BIRIMI}`     : '',
-        ].filter(Boolean).join(' · ');
-
-        const htmlCode = `
-            <!-- Ana satır -->
-            <tr>
-                <td style="min-width:200px">
-                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                        <span class="badge bg-secondary font-monospace" style="font-size:11px">${KOD}</span>
-                        <span class="gkk-req-badge ${ZORUNLU ? 'gkk-req-yes' : 'gkk-req-no'}">
-                            ${ZORUNLU ? 'Zorunlu' : 'İsteğe bağlı'}
-                        </span>
-                        <div class="fw-semibold" style="font-size:13px">${AD}</div>
-                        ${meta ? `<div class="text-muted" style="font-size:11px;margin-top:3px">${meta}</div>` : ''}
-                        <input type="hidden" name="GECERLI_KOD[]" value="${ZORUNLU}">
-                        ${hiddenFields}
-                    </div>
-                </td>
-
-                <td style="white-space:nowrap;min-width:72px">
-                    <div style="font-size:10px;font-weight:500;color:#6c757d;text-transform:uppercase;letter-spacing:.04em">Min</div>
-                    <div class="fw-semibold" style="font-size:13px">${MIN_DEGER ?? '—'}</div>
-                    <div style="font-size:10px;font-weight:500;color:#6c757d;text-transform:uppercase;letter-spacing:.04em;margin-top:4px">Maks</div>
-                    <div class="fw-semibold" style="font-size:13px">${MAX_DEGER ?? '—'}</div>
-                </td>
-
-                <td><input type="text"  class="form-control form-control-sm" name="OLCUM_SONUC[]" value="${res}" placeholder="Sonuç girin"></td>
-                <td>
-                    <select name="DURUM[]" class="form-select form-select-sm ${getDurumClass(durum)}"
-                            onchange="updateDurumClass(this)">
-                        <option value="KABUL"        ${durum === 'KABUL'        ? 'selected' : ''}>KABUL</option>
-                        <option value="RED"          ${durum === 'RED'          ? 'selected' : ''}>RED</option>
-                        <option value="ŞARTLI KABUL" ${durum === 'ŞARTLI KABUL' ? 'selected' : ''}>ŞARTLI KABUL</option>
-                    </select>
-                </td>
-                <td><input type="text"  class="form-control form-control-sm" name="NOT[]"        value="${not}" placeholder="Not..."></td>
-                <td><input type="date"  class="form-control form-control-sm" name="ONAY_TARIH[]" value="${onayTarihi}"></td>
-                <td style="white-space:nowrap">
-                    <button type="button"
-                            class="btn btn-sm btn-outline-secondary gkk-detail-toggle px-2"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#${uid}"
-                            style="font-size:11px">
-                        <i class="bi bi-chevron-down"></i> Detay
-                    </button>
-                </td>
-                <td><button type="button" class="btn btn-default delete-gkk-row" data-index="${index}"><i class="fa fa-minus" style="color: red"></i></button></td>
-            </tr>
-
-            <!-- Detay satırı (teknik bilgiler) -->
-            <tr class="collapse" id="${uid}">
-                <td colspan="7" class="bg-light border-bottom px-4 py-2">
-                    <div class="d-flex gap-4 flex-wrap" style="font-size:12px">
-                        ${[
-                            { label: 'Girdi Tipi',   value: QVALINPUTTYPE },
-                            { label: 'Seçim Tipi',   value: QVALCHZTYPE },
-                            { label: 'Ölçüm No',     value: OLCUM_NO },
-                            { label: 'Ölçüm Birimi', value: OLCUM_BIRIMI },
-                        ].map(({ label, value }) => `
-                            <div>
-                                <div style="font-size:10px;font-weight:500;color:#6c757d;text-transform:uppercase;letter-spacing:.04em">${label}</div>
-                                <div class="fw-semibold" style="font-size:13px">${value ?? '—'}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </td>
-            </tr>`;
-
-        $('#gkkTableBody').append(htmlCode);
-        initFlatpickr();
-        card.find('input[name="OLCUM_SONUCU['+index+']"]').val('');
+    
+        /* Kart üzerindeki sayacı güncelle */
+        const $num = card.find('.num');
+        let numIdx = ($num.data('index') || 0) + 1;
+        $num.data('index', numIdx).text(numIdx + ' kayıt');
+    
+        const get = (name) => card.find(`input[name="${name}[${index}]"]`).val() || '';
+    
+        const data = {
+            KOD:           get('KOD'),
+            MIN:           get('MIN_DEGER'),
+            MAKS:          get('MAX_DEGER'),
+            KOD:           get('KOD'),
+            AD:            get('AD'),
+            GECERLI_KOD:   get('GECERLI_KOD'),
+            OLCUM_NO:      get('OLCUM_NO'),
+            OLCUM_BIRIMI:  get('OLCUM_BIRIMI'),
+            QVALINPUTTYPE: get('QVALINPUTTYPE'),
+            QVALCHZTYPE:   get('QVALCHZTYPE'),
+            res:           get('OLCUM_SONUC'),
+            not:           get('NOT'),
+            onayTarihi:    get('ONAY_TARIH'),
+            durum:         card.find(`select[name="DURUM[${index}]"]`).val() || 'KABUL',
+            TRNUM:         typeof getTRNUM === 'function' ? getTRNUM() : '',
+        };
+    
+        const groupId = getOrCreateGroup(data);
+        addRowToGroup(groupId, data);
+    });
+    
+    /* ── Satır silme ───────────────────────────────────────────── */
+    $(document).off('click', '.gkk-dr-del').on('click', '.gkk-dr-del', function () {
+        const rowId   = $(this).data('row');
+        const groupId = $(this).data('group');
+        const row     = document.getElementById(rowId);
+        if (row) {
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(8px)';
+            row.style.transition = 'all .18s ease';
+            setTimeout(() => {
+                row.remove();
+                /* Kart sayacını da düşür */
+                const grp = document.getElementById(groupId);
+                if (grp) {
+                    const kod = grp.dataset.kod;
+                    const card = document.querySelector(`[id^="gkkCard_"]`);
+                    
+                    document.querySelectorAll('[id^="gkkCard_"]').forEach(c => {
+                        const kodInput = c.querySelector('input[name^="KOD["]');
+                        if (kodInput && kodInput.value === kod) {
+                            const $num = $(c).find('.num');
+                            let n = Math.max(0, ($num.data('index') || 0) - 1);
+                            $num.data('index', n).text(n > 0 ? n + ' kayıt' : '');
+                        }
+                    });
+                }
+                updateGroupCount(groupId);
+            }, 180);
+        }
+    });
+    
+    /* ── Tümünü Aç / Kapat ─────────────────────────────────────── */
+    document.getElementById('t2ExpandAll')?.addEventListener('click', () => {
+        document.querySelectorAll('#gkkGroupArea .gkk-group').forEach(g => g.dataset.open = 'true');
+    });
+    document.getElementById('t2CollapseAll')?.addEventListener('click', () => {
+        document.querySelectorAll('#gkkGroupArea .gkk-group').forEach(g => g.dataset.open = 'false');
     });
 
 
