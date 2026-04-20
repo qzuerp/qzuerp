@@ -1364,7 +1364,7 @@
         if (document.getElementById(id)) return id;
 
         const iconMap = {
-            'UZUNLUK': 'fa-ruler', 'BOY': 'fa-ruler', 'GENISLIK': 'fa-ruler-horizontal',
+            'UZUNLUK': 'fa-ruler', 'BOY': 'fa-ruler', 'EN': 'fa-ruler-horizontal',
             'AGIRLIK': 'fa-weight', 'SICAKLIK': 'fa-thermometer-half',
             'BASINC': 'fa-gauge', 'default': 'fa-vials'
         };
