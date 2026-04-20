@@ -23,19 +23,16 @@ class FunctionHelpers
             ])
             ->first();
     
-        // 1. ADIM: Veri var mı kontrolü (Null Guard)
         if (!$MEVCUT) {
             session()->push('EKSILER', $KOD . ' için hiç stok kaydı bulunamadı!');
             return true; 
         }
     
-        // 2. ADIM: Aktiflik kontrolü (Eğer 1 olması "kapalı/yasak" demekse senin mantığın doğru)
-        if ($MEVCUT->AKTIF_STOK == 1) {
+        if ($MEVCUT->AKTIF_STOK == 2) {
             session()->push('EKSILER', $KOD . ' bu stok kullanılamaz veya hareket ettirilemez');
             return true;
         }
     
-        // 3. ADIM: Miktar kontrolü
         $mevcutMiktar = $MEVCUT->MIKTAR ?? 0;
         if ($ISLEM_MIK > $mevcutMiktar) {
             session()->push('EKSILER', $KOD . ' (-' . ($ISLEM_MIK - $mevcutMiktar) . ' Adet) eksiye düşecek');

@@ -339,6 +339,7 @@
                     @csrf
                     {{-- EVRAKNO — form genelinde bir kez yeterli --}}
                     <input type="hidden" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}">
+                    <input type="hidden" id="OR_TRNUM" value="">
     
                     {{-- ── Split Panel Body ──────────────────────── --}}
                     <div class="gkk-wrap ">
@@ -407,15 +408,15 @@
                                 <div class="gkk-stats-bar" id="gkkStatsBar">
                                     <div class="gkk-pill gkk-pill-ok">
                                         <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>
-                                        <span id="gkkCntOk">0</span> Geçti
+                                        <span id="gkkCntOk">0</span> Kabul
                                     </div>
                                     <div class="gkk-pill gkk-pill-fail">
                                         <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
-                                        <span id="gkkCntFail">0</span> Başarısız
+                                        <span id="gkkCntFail">0</span> Red
                                     </div>
                                     <div class="gkk-pill gkk-pill-warn">
                                         <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
-                                        <span id="gkkCntWarn">0</span> Uyarı
+                                        <span id="gkkCntWarn">0</span> Şartlı Kabul
                                     </div>
                                     <div class="gkk-pill gkk-pill-empty">
                                         <span style="width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;"></span>
@@ -484,13 +485,13 @@
 
             {{-- ── Modal Footer ──────────────────────────── --}}
             <div class="modal-footer">
-                <button type="submit" class="btn btn-sm btn-success" id="gkkSaveBtn">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-success" form="gkk_form" value="kabul">
                     <i class="fa-solid fa-check-double me-1"></i> Kabul
                 </button>
-                <button type="submit" class="btn btn-sm btn-warning" id="gkkSaveBtn">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-warning" form="gkk_form" value="sartli">
                 <i class="fa fa-check me-1"></i>Şartlı Kabul
                 </button>
-                <button type="submit" class="btn btn-sm btn-danger" id="gkkSaveBtn">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-danger" form="gkk_form" value="red">
                     <i class="fa fa-circle-xmark me-1"></i>Red
                 </button>
                 <span class="gkk-save-lbl" id="gkkLastSaveLbl"></span>
@@ -606,6 +607,7 @@
                 div.addEventListener('click', () => {
                     confirmUnsaved(() => {
                         currentIndex = i;
+                        $('#OR_TRNUM').val(trnumValues[i]);
                         loadSablon(kodValues[i]);
                     });
                 });
@@ -681,17 +683,18 @@
             const durum      = veri.DURUM ?? 'KABUL';
             const zorunlu    = isChecked;
             const rangeHint  = (minVal !== '' && maxVal !== '')
-                            ? `${minVal} – ${maxVal} ${veri.UNIT ?? ''}`
-                            : `Serbest${veri.UNIT ? ' (' + veri.UNIT + ')' : ''}`;
+                            ? `${minVal} – ${maxVal} ${veri.QVALINPUTUNIT ?? ''}`
+                            : `Serbest${veri.QVALINPUTUNIT ? ' (' + veri.QVALINPUTUNIT + ')' : ''}`;
     
             const card = document.createElement('div');
             card.className = getCardClass(value, minVal, maxVal);
             card.id = `gkkCard_${rowIndex}`;
-    
+            let rowTRNUM = $('#OR_TRNUM').val() ?? '';
+            const today = new Date().toISOString().split('T')[0];
             card.innerHTML = `
                 {{-- Gizli form alanları --}}
                 <input type="hidden" name="TRNUM[${rowIndex}]"    value="${escHtml(TRNUM_FILL)}">
-                <input type="hidden" name="OR_TRNUM[${rowIndex}]" value="${escHtml(trnumValues[rowIndex] ?? '')}">
+                <input type="hidden" name="OR_TRNUM" value="${rowTRNUM}">
                 <input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
                 <input type="hidden" name="KOD[${rowIndex}]"      value="${escHtml(veri.VARCODE ?? '')}">
                 <input type="hidden" name="AD[${rowIndex}]"      value="${escHtml(veri.VARASPNAME ?? '')}">
@@ -718,7 +721,7 @@
     
                 {{-- Gizli ölçüm no --}}
                 <input type="hidden" name="OLCUM_NO[${rowIndex}]"     value="${escHtml(veri.VARINDEX ?? '')}">
-                <input type="hidden" name="OLCUM_BIRIMI[${rowIndex}]" value="${escHtml(veri.UNIT ?? '')}">
+                <input type="hidden" name="OLCUM_BIRIMI[${rowIndex}]" value="${escHtml(veri.QVALINPUTUNIT ?? '')}">
                 <input type="hidden" name="QVALINPUTTYPE[${rowIndex}]" value="${escHtml(veri.QVALINPUTTYPE ?? '')}">
                 <input type="hidden" name="QVALCHZTYPE[${rowIndex}]"  value="${escHtml(veri.QVALCHZTYPE ?? '')}">
                 <input type="hidden" name="MIN_DEGER[${rowIndex}]"    value="${escHtml(minVal)}">
@@ -736,7 +739,7 @@
                     </div>
                     <div class="gkk-field">
                         <label>Birim</label>
-                        <input type="text" value="${escHtml(veri.UNIT ?? '')}" readonly tabindex="-1">
+                        <input type="text" value="${escHtml(veri.QVALINPUTUNIT ?? '')}" readonly tabindex="-1">
                     </div>
                     <div class="gkk-field" style="min-width:150px">
                         <label>Ölçüm Sonucu</label>
@@ -754,7 +757,7 @@
                             class="flatpickr"
                             name="ONAY_TARIH[${rowIndex}]"
                             id="gkkDate_${rowIndex}"
-                            value="${escHtml(veri.DURUM_ONAY_TARIH ?? '')}">
+                            value="${escHtml(veri.DURUM_ONAY_TARIH ?? today)}">
                     </div>
                 </div>
     
@@ -889,6 +892,7 @@
             confirmUnsaved(() => {
                 if (currentIndex > 0) {
                     currentIndex--;
+                    $('#OR_TRNUM').val(trnumValues[currentIndex]);
                     loadSablon(kodValues[currentIndex]);
                 }
             });
@@ -898,6 +902,7 @@
             confirmUnsaved(() => {
                 if (currentIndex < kodValues.length - 1) {
                     currentIndex++;
+                    $('#OR_TRNUM').val(trnumValues[currentIndex]);
                     loadSablon(kodValues[currentIndex]);
                 }
             });
@@ -918,18 +923,13 @@
             }
         });
     
-        /* ── 13. Kaydet butonu ───────────────────────────────────── */
-        document.getElementById('gkkSaveBtn').addEventListener('click', function () {
-            markSaved();
-            // Form submit devam eder (type="submit")
-        });
-    
         /* ── 14. .sablonGetirBtn tıklaması ───────────────────────── */
         $(document).on('click', '.sablonGetirBtn', function () {
-            const KOD = $(this).data('kod');
-            const foundIndex = kodValues.indexOf(KOD);
+            const TRNUM = $(this).data('trnum');
+            const foundIndex = trnumValues.indexOf(TRNUM);
             currentIndex = foundIndex !== -1 ? foundIndex : 0;
             $('#modal_gkk').modal('show');
+            $('#OR_TRNUM').val(trnumValues[currentIndex]);
             loadSablon(kodValues[currentIndex]);
         });
     
@@ -967,6 +967,7 @@
 
         $numElement.data('index', NumIndex).text(NumIndex + ' Num.');
 
+
         const get  = (name) => card.find(`input[name="${name}[${index}]"]`).val();
         const uid  = `detail_${Date.now()}_${index}`;
 
@@ -983,6 +984,7 @@
         const not           = get('NOT');
         const onayTarihi    = get('ONAY_TARIH');
         const durum         = card.find(`select[name="DURUM[${index}]"]`).val();
+        const TRNUM_FILL = getTRNUM();
 
         const hiddenFields = [
             { name: 'KOD',           value: KOD },
@@ -993,6 +995,7 @@
             { name: 'QVALCHZTYPE',   value: QVALCHZTYPE },
             { name: 'MIN_DEGER',     value: MIN_DEGER },
             { name: 'MAX_DEGER',     value: MAX_DEGER },
+            { name: 'TRNUM',     value: TRNUM_FILL },
         ].map(({ name, value }) =>
             `<input type="hidden" name="${name}[]" value="${value}">`
         ).join('');
@@ -1045,6 +1048,7 @@
                         <i class="bi bi-chevron-down"></i> Detay
                     </button>
                 </td>
+                <td><button type="button" class="btn btn-default delete-gkk-row" data-index="${index}"><i class="fa fa-minus" style="color: red"></i></button></td>
             </tr>
 
             <!-- Detay satırı (teknik bilgiler) -->
@@ -1068,7 +1072,22 @@
 
         $('#gkkTableBody').append(htmlCode);
         initFlatpickr();
+        card.find('input[name="OLCUM_SONUCU['+index+']"]').val('');
     });
+
+
+    $(document).on('click', '.delete-gkk-row', function() {
+        $(this).closest('tr').remove();
+        let index = $(this).data('index');
+        const card  = $(`#gkkCard_${index}`);
+
+        const $numElement = card.find('.num');
+
+        let NumIndex = ($numElement.data('index') || 0) - 1;
+
+        $numElement.data('index', NumIndex).text(NumIndex + ' Num.');
+    });
+
 
     function updateDurumClass(sel) {
         sel.className = `form-select form-select-sm ${getDurumClass(sel.value)}`;

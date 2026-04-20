@@ -495,16 +495,26 @@
 																		@include('components.detayBtn', ['KOD' => $veri->KOD])
 																	</td>
 																
-																	<td><button type="button"
-																			class="btn btn-default border-0 sablonGetirBtn"
-																			data-kod="{{ $veri->KOD }}">
-																			@if($veri->AKTIF_STOK == 1)
-																				<i class="fa-solid fa-clipboard-question fa-lg" style="color: red;"></i>
+																	<td>
+																		<button type="button"
+																				class="btn btn-default border-0 sablonGetirBtn"
+																				data-trnum="{{ $veri->TRNUM }}">
+
+																			@if($veri->AKTIF_STOK == 2)
+																				{{-- Reddedildi / Kritik --}}
+																				<i class="fa-solid fa-circle-xmark fa-lg" style="color:#ef4444;"></i>
+
+																			@elseif($veri->AKTIF_STOK == 1)
+																				{{-- Beklemede / İncelemede --}}
+																				<i class="fa-solid fa-clock fa-lg" style="color:#f59e0b;"></i>
+
 																			@else
-																				<i class="fa-solid fa-clipboard-check fa-lg" style="color:green"></i>
+																				{{-- Onaylandı / Tamam --}}
+																				<i class="fa-solid fa-circle-check fa-lg" style="color:#10b981;"></i>
 																			@endif
-																			</button>
-																		</td>
+
+																		</button>
+																	</td>
 																	<td style="display: none;"><input type="hidden"
 																			class="form-control" maxlength="6" name="TRNUM[]"
 																			value="{{ $veri->TRNUM }}"></td>

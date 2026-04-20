@@ -279,7 +279,7 @@ class stok29_controller extends Controller
             'AMBCODE' => $AMBCODE,
             'SERINO' => $SERINO[$i],
             'created_at' => date('Y-m-d H:i:s'),
-            'AKTIF_STOK' => '1'
+            'AKTIF_STOK' => '2'
           ]);
 
         }
@@ -410,7 +410,7 @@ class stok29_controller extends Controller
             'AMBCODE' => $AMBCODE,
             'created_at' => date('Y-m-d H:i:s'),
             'SERINO' => $SERINO[$i],
-            'AKTIF_STOK' => '1'
+            'AKTIF_STOK' => '2'
           ]);
 
           }
@@ -680,31 +680,38 @@ class stok29_controller extends Controller
         'QS_VARCODE'             => $KOD[$i],
         'QS_VARINDEX'            => $OLCUM_NO[$i],
         'QS_VALUE'               => $OLCUM_SONUC[$i],
-        'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
+        'QS_TARIH'               => date('Y-m-d'),
         'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
         'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
         'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i],
         'QS_UNIT'                => $OLCUM_BIRIMI[$i],
-        'REFDEGER1'              => $REFERANS_DEGER1[$i],
-        'REFDEGER2'              => $REFERANS_DEGER2[$i],
         'QVALINPUTTYPE'          => $QVALINPUTTYPE[$i],
-        'KRITERMIK_OPT'          => $KRITERMIK_OPT[$i],
-        'KRITERMIK_1'            => $KRITERMIK_1[$i],
-        'KRITERMIK_2'            => $KRITERMIK_2[$i],
         'QVALCHZTYPE'            => $QVALCHZTYPE[$i],
         'NOTES'                  => $NOT[$i],
         'DURUM'                  => $DURUM[$i],
         'DURUM_ONAY_TARIHI'      => $ONAY_TARIH[$i],
-        'OR_TRNUM'      => $OR_TRNUM[$i],
+        'OR_TRNUM'      => $OR_TRNUM,
         'BAGLANTILI_EVRAKNO' => $EVRAKNO,
         'EVRAKTYPE' => 'STOK29'
       ]);
     }
 
-    for ($i = 0; $i < count($OR_TRNUM); $i++) {
-      DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM[$i])->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
-        'AKTIF_STOK' => '0'
-      ]);
+    switch ($request->sonuc) {
+      case 'kabul':
+        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
+          'AKTIF_STOK' => '0'
+        ]);
+        break;
+      case 'sartli':
+        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
+          'AKTIF_STOK' => '1'
+        ]);
+      break;
+      case 'red':
+        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
+          'AKTIF_STOK' => '2'
+        ]);
+      break;
     }
 
     return redirect()->back()->with('success', 'Kayıt Başarılı');
