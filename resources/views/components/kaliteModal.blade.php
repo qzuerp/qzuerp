@@ -17,12 +17,20 @@
  
     /* ── Sol panel ───────────────────────────────────────────── */
     .gkk-left {
+        position: relative;
         width: 230px;
         min-width: 230px;
         border-right: 1px solid #e5e7eb;
         display: flex;
         flex-direction: column;
         background: #f9fafb;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index:500;
+    }
+    .gkk-left.is-hidden {
+        position: absolute;
+        transform: translateX(-110%);
+        width: 0;
     }
     .gkk-left-header {
         padding: 14px 14px 10px;
@@ -639,10 +647,14 @@
     <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
         <div class="modal-content">
             {{-- ── Modal Header ──────────────────────────── --}}
-            <div class="modal-header py-2 px-3" style="border-bottom:1px solid #e5e7eb;">
-                <h5 class="modal-title mb-0" id="gkk_modal_title" style="font-size:14px;font-weight:600;color:#111827;">
+            <div class="modal-header d-flex gap-2 py-2 px-3" style="border-bottom:1px solid #e5e7eb;">
+                <button class="btn" type="button" id="menu_toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <h6 class="modal-title mb-0" id="gkk_modal_title" style="font-size:14px;font-weight:600;color:#111827;">
                     <i class="fa fa-check-circle me-2" style="color:#3b82f6;"></i>Giriş Kalite Kontrol
-                </h5>
+                </h6>
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
 
@@ -1571,6 +1583,9 @@
         document.querySelectorAll('#gkkGroupArea .gkk-group').forEach(g => g.dataset.open = 'false');
     });
 
+    $(document).on('click', '#menu_toggle', function() {
+        $('.gkk-left').toggleClass('is-hidden');
+    });
 
     $(document).on('click', '.delete-gkk-row', function() {
         $(this).closest('tr').remove();
