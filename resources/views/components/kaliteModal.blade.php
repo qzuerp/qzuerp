@@ -1159,7 +1159,7 @@
             $('#t2SumTotal').text('0 grup');
             $('#t2SumRows').text('0 kayıt');
             $('#gkkTab2Empty').fadeIn(500);
-            
+
             Swal.fire({
                 title: 'Yükleniyor...',
                 text: 'Lütfen bekleyin',
@@ -1438,13 +1438,15 @@
         const min   = data.MIN || '';
         const max   = data.MAKS || '';
         
-        
+        console.log(data);
 
         const durumCls = getDurumClass(data.durum);
         const hiddenFields = [
             ['KOD',           data.KOD],
             ['AD',            data.AD],
             ['OLCUM_NO',      data.OLCUM_NO],
+            ['res',           data.res],
+            ['not',           data.not],
             ['OLCUM_BIRIMI',  data.OLCUM_BIRIMI],
             ['QVALINPUTTYPE', data.QVALINPUTTYPE],
             ['QVALCHZTYPE',   data.QVALCHZTYPE],
@@ -1513,8 +1515,6 @@
         card.removeClass('invalid');
         card.removeClass('valid');
 
-        card.find('input[name="OLCUM_SONUC['+index+']"]').val('');
-        card.find('input[name="NOT['+index+']"]').val('');
         const data = {
             KOD:           get('KOD'),
             MIN:           get('MIN_DEGER'),
@@ -1535,6 +1535,9 @@
     
         const groupId = getOrCreateGroup(data);
         addRowToGroup(groupId, data);
+        
+        card.find('input[name="OLCUM_SONUC['+index+']"]').val('');
+        card.find('input[name="NOT['+index+']"]').val('');
     });
     
     /* ── Satır silme ───────────────────────────────────────────── */
