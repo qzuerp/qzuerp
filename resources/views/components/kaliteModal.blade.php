@@ -926,6 +926,10 @@
                     </div>`;
                 div.addEventListener('click', () => {
                     confirmUnsaved(() => {
+                        $('.gkk-group').remove();
+                        $('#t2SumTotal').text('0 grup');
+                        $('#t2SumRows').text('0 kayıt');
+                        $('#gkkTab2Empty').fadeIn(500);
                         currentIndex = i;
                         $('#OR_TRNUM').val(trnumValues[i]);
                         loadSablon(kodValues[i]);
@@ -1213,6 +1217,10 @@
         document.getElementById('gkkPrevBtn').addEventListener('click', function () {
             confirmUnsaved(() => {
                 if (currentIndex > 0) {
+                    $('.gkk-group').remove();
+                    $('#t2SumTotal').text('0 grup');
+                    $('#t2SumRows').text('0 kayıt');
+                    $('#gkkTab2Empty').fadeIn(500);
                     currentIndex--;
                     $('#OR_TRNUM').val(trnumValues[currentIndex]);
                     loadSablon(kodValues[currentIndex]);
@@ -1223,6 +1231,10 @@
         document.getElementById('gkkNextBtn').addEventListener('click', function () {
             confirmUnsaved(() => {
                 if (currentIndex < kodValues.length - 1) {
+                    $('.gkk-group').remove();
+                    $('#t2SumTotal').text('0 grup');
+                    $('#t2SumRows').text('0 kayıt');
+                    $('#gkkTab2Empty').fadeIn(500);
                     currentIndex++;
                     $('#OR_TRNUM').val(trnumValues[currentIndex]);
                     loadSablon(kodValues[currentIndex]);
