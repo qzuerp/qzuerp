@@ -1283,7 +1283,6 @@
     return 'grp_' + String(kod).replace(/[^a-zA-Z0-9]/g, '_') + '_' + String(olcumNo).replace(/[^a-zA-Z0-9]/g, '_');
 }
  
-    /* Grup sayacını güncelle */
     function updateGroupCount(groupId) {
         const grp  = document.getElementById(groupId);
         if (!grp) return;
@@ -1293,7 +1292,6 @@
         updateTab2Summary();
         updateGroupStatusPills(groupId);
     
-        /* Eğer hiç satır kalmadıysa grubu sil */
         if (rows.length === 0) {
             grp.remove();
             updateTab2Summary();
@@ -1321,7 +1319,6 @@
         dotsEl.innerHTML = html;
     }
     
-    /* Üst toolbar sayacını güncelle */
     function updateTab2Summary() {
         const groups = document.querySelectorAll('#gkkGroupArea .gkk-group');
         const rows   = document.querySelectorAll('#gkkGroupArea .gkk-detail-row');
@@ -1329,23 +1326,23 @@
         document.getElementById('t2SumRows').textContent  = rows.length  + ' kayıt';
     }
     
-    /* Boş durum kontrolü */
     function checkTab2Empty() {
         const emptyEl = document.getElementById('gkkTab2Empty');
         const groups  = document.querySelectorAll('#gkkGroupArea .gkk-group');
         if (emptyEl) emptyEl.style.display = groups.length === 0 ? 'flex' : 'none';
     }
     
-    /* Sonuç input sınıf hesapla */
     function resClass(v, min, max) {
         if (v === '') return '';
         if (min === '' || max === '') return 'res-ok';
         const num = parseFloat(v);
+        
+        
+
         if (isNaN(num)) return '';
         return num >= parseFloat(min) && num <= parseFloat(max) ? 'res-ok' : 'res-fail';
     }
     
-    /* Grup header toggle */
     function toggleGroup(groupId) {
         const grp  = document.getElementById(groupId);
         if (!grp) return;
@@ -1353,6 +1350,8 @@
         grp.dataset.open = open ? 'false' : 'true';
     }
     
+
+
     /* Grubu oluştur veya mevcut grubu getir */
     function getOrCreateGroup(data) {
         const id = grpId(data.KOD, data.OLCUM_NO);
@@ -1363,8 +1362,7 @@
         if (emptyEl) emptyEl.style.display = 'none';
     
         if (document.getElementById(id)) return id;
-    
-        /* Ölçüm tipi için ikon */
+
         const iconMap = {
             'UZUNLUK': 'fa-ruler', 'BOY': 'fa-ruler', 'GENISLIK': 'fa-ruler-horizontal',
             'AGIRLIK': 'fa-weight', 'SICAKLIK': 'fa-thermometer-half',
@@ -1378,6 +1376,8 @@
             ? `${data.MIN_DEGER} – ${data.MAX_DEGER} ${unitStr}`
             : `Serbest · ${unitStr}`;
     
+            
+
         const div = document.createElement('div');
         div.className   = 'gkk-group';
         div.id          = id;
@@ -1386,6 +1386,8 @@
         div.dataset.no   = data.OLCUM_NO;
         div.dataset.min  = data.MIN_DEGER;
         div.dataset.max  = data.MAX_DEGER;
+
+
     
         div.innerHTML = `
             <div class="gkk-group-header" onclick="toggleGroup('${id}')">
@@ -1407,6 +1409,7 @@
     
         area.appendChild(div);
         return id;
+        
     }
     
     
@@ -1489,7 +1492,12 @@
         $num.data('index', numIdx).text(numIdx + ' kayıt');
     
         const get = (name) => card.find(`input[name="${name}[${index}]"]`).val() || '';
-    
+
+        card.removeClass('invalid');
+        card.removeClass('valid');
+
+        card.find('input[name="OLCUM_SONUC['+index+']"]').val('');
+        card.find('input[name="NOT['+index+']"]').val('');
         const data = {
             KOD:           get('KOD'),
             MIN:           get('MIN_DEGER'),
