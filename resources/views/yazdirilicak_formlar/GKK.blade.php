@@ -80,7 +80,7 @@
         /* ── HEADER ── */
         .header {
             display: grid;
-            grid-template-columns: 90px 1fr 165px;
+            grid-template-columns: 150px 1fr 230px;
             border: 1.5px solid var(--ink);
             border-radius: 8px;
             overflow: hidden;
@@ -92,7 +92,7 @@
             justify-content: center;
             padding: 10px;
         }
-        .hdr-logo img { max-width: 68px; max-height: 44px; object-fit: contain; }
+        .hdr-logo img { max-width: 100%; max-height: 44px; object-fit: contain; }
         .hdr-center {
             background: var(--ink);
             text-align: center;
@@ -417,11 +417,11 @@
     {{-- ══ HEADER ══ --}}
     <div class="header">
         <div class="hdr-logo">
-            <img src="{{ asset($FIRMAB->LOGO_URL) }}" alt="Logo">
+            <img style="width:100%;" src="{{ asset($FIRMAB->LOGO_URL) }}" alt="Logo">
         </div>
         <div class="hdr-center">
-            <div class="t1">GİRİŞ KALİTE KONTROL FORMU VE RAPORU</div>
-            <div class="t2">RECEIVING QUALITY CONTROL INSTRUCTION AND REPORT</div>
+            <div class="t1">GİRİŞ KALİTE KONTROL FORMU</div>
+            <div class="t2">RECEIVING QUALITY CONTROL INSTRUCTION</div>
         </div>
         <div class="hdr-meta">
             <div class="mrow"><div class="mlbl">Form No</div><div class="mval">GKK-{{ date('ymd') }}-{{ $eVeri->ID }}</div></div>
@@ -495,8 +495,8 @@
             <tr>
                 <th class="col-no" rowspan="2">Nr</th>
                 <th class="col-char" rowspan="2">Karakteristik</th>
-                <th class="col-spec" rowspan="2">Spesifikasyon</th>
-                <th class="col-equip" rowspan="2">Ekipman</th>
+                <th class="col-spec" rowspan="2">Min</th>
+                <th class="col-equip" rowspan="2">Maks</th>
                 <th>Ölçüm Sonuç – Measured Result</th>
                 <th style="width:100px;">Sonuç</th>
             </tr>
