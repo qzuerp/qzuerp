@@ -338,87 +338,87 @@ class stok60_controller extends Controller
             //       }
             //   }
 
-              if (empty($lines)) {
-                  return response()->json([
-                      'basari' => false,
-                      'mesaj'  => 'İrsaliyeye eklenecek geçerli ürün bulunamadı.',
-                      'hatalar' => $errors,
-                  ], 422);
-              }
+            // if (empty($lines)) {
+            //     return response()->json([
+            //         'basari' => false,
+            //         'mesaj'  => 'İrsaliyeye eklenecek geçerli ürün bulunamadı.',
+            //         'hatalar' => $errors,
+            //     ], 422);
+            // }
 
-              try {
-                  $cari = DB::table($firma . 'cari00')->where('KOD', $CARIHESAPCODE)->first();
+            // try {
+            //     $cari = DB::table($firma . 'cari00')->where('KOD', $CARIHESAPCODE)->first();
 
-                  if (!$cari) {
-                      return response()->json([
-                          'basari' => false,
-                          'mesaj'  => "Cari hesap bulunamadı: {$CARIHESAPCODE}",
-                      ], 422);
-                  }
+            //     if (!$cari) {
+            //         return response()->json([
+            //             'basari' => false,
+            //             'mesaj'  => "Cari hesap bulunamadı: {$CARIHESAPCODE}",
+            //         ], 422);
+            //     }
 
-                  if ($cari->API_ID) {
-                      $cari_id = $cari->API_ID;
-                  } else {
-                      $GET_ID = $provider->getContacts($cari->AD);
+            //     if ($cari->API_ID) {
+            //         $cari_id = $cari->API_ID;
+            //     } else {
+            //         $GET_ID = $provider->getContacts($cari->AD);
 
-                      if (empty($GET_ID['data'][0]['id'])) {
-                          return response()->json([
-                              'basari' => false,
-                              'mesaj'  => "Muhasebe sisteminde cari bulunamadı: {$cari->AD}",
-                          ], 422);
-                      }
+            //         if (empty($GET_ID['data'][0]['id'])) {
+            //             return response()->json([
+            //                 'basari' => false,
+            //                 'mesaj'  => "Muhasebe sisteminde cari bulunamadı: {$cari->AD}",
+            //             ], 422);
+            //         }
 
-                      $cari_id = $GET_ID['data'][0]['id'];
+            //         $cari_id = $GET_ID['data'][0]['id'];
 
-                      DB::table($firma . 'cari00')
-                          ->where('KOD', $CARIHESAPCODE)
-                          ->update(['API_ID' => $cari_id]);
-                  }
+            //         DB::table($firma . 'cari00')
+            //             ->where('KOD', $CARIHESAPCODE)
+            //             ->update(['API_ID' => $cari_id]);
+            //     }
 
-              } catch (Exception $e) {
-                  return response()->json([
-                      'basari' => false,
-                      'mesaj'  => 'Cari hesap sorgulanırken hata oluştu: ' . $e->getMessage(),
-                  ], 500);
-              }
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'basari' => false,
+            //         'mesaj'  => 'Cari hesap sorgulanırken hata oluştu: ' . $e->getMessage(),
+            //     ], 500);
+            // }
 
-              try {
-                  $sonuc = $provider->createInvoice([
-                      'contact_id'    => $cari_id,
-                      'issue_date'    => date('Y-m-d'),
-                      'shipment_date' => date('Y-m-d'),
-                      'city'          => $cari->ADRES_2,
-                      'district'      => $cari->ADRES_3,
-                      'address'       => $cari->ADRES_1,
-                      'description'   => '',
-                      'lines'         => $lines,
-                  ]);
+            // try {
+            //     $sonuc = $provider->createInvoice([
+            //         'contact_id'    => $cari_id,
+            //         'issue_date'    => date('Y-m-d'),
+            //         'shipment_date' => date('Y-m-d'),
+            //         'city'          => $cari->ADRES_2,
+            //         'district'      => $cari->ADRES_3,
+            //         'address'       => $cari->ADRES_1,
+            //         'description'   => '',
+            //         'lines'         => $lines,
+            //     ]);
 
-                  if (isset($sonuc['errors'])) {
-                      return response()->json([
-                          'basari'  => false,
-                          'mesaj'   => 'Muhasebe servisi faturayı oluşturamadı.',
-                          'hatalar' => $sonuc['errors'],
-                      ], 422);
-                  }
+            //     if (isset($sonuc['errors'])) {
+            //         return response()->json([
+            //             'basari'  => false,
+            //             'mesaj'   => 'Muhasebe servisi faturayı oluşturamadı.',
+            //             'hatalar' => $sonuc['errors'],
+            //         ], 422);
+            //     }
 
-                  $response = [
-                      'basari'     => true,
-                      'parasut_id' => $sonuc['data']['id'] ?? null,
-                  ];
+            //     $response = [
+            //         'basari'     => true,
+            //         'parasut_id' => $sonuc['data']['id'] ?? null,
+            //     ];
 
-                  if (!empty($errors)) {
-                      $response['uyarilar'] = $errors;
-                  }
+            //     if (!empty($errors)) {
+            //         $response['uyarilar'] = $errors;
+            //     }
 
-                  // return response()->json($response);
+            //     // return response()->json($response);
 
-              } catch (Exception $e) {
-                  return response()->json([
-                      'basari' => false,
-                      'mesaj'  => 'Fatura oluşturulurken beklenmedik bir hata oluştu: ' . $e->getMessage(),
-                  ], 500);
-              }
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'basari' => false,
+            //         'mesaj'  => 'Fatura oluşturulurken beklenmedik bir hata oluştu: ' . $e->getMessage(),
+            //     ], 500);
+            // }
 
             //Yeni eklenen satirlar
             DB::table($firma.'stok60t')->insert([

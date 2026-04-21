@@ -2422,7 +2422,7 @@
 								['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
 								'.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
 									$newCard.find(cls).each(function () {
-										safeSet(this, this.value || 0);
+										$(this).trigger('input');
 									});
 								});
 							}, 500);
