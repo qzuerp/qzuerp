@@ -255,7 +255,7 @@ class qval02_controller extends Controller
                 break;
 
             case 'yazdir':
-                return view('yazdirilicak_formlar.GKK');
+                return view('yazdirilicak_formlar.GKK', ['EVRAKNO' => $EVRAKNO]);
         }
     }
 

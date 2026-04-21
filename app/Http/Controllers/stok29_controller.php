@@ -620,7 +620,7 @@ class stok29_controller extends Controller
 
   public function kalite_kontrolu(Request $request)
   {
-    // dd($request->all());
+    dd($request->all());
     $EVRAKNO = $request->EVRAKNO;
     $KOD = $request->KOD;
     $OLCUM_NO = $request->OLCUM_NO;
@@ -652,6 +652,7 @@ class stok29_controller extends Controller
     $ISLEM_MIKTARI = $request->ISLEM_MIKTARI;
     $TEDARIKCI = $request->TEDARIKCI;
 
+    $DURUM_E = $request->sonuc;
 
     if(!isset($OR_TRNUM))
       return redirect()->back()->with('error','Şablon bilgisi bulunamadı.');
@@ -663,16 +664,24 @@ class stok29_controller extends Controller
 
     $NEXT_EVRAKNO = (DB::table($firma.'qval02e')->max('EVRAKNO') ?? 0) + 1;
 
-    DB::table($firma.'QVAL02E')->insert([
-        'EVRAKNO' => $NEXT_EVRAKNO,
-        'KOD' => $ISLEM_KODU,
-        'KOD_STOK00_AD' => $ISLEM_ADI,
-        'LOTNUMBER' => $ISLEM_LOTU,
-        'SERINO' => $ISLEM_SERI,
-        'SF_MIKTAR' => $ISLEM_MIKTARI,
-        'KRITER3' => $TEDARIKCI
+    DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
+      'AKTIF_STOK' => $DURUM_E
     ]);
 
+    DB::table($firma.'QVAL02E')->insert([
+      'EVRAKNO' => $NEXT_EVRAKNO,
+      'KOD' => $ISLEM_KODU,
+      'KOD_STOK00_AD' => $ISLEM_ADI,
+      'LOTNUMBER' => $ISLEM_LOTU,
+      'SERINO' => $ISLEM_SERI,
+      'SF_MIKTAR' => $ISLEM_MIKTARI,
+      'KRITER3' => $TEDARIKCI,
+      'OR_TRNUM'      => $OR_TRNUM,
+      'BAGLANTILI_EVRAKNO' => $EVRAKNO,
+      'DURUM' => $DURUM_E,
+      'EVRAKTYPE' => 'STOK29'
+    ]);
+  
     for ($i = 0; $i < count($TRNUM); $i++) {
       DB::table($firma.'QVAL02T')->insert([
         'EVRAKNO' => $NEXT_EVRAKNO,
@@ -694,24 +703,6 @@ class stok29_controller extends Controller
         'BAGLANTILI_EVRAKNO' => $EVRAKNO,
         'EVRAKTYPE' => 'STOK29'
       ]);
-    }
-
-    switch ($request->sonuc) {
-      case 'kabul':
-        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
-          'AKTIF_STOK' => '0'
-        ]);
-        break;
-      case 'sartli':
-        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
-          'AKTIF_STOK' => '1'
-        ]);
-      break;
-      case 'red':
-        DB::table($firma.'stok10a')->where('TRNUM',$OR_TRNUM)->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI','STOK29T')->update([
-          'AKTIF_STOK' => '2'
-        ]);
-      break;
     }
 
     return redirect()->back()->with('success', 'Kayıt Başarılı');

@@ -520,7 +520,6 @@
 
             <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
                 @php
-                    // Cache kullanarak firma bilgisini optimize et
                     $FIRMA = Cache::remember('firma_' . trim($user->firma), 3600, function() use ($user) {
                         return DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->first();
                     });

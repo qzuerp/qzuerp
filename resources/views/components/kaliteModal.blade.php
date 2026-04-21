@@ -682,92 +682,92 @@
                         <div class="gkk-right">
                             {{-- Sağ Panel --}}
                             <div class="nav-tabs-custom">
+                                <div>
+                                    {{-- Seçili kalem bilgi satırı --}}
+                                    <div class="gkk-info-bar" id="gkkInfoBar">
+                                        <div class="gkk-info-group">
+                                            <span class="gkk-info-label">Kod</span>
+                                            <span class="gkk-info-value" id="gkkHKod">—</span>
+                                            <input type="hidden" id="ISLEM_KODU" name="ISLEM_KODU">
+                                        </div>
+                                        <div class="gkk-info-sep"></div>
+                                        <div class="gkk-info-group">
+                                            <span class="gkk-info-label">Ürün Adı</span>
+                                            <span class="gkk-info-value" id="gkkHAd">—</span>
+                                            <input type="hidden" id="ISLEM_ADI" name="ISLEM_ADI">
+                                        </div>
+                                        <div class="gkk-info-sep"></div>
+                                        <div class="gkk-info-group">
+                                            <span class="gkk-info-label">Lot</span>
+                                            <span class="gkk-info-value" id="gkkHLot">—</span>
+                                            <input type="hidden" id="ISLEM_LOTU" name="ISLEM_LOTU">
+                                        </div>
+                                        <div class="gkk-info-sep"></div>
+                                        <div class="gkk-info-group">
+                                            <span class="gkk-info-label">Seri</span>
+                                            <span class="gkk-info-value" id="gkkHSeri">—</span>
+                                            <input type="hidden" id="ISLEM_SERI" name="ISLEM_SERI">
+                                        </div>
+                                        <div class="gkk-info-sep"></div>
+                                        <div class="gkk-info-group">
+                                            <span class="gkk-info-label">Miktar</span>
+                                            <span class="gkk-info-value" id="gkkHMiktar">—</span>
+                                            <input type="hidden" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI">
+                                        </div>
+                                        <input type="hidden" id="TEDARIKCI" name="TEDARIKCI">
 
-                                {{-- Seçili kalem bilgi satırı --}}
-                                <div class="gkk-info-bar" id="gkkInfoBar">
-                                    <div class="gkk-info-group">
-                                        <span class="gkk-info-label">Kod</span>
-                                        <span class="gkk-info-value" id="gkkHKod">—</span>
-                                        <input type="hidden" id="ISLEM_KODU" name="ISLEM_KODU">
+                                        {{-- Nav butonları --}}
+                                        <div class="gkk-nav">
+                                            <div class="gkk-unsaved-dot" id="gkkUnsavedDot" title="Kaydedilmemiş değişiklik var"></div>
+                                            <button type="button" class="gkk-nav-btn" id="gkkPrevBtn" title="Önceki kalem (↑)">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </button>
+                                            <button type="button" class="gkk-nav-btn" id="gkkNextBtn" title="Sonraki kalem (↓)">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="gkk-info-sep"></div>
-                                    <div class="gkk-info-group">
-                                        <span class="gkk-info-label">Ürün Adı</span>
-                                        <span class="gkk-info-value" id="gkkHAd">—</span>
-                                        <input type="hidden" id="ISLEM_ADI" name="ISLEM_ADI">
-                                    </div>
-                                    <div class="gkk-info-sep"></div>
-                                    <div class="gkk-info-group">
-                                        <span class="gkk-info-label">Lot</span>
-                                        <span class="gkk-info-value" id="gkkHLot">—</span>
-                                        <input type="hidden" id="ISLEM_LOTU" name="ISLEM_LOTU">
-                                    </div>
-                                    <div class="gkk-info-sep"></div>
-                                    <div class="gkk-info-group">
-                                        <span class="gkk-info-label">Seri</span>
-                                        <span class="gkk-info-value" id="gkkHSeri">—</span>
-                                        <input type="hidden" id="ISLEM_SERI" name="ISLEM_SERI">
-                                    </div>
-                                    <div class="gkk-info-sep"></div>
-                                    <div class="gkk-info-group">
-                                        <span class="gkk-info-label">Miktar</span>
-                                        <span class="gkk-info-value" id="gkkHMiktar">—</span>
-                                        <input type="hidden" id="ISLEM_MIKTARI" name="ISLEM_MIKTARI">
-                                    </div>
-                                    <input type="hidden" id="TEDARIKCI" name="TEDARIKCI">
 
-                                    {{-- Nav butonları --}}
-                                    <div class="gkk-nav">
-                                        <div class="gkk-unsaved-dot" id="gkkUnsavedDot" title="Kaydedilmemiş değişiklik var"></div>
-                                        <button type="button" class="gkk-nav-btn" id="gkkPrevBtn" title="Önceki kalem (↑)">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </button>
-                                        <button type="button" class="gkk-nav-btn" id="gkkNextBtn" title="Sonraki kalem (↓)">
-                                            <i class="fa fa-chevron-down"></i>
-                                        </button>
+                                    {{-- İstatistik satırı --}}
+                                    <div class="gkk-stats-bar" id="gkkStatsBar">
+                                        <div class="gkk-pill gkk-pill-ok">
+                                            <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+                                            <span id="gkkCntOk">0</span> Kabul
+                                        </div>
+                                        <div class="gkk-pill gkk-pill-fail">
+                                            <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
+                                            <span id="gkkCntFail">0</span> Red
+                                        </div>
+                                        <div class="gkk-pill gkk-pill-warn">
+                                            <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
+                                            <span id="gkkCntWarn">0</span> Şartlı Kabul
+                                        </div>
+                                        <div class="gkk-pill gkk-pill-empty">
+                                            <span style="width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;"></span>
+                                            <span id="gkkCntEmpty">0</span> Boş
+                                        </div>
+
+                                        <ul class="nav nav-tabs ms-auto mb-0">
+                                            <li class="nav-item">
+                                                <a href="#tab_1" class="nav-link active" data-bs-toggle="tab">Operasyonlar</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#tab_2" class="nav-link" data-bs-toggle="tab">Operasyon Detayları</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    {{-- Progress bar --}}
+                                    <div class="gkk-progress-wrap">
+                                        <div class="gkk-progress-bg">
+                                            <div class="gkk-progress-fill" id="gkkProgressFill" style="width:0%"></div>
+                                        </div>
+                                        <div class="gkk-progress-lbl">
+                                            <span id="gkkProgressTxt">0 / 0 ölçüm tamamlandı</span>
+                                            <span id="gkkProgressPct">0%</span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                {{-- İstatistik satırı --}}
-                                <div class="gkk-stats-bar" id="gkkStatsBar">
-                                    <div class="gkk-pill gkk-pill-ok">
-                                        <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>
-                                        <span id="gkkCntOk">0</span> Kabul
-                                    </div>
-                                    <div class="gkk-pill gkk-pill-fail">
-                                        <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
-                                        <span id="gkkCntFail">0</span> Red
-                                    </div>
-                                    <div class="gkk-pill gkk-pill-warn">
-                                        <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
-                                        <span id="gkkCntWarn">0</span> Şartlı Kabul
-                                    </div>
-                                    <div class="gkk-pill gkk-pill-empty">
-                                        <span style="width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;"></span>
-                                        <span id="gkkCntEmpty">0</span> Boş
-                                    </div>
-
-                                    <ul class="nav nav-tabs ms-auto mb-0">
-                                        <li class="nav-item">
-                                            <a href="#tab_1" class="nav-link active" data-bs-toggle="tab">Operasyonlar</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#tab_2" class="nav-link" data-bs-toggle="tab">Operasyon Detayları</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                {{-- Progress bar --}}
-                                <div class="gkk-progress-wrap">
-                                    <div class="gkk-progress-bg">
-                                        <div class="gkk-progress-fill" id="gkkProgressFill" style="width:0%"></div>
-                                    </div>
-                                    <div class="gkk-progress-lbl">
-                                        <span id="gkkProgressTxt">0 / 0 ölçüm tamamlandı</span>
-                                        <span id="gkkProgressPct">0%</span>
-                                    </div>
-                                </div>
-
                                 {{-- Tab İçerikleri --}}
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="tab_1">
@@ -817,13 +817,13 @@
 
             {{-- ── Modal Footer ──────────────────────────── --}}
             <div class="modal-footer">
-                <button type="submit" name="sonuc" class="btn btn-sm btn-success" form="gkk_form" value="kabul">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-success" form="gkk_form" value="0">
                     <i class="fa-solid fa-check-double me-1"></i> Kabul
                 </button>
-                <button type="submit" name="sonuc" class="btn btn-sm btn-warning" form="gkk_form" value="sartli">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-warning" form="gkk_form" value="1">
                 <i class="fa fa-check me-1"></i>Şartlı Kabul
                 </button>
-                <button type="submit" name="sonuc" class="btn btn-sm btn-danger" form="gkk_form" value="red">
+                <button type="submit" name="sonuc" class="btn btn-sm btn-danger" form="gkk_form" value="2">
                     <i class="fa fa-circle-xmark me-1"></i>Red
                 </button>
                 <span class="gkk-save-lbl" id="gkkLastSaveLbl"></span>
@@ -1025,6 +1025,25 @@
             const today = new Date().toISOString().split('T')[0];
             let Itype = '';
             rangeHint == '1' ? Itype = 'checkbox' : Itype = 'text'
+            let html = '';
+            if (Itype == 'checkbox') {
+                html += '<select ' +
+                    'class="form-control' + getResClass(value, minVal, maxVal) + '" ' +
+                    'id="gkkRes_' + rowIndex + '" ' +
+                    'name="OLCUM_SONUC[' + rowIndex + ']">' +
+                    '<option value="">Seçiniz</option>' +
+                    '<option value="OK" ' + (value == 'OK' ? 'selected' : '') + '>Evet</option>' +
+                    '<option value="NO" ' + (value != 'NO' ? 'selected' : '') + '>Hayır</option>' +
+                    '</select>';
+            } else {
+                html += '<input type="text" ' +
+                    'class="' + getResClass(value, minVal, maxVal) + '" ' +
+                    'id="gkkRes_' + rowIndex + '" ' +
+                    'name="OLCUM_SONUC[' + rowIndex + ']" ' +
+                    'value="' + escHtml(value) + '" ' +
+                    'placeholder="' + escHtml(rangeHint) + '" ' +
+                    'autocomplete="off">';
+            }
             card.innerHTML = `
                 {{-- Gizli form alanları --}}
                 <input type="hidden" name="TRNUM[${rowIndex}]"    value="${escHtml(TRNUM_FILL)}">
@@ -1077,13 +1096,7 @@
                     </div>
                     <div class="gkk-field" style="min-width:150px">
                         <label>Ölçüm Sonucu</label>
-                        <input type="text"
-                            class="${getResClass(value, minVal, maxVal)}"
-                            id="gkkRes_${rowIndex}"
-                            name="OLCUM_SONUC[${rowIndex}]"
-                            value="${escHtml(value)}"
-                            placeholder="${escHtml(rangeHint)}"
-                            autocomplete="off">
+                        ${html}
                     </div>
                     <div class="gkk-field">
                         <label>Onay Tarihi</label>
@@ -1389,9 +1402,9 @@
         const icon = iconMap[iconKey];
     
         const unitStr    = data.OLCUM_BIRIMI ? data.OLCUM_BIRIMI : '—';
-        const rangeLabel = (data.MIN_DEGER && data.MAX_DEGER)
-            ? `${data.MIN_DEGER} – ${data.MAX_DEGER} ${unitStr}`
-            : `Serbest · ${unitStr}`;
+        const rangeLabel = (data.MIN && data.MAKS)
+            ? `${data.MIN} – ${data.MAKS} ${unitStr}`
+            : `1 · ${unitStr}`;
     
             
 
@@ -1459,18 +1472,37 @@
         const row = document.createElement('div');
         row.className = 'gkk-detail-row';
         row.id = rowId;
+
+        let OLCUM_INPUT = '';
+
+        if(data.res == 'OK' || data.res == 'NO')
+        {
+            OLCUM_INPUT = '<select ' +
+                'class="form-control gkk-res ok" ' +
+                'id="gkkRess_" ' +
+                'name="OLCUM_SONUC[]">' +
+                '<option value="">Seçiniz</option>' +
+                '<option value="OK" ' + (data.res == 'OK' ? 'selected' : '') + '>Evet</option>' +
+                '<option value="NO" ' + (data.res == 'NO' ? 'selected' : '') + '>Hayır</option>' +
+                '</select>';
+        }
+        else
+        {
+            OLCUM_INPUT = '<input type="text" ' +
+                'class="' + resClass(data.res || '', min, max) + '" ' +
+                'id="gkkRess_" ' +
+                'name="OLCUM_SONUC[]" ' +
+                'value="' + data.res + '" ' +
+                'autocomplete="off">';
+        }
+
         row.innerHTML = `
             ${hiddenFields}
             <div class="gkk-dr-range">
                 <div><strong>${min || '—'}</strong><span class="gkk-dr-sep">/</span><strong>${max || '—'}</strong></div>
                 <div style="font-size:10px;color:#94a3b8;margin-top:2px;">${data.OLCUM_BIRIMI || ''}</div>
             </div>
-            <input type="text"
-                name="OLCUM_SONUC[]"
-                value="${data.res || ''}"
-                class="${resClass(data.res || '', min, max)}"
-                placeholder="${min && max ? min + ' – ' + max : 'Sonuç girin'}"
-                autocomplete="off">
+            <div class="gkk-dr-res">${OLCUM_INPUT}</div>
             <input type="text"
                 name="NOT[]"
                 value="${data.not || ''}"
@@ -1488,12 +1520,23 @@
                 </button>
             </div>`;
     
-        /* Sonuç input canlı doğrulama */
-        const resInput = row.querySelector('input[name="OLCUM_SONUC[]"]');
-        resInput.addEventListener('input', function () {
-            this.className = resClass(this.value, min, max);
-            updateGroupStatusPills(groupId);
-        });
+        if(data.res == 'OK' || data.res == 'NO')
+        {
+            const resInput = row.querySelector('select[name="OLCUM_SONUC[]"]');
+            resInput.addEventListener('change', function () {
+                this.className = resClass(this.value, min, max);
+                updateGroupStatusPills(groupId);
+            });
+        }
+        else
+        {
+            const resInput = row.querySelector('input[name="OLCUM_SONUC[]"]');
+            resInput.addEventListener('input', function () {
+                this.className = resClass(this.value, min, max);
+                updateGroupStatusPills(groupId);
+            });
+        }
+       
     
         body.appendChild(row);
         updateGroupCount(groupId);
@@ -1526,7 +1569,7 @@
             OLCUM_BIRIMI:  get('OLCUM_BIRIMI'),
             QVALINPUTTYPE: get('QVALINPUTTYPE'),
             QVALCHZTYPE:   get('QVALCHZTYPE'),
-            res:           get('OLCUM_SONUC'),
+            res:           card.find(`select[name="OLCUM_SONUC[${index}]"]`).val() || get('OLCUM_SONUC'),
             not:           get('NOT'),
             onayTarihi:    get('ONAY_TARIH'),
             durum:         card.find(`select[name="DURUM[${index}]"]`).val() || 'KABUL',
