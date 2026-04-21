@@ -424,6 +424,7 @@
             <div class="t2">RECEIVING QUALITY CONTROL INSTRUCTION AND REPORT</div>
         </div>
         <div class="hdr-meta">
+            <div class="mrow"><div class="mlbl">Form No</div><div class="mval">GKK-{{ date('ymd') }}-{{ $eVeri->ID }}</div></div>
             <div class="mrow"><div class="mlbl">Rev. No</div><div class="mval">{{ $eVeri->REVNO ?? '00' }}</div></div>
             <div class="mrow"><div class="mlbl">Tarih</div><div class="mval">{{ $eVeri->ELOG_LOGTARIH }}</div></div>
             <div class="mrow"><div class="mlbl">Sayfa</div><div class="mval">1 / 1</div></div>
@@ -646,7 +647,7 @@
 
     {{-- ══ FOOTER ══ --}}
     <div class="doc-footer">
-        <span>FORM NO: {{ date('Y-mdHis') }} &nbsp;|&nbsp; REV: {{ $eVeri->REVNO }}</span>
+        <span>FORM NO: F.19 /Y.T:03.07.2025/REV:0/0 &nbsp;|&nbsp; REV: {{ $eVeri->REVNO }}</span>
     </div>
 
 </div>
