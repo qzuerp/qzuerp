@@ -90,7 +90,7 @@
 									</div>
 									<div class="col-md-2">
 										<label>Firma</label>
-										<input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
+										<input type="text" id="firma" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled>
 										<input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
 									</div>
 									<div class="col-md-6 d-flex align-items-end justify-content-end">
