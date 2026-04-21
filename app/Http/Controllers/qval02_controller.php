@@ -106,7 +106,7 @@ class qval02_controller extends Controller
                             'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                             'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
                             'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
-                            'VERIFIKASYONTIPI2'    => $GECERLI_KOD[$i],
+                            'VERIFIKASYONTIPI2'    => $GECERLI_KOD[$i] ?? 0,
                             'QS_UNIT'                => $OLCUM_BIRIMI[$i],
                             'QS_GK1'                 => $GK_1[$i],
                             'REFDEGER1'              => $REFERANS_DEGER1[$i],
@@ -165,6 +165,8 @@ class qval02_controller extends Controller
                 $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
                 $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
 
+
+
                 // Satırları güncelle veya yeni satır ekle
                 for ($i = 0; $i < count($TRNUM); $i++) {
                     $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
@@ -183,7 +185,7 @@ class qval02_controller extends Controller
                             'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                             'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
                             'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
-                            'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i],
+                            'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i] ?? 0,
                             'QS_UNIT'                => $OLCUM_BIRIMI[$i],
                             'QS_GK1'                 => $GK_1[$i],
                             'REFDEGER1'              => $REFERANS_DEGER1[$i],
@@ -217,7 +219,7 @@ class qval02_controller extends Controller
                                 'QS_TARIH'               => $OLCUM_SONUC_TARIH[$i],
                                 'VERIFIKASYONNUM1'       => $MIN_DEGER[$i],
                                 'VERIFIKASYONNUM2'       => $MAX_DEGER[$i],
-                                'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i],
+                                'VERIFIKASYONTIPI2'      => $GECERLI_KOD[$i] ?? 0,
                                 'QS_UNIT'                => $OLCUM_BIRIMI[$i],
                                 'QS_GK1'                 => $GK_1[$i],
                                 'REFDEGER1'              => $REFERANS_DEGER1[$i],

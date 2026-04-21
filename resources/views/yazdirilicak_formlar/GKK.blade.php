@@ -69,7 +69,7 @@
             min-height: 297mm;
             margin: 16px auto;
             background: var(--white);
-            padding: 12mm 12mm 10mm;
+            padding: 3mm 3mm 3mm;
             box-shadow: 0 2px 20px rgba(0,0,0,.08);
             border-radius: 6px;
             display: flex;
@@ -469,6 +469,10 @@
         <div class="info-cell span3 force-border">
             <div class="ilbl">Tedarikçi – Supplier</div>
             <div class="ival">{{ $eVeri->CARI_ADI }}</div>
+        </div>
+        <div class="info-cell span3 force-border">
+            <div class="ilbl">Ham Malzeme Lot No</div>
+            <div class="ival">{{ $irsaliyeT->CARI_ADI }}</div>
         </div>
         <div class="info-cell">
             <div class="ilbl">Parti İrsaliye No</div>

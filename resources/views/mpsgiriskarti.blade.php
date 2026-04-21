@@ -2220,6 +2220,7 @@
 			function ozelInput()
 			{
 				$('#MAMULSTOKKODU_SHOW').prop('disabled',false);
+				$('#KAPANIS_TARIHI').val('');
 				$('#SF_PAKETSAYISI').val('1');
 				$('#STATUS').val('C').trigger('change');
 			}
