@@ -6,6 +6,15 @@
         ->leftJoin($firma.'cari00', 'cari00.KOD', '=', 'QVAL02E.KRITER3')
         ->first(['QVAL02E.*', 'stok00.AD as STOK_ADI', 'stok00.REVNO', 'cari00.AD as CARI_ADI']);
 
+    if($eVeri->EVRAKTYPE == 'STOK29')
+    {
+        $irsaliyeE = DB::table($firma.'stok29e as S29E')
+                    ->where('EVRAKNO', $eVeri->BAGLANTILI_EVRAKNO)->first();
+                    
+        $irsaliyeT = DB::table($firma.'stok29t as S29T')
+            ->where('EVRAKNO', $eVeri->BAGLANTILI_EVRAKNO)->where('TRNUM', $eVeri->OR_TRNUM)->first();
+    }
+
     $tVeri = DB::table($firma.'QVAL02T')
         ->leftJoin($firma.'gecoust', 'gecoust.KOD', '=', 'QVAL02T.QS_VARCODE')
         ->where('gecoust.EVRAKNO', 'HSCODE')
@@ -442,8 +451,20 @@
             <div class="ival">{{ $eVeri->REVNO }}</div>
         </div>
         <div class="info-cell">
-            <div class="ilbl">Sayfa</div>
-            <div class="ival">1 / 1</div>
+            <div class="ilbl">MPS EVRAK NO</div>
+            <div class="ival">{{ $irsaliyeT->MPS_KODU }}</div>
+        </div>
+        <div class="info-cell">
+            <div class="ilbl">NOT</div>
+            <div class="ival">{{ $irsaliyeT->NOT1 }}</div>
+        </div>
+        <div class="info-cell">
+            <div class="ilbl">LOT NO</div>
+            <div class="ival">{{ $irsaliyeT->TEXT1 }}</div>
+        </div>
+        <div class="info-cell">
+            <div class="ilbl">Sipariş No</div>
+            <div class="ival">{{ $irsaliyeT->SIPNO }}</div>
         </div>
         <div class="info-cell span3 force-border">
             <div class="ilbl">Tedarikçi – Supplier</div>
@@ -451,7 +472,7 @@
         </div>
         <div class="info-cell">
             <div class="ilbl">Parti İrsaliye No</div>
-            <div class="ival"></div>
+            <div class="ival">{{ $irsaliyeE->IRSALIYENO }}</div>
         </div>
         <div class="info-cell">
             <div class="ilbl">Parti Miktarı</div>
@@ -473,7 +494,7 @@
                 <th class="col-spec" rowspan="2">Spesifikasyon</th>
                 <th class="col-equip" rowspan="2">Ekipman</th>
                 <th>Ölçüm Sonuç – Measured Result</th>
-                <th class="col-res" rowspan="2">Sonuç</th>
+                <th style="width:100px;">Sonuç</th>
             </tr>
         </thead>
         <tbody>

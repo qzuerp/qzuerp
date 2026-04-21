@@ -584,7 +584,7 @@
 																			value="{{ $veri->NUM3 }}"></td>
 																	<td><input type="number" class="form-control" name="NUM4[]"
 																			value="{{ $veri->NUM4 }}"></td>
-																	<td><input type="text" class="form-control" name="SIPNO[]"
+																	<td><input type="text" class="form-control" name="SIPNO[]" readonly
 																			value="{{ $veri->SIPNO }}"></td>
 																	<td style="display: none;"><input type="text"
 																			class="form-control" name="SIPARTNO[]"

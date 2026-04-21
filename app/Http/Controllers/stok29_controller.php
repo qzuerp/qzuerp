@@ -620,7 +620,7 @@ class stok29_controller extends Controller
 
   public function kalite_kontrolu(Request $request)
   {
-    dd($request->all());
+    // dd($request->all());
     $EVRAKNO = $request->EVRAKNO;
     $KOD = $request->KOD;
     $OLCUM_NO = $request->OLCUM_NO;
