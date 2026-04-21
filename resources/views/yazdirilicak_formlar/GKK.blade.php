@@ -329,7 +329,7 @@
             border-right: 1px solid var(--ink2);
         }
         .sig-head-cell:last-child { border-right: none; }
-        .sig-head-cell .sh-tr { font-size: 7pt; font-weight: 700; color: #f1f5f9; letter-spacing: .04em; }
+        .sig-head-cell .sh-tr { font-size: 7pt; font-weight: 700; letter-spacing: .04em; }
         .sig-head-cell .sh-en { font-size: 6.5pt; color: var(--muted); font-style: italic; margin-top: 2px; }
         .sig-body-row {
             display: grid;
@@ -424,7 +424,6 @@
             <div class="t2">RECEIVING QUALITY CONTROL INSTRUCTION AND REPORT</div>
         </div>
         <div class="hdr-meta">
-            <div class="mrow"><div class="mlbl">Form No</div><div class="mval">GKK-F-001</div></div>
             <div class="mrow"><div class="mlbl">Rev. No</div><div class="mval">{{ $eVeri->REVNO ?? '00' }}</div></div>
             <div class="mrow"><div class="mlbl">Tarih</div><div class="mval">{{ $eVeri->ELOG_LOGTARIH }}</div></div>
             <div class="mrow"><div class="mlbl">Sayfa</div><div class="mval">1 / 1</div></div>
@@ -472,7 +471,7 @@
         </div>
         <div class="info-cell span3 force-border">
             <div class="ilbl">Ham Malzeme Lot No</div>
-            <div class="ival">{{ $irsaliyeT->CARI_ADI }}</div>
+            <div class="ival">{{ $irsaliyeT->LOTNUMBER }}</div>
         </div>
         <div class="info-cell">
             <div class="ilbl">Parti İrsaliye No</div>
@@ -647,9 +646,7 @@
 
     {{-- ══ FOOTER ══ --}}
     <div class="doc-footer">
-        <span>FORM NO: GKK-F-001 &nbsp;|&nbsp; REV: 00</span>
-        <span>Bu form kontrollü dokümandır. Baskı alındığında geçerliliğini yitirir.</span>
-        <span>Sayfa 1 / 1</span>
+        <span>FORM NO: {{ date('Y-mdHis') }} &nbsp;|&nbsp; REV: {{ $eVeri->REVNO }}</span>
     </div>
 
 </div>
