@@ -619,7 +619,7 @@
             <div class="sig-cell">
                 <div class="sig-line">Ad Soyad:</div>
                 <div class="sig-blank"></div>
-                <div class="sig-date">Tarih: ___ / ___ / ______</div>
+                <div class="sig-date">Tarih: {{ date('d.m.Y') }}</div>
             </div>
             @endforeach
         </div>
