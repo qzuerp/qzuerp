@@ -319,16 +319,26 @@
 									</div>
 
 									<div class="col-md-4">
-										<div class="form-group">
-											<label>Durumu</label>
-											<div class="checkbox" style="margin-top: 10px;">
-												<label>
-													<input type='hidden' value='A' name='ACIK_KAPALI'>
-													<input type="checkbox" name="ACIK_KAPALI" id="ACIK_KAPALI" 
-														value="K" @if (@$kart_veri->ACIK_KAPALI == "K") checked @endif>
-													Kapalı
-												</label>
+										<div class="form-group flex-nowrap d-flex justify-content-between">
+											<div>
+												<label>Durumu</label>
+												<div class="checkbox" style="margin-top: 10px;">
+													<label>
+														<input type='hidden' value='A' name='ACIK_KAPALI'>
+														<input type="checkbox" name="ACIK_KAPALI" id="ACIK_KAPALI" 
+															value="K" @if (@$kart_veri->ACIK_KAPALI == "K") checked @endif>
+														Kapalı
+													</label>
+												</div>
 											</div>
+											@php 
+												$img = DB::table($database.'dosyalar00')
+												->where('EVRAKNO',@$kart_veri->MAMULSTOKKODU)
+												->where('EVRAKTYPE','STOK00')
+												->where('DOSYATURU','GORSEL')
+												->first();
+											@endphp
+											<img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
 										</div>
 									</div>
 								</div>
