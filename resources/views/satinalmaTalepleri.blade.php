@@ -895,6 +895,8 @@
                                       <th>Fiyat</th>
                                       <th>Para Birimi</th>
                                       <th>Termin Tarihi</th>
+                                      <th>MPS No</th>
+                                      <th>Lot No</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
                                   </tr>
@@ -910,6 +912,8 @@
                                       <th>Fiyat</th>
                                       <th>Para Birimi</th>
                                       <th>Termin Tarihi</th>
+                                      <th>MPS No</th>
+                                      <th>Lot No</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
                                   </tr>
@@ -926,6 +930,8 @@
                                           <td>{{ $row->FIYAT }}</td>
                                           <td>{{ $row->FIYAT_PB }}</td>
                                           <td>{{ $row->TERMIN_TAR }}</td>
+                                          <td>{{ $row->MPS_KODU }}</td>
+                                          <td>{{ $row->LOTNUMBER }}</td>
                                           <td>{{ $row->EVRAKNO }}</td>
                                           <td>{{ $row->SIPARISNO ?? '' }}</td>
                                       </tr>

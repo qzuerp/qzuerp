@@ -237,7 +237,7 @@ class stok29_controller extends Controller
 
           if (!empty($SIPARTNO[$i]) && isset($SF_MIKTAR[$i])) {
             DB::table($firma.'stok46t')
-              ->whereRaw("CONCAT(EVRAKNO, TRNUM) = ?", [$SIPARTNO[$i]])
+              ->whereRaw("ARTNO = ?", [$SIPARTNO[$i]])
               ->update([
                   'NETKAPANANMIK' => DB::raw("NETKAPANANMIK + {$SF_MIKTAR[$i]}"),
                   'SF_BAKIYE'     => DB::raw("SF_MIKTAR - {$SF_MIKTAR[$i]}"),
@@ -417,12 +417,9 @@ class stok29_controller extends Controller
 
           if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
             $mevcutMiktar = 0;
-            $mevcutMiktar =  DB::table($firma.'stok29t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->value('SF_MIKTAR');
+            $mevcutMiktar =  DB::table($firma.'stok46t')->where('ARTNO',$SIPARTNO[$i])->value('SF_MIKTAR');
 
-            if($mevcutMiktar == null)
-              $mevcutMiktar = 0;
-
-            $guncellMiktar = $SF_MIKTAR[$i] - $mevcutMiktar;
+            $guncellMiktar = abs(floatval($SF_MIKTAR[$i]) - floatval($mevcutMiktar));
 
             DB::table($firma.'stok29t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
               'SRNUM' => $SRNUM,
@@ -452,15 +449,16 @@ class stok29_controller extends Controller
               'FIYAT' => $FIYAT[$i],
               'FIYAT_PB' => $FIYAT_PB[$i]
             ]);
-            if($SIPARTNO[$i]) 
-            {
+            
+            if($SIPARTNO[$i]) {
               DB::update("
                   UPDATE {$firma}stok46t 
                   SET 
-                      NETKAPANANMIK = NETKAPANANMIK - {$mevcutMiktar},
-                      SF_BAKIYE = SF_MIKTAR - (NETKAPANANMIK + {$guncellMiktar}) 
-                  WHERE CAST(EVRAKNO AS VARCHAR) + CAST(TRNUM AS VARCHAR) = '{$SIPARTNO[$i]}'
-              ");
+                      NETKAPANANMIK = ?, 
+                      SF_BAKIYE = ?
+                  WHERE ARTNO = ?", 
+                  [$SF_MIKTAR[$i], $guncellMiktar, $SIPARTNO[$i]]
+              );
             }
 
             DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK29T')->where('TRNUM',$TRNUM[$i])->update([
@@ -509,7 +507,7 @@ class stok29_controller extends Controller
                             WHEN (SF_MIKTAR - (NETKAPANANMIK - {$mevcutMiktar})) = SF_MIKTAR THEN 'A' 
                             ELSE AK 
                         END
-                WHERE CAST(EVRAKNO AS VARCHAR) + CAST(TRNUM AS VARCHAR) = '{$SIPARTNO}'
+                WHERE ARTNO = '{$SIPARTNO}'
               ");
             }
 
