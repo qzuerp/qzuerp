@@ -161,15 +161,15 @@
 
         // ── Kalite Kontrol ────────────────────────────────────────────
         try {
-            $KALITE_AYLIK = DB::table($database . 'stok10a')
-                ->where('AKTIF_STOK', 2)
-                ->whereNotExists(function ($query) use ($database) {
-                    $query->select(DB::raw(1))
-                        ->from($database . 'QVAL02E as Q02E')
-                        ->whereColumn('Q02E.BAGLANTILI_EVRAKNO', 'stok10a.EVRVAKNO')
-                        ->whereColumn('Q02E.OR_TRNUM', 'stok10a.TRNUM');
-                })
-                ->get();
+            $KALITE_AYLIK = DB::table($database . 'stok10a as S10A')
+                    ->leftJoin($database . 'QVAL02E as Q02E', function($join) {
+                        $join->on('S10A.EVRAKNO', '=', 'Q02E.BAGLANTILI_EVRAKNO')
+                            ->on('S10A.TRNUM', '=', 'Q02E.OR_TRNUM');
+                    })
+                    ->where('S10A.AKTIF_STOK', '2')
+                    ->whereNull('Q02E.BAGLANTILI_EVRAKNO')
+                    ->whereNull('Q02E.OR_TRNUM')
+                    ->get();
         } catch (\Exception $e) { $KALITE_AYLIK = collect(); }
 
         // ── Tedarikçi Performans ─────────────────────────────────────
