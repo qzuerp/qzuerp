@@ -452,7 +452,7 @@
                             <td><input type="text" class="form-control" name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
                             </td>
                             <td><input type="text" class="form-control" name="SERINO[]" value="{{ $veri->SERINO }}"></td>
-                            <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ round($veri->SF_MIKTAR) }}"></td>
+                            <td><input type="number" class="form-control" name="SF_MIKTAR[]" value="{{ round($veri->SF_MIKTAR,3) }}"></td>
                             <td><input type="text" class="form-control" name="SF_SF_UNIT_SHOW_T"
                                 value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control"
                                 data-name="SF_SF_UNIT[]" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
@@ -909,7 +909,7 @@
                                           <td>{{ $row->KOD }}</td>
                                           <td>{{ $row->AD }}</td>
                                           <td>{{ $row->IUNIT }}</td>
-                                          <td>{{ round($row->SF_MIKTAR) }}</td>
+                                          <td>{{ round($row->SF_MIKTAR,3) }}</td>
                                           <td>{{ $row->NOT1 }}</td>
                                           <td>{{ $row->FIYAT }}</td>
                                           <td>{{ $row->FIYAT_PB }}</td>
@@ -1047,7 +1047,7 @@
                         echo "<td>" . $suzVeri->EVRAKNO . "</td>";
                         echo "<td>" . $suzVeri->KOD . "</td>";
                         echo "<td>" . $suzVeri->LOTNUMBER . "</td>";
-                        echo "<td>" . round($suzVeri->SF_MIKTAR) . "</td>";
+                        echo "<td>" . round($suzVeri->SF_MIKTAR, 2) . "</td>";
                         echo "<td>" . $suzVeri->CARIHESAPCODE . "</td>";
                         echo "<td>" . $suzVeri->TARIH . "</td>";
                         echo "<td>" . $suzVeri->NOT1 . "</td>";
