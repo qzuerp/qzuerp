@@ -838,6 +838,7 @@
 																	<th>Seri No</th>
 																	<th>İşlem Mik.</th>
 																	<th>İşlem Br.</th>
+																	<th>Kalite Kontrol</th>
 																	<th>Bakiye</th>
 																	<th>Termin Tar.</th>
 																</tr>
@@ -853,6 +854,7 @@
 																	<th>Seri No</th>
 																	<th>İşlem Mik.</th>
 																	<th>İşlem Br.</th>
+																	<th>Kalite Kontrol</th>
 																	<th>Bakiye</th>
 																	<th>Termin Tar.</th>
 																</tr>
@@ -868,9 +870,11 @@
 																	$TARIH_B     = trim($_GET['TARIH_B'] ?? '');
 																	$TARIH_E     = trim($_GET['TARIH_E'] ?? '');
 
-																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
+																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, Q02E.BAGLANTILI_EVRAKNO, S10A.AKTIF_STOK, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
 																		LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S29E.CARIHESAPCODE
 																		LEFT JOIN ' . $database . 'STOK46T S29T ON S29T.EVRAKNO = S29E.EVRAKNO
+																		LEFT JOIN ' . $database . 'QVAL02E Q02E ON Q02E.OR_TRNUM = S29T.TRNUM AND Q02E.EVRAKNO = S29T.EVRAKNO
+																		LEFT JOIN ' . $database . 'stok10a S10A ON S10A.TRNUM = S29T.TRNUM AND S10A.EVRAKNO = S29T.EVRAKNO
 																		WHERE 1 = 1';
 
 																	if ($KOD_B !== '') {
@@ -901,17 +905,26 @@
 																	$tableResults = DB::select($sql_sorgu, $bindings);
 
 																	foreach ($tableResults as $row) {
+																		$DURUM = '';
+																		if($row->BAGLANTILI_EVRAKNO == null && $row->AKTIF_STOK == '2'){
+																			$DURUM = 'YAPILACAK';
+																		}
+																		else
+																		{
+																			$DURUM = 'YAPILDI';
+																		}
 																		echo "<tr>";
-																		echo "<td><b>" . e($row->SIPNUM) . "</b></td>";
-																		echo "<td><b>" . e($row->TEDARIKCI) . "</b></td>";
-																		echo "<td><b>" . e($row->KOD) . "</b></td>";
-																		echo "<td><b>" . e($row->STOK_ADI) . "</b></td>";
-																		echo "<td><b>" . e($row->LOTNUMBER) . "</b></td>";
-																		echo "<td><b>" . e($row->SERINO) . "</b></td>";
-																		echo "<td><b>" . e($row->SF_MIKTAR) . "</b></td>";
-																		echo "<td><b>" . e($row->SF_SF_UNIT) . "</b></td>";
-																		echo "<td><b>" . e($row->SF_BAKIYE) . "</b></td>";
-																		echo "<td><b>" . e($row->TERMIN_TAR) . "</b></td>";
+																			echo "<td><b>" . e($row->SIPNUM) . "</b></td>";
+																			echo "<td><b>" . e($row->TEDARIKCI) . "</b></td>";
+																			echo "<td><b>" . e($row->KOD) . "</b></td>";
+																			echo "<td><b>" . e($row->STOK_ADI) . "</b></td>";
+																			echo "<td><b>" . e($row->LOTNUMBER) . "</b></td>";
+																			echo "<td><b>" . e($row->SERINO) . "</b></td>";
+																			echo "<td><b>" . e($row->SF_MIKTAR) . "</b></td>";
+																			echo "<td><b>" . e($row->SF_SF_UNIT) . "</b></td>";
+																			echo "<td><b>" . e($DURUM) . "</b></td>";
+																			echo "<td><b>" . e($row->SF_BAKIYE) . "</b></td>";
+																			echo "<td><b>" . e($row->TERMIN_TAR) . "</b></td>";
 																		echo "</tr>";
 																	}
 																@endphp
