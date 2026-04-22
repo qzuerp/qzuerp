@@ -489,7 +489,7 @@
                             RB.HM_YM_Kodu AS HammaddeKodu,
                             S00.AD AS HammaddeAdi,
                             S00.IUNIT AS HammaddeBirimi,
-                            SUM(RB.HesaplananHM_YM_Miktar) AS ToplamHammaddeMiktari,
+                            RB.HesaplananHM_YM_Miktar AS ToplamHammaddeMiktari,
                             min(M10E.EVRAKNO) AS MPS_EVRAKNO
                         FROM RecursiveBOM RB
                         LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
@@ -498,7 +498,7 @@
                         GROUP BY
                             RB.SiparisEvrakNo, RB.Seviye, RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
-                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, RB.ARTNO
+                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, RB.ARTNO,RB.HesaplananHM_YM_Miktar
                         ORDER BY
                             RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu;
                       ";
