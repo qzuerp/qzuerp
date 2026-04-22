@@ -44,11 +44,16 @@
 			$oncekiEvrak = DB::table($ekranTableE)->where('EVRAKNO', '<', $sonID)->max('EVRAKNO');
 		}
 		$kur_veri = DB::table($database . 'gecoust')->where('EVRAKNO', 'PUNIT')->get();
+
 		$t_kart_veri = DB::table($ekranTableT . ' as t')
 			->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
 			->where('EVRAKNO', @$kart_veri->EVRAKNO)
+			->select(
+				't.*', 
+				DB::raw("(SELECT COUNT(*) FROM {$ekranTableT} WHERE KOD = t.KOD) as k_sayisi")
+			)
 			->orderBy('TRNUM', 'ASC')
-			->select('t.*')->get();
+			->get();
 	@endphp
 	<style>
 		#yazdir {
@@ -868,10 +873,11 @@
 							<thead>
 								<tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
 									<th>Evrak No</th>
-									<th>Tarih</th>
-									<th>Fiyat Birimi</th>
-									<th>Müşteri</th>
-									<!-- <th>Tutar</th> -->
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Adet</th>
+									<th>Revizyon</th>
+									<th>Açıklama</th>
 									<th>#</th>
 								</tr>
 							</thead>
@@ -879,10 +885,11 @@
 							<tfoot>
 								<tr class="bg-info">
 									<th>Evrak No</th>
-									<th>Tarih</th>
-									<th>Fiyat Birimi</th>
-									<th>Müşteri</th>
-									<!-- <th>Tutar</th> -->
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>Adet</th>
+									<th>Revizyon</th>
+									<th>Açıklama</th>
 									<th>#</th>
 								</tr>
 							</tfoot>
@@ -890,15 +897,16 @@
 							<tbody>
 
 								@php
-									$evraklar2 = DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+									$evraklar2 = DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->get();
 									foreach ($evraklar2 as $key => $suzVeri) {
-										$mus = DB::table($database . 'cari00')->where('KOD', $suzVeri->BASE_DF_CARIHESAP)->first();
 										echo "<tr>";
 										echo "<td>" . $suzVeri->EVRAKNO . "</td>";
-										echo "<td>" . $suzVeri->TARIH . "</td>";
-										echo "<td>" . $suzVeri->TEKLIF_FIYAT_PB . "</td>";
-										echo "<td>" . ($mus ? $mus->AD : $suzVeri->BASE_DF_CARIHESAP) . "</td>";
-										echo "<td><a class='btn btn-info' href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKNO . "'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
+										echo "<td>" . $suzVeri->KOD . "</td>";
+										echo "<td>" . $suzVeri->STOK_AD1 . "</td>";
+										echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
+										echo "<td>" . $suzVeri->SF_SF_UNIT . "</td>";
+										echo "<td>" . $suzVeri->ACIKLAMA . "</td>";
+										echo "<td><a class='btn btn-info' href='{$ekranLink}?ID={$suzVeri->EVRAKNO}&KOD={$suzVeri->KOD}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 										echo "</tr>";
 									}
 								@endphp
@@ -986,6 +994,44 @@
 							</tfoot> -->
 							<tbody>
 
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+						style="margin-top: 15px;">Vazgeç</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade bd-example-modal-lg" id="modal_gecmis" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" style="overflow: auto">
+						<table id="gecmis" class="table table-hover text-center" data-page-length="10">
+							<thead>
+								<tr class="bg-primary">
+									<th>Evrak No</th>
+									<th>Kod</th>
+									<th>Ad</th>
+									<th>İşlem Mik.</th>
+									<th>Revizyon</th>
+									<th>Fiyat</th>
+									<th>Dolar Fiyat</th>
+									<th>Tutar</th>
+									<th>Termin Tarihi</th>
+									<th>Açıklama</th>
+								</tr>
+								</thead>
+							<tbody>
 
 							</tbody>
 						</table>
@@ -1929,7 +1975,11 @@
 																		{{ $siraNo }}
 																	</td>
 																	<td class="d-flex">
-																		<button class="btn text-info kopyalaBtn" type="button" data-text="{{$veri->KOD}}" autocomplete="off">
+																		<button class="btn get_gecmis" data-kod="{{ $veri->KOD }}" style="color:#aca5ac !important; position: relative;" type="button">
+																			<i class="fa-solid fa-clock-rotate-left"></i>
+																			<span style="position: absolute;top: 2px;right: 7px;background: red;color: white;border-radius: 50%;font-size: 8px;padding: 0px 4px;">{{ $veri->k_sayisi }}</span>
+																		</button>
+																		<button class="btn kopyalaBtn" style="color:#aca5ac !important;" type="button" data-text="{{$veri->KOD}}">
 																			<i class="fa-solid fa-copy"></i>
 																		</button>
 																		<input type="text " name="KOD[]" value="{{$veri->KOD}}" class="form-control" readonly>
@@ -2132,6 +2182,55 @@
 		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5"></script>
+								
+		<script>
+			$('.get_gecmis').on('click',function(){
+				let KOD = $(this).data('kod');
+
+				$.ajax({
+					url:'/get_teklif_gecmisi',
+					type: 'post',
+					data:{KOD},
+					beforeSend() {
+						Swal.fire({
+							title: 'Yükleniyor...',
+							text: 'Lütfen bekleyiniz',
+							allowOutsideClick: false,
+							allowEscapeKey: false,
+							showConfirmButton: false,
+							didOpen: () => {
+								Swal.showLoading();
+							}
+						});
+					},
+					success:function(res){
+						$('#modal_gecmis').modal('show');
+						Swal.close();
+						let htmlCode = '';
+						$('#gecmis tbody').empty();
+						res.forEach(eleman => {
+							htmlCode =+ `
+								<tr>
+									<td>${eleman.EVRAKNO ?? ''}</td>
+									<td>${eleman.KOD ?? ''}</td>
+									<td>${eleman.STOK_AD1 ?? ''}</td>
+									<td>${eleman.SF_MIKTAR ?? ''}</td>
+									<td>${eleman.SF_SF_UNIT ?? ''}</td>
+									<td>${eleman.FIYAT ?? ''}</td>
+									<td>${eleman.FIYAT2 ?? ''}</td>
+									<td>${eleman.TUTAR ?? ''}</td>
+									<td>${eleman.TERMIN_TARIHI ?? ''}</td>
+									<td>${eleman.ACIKLAMA ?? ''}</td>
+									<td><a href="V2_teklif_fiyat_analiz?ID=${eleman.EVRAKNO}" class="btn btn-info"><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
+								</tr>
+							`
+						});
+						$('#gecmis tbody').append(htmlCode);
+					}
+				});
+			});
+		</script>
+
 		<script>
 			$(document).on('focus', '.tutar-input,.TIME,.PRICE,.PTIME,.STIME,.TOPLANICAK', function() {
 				$(this).select();

@@ -493,6 +493,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/digerFiyatHesapla', [Teklif_fiyat_analizV2::class, 'digerFiyatHesapla']);
     Route::post('/V2_teklif_fiyat_analiz/detay/kaydet', [Teklif_fiyat_analizV2::class, 'detayKaydet']);
     Route::post('/copy/row', [Teklif_fiyat_analizV2::class, 'copy']);
+    Route::post('/get_teklif_gecmisi', [Teklif_fiyat_analizV2::class, 'get_history']);
     Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler'])->name('V2_excel_export_maliyetler');
     Route::get('/V2_teklif_fiyat_analiz/excel-export-maliyetler_detay', [Teklif_fiyat_analizV2::class, 'excel_export_maliyetler_detay'])->name('V2_excel_export_maliyetler_detay');
 

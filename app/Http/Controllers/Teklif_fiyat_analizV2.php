@@ -683,6 +683,17 @@ class teklif_fiyat_analizV2 extends Controller
             ], 500);
         }
     }
+    public function get_history(Request $request)
+    {
+        $KOD = $request->KOD;
+
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+
+        return DB::table($firma.'tekl20t')->where('KOD',$KOD)->get();
+    }
     public function copy(Request $request)
     {
         $u = Auth::user();

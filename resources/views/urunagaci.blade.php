@@ -473,7 +473,7 @@
 																		<td><input type="number" class="form-control" name="BOMREC_KAYNAK01[]" id="BOMREC_KAYNAK01-{{ $veri->id }}" value="{{ round($veri->BOMREC_KAYNAK1,3) }}" ></td>
 																		<td><input type="number" class="form-control" name="BOMREC_KAYNAK02[]" id="BOMREC_KAYNAK02-{{ $veri->id }}" value="{{ round($veri->BOMREC_KAYNAK2,3) }}" ></td>
 																		<td><input type="text" class="form-control" maxlength='255' name="ACIKLAMA[]" id="ACIKLAMA" value="{{ $veri->STOK_BIRIM }}" readonly></td>
-																		<td><input type="text" class="form-control" name="BOMREC_YMAM4ULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
+																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPS[]" id="BOMREC_KAYNAK01_SHOW_T" value="{{ $veri->BOMREC_YMAMULPS }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULPM[]" id="BOMREC_KAYNAK02_SHOW_T" value="{{ $veri->BOMREC_YMAMULPM }}" >
 																		<td><input type="text" class="form-control" name="BOMREC_YMAMULCODE[]" value="{{ $veri->BOMREC_YMAMULCODE }}" readonly></td>
 																		<td><input type="text" class="form-control" name="KALIPKODU_1_SHOW_T" id="KALIPKODU_1_SHOW_T" value="{{ $veri->KALIP_KODU1 }}" ><input type="hidden" class="form-control" name="KALIPKODU_1[]" id="KALIPKODU_1" value="{{ $veri->KALIP_KODU1 ?? '' }}"></td>
