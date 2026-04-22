@@ -840,33 +840,36 @@
                           @endphp
 											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
                           @php
+
+                          // Ortak veritabanı değişkenini ve query başlangıcını hazırla
+                          $query = DB::table($database . 'stok47t as S47T')
+                              ->leftJoin($database . 'STOK47E as S47E', 'S47E.EVRAKNO', '=', 'S47T.EVRAKNO')
+                              ->leftJoin($database . 'STOK00 as S00', 'S00.KOD', '=', 'S47T.KOD');
+
                           if ($SIPARIS_DURUM === 'olanlar') {
-                            $q = DB::table(DB::raw("(
-                                SELECT S47T.*, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT,
-                                (
-                                    SELECT MAX(EVRAKNO) 
-                                    FROM {$database}STOK46T 
-                                    WHERE {$database}STOK46T.TALEP_ARTNO = S47T.ARTNO
-                                ) AS SIPARISNO
-                                FROM {$database}stok47ti S47T
-                                LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO 
-                                LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
-                            ) as T1"));
-                            $q->whereNotNull('ARTNO');
+                              // 'Olanlar': İlişkili kayıtları getiriyoruz
+                              $veriler = $query->join($database . 'stok47ti as S47TI', 'S47TI.OR_TRNUM', '=', 'S47T.TRNUM')
+                                  ->select('S47T.*', 'S47E.CARIHESAPCODE', 'S00.AD', 'S00.IUNIT')
+                                  ->selectSub(function ($sub) use ($database) {
+                                      $sub->selectRaw('MAX(EVRAKNO)')
+                                          ->from($database . 'STOK46T')
+                                          ->whereColumn('TALEP_ARTNO', 'S47TI.ARTNO');
+                                  }, 'SIPARISNO')
+                                  ->whereNotNull('S47TI.ARTNO')
+                                  ->get();
+
                           } elseif ($SIPARIS_DURUM === 'olmayanlar') {
-                            $q = DB::table(DB::raw("(
-                              SELECT S47T.*, S47TI.ARTNO AS SIPNO, S47E.CARIHESAPCODE, S00.AD, S00.IUNIT, S46T.EVRAKNO AS SIPARISNO
-                              FROM {$database}stok47t S47T
-                              LEFT JOIN {$database}STOK47E S47E ON S47E.EVRAKNO = S47T.EVRAKNO
-                              LEFT JOIN {$database}STOK47ti S47TI ON S47T.TRNUM = S47TI.OR_TRNUM
-                              LEFT JOIN {$database}stok46t as S46T ON S46T.TALEP_ARTNO = S47TI.ARTNO
-                              LEFT JOIN {$database}STOK00 S00 ON S00.KOD = S47T.KOD
-                            ) as T1"));
-                            $q->whereNull('SIPNO');
-                            $q->whereNull('AK');
+                              // 'Olmayanlar': Eşleşen kaydı OLMAYANLARI getir (WhereNotExists en temiz yöntemdir)
+                              $veriler = $query->whereNotExists(function ($sub) use ($database) {
+                                      $sub->select(DB::raw(1))
+                                          ->from($database . 'stok47ti as S47TI')
+                                          ->join($database . 'stok46t as S46T', 'S46T.TALEP_ARTNO', '=', 'S47TI.ARTNO')
+                                          ->whereColumn('S47TI.OR_TRNUM', 'S47T.TRNUM');
+                                  })
+                                  ->select('S47T.*', 'S47E.CARIHESAPCODE', 'S00.AD', 'S00.IUNIT')
+                                  ->get();
                           }
 
-                          $veriler = $q->get();
                         @endphp
 
                           <table class="table table-hover table-bordered text-center align-middle" id="example2">
@@ -883,7 +886,6 @@
                                       <th>Termin Tarihi</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
-                                      <!-- <th>Sipariş'e Git</th> -->
                                   </tr>
                               </thead>
                               <tfoot class="table-primary">
@@ -899,7 +901,6 @@
                                       <th>Termin Tarihi</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
-                                      <!-- <th>Sipariş'e Git</th> -->
                                   </tr>
                               </tfoot>
                               <tbody>
@@ -915,7 +916,7 @@
                                           <td>{{ $row->FIYAT_PB }}</td>
                                           <td>{{ $row->TERMIN_TAR }}</td>
                                           <td>{{ $row->EVRAKNO }}</td>
-                                          <td>{{ $row->SIPARISNO }}</td>
+                                          <td>{{ $row->SIPARISNO ?? '' }}</td>
                                       </tr>
                                   @endforeach
                               </tbody>
