@@ -161,11 +161,14 @@
 
         // ── Kalite Kontrol ────────────────────────────────────────────
         try {
-            $KALITE_AYLIK = DB::table($database . 'kalite00')
-                ->selectRaw("MONTH(TARIH) as ay, COUNT(*) as toplam, SUM(CASE WHEN SONUC='RED' THEN 1 ELSE 0 END) as red")
-                ->whereYear('TARIH', now()->year)
-                ->groupBy('ay')
-                ->orderBy('ay')
+            $KALITE_AYLIK = DB::table($database . 'stok10a')
+                ->where('AKTIF_STOK', 2)
+                ->whereNotExists(function ($query) use ($database) {
+                    $query->select(DB::raw(1))
+                        ->from($database . 'QVAL02E as Q02E')
+                        ->whereColumn('Q02E.BAGLANTILI_EVRAKNO', 'stok10a.EVRVAKNO')
+                        ->whereColumn('Q02E.OR_TRNUM', 'stok10a.TRNUM');
+                })
                 ->get();
         } catch (\Exception $e) { $KALITE_AYLIK = collect(); }
 
@@ -243,13 +246,14 @@
                 'progress_color' => $fason_zamaninda_oran >= 80 ? '#22c55e' : ($fason_zamaninda_oran >= 50 ? '#f59e0b' : '#ef4444'),
             ],
             [
-                'title'   => 'Aktif İş Emri',
-                'value'   => $is_emirleri_toplam,
-                'sub'     => 'Üretimde / Bekleyen',
-                'icon'    => 'fa-industry',
-                'color'   => '#6366f1',
+                'title'   => 'GKK bekleyenler',
+                'value'   => $KALITE_AYLIK->count(),
+                'sub'     => 'Bekleyen',
+                'icon'    => 'fa-clipboard-check',
+                'color'   => '#ef4444',
+                'link'     => "satinalmairsaliyesi?SUZ=SUZ&firma={$database}#liste",
                 'progress'=> null,
-            ],
+            ]
         ];
     @endphp
 
@@ -913,7 +917,7 @@
                     @if(in_array("MPSGRS", $kullanici_read_yetkileri) && in_array("QLT", $kullanici_read_yetkileri) && in_array("QLT02", $kullanici_read_yetkileri) && in_array("FKK", $kullanici_read_yetkileri) && in_array("CLSMBLDRM", $kullanici_read_yetkileri))
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3><i class="fa-solid fa-shield-check"></i> Kalite Kontrol — Aylık Red Oranı</h3>
+                            <h3><i class="fa-solid fa-shield-check"></i> Kalite Kontrol</h3>
                             <div style="display:flex;align-items:center;gap:8px">
                                 <span class="chart-badge" style="background:#fef2f2;color:#dc2626">Ret %</span>
                                 <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
@@ -1406,40 +1410,38 @@
         });
         @endif
 
-        // ── 9. Kalite Kontrol ───────────────────────────────────────
-        var kaliteAylar  = @json($KALITE_AYLIK->pluck('ay')->map(fn($a)=>$aylar[$a-1] ?? $a)->values());
-        var kaliteToplam = @json($KALITE_AYLIK->pluck('toplam')->values());
-        var kaliteRed    = @json($KALITE_AYLIK->pluck('red')->values());
-        var kaliteOran   = @json($KALITE_AYLIK->map(fn($r)=> $r->toplam > 0 ? round($r->red/$r->toplam*100,1) : 0)->values());
+        // var kaliteAylar  = @json($KALITE_AYLIK->pluck('ay')->map(fn($a)=>$aylar[$a-1] ?? $a)->values());
+        // var kaliteToplam = @json($KALITE_AYLIK->pluck('toplam')->values());
+        // var kaliteRed    = @json($KALITE_AYLIK->pluck('red')->values());
 
-        if (kaliteAylar.length === 0) {
-            kaliteAylar  = ['Oca','Şub','Mar','Nis','May','Haz'];
-            kaliteToplam = [120,135,118,142,130,125];
-            kaliteRed    = [8,6,10,4,9,5];
-            kaliteOran   = [6.7,4.4,8.5,2.8,6.9,4.0];
-        }
+        // if (kaliteAylar.length === 0) {
+        //     kaliteAylar  = ['Oca','Şub','Mar','Nis','May','Haz'];
+        //     kaliteToplam = [120,135,118,142,130,125];
+        //     kaliteRed    = [8,6,10,4,9,5];
+        //     kaliteOran   = [6.7,4.4,8.5,2.8,6.9,4.0];
+        // }
 
-        Highcharts.chart('hc-kalite', {
-            chart:{backgroundColor:'transparent'}, title:{text:''}, credits:{enabled:false},
-            xAxis:{categories:kaliteAylar, crosshair:true, gridLineWidth:1, gridLineColor:'#e5e7eb', labels:{style:{color:'#6b7280',fontSize:'11px'}}},
-            yAxis:[
-                {title:{text:'Kontrol Adedi',style:{color:'#6b7280'}}, gridLineDashStyle:'Dash', gridLineColor:'#e5e7eb', labels:{style:{color:'#6b7280',fontSize:'11px'}}, allowDecimals:false},
-                {title:{text:'Red Oranı (%)',style:{color:'#ef4444'}}, opposite:true, gridLineWidth:0, min:0, max:100, labels:{formatter:function(){return this.value+'%';},style:{color:'#ef4444',fontSize:'11px'}}}
-            ],
-            plotOptions:{
-                column:{borderRadius:4, grouping:true},
-                spline:{lineWidth:2.5, marker:{radius:4,lineWidth:2,lineColor:'#fff'}}
-            },
-            tooltip:{shared:true, useHTML:true, backgroundColor:'#1f2937', borderColor:'transparent', borderRadius:10, style:{color:'#f9fafb',fontSize:'12px'},
-                formatter:function(){ let h=`<div style="padding:4px 6px"><b>${this.x}</b><br>`; this.points.forEach(p=>{ const v=p.series.name==='Red Oranı'?`%${p.y}`:p.y+' adet'; h+=`<span style="color:${p.color}">●</span> ${p.series.name}: <b>${v}</b><br>`; }); return h+'</div>'; }
-            },
-            legend:{itemStyle:{color:'#374151',fontSize:'12px',fontWeight:'600'}},
-            series:[
-                {name:'Toplam Kontrol', type:'column', yAxis:0, data:kaliteToplam, color:'#3b82f6'},
-                {name:'Red Edilen',     type:'column', yAxis:0, data:kaliteRed,    color:'#ef4444'},
-                {name:'Red Oranı',      type:'spline', yAxis:1, data:kaliteOran,   color:'#f59e0b', zIndex:5}
-            ]
-        });
+        // Highcharts.chart('hc-kalite', {
+        //     chart:{backgroundColor:'transparent'}, title:{text:''}, credits:{enabled:false},
+        //     xAxis:{categories:kaliteAylar, crosshair:true, gridLineWidth:1, gridLineColor:'#e5e7eb', labels:{style:{color:'#6b7280',fontSize:'11px'}}},
+        //     yAxis:[
+        //         {title:{text:'Kontrol Adedi',style:{color:'#6b7280'}}, gridLineDashStyle:'Dash', gridLineColor:'#e5e7eb', labels:{style:{color:'#6b7280',fontSize:'11px'}}, allowDecimals:false},
+        //         {title:{text:'Red Oranı (%)',style:{color:'#ef4444'}}, opposite:true, gridLineWidth:0, min:0, max:100, labels:{formatter:function(){return this.value+'%';},style:{color:'#ef4444',fontSize:'11px'}}}
+        //     ],
+        //     plotOptions:{
+        //         column:{borderRadius:4, grouping:true},
+        //         spline:{lineWidth:2.5, marker:{radius:4,lineWidth:2,lineColor:'#fff'}}
+        //     },
+        //     tooltip:{shared:true, useHTML:true, backgroundColor:'#1f2937', borderColor:'transparent', borderRadius:10, style:{color:'#f9fafb',fontSize:'12px'},
+        //         formatter:function(){ let h=`<div style="padding:4px 6px"><b>${this.x}</b><br>`; this.points.forEach(p=>{ const v=p.series.name==='Red Oranı'?`%${p.y}`:p.y+' adet'; h+=`<span style="color:${p.color}">●</span> ${p.series.name}: <b>${v}</b><br>`; }); return h+'</div>'; }
+        //     },
+        //     legend:{itemStyle:{color:'#374151',fontSize:'12px',fontWeight:'600'}},
+        //     series:[
+        //         {name:'Toplam Kontrol', type:'column', yAxis:0, data:kaliteToplam, color:'#3b82f6'},
+        //         {name:'Red Edilen',     type:'column', yAxis:0, data:kaliteRed,    color:'#ef4444'},
+        //         {name:'Red Oranı',      type:'spline', yAxis:1, data:kaliteOran,   color:'#f59e0b', zIndex:5}
+        //     ]
+        // });
 
         // ── 10. Karlılık ────────────────────────────────────────────
         $.getJSON('/dashboard/karlilik', function(res) {
