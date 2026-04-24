@@ -66,6 +66,7 @@
     <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" defer></script>
 
     <!-- Ana Javascript - Kritik -->
+    <script src="{{ asset('qzuerp-sources/js/context-menu.js') }}" ></script>
     <script src="{{ asset('qzuerp-sources/js/main.js') }}" ></script>
 
     <!-- Defer ile yüklenecek scriptler -->

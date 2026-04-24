@@ -924,99 +924,17 @@
 		</div>
 	</div>
 
-	<div class="modal fade bd-example-modal-lg" id="a" tabindex="-1" role="dialog" aria-labelledby="a">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-							style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<table id="popupSelect" class="table table-hover text-center" data-page-length="10"
-							style="font-size: 0.8em">
-							<thead>
-								<tr class="bg-primary" style="font-size: 1.0em !important; text-align: center">
-									<th>KOD</th>
-									<th>Kod adı</th>
-									<!-- <th>Tutar</th> -->
-								</tr>
-							</thead>
-
-							<tfoot>
-								<tr class="bg-info">
-									<th>KOD</th>
-									<th>Kod adı</th>
-									<!-- <th>Tutar</th> -->
-								</tr>
-							</tfoot>
-
-							<tbody>
-
-							</tbody>
-
-						</table>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-bs-dismiss="modal"
-						style="margin-top: 15px;">Kapat</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-							style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
-				</div>
-				<div class="modal-body">
-					<div class="row" style="overflow: auto">
-						<table id="popupSelectt" class="table table-hover text-center" data-page-length="10">
-							<thead>
-								<tr class="bg-primary">
-									<th>Kod</th>
-									<th>Ad</th>
-									<th>Birim</th>
-								</tr>
-							</thead>
-							<!-- <tfoot>
-								<tr class="bg-info">
-									<th>Kod</th>
-									<th>Ad</th>
-									<th>Birim</th>
-									<th>#</th>
-								</tr>
-							</tfoot> -->
-							<tbody>
-
-
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-						style="margin-top: 15px;">Vazgeç</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 
 	<div class="modal fade bd-example-modal-lg" id="modal_gecmis" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
+				<input type="hidden" id="HISTORY_OR_TRNUM">
 				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Geçmiş Teklifler</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row" style="overflow: auto">
-						<table id="gecmis" class="table table-hover text-center" data-page-length="10">
+						<table id="popupSelect" class="table table-hover text-center" data-page-length="10">
 							<thead>
 								<tr class="bg-primary">
 									<th>Evrak No</th>
@@ -1029,8 +947,24 @@
 									<th>Tutar</th>
 									<th>Termin Tarihi</th>
 									<th>Açıklama</th>
+									<th>İşlemler</th>
 								</tr>
 								</thead>
+								<tfoot>
+									<tr class="bg-primary">
+										<th>Evrak No</th>
+										<th>Kod</th>
+										<th>Ad</th>
+										<th>İşlem Mik.</th>
+										<th>Revizyon</th>
+										<th>Fiyat</th>
+										<th>Dolar Fiyat</th>
+										<th>Tutar</th>
+										<th>Termin Tarihi</th>
+										<th>Açıklama</th>
+										<th>İşlemler</th>
+									</tr>
+								</tfoot>
 							<tbody>
 
 							</tbody>
@@ -1975,7 +1909,7 @@
 																		{{ $siraNo }}
 																	</td>
 																	<td class="d-flex">
-																		<button class="btn get_gecmis" data-kod="{{ $veri->KOD }}" style="color:#aca5ac !important; position: relative;" type="button">
+																		<button class="btn get_gecmis" data-or_trnum="{{ $veri->TRNUM }}" data-kod="{{ $veri->KOD }}" style="color:#aca5ac !important; position: relative;" type="button">
 																			<i class="fa-solid fa-clock-rotate-left"></i>
 																			<span style="position: absolute;top: 2px;right: 7px;background: red;color: white;border-radius: 50%;font-size: 8px;padding: 0px 4px;">{{ $veri->k_sayisi }}</span>
 																		</button>
@@ -2186,11 +2120,11 @@
 		<script>
 			$('.get_gecmis').on('click',function(){
 				let KOD = $(this).data('kod');
-
+				$('#HISTORY_OR_TRNUM').val($(this).data('or_trnum'));
 				$.ajax({
 					url:'/get_teklif_gecmisi',
 					type: 'post',
-					data:{KOD},
+					data:{KOD,_token:$('meta[name="csrf-token"]').attr('content')},
 					beforeSend() {
 						Swal.fire({
 							title: 'Yükleniyor...',
@@ -2207,25 +2141,30 @@
 						$('#modal_gecmis').modal('show');
 						Swal.close();
 						let htmlCode = '';
-						$('#gecmis tbody').empty();
+						
+						var table = $('#popupSelect').DataTable();
+
+						table.clear();
+
 						res.forEach(eleman => {
-							htmlCode =+ `
-								<tr>
-									<td>${eleman.EVRAKNO ?? ''}</td>
-									<td>${eleman.KOD ?? ''}</td>
-									<td>${eleman.STOK_AD1 ?? ''}</td>
-									<td>${eleman.SF_MIKTAR ?? ''}</td>
-									<td>${eleman.SF_SF_UNIT ?? ''}</td>
-									<td>${eleman.FIYAT ?? ''}</td>
-									<td>${eleman.FIYAT2 ?? ''}</td>
-									<td>${eleman.TUTAR ?? ''}</td>
-									<td>${eleman.TERMIN_TARIHI ?? ''}</td>
-									<td>${eleman.ACIKLAMA ?? ''}</td>
-									<td><a href="V2_teklif_fiyat_analiz?ID=${eleman.EVRAKNO}" class="btn btn-info"><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
-								</tr>
-							`
+							table.row.add([
+								eleman.EVRAKNO ?? '',
+								eleman.KOD ?? '',
+								eleman.STOK_AD1 ?? '',
+								eleman.SF_MIKTAR ?? '',
+								eleman.SF_SF_UNIT ?? '',
+								eleman.FIYAT ?? '',
+								eleman.FIYAT2 ?? '',
+								eleman.TUTAR ?? '',
+								eleman.TERMIN_TARIHI ?? '',
+								eleman.ACIKLAMA ?? '',
+								`
+								<button class="btn btn-primary COPY_HISTORY" data-trnum="${eleman.TRNUM}" data-evrakno="${eleman.EVRAKNO}"><i class='fa fa-copy' style='color: white'></i></button>
+								<a href="V2_teklif_fiyat_analiz?ID=${eleman.EVRAKNO}&KOD=${KOD}" class="btn btn-info"><i class='fa fa-chevron-circle-right' style='color: white'></i></a>`
+							]);
 						});
-						$('#gecmis tbody').append(htmlCode);
+
+						table.draw();
 					}
 				});
 			});
@@ -2518,8 +2457,7 @@
 								$newCard.find('.STIME').trigger('input');
 
 								
-								['.PRICE', '.TOPLANICAK', '.tutar-input', '.RES_TOTAL',
-								'.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
+								['.PRICE', '.TOPLANICAK','.AYAR_TUTAR', '.ISLEM_TUTAR', '.SOKTAK_TUTAR'].forEach(cls => {
 									$newCard.find(cls).each(function () {
 										$(this).trigger('input');
 									});
@@ -3288,41 +3226,31 @@
 						cache: true
 					}
 				});
+			});
+			$(document).on('click','.COPY_HISTORY',function(){
+				$('#copy_loader').fadeIn(300);
+				let OR_TRNUM = $('#HISTORY_OR_TRNUM').val();
+				let COPY_TRNUM = $(this).data('trnum');
+				let EVRAKNO = $(this).data('evrakno');
 
-				$('#popupSelectt').DataTable({
-					"order": [[0, "desc"]],
-					dom: 'Bfrtip',
-					buttons: ['copy', 'excel', 'print'],
-					processing: true,
-					serverSide: true,
-					searching: true,
-					autoWidth: false,
-					scrollX: false,
-					ajax: '/evraklar-veri',
-					columns: [
-						{ data: 'KOD' },
-						{ data: 'AD' },
-						{ data: 'IUNIT' }
-					], language: {
-						url: '{{ asset("tr.json") }}'
+				$.ajax({
+					url:'copy/row',
+					type:'post',
+					data:{
+						OR_TRNUM,
+						COPY_TRNUM,
+						EVRAKNO,
+						TO_EVRAKNO: {{ @$kart_veri->EVRAKNO }}
 					},
-					initComplete: function () {
-						const table = this.api();
-						$('.dataTables_filter input').on('keyup', function () {
-							table.draw();
-						});
+					success:function(res){
+						$('#satir_detay').modal('hide');
+						setTimeout(function() {
+							$('.satir_detay[data-trnum="'+OR_TRNUM+'"]').trigger('click');
+							$('#copy_loader').fadeOut(600);
+						}, 300);
 					}
 				});
-
-				$(document).on('click', '#popupSelectt tbody tr', function () {
-					var KOD = $(this).find('td:eq(0)').text().trim();
-					var AD = $(this).find('td:eq(1)').text().trim();
-					var IUNIT = $(this).find('td:eq(2)').text().trim();
-					$('#ISLEM_BIRIMI').val(IUNIT);
-					popupToDropdown(KOD + '|||' + AD + '|||' + IUNIT, 'STOK_KODU_SHOW', 'modal_popupSelectModal');
-				});
 			});
-
 			$('#COPY_ROWBTN').on('click',function(){
 				$('#copy_loader').fadeIn(300);
 				let OR_TRNUM = $('#OR_TRNUM').val();
@@ -3334,7 +3262,8 @@
 					data:{
 						OR_TRNUM,
 						COPY_TRNUM,
-						EVRAKNO: {{ @$kart_veri->EVRAKNO }}
+						EVRAKNO: {{ @$kart_veri->EVRAKNO }},
+						TO_EVRAKNO: {{ @$kart_veri->EVRAKNO }}
 					},
 					success:function(res){
 						$('#satir_detay').modal('hide');
@@ -3401,76 +3330,6 @@
 				$('#STOK_KOD2').val(veriler[0]);
 				$('#KODADI2').val(veriler[1]);
 				$('#ISLEM_BIRIMI2').val(veriler[2]);
-			}
-
-			function getKaynakCodeSelect() {
-				const KAYNAK_TIPI = document.getElementById("KAYNAK_TIPI").value;
-				const firma = document.getElementById("firma").value;
-				const table = $('#popupSelect').DataTable();
-
-
-				$('#BOMREC_INPUTTYPE_FILL').val(KAYNAK_TIPI).change();
-
-
-				try {
-					$.ajax({
-						url: '/V2_maliyetlendire_createKaynakKodSelect',
-						data: {
-							'islem': KAYNAK_TIPI,
-							'firma': firma,
-							'_token': $('meta[name="csrf-token"]').attr('content')
-						},
-						type: 'POST',
-						success: function (response) {
-
-							const data = response.selectdata2;
-
-							const options = ['<option value="">Seç</option>'];
-							const rows = [];
-
-							for (let i = 0; i < data.length; i++) {
-								const row = data[i];
-								options.push(
-									`<option value="${row.KOD}|||${row.AD}|||${row.IUNIT}">
-										${row.KOD} | ${row.AD}
-									</option>`
-								);
-								rows.push([row.KOD, row.AD]);
-							}
-
-							table
-								.clear()
-								.rows.add(rows)
-								.draw(false);
-
-							const modal = $('#satir_detay');
-							const kodSelect = modal.find('#KOD');
-
-							// 🔥 ESKİ SELECT2’Yİ YOK ET
-							if (kodSelect.hasClass('select2-hidden-accessible')) {
-								kodSelect.select2('destroy');
-							}
-
-							// OPTION’LARI BAS
-							kodSelect.empty().html(options.join(''));
-
-							// 🔥 MODAL İÇİNDE TEKRAR INIT
-							kodSelect.select2({
-								dropdownParent: modal,
-								width: '100%'
-							});
-						},
-						error: function (xhr, status, error) {
-							console.error('Ajax Hatası:', error);
-							console.error('Status:', status);
-							console.error('Response:', xhr.responseText);
-						}
-					});
-
-				}
-				catch {
-					console.log("Hata");
-				}
 			}
 
 			function ozelInput() {

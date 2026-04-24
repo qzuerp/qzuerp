@@ -1341,61 +1341,43 @@ function detayBtnForJS(KOD) {
 }
 
 
-$(document).ready(function() {
-  $(document).on("contextmenu", function(e) {
-      // if (!$(e.target).closest('tr').length) return;
 
-      e.preventDefault();
+$(document).ready(function () {
+  const params = new URLSearchParams(window.location.search);
+  const targetKod = params.get('KOD');
 
-      $("#custom-menu").finish().toggle(100)
-          .css({
-              top: e.pageY + "px",
-              left: e.pageX + "px"
-          });
-  });
-
-  $(document).on("mousedown", function(e) {
-      if (!$(e.target).parents("#custom-menu").length > 0) {
-          $("#custom-menu").hide(100);
-      }
-  });
-
-  $("#custom-menu ul li").on("click", function() {
-      let action = $(this).attr("data-action");
-      
-      if(action == 'copy')
-      {
-        let selectedText = window.getSelection().toString();
-        let textArea = document.createElement("textarea");
-        textArea.value = selectedText;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        
-        document.body.removeChild(textArea);
-      }
-      else if(action == 'pase')
-      {
-        navigator.clipboard.readText().then(text => {
-          // Metni nereye yapıştıracağız? 
-          // Eğer odaklanmış bir input/textarea varsa oraya basarız.
-          let activeElem = document.activeElement;
-          if (activeElem.tagName === 'INPUT' || activeElem.tagName === 'TEXTAREA') {
-              let start = activeElem.selectionStart;
-              let end = activeElem.selectionEnd;
-              let val = activeElem.value;
-              activeElem.value = val.slice(0, start) + text + val.slice(end);
-          } else {
-              alert("Yapıştıracak bir giriş alanı seçmedin Eren!");
-          }
-        });
-      }
-      else
-      {
-        window.location.href = action;
-      }
-
-      
-      $("#custom-menu").hide(100);
-  });
+  if (targetKod) focusInputByKod(targetKod);
 });
+
+function focusInputByKod(targetKod) {
+  let firstFound = false;
+
+  $('input[name="KOD[]"]').each(function () {
+    const $input = $(this);
+    
+    const val = $input.val().trim();
+
+    if (val === targetKod) {
+      $('input').css('background-color', '');
+
+      const matched = $(`input[name="KOD[]"]`).filter(function() {
+        return $(this).val().trim() === targetKod;
+      });
+
+      matched.css({
+        'background-color': '#cfe8ff',
+        'border': '1px solid #1c8aff',
+        'font-weight': '500',
+        'transition': 'all 0.3s ease'
+      });
+
+      if (!firstFound) {
+        firstFound = true;
+        setTimeout(() => $input.focus(), 200);
+        $('html, body').animate({
+          scrollTop: $input.offset().top - 100
+        }, 400);
+      }
+    }
+  });
+}

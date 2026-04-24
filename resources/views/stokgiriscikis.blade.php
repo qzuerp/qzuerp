@@ -1075,45 +1075,6 @@
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
   <script>
 
-    $(document).ready(function () {
-        const targetKod = '<?= @$_GET["KOD"] ?? "" ?>';
-        console.log('TargetKod:', targetKod);
-
-        if (targetKod) focusInputByKod(targetKod);
-    });
-
-    function focusInputByKod(targetKod) {
-        let firstFound = false;
-
-        $('input[name="KOD[]"]').each(function () {
-            const $input = $(this);
-            const val = $input.val().trim();
-
-            if (val === targetKod) {
-                $('input').css('background-color', '');
-
-                const matched = $(`input[name="KOD[]"]`).filter(function() {
-                    return $(this).val().trim() === targetKod;
-                });
-
-                matched.css({
-                    'background-color': '#cfe8ff',
-                    'border': '1px solid #1c8aff',
-                    'font-weight': '500',
-                    'transition': 'all 0.3s ease'
-                });
-
-                if (!firstFound) {
-                    firstFound = true;
-                    setTimeout(() => $input.focus(), 200);
-                    $('html, body').animate({
-                        scrollTop: $input.offset().top - 100
-                    }, 400);
-                }
-            }
-        });
-    }
-
     $(document).ready(function() {
 
 

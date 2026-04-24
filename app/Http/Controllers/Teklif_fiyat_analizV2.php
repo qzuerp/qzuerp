@@ -698,47 +698,49 @@ class teklif_fiyat_analizV2 extends Controller
     {
         $u = Auth::user();
         $firma = trim($u->firma).'.dbo.';
-
+    
+        // 1. İşlem: tekl20tı tablosu
         $datas = DB::table($firma.'tekl20tı')
             ->where('EVRAKNO', $request->EVRAKNO)
             ->where('OR_TRNUM', $request->COPY_TRNUM)
             ->get();
-
+    
         if ($datas->isNotEmpty()) {
             $insertData = [];
-
             foreach ($datas as $data) {
                 $temp = (array) $data;
-
                 unset($temp['id']); 
-
                 $temp['OR_TRNUM'] = $request->OR_TRNUM;
-
+                $temp['EVRAKNO'] = $request->TO_EVRAKNO;
                 $insertData[] = $temp;
             }
-
-            DB::table($firma.'tekl20tı')->insert($insertData);
+    
+            // Chunk ile parçalara bölerek ekle
+            foreach (array_chunk($insertData, 50) as $chunk) {
+                DB::table($firma.'tekl20tı')->insert($chunk);
+            }
         }
-
+    
+        // 2. İşlem: tekl20o tablosu
         $datas2 = DB::table($firma.'tekl20o')
             ->where('EVRAKNO', $request->EVRAKNO)
             ->where('OR_TRNUM', $request->COPY_TRNUM)
             ->get();
-
+    
         if ($datas2->isNotEmpty()) {
             $insertData = [];
-
             foreach ($datas2 as $data) {
                 $temp = (array) $data;
-
                 unset($temp['ID']); 
-
                 $temp['OR_TRNUM'] = $request->OR_TRNUM;
-
+                $temp['EVRAKNO'] = $request->TO_EVRAKNO;
                 $insertData[] = $temp;
             }
-
-            DB::table($firma.'tekl20o')->insert($insertData);
+    
+            // Chunk ile parçalara bölerek ekle
+            foreach (array_chunk($insertData, 50) as $chunk) {
+                DB::table($firma.'tekl20o')->insert($chunk);
+            }
         }
     }
     public function getDovizKuru(Request $request)
