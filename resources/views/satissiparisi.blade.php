@@ -454,7 +454,8 @@
                               CASE WHEN B01T.BOMREC_INPUTTYPE <> 'I' THEN B01T.BOMREC_KAYNAK0 ELSE 
                               B01T.BOMREC_YMAMULPM  END AS KaynakMiktarReçete,
                               B01E.MAMUL_MIKTAR AS MamulMiktarReçete,
-                              (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR AS HesaplananHM_YM_Miktar,
+                              CASE WHEN B01T.BOMREC_INPUTTYPE <> 'I' THEN (S40T.SF_MIKTAR * B01T.BOMREC_KAYNAK0) / B01E.MAMUL_MIKTAR ELSE
+                              (S40T.SF_MIKTAR * B01T.BOMREC_YMAMULPM) / B01E.MAMUL_MIKTAR END  AS HesaplananHM_YM_Miktar,
                               B01T.BOMREC_INPUTTYPE AS KaynakTipi,
                               1 AS Seviye
                           FROM {$database}STOK40T S40T
@@ -481,10 +482,7 @@
                           FROM RecursiveBOM RB
                           INNER JOIN {$database}BOMU01E B01E_Alt ON B01E_Alt.MAMULCODE = RB.HM_YM_Kodu AND B01E_Alt.AP10 = 1
                           INNER JOIN {$database}BOMU01T B01T_Alt ON B01E_Alt.EVRAKNO = B01T_Alt.EVRAKNO AND B01T_Alt.BOMREC_INPUTTYPE = 'H'
-
-                         
-                           
-
+                          
                         )
                         SELECT
                             ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
@@ -508,8 +506,8 @@
                             RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
                             RB.HM_YM_Kodu, S00.AD, S00.IUNIT, RB.ARTNO,RB.HesaplananHM_YM_Miktar
                         ORDER BY
-                            RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu;
-
+                            RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu
+                          OFFSET 1 ROWS;
                         
                       ";
                       $sonuc = DB::select($sql, [@$kart_veri->EVRAKNO]);

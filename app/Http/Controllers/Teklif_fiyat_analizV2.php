@@ -692,7 +692,7 @@ class teklif_fiyat_analizV2 extends Controller
         }
         $firma = trim($u->firma).'.dbo.';
 
-        return DB::table($firma.'tekl20t')->where('KOD',$KOD)->get();
+        return DB::table($firma.'tekl20t')->where('KOD',$KOD)->where('EVRAKNO', '!=', $request->EVRAKNO)->get();
     }
     public function copy(Request $request)
     {

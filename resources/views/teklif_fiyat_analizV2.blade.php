@@ -50,7 +50,7 @@
 			->where('EVRAKNO', @$kart_veri->EVRAKNO)
 			->select(
 				't.*', 
-				DB::raw("(SELECT COUNT(*) FROM {$ekranTableT} WHERE KOD = t.KOD) as k_sayisi")
+				DB::raw("(SELECT COUNT(*) FROM {$ekranTableT} WHERE KOD = t.KOD AND EVRAKNO != t.EVRAKNO) as k_sayisi")
 			)
 			->orderBy('TRNUM', 'ASC')
 			->get();
@@ -2124,7 +2124,7 @@
 				$.ajax({
 					url:'/get_teklif_gecmisi',
 					type: 'post',
-					data:{KOD,_token:$('meta[name="csrf-token"]').attr('content')},
+					data:{EVRAKNO:'{{ @$kart_veri->EVRAKNO }}',KOD,_token:$('meta[name="csrf-token"]').attr('content')},
 					beforeSend() {
 						Swal.fire({
 							title: 'Yükleniyor...',

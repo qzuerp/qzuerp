@@ -1,14 +1,10 @@
 /**
- * ContextMenu — Modern, HTTP-uyumlu sağ tık menüsü v2
+ * ContextMenu — Modern, HTTP-uyumlu sağ tık menüsü v3
  *
- * Düzeltmeler:
- *  - Konumlandırma: menü gerçek boyutu ölçüldükten sonra yerleştiriliyor
- *  - Scroll kapatmıyor
- *  - Yapıştır: execCommand('paste') ile çalışıyor, helper yok
- *  - Seçili metin arama: menü açılırken kaydediliyor, tıklamada kaybolmuyor
- *  - Submenu ekran sağından taşarsa sola döner
- *
- * Kullanım: <script src="context-menu.js"></script>  (jQuery gerekmez)
+ * v3 Eklemeler:
+ *  - Sayfanın Başı / Sonu: smooth scroll ile hızlı gezinti
+ *  - QR Kod Oluştur: seçili metin veya sayfa URL'si için QR modal
+ *    (qrcodejs CDN'den lazy-load edilir, tekrar çağrılmaz)
  */
 
 (function () {
@@ -87,6 +83,51 @@
     white-space:nowrap; font-family:system-ui,-apple-system,sans-serif;
   }
   #ctx-toast.ctx-show { opacity:1; }
+  
+  /* ── QR Modal ── */
+  #ctx-qr-overlay {
+    position:fixed; inset:0; z-index:100000;
+    background:rgba(0,0,0,.55);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition:opacity .18s;
+  }
+  #ctx-qr-overlay.ctx-qr-open {
+    opacity:1; pointer-events:all;
+  }
+  #ctx-qr-box {
+    background:#18181d;
+    border:.5px solid rgba(255,255,255,.15);
+    border-radius:14px;
+    padding:24px;
+    display:flex; flex-direction:column; align-items:center; gap:16px;
+    min-width:220px;
+    animation:ctxFadeIn .18s cubic-bezier(.22,.68,0,1.2);
+    font-family:system-ui,-apple-system,sans-serif;
+  }
+  #ctx-qr-label {
+    font-size:12px; color:rgba(255,255,255,.45);
+    max-width:200px; text-align:center;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  #ctx-qr-canvas-wrap {
+    background:#fff;
+    border-radius:8px;
+    padding:10px;
+    line-height:0;
+  }
+  #ctx-qr-actions {
+    display:flex; gap:8px;
+  }
+  .ctx-qr-btn {
+    font-size:12px; padding:6px 14px; border-radius:7px;
+    cursor:pointer; border:.5px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.07); color:rgba(255,255,255,.82);
+    font-family:system-ui,-apple-system,sans-serif;
+    transition:background .1s;
+  }
+  .ctx-qr-btn:hover { background:rgba(255,255,255,.14); }
+  .ctx-qr-btn.ctx-qr-close { background:transparent; }
   `;
   
     /* ─── SVG ikonları ─────────────────────────────────────────────── */
@@ -111,6 +152,10 @@
       source:    "M5 5L2 8l3 3m6-6l3 3-3 3M9 3l-2 10",
       zoomIn:    "M10 10l3 3M7 11A4 4 0 107 3a4 4 0 000 8zm-1-4h2M7 6v2",
       zoomOut:   "M10 10l3 3M7 11A4 4 0 107 3a4 4 0 000 8zm-2-4h4",
+      /* Yeni ikonlar */
+      arrowUp:   "M8 14V2m0 0L3 7m5-5l5 5",
+      arrowDown: "M8 2v12m0 0l5-5m-5 5L3 9",
+      qr:        "M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h2v2H9zM13 9h2v2h-2zM11 11h2v2h-2zM9 13h2v2H9zM13 13h2v2h-2z",
     };
   
     const icon = (k) =>
@@ -129,10 +174,30 @@
     toastEl.id = "ctx-toast";
     document.body.appendChild(toastEl);
   
+    /* ── QR Modal DOM ── */
+    const qrOverlay = document.createElement("div");
+    qrOverlay.id = "ctx-qr-overlay";
+    qrOverlay.innerHTML = `
+      <div id="ctx-qr-box">
+        <div id="ctx-qr-label"></div>
+        <div id="ctx-qr-canvas-wrap"></div>
+        <div id="ctx-qr-actions">
+          <button class="ctx-qr-btn" id="ctx-qr-save">İndir</button>
+          <button class="ctx-qr-btn ctx-qr-close" id="ctx-qr-close">Kapat</button>
+        </div>
+      </div>`;
+    document.body.appendChild(qrOverlay);
+  
+    document.getElementById("ctx-qr-close").addEventListener("click", closeQR);
+    qrOverlay.addEventListener("click", (e) => { if (e.target === qrOverlay) closeQR(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeQR(); });
+  
     /* ─── Durum ────────────────────────────────────────────────────── */
-    let savedSel    = "";   // contextmenu anında seçili metin
-    let savedActive = null; // contextmenu anında odaklı element
+    let savedSel    = "";
+    let savedActive = null;
     let toastTimer  = null;
+    let qrLibLoaded = false;
+    let qrLibLoading = false;
   
     /* ─── Toast ────────────────────────────────────────────────────── */
     function toast(msg) {
@@ -150,7 +215,6 @@
         icon(iconKey) +
         `<span class="ctx-label">${labelText}</span>` +
         (kbd ? `<span class="ctx-kbd">${kbd}</span>` : "");
-      // mousedown'da preventDefault → tıklama seçimi silmez
       el.addEventListener("mousedown", (e) => e.preventDefault());
       el.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -174,9 +238,8 @@
         icon(iconKey) +
         `<span class="ctx-label">${labelText}</span><span class="ctx-arrow">›</span>`;
       el.appendChild(sub);
-      // Submenu yönünü hover'da güncelle
       el.addEventListener("mouseenter", () => {
-        const r   = el.getBoundingClientRect();
+        const r    = el.getBoundingClientRect();
         const subW = 200;
         if (r.right + subW > window.innerWidth - 8) {
           sub.classList.replace("ctx-sub-right", "ctx-sub-left");
@@ -201,16 +264,31 @@
       return d;
     }
   
-    /* ─── Clipboard (HTTP-uyumlu) ──────────────────────────────────── */
+    /* ─── Clipboard ────────────────────────────────────────────────── */
     function copyText(text) {
       const ta = document.createElement("textarea");
       ta.value = text;
+      localStorage.setItem("clipboard", text);
       ta.style.cssText = "position:fixed;top:-9999px;left:-9999px;opacity:0";
       document.body.appendChild(ta);
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
       toast("✓ Kopyalandı");
+    }
+  
+    function copyAction() {
+      const active = savedActive;
+      if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA")) {
+        const s = active.selectionStart, e = active.selectionEnd;
+        if (s !== e) {
+          copyText(active.value.slice(s, e));
+          active.setSelectionRange(s, s);
+          return;
+        }
+      }
+      if (savedSel) { copyText(savedSel); }
+      else { toast("Önce metin seçin"); }
     }
   
     function cutAction() {
@@ -247,33 +325,39 @@
     }
   
     function pasteAction() {
-      const target   = savedActive;
-      const editable = target && (
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.isContentEditable
-      );
-  
-      if (!editable) {
-        toast("Yapıştırmak için bir input alanına tıklayın");
-        return;
-      }
-  
-      if (window.isSecureContext && navigator.clipboard) {
-        // HTTPS — modern API
-        navigator.clipboard.readText()
-          .then((text) => { insertAtCursor(target, text); toast("✓ Yapıştırıldı"); })
-          .catch(() => {
-            target.focus();
-            document.execCommand("paste");
-            toast("✓ Yapıştırıldı");
-          });
-      } else {
-        // HTTP — execCommand, user-gesture sayesinde çoğu tarayıcıda çalışır
-        target.focus();
-        const ok = document.execCommand("paste");
-        toast(ok ? "✓ Yapıştırıldı" : "Ctrl+V ile yapıştırın (tarayıcı izin vermiyor)");
-      }
+        const target = savedActive;
+        if (!target) { toast("Bir alana tıklaman lazım!"); return; }
+      
+        const clipboard = localStorage.getItem("clipboard");
+        if (!clipboard) return;
+      
+        // 1. Durum: INPUT veya TEXTAREA
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+          const start = target.selectionStart;
+          const end = target.selectionEnd;
+          const value = target.value;
+      
+          // Metni parçala ve yeni metni araya sıkıştır
+          target.value = value.substring(0, start) + clipboard + value.substring(end);
+      
+          // İmleci yapıştırılan metnin sonuna koy
+          target.selectionStart = target.selectionEnd = start + clipboard.length;
+          target.focus();
+        } 
+        // 2. Durum: contentEditable (div, span vb.)
+        else if (target.isContentEditable) {
+          const selection = window.getSelection();
+          if (!selection.rangeCount) return;
+      
+          selection.deleteFromDocument(); // Seçili olanı sil
+          selection.getRangeAt(0).insertNode(document.createTextNode(clipboard)); // Yeni metni ekle
+        } 
+        else {
+          toast("Buraya yapıştırılmaz, bir input alanına tıkla.");
+          return;
+        }
+      
+        toast("✓ Yapıştırıldı");
     }
   
     function selectAll() {
@@ -287,7 +371,7 @@
       toast("Tümü seçildi");
     }
   
-    /* ─── Arama — savedSel kullanır, menü tıklamada kaybolmaz ─────── */
+    /* ─── Arama ────────────────────────────────────────────────────── */
     function searchWith(engine) {
       const text = savedSel;
       if (!text) { toast("Önce metin seçin"); return; }
@@ -298,6 +382,82 @@
         translate: "https://translate.google.com/?sl=auto&tl=tr&text=",
       };
       window.open(base[engine] + encodeURIComponent(text), "_blank");
+    }
+  
+    /* ─── YENİ: Sayfanın Başı / Sonu ──────────────────────────────── */
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast("↑ Sayfanın başına gidildi");
+    }
+  
+    function scrollToBottom() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      toast("↓ Sayfanın sonuna gidildi");
+    }
+  
+    /* ─── YENİ: QR Kod ─────────────────────────────────────────────── */
+  
+    function loadQRLib(cb) {
+      if (qrLibLoaded) { cb(); return; }
+      if (qrLibLoading) {
+        /* Zaten yükleniyor — script onload'ı bekle */
+        const interval = setInterval(() => {
+          if (qrLibLoaded) { clearInterval(interval); cb(); }
+        }, 50);
+        return;
+      }
+      qrLibLoading = true;
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+      s.onload = () => { qrLibLoaded = true; cb(); };
+      s.onerror = () => { toast("QR kütüphanesi yüklenemedi"); qrLibLoading = false; };
+      document.head.appendChild(s);
+    }
+  
+    function openQR() {
+      /* Önce metin seçimi, yoksa sayfa URL'si */
+      const content = savedSel || window.location.href;
+      const labelEl = document.getElementById("ctx-qr-label");
+      const wrapEl  = document.getElementById("ctx-qr-canvas-wrap");
+      const saveBtn = document.getElementById("ctx-qr-save");
+  
+      labelEl.textContent = content.length > 45 ? content.slice(0, 44) + "…" : content;
+      wrapEl.innerHTML    = "";
+  
+      loadQRLib(() => {
+        /* QRCode oluştur */
+        new QRCode(wrapEl, {
+          text:         content,
+          width:        180,
+          height:       180,
+          colorDark:    "#000000",
+          colorLight:   "#ffffff",
+          correctLevel: QRCode.CorrectLevel.M,
+        });
+  
+        /* İndir butonu: canvas veya img'den PNG al */
+        saveBtn.onclick = () => {
+          const canvas = wrapEl.querySelector("canvas");
+          const img    = wrapEl.querySelector("img");
+          if (canvas) {
+            const a = document.createElement("a");
+            a.href     = canvas.toDataURL("image/png");
+            a.download = "qr-kod.png";
+            a.click();
+          } else if (img) {
+            const a = document.createElement("a");
+            a.href     = img.src;
+            a.download = "qr-kod.png";
+            a.click();
+          }
+        };
+  
+        qrOverlay.classList.add("ctx-qr-open");
+      });
+    }
+  
+    function closeQR() {
+      qrOverlay.classList.remove("ctx-qr-open");
     }
   
     /* ─── Menü içeriği ─────────────────────────────────────────────── */
@@ -311,10 +471,10 @@
       const isImg      = tag === "img";
       const sel        = savedSel;
   
-      /* ── Düzenleme bölümü ── */
+      /* ── Düzenleme ── */
       if (isEditable) {
         menuEl.appendChild(lbl("düzenle"));
-        menuEl.appendChild(makeItem("copy",      "Kopyala",    "Ctrl+C", () => { document.execCommand("copy"); toast("✓ Kopyalandı"); }));
+        menuEl.appendChild(makeItem("copy",      "Kopyala",    "Ctrl+C", copyAction));
         menuEl.appendChild(makeItem("cut",       "Kes",        "Ctrl+X", cutAction));
         menuEl.appendChild(makeItem("paste",     "Yapıştır",   "Ctrl+V", pasteAction));
         menuEl.appendChild(sep());
@@ -324,7 +484,7 @@
         menuEl.appendChild(sep());
       }
   
-      /* ── Seçili metin bölümü ── */
+      /* ── Seçili metin ── */
       if (sel) {
         const short = sel.length > 22 ? sel.slice(0, 22) + "…" : sel;
         if (!isEditable) {
@@ -341,7 +501,7 @@
         menuEl.appendChild(sep());
       }
   
-      /* ── Bağlantı bölümü ── */
+      /* ── Bağlantı ── */
       if (linkEl) {
         menuEl.appendChild(lbl("bağlantı"));
         menuEl.appendChild(makeItem("link",     "Bağlantıyı Aç",             "", () => (window.location.href = linkEl.href)));
@@ -350,10 +510,10 @@
         menuEl.appendChild(sep());
       }
   
-      /* ── Resim bölümü ── */
+      /* ── Resim ── */
       if (isImg) {
         menuEl.appendChild(lbl("resim"));
-        menuEl.appendChild(makeItem("viewImg",  "Resmi Görüntüle",       "", () => window.open(target.src, "_blank")));
+        menuEl.appendChild(makeItem("viewImg",  "Resmi Görüntüle",       "", () => { $('#dokuman_modal').modal('show'); document.querySelector('#dokuman_modal img').src = target.src; }));
         menuEl.appendChild(makeItem("copyLink", "Resim URL'ini Kopyala", "", () => copyText(target.src)));
         menuEl.appendChild(makeItem("save",     "Resmi Kaydet",          "", () => {
           const a = document.createElement("a");
@@ -364,31 +524,35 @@
         menuEl.appendChild(sep());
       }
   
-      /* ── Sayfa bölümü ── */
+      /* ── Sayfa ── */
       menuEl.appendChild(lbl("sayfa"));
-      menuEl.appendChild(makeItem("back",    "Geri",              "Alt+←",  () => window.history.back()));
-      menuEl.appendChild(makeItem("forward", "İleri",             "Alt+→",  () => window.history.forward()));
-      menuEl.appendChild(makeItem("reload",  "Yenile",            "F5",     () => window.location.reload()));
+  
+      const recent = JSON.parse(localStorage.getItem("recentPages") || "[]");
+      const page   = recent.map(p => makeSubItem("link", p.title, () => window.open(p.url, "_blank")));
+      menuEl.appendChild(makeItemWithSub("reload", "Son Kullanılanlar", page));
+  
+      menuEl.appendChild(makeItem("back",      "Geri",              "Alt+←",  () => window.history.back()));
+      menuEl.appendChild(makeItem("forward",   "İleri",             "Alt+→",  () => window.history.forward()));
+      menuEl.appendChild(makeItem("reload",    "Yenile",            "F5",     () => window.location.reload()));
       menuEl.appendChild(sep());
-      menuEl.appendChild(makeItem("zoomIn",  "Yakınlaştır",       "Ctrl++", () => {
-        document.body.style.zoom = Math.min(3,   parseFloat(document.body.style.zoom || 1) + 0.1).toFixed(1);
-      }));
-      menuEl.appendChild(makeItem("zoomOut", "Uzaklaştır",        "Ctrl+-", () => {
-        document.body.style.zoom = Math.max(0.3, parseFloat(document.body.style.zoom || 1) - 0.1).toFixed(1);
-      }));
+  
+      /* Sayfanın Başı / Sonu — YENİ */
+      menuEl.appendChild(makeItem("arrowUp",   "Sayfanın Başına Git",  "Home",   scrollToTop));
+      menuEl.appendChild(makeItem("arrowDown", "Sayfanın Sonuna Git",  "End",    scrollToBottom));
       menuEl.appendChild(sep());
-      menuEl.appendChild(makeItem("print",  "Yazdır",            "Ctrl+P", () => window.print()));
-      menuEl.appendChild(makeItem("source", "Kaynağı Görüntüle", "Ctrl+U", () =>
-        window.open("view-source:" + window.location.href, "_blank")
-      ));
+  
+      /* QR Kod — YENİ */
+      const qrLabel = sel
+        ? `"${sel.length > 18 ? sel.slice(0, 18) + "…" : sel}" için QR`
+        : "Sayfa QR Kodu";
+      menuEl.appendChild(makeItem("qr", qrLabel, "", openQR));
+      menuEl.appendChild(sep());
+  
+      menuEl.appendChild(makeItem("print", "Yazdır", "Ctrl+P", () => window.print()));
     }
   
-    /* ─── Akıllı konumlandırma ─────────────────────────────────────── */
+    /* ─── Konumlandırma ────────────────────────────────────────────── */
     function positionMenu(mouseX, mouseY) {
-      /*
-       * Menü visibility:hidden / display:block durumda olduğu için
-       * gerçek offsetWidth / offsetHeight okunabilir, ekrana yansımaz.
-       */
       const mw  = menuEl.offsetWidth;
       const mh  = menuEl.offsetHeight;
       const pad = 8;
@@ -407,19 +571,12 @@
   
     /* ─── Aç / Kapat ───────────────────────────────────────────────── */
     function openMenu(e) {
-      // 1) Seçimi ve odak noktasını kaydet — menü açılmadan önce
       savedSel    = window.getSelection().toString().trim();
       savedActive = document.activeElement;
-  
-      // 2) İçeriği oluştur (menü hâlâ görünmez)
       buildMenu(e.target);
-  
-      // 3) Boyutu ölç ve doğru konuma yerleştir
       positionMenu(e.clientX, e.clientY);
-  
-      // 4) Animasyonu sıfırla ve göster
       menuEl.classList.remove("ctx-visible");
-      void menuEl.offsetWidth; // reflow — animasyon yeniden tetiklensin
+      void menuEl.offsetWidth;
       menuEl.classList.add("ctx-visible");
     }
   
@@ -441,7 +598,6 @@
       if (e.key === "Escape") closeMenu();
     });
   
-    // Scroll kapatmıyor — bilerek kaldırıldı
     window.addEventListener("resize", closeMenu);
   
   })();

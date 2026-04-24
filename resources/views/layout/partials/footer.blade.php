@@ -121,6 +121,22 @@
   .separator{
     margin: 0 4px;
   }
+
+  #dokuman_modal .modal-body {
+    overflow: hidden; /* Resim dışarı taşmasın */
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px; /* Sabit bir yükseklik ver */
+  }
+
+  #dokuman_modal img {
+      transition: transform 0.1s ease;
+      transform-origin: center;
+      pointer-events: none;
+      user-select: none;
+  }
 </style>
 
 
@@ -170,6 +186,53 @@
 
 
 <script>
+  let scale = 1;
+  const img = $('#dokuman_modal img');
+
+  $('#dokuman_modal').on('shown.bs.modal', function () {
+      scale = 1;
+      img.css('transform', `scale(${scale})`);
+  });
+
+  $('#dokuman_modal .modal-body').on('wheel', function(e) {
+      e.preventDefault();
+      
+      if(e.originalEvent.deltaY < 0) {
+          scale += 0.2; // Yakınlaştır
+      } else {
+          scale -= 0.2; // Uzaklaştır
+      }
+      
+      scale = Math.min(Math.max(0.5, scale), 3);
+      
+      img.css('transform', `scale(${scale})`);
+  });
+
+  // Sürükleme (Drag) özelliği
+  let isDragging = false;
+  let startX, startY, scrollLeft, scrollTop;
+
+  $('#dokuman_modal .modal-body').mousedown(function(e) {
+      isDragging = true;
+      $(this).css('cursor', 'grabbing');
+      startX = e.pageX - $(this).offset().left;
+      startY = e.pageY - $(this).offset().top;
+  });
+
+  $(document).on('mouseup', function() {
+      isDragging = false;
+      $('#dokuman_modal .modal-body').css('cursor', 'grab');
+  });
+
+  $('#dokuman_modal .modal-body').mousemove(function(e) {
+      if(!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - $(this).offset().left;
+      const y = e.pageY - $(this).offset().top;
+      
+      // Basit kaydırma mantığı (Burada resmin pozisyonunu ayarlayabilirsin)
+      img.css('transform', `scale(${scale}) translate(${(x - startX)}px, ${(y - startY)}px)`);
+  });
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-preview').forEach(btn => {
       btn.addEventListener('click', () => {
