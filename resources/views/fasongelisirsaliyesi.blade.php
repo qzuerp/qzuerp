@@ -235,7 +235,7 @@
                     		<div class="active tab-pane" id="irsaliye">
                           <div class="my-2 d-flex gap-2">
                             <button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>&nbsp;Seçili Satırları Sil</button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>&nbsp;
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_fasonSuz"><i class="fa fa-filter" style="color: red"></i>
                           </button>
                           </div>
 
@@ -1058,7 +1058,6 @@
           data:{DEPO:DEPO,URETICI:URETICI},
           success:function(res)
           {
-            
             var htmlCode  = " ";
             res.forEach(element => {
               htmlCode += "<tr>";
@@ -1076,6 +1075,7 @@
               htmlCode += "<td><input type='text' class='form-control' value='"+(element.AMBCODE ?? '')+"' disabled><input type='hidden' name='AMBCODE[]' value='"+(element.AMBCODE ?? '')+"'></td>";
 
               htmlCode += "<td><input type='text' class='form-control' value='"+(element.MPSNO ?? '')+"' disabled><input type='hidden' name='JOBNO[]' value='"+(element.MPSNO ?? '')+"'></td>";
+
               // LOCATION
               htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION1 ?? '') + "' disabled><input type='hidden' name='LOCATION1[]' value='" + (element.LOCATION1 ?? '') + "'></td>";
               htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION2 ?? '') + "' disabled><input type='hidden' name='LOCATION2[]' value='" + (element.LOCATION2 ?? '') + "'></td>";

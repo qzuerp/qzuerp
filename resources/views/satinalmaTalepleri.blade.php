@@ -494,7 +494,7 @@
                   <div class="row">
                     <div class="col-12 mb-2">
                       <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                           <select class="form-control select2 js-example-basic-single T_STOK_KODU"
                             onchange="veriGetir(this.value)" data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="T_STOK_KODU" style="width: 100%; height: 30PX">
@@ -509,7 +509,7 @@
                           <input type="hidden" id="T_STOK_KODU">
                           <input type="hidden" id="TI_ARTNO">
                         </div>
-                        <div class="col-6 d-flex gap-3">
+                        <div class="col-8 d-flex gap-3">
                           <button class="btn btn-primary" id="create_order" type="submit" name="kart_islemleri"
                             value="create_order"> <i class="fa-solid fa-plus"></i> Siparişleri Oluştur </button>
                           <button class="btn btn-primary" type="button" id="price_list"><i class="fa-solid fa-tags"></i>
