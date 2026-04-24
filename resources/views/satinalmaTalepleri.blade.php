@@ -622,15 +622,17 @@
                             <tr>
                               <td><input type="checkbox" style="width:20px;height:20px;" class="row_check no-track"></td>
                               <td>
-                                <input type="text" class="form-control" name="T_STOK_KODU[]" value="{{ $veri->KOD }}"
-                                  readonly>
+                                <input type="hidden" id="kod{{ $veri->TRNUM }}" class="form-control" name="T_STOK_KODU[]" value="{{ $veri->KOD }}" readonly>
+                                <select class="STOK_KODU select2" data-trnum='{{ $veri->TRNUM }}'">
+                                  <option value="{{ $veri->KOD }}">{{ $veri->KOD }}</option>
+                                </select>
                               </td>
 
                               <td style="display: none;">
                                 <input type="hidden" class="form-control" maxlength="6" name="TI_TRNUM[]"
                                   value="{{ $veri->TRNUM }}">
                               </td>
-                              <td style='display: none;'><input type='hidden' class='form-control' name='6[]'
+                              <td style='display: none;'><input type='hidden' class='form-control' name='TI_ARTNO[]'
                                   value='{{ $veri->ARTNO }}'></td>
                               <td>
                                 <input type="text" class="form-control" name="CARI_KOD[]" value="{{ $veri->CARI_KODU }}"
@@ -1176,7 +1178,7 @@
         </div>
       </div>
     </section>
-    @include('components/detayBtnLib')
+    @include("components/detayBtnLib")
     <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
@@ -1211,6 +1213,13 @@
         $('#AGIRLIK').val(veriler[4]);
       }
       $(document).ready(function () {
+
+        $('.STOK_KODU').on('change',function(){
+          var value = $(this).val();
+          var trnum = $(this).data('trnum');
+          $('#kod'+trnum).val(value.split('|||')[0]);
+        });
+
         $('#fiyat_table tfoot th').each(function () {
           var title = $(this).text();
           if (title == "#") {
@@ -1350,6 +1359,25 @@
           });
         });
         $('#STOK_KODU_SHOW').select2({
+          placeholder: 'Stok kodu seç...',
+          ajax: {
+            url: '/stok-kodu-custom-select',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+              return {
+                q: params.term
+              };
+            },
+            processResults: function (data) {
+              return {
+                results: data.results
+              };
+            },
+            cache: true
+          }
+        });
+        $('.STOK_KODU').select2({
           placeholder: 'Stok kodu seç...',
           ajax: {
             url: '/stok-kodu-custom-select',
@@ -1517,11 +1545,10 @@
     <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
     <script>
-
       function fnExcelReport() {
         var tab_text = "";
         var textRange; var j = 0;
-        tab = document.getElementById('example2'); // Excel'e çıkacak tablo id'si
+        tab = document.getElementById('example2');
 
         for (j = 0; j < tab.rows.length; j++) {
           tab_text = tab_text + tab.rows[j].innerHTML + "";
@@ -1529,9 +1556,9 @@
         }
         //Temizleme işlemleri
         tab_text = tab_text + "";
-        tab_text = tab_text.replace(/]*>|<\/A>/g, "");//Linklerinizi temizler
-        tab_text = tab_text.replace(/]*>/gi, ""); //Resimleri temizler
-        tab_text = tab_text.replace(/]*>|<\/input>/gi, ""); // İnput ve Parametreler
+        tab_text = tab_text.replace(/]*>|<\/A>/g, "");
+        tab_text = tab_text.replace(/]*>/gi, "");
+        tab_text = tab_text.replace(/]*>|<\/input>/gi, "");
 
         var ua = window.navigator.userAgent;
         var msie = ua.indexOf("MSIE ");

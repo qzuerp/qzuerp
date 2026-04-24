@@ -67,11 +67,15 @@
     min-width:190px; background:#18181d;
     border:.5px solid rgba(255,255,255,.13); border-radius:11px; padding:4px;
     box-shadow:0 8px 32px rgba(0,0,0,.5);
-    display:none; pointer-events:none; z-index:1;
+    transition: all 0.25s ease-out;
+    transform:scale(0);
+    opacity:0;
+    z-index:1;
+    pointer-events:all;
   }
   .ctx-sub.ctx-sub-right { left:calc(100% + 5px); }
   .ctx-sub.ctx-sub-left  { right:calc(100% + 5px); }
-  .ctx-item:hover > .ctx-sub { display:block; pointer-events:all; }
+  .ctx-item:hover > .ctx-sub { transform:scale(1); opacity:1; }
   
   #ctx-toast {
     position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
