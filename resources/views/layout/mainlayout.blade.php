@@ -482,7 +482,7 @@
       let recent = JSON.parse(localStorage.getItem('recentPages') || '[]');
       recent = recent.filter(item => item.url !== url);
       recent.unshift({ title, url, icon, timestamp: Date.now() });
-      localStorage.setItem('recentPages', JSON.stringify(recent.slice(0, 5)));
+      localStorage.setItem('recentPages', JSON.stringify(recent.slice(0, 7)));
     };
 
     saveRecentPage('{{ $ekranAdi ?? "" }}', '{{ $ekranLink ?? "" }}');

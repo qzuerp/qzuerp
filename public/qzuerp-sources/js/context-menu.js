@@ -341,10 +341,8 @@
           const end = target.selectionEnd;
           const value = target.value;
       
-          // Metni parçala ve yeni metni araya sıkıştır
           target.value = value.substring(0, start) + clipboard + value.substring(end);
       
-          // İmleci yapıştırılan metnin sonuna koy
           target.selectionStart = target.selectionEnd = start + clipboard.length;
           target.focus();
         } 
