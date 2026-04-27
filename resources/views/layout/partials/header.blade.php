@@ -690,19 +690,8 @@
 
             // Title animasyonu
             updateTitleNotification(count) {
-                const { titleInterval, originalTitle } = NotificationState;
-                
-                if (titleInterval) {
-                    clearInterval(titleInterval);
-                    NotificationState.titleInterval = null;
-                }
-                
                 if (count > 0) {
-                    let toggle = false;
-                    NotificationState.titleInterval = setInterval(() => {
-                        toggle = !toggle;
-                        document.title = toggle ? `(${count}) Bildirim` : originalTitle;
-                    }, 1000);
+                    document.title = `(${count}) Bildirim`;
                 } else {
                     document.title = originalTitle;
                 }

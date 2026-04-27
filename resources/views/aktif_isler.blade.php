@@ -11,6 +11,7 @@
     ->leftJoin($firma . 'mmps10t as M10T', 'S31E.JOBNO', '=', 'M10T.JOBNO')
     ->leftJoin($firma . 'mmps10e as M10E', 'M10E.EVRAKNO', '=', 'M10T.EVRAKNO')
     ->leftJoin($firma . 'stok40e as S40E', 'M10E.SIPNO', '=', 'S40E.EVRAKNO')
+    ->leftJoin($firma . 'pers00 as P00', 'P00.KOD', '=', 'S31E.TO_OPERATOR')
     ->leftJoin($firma . 'dosyalar00 as D00', function ($join) {
       $join->on('D00.EVRAKNO', '=', 'S00.KOD')
         ->where('D00.EVRAKTYPE', 'STOK00')
@@ -27,7 +28,8 @@
       'D00.DOSYA',
       'M10T.R_TMYMAMULMIKTAR',
       'M10T.R_YMAMULMIKTAR',
-      'S40E.CHSIPNO'
+      'S40E.CHSIPNO',
+      'P00.AD as OPERATOR_AD'
     )
     ->orderBy('I00.AD', 'asc')
     ->get();
@@ -614,7 +616,7 @@
     /* Detail Row */
     .detail-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 2fr;
       gap: 8px;
       padding-top: 14px;
       border-top: 1px solid #f1f5f9;
@@ -889,9 +891,13 @@
                 <div class="detail-label">Operasyon</div>
                 <div class="detail-value">{{ $is->OPERASYON ?? '—' }}</div>
               </div>
-              <div class="detail-item" style="grid-column: span 2">
+              <div class="detail-item">
                 <div class="detail-label">Sipariş No</div>
                 <div class="detail-value">{{ $is->CHSIPNO ?? '—' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Operatör</div>
+                <div class="detail-value">{{ strtoupper($is->OPERATOR_AD) ?? '—' }}</div>
               </div>
             </div>
 

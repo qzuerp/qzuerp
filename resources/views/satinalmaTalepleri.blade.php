@@ -849,7 +849,7 @@
 
                           if ($SIPARIS_DURUM === 'olanlar') {
                               $veriler = $query->join($database . 'stok47ti as S47TI', 'S47TI.OR_TRNUM', '=', 'S47T.TRNUM')
-                                  ->select('S47T.*', 'S47E.CARIHESAPCODE', 'S00.AD', 'S00.IUNIT')
+                                  ->select('S47T.*', 'S47E.CARIHESAPCODE', 'S47E.id as URL', 'S00.AD', 'S00.IUNIT')
                                   ->selectSub(function ($sub) use ($database) {
                                       $sub->selectRaw('MAX(EVRAKNO)')
                                           ->from($database . 'STOK46T')
@@ -862,7 +862,8 @@
                               $sql = "
                                   SELECT 
                                       S47T.*, 
-                                      S47E.CARIHESAPCODE, 
+                                      S47E.CARIHESAPCODE,
+                                      S47E.id as URL,
                                       S00.AD, 
                                       S00.IUNIT
                                   FROM {$database}stok47t AS S47T
@@ -882,7 +883,7 @@
                           }
                           else
                           {
-                            $veriler = $query->get();
+                            $veriler = $query->get(['S47T.*', 'S47E.CARIHESAPCODE', 'S47E.id as URL', 'S00.AD', 'S00.IUNIT']);
                           }
 
                         @endphp
@@ -903,6 +904,7 @@
                                       <th>Lot No</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
+                                      <th>Git</th>
                                   </tr>
                               </thead>
                               <tfoot class="table-primary">
@@ -920,6 +922,7 @@
                                       <th>Lot No</th>
                                       <th>Talep Evrak No</th>
                                       <th>Sipariş Evrak No</th>
+                                      <th>Git</th>
                                   </tr>
                               </tfoot>
                               <tbody>
@@ -938,6 +941,7 @@
                                           <td>{{ $row->LOTNUMBER }}</td>
                                           <td>{{ $row->EVRAKNO }}</td>
                                           <td>{{ $row->SIPARISNO ?? '' }}</td>
+                                          <td><a class='btn btn-info' href='satinalmaTalepleri?ID={{ $row->URL }}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>
                                       </tr>
                                   @endforeach
                               </tbody>

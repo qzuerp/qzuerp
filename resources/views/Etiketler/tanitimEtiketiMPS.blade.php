@@ -218,7 +218,15 @@
 
                 <div class="data-row">
                     <div class="data-label">İrsaliye No / Tarih</div>
-                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->IRSALIYENO }} - {{ $veriE->IRSALIYE_SERINO }} - {{ $veriE->LOTNUMBER }}"/></div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->IRSALIYENO }} - {{ $veriE->IRSALIYE_SERINO }}"/></div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Lot numarası</div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->LOTNUMBER }}"/></div>
+                </div>
+                <div class="data-row">
+                    <div class="data-label">Malzeme Sertifikası</div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->TEXT1 }}"/></div>
                 </div>
 
             </div>

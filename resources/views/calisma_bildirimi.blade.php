@@ -920,22 +920,8 @@
                   
                   {{-- LİSTE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="liste">
-                      {{-- ============================================================
-                      Çalışma Bildirimi - Liste Sekmesi
-                      Düzeltmeler:
-                        • SQL injection → Laravel query builder ile parametre bağlama
-                        • $_GET key ismi hatası: '$MPSSTOKKODU_B' → 'MPSSTOKKODU_B'
-                        • Çakışan id attribute'ları giderildi
-                        • ENDTARIH/ENDTIME koşullarında yanlış değişken referansı düzeltildi
-                        • ENDTIME1_B input'unun name/id hatası düzeltildi
-                        • Duplicate export butonları tek sete indirildi
-                        • PHP mantığı view'in en üstüne taşındı (separation of concerns)
-                      ============================================================ --}}
 
                   @php
-                  /* ---------------------------------------------------------------
-                    1. FİLTRE PARAMETRELERİNİ GÜVENLİ ŞEKILDE AL
-                    ---------------------------------------------------------------- */
                   $get = fn(string $key): string => trim(request()->get($key, ''));
 
                   $MPSSTOKKODU_B    = $get('MPSSTOKKODU_B');
@@ -959,9 +945,6 @@
                   $URETIM_B         = $get('URETIM_B');
                   $URETIM_E         = $get('URETIM_E');
 
-                  /* ---------------------------------------------------------------
-                    2. AÇILIR KUTU VERİLERİNİ ÇEK
-                    ---------------------------------------------------------------- */
                   $db = trim($kullanici_veri->firma) . '.dbo.';
 
                   $mpsStoklar  = DB::table($db . 'mmps10e')
@@ -988,24 +971,23 @@
                                       ->orderBy('KOD')
                                       ->get(['KOD', 'AD']);
 
-                  /* ---------------------------------------------------------------
-                    3. SORGU — yalnızca SUZ parametresi varsa çalışır
-                    ---------------------------------------------------------------- */
+                                      
                   $kayitlar   = collect();
                   $suzAktif   = request()->has('SUZ');
 
                   if ($suzAktif) {
 
-                      // İKİ TABLO JOIN — sfdc31e (evrak başlık) LEFT JOIN sfdc31t (satırlar)
                       $q = DB::table($db . 'sfdc31e as e')
                               ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
+                              ->leftJoin($db . 'mmps10t as M10T','M10T.JOBNO','=','e.JOBNO')
                               ->select(
                                   'e.EVRAKNO', 'e.TARIH', 'e.ID',
                                   'e.STOK_CODE', 'e.TO_OPERATOR', 'e.OPERASYON',
                                   'e.TO_ISMERKEZI', 't.ISLEM_TURU',
                                   't.BASLANGIC_TARIHI', 't.BASLANGIC_SAATI',
                                   't.BITIS_TARIHI',    't.BITIS_SAATI',
-                                  't.SURE',            'e.SF_MIKTAR'
+                                  't.SURE',            'e.SF_MIKTAR',
+                                  'M10T.R_MIKTART'
                               );
 
                       // Stok kodu
@@ -1047,9 +1029,7 @@
                       $kayitlar = $q->orderBy('e.EVRAKNO', 'DESC')->get();
                   }
 
-                  /* ---------------------------------------------------------------
-                    YARDIMCI: select seçenekleri render yardımcısı
-                    ---------------------------------------------------------------- */
+                  
                   $buildOptions = function(string $valField, string $labelField, $items, string $selected = ''): string {
                       $html = '<option value="">— Seç —</option>';
                       foreach ($items as $item) {
@@ -1062,9 +1042,7 @@
                   };
                   @endphp
 
-                  {{-- ═══════════════════════════════════════════════════════════
-                      SEKME İÇERİĞİ
-                      ═══════════════════════════════════════════════════════════ --}}
+                  
                   <div class="tab-pane" id="liste">
 
                       {{-- ── FİLTRE FORMU ──────────────────────────────────────── --}}
@@ -1286,7 +1264,8 @@
                                           <th>Başlama Saati</th>
                                           <th>Bitiş Tarihi</th>
                                           <th>Bitiş Saati</th>
-                                          <th>Süre</th>
+                                          <th>Gerçekleşen Süre</th>
+                                          <th>Planlanan Süre</th>
                                           <th>Üretilen Miktar</th>
                                           <th></th>
                                       </tr>
@@ -1305,7 +1284,8 @@
                                           <th>Başlama Saati</th>
                                           <th>Bitiş Tarihi</th>
                                           <th>Bitiş Saati</th>
-                                          <th>Süre</th>
+                                          <th>Gerçekleşen Süre</th>
+                                          <th>Planlanan Süre</th>
                                           <th>Üretilen Miktar</th>
                                           <th></th>
                                       </tr>
@@ -1336,6 +1316,7 @@
                                               <td>{{ $r->BITIS_TARIHI }}</td>
                                               <td>{{ $r->BITIS_SAATI }}</td>
                                               <td>{{ $r->SURE }}</td>
+                                              <td>{{ $r->R_MIKTART }}</td>
                                               <td>{{ floor($r->SF_MIKTAR) }}</td>
                                               <td>
                                                   <a class="btn btn-sm btn-primary"

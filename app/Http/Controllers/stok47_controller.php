@@ -482,6 +482,14 @@ class stok47_controller extends Controller
         $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
         
         for ($i = 0; $i < $satir_say2; $i++) {
+          $KKOD = DB::table($firma . 'stok47ti')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TI_TRNUM[$i])->value('KOD');
+
+          if($KKOD != $T_STOK_KODU[$i])
+          {
+            DB::table($firma.'mmps10t')->where('EVRAKNO', $TI_MPS_KODU[$i])->where('R_KAYNAKKODU', $KKOD)->update([
+              'R_KAYNAKKODU' => $T_STOK_KODU[$i],
+            ]);
+          }
 
           $SRNUM = str_pad($i + 1, 6, "0", STR_PAD_LEFT);
           if (in_array($TI_TRNUM[$i], $newTRNUMS2)) { //Yeni eklenen satirlar
@@ -531,6 +539,8 @@ class stok47_controller extends Controller
             ]);
 
           }
+
+          
         }
 
         if(Auth::check()) {
