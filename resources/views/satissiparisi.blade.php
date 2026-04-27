@@ -496,7 +496,7 @@
                             S00.AD AS HammaddeAdi,
                             S00.IUNIT AS HammaddeBirimi,
                             RB.HesaplananHM_YM_Miktar AS ToplamHammaddeMiktari,
-                            min(M10E.EVRAKNO) AS MPS_EVRAKNO
+                            max(M10E.EVRAKNO) AS MPS_EVRAKNO
                         FROM RecursiveBOM RB
                         LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
 	                      LEFT JOIN {$database}mmps10e M10E ON M10E.SIPARTNO = RB.ARTNO

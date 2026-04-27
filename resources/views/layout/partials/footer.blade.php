@@ -271,7 +271,7 @@ $(function() {
             `,
             showCancelButton: true,
             cancelButtonText: 'Kapat',
-            confirmButtonText: '🔍 Nedenini Açıkla',
+            confirmButtonText: '🔍 Neden',
             confirmButtonColor: '#2d3748',
             cancelButtonColor: '#e53e3e',
             reverseButtons: true,
