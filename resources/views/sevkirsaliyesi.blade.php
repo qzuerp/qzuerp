@@ -778,7 +778,7 @@
                         <th>Kod</th>
                         <th>Lot</th>
                         <th>Miktar</th>
-                        <th>>o</th>
+                        <th>Sip No</th>
                         <th>Cari</th>
                         <th>Depo</th>
                         <th>Tarih</th>
@@ -802,22 +802,19 @@
 
                       @php
 
-                      $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok60t.EVRAKNO', '=', 'stok60e.EVRAKNO')->orderBy('stok60e.id', 'ASC')->get();
+                      $evraklar=DB::table($ekranTableE)->leftJoin($ekranTableT, 'stok60t.EVRAKNO', '=', 'stok60e.EVRAKNO')->orderBy('stok60e.id', 'ASC')->get(['stok60e.id as url', 'stok60e.CARIHESAPCODE','stok60e.TARIH', 'stok60e.AMBCODE', 'stok60t.*']);
 
                       foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
-                        echo "<td>".$suzVeri->EVRAKNO."</td>";
-                        echo "<td>".$suzVeri->KOD."</td>";
-                        echo "<td>".$suzVeri->LOTNUMBER."</td>";
-                        echo "<td>".$suzVeri->SF_MIKTAR."</td>";
-                        echo "<td>".$suzVeri->SIPNO."</td>";
-                        echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
-                        echo "<td>".$suzVeri->AMBCODE."</td>";
-                        echo "<td>".$suzVeri->TARIH."</td>";
-
-
-                        echo "<td>"."<a class='btn btn-info' href='sevkirsaliyesi?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
-
+                          echo "<td>".$suzVeri->EVRAKNO."</td>";
+                          echo "<td>".$suzVeri->KOD."</td>";
+                          echo "<td>".$suzVeri->LOTNUMBER."</td>";
+                          echo "<td>".$suzVeri->SF_MIKTAR."</td>";
+                          echo "<td>".$suzVeri->SIPNO."</td>";
+                          echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
+                          echo "<td>".$suzVeri->AMBCODE."</td>";
+                          echo "<td>".$suzVeri->TARIH."</td>";
+                          echo "<td>"."<a class='btn btn-info' href='sevkirsaliyesi?ID=".$suzVeri->url."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
                         echo "</tr>";
 
                       }
