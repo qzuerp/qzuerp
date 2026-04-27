@@ -1316,7 +1316,7 @@
                                               <td>{{ $r->BITIS_TARIHI }}</td>
                                               <td>{{ $r->BITIS_SAATI }}</td>
                                               <td>{{ $r->SURE }}</td>
-                                              <td>{{ $r->R_MIKTART }}</td>
+                                              <td>{{ round($r->R_MIKTART,3) }}</td>
                                               <td>{{ floor($r->SF_MIKTAR) }}</td>
                                               <td>
                                                   <a class="btn btn-sm btn-primary"
