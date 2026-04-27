@@ -2590,7 +2590,7 @@
 			async function hesapla() {
 				let toplam = 0;
 				$(".TOPLANICAK").each(function () {
-					let val = AutoNumeric.getNumber(this);
+					let val = safeGet(this);
 					if (!isNaN(val)) {
 						toplam += val;
 					}
