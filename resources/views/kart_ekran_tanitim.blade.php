@@ -42,7 +42,7 @@
                       $app_list = DB::table($database.'table00')->orderBy('baslik')->get();
                   @endphp
                   @foreach ($app_list as $app)
-                      <option value="{{ $app->KOD }}" {{ $app->KOD == $table ? 'selected' : '' }}>{{ $app->AD }} ({{ $app->KOD }})</option>
+                      <option value="{{ $app->tablo }}" {{ $app->tablo == $table ? 'selected' : '' }}>{{ $app->baslik }} ({{ $app->tablo }})</option>
                   @endforeach
               </select>
               <button type="submit" class="btn btn-primary">Kaydet</button>
