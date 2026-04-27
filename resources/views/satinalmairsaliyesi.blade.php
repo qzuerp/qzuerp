@@ -519,7 +519,7 @@
 																			class="form-control" maxlength="6" name="TRNUM[]"
 																			value="{{ $veri->TRNUM }}"></td>
 																	<td><input type="text" class="form-control"
-																			name="KOD_SHOW_T" value="{{ $veri->KOD }}"
+																			name="KOD" value="{{ $veri->KOD }}"
 																			disabled><input type="hidden" class="form-control"
 																			name="KOD[]" value="{{ $veri->KOD }}"></td>
 																	<td><input type="text" class="form-control"
@@ -841,6 +841,7 @@
 																	<th>Kalite Kontrol</th>
 																	<th>Bakiye</th>
 																	<th>Termin Tar.</th>
+																	<th>Git</th>
 																</tr>
 															</thead>
 
@@ -857,6 +858,7 @@
 																	<th>Kalite Kontrol</th>
 																	<th>Bakiye</th>
 																	<th>Termin Tar.</th>
+																	<th>Git</th>
 																</tr>
 															</tfoot>
 
@@ -870,11 +872,22 @@
 																	$TARIH_B     = trim($_GET['TARIH_B'] ?? '');
 																	$TARIH_E     = trim($_GET['TARIH_E'] ?? '');
 
-																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, Q02E.BAGLANTILI_EVRAKNO,Q02E.EVRAKNO AS GKK_EVRAK, S10A.AKTIF_STOK, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
+																	$sql_sorgu = 'SELECT 
+																			S29E.EVRAKNO AS SIPNUM,
+																			S29E.id AS ID,
+																			Q02E.BAGLANTILI_EVRAKNO,
+																			Q02E.EVRAKNO AS GKK_EVRAK, 
+																			S10A.AKTIF_STOK, 
+																			C00.AD AS TEDARIKCI,
+																			S46T.SF_BAKIYE,
+																			S46T.TERMIN_TAR,
+																			S29T.*
+																		FROM ' . $database . 'stok29e S29E
 																		LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S29E.CARIHESAPCODE
-																		LEFT JOIN ' . $database . 'STOK46T S29T ON S29T.EVRAKNO = S29E.EVRAKNO
+																		LEFT JOIN ' . $database . 'stok29t S29T ON S29T.EVRAKNO = S29E.EVRAKNO
 																		LEFT JOIN ' . $database . 'QVAL02E Q02E ON Q02E.OR_TRNUM = S29T.TRNUM AND Q02E.EVRAKNO = S29T.EVRAKNO
 																		LEFT JOIN ' . $database . 'stok10a S10A ON S10A.TRNUM = S29T.TRNUM AND S10A.EVRAKNO = S29T.EVRAKNO
+																		LEFT JOIN ' . $database . 'stok46t S46T ON S29T.SIPARTNO = S46T.ARTNO
 																		WHERE 1 = 1';
 
 																	if ($KOD_B !== '') {
@@ -925,6 +938,7 @@
 																			echo "<td><b>" . e($DURUM) . "</b></td>";
 																			echo "<td><b>" . e($row->SF_BAKIYE) . "</b></td>";
 																			echo "<td><b>" . e($row->TERMIN_TAR) . "</b></td>";
+																			echo "<td><a class='btn btn-info' href='satinalmairsaliyesi?ID=".$row->ID."&KOD=".$row->KOD."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 																		echo "</tr>";
 																	}
 																@endphp

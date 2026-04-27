@@ -493,6 +493,8 @@ if (isset($kart_veri)) {
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Yoğunluk</th>
+                      <th>GK_1</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -505,6 +507,8 @@ if (isset($kart_veri)) {
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Yoğunluk</th>
+                      <th>GK_1</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -522,6 +526,8 @@ if (isset($kart_veri)) {
                         echo "<td>".$suzVeri->PRICE."</td>";
                         echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
+                        echo "<td>".$suzVeri->TEXT1."</td>";
+                        echo "<td>".$suzVeri->GK_1."</td>";
 
 
                         echo "<td>"."<a class='btn btn-info' href='fiyat_listesi?ID=".$suzVeri->EVRAKNO."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";

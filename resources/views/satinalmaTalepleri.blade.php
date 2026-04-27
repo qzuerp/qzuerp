@@ -797,7 +797,7 @@
                                               <div class="form-check">
                                                   <input class="form-check-input" type="radio"
                                                         name="SIPARIS_DURUM" id="rd_tumu" value="tumu"
-                                                        {{ $SIPARIS_DURUM === 'tumu' ? 'checked' : '' }}>
+                                                        checked>
                                                   <label class="form-check-label" for="rd_tumu">
                                                       <span class="badge bg-secondary">Tümü</span>
                                                   </label>
@@ -840,16 +840,14 @@
                         @php
                         if (isset($_GET['SUZ'])) {
                           @endphp
-											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
+											      <button class="btn btn-success" onclick="exportTableToExcel('example2')">Excele Aktar</button>
                           @php
 
-                          // Ortak veritabanı değişkenini ve query başlangıcını hazırla
                           $query = DB::table($database . 'stok47t as S47T')
                               ->leftJoin($database . 'STOK47E as S47E', 'S47E.EVRAKNO', '=', 'S47T.EVRAKNO')
                               ->leftJoin($database . 'STOK00 as S00', 'S00.KOD', '=', 'S47T.KOD');
 
                           if ($SIPARIS_DURUM === 'olanlar') {
-                              // 'Olanlar': İlişkili kayıtları getiriyoruz
                               $veriler = $query->join($database . 'stok47ti as S47TI', 'S47TI.OR_TRNUM', '=', 'S47T.TRNUM')
                                   ->select('S47T.*', 'S47E.CARIHESAPCODE', 'S00.AD', 'S00.IUNIT')
                                   ->selectSub(function ($sub) use ($database) {
@@ -881,6 +879,10 @@
                                   ";
 
                               $veriler = DB::select($sql);
+                          }
+                          else
+                          {
+                            $veriler = $query->get();
                           }
 
                         @endphp

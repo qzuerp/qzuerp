@@ -39,7 +39,7 @@
               <select class="select2 w-100" style="margin-bottom:20px;" name="EVRAKTYPE" id="EVRAKTYPE">
                 <option value="" disabled selected>Seç</option>
                   @php
-                      $app_list = DB::table('gecoust')->where('EVRAKNO','APPLIST')->get();
+                      $app_list = DB::table($database.'table00')->orderBy('baslik')->get();
                   @endphp
                   @foreach ($app_list as $app)
                       <option value="{{ $app->KOD }}" {{ $app->KOD == $table ? 'selected' : '' }}>{{ $app->AD }} ({{ $app->KOD }})</option>

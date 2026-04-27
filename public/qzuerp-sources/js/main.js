@@ -1352,7 +1352,7 @@ $(document).ready(function () {
 function focusInputByKod(targetKod) {
   let firstFound = false;
 
-  $('input[name="KOD[]"]').each(function () {
+  $('input[name="KOD[]"], input[name="KOD"]').each(function () {
     const $input = $(this);
     
     const val = $input.val().trim();
@@ -1360,7 +1360,7 @@ function focusInputByKod(targetKod) {
     if (val === targetKod) {
       $('input').css('background-color', '');
 
-      const matched = $(`input[name="KOD[]"]`).filter(function() {
+      const matched = $(`input[name="KOD[]"], input[name="KOD"]`).filter(function() {
         return $(this).val().trim() === targetKod;
       });
 
