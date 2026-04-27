@@ -870,7 +870,7 @@
 																	$TARIH_B     = trim($_GET['TARIH_B'] ?? '');
 																	$TARIH_E     = trim($_GET['TARIH_E'] ?? '');
 
-																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, Q02E.BAGLANTILI_EVRAKNO, S10A.AKTIF_STOK, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
+																	$sql_sorgu = 'SELECT S29E.EVRAKNO AS SIPNUM, Q02E.BAGLANTILI_EVRAKNO,Q02E.EVRAKNO AS GKK_EVRAK, S10A.AKTIF_STOK, C00.AD AS TEDARIKCI, S29T.* FROM ' . $database . 'STOK46E S29E
 																		LEFT JOIN ' . $database . 'cari00 C00 ON C00.KOD = S29E.CARIHESAPCODE
 																		LEFT JOIN ' . $database . 'STOK46T S29T ON S29T.EVRAKNO = S29E.EVRAKNO
 																		LEFT JOIN ' . $database . 'QVAL02E Q02E ON Q02E.OR_TRNUM = S29T.TRNUM AND Q02E.EVRAKNO = S29T.EVRAKNO
@@ -907,11 +907,11 @@
 																	foreach ($tableResults as $row) {
 																		$DURUM = '';
 																		if($row->BAGLANTILI_EVRAKNO == null && $row->AKTIF_STOK == '2'){
-																			$DURUM = 'YAPILACAK';
+																			$DURUM = '';
 																		}
 																		else
 																		{
-																			$DURUM = 'YAPILDI';
+																			$DURUM = $row->GKK_EVRAK;
 																		}
 																		echo "<tr>";
 																			echo "<td><b>" . e($row->SIPNUM) . "</b></td>";

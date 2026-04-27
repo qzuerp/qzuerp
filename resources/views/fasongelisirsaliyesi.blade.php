@@ -268,7 +268,7 @@
                                 <th>Ölçü 1</th>
                                 <th>Ölçü 2</th>
                                 <th>Ölçü 3</th>
-                                <th>Ölçü 4</th>
+                                <th>Ölçü 4</th> 
                                 <th></th>
                               </tr>
 
