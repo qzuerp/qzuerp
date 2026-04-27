@@ -920,7 +920,7 @@
 																	foreach ($tableResults as $row) {
 																		$DURUM = '';
 																		if($row->BAGLANTILI_EVRAKNO == null && $row->AKTIF_STOK == '2'){
-																			$DURUM = '';
+																			$DURUM = 'YAPILACAK';
 																		}
 																		else
 																		{
