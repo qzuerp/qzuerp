@@ -31,7 +31,7 @@ class NotificationController extends Controller
                     ->limit(10)
             ->get();
     
-        salt($EVRAKNO,$EVRAKTYPE);
+        // salt($EVRAKNO,$EVRAKTYPE);
 
         return response()->json([
             'status' => 'active',
@@ -43,7 +43,7 @@ class NotificationController extends Controller
 
     public function salt($EVRAKNO,$EVRAKTYPE)
     {
-        
+
     }
 
     public function markAsRead(Request $request)
