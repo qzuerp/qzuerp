@@ -38,12 +38,12 @@
     ->leftJoin($database . 'stok10a as S10A', function($join) {
         $join->on('t.TRNUM', '=', 'S10A.TRNUM')
              ->where('S10A.EVRAKTIPI', '=', 'STOK29T')
-             ->whereColumn('S10A.EVRAKNO', '=', 't.EVRAKNO'); // İşte sihirli dokunuş
+             ->whereColumn('S10A.EVRAKNO', '=', 't.EVRAKNO');
     })
     ->where('t.EVRAKNO', $kart_veri->EVRAKNO ?? null)
     ->orderBy('t.id', 'ASC')
     ->select([
-        't.*', // Hala t.* diyorsun Eren, hafıza bedava mı sanıyorsun?
+        't.*',
         's.AD as STOK_ADI', 
         's.IUNIT as SF_SF_UNIT',
         'S10A.AKTIF_STOK'

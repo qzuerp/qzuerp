@@ -713,7 +713,13 @@
                 NotificationState.isPolling = true;
 
                 try {
-                    const response = await fetch(`/notifications/poll?lastId=${NotificationState.lastId}`, {
+                    const queryParams = new URLSearchParams({
+                        lastId: NotificationState.lastId,
+                        EVRAKNO: '12345',
+                        EVRAKTYPE: 'SATIS'
+                    });
+
+                    const response = await fetch(`/notifications/poll?${queryParams.toString()}`, {
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
                         signal: AbortSignal.timeout(8000)
                     });

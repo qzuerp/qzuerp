@@ -19,6 +19,8 @@ class NotificationController extends Controller
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
         $lastId = (int) $request->query('lastId', 0);
+        $EVRAKNO = (int) $request->query('EVRAKNO', 0);
+        $EVRAKTYPE = (int) $request->query('EVRAKTYPE', 0);
     
         $notifications = DB::table($firma . 'notifications')
             ->select('*')
@@ -29,12 +31,19 @@ class NotificationController extends Controller
                     ->limit(10)
             ->get();
     
+        salt($EVRAKNO,$EVRAKTYPE);
+
         return response()->json([
             'status' => 'active',
             'notifications' => $notifications,
             'lastId' => $notifications->first()->id ?? $lastId,
             'count' => $notifications->count()
         ]);
+    }
+
+    public function salt($EVRAKNO,$EVRAKTYPE)
+    {
+        
     }
 
     public function markAsRead(Request $request)
