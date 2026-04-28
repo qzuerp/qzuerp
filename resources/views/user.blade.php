@@ -53,6 +53,7 @@
     ['ETKTKART','Etiket Kartı','Sistem & Tanımlar'],['ETIKETBOL','Etiket Bölme','Sistem & Tanımlar'],
     ['musteri_form','Müşteri Formu','Sistem & Tanımlar'],['TMUSTR','Zorunlu Alan Paneli','Sistem & Tanımlar'],
     ['INFO','Ekran Tanıtım Kartı','Sistem & Tanımlar'],['PRYBKM','Periyodik Bakım','Sistem & Tanımlar'],['APIPANEL','Api Paneli','Sistem & Tanımlar'],
+    ['LIB00','Dosya Kütüpanesi','Sistem & Tanımlar'],
   ];
 
   $gruplar = [];

@@ -213,6 +213,7 @@ class stok63_controller extends Controller
             'PKTICIADET' => $PKTICIADET[$i],
             'AMBLJ_TNM' => $AMBLJ_TNM[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
+            'SERINO' => $SERINO[$i],
             'AMBCODE' => $TARGETAMBCODE,
             'MPSNO' => $MPSNO[$i],
             'LOCATION1' => $LOCATION1[$i],

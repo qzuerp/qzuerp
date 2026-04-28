@@ -156,8 +156,6 @@ class dosyalar00_controller extends Controller
         return response()->json(['success' => $msg]);
     }
 
-
-
     private function generateRandomString($length = 10)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -189,7 +187,6 @@ class dosyalar00_controller extends Controller
 
             $dosyaAdi = time() . '.webp';
 
-            // 🔥 Intervention Image v3
             $manager = new ImageManager(new Driver());
 
             $image = $manager->read($dosya);

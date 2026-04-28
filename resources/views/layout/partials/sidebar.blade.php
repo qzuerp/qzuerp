@@ -263,6 +263,7 @@
         @if (in_array('DYS', $kullanici_read_yetkileri))
           <li><a href="dys"><i class='bx bx-file'></i>Doküman Yönetim Kartı</a></li>
         @endif
+        <li><a href="library"><i class='bx bx-file'></i>Dosya kütüpanesi</a></li>
       </ul>
     </li>
 
