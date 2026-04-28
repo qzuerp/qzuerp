@@ -96,7 +96,7 @@ class stok47_controller extends Controller
     $TI_NOT1 = $request->TI_NOT1;
     $T_AK = $request->T_AK;
     $OR_TRNUM = $request->OR_TRNUM;
-    $TI_MPS_KODU = $request->MPS_KODU;
+    $TI_MPS_KODU = $request->TI_MPS_KODU;
     $SIPARIS_DURUM = $request->SIPARIS_DURUM;
 
     if ($KOD == null) {
@@ -482,11 +482,11 @@ class stok47_controller extends Controller
         $updateTRNUMS2 = array_intersect($currentTRNUMS2, $liveTRNUMS2);
         
         for ($i = 0; $i < $satir_say2; $i++) {
-          $KKOD = DB::table($firma . 'stok47ti')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TI_TRNUM[$i])->value('KOD');
-
-          if($KKOD != $T_STOK_KODU[$i])
+          $KKOD = DB::table($firma . 'stok47ti')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TI_TRNUM[$i])->first();
+          
+          if($KKOD->KOD != $T_STOK_KODU[$i])
           {
-            DB::table($firma.'mmps10t')->where('EVRAKNO', $TI_MPS_KODU[$i])->where('R_KAYNAKKODU', $KKOD)->update([
+            DB::table($firma.'mmps10t')->where('EVRAKNO', $KKOD->MPS_KODU)->where('R_KAYNAKKODU', $KKOD->KOD)->update([
               'R_KAYNAKKODU' => $T_STOK_KODU[$i],
             ]);
           }
@@ -638,11 +638,11 @@ class stok47_controller extends Controller
             ->send(new PurchaseOrderEmail('Satın Alma Siparişi',$data));
         }
 
-        return redirect()->route('satinalmaTalepleri')->with('success', 'Siparişler oluşturuldu');
+        return redirect()->back()->with('success', 'Siparişler oluşturuldu');
       case 'delete_order':
         DB::table($firma . 'stok46e')->where('TALEP_EVRAKNO', $EVRAKNO)->delete();
         DB::table($firma . 'stok46t')->where('TALEP_EVRAKNO', $EVRAKNO)->delete();
-        return redirect()->route('satinalmaTalepleri')->with('success', 'Siparişler iptal edildi');
+        return redirect()->back()->with('success', 'Siparişler iptal edildi');
     }
 
   }

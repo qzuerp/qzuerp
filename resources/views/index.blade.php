@@ -2,6 +2,8 @@
 @section('content')
 
     @php
+        use Carbon\Carbon;
+
         if (Auth::check()) { $user = Auth::user(); }
         $kullanici_veri   = DB::table('users')->where('id', $user->id)->first();
         $database         = trim($kullanici_veri->firma) . ".dbo.";
@@ -33,8 +35,8 @@
         $kritik_kalibrasyonlar = [];
 
         foreach ($KALIBRASYONLAR as $k) {
-            $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
-            $ay       = \Carbon\Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI)->month - 1;
+            $kalanGun = Carbon::now()->diffInDays(Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI), false);
+            $ay       = Carbon::parse($k->BIRSONRAKIKALIBRASYONTARIHI)->month - 1;
 
             if ($kalanGun < 0)        { $kalibrasyon_data['gecmis']++;  $kalibrasyon_aralik['Geçmiş']++;   }
             elseif ($kalanGun <= 7)   { $kalibrasyon_data['kritik']++;  $kalibrasyon_aralik['0-7 Gün']++;  }
@@ -74,8 +76,8 @@
         $kritik_fasonsevkler = [];
 
         foreach ($FASONSEVKLER as $f) {
-            $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($f->TERMIN_TAR), false);
-            $ay       = \Carbon\Carbon::parse($f->TERMIN_TAR)->month - 1;
+            $kalanGun = Carbon::now()->diffInDays(Carbon::parse($f->TERMIN_TAR), false);
+            $ay       = Carbon::parse($f->TERMIN_TAR)->month - 1;
 
             if ($kalanGun < 0)       { $fason_data['gecmis']++;  $fason_aralik['Gecikmiş']++;   if($ay>=0&&$ay<12) $fason_aylik_geciken[$ay]++; }
             elseif ($kalanGun <= 7)  { $fason_data['kritik']++;  $fason_aralik['0-7 Gün']++;    if($ay>=0&&$ay<12) $fason_aylik_bekleyen[$ay]++; }
@@ -113,8 +115,8 @@
         $kritik_siparis = [];
 
         foreach ($SATISSIPARISLER as $f) {
-            $kalanGun = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($f->TERMIN_TAR), false);
-            $ay       = \Carbon\Carbon::parse($f->TERMIN_TAR)->month - 1;
+            $kalanGun = Carbon::now()->diffInDays(Carbon::parse($f->TERMIN_TAR), false);
+            $ay       = Carbon::parse($f->TERMIN_TAR)->month - 1;
 
             if ($kalanGun < 0)       { $siparis_data['gecmis']++;  $siparis_aralik['Gecikmiş']++;   if($ay>=0&&$ay<12) $siparis_aylik_geciken[$ay]++; }
             elseif ($kalanGun <= 7)  { $siparis_data['kritik']++;  $siparis_aralik['0-7 Gün']++;    if($ay>=0&&$ay<12) $siparis_aylik_bekleyen[$ay]++; }
@@ -172,6 +174,9 @@
                     ->get();
         } catch (\Exception $e) { $KALITE_AYLIK = collect(); }
 
+        $DOSYALAR = DB::table($database.'LIB00')->count();
+        $DOSYALAR_END = DB::table($database.'LIB00')->orderBy('ID','desc')->first();
+
         // ── Tedarikçi Performans ─────────────────────────────────────
         try {
             $TEDARKCI_PERF = DB::table($database . 'tedarikci00')
@@ -188,8 +193,8 @@
             ->whereNotNull('DOGUM_TARIHI')
             ->get()
             ->map(function ($p) use ($today) {
-                $d  = \Carbon\Carbon::parse($p->DOGUM_TARIHI);
-                $bu = \Carbon\Carbon::create($today->year, $d->month, $d->day)->startOfDay();
+                $d  = Carbon::parse($p->DOGUM_TARIHI);
+                $bu = Carbon::create($today->year, $d->month, $d->day)->startOfDay();
                 if ($bu->lt($today)) $bu->addYear();
                 $p->kalan_gun = $today->diffInDays($bu);
                 $p->dogum_gunu_tarihi = $bu;
@@ -252,6 +257,15 @@
                 'icon'    => 'fa-clipboard-check',
                 'color'   => '#ef4444',
                 'link'     => "satinalmairsaliyesi?SUZ=SUZ&firma={$database}#liste",
+                'progress'=> null,
+            ],
+            [
+                'title'   => 'Toplam Dosyalar',
+                'value'   => $DOSYALAR,
+                'sub'     => 'En son '. Carbon::parse($DOSYALAR_END->created_at)->locale('tr')->translatedFormat('d F Y') .' tarihinde yüklendi',
+                'icon'    => 'fa-book-open',
+                'color'   => '#3bde77',
+                'link'     => "library",
                 'progress'=> null,
             ]
         ];
@@ -957,61 +971,6 @@
                 </div>
                 @endif
 
-                {{-- ══ SATIR 9: İş Emirleri Kanban ══ --}}
-                @if(in_array("MPSGRS", $kullanici_read_yetkileri))
-                <div class="row-mb" data-id="isemirleri">
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3><i class="fa-solid fa-table-columns"></i> İş Emirleri Durumu</h3>
-                            <div style="display:flex;align-items:center;gap:8px">
-                                <span class="chart-badge" style="background:#eff6ff;color:#1d4ed8">{{ $is_emirleri_toplam }} toplam</span>
-                                <span class="drag-handle" title="Taşı"><i class="fa-solid fa-grip-vertical"></i></span>
-                            </div>
-                        </div>
-                        <div class="chart-body">
-                            @if($IS_EMIRLERI->count() > 0)
-                                <div class="kanban-grid">
-                                    @php
-                                        $STATUS = DB::table($database.'gecoust')->where('EVRAKNO','STATUS')->get();
-                                        $kanban_statusler = [];
-                                        foreach($STATUS as $s){
-                                            $kanban_statusler[] = [
-                                                'key' => $s->KOD,
-                                                'label' => $s->AD,
-                                                'bg' => '#fef2f2',
-                                                'color' => '#22c55e',
-                                            ];
-                                        }
-                                    @endphp
-                                    @foreach($kanban_statusler as $ks)
-                                        @php $grp = DB::table($database.'mmps10e')->where('STATUS', $ks['key'])->get(); @endphp
-                                        <div class="kanban-col" style="background:{{ $ks['bg'] }}">
-                                            <div class="kanban-col-title" style="color:{{ $ks['color'] }}">
-                                                {{ $ks['label'] }}
-                                                <span class="kanban-count" style="background:{{ $ks['color'] }}">{{ $grp->count() }}</span>
-                                            </div>
-                                            @forelse($grp as $ie)
-                                                <a href="mpsgiriskarti?ID={{ $ie->id }}" class="kanban-card" style="border-left-color:{{ $ks['color'] }}">
-                                                    <div class="kanban-card-ad">{{ $ie->MAMULSTOKKODU }}</div>
-                                                    <div class="kanban-card-mik">{{ number_format($ie->TAMAMLANAN_URETIM_FISI_MIKTARI,0,'.',',') }} adet</div>
-                                                </a>
-                                            @empty
-                                                <div class="kanban-empty">Kayıt yok</div>
-                                            @endforelse
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @else
-                                <div class="empty-recent" style="padding:40px">
-                                    <i class="fa-solid fa-clipboard-list"></i>
-                                    <p style="font-size:12px">İş emri bulunamadı veya endpoint bağlanamadı</p>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                @endif
-
             </div>{{-- /#sortable-dashboard --}}
 
             {{-- ══ DOĞUM GÜNÜ MODAL ══ --}}
@@ -1031,7 +990,7 @@
                                     @forelse($yaklasanlar as $p)
                                         <tr class="{{ $p->kalan_gun == 0 ? 'table-success' : 'table-warning' }}">
                                             <td>{{ $p->AD }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($p->DOGUM_TARIHI)->format('d.m.Y') }}</td>
+                                            <td>{{ Carbon::parse($p->DOGUM_TARIHI)->format('d.m.Y') }}</td>
                                             <td>{{ $p->kalan_gun == 0 ? '🎉 Bugün' : $p->kalan_gun . ' gün' }}</td>
                                         </tr>
                                     @empty

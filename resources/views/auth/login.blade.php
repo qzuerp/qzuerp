@@ -1,3 +1,6 @@
+@php
+  DB::statement("UPDATE users SET is_logged_in = 0 WHERE last_activity < DATEADD(hour, -4, GETDATE())");
+@endphp
 <!DOCTYPE html>
 <html lang="tr">
 <head>
