@@ -911,7 +911,8 @@
 
             $('button, input[type="submit"], input[type="button"]').prop('disabled', true);
             $('.kopyalaBtn').prop('disabled', false);
-            $('#yazdir').prop('disabled', false);
+            $('#yazdir button').prop('disabled', false);
+            $('.header-container button').prop('disabled', false);
             $('form').on('submit', function(e) {
                 e.preventDefault();
                 return false;
