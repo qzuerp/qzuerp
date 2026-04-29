@@ -715,7 +715,7 @@
                 try {
                     const queryParams = new URLSearchParams({
                         lastId: NotificationState.lastId,
-                        EVRAKNO: '{{ @$kart_veri->EVRAKNO ?? @$kart_veri->KOD ?? 'pass' }}',
+                        EVRAKNO: '{{ @$kart_veri->EVRAKNO ?? @$kart_veri->KOD ?? @$kart_veri->DOKUMAN_NO ?? 'pass' }}',
                         EVRAKTYPE: '{{ $ekranRumuz ?? 'pass' }}'
                     });
 
