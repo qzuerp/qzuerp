@@ -735,6 +735,10 @@
                     {
                         setReadOnlyMode(data.salt.name);
                     }
+                    else
+                    {
+                        setEditableMode();
+                    }
 
                     if (data.notifications?.length > 0) {
                         NotificationState.lastId = data.lastId;
@@ -911,6 +915,13 @@
                 e.preventDefault();
                 return false;
             });
+        }
+        function setEditableMode() {
+            $('#salt_info').text(''); 
+            
+            $('button, input[type="submit"], input[type="button"]').prop('disabled', false);
+            
+            $('form').off('submit'); 
         }
     })();
 
