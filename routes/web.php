@@ -564,6 +564,7 @@ Route::group(['middleware' => ['auth']], function() {
     */
     Route::get('/notifications/poll', [NotificationController::class, 'poll']);
     Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead']);
+    Route::post('/empty_modul', [NotificationController::class, 'empty_modul']);
 
     /*
     |--------------------------------------------------------------------------

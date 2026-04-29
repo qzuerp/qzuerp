@@ -685,7 +685,7 @@ class stok29_controller extends Controller
       DB::table($firma.'QVAL02T')->insert([
         'EVRAKNO' => $NEXT_EVRAKNO,
         // Zaten her kalıte kontrolü için bir evrak oluşturuluyor o yüzden ekranda her seferinden TRNUM tekrar hesaplamak yerine her satır için sırayla SRNUM vermek daha mantıklı
-        'TRNUM' => $SRNUM[$i],
+        'TRNUM' => $SRNUM,
         'QS_VARCODE'             => $KOD[$i],
         'QS_VARINDEX'            => $OLCUM_NO[$i],
         'QS_VALUE'               => $OLCUM_SONUC[$i],

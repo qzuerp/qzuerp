@@ -625,7 +625,7 @@
             originalTitle: document.title,
             titleInterval: null,
             pollingTimeout: null,
-            POLL_INTERVAL: 60000,
+            POLL_INTERVAL: 45000,
             
             // DOM elementleri cache'le
             elements: {
@@ -710,7 +710,7 @@
         const NotificationAPI = {
             async poll() {
                 if (NotificationState.isPolling) return;
-                NotificationState.isPolling = true;
+                // NotificationState.isPolling = true;
 
                 try {
                     const queryParams = new URLSearchParams({
@@ -723,25 +723,18 @@
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
                         signal: AbortSignal.timeout(8000)
                     });
+
                     if(response.message == 'Unauthenticated')
                     {
                         location.href = '/login';
                     }
-
-                    if (!response.ok)
-                    {
-                        location.href = '/login';
-                        throw new Error('Network error');
-                    }
-
-                    if(response.salt == true)
-                    {
-                        console.log('deneme');
-                        setReadOnlyMode();
-                    }
-                        
-
+                    
                     const data = await response.json();
+
+                    if(data.salt.durum == true)
+                    {
+                        setReadOnlyMode(data.salt.name);
+                    }
 
                     if (data.notifications?.length > 0) {
                         NotificationState.lastId = data.lastId;
@@ -897,21 +890,31 @@
             PollingScheduler.stop();
             Utils.stopTitleNotification();
         });
+
+        window.addEventListener('pagehide', () => {
+            sendRequest();
+        });
+        function sendRequest() {
+            const data = new FormData();
+            data.append('_token', $('meta[name="csrf-token"]').attr('content'));
+            data.append('EVRAKNO', '{{ @$kart_veri->EVRAKNO ?? @$kart_veri->KOD ?? "pass" }}');
+            data.append('EVRAKTYPE', '{{ $ekranRumuz ?? "pass" }}');
+
+            navigator.sendBeacon('/empty_modul', data);
+        }
+        function setReadOnlyMode(name) {
+            $('#salt_info').text('Bu evrakı '+ name + ' kullanıyor. sadece okuma yetkisi verildi.');
+
+            $('button, input[type="submit"], input[type="button"]').prop('disabled', true);
+            $('#yazdir').prop('disabled', false);
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        }
     })();
 
-    function setReadOnlyMode() {
-        // 1. Kullanıcıyı uyar
-        mesaj('Bu evrak salt okunur durumda', 'info');
 
-        // 2. Button'ları ve form'daki butonları kilitle (a etiketlerine dokunma)
-        $('button, input[type="submit"], input[type="button"]').prop('disabled', true);
-
-        // 3. Form gönderimini engelle
-        $('form').on('submit', function(e) {
-            e.preventDefault();
-            return false;
-        });
-    }
 </script>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

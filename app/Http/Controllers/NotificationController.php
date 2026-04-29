@@ -38,7 +38,7 @@ class NotificationController extends Controller
             'notifications' => $notifications,
             'lastId' => $notifications->first()->id ?? $lastId,
             'count' => $notifications->count(),
-            'salt' => $this->salt($EVRAKNO,$EVRAKTYPE)
+            'salt' => $this->salt($EVRAKNO,$EVRAKTYPE),
         ]);
     }
 
@@ -50,8 +50,10 @@ class NotificationController extends Controller
         $firma = trim($u->firma).'.dbo.';
         
         $durum = true;
+        $name = '';
+        
+        DB::statement("DELETE FROM D7WLOCK WHERE ACTIVE_TIME < DATEADD(second, -45, GETDATE())");
 
-        DB::statement("DELETE FROM D7WLOCK WHERE ACTIVE_TIME < DATEADD(minute, -5, GETDATE())");
         $salt = DB::table($firma.'D7WLOCK')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTYPE', $EVRAKTYPE)->first();
 
         if (!$salt) {
@@ -59,7 +61,8 @@ class NotificationController extends Controller
                 'EVRAKNO' => $EVRAKNO,
                 'EVRAKTYPE' => $EVRAKTYPE,
                 'ACTIVE_TIME' => now(),
-                'USER_ID' => $u->id
+                'USER_ID' => $u->id,
+                'USER_NAME' => $u->name
             ]);
             $durum = false;
         }
@@ -68,15 +71,34 @@ class NotificationController extends Controller
             if($salt->USER_ID != $u->id)
             {
                 $durum = true;
+                $name = $salt->USER_NAME;
             }
             else
             {
-                DB::table($table)->where('id', $lock->id)->update(['ACTIVE_TIME' => now()]);
+                DB::table($firma.'D7WLOCK')->where('ID', $salt->ID)->update(['ACTIVE_TIME' => now()]);
                 $durum = false;
             }
         }
 
-        return $durum;
+        return [
+            'durum' => $durum,
+            'name' => $name
+        ];
+    }
+
+    public function empty_modul(Request $request)
+    {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        DB::table($firma.'D7WLOCK')
+        ->where('EVRAKNO',$request->EVRKANO)
+        ->where('EVRAKTYPE',$request->EVRKTYPE)
+        ->where('USER_ID', $u->id)
+        ->delete();
+
+        return response()->json(['success' => true]);
     }
 
     public function markAsRead(Request $request)
