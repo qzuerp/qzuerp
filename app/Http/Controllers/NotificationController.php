@@ -52,14 +52,14 @@ class NotificationController extends Controller
         $durum = true;
         $name = '';
 
+        DB::statement("DELETE FROM ".$firma."D7WLOCK WHERE ACTIVE_TIME < DATEADD(second, -45, GETDATE())");
+
         if($EVRAKNO == 'pass' || $EVRAKTYPE == 'pass')
         {
             return [
                 'durum' => 'false',
             ];
         }
-
-        DB::statement("DELETE FROM ".$firma."D7WLOCK WHERE ACTIVE_TIME < DATEADD(second, -45, GETDATE())");
 
         $salt = DB::table($firma.'D7WLOCK')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTYPE', $EVRAKTYPE)->first();
 
