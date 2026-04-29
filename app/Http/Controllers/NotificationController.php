@@ -52,7 +52,7 @@ class NotificationController extends Controller
         $durum = true;
         $name = '';
 
-        if($EVRAKNO == 'pass' && $EVRAKTYPE == 'pass')
+        if($EVRAKNO == 'pass' || $EVRAKTYPE == 'pass')
         {
             return [
                 'durum' => 'false',
