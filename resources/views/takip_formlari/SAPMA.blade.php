@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-md-1">
                     <label class="form-label">Kapandı</label>
-                    <input type="checkbox" name="sapma_ap10" {{ $kart_veri->sapma_ap10 == 1 ? 'checked' : '' }} value="1" class="form-check-input" id="">
+                    <input type="checkbox" name="sapma_ap10" {{ @$kart_veri->sapma_ap10 == 1 ? 'checked' : '' }} value="1" class="form-check-input" id="">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label ">Değişikliğin Tanımı</label>

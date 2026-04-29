@@ -19,8 +19,8 @@ class NotificationController extends Controller
         $user = Auth::user();
         $firma = trim($user->firma) . '.dbo.';
         $lastId = (int) $request->query('lastId', 0);
-        $EVRAKNO = (int) $request->query('EVRAKNO', 0);
-        $EVRAKTYPE = (int) $request->query('EVRAKTYPE', 0);
+        $EVRAKNO =  $request->query('EVRAKNO', 0);
+        $EVRAKTYPE =  $request->query('EVRAKTYPE', 0);
     
         $notifications = DB::table($firma . 'notifications')
             ->select('*')
@@ -31,19 +31,52 @@ class NotificationController extends Controller
                     ->limit(10)
             ->get();
     
-        // salt($EVRAKNO,$EVRAKTYPE);
+        
 
         return response()->json([
             'status' => 'active',
             'notifications' => $notifications,
             'lastId' => $notifications->first()->id ?? $lastId,
-            'count' => $notifications->count()
+            'count' => $notifications->count(),
+            'salt' => $this->salt($EVRAKNO,$EVRAKTYPE)
         ]);
     }
 
     public function salt($EVRAKNO,$EVRAKTYPE)
     {
+        if(Auth::check()) {
+            $u = Auth::user();
+        }
+        $firma = trim($u->firma).'.dbo.';
+        
+        $durum = true;
 
+        DB::statement("DELETE FROM D7WLOCK WHERE ACTIVE_TIME < DATEADD(minute, -5, GETDATE())");
+        $salt = DB::table($firma.'D7WLOCK')->where('EVRAKNO', $EVRAKNO)->where('EVRAKTYPE', $EVRAKTYPE)->first();
+
+        if (!$salt) {
+            DB::table($firma.'D7WLOCK')->insert([
+                'EVRAKNO' => $EVRAKNO,
+                'EVRAKTYPE' => $EVRAKTYPE,
+                'ACTIVE_TIME' => now(),
+                'USER_ID' => $u->id
+            ]);
+            $durum = false;
+        }
+        else
+        {
+            if($salt->USER_ID != $u->id)
+            {
+                $durum = true;
+            }
+            else
+            {
+                DB::table($table)->where('id', $lock->id)->update(['ACTIVE_TIME' => now()]);
+                $durum = false;
+            }
+        }
+
+        return $durum;
     }
 
     public function markAsRead(Request $request)

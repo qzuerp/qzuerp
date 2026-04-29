@@ -262,7 +262,7 @@
             [
                 'title'   => 'Toplam Dosyalar',
                 'value'   => $DOSYALAR,
-                'sub'     => 'En son '. Carbon::parse(isset($DOSYALAR_END->created_at))->locale('tr')->translatedFormat('d F Y') .' tarihinde yüklendi',
+                'sub'     => $DOSYALAR_END?->created_at ? 'En son ' . Carbon::parse($DOSYALAR_END->created_at)->locale('tr')->translatedFormat('d F Y') . ' tarihinde yüklendi' : 'Henüz yüklenen bir dosya yok',
                 'icon'    => 'fa-book-open',
                 'color'   => '#3bde77',
                 'link'     => "library",

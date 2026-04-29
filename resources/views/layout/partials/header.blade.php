@@ -715,8 +715,8 @@
                 try {
                     const queryParams = new URLSearchParams({
                         lastId: NotificationState.lastId,
-                        EVRAKNO: '12345',
-                        EVRAKTYPE: 'SATIS'
+                        EVRAKNO: '{{ @$kart_veri->EVRAKNO ?? @$kart_veri->KOD ?? 'pass' }}',
+                        EVRAKTYPE: '{{ $ekranRumuz ?? 'pass' }}'
                     });
 
                     const response = await fetch(`/notifications/poll?${queryParams.toString()}`, {
@@ -732,7 +732,13 @@
                     {
                         location.href = '/login';
                         throw new Error('Network error');
-                    } 
+                    }
+
+                    if(response.salt == true)
+                    {
+                        console.log('deneme');
+                        setReadOnlyMode();
+                    }
                         
 
                     const data = await response.json();
@@ -892,6 +898,20 @@
             Utils.stopTitleNotification();
         });
     })();
+
+    function setReadOnlyMode() {
+        // 1. Kullanıcıyı uyar
+        mesaj('Bu evrak salt okunur durumda', 'info');
+
+        // 2. Button'ları ve form'daki butonları kilitle (a etiketlerine dokunma)
+        $('button, input[type="submit"], input[type="button"]').prop('disabled', true);
+
+        // 3. Form gönderimini engelle
+        $('form').on('submit', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    }
 </script>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
