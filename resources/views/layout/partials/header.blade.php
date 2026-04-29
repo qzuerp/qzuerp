@@ -710,7 +710,7 @@
         const NotificationAPI = {
             async poll() {
                 if (NotificationState.isPolling) return;
-                // NotificationState.isPolling = true;
+                NotificationState.isPolling = true;
 
                 try {
                     const queryParams = new URLSearchParams({
@@ -910,6 +910,7 @@
             $('#salt_info').text('Bu evrakı '+ name + ' kullanıyor. sadece okuma yetkisi verildi.');
 
             $('button, input[type="submit"], input[type="button"]').prop('disabled', true);
+            $('.kopyalaBtn').prop('disabled', false);
             $('#yazdir').prop('disabled', false);
             $('form').on('submit', function(e) {
                 e.preventDefault();
