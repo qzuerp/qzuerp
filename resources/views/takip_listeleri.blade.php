@@ -490,7 +490,7 @@
     </div>
 
     <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
@@ -504,6 +504,7 @@
                                     <th>Form Türü</th>
                                     <th>Sapma Parça No</th>
                                     <th>Sapma Değişken Tanımı</th>
+                                    <th>Sapma Tarihi</th>
                                     <th>İç Hata Parça No</th>
                                     <th>8D Parça No</th>
                                     <th>Sipariş No</th>
@@ -517,6 +518,7 @@
                                     <th>Form Türü</th>
                                     <th>Sapma Parça No</th>
                                     <th>Sapma Değişken Tanımı</th>
+                                    <th>Sapma Tarihi</th>
                                     <th>İç Hata Parça No</th>
                                     <th>8D Parça No</th>
                                     <th>Sipariş No</th>
@@ -536,6 +538,7 @@
                                         echo "<td>" . ($FORM_TURLERI[$suzVeri->FORM] ?? 'Seçilmedi') . "</td>";
                                         echo "<td>" . $suzVeri->sapma_parca_no . "</td>";
                                         echo "<td>" . $suzVeri->sapma_degisim_tanimi . "</td>";
+                                        echo "<td>" . $suzVeri->sapma_tarih . "</td>";
                                         echo "<td>" . $suzVeri->ich_part_code . "</td>";
                                         echo "<td>" . $suzVeri->d8_parca_no . "</td>";
                                         echo "<td>" . $suzVeri->d8_sipNo . "</td>";

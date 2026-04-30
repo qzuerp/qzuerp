@@ -71,7 +71,7 @@
                             </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label ">Rapor No</label>
+                    <label class="form-label ">Sipariş No</label>
                     <input type="text" name="sapma_rapor_no" class="form-control" 
                            value="{{ @$kart_veri->sapma_rapor_no ?? '' }}">
                 </div>
