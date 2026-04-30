@@ -409,7 +409,7 @@
                                     </span>
                                   </td>
                                   <td><input type="text" class="form-control AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE[]" value="{{ $veri->AMBCODE }}" readonly></td>
-                                  <td><input type="text" class="form-control SIPNO" name="SIPNO[]" value="{{ $veri->SIPNO }}"></td>
+                                  <td><input type="text" class="form-control SIPNO" name="SIPNO[]" value="{{ $veri->SIPNO }}" readonly></td>
                                   <td><input type="text" class="form-control LOCATION1" id="lok1-{{ $veri->id }}-CAM" name="LOCATION1[]" value="{{ $veri->LOCATION1 }}" readonly></td>
                                   <td><input type="text" class="form-control LOCATION2" id="lok2-{{ $veri->id }}-CAM" name="LOCATION2[]" value="{{ $veri->LOCATION2 }}" readonly></td>
                                   <td><input type="text" class="form-control LOCATION3" id="lok3-{{ $veri->id }}-CAM" name="LOCATION3[]" value="{{ $veri->LOCATION3 }}" readonly></td>
