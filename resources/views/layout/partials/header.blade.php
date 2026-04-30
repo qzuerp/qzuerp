@@ -913,6 +913,7 @@
             $('.kopyalaBtn').prop('disabled', false);
             $('#yazdir button').prop('disabled', false);
             $('.header-container button').prop('disabled', false);
+            $('button[data-bs-dismiss="modal"]').prop('disabled', false);
             $('form').on('submit', function(e) {
                 e.preventDefault();
                 return false;

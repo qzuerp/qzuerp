@@ -496,7 +496,7 @@
                             S00.AD AS HammaddeAdi,
                             S00.IUNIT AS HammaddeBirimi,
                             RB.HesaplananHM_YM_Miktar AS ToplamHammaddeMiktari,
-                            max(M10E.EVRAKNO) AS MPS_EVRAKNO
+                            max(M10E.id) AS MPS_EVRAKNO
                         FROM RecursiveBOM RB
                         LEFT JOIN {$database}STOK00 S00 ON S00.KOD = RB.HM_YM_Kodu
 	                      LEFT JOIN {$database}mmps10e M10E ON M10E.SIPARTNO = RB.ARTNO
@@ -566,8 +566,11 @@
                             {{ $satir->HammaddeBirimi }}
                           </td>
                           <td>
-                            <input type="hidden" name="MPS_EVRAKNO[]" value="{{ $satir->MPS_EVRAKNO }}">
-                            {{ $satir->MPS_EVRAKNO }}
+                            @php
+                              $mpsno = DB::table($database.'mmps10e')->where('id', $satir->MPS_EVRAKNO)->value('EVRAKNO');
+                            @endphp
+                            <input type="hidden" name="MPS_EVRAKNO[]" value="{{ $satir->mpsno }}">
+                            {{ $satir->mpsno }}
                           </td>
                         </tr>
                       @endforeach
