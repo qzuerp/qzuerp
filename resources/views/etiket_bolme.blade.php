@@ -51,9 +51,8 @@
     $sonEvrak=DB::table($ekranTableE)->max('id');
     $sonrakiEvrak=DB::table($ekranTableE)->where('id', '>', $sonID)->min('id');
     $oncekiEvrak=DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
-
   }
-
+  
 @endphp
 
 @section('content')

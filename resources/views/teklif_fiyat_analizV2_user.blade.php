@@ -874,6 +874,8 @@
 									<th>Adet</th>
 									<th>Revizyon</th>
 									<th>Açıklama</th>
+									<th>Müşteri</th>
+									<th>Müşteri Adı</th>
 									<th>#</th>
 								</tr>
 							</thead>
@@ -886,6 +888,8 @@
 									<th>Adet</th>
 									<th>Revizyon</th>
 									<th>Açıklama</th>
+									<th>Müşteri</th>
+									<th>Müşteri Adı</th>
 									<th>#</th>
 								</tr>
 							</tfoot>
@@ -893,7 +897,10 @@
 							<tbody>
 
 								@php
-									$evraklar2 = DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->get();
+									$evraklar2 = DB::table($ekranTableT)
+									->leftJoin($ekranTableE, $ekranTableT.'.EVRAKNO', '=', $ekranTableE.'.EVRAKNO')
+									->leftJoin($database.'cari00','tekl20e.BASE_DF_CARIHESAP','=','cari00.KOD')
+									->orderBy('EVRAKNO', 'ASC')->get(['tekl20t.*', 'tekl20e.BASE_DF_CARIHESAP','cari00.AD']);
 									foreach ($evraklar2 as $key => $suzVeri) {
 										echo "<tr>";
 										echo "<td>" . $suzVeri->EVRAKNO . "</td>";
@@ -902,6 +909,8 @@
 										echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
 										echo "<td>" . $suzVeri->SF_SF_UNIT . "</td>";
 										echo "<td>" . $suzVeri->ACIKLAMA . "</td>";
+										echo "<td>" . $suzVeri->BASE_DF_CARIHESAP . "</td>";
+										echo "<td>" . $suzVeri->AD . "</td>";
 										echo "<td><a class='btn btn-info' href='{$ekranLink}?ID={$suzVeri->EVRAKNO}&KOD={$suzVeri->KOD}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
 										echo "</tr>";
 									}
@@ -1603,6 +1612,20 @@
 										<input type="date" disabled name="TARIH" id="TARIH" data-bs-toggle="tooltip"
 											data-bs-placement="top" data-bs-title="TARIH" class="form-control"
 											value="{{ @$kart_veri->TARIH }}">
+									</div>
+									<div class="col-md-3">
+										<label for="musteri">Müşteri</label>
+										<select name="MUSTERI" id="musteri" data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="BASE_DF_CARIHESAP" class="form-control js-example-basic-single">
+											<option value=" ">Seç</option>
+											@php
+												$musteriler = DB::table($database . 'cari00')->orderBy('id', 'ASC')->get();
+												foreach ($musteriler as $veri) {
+													$selected = ($veri->KOD == @$kart_veri->BASE_DF_CARIHESAP) ? 'selected' : '';
+													echo "<option value='{$veri->KOD}' {$selected}>{$veri->KOD} | {$veri->AD}</option>";
+												}
+											@endphp
+										</select>
 									</div>
 								</div>
 							</div>
