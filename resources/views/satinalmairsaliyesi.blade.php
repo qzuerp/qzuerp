@@ -789,7 +789,7 @@
 														<div style="display:grid; grid-template-columns:120px 1fr 1fr; gap:10px; align-items:center; margin-bottom:1.25rem;">
 														<label style="font-size:13px; font-weight:500; color:#374151;">Tarih</label>
 														<input type="date" class="form-control" name="TARIH_B" id="TARIH_B" style="height:34px; font-size:13px;">
-														<input type="date" class="form-control" name="TARIH_E" id="TARIH_E" style="height:34px; font-size:13px;">
+														<input type="date" class="form-control" name="TARIH_E" style="height:34px; font-size:13px;">
 														</div>
 
 														<div style="display:flex; gap:8px; flex-wrap:wrap;">

@@ -422,15 +422,6 @@
 
                     <div class="vr mx-1"></div>
 
-                    {{-- Tip filtresi --}}
-                    <div class="btn-group btn-group-sm" id="tipFilter">
-                      <button type="button" class="btn btn-outline-secondary active" data-tip="all">Tümü</button>
-                      <button type="button" class="btn btn-outline-success" data-tip="Y">Hammadde</button>
-                      <button type="button" class="btn btn-outline-warning" data-tip="H">Yarı Mamul</button>
-                    </div>
-
-                    <div class="vr mx-1"></div>
-
                     {{-- Arama --}}
                     <input type="text" id="ihtiyac_search" class="form-control form-control-sm"
                           placeholder="Kod veya ad ara..." style="width:200px">
@@ -508,7 +499,6 @@
                         ORDER BY
                             RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu
                           OFFSET 1 ROWS;
-                        
                       ";
                       $sonuc = DB::select($sql, [@$kart_veri->EVRAKNO]);
                   @endphp
@@ -520,7 +510,6 @@
                           <input type="checkbox" id="ihtiyac_select_all" title="Tümünü seç">
                         </th>
                         <th style="width:65px">Seviye</th>
-                        <th style="width:80px">Tip</th>
                         <th>Nihai Mamul</th>
                         <th>Hammadde Kodu</th>
                         <th>Hammadde Adı</th>
@@ -537,13 +526,6 @@
                           </td>
                           <td class="text-center">
                             <span class="badge bg-secondary">{{ $satir->Seviye }}</span>
-                          </td>
-                          <td>
-                            @if($satir->KaynakTipi != 'H')
-                              <span class="badge bg-success">Hammadde</span>
-                            @else
-                              <span class="badge bg-warning text-dark">Yarı Mamul</span>
-                            @endif
                           </td>
                           <td>
                             <input type="hidden" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}">
@@ -1242,18 +1224,6 @@
         $('#secili_sayi').text(secili);
         $('#toplam_sayi').text(gorunen);
       }
-
-      $('#tipFilter button').on('click', function () {
-        $('#tipFilter button').removeClass('active');
-        $(this).addClass('active');
-
-        const tip = $(this).data('tip');
-        $('.ihtiyac-row').each(function () {
-          const goster = tip === 'all' || $(this).data('tip') === tip;
-          $(this).toggle(goster);
-        });
-        updateCounter();
-      });
 
       $('#ihtiyac_search').on('input', function () {
         const q = $(this).val().toLowerCase();

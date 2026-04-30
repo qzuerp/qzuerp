@@ -19,9 +19,10 @@ class stok00_controller extends Controller
 
   public function getEvraklarAjax(Request $request)
   {
-    if(Auth::check()) {
-      $u = Auth::user();
+    if(!Auth::check()) {
+      return;
     }
+    $u = Auth::user();
     $firma = trim($u->firma).'.dbo.';
     $veriler = DB::table($firma.'stok00')
       ->select('id', 'KOD', 'AD', 'IUNIT')
