@@ -1577,7 +1577,7 @@
 				@include('layout.util.logModal', ['EVRAKTYPE' => 'TEKL20', 'EVRAKNO' => @$kart_veri->EVRAKNO])
 			</div>
 
-			<form action="{{ route('V2_maliyetlendire_islemler') }}" method="post" id="verilerForm">
+			<form action="" method="post" id="verilerForm">
 				@csrf
 				<div class="row">
 					<div class="col-12">
