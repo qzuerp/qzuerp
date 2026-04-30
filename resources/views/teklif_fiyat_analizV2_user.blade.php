@@ -1614,6 +1614,7 @@
 									</div>
 
 									<div class="col-md-3">
+										<label for="TARIH">Tarih</label>
 										<input type="date" disabled name="TARIH" id="TARIH" data-bs-toggle="tooltip"
 											data-bs-placement="top" data-bs-title="TARIH" class="form-control"
 											value="{{ @$kart_veri->TARIH }}">
