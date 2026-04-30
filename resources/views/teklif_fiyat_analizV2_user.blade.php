@@ -1608,7 +1608,12 @@
 										<input type="text" class="form-control" maxlength="16" name="firma" id="firma"
 											readonly value="{{ @$kullanici_veri->firma }}">
 									</div>
+									
 									<div class="col-md-6">
+										@include('layout.util.evrakIslemleri')
+									</div>
+
+									<div class="col-md-3">
 										<input type="date" disabled name="TARIH" id="TARIH" data-bs-toggle="tooltip"
 											data-bs-placement="top" data-bs-title="TARIH" class="form-control"
 											value="{{ @$kart_veri->TARIH }}">
