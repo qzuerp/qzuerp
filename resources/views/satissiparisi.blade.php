@@ -569,8 +569,8 @@
                             @php
                               $mpsno = DB::table($database.'mmps10e')->where('id', $satir->MPS_EVRAKNO)->value('EVRAKNO');
                             @endphp
-                            <input type="hidden" name="MPS_EVRAKNO[]" value="{{ $satir->mpsno }}">
-                            {{ $satir->mpsno }}
+                            <input type="hidden" name="MPS_EVRAKNO[]" value="{{ $mpsno }}">
+                            {{ $mpsno }}
                           </td>
                         </tr>
                       @endforeach
