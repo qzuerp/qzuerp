@@ -527,10 +527,10 @@ class calisma_bildirimi_controller extends Controller
 
         $currentTRNUMS = array();
         $liveTRNUMS = array();
-        $currentTRNUMSObj = DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->select('id')->get();
+        $currentTRNUMSObj = DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->select('TRNUM')->get();
 
         foreach ($currentTRNUMSObj as $key => $veri) {
-          array_push($currentTRNUMS, $veri->id);
+          array_push($currentTRNUMS, $veri->TRNUM);
         }
 
         foreach ($TRNUM as $key => $veri) {
@@ -540,11 +540,13 @@ class calisma_bildirimi_controller extends Controller
         $newTRNUMS = array_diff($liveTRNUMS, $currentTRNUMS);
         $updateTRNUMS = array_intersect($currentTRNUMS, $liveTRNUMS);
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
+
         // dd([
         //   "N" => $newTRNUMS,
         //   'U' => $updateTRNUMS,
         //   'D' => $deleteTRNUMS
         // ]);
+        
         for ($i = 0; $i < $satir_say; $i++) {
           if (in_array($TRNUM[$i], $updateTRNUMS)) {
             DB::table($firma . 'sfdc31t')

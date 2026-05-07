@@ -1598,7 +1598,10 @@
       }
 
       function initializeTableEdit() {
-        $(document).on('click', '#veri_table tbody tr', function() {
+        $(document).on('click', '#veri_table tbody tr', function(e) {
+          if ($(e.target).closest('.delete-row').length) {
+            return; 
+          }
           openEditModal($(this));
         });
       }
@@ -1747,6 +1750,7 @@
           <td><input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly></td>
           <td><input type="text" class="tbl-input" name="toplam_sure[]" readonly></td>
           <td style="display: none;"><input type="hidden" name="TRNUM[]" value="${++sonID}"></td>
+          <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
         `);
         
         $("#veri_table tbody").append(row);
