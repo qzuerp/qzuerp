@@ -31,7 +31,7 @@
       'S40E.CHSIPNO',
       'P00.AD as OPERATOR_AD'
     )
-    ->orderBy('I00.AD', 'asc')
+    ->orderBy('I00.KOD', 'asc')
     ->get();
 
   $uretimSay = $isler->where('ISLEM_TURU', 'U')->count();

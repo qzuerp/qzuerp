@@ -9,4 +9,5 @@ interface AccountingInterface
     public function createContact(array $data);
     public function getContacts($code);
     public function getProducts($code);
+    public function getSatisFaturalari($date);
 }

@@ -595,7 +595,7 @@
                   </div>
                 </div>
                   <div>
-                    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+                    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i> --Süz--</button>
                   </div> 
 
                   <div class="row " style="overflow: auto">
@@ -737,7 +737,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;MPS Seç</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> MPS Seç</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -792,7 +792,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -848,7 +848,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz (Satır)</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -939,7 +939,7 @@
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">

@@ -505,8 +505,9 @@ function popupToDropdown(value, inputName, modalName) {
   $("#" + modalName).modal('hide');
 }
 
+let manuelCheck = true;
 function inputTemizle() {
-
+  console.log('denemme');
   $('#kartOlustur').css('display', 'inline');
   $('#kartOlustur2').css('display', 'inline');
   $('#kartDuzenle').hide();
@@ -541,20 +542,16 @@ function inputTemizle() {
 
   const today = new Date();
 
-  // DD/MM/YYYY format istersen gene formatlarsın ama flatpickr direkt Date nesnesiyle çalışıyor
   const formattedDate = today.toLocaleDateString('tr-TR');
 
-  // Eğer sadece <span> ya da <div> içindeyse
   $('#TARIH').text(formattedDate);
   $('#TARIH_E').text(formattedDate);
 
-  // Eğer flatpickr input’larıysa
   let pickerTarih = flatpickr("#TARIH", {});
   let pickerTarihE = flatpickr("#TARIH_E", {});
 
   pickerTarih.setDate(today, true);
   pickerTarihE.setDate(today, true);
-
 }
 
 function kartKopyala() {
@@ -638,7 +635,12 @@ function inputTemizle2() {
     });
     TARIH_E_FP.setDate(today, true);
   }
-
+  $('#salt_info').text(''); 
+            
+  $('button, input[type="submit"], input[type="button"]').prop('disabled', false);
+  
+  $('form').off('submit');
+  manuelCheck = false;
 }
 function exportTableToExcel(table) {
   $('#' + table + ' tfoot').remove();
@@ -646,14 +648,15 @@ function exportTableToExcel(table) {
     exclude: ".noExport",
     name: "Sayfa 1",
     filename: "indir",
+
     fileext: ".xlsx",
     preserveColors: true
   });
 
-
   setTimeout(() => {
     location.reload();
   }, 5000);
+  
 }
 function inputTemizle3() {
   $('#kartOlustur').css('display', 'inline');
@@ -1264,6 +1267,26 @@ $(document).ready(function () {
     }
 
     $('header').css('opacity', opacity);
+  });
+
+  $('.STOK_KODU_SHOW').select2({
+    placeholder: 'Stok kodu seç...',
+    ajax: {
+        url: '/stok-kodu-custom-select',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                q: params.term
+            };
+        },
+        processResults: function (data) {
+            return {
+                results: data.results
+            };
+        },
+        cache: true
+    }
   });
 });
 function mesaj(str, type) {

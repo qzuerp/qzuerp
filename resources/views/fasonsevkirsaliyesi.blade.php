@@ -243,7 +243,7 @@ if (isset($kart_veri)) {
 
                   <div class="nav-tabs-custom">
                   	<ul class="nav nav-tabs">
-                  		<li class="nav-item"><a href="#irsaliye" id="irsaliyeTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text"></i>&nbsp;&nbsp;İrsaliye</a></li>
+                  		<li class="nav-item"><a href="#irsaliye" id="irsaliyeTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text"></i> İrsaliye</a></li>
                   		<!-- <li class="nav-item"><a href="#fasonSuz" id="fasonSuzTab" class="nav-link" data-bs-toggle="tab">Fason Süz</a></li> -->
                       <li class="nav-item" ><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                       <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
@@ -288,7 +288,7 @@ if (isset($kart_veri)) {
                           <th></th>
                         </tr>
 
-                        <tr class="satirEkle" style="background-color:#3c8dbc">
+                        <tr class="satirEkle"  >
                           <td>#</td>
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td style="display:none;">
@@ -494,7 +494,7 @@ if (isset($kart_veri)) {
 
                   <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
                   <i class='fa fa-filter' style='color: WHİTE'></i>
-                    &nbsp;&nbsp;--Süz--</button>
+                     --Süz--</button>
               
 
                     @if(@$_GET["SUZ"])
@@ -628,7 +628,7 @@ if (isset($kart_veri)) {
               <div class="modal-content">
 
                           <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                            <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
                           </div>
                           <div class="modal-body">
                             <div class="row">
@@ -692,7 +692,7 @@ if (isset($kart_veri)) {
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz (Satır)</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)</h4>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -770,7 +770,7 @@ if (isset($kart_veri)) {
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Stok Kodu Seç</h4>
                   </div>
                   <div class="modal-body">
                     <div class="row" style="overflow: auto">
@@ -809,7 +809,7 @@ if (isset($kart_veri)) {
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Seç</h4>
+                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Sipariş Seç</h4>
                   </div>
                   <div class="modal-body">
                     <div class="row" style="overflow: auto">
@@ -848,7 +848,7 @@ if (isset($kart_veri)) {
               <div class="modal-content">
 
                 <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
                 </div>
                 <div class="modal-body">
                   <div class="row" style="overflow:auto;">
@@ -923,7 +923,7 @@ if (isset($kart_veri)) {
               <div class="modal-content">
 
                 <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                  <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
                 </div>
                 <div class="modal-body">
                   <div class="row" style="overflow:auto;">
@@ -996,7 +996,7 @@ if (isset($kart_veri)) {
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Fason Seç</h4>
+                      <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Fason Seç</h4>
                     </div>
                     <div class="modal-body">
                       @php

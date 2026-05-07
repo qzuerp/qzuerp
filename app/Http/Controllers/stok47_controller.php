@@ -484,7 +484,7 @@ class stok47_controller extends Controller
         for ($i = 0; $i < $satir_say2; $i++) {
           $KKOD = DB::table($firma . 'stok47ti')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $TI_TRNUM[$i])->first();
           
-          if($KKOD->KOD != $T_STOK_KODU[$i])
+          if(isset($KKOD) && $KKOD->KOD != $T_STOK_KODU[$i])
           {
             DB::table($firma.'mmps10t')->where('EVRAKNO', $KKOD->MPS_KODU)->where('R_KAYNAKKODU', $KKOD->KOD)->update([
               'R_KAYNAKKODU' => $T_STOK_KODU[$i],
@@ -577,11 +577,12 @@ class stok47_controller extends Controller
               'TALEP_EVRAKNO' => $EVRAKNO
             ]);
           }
-
+          
           $STOK = DB::table($firma . 'stok00')->where('KOD', $T_STOK_KODU[$i])->first();
-          DB::table($firma . 'stok47t')->where('KOD',  $T_STOK_KODU[$i])->update([
+          DB::table($firma . 'stok47t')->where('TRNUM',  $OR_TRNUM[$i])->update([
             'AK' => 'K'
           ]);
+
           $CTRNUM = str_pad($i + 1,6,'0',STR_PAD_LEFT);
           DB::table($firma . 'stok46t')->insert([
             'TRNUM' => $CTRNUM,
@@ -594,7 +595,7 @@ class stok47_controller extends Controller
             'FIYAT_PB' => $FIYAT_PB[$i],
             'TERMIN_TAR' => $TI_TERMIN_TAR[$i],
             'SF_SF_UNIT' => $STOK->IUNIT,
-            // 'ARTNO' => $request->TI_ARTNO[$i],
+            //'ARTNO' => $request->TI_ARTNO[$i],
             'TALEP_EVRAKNO' => $EVRAKNO,
             'TALEP_ARTNO' => $EVRAKNO . $TI_TRNUM[$i],
             'LOTNUMBER' => $TI_LOTNUMBER[$i],
@@ -611,6 +612,14 @@ class stok47_controller extends Controller
             'url' => 'satinalmasiparisi?ID='.$EVRAKID
           ]);
         }
+
+        $count = DB::table($firma . 'stok47t')->where('EVRAKNO', $EVRAKNO)->where('AK','K')->count();
+        if($count == $satir_say2) {
+          DB::table($firma.'stok47e')->where('EVRAKNO', $EVRAKNO)->update([
+            'AK' => 'K'
+          ]);
+        }
+
         FunctionHelpers::apply_mail_settings();
 
         $data = [

@@ -9,12 +9,18 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\PurchaseOrderEmail;
 use PDF;
+use Jenssegers\Agent\Agent;
 
 class stok46_controller extends Controller
 {
 
   public function index()
   {
+    $agent = new Agent();
+    // dd($agent->getUserAgent());
+    // if($agent->isMobile() || $agent->isTablet()){
+    //   dd('Mobil veya Tablet yakalandı!');
+    // }
     $sonID=DB::table('stok46e')->min('id');
 
     return view('satinalmasiparisi')->with('sonID', $sonID);

@@ -24,7 +24,7 @@
         $sonID = $_GET['ID'];
     }
     else{
-        $sonID = DB::table($ekranTableE)->max('id');
+        $sonID = DB::table($ekranTableE)->max('ID');
     }
     $sonID = intval($sonID);
     $kart_veri = DB::table($ekranTableE)
@@ -47,7 +47,7 @@
         @include('layout.util.logModal',['EVRAKTYPE' => 'CGCV70','EVRAKNO'=>@$kart_veri->EVRAKNO])
         
         <section class="content">
-            <form action="cgc70_islemler" method="post">
+            <form action="cgc70_islemler" method="post" id="verilerForm">
                 @csrf
                 <div class="row">
                     <div class="col-12">

@@ -510,7 +510,7 @@ $(function(){
         (f.BASLIK||'').toLowerCase().includes(q) ||
         (f.ACIKLAMA||'').toLowerCase().includes(q) ||
         (f.URL||'').toLowerCase().includes(q);
-      var mt = !t || extCls(f.URL.split('.')[1])===t;
+      var mt = !t || extCls(f.URL.split('.').pop())===t;
       return mq && mt;
     });
 
@@ -546,8 +546,8 @@ $(function(){
     $('#lemp').hide();
 
     var rows = $.map(slice, function(f){
-      var ec  = extCls(f.URL.split('.')[1]);
-      var el  = f.URL.split('.')[1];
+      var ec  = extCls(f.URL.split('.').pop());
+      var el  = f.URL.split('.').pop();
       var nm  = esc(f.BASLIK||f.URL);
       var dc  = f.ACIKLAMA ? esc(f.ACIKLAMA) : '';
       var del = canDel

@@ -864,7 +864,7 @@
 
 				<div class="modal-header">
 					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-							style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+							style='color: blue'></i> Evrak Süz</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -930,7 +930,7 @@
 			<div class="modal-content">
 				<input type="hidden" id="HISTORY_OR_TRNUM">
 				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Geçmiş Teklifler</h4>
+					<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Geçmiş Teklifler</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row" style="overflow: auto">
@@ -1454,7 +1454,7 @@
 												<th style="text-align:right;">#</th>
 											</tr>
 
-											<tr class="satirEkle2" style="background-color:#3c8dbc">
+											<tr class="satirEkle2"  >
 												<td>
 													<button type="button" class="btn btn-default add-row" id="addRow2"><i
 															class="fa fa-plus" style="color: blue"></i></button>
@@ -1797,7 +1797,7 @@
 																	<th style="min-width:170px; font-size: 13px !important;">
 																		Açıklama</th>
 																</tr>
-																<tr class="satirEkle" style="background-color:#3c8dbc">
+																<tr class="satirEkle"  >
 																	<td>
 																		<button type="button" class="btn btn-default"
 																			id="addRow"><i class="fa fa-plus"
@@ -2118,6 +2118,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5"></script>
 								
 		<script>
+			isSubmit = true;
 			$('.get_gecmis').on('click',function(){
 				let KOD = $(this).data('kod');
 				$('#HISTORY_OR_TRNUM').val($(this).data('or_trnum'));

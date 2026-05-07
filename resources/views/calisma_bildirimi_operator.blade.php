@@ -72,13 +72,17 @@
 @endphp
 @section('content')
 <style>
-.sf-indicator {
-  --sf-indicator-size: 18px;
-  --sf-indicator-green: #0bbf0b;
-  --sf-indicator-red: #c51b1b;
-  --sf-indicator-orange: #db8719;
-}
-.sf-indicator {
+  #kartKopyalama
+  {
+    display: none !important;
+  }
+  .sf-indicator {
+    --sf-indicator-size: 18px;
+    --sf-indicator-green: #0bbf0b;
+    --sf-indicator-red: #c51b1b;
+    --sf-indicator-orange: #db8719;
+  }
+  .sf-indicator {
     display: flex;
     align-items: center;
     justify-content: end;
@@ -645,7 +649,7 @@
                                   <th>Bozuldan parça adı</th>
                                   <th>Hatalı ürün adedi</th>
                                 </tr>
-                                <tr class="satirEkle" style="background-color:#3c8dbc">
+                                <tr class="satirEkle"  >
 
                                   <td><button type="button" type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                   <td style="display:none;"></td>
@@ -729,7 +733,7 @@
                                 <th>#</th>
                               </tr>
 
-                              <tr class="satirEkle" style="background-color:#3c8dbc">
+                              <tr class="satirEkle"  >
 
                                 <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                 <td style="display:none;"></td>
@@ -1003,7 +1007,7 @@
 							@csrf
 							<div class="modal-header">
 								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check'
-										style='color: blue'></i>&nbsp;&nbsp;Prosess Kalite Kontrol</h4>
+										style='color: blue'></i> Prosess Kalite Kontrol</h4>
 							</div>
 							<div class="modal-body">
 								<!-- İşlem Bilgileri -->
@@ -1094,7 +1098,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <div style='display:flex; justify-content: space-between;'>
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;MPS Evrakı Seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> MPS Evrakı Seç</h4>
               </div>
             </div>
             <div class="modal-body">
@@ -1137,8 +1141,9 @@
                         M10E.MAMULSTOKKODU,
                         M10E.MAMULSTOKADI,
                         M10E.SIPNO FROM ".$database." mmps10t M10T 
-                        LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO 
-                        WHERE M10T.R_KAYNAKTYPE = 'I' AND ACIK_KAPALI = 'A'";
+                        LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO
+                        LEFT JOIN ".$database." imlt01 IM01 ON IM01.KOD = M10T.R_KAYNAKKODU 
+                        WHERE M10T.R_KAYNAKTYPE = 'I' AND M10T.R_ACIK_KAPALI = 'A' AND IM01.GK_1 = 'OPTLS'";
 
                       $mmps10t_evraklar = DB::select($sql_sorgu);
 
@@ -1337,7 +1342,7 @@
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
@@ -2244,12 +2249,11 @@
                   icon: "warning",
                   allowOutsideClick: true,
                   allowEscapeKey: true,
-                  showConfirmButton: true,
+                  showConfirmButton: false,
                   showCancelButton: true,
-                  confirmButtonText: '<a href="/calisma_bildirimi_oprt?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
+                  confirmButtonText: '<a href="/calisma_bildirimi?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
                   cancelButtonText: "İptal",
-                }).then((result) => {
-                  if (result.dismiss === Swal.DismissReason.cancel) {
+                  didClose: () => {
                     $('#X_T_ISMERKEZI').val('').trigger('change');
                   }
                 });

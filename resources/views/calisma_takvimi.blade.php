@@ -952,7 +952,7 @@
                             <th>Açıklama</th>
                         </tr>
 
-                        <tr class="satirEkle" style="background-color:#3c8dbc">
+                        <tr class="satirEkle"  >
                             <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
                             <td><input type='date' class='form-control' id='B_GUN' ></td>
                             <td><input type='time' class='form-control' id='B_SAAT'></td>

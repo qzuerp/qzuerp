@@ -2,6 +2,9 @@
   $kullanici_read_yetkileri = explode("|", $user->read_perm);
   $kullanici_write_yetkileri = explode("|", $user->write_perm);
   $kullanici_delete_yetkileri = explode("|", $user->delete_perm);
+
+  // ajax ile sayfa geçişleri için (Silme)
+  // hx-boost="true"hx-target="#p-content"hx-select="#p-content"hx-push-url="true"hx-indicator="#loader"
 @endphp
 
 <div class="sidebar">
@@ -36,9 +39,12 @@
         </span>
       </a>
       <span class="tooltip">Stok</span>
-      <ul class="treeview-menu">
+      <ul class="treeview-menu"
+      >
         @if (in_array('STOKKART', $kullanici_read_yetkileri))
-          <li><a href="kart_stok"><i class='bx bx-package'></i>Stok Kartı</a></li>
+          <li>
+            <a href="kart_stok"><i class='bx bx-package'></i>Stok Kartı</a>
+          </li>
         @endif
         @if (in_array('DEPOKART', $kullanici_read_yetkileri))
           <li><a href="kart_depo"><i class='bx bx-store'></i>Depo Kartı</a></li>
@@ -143,6 +149,9 @@
         @endif
         @if (in_array('SATISSIP', $kullanici_read_yetkileri))
           <li><a href="satissiparisi"><i class='bx bx-cart-alt'></i>Satış Siparişi</a></li>
+        @endif
+        @if (in_array('SATISFAT', $kullanici_read_yetkileri))
+          <li><a href="satis_faturalari"><i class='bx bx-cart-alt'></i>Satış Faturaları</a></li>
         @endif
         @if (in_array('SEVKIRS', $kullanici_read_yetkileri))
           <li><a href="sevkirsaliyesi"><i class="fa-solid fa-truck-fast"></i>Sevk İrsaliyesi</a></li>

@@ -328,7 +328,7 @@
                               <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                   <div class="modal-header">
-                                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Operasyon Seç</h4>
+                                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Operasyon Seç</h4>
                                   </div>
                                   <div class="modal-body">
                                     <div class="row" style="overflow: auto">
@@ -425,7 +425,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -487,7 +487,7 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;MPS Evrakı Seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> MPS Evrakı Seç</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow: auto">

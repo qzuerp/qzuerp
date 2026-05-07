@@ -1928,7 +1928,7 @@
                               <th style="text-align:right;">#</th>
                             </tr>
 
-                            <tr class="satirEkle" style="background-color:#3c8dbc">
+                            <tr class="satirEkle"  >
 
                               <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus"
                                     style="color: blue"></i></button></td>
@@ -2057,7 +2057,7 @@
                         @endfor
                         <div class="col-sm-3">
                           <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele"
-                            value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+                            value="listele"><i class='fa fa-filter' style='color: WHİTE'></i> --Süz--</button>
                         </div>
 
 
@@ -2347,7 +2347,7 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-                  style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                  style='color: blue'></i> Evrak Süz</h4>
             </div>
             <div class="modal-body">
               <div class="row">

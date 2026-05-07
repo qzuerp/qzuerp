@@ -496,9 +496,9 @@
 																		<th>Operasyon sonucudan ortaya çıkan yarı mamul kodu</th>
 																		<th>#</th>
 																	</tr>
-																	<tr class="satirEkle" style="background-color:#3c8dbc">
+																	<tr class="satirEkle"  >
 																		<th>
-																			<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: white"></i></button>
+																			<button type="button" class="btn btn-info add-row" id="addRow"><i class="fa fa-plus" style="color: white"></i></button>
 																		</th>
 																		<th style="min-width:0px !important; width:50px;">
 																			<select class="form-select R_ACIK_KAPALI" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="R_ACIK_KAPALI" style="font-size: 0.7rem !important;" id="R_ACIK_KAPALI_FILL">
@@ -1275,7 +1275,7 @@
 													<div class="col-sm-3">
 														
 														<button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
-															<i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--
+															<i class='fa fa-filter' style='color: WHİTE'></i> --Süz--
 														</button>
 													</div> 
 
@@ -1453,7 +1453,7 @@
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-info-circle' style='color: orange'></i>&nbsp;&nbsp;Stok Kodu Mevcutları</h4>
+							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-info-circle' style='color: orange'></i> Stok Kodu Mevcutları</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row" style="overflow: auto">
@@ -1487,7 +1487,7 @@
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Artıkel No Seç</h4>
+							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Sipariş Artıkel No Seç</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row" style="overflow: auto">
@@ -1562,7 +1562,7 @@
 					<div class="modal-content">
 
 						<div class="modal-header">
-							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
 						</div>
 
 						<div class="modal-body">

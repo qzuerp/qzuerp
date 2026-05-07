@@ -66,6 +66,7 @@ use App\Http\Controllers\api_controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FasonTakibi;
 use App\Http\Controllers\library;
+use App\Http\Controllers\stok70_controller;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -613,6 +614,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/library/list', [library::class, 'list']);
     Route::get('/library/delete/{id}', [library::class, 'delete']);
     Route::post('/library/upload', [library::class, 'upload']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | satış faturaları
+    |--------------------------------------------------------------------------
+    */
+    Route::get('satis_faturalari', [stok70_controller::class, 'index']);
+    Route::post('stok70_islemler', [stok70_controller::class, 'islemler']);
 
     /*
     |--------------------------------------------------------------------------

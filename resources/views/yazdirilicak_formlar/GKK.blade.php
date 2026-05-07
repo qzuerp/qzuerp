@@ -528,7 +528,7 @@
             @endforeach
             <tr>
                 <td class="left" style="background:var(--surface);">
-                    <strong style="font-size:7pt;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;">Açıklama – Explanation:</strong>&nbsp;&nbsp;
+                    <strong style="font-size:7pt;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;">Açıklama – Explanation:</strong> 
                 </td>
             </tr>
         </tbody>

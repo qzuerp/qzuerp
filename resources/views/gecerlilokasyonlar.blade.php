@@ -171,7 +171,7 @@ if (isset($kart_veri)) {
                         <!-- <th>#</th> -->
                       </tr>
 
-                      <tr class="satirEkle" style="background-color:#3c8dbc">
+                      <tr class="satirEkle"  >
 
                         <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                         <td style="display:none;">
@@ -253,7 +253,7 @@ if (isset($kart_veri)) {
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
               </div>
               <div class="modal-body">
                 <div class="row">

@@ -225,7 +225,7 @@
                   <div class="table-responsive">
                     <div class="nav-tabs-custom">
                       <ul class="nav nav-tabs">
-                        <li class="nav-item"><a href="#toplumpsgirisi" id="toplumpsgirisiTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color:black;"></i>&nbsp;&nbsp;Toplu MPS Girişi</a></li>
+                        <li class="nav-item"><a href="#toplumpsgirisi" id="toplumpsgirisiTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color:black;"></i> Toplu MPS Girişi</a></li>
                         <li class="" >
                           <a href="#uretimEmirlerilistesi" id="uretimEmirlerilistesiTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue;"></i>&nbsp;Üretim Emirleri Listesi</a></li>
                         <li class=""><a href="#liste" id="liste-tab" id="listeTab" class="nav-link" data-bs-toggle="tab">&nbsp;Liste</a></li>
@@ -254,7 +254,7 @@
                                     <th style="min-width: 100px;">Sipariş Miktarı</th>
                                     <th>#</th>
                                   </tr>
-                                  <tr class="satirEkle" style="background-color:#3c8dbc">
+                                  <tr class="satirEkle"  >
                                     <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                     <td style="display: none;"></td>
                                     <td style="width: 150px;">
@@ -441,7 +441,7 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Sipariş Seç</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow: auto">
@@ -477,7 +477,7 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Sipariş Seç</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow: auto">

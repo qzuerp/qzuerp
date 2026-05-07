@@ -10,7 +10,7 @@
             <div class="col-md-8">
               <div class="box box-primary">
                 <div class="box-header with-border bg-primary">
-                  <h3 class="box-title" style="color:white; font-weight: bold"><i class="fa fa-file-text"></i>&nbsp;&nbsp;Dosya Ekle</h3>
+                  <h3 class="box-title" style="color:white; font-weight: bold"><i class="fa fa-file-text"></i> Dosya Ekle</h3>
                 </div>
                 <div class="box-body">
                   <!-- <form class="form-horizontal" enctype="multipart/form-data" method="POST" name="dosyaVerilerForm" id="dosyaVerilerForm"> -->

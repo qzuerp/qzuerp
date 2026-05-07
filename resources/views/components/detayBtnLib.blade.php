@@ -15,7 +15,7 @@
 
             <div class="modal-header">
                 <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-                        style='color: blue'></i>&nbsp;&nbsp;Depo Mevcutları</h4>
+                        style='color: blue'></i> Depo Mevcutları</h4>
             </div>
             <div class="modal-body">
                 <div class="row" style="overflow:auto;">
@@ -65,7 +65,7 @@
 
             <div class="modal-header">
                 <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-                        style='color: blue'></i>&nbsp;&nbsp;Stok Hareketleri</h4>
+                        style='color: blue'></i> Stok Hareketleri</h4>
             </div>
             <div class="modal-body">
                 <div class="row" style="overflow:auto;">

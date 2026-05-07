@@ -245,7 +245,7 @@
 
 										<div class="nav-tabs-custom">
 											<ul class="nav nav-tabs">
-												<li class="nav-item" id="irsaliyeTab"><a href="#irsaliye" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i>&nbsp;&nbsp;İrsaliye</a></li>
+												<li class="nav-item" id="irsaliyeTab"><a href="#irsaliye" class="nav-link" data-bs-toggle="tab"><i class="fa fa-file-text" style="color: black"></i> İrsaliye</a></li>
 															
 												<li class="nav-item {{ in_array('SAIF', $kullanici_read_yetkileri) ? 'd-block' : 'd-none' }}" ><a href="#fiyatlar" class="nav-link" data-bs-toggle="tab">Fiyatlar</a></li>
 												<li class="nav-item"><a href="#siparis" id="siparisTab" class="nav-link" data-bs-toggle="tab"><i class="fa fa-filter" style="color: blue"></i>&nbsp;Sipariş Süz</a></li>
@@ -294,7 +294,7 @@
 																<th>#</th>
 															</tr>
 
-															<tr class="satirEkle" style="background-color:#3c8dbc">
+															<tr class="satirEkle"  >
 
 																<td><button type="button" class="btn btn-default add-row"
 																		id="addRow"><i class="fa fa-plus"
@@ -942,7 +942,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-									style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+									style='color: blue'></i> Evrak Süz</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row">
@@ -1008,7 +1008,7 @@
 
 						<div class="modal-header">
 							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter'
-									style='color: blue'></i>&nbsp;&nbsp;Evrak Süz (Satır)</h4>
+									style='color: blue'></i> Evrak Süz (Satır)</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row">
@@ -1093,7 +1093,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-									style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+									style='color: blue'></i> Stok Kodu Seç</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row" style="overflow: auto">
@@ -1134,7 +1134,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search'
-									style='color: blue'></i>&nbsp;&nbsp;Sipariş Seç</h4>
+									style='color: blue'></i> Sipariş Seç</h4>
 						</div>
 						<div class="modal-body">
 							<div class="row" style="overflow: auto">
@@ -1175,6 +1175,7 @@
 	@include('components/detayBtnLib')
 	<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 	<script>
+    	isSubmit = true;
 		function addRowHandlers2() {
 			var table = document.getElementById("popupSelect2");
 			var rows = table.getElementsByTagName("tr");

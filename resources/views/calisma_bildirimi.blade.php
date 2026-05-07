@@ -654,7 +654,7 @@
                                   <th>Bozuldan parça adı</th>
                                   <th>Hatalı ürün adedi</th>
                                 </tr>
-                                <tr class="satirEkle" style="background-color:#3c8dbc">
+                                <tr class="satirEkle"  >
 
                                   <td><button type="button" type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                   <td style="display:none;"></td>
@@ -739,7 +739,7 @@
                                 <th>#</th>
                               </tr>
 
-                              <tr class="satirEkle" style="background-color:#3c8dbc">
+                              <tr class="satirEkle"  >
 
                                 <td><button type="button" class="btn btn-default add-row" id="addRow2"><i class="fa fa-plus" style="color: blue"></i></button></td>
                                 <td style="display:none;"></td>
@@ -1452,7 +1452,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <div style='display:flex; justify-content: space-between;'>
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;MPS Evrakı Seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> MPS Evrakı Seç</h4>
               </div>
             </div>
             <div class="modal-body">
@@ -1697,7 +1697,7 @@
 							@csrf
 							<div class="modal-header">
 								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-check'
-										style='color: blue'></i>&nbsp;&nbsp;Prosess Kalite Kontrol</h4>
+										style='color: blue'></i> Prosess Kalite Kontrol</h4>
 							</div>
 							<div class="modal-body">
 								<!-- İşlem Bilgileri -->
@@ -1788,7 +1788,7 @@
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
@@ -2703,20 +2703,19 @@
               if(res && res.ID)
               {
                 Swal.fire({
-                title: "Açık Süreç Bulundu",
-                text: res['EVRAKNO'] + " numaralı evrakta açık süreç bulundu",
-                icon: "warning",
-                allowOutsideClick: true,
-                allowEscapeKey: true,
-                showConfirmButton: true,
-                showCancelButton: true,
-                confirmButtonText: '<a href="/calisma_bildirimi?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
-                cancelButtonText: "İptal",
-              }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.cancel) {
-                  $('#X_T_ISMERKEZI').val('').trigger('change');
-                }
-              });
+                  title: "Açık Süreç Bulundu",
+                  text: res['EVRAKNO'] + " numaralı evrakta açık süreç bulundu",
+                  icon: "warning",
+                  allowOutsideClick: true,
+                  allowEscapeKey: true,
+                  showConfirmButton: true,
+                  showCancelButton: true,
+                  confirmButtonText: '<a href="/calisma_bildirimi?ID='+res['ID']+'" style="color: white; text-decoration: none;">Evraka Git</a>',
+                  cancelButtonText: "İptal",
+                  didClose: () => {
+                    $('#X_T_ISMERKEZI').val('').trigger('change');
+                  }
+                });
 
               }
             }

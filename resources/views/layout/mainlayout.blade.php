@@ -61,7 +61,9 @@
   @include('layout.partials.header', ['firmaAdi' => $firmaAdi])
   @include('layout.partials.sidebar', ['firmaAdi' => $firmaAdi])
 
-  @yield('content')
+  <div id="p-content">
+    @yield('content')
+  </div>
 
   <script>
     // Global değişkenler
@@ -295,33 +297,30 @@
     });
     $(window).on('popstate', () => loaderManager.reset());
 
-    // Güvenlik timeout
     setTimeout(() => loaderManager.reset(), 10000);
 
-    // Link ve form yönetimi - tek event handler
     $(document).ready(function() {
       loaderManager.hide();
 
-      // Link tıklama - optimize edilmiş
-      $(document).on('click', 'a:not([target="_blank"])', function(e) {
-        if (state.isNavigating) return false;
+      // $(document).on('click', 'a:not([target="_blank"])', function(e) {
+      //   if (state.isNavigating) return false;
         
-        const $a = $(this);
-        const href = $a.attr('href');
+      //   const $a = $(this);
+      //   const href = $a.attr('href');
 
-        if ($a.data('skip') == 1) return;
-        if ($a.is('[data-evrak-kontrol]') && state.evrakDegisti) return;
-        if (!href || href === '#' || href === 'javascript:void(0)' || href === '') return;
-        if (href.startsWith('http') && !href.includes(window.location.hostname)) return;
-        if (href.startsWith('#')) return;
+      //   if ($a.data('skip') == 1) return;
+      //   if ($a.is('[data-evrak-kontrol]') && state.evrakDegisti) return;
+      //   if (!href || href === '#' || href === 'javascript:void(0)' || href === '') return;
+      //   if (href.startsWith('http') && !href.includes(window.location.hostname)) return;
+      //   if (href.startsWith('#')) return;
 
-        const currentPath = window.location.pathname + window.location.search + window.location.hash;
-        if (href === currentPath || href === window.location.pathname) return;
+      //   const currentPath = window.location.pathname + window.location.search + window.location.hash;
+      //   if (href === currentPath || href === window.location.pathname) return;
 
-        e.preventDefault();
-        loaderManager.show();
-        setTimeout(() => window.location.href = href, 2);
-      });
+      //   e.preventDefault();
+      //   loaderManager.show();
+      //   setTimeout(() => window.location.href = href, 2);
+      // });
 
       // Form submit
       $(document).on('submit', 'form', function(e) {
@@ -336,38 +335,6 @@
         loaderManager.show();
       });
 
-      // Evrak düzenle - AJAX
-      // $(document).on('click', '#evrakDuzenle', function(e) {
-      //   e.preventDefault();
-
-      //   const form = $('#verilerForm')[0];
-      //   const formData = new FormData(form);
-      //   formData.append(this.name, this.value);
-
-      //   $.ajax({
-      //     url: form.action,
-      //     type: form.method,
-      //     data: formData,
-      //     processData: false,
-      //     contentType: false,
-      //     beforeSend: () => {
-      //       Swal.fire({
-      //         title: 'İşlem devam ediyor',
-      //         text: 'Lütfen bekleyiniz',
-      //         allowOutsideClick: false,
-      //         didOpen: () => Swal.showLoading()
-      //       });
-      //     },
-      //     success: () => {
-      //       Swal.close();
-      //       mesaj('Değişiklikler başarıyla kaydedildi', 'success');
-      //       resetEvrakDegisiklikFlag();
-      //     },
-      //     error: (xhr) => {
-      //       Swal.fire('Hata', xhr.responseJSON?.message ?? 'Bir şey ters gitti', 'error');
-      //     }
-      //   });
-      // });
     });
 
     $(document).ready(function() {
@@ -606,6 +573,5 @@
   @endif
 
   @include('layout.partials.footer', ['firmaAdi' => $firmaAdi])
-
 </body>
 </html>

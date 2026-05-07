@@ -60,12 +60,10 @@
   $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();
 
   if (isset($kart_veri)) {
-
     $ilkEvrak=DB::table($ekranTableE)->min('id');
     $sonEvrak=DB::table($ekranTableE)->max('id');
     $sonrakiEvrak=DB::table($ekranTableE)->where('id', '>', $sonID)->min('id');
     $oncekiEvrak=DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
-
   }
 
 @endphp
@@ -239,7 +237,7 @@
                           <th>#</th>
                         </tr>
 
-                        <tr class="satirEkle" style="background-color:#3c8dbc">
+                        <tr class="satirEkle"  >
 
                           <td><button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button></td>
                           <td>
@@ -257,7 +255,7 @@
                           </th>
                           <td style="min-width: 250px;">
                             <div class="d-flex "> 
-                            <select class="form-control select2 txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
+                              <select class="form-control select2 txt-radius KOD" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" data-name="KOD" onchange="stokAdiGetir3(this.value)" name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style=" height: 30px; width:100%;">
                                 <option value=" " >Seç</option>
                                 @php
                                   foreach ($stok_evraklar as $key => $veri) {
@@ -1020,7 +1018,7 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -1082,7 +1080,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz (Satır)</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -1161,7 +1159,7 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Stok Kodu Seç</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Stok Kodu Seç</h4>
             </div>
             <div class="modal-body">
               <div class="row" style="overflow: auto">
@@ -1198,6 +1196,7 @@
 @include('components/detayBtnLib')
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
   <script>
+    isSubmit = true;
     function stokAdiGetir3(veri) {
       const veriler = veri.split("|||");
       //$('#STOK_KODU_SHOW').val(veriler[0]);

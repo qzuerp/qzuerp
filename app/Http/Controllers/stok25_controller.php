@@ -43,6 +43,17 @@ class stok25_controller extends Controller
         $NUM3 = $request->NUM3;
         $NUM4 = $request->NUM4;
         $NOT1 = $request->NOT1;
+
+        $TEXTNEW1 = $request->TEXTNEW1;
+        $TEXTNEW2 = $request->TEXTNEW2;
+        $TEXTNEW3 = $request->TEXTNEW3;
+        $TEXTNEW4 = $request->TEXTNEW4;
+        $NUMNEW1 = $request->NUMNEW1;
+        $NUMNEW2 = $request->NUMNEW2;
+        $NUMNEW3 = $request->NUMNEW3;
+        $NUMNEW4 = $request->NUMNEW4;
+        $NOT1 = $request->NOT1;
+
         $LOCATION1 = $request->LOCATION1;
         $LOCATION2 = $request->LOCATION2;
         $LOCATION3 = $request->LOCATION3;
@@ -282,20 +293,20 @@ class stok25_controller extends Controller
                 'TESLIM_ALAN' => $TESLIM_ALAN[$i],
                 'TEZGAH' => $TEZGAH[$i],
                 'MPS_NO' => $MPS_NO[$i],
-                'TEXT1' => $TEXT1[$i],
-                'TEXT2' => $TEXT2[$i],
-                'TEXT3' => $TEXT3[$i],
-                'TEXT4' => $TEXT4[$i],
-                'NUM1' => $NUM1[$i],
-                'NUM2' => $NUM2[$i],
-                'NUM3' => $NUM3[$i],
-                'NUM4' => $NUM4[$i],
+                'TEXT1' => $TEXTNEW1[$i],
+                'TEXT2' => $TEXTNEW2[$i],
+                'TEXT3' => $TEXTNEW3[$i],
+                'TEXT4' => $TEXTNEW4[$i],
+                'NUM1' => $NUMNEW1[$i],
+                'NUM2' => $NUMNEW2[$i],
+                'NUM3' => $NUMNEW3[$i],
+                'NUM4' => $NUMNEW4[$i],
                 'NOT1' => $NOT1[$i],
                 'AMBCODE' => $AMBCODE_SEC,
-                'LOCATION1' => $LOCATION1[$i],
-                'LOCATION2' => $LOCATION2[$i],
-                'LOCATION3' => $LOCATION3[$i],
-                'LOCATION4' => $LOCATION4[$i],
+                'LOCATION1' => $LOCATION_NEW1[$i],
+                'LOCATION2' => $LOCATION_NEW2[$i],
+                'LOCATION3' => $LOCATION_NEW3[$i],
+                'LOCATION4' => $LOCATION_NEW4[$i],
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -358,7 +369,6 @@ class stok25_controller extends Controller
                     ->value('SF_MIKTAR');
         
                 if ($KAYITLI_SF == $SF_MIKTAR[$i]) continue;
-        
                 FunctionHelpers::stokKontrol(
                     $KOD[$i], $LOTNUMBER[$i], $SERINO[$i], $AMBCODE_SEC,
                     $NUM1[$i], $NUM2[$i], $NUM3[$i], $NUM4[$i],
@@ -368,7 +378,7 @@ class stok25_controller extends Controller
                 );
             }
             foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
-                $KONTROL_VERI = DB::table($firma . 'stok26t')
+                $KONTROL_VERI = DB::table($firma . 'stok25t')
                     ->where('EVRAKNO', $EVRAKNO)
                     ->where('TRNUM', $deleteTRNUM)
                     ->first();
@@ -412,20 +422,20 @@ class stok25_controller extends Controller
                     'TESLIM_ALAN' => $TESLIM_ALAN[$i],
                     'TEZGAH' => $TEZGAH[$i],
                     'MPS_NO' => $MPS_NO[$i],
-                    'TEXT1' => $TEXT1[$i],
-                    'TEXT2' => $TEXT2[$i],
-                    'TEXT3' => $TEXT3[$i],
-                    'TEXT4' => $TEXT4[$i],
-                    'NUM1' => $NUM1[$i],
-                    'NUM2' => $NUM2[$i],
-                    'NUM3' => $NUM3[$i],
-                    'NUM4' => $NUM4[$i],
+                    'TEXT1' => $TEXTNEW1[$i],
+                    'TEXT2' => $TEXTNEW2[$i],
+                    'TEXT3' => $TEXTNEW3[$i],
+                    'TEXT4' => $TEXTNEW4[$i],
+                    'NUM1' => $NUMNEW1[$i],
+                    'NUM2' => $NUMNEW2[$i],
+                    'NUM3' => $NUMNEW3[$i],
+                    'NUM4' => $NUMNEW4[$i],
                     'NOT1' => $NOT1[$i],
                     'AMBCODE' => $AMBCODE_SEC,
-                    'LOCATION1' => $LOCATION1[$i],
-                    'LOCATION2' => $LOCATION2[$i],
-                    'LOCATION3' => $LOCATION3[$i],
-                    'LOCATION4' => $LOCATION4[$i],
+                    'LOCATION1' => $LOCATION_NEW1[$i],
+                    'LOCATION2' => $LOCATION_NEW2[$i],
+                    'LOCATION3' => $LOCATION_NEW3[$i],
+                    'LOCATION4' => $LOCATION_NEW4[$i],
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
@@ -521,14 +531,14 @@ class stok25_controller extends Controller
                 'SERINO' => $SERINO[$i],
                 'SF_MIKTAR' => $SF_MIKTAR[$i],
                 'SF_SF_UNIT' => $SF_SF_UNIT[$i],
-                'TEXT1' => $TEXT1[$i],
-                'TEXT2' => $TEXT2[$i],
-                'TEXT3' => $TEXT3[$i],
-                'TEXT4' => $TEXT4[$i],
-                'NUM1' => $NUM1[$i],
-                'NUM2' => $NUM2[$i],
-                'NUM3' => $NUM3[$i],
-                'NUM4' => $NUM4[$i],
+                'TEXT1' => $TEXTNEW1[$i],
+                'TEXT2' => $TEXTNEW2[$i],
+                'TEXT3' => $TEXTNEW3[$i],
+                'TEXT4' => $TEXTNEW4[$i],
+                'NUM1' => $NUMNEW1[$i],
+                'NUM2' => $NUMNEW2[$i],
+                'NUM3' => $NUMNEW3[$i],
+                'NUM4' => $NUMNEW4[$i],
                 'TARIH' => $TARIH,
                 'EVRAKTIPI' => 'stok25t-G',
                 'STOK_MIKTAR' => $SF_MIKTAR[$i],
@@ -642,10 +652,10 @@ class stok25_controller extends Controller
                     'EVRAKTIPI' => 'stok25t-G',
                     'STOK_MIKTAR' => $SF_MIKTAR[$i],
                     'AMBCODE' => $TARGETAMBCODE_E,
-                    'LOCATION1' => $LOCATION_NEW1[$i],
-                    'LOCATION2' => $LOCATION_NEW2[$i],
-                    'LOCATION3' => $LOCATION_NEW3[$i],
-                    'LOCATION4' => $LOCATION_NEW4[$i],
+                    'LOCATION1' => $LOCATION1[$i],
+                    'LOCATION2' => $LOCATION2[$i],
+                    'LOCATION3' => $LOCATION3[$i],
+                    'LOCATION4' => $LOCATION4[$i],
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
 

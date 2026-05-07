@@ -302,7 +302,7 @@
 																	<th>Toplam Yarı Mamul Miktarı</th>
 																	<th>#</th>
 																</tr>
-																<tr class="satirEkle" style="background-color:#3c8dbc">
+																<tr class="satirEkle"  >
 																	<th>
 																		<button type="button" class="btn btn-default add-row" id="addRow" ><i class="fa fa-plus" style="color: blue"></i></button>
 																	</th>
@@ -992,7 +992,7 @@
 											        </select>
 											    </div>
 												<div class="col-sm-3">
-												    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+												    <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i> --Süz--</button>
 												</div></br></br></br></br>
 												    
 											    <div class="row " style="overflow: auto">
@@ -1202,7 +1202,7 @@
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-info-circle' style='color: orange'></i>&nbsp;&nbsp;Stok Kodu Mevcutları</h4>
+								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-info-circle' style='color: orange'></i> Stok Kodu Mevcutları</h4>
 							</div>
 							<div class="modal-body">
 								<div class="row" style="overflow: auto">
@@ -1247,7 +1247,7 @@
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i>&nbsp;&nbsp;Sipariş Artıkel No Seç</h4>
+								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Sipariş Artıkel No Seç</h4>
 							</div>
 							<div class="modal-body">
 								<div class="row" style="overflow: auto">
@@ -1307,7 +1307,7 @@
 						<div class="modal-content">
 
 							<div class="modal-header">
-								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+								<h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
 							</div>
 
 							<div class="modal-body">

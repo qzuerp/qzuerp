@@ -52,7 +52,7 @@
     $sonrakiEvrak=DB::table($ekranTableE)->where('id', '>', $sonID)->min('id');
     $oncekiEvrak=DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
   }
-  
+
 @endphp
 
 @section('content')
@@ -246,6 +246,16 @@
                               <th>Teslim Alan Kişi</th>
                               <th>Tezgah</th>
                               <th style="min-width:120px;">Mps No</th>
+
+                              <th>Yeni Varyant Text 1</th>
+                              <th>Yeni Varyant Text 2</th>
+                              <th>Yeni Varyant Text 3</th>
+                              <th>Yeni Varyant Text 4</th>
+                              <th>Yeni Ölçü 1</th>
+                              <th>Yeni Ölçü 2</th>
+                              <th>Yeni Ölçü 3</th>
+                              <th>Yeni Ölçü 4</th>
+
                               <th>Varyant Text 1</th>
                               <th>Varyant Text 2</th>
                               <th>Varyant Text 3</th>
@@ -310,7 +320,8 @@
                                   @endphp
                                 </select>
                               </td>
-                              <td style="min-width: 150px;">
+
+                                <td style="min-width: 150px;">
                                   <select class="form-control select2 js-example-basic-single LOCATION1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" style=" height: 30PX" onchange="getLocation2()" name="LOCATION1_FILL" id="LOCATION1_FILL">
                                     <option value=" ">Seç</option>
                                     @php
@@ -322,6 +333,7 @@
                                     @endphp
                                   </select>
                                 </td>
+
                                 <td style="min-width: 150px;">
                                   <select class="form-control select2 js-example-basic-single LOCATION2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" style=" height: 30PX" onchange="getLocation3()" name="LOCATION2_FILL" id="LOCATION2_FILL">
                                     <option value=" ">Seç</option>
@@ -334,6 +346,7 @@
                                     @endphp
                                   </select>
                                 </td>
+
                                 <td style="min-width: 150px;">
                                   <select class="form-control select2 js-example-basic-single LOCATION3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" style=" height: 30PX" onchange="getLocation4()" name="LOCATION3_FILL" id="LOCATION3_FILL">
                                     <option value=" ">Seç</option>
@@ -346,6 +359,7 @@
                                     @endphp
                                   </select>
                                 </td>
+
                                 <td style="min-width: 150px;">
                                   <select class="form-control select2 js-example-basic-single LOCATION4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
                                     <option value=" ">Seç</option>
@@ -370,6 +384,7 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td style="min-width: 150px;">
                                 <select class="form-control select2 js-example-basic-single LOCATION_NEW2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW2" style=" height: 30PX" onchange="getNewLocation3()" name="LOCATION_NEW2_FILL" id="LOCATION_NEW2_FILL">
                                   <option value=" ">Seç</option>
@@ -382,6 +397,7 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td style="min-width: 150px;">
                                 <select class="form-control select2 js-example-basic-single LOCATION_NEW3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW3" style=" height: 30PX" onchange="getNewLocation4()" name="LOCATION_NEW3_FILL" id="LOCATION_NEW3_FILL">
                                   <option value=" ">Seç</option>
@@ -394,6 +410,7 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td style="min-width: 150px;">
                                 <select class="form-control select2 js-example-basic-single LOCATION_NEW4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION_NEW4" style=" height: 30PX" name="LOCATION_NEW4_FILL" id="LOCATION_NEW4_FILL">
                                   <option value=" ">Seç</option>
@@ -406,9 +423,11 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="text" name="NOT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT1" id="NOT1_FILL" class="form-control NOT1">
                               </td>
+
                               <td style="min-width: 150px">
                                 <select class="form-control select2 js-example-basic-single TESLIM_ALAN" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TESLIM_ALAN" id="TESLIM_ALAN_FILL">
                                   <option value="" selected></option>
@@ -427,6 +446,7 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td style="min-width: 150px">
                                 <select class="form-control select2 js-example-basic-single TEZGAH" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH" id="TEZGAH_FILL">
                                   <option value="" selected></option>
@@ -445,6 +465,7 @@
                                   @endphp
                                 </select>
                               </td>
+
                               <td class="d-flex ">
                                 <input maxlength="255" style="color: red" type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MPS_NO" id="MPS_NO_FILL" class="form-control txt-radius MPS_NO " readonly>
                                 <span class="d-flex -btn">
@@ -454,6 +475,47 @@
                                   </button>
                                 </span>
                               </td>
+
+                              <td style="min-width: 150px">
+                                <select class="form-control select2 js-example-basic-single TEXTNEW1" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXTNEW1" id="TEXTNEW1_FILL">
+                                  <option value="" selected></option>
+                                  @php
+                                    $pers00_evraklar=DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+
+                                    foreach ($pers00_evraklar as $key => $veri) {
+
+                                      if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
+                                        echo "<option value ='".$veri->KOD."' selected>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                      else {
+                                        echo "<option value ='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
+                                      }
+                                    }
+                                  @endphp
+                                </select>
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="text" name="TEXTNEW2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXTNEW2" id="TEXTNEW2_FILL" class="form-control TEXTNEW2">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="text" name="TEXTNEW3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXTNEW3" id="TEXTNEW3_FILL" class="form-control TEXTNEW3">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="text" name="TEXTNEW4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXTNEW4" id="TEXTNEW4_FILL" class="form-control TEXTNEW4">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="number" name="NUMNEW1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUMNEW1" id="NUMNEW1_FILL" class="form-control NUMNEW1">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="number" name="NUMNEW2_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUMNEW2" id="NUMNEW2_FILL" class="form-control NUMNEW2">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="number" name="NUMNEW3_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUMNEW3" id="NUMNEW3_FILL" class="form-control NUMNEW3">
+                              </td>
+                              <td style="min-width: 150px">
+                                <input maxlength="255" style="color: red" type="number" name="NUMNEW4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUMNEW4" id="NUMNEW4_FILL" class="form-control NUMNEW4">
+                              </td>
+
                               <td style="min-width: 150px">
                                 <input class="form-control TEXT1" style="width: 100%;" name="TEXT1_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL" />
                               </td>
@@ -478,6 +540,7 @@
                               <td style="min-width: 150px">
                                 <input maxlength="255" style="color: red" type="number" name="NUM4_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" id="NUM4_FILL" class="form-control NUM4">
                               </td>
+                              
                               <td>#</td>
 
                             </tr>
@@ -515,6 +578,16 @@
                                 <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ $veri->TESLIM_ALAN }}"></td>
                                 <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
                                 <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
+                                
+                                <td><input type="text" class="form-control" name="TEXTNEW1[]" value="{{ $veri->TEXTNEW1 }}"></td>
+                                <td><input type="text" class="form-control" name="TEXTNEW2[]" value="{{ $veri->TEXTNEW2 }}"></td>
+                                <td><input type="text" class="form-control" name="TEXTNEW3[]" value="{{ $veri->TEXTNEW3 }}"></td>
+                                <td><input type="text" class="form-control" name="TEXTNEW4[]" value="{{ $veri->TEXTNEW4 }}"></td>
+                                <td><input type="number" class="form-control" name="NUMNEW1[]" value="{{ $veri->NUMNEW1 }}"></td>
+                                <td><input type="number" class="form-control" name="NUMNEW2[]" value="{{ $veri->NUMNEW2 }}"></td>
+                                <td><input type="number" class="form-control" name="NUMNEW3[]" value="{{ $veri->NUMNEW3 }}"></td>
+                                <td><input type="number" class="form-control" name="NUMNEW4[]" value="{{ $veri->NUMNEW4 }}"></td>
+
                                 <td><input type="text" class="form-control" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
                                 <td><input type="text" class="form-control" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
                                 <td><input type="text" class="form-control" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -635,7 +708,7 @@
                     </div>
 
                     <div class="col-sm-3">
-                      <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+                      <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i> --Süz--</button>
                     </div>
 
                     <div class="row " style="overflow: auto">
@@ -992,7 +1065,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -1048,7 +1121,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;MPS Seç</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> MPS Seç</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -1103,7 +1176,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz (Satır)</h4>
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -1175,7 +1248,7 @@
             <div class="modal-content">
 
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Seri numarası seç</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Seri numarası seç</h4>
               </div>
               <div class="modal-body">
                 <div class="row" style="overflow:auto;">
@@ -1294,7 +1367,7 @@
               var MIKTAR = $cells.eq(3).text().trim();
               var LOTNO = $cells.eq(5).text().trim();
               var SERINO = $cells.eq(6).text().trim();
-              var DEPO = $cells.eq(7).text().trim();
+              var DEPO = $cells.eq(7).text().trim().split('-')[0];
               var V1 = $cells.eq(8).text().trim();
               var V2 = $cells.eq(9).text().trim();
               var V3 = $cells.eq(10).text().trim();
@@ -1425,14 +1498,25 @@
         		htmlCode += " <td><input type='text' class='form-control' name='TESLIM_ALAN[]' value='"+satirEkleInputs.TESLIM_ALAN_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='TEZGAH[]' value='"+satirEkleInputs.TEZGAH_FILL+"' readonly></td> ";
         		htmlCode += " <td><input type='text' class='form-control' name='MPS_NO[]' value='"+satirEkleInputs.MPS_NO_FILL+"' readonly></td> ";
-        		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"' readonly></td> ";
+
+            htmlCode += " <td><input type='text' class='form-control' name='TEXTNEW1[]' value='"+satirEkleInputs.TEXTNEW1_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TEXTNEW2[]' value='"+satirEkleInputs.TEXTNEW2_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TEXTNEW3[]' value='"+satirEkleInputs.TEXTNEW3_FILL+"'></td> ";
+        		htmlCode += " <td><input type='text' class='form-control' name='TEXTNEW4[]' value='"+satirEkleInputs.TEXTNEW4_FILL+"'></td> ";
+        		htmlCode += " <td><input type='number' class='form-control' name='NUMNEW1[]' value='"+satirEkleInputs.NUMNEW1_FILL+"'></td> ";
+        		htmlCode += " <td><input type='number' class='form-control' name='NUMNEW2[]' value='"+satirEkleInputs.NUMNEW2_FILL+"'></td> ";
+        		htmlCode += " <td><input type='number' class='form-control' name='NUMNEW3[]' value='"+satirEkleInputs.NUMNEW3_FILL+"'></td> ";
+        		htmlCode += " <td><input type='number' class='form-control' name='NUMNEW4[]' value='"+satirEkleInputs.NUMNEW4_FILL+"'></td> "; 
+
+        		htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
         		htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
         		htmlCode += " <td><input type='number' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
-        		htmlCode += " <td><input type='num  ber' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+        		htmlCode += " <td><input type='number' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+
             // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
         		htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
         		htmlCode += " </tr> ";

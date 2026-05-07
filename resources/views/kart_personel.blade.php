@@ -2401,7 +2401,7 @@ if (isset($kart_veri)) {
                 </select>
             </div>
             <div class="col-sm-3">
-              <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i>&nbsp;&nbsp;--Süz--</button>
+              <button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele"><i class='fa fa-filter' style='color: WHİTE'></i> --Süz--</button>
             </div> 
                               
             <div class="row " style="overflow: auto">
@@ -2671,7 +2671,7 @@ if (isset($kart_veri)) {
                 <div class="modal-content">
 
                   <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Evrak Süz</h4>
+                    <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
                   </div>
                   <div class="modal-body">
                     <div class="row">

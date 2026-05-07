@@ -65,6 +65,8 @@
     <script src="{{ asset('qzuerp-sources/js/flatpickr.js') }}" defer></script>   
     <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" defer></script>
 
+    <!-- <script src="https://unpkg.com/htmx.org@1.9.10" defer></script> -->
+
     <!-- Ana Javascript - Kritik -->
     <script src="{{ asset('qzuerp-sources/js/context-menu.js') }}" ></script>
     <script src="{{ asset('qzuerp-sources/js/main.js') }}" ></script>
@@ -86,8 +88,8 @@
     <script src="{{ asset('qzuerp-sources/js/solid-gauge.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/accessibility.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" defer></script>
 {{-- JS Bitiş --}}
+
 <style>
     :root {
         --primary-color: #3c8dbc;
@@ -494,6 +496,7 @@
         text-align: center;
     }
 </style>
+
 <div id="custom-menu">
     <ul>
         <li data-action="mpsgiriskarti">MPS Giriş Kartı</li>
@@ -731,7 +734,7 @@
                     
                     const data = await response.json();
 
-                    if(data.salt.durum == true)
+                    if(data.salt.durum == true && manuelCheck == true)
                     {
                         setReadOnlyMode(data.salt.name);
                     }

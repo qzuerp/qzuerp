@@ -3,7 +3,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Sayfa Logları</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Sayfa Logları</h4>
                 <!-- <div class="alert alert-info" style="font-size: 14px;">
                     <strong>İşlem Kodları:</strong> 
                     <span><b>W</b> = Düzenleme, </span>
@@ -52,7 +52,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i>&nbsp;&nbsp;Sayfa Tanıtım </h4>
+                <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Sayfa Tanıtım </h4>
                 <!-- <div class="alert alert-info" style="font-size: 14px;">
                     <strong>İşlem Kodları:</strong> 
                     <span><b>W</b> = Düzenleme, </span>

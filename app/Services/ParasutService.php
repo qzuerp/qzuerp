@@ -109,4 +109,18 @@ class ParasutService implements AccountingInterface
             ])
             ->json();
     }
+    public function getSatisFaturalari($date) {
+        if (!$this->token) return ['error' => 'Token yok!'];
+    
+        $queryParams = [
+            'page[size]' => 25,
+            'sort' => '-issue_date,-id',
+        ];
+    
+        $response = Http::withToken($this->token)
+            ->get($this->baseUrl . $this->companyId . '/sales_invoices',$queryParams);
+    
+        
+        return $response->json();
+    }
 }
