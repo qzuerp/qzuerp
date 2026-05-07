@@ -1946,20 +1946,20 @@
                 showBullets: false,
                 steps: [
                     {
-                        title: 'Yeni Özellik!',
-                        intro: 'Merhaba '+'{{ @$personel->AD }}'+', sisteme yeni özellik eklendi. Hadi gel kullanalım.'
+                        title: 'Selam {{ @$personel->AD ?? "Eren" }}!',
+                        intro: 'İşini kolaylaştıracak yeni bir özelliğimiz var. Hemen hızlıca üzerinden geçelim.'
                     },
                     {
-                      element: '#surec_bi',
-                      intro: 'Süreç bilgileri sekmesine gelip'
+                        element: '#surec_bi',
+                        intro: 'Tüm detaylar için önce <b>Süreç Bilgileri</b> sekmesine bir göz atalım.'
                     },
                     {
                         element: '#deleteSingleRow',
-                        intro: 'Artık oluşturduğun süreç satırlarını buradan silebilirsin.'
+                        intro: 'Yanlış ya da gereksiz gördüğün satırları buradan tek tıkla silebilirsin. Kontrol tamamen sende.'
                     },
                     {
-                        element: document.querySelector('#kartDuzenle2Btn'),
-                        intro: 'ÖNEMLİ: Satırları sildikten sonra değişikliklerin kalıcı olması için bu kaydet butonuna basmalısın.'
+                        element: '#kartDuzenle2Btn',
+                        intro: 'Yalnız dikkat; yaptığın değişikliklerin boşa gitmemesi için çıkmadan önce mutlaka <b>Kaydet</b> butonuna basmalısın.'
                     }
                 ]
             });
