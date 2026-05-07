@@ -1485,7 +1485,7 @@
         const isTourSeen = localStorage.getItem(tourVersion);
         
         const criticalElementsExist = $('.delete-row').length > 0 && $('#kartDuzenle2Btn').length > 0;
-        if (isTourSeen && criticalElementsExist) {
+        if (!isTourSeen && criticalElementsExist) {
             const intro = introJs();
 
             intro.setOptions({
