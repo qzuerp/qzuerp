@@ -619,6 +619,7 @@
                                                         <td><input name="bitis_saat[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->BITIS_SAATI }}" readonly></td>
                                                         <td><input name="durus_sebebi[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->ISLEM_TURU == 'D' ? $val->DURMA_SEBEBI : '' }}" readonly></td>
                                                         <td><input name="toplam_sure[]" title="{{ $val->DURMA_SEBEBI }}" style="background:transparent; border:none; outline:none;" type="text" value="{{ $val->SURE }}" readonly></td>
+                                                        <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                                                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $val->id }}" readonly></td>
                                                     </tr>
                                                 @endforeach
@@ -702,7 +703,7 @@
                     <div class="tab-pane" id="hammade">
                       <div class="row">
                         <div class="col-123">
-                          <button type="button" class="btn btn-default delete-row" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
+                          <button type="button" class="btn btn-default" data-bs-toggle="modal"  data-bs-target="#hizli_islem"><i class="fa-solid fa-gauge-high"></i> Hızlı İşlem</button>
                         </div>
                         <div class="col-12">
                           <table class="table table-bordered text-center" id="hammade_table" >
@@ -1142,7 +1143,7 @@
                         M10E.MAMULSTOKADI,
                         M10E.SIPNO FROM ".$database." mmps10t M10T 
                         LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO
-                        LEFT JOIN ".$database." imlt01 IM01 ON IM01.KOD = M10T.R_KAYNAKKODU 
+                        LEFT JOIN ".$database." imlt01 IM01 ON IM01.KOD = M10T.R_OPERASYON 
                         WHERE M10T.R_KAYNAKTYPE = 'I' AND M10T.R_ACIK_KAPALI = 'A' AND IM01.GK_1 = 'OPTLS'";
 
                       $mmps10t_evraklar = DB::select($sql_sorgu);
@@ -1415,7 +1416,6 @@
 
     <!-- Tezgah Planı Seçmek İçin Modal -->
     <script>
-
       $(document).on('click', '.tezgah-row', function () {
         const evrakNo = $(this).data('evrakno');
         const ismerkezi = $(this).data('ismerkezi');
@@ -1481,6 +1481,61 @@
 
 
       $(document).ready(function () {
+        const tourVersion = 'tour_v1_delete_feature'; // Versiyonu değiştirdim
+        const isTourSeen = localStorage.getItem(tourVersion);
+        
+        const criticalElementsExist = $('.delete-row').length > 0 && $('#kartDuzenle2Btn').length > 0;
+        if (!isTourSeen && criticalElementsExist) {
+            const intro = introJs();
+
+            intro.setOptions({
+                nextLabel: 'İleri >',
+                prevLabel: '< Geri',
+                doneLabel: 'Anladım, Başla!',
+                skipLabel: '',
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                showBullets: false,
+                steps: [
+                    {
+                        title: 'Yeni Özellik!',
+                        intro: 'Merhaba '+'{{ @$personel->AD }}'+', sisteme yeni özellik eklendi. Hadi gel kullanalım.'
+                    },
+                    {
+                      element: '#surec_bi',
+                      intro: 'Süreç bilgileri sekmesine gelip'
+                    },
+                    {
+                        element: '#deleteSingleRow',
+                        intro: 'Artık oluşturduğun süreç satırlarını buradan silebilirsin.'
+                    },
+                    {
+                        element: document.querySelector('#kartDuzenle2Btn'),
+                        intro: 'ÖNEMLİ: Satırları sildikten sonra değişikliklerin kalıcı olması için bu kaydet butonuna basmalısın.'
+                    }
+                ]
+            });
+
+            intro.onbeforechange(function(targetElement) {
+              if(targetElement && targetElement.id === "surec_bi")
+              {
+                $('.nav-tabs a[href="#surec_bilgileri"]').tab('show'); 
+              }
+              if (targetElement && targetElement.id === 'deleteSingleRow') {
+                  targetElement.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'center', 
+                      inline: 'center' 
+                  });
+              }
+            });
+
+            intro.onexit(function() {
+                localStorage.setItem(tourVersion, 'seen');
+            }).oncomplete(function() {
+                localStorage.setItem(tourVersion, 'seen');
+            }).start();
+        }
         // $("#veri_table tbody tr:first").remove();
         $('#JOBNO_SHOW').on("change",function () {
           $.ajax({

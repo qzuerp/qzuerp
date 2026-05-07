@@ -19,6 +19,9 @@
     <!-- iziToast -->
     <link rel="stylesheet" href="{{ asset('qzuerp-sources/css/izitoast-1.4.0.css') }}">
 
+    <!-- Intro.js -->
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+
     <!-- Google Fonts - Preconnect ekleyerek hızlandırma -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,6 +69,8 @@
     <script src="{{ asset('qzuerp-sources/js/flatpickr-tr.js') }}" defer></script>
 
     <!-- <script src="https://unpkg.com/htmx.org@1.9.10" defer></script> -->
+    <!-- Intro.js -->
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js" defer></script>
 
     <!-- Ana Javascript - Kritik -->
     <script src="{{ asset('qzuerp-sources/js/context-menu.js') }}" ></script>

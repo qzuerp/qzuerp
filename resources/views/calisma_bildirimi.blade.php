@@ -1928,6 +1928,61 @@
 
 
       $(document).ready(function () {
+        const tourVersion = 'tour_v1_delete_feature'; // Versiyonu değiştirdim
+        const isTourSeen = localStorage.getItem(tourVersion);
+        
+        const criticalElementsExist = $('.delete-row').length > 0 && $('#kartDuzenle2Btn').length > 0;
+        if (!isTourSeen && criticalElementsExist) {
+            const intro = introJs();
+
+            intro.setOptions({
+                nextLabel: 'İleri >',
+                prevLabel: '< Geri',
+                doneLabel: 'Anladım, Başla!',
+                skipLabel: '',
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                showBullets: false,
+                steps: [
+                    {
+                        title: 'Yeni Özellik!',
+                        intro: 'Merhaba '+'{{ @$personel->AD }}'+', sisteme yeni özellik eklendi. Hadi gel kullanalım.'
+                    },
+                    {
+                      element: '#surec_bi',
+                      intro: 'Süreç bilgileri sekmesine gelip'
+                    },
+                    {
+                        element: '#deleteSingleRow',
+                        intro: 'Artık oluşturduğun süreç satırlarını buradan silebilirsin.'
+                    },
+                    {
+                        element: document.querySelector('#kartDuzenle2Btn'),
+                        intro: 'ÖNEMLİ: Satırları sildikten sonra değişikliklerin kalıcı olması için bu kaydet butonuna basmalısın.'
+                    }
+                ]
+            });
+
+            intro.onbeforechange(function(targetElement) {
+              if(targetElement && targetElement.id === "surec_bi")
+              {
+                $('.nav-tabs a[href="#surec_bilgileri"]').tab('show'); 
+              }
+              if (targetElement && targetElement.id === 'deleteSingleRow') {
+                  targetElement.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'center', 
+                      inline: 'center' 
+                  });
+              }
+            });
+
+            intro.onexit(function() {
+                localStorage.setItem(tourVersion, 'seen');
+            }).oncomplete(function() {
+                localStorage.setItem(tourVersion, 'seen');
+            }).start();
+        }
         // $("#veri_table tbody tr:first").remove();
         $('#JOBNO_SHOW').on("change",function () {
           $.ajax({
