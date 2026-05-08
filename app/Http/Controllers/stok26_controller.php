@@ -457,7 +457,16 @@ class stok26_controller extends Controller
           }
       
           if (session()->has('EKSILER')) {
-              return redirect()->back()->with('error_stock', session('EKSILER'));
+            $eksikStoklar = session('EKSILER');
+        
+            session()->forget('EKSILER');
+            session()->forget('error_stock');
+        
+            return [
+                'error' => true,
+                'error_code' => 'STOK_EKSI',
+                'error_stock' => $eksikStoklar
+            ];
           }
       
           for ($i = 0; $i < $satir_say; $i++) {

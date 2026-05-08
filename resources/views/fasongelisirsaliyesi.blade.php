@@ -1047,6 +1047,7 @@
     @include('components/detayBtnLib')
     <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
     <script>
+      isSubmit = true;
       function fasonSuz()
       {
         let DEPO = $('#AMBCODE_E').val();

@@ -14,7 +14,7 @@
   $ekranLink = "calisma_bildirimi_oprt";
   $ekranTableE = $database."sfdc31e";
   $ekranTableT = $database."sfdc31t";
-  $ekranKayitSatirKontrol = "false";
+  $ekranKayitSatirKontrol = "true";
 
   $kullanici_read_yetkileri = explode("|", $kullanici_veri->read_perm);
   $kullanici_write_yetkileri = explode("|", $kullanici_veri->write_perm);
@@ -1144,7 +1144,7 @@
                         M10E.SIPNO FROM ".$database." mmps10t M10T 
                         LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO
                         LEFT JOIN ".$database." imlt01 IM01 ON IM01.KOD = M10T.R_OPERASYON 
-                        WHERE M10T.R_KAYNAKTYPE = 'I' AND M10T.R_ACIK_KAPALI = 'A' AND IM01.GK_1 = 'OPTLS'";
+                        WHERE M10T.R_KAYNAKTYPE = 'I' AND M10T.R_ACIK_KAPALI IS NULL AND IM01.GK_1 = 'OPTLS'";
 
                       $mmps10t_evraklar = DB::select($sql_sorgu);
 
@@ -1579,7 +1579,6 @@
     </script>
 
     <script>
-      let sonID = typeof window.initialSonID !== 'undefined' ? window.initialSonID : 1;
 
       document.addEventListener('DOMContentLoaded', function() {
         initializeButtons();
@@ -1738,6 +1737,8 @@
         const date = now.toISOString().split('T')[0];
         const time = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
         
+        let sonID = ($('#veri_table tbody tr').length + 1).toString().padStart(6, '0');
+        
         const durusSebebi = type === 'D' ? $("#DURMA_SEBEBI").val() : '';
         
         const row = $("<tr>");
@@ -1749,7 +1750,7 @@
           <td><input type="text" class="tbl-input" name="bitis_saat[]" readonly></td>
           <td><input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly></td>
           <td><input type="text" class="tbl-input" name="toplam_sure[]" readonly></td>
-          <td style="display: none;"><input type="hidden" name="TRNUM[]" value="${++sonID}"></td>
+          <td style="display: none;"><input type="hidden" name="TRNUM[]" value="${sonID}"></td>
           <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
         `);
         

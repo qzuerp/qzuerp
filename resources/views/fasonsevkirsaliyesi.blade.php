@@ -1157,6 +1157,7 @@ if (isset($kart_veri)) {
 <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+  isSubmit = true;
 function exportTableToWord(tableId)
 {
   let table = document.getElementById(tableId).outerHTML;

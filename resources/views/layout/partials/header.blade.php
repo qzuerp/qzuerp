@@ -75,6 +75,8 @@
     <!-- Ana Javascript - Kritik -->
     <script src="{{ asset('qzuerp-sources/js/context-menu.js') }}" ></script>
     <script src="{{ asset('qzuerp-sources/js/main.js') }}" ></script>
+    
+    <script src="{{ asset('qzuerp-sources/js/ajax.js') }}" ></script>
 
     <!-- Defer ile yüklenecek scriptler -->
     <!-- <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.js') }}" defer></script>

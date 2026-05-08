@@ -113,12 +113,13 @@ class ParasutService implements AccountingInterface
         if (!$this->token) return ['error' => 'Token yok!'];
     
         $queryParams = [
-            'page[size]' => 25,
-            'sort' => '-issue_date,-id',
+            'page[size]' => 60,
+            // 'filter[name]' => 'KADİR ÇELİK',
+            // 'sort' => '-issue_date,-id',
         ];
     
         $response = Http::withToken($this->token)
-            ->get($this->baseUrl . $this->companyId . '/sales_invoices',$queryParams);
+            ->get($this->baseUrl . $this->companyId . '/employees',$queryParams);
     
         
         return $response->json();

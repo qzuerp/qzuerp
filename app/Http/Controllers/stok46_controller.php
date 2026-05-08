@@ -16,7 +16,7 @@ class stok46_controller extends Controller
 
   public function index()
   {
-    $agent = new Agent();
+    // $agent = new Agent();
     // dd($agent->getUserAgent());
     // if($agent->isMobile() || $agent->isTablet()){
     //   dd('Mobil veya Tablet yakalandı!');

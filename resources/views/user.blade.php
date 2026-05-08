@@ -1062,7 +1062,7 @@ function togglePanel(idx) {
 
   /* --- Ana arama fonksiyonu --- */
   function doSearch() {
-    var q = searchBox.value.toLowerCase().trim();
+    var q = searchBox.value.toLocaleLowerCase('tr-TR').trim();
     var totalVisible = 0;
 
     // Clear butonunu göster/gizle

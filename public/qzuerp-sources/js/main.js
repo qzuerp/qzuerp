@@ -1228,7 +1228,6 @@ function padLeft(value, length = 6, padChar = '0') {
 }
 
 function getTRNUM(tableID = '') {
-  // var TRNUM = $('#'+tableID+'tbody tr').length + 1;
 
   var LAST_TRNUM_OBJ = $('#LAST_TRNUM' + tableID)
   var LAST_TRNUM = +LAST_TRNUM_OBJ.val();

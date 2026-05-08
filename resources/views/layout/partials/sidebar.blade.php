@@ -477,7 +477,7 @@ document.querySelectorAll(".treeview > a").forEach((menu) => {
 // Arama özelliği
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase().trim();
+    const searchTerm = e.target.value.toLocaleLowerCase('tr-TR').trim();
     const allMenuItems = document.querySelectorAll(".nav-list > li");
 
     if (searchTerm === "") {
@@ -503,12 +503,12 @@ if (searchInput) {
       const isTreeview = item.classList.contains("treeview");
 
       if (isTreeview) {
-        const mainMenuText = item.querySelector("a .links_name")?.textContent.toLowerCase() || "";
+        const mainMenuText = item.querySelector("a .links_name")?.textContent.toLocaleLowerCase('tr-TR') || "";
         const subMenus = item.querySelectorAll(".treeview-menu li");
         let hasMatchingSubMenu = false;
 
         subMenus.forEach((subItem) => {
-          const subMenuText = subItem.textContent.toLowerCase();
+          const subMenuText = subItem.textContent.toLocaleLowerCase('tr-TR');
           if (subMenuText.includes(searchTerm)) {
             subItem.style.display = "flex";
             hasMatchingSubMenu = true;
@@ -532,7 +532,7 @@ if (searchInput) {
           item.style.display = "none";
         }
       } else {
-        const menuText = item.textContent.toLowerCase();
+        const menuText = item.textContent.toLocaleLowerCase('tr-TR');
         if (menuText.includes(searchTerm)) {
           item.style.display = "block";
         } else {
