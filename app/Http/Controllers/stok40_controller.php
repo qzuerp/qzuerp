@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,16 +108,32 @@ class stok40_controller extends Controller
     ->get();
 
 
-    foreach($ids as $id)
-    {
+
+    
+    FunctionHelpers::apply_mail_settings();
+
+    $mails = DB::table($firma.'pers00')->where('NAME2', '12')->orWhere('NAME2','04')->get();
+    $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
+    
+    foreach ($mails as $mail) {
+      
+      $id = DB::table($firma.'stok47e')->where('EVRAKNO', $EVRAKNO)->value('id');
       DB::table($firma.'notifications')->insert([
-        'title' => 'Yeni satın alma talebi oluşturuldu',
-        'message' => $u->name.' yeni bir satın alma talebi oluşturdu.',
-        'target_user_id' => $id->id,
-        'url' => 'satinalmaTalepleri?ID='.$Talep_id,
-        'created_at' => now(),
-        'updated_at' => now()
+          'title' => 'Yeni Satın Alma Talebi',
+          'message' => $name .' '. $EVRAKNO.' numaralı satın alma talebini oluşturdu.',
+          'target_user_id' => $mail->bagli_hesap,
+          'url' => 'satinalmaTalepleri?ID='.$id,
+          'created_at' => now(),
+          'updated_at' => now()
       ]);
+
+      Mail::raw(
+          "{$name} {$EVRAKNO} numaralı satın alma talebini oluşturdu.",
+          function ($message) use ($mail) {
+              $message->to($mail->EMAIL)
+                      ->subject('Yeni Satın Alma Talebi');
+          }
+      );
     }
 
     return redirect()->back()->with('success','Talepler Başarıyla Oluşturuldu');
