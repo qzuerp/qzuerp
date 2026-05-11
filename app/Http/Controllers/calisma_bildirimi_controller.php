@@ -506,7 +506,7 @@ class calisma_bildirimi_controller extends Controller
         FunctionHelpers::Logla('SFDC31', $EVRAKNO, 'W', $TARIH);
 
         $ID = $request->input('ID_TO_REDIRECT');
-        DB::table($firma . 'sfdc31e')->where('ID', $ID)->update([
+        DB::table($firma . 'sfdc31ee')->where('ID', $ID)->update([
           'EVRAKNO' => $EVRAKNO,
           'TARIH' => $TARIH,
           'JOBNO' => $JOBNO,

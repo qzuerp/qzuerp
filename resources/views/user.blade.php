@@ -48,6 +48,7 @@
     ['QLT','Kalite Şablonu','Kalite'],['QLT02','Giriş Kalite Kontrol','Kalite'],['FKK','Final Kalite Kontrol','Kalite'],['CGC70','Müşteri Şikayetleri','Kalite'],
     ['SPRSRPRLR','Sipariş Raporları','Raporlar & Analiz'],['maliyet','Maliyet','Raporlar & Analiz'],
     ['teklif_fiyat_analiz','Teklif Fiyat Analizi','Raporlar & Analiz'],
+    ['LOGS','Sistem Logları','Raporlar & Analiz'],
     ['teklif_fiyat_analiz_user','Teklif Fiyat Analizi (Kullanıcı)','Raporlar & Analiz'],
     ['TAKIPLISTE','Takip Listeleri','Raporlar & Analiz'],
     ['GKTNM','Grup Kodu Tanımları','Sistem & Tanımlar'],['PRMTR','Parametreler','Sistem & Tanımlar'],

@@ -176,6 +176,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/evraklar-veri', [stok00_controller::class, 'getEvraklarAjax']);
     Route::get('stok-kodu-custom-select', [stok00_controller::class, 'stokKoduCustomSelect']);
     Route::post('stokKartinaGit', [main_controller::class, 'StokKartinaGit']);
+    Route::post('hata-logla', [main_controller::class, 'hataLogla']);
+    Route::post('logs/fetch', [main_controller::class, 'logs_fetch']);
+    Route::post('logs/check-new', [main_controller::class, 'check_new']);
+    Route::post('logs/resolve', [main_controller::class, 'resolve']);
+    Route::get('logs', [main_controller::class, 'logIndex']);
 
     // Stok01 - TV & Hareketleri
     Route::get('stok_tv', [stok01_controller::class, 'index'])->name('stok_tv');

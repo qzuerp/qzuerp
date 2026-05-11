@@ -308,4 +308,118 @@ class main_controller extends Controller
 
     return response()->json(['data' => $data]);
   }
+
+  public function hataLogla(Request $request) {
+    $user = Auth::user();
+    $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+    $database = trim($kullanici_veri->firma).".dbo.";
+
+    DB::table($database.'SLOG00')->insert([
+        'Kullanici' => auth()->user()->name ?? 'Misafir',
+        'Kullanici_id' => auth()->user()->id,
+        'HataMesaji' => $request->mesaj,
+        'Endpoint' => $request->url,
+        'HataKodu' => $request->kod,
+        'InputData' => json_encode($request->input_data),
+        'Tarih' => now()
+    ]);
+    return response()->json(['status' => 'ok']);
+  }
+  public function logIndex() {
+    return view('logs');
+  }
+
+  public function logs_fetch(Request $request) {
+    $user          = Auth::user();
+    $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+    $database      = trim($kullanici_veri->firma) . '.dbo.';
+    $table         = $database . 'SLOG00';
+
+    $tarihBas  = $request->input('tarih_bas') . ' ' .$request->input('tarih_bit');
+    $kullanici = $request->input('kullanici');
+    $hataKodu  = $request->input('hata_kodu');
+    $endpoint  = $request->input('endpoint');
+    $offset    = (int) $request->input('offset', 0);
+    $limit     = (int) $request->input('limit', 20);
+
+    $query = DB::table($table)
+        ->select('ID', 'HataKodu', 'Kullanici', 'Tarih', 'Endpoint', 'HataMesaji')
+        ->orderBy('Tarih', 'desc');
+
+    if ($tarihBas) {
+        $query->whereDate('Tarih', '=', $tarihBas);
+    }
+
+    if ($kullanici) {
+        $query->where('Kullanici', 'like', '%' . $kullanici . '%');
+    }
+
+    if ($hataKodu) {
+        $query->where('HataKodu', $hataKodu);
+    }
+
+    if ($endpoint) {
+        $query->where('Endpoint', 'like', '%' . $endpoint . '%');
+    }
+
+    $rows = $query->skip($offset)->take($limit)->get();
+
+    return response()->json(['rows' => $rows]);
+  }
+
+  public function check_new(Request $request) {
+    $user          = Auth::user();
+    $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+    $database      = trim($kullanici_veri->firma) . '.dbo.';
+    $table         = $database . 'SLOG00';
+
+    $tarihBas  = $request->input('tarih_bas') . ' ' .$request->input('tarih_bit');
+    $kullanici = $request->input('kullanici');
+    $hataKodu  = $request->input('hata_kodu');
+    $endpoint  = $request->input('endpoint');
+    $offset    = (int) $request->input('offset', 0);
+    $limit     = (int) $request->input('limit', 20);
+
+    $query = DB::table($table)
+        ->select('ID', 'HataKodu', 'Kullanici', 'Tarih', 'Endpoint', 'HataMesaji')
+        ->orderBy('Tarih', 'desc');
+
+    if ($tarihBas) {
+        $query->whereDate('Tarih', '=', $tarihBas);
+    }
+
+    if ($kullanici) {
+        $query->where('Kullanici', 'like', '%' . $kullanici . '%');
+    }
+
+    if ($hataKodu) {
+        $query->where('HataKodu', $hataKodu);
+    }
+
+    if ($endpoint) {
+        $query->where('Endpoint', 'like', '%' . $endpoint . '%');
+    }
+    $query->where('ID','>', $request->latest_id);
+
+    $rows = $query->skip($offset)->take($limit)->count();
+
+    return response()->json(['new_count' => $rows]);
+  }
+
+  public function resolve(Request $request)
+  {
+    $user          = Auth::user();
+    $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
+    $database      = trim($kullanici_veri->firma) . '.dbo.';
+    $table         = $database . 'SLOG00';
+
+    DB::table($table)->where('ID', $request->log_id)->update([
+      'durum' => 1,
+    ]);
+
+    DB::table($database.'notifications')->insert([
+      'title' => 'Hata Çözüldü',
+      'message' => ''
+    ]);
+  }
 }
