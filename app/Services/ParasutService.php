@@ -109,19 +109,26 @@ class ParasutService implements AccountingInterface
             ])
             ->json();
     }
-    public function getSatisFaturalari($date) {
+    public function getSatismesajalari($data) {
         if (!$this->token) return ['error' => 'Token yok!'];
     
         $queryParams = [
-            'page[size]' => 60,
-            // 'filter[name]' => 'KADİR ÇELİK',
-            // 'sort' => '-issue_date,-id',
+            'page[size]' => 25,
+            'sort' => '-issue_date,-id',
         ];
     
         $response = Http::withToken($this->token)
-            ->get($this->baseUrl . $this->companyId . '/employees',$queryParams);
+            ->get($this->baseUrl . $this->companyId . '/sales_invoices',$queryParams);
     
-        
+        $data = [];
+
+        foreach($response->json()['data'] as $key => $value) {
+            $data = [
+                'invoice_no' => $value['attributes']['invoice_no'],
+                'net_total' => $value['attributes']['net_total'],
+            ]
+        }
+
         return $response->json();
     }
 }
