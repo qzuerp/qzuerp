@@ -789,7 +789,7 @@
                         </div>
                         <a href='${n.url || '#'}' class="text-decoration-none">
                             <div class="alarm-title text-truncate">${n.title}</div>
-                            <div class="alarm-desc text-truncate">${n.message}</div>
+                            <div class="alarm-desc">${n.message}</div>
                             <div class="alarm-time">${Utils.timeAgo(n.created_at)}</div>
                         </a>
                         <div class="notification-dot"></div>

@@ -343,7 +343,7 @@ class main_controller extends Controller
     $limit     = (int) $request->input('limit', 20);
 
     $query = DB::table($table)
-        ->select('ID', 'HataKodu', 'Kullanici', 'Tarih', 'Endpoint', 'HataMesaji')
+        ->select('*')
         ->orderBy('Tarih', 'desc');
 
     if ($tarihBas) {
@@ -413,13 +413,17 @@ class main_controller extends Controller
     $database      = trim($kullanici_veri->firma) . '.dbo.';
     $table         = $database . 'SLOG00';
 
+    $log = DB::table($table)->where('ID', $request->log_id)->first();
+
     DB::table($table)->where('ID', $request->log_id)->update([
       'durum' => 1,
     ]);
 
     DB::table($database.'notifications')->insert([
       'title' => 'Hata Çözüldü',
-      'message' => ''
+      'message' => $log->Tarih . ' tarihindeki ' . $log->HataKodu . ' hatası çözüldü. ' . $log->Endpoint,
+      'target_user_id' => $log->kullanici_id,
+      'type' => 'success',
     ]);
   }
 }

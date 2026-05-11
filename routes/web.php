@@ -179,8 +179,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('hata-logla', [main_controller::class, 'hataLogla']);
     Route::post('logs/fetch', [main_controller::class, 'logs_fetch']);
     Route::post('logs/check-new', [main_controller::class, 'check_new']);
-    Route::post('logs/resolve', [main_controller::class, 'resolve
-    ']);
+    Route::post('logs/resolve', [main_controller::class, 'resolve']);
     Route::get('logs', [main_controller::class, 'logIndex']);
 
     // Stok01 - TV & Hareketleri

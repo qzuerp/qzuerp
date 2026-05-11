@@ -444,7 +444,7 @@
                     <div class="polling-toggle active" id="polling-toggle" title="Otomatik yenilemeyi aç/kapat">
                         <div class="switch"></div>
                         <span id="polling-label">Otomatik:</span>
-                        <select class="polling-interval-select" id="polling-interval">
+                        <select class="polling-interval-select" style="border: none;" id="polling-interval">
                             <option value="15">15s</option>
                             <option value="30" selected>30s</option>
                             <option value="60">60s</option>
@@ -700,7 +700,31 @@
             const msgFull  = row.HataMesaji || '—';
             const hasMore  = msgFull.length > 180;
             const msgShort = hasMore ? msgFull.substring(0, 180) + '…' : msgFull;
+            var button = "";
 
+
+            if(row.durum == 1)
+            {
+                button = `
+                        <button class="resolved btn-cozuldu">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                            </svg>
+                            Çözüldü
+                        </button>`;
+                        
+            }
+            else
+            {
+                button =  `<button class="btn-cozuldu" data-log-id="${row.ID}" data-kullanici="${row.Kullanici_id || ''}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                        </svg>
+                        Sorun Çözüldü
+                    </button>`;
+            }
+
+            console.log(button);
             const toggleHtml = hasMore
                 ? `<div class="log-message-full" id="msg-full-${row.ID}">${msgFull}</div>
                    <button class="toggle-btn" data-id="${row.ID}">
@@ -736,12 +760,7 @@
                     <div class="log-card-footer-left">
                         <!-- toggle buraya da taşınabilir, şimdilik boş bırakıldı -->
                     </div>
-                    <button class="btn-cozuldu" data-log-id="${row.ID}" data-kullanici="${row.Kullanici_id || ''}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-                        </svg>
-                        Sorun Çözüldü
-                    </button>
+                    ${button}
                 </div>
             </div>`;
         }
