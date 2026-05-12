@@ -165,6 +165,35 @@
                   </div>
                   <div class="col-md-6 col-xs-6">
                     @include('layout.util.evrakIslemleri')
+
+                    @php
+                      $surecB = DB::table($ekranTableT)
+                      ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                      ->orderBy('BASLANGIC_SAATI', 'asc')
+                      ->get();
+                      $sonSurec = DB::table($ekranTableT)
+                      ->where("EVRAKNO", @$kart_veri->EVRAKNO)
+                      ->orderBy('BASLANGIC_SAATI', 'desc')
+                      ->first();
+                    @endphp
+                    @if(@$sonSurec->ISLEM_TURU == 'A' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                      <p class="sf-indicator">
+                        <span class="status-dot status-orange"></span>
+                        <!-- <span class="status-text">Ayar</span> -->
+                      </p>
+                    @elseif(@$sonSurec->ISLEM_TURU == 'U' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                    <p class="sf-indicator">
+                      <span class="status-dot status-green"></span>
+                      <!-- <span class="status-text">Üretim</span> -->
+                    </p>
+                    @elseif(@$sonSurec->ISLEM_TURU == 'D' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
+                    <p class="sf-indicator">
+                      <span class="status-dot status-red"></span>
+                      <!-- <span class="status-text">Duruş</span> -->
+                    </p>
+                    @else
+
+                    @endif
                   </div>
                 </div>
 
@@ -239,34 +268,7 @@
                       @endphp
                       <img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
 
-                      @php
-                        $surecB = DB::table($ekranTableT)
-                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                        ->orderBy('BASLANGIC_SAATI', 'asc')
-                        ->get();
-                        $sonSurec = DB::table($ekranTableT)
-                        ->where("EVRAKNO", @$kart_veri->EVRAKNO)
-                        ->orderBy('BASLANGIC_SAATI', 'desc')
-                        ->first();
-                      @endphp
-                      @if(@$sonSurec->ISLEM_TURU == 'A' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
-                        <p class="sf-indicator">
-                          <span class="status-dot status-orange"></span>
-                          <!-- <span class="status-text">Ayar</span> -->
-                        </p>
-                      @elseif(@$sonSurec->ISLEM_TURU == 'U' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
-                      <p class="sf-indicator">
-                        <span class="status-dot status-green"></span>
-                        <!-- <span class="status-text">Üretim</span> -->
-                      </p>
-                      @elseif(@$sonSurec->ISLEM_TURU == 'D' && @$sonSurec->BITIS_SAATI == null && @$sonSurec->BITIS_TARIHI == null)
-                      <p class="sf-indicator">
-                        <span class="status-dot status-red"></span>
-                        <!-- <span class="status-text">Duruş</span> -->
-                      </p>
-                      @else
-
-                      @endif
+                      
                     </div>
                   </div>
                 </div>
