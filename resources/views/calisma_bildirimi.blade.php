@@ -224,12 +224,21 @@
                       </div>                    
                     </div>
                         
-                    <div class="col-md-2 col-sm-4 col-xs-6">
+                    <!-- <div class="col-md-2 col-sm-4 col-xs-6">
                       <button type="button" class="btn btn-primary sablonGetirBtn" style="margin-top:28px;" data-kod="{{ @$kart_veri->STOK_CODE }}" data-bs-toggle="modal" data-bs-target="#modal_gkk" type="button">
                           <i class="fa-solid fa-clipboard-check" style="color: green;"></i>
                       </button>
-                    </div>
-                    <div class="">
+                    </div> -->
+                    <div class="d-flex col">
+                      @php 
+                        $img = DB::table($database.'dosyalar00')
+                        ->where('EVRAKNO',@$kart_veri->STOK_CODE)
+                        ->where('EVRAKTYPE','STOK00')
+                        ->where('DOSYATURU','GORSEL')
+                        ->first();
+                      @endphp
+                      <img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
+
                       @php
                         $surecB = DB::table($ekranTableT)
                         ->where("EVRAKNO", @$kart_veri->EVRAKNO)
