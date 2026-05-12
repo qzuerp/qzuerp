@@ -210,6 +210,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Stok25 - Etiket Bölme
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');
+    Route::get('takimhane', function() { return view('takimhane');})->name('takimhane');
     Route::post('stok25_islemler', [stok25_controller::class, 'islemler']);
 
     // Stok26 - Depodan Depoya Transfer

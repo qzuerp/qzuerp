@@ -109,7 +109,7 @@
                       <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz">
                         <i class="fa fa-filter" style="color: white;"></i>
                       </a>
-                       
+                      
                       <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2">
                         <i class="fa fa-filter" style="color: white;"></i>
                       </a>
