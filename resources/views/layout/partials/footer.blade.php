@@ -247,7 +247,6 @@
 
 
 
-
 @if (session('error_swal'))
   <script>
   $(function() {

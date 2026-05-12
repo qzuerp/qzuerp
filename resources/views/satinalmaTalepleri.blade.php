@@ -194,8 +194,9 @@
             <div class="nav-tabs-custom box box-info">
               <ul class="nav nav-tabs">
                 <li class="nav-item"><a href="#siparisler" class="nav-link" data-bs-toggle="tab">Talepler</a></li>
-                <li class="nav-item"><a href="#teklifler" class="nav-link" data-bs-toggle="tab">Tedarikçilerden Alınan
-                    Teklifler</a></li>
+                @if (in_array('SFF', $kullanici_read_yetkileri))
+                  <li class="nav-item"><a href="#teklifler" class="nav-link" data-bs-toggle="tab">Tedarikçilerden Alınan Teklifler</a></li>
+                @endif
                 <li class=""><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
                 <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar"
                     id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange"
@@ -1188,6 +1189,8 @@
     <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
+      
+      isSubmit = true;
       function ozelInput() {
         $('#CARIHESAPCODE_E').val('').trigger('change');
       }

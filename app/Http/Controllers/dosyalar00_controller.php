@@ -27,7 +27,7 @@ class dosyalar00_controller extends Controller
         ]);
 
         $unallowedTables = ['stok','urun','musteri'];
-        $maxRows = 100;
+        $maxRows = 3000;
         $chunkSize = 500;
         $blacklistColumns = ['id','created_at','updated_at'];
 

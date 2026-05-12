@@ -101,7 +101,7 @@ class stok40_controller extends Controller
 
     $ids = DB::table('users')
     ->where('write_perm', 'LIKE', '%|SATINALMSIP|%')
-    ->orWhere('write_perm', 'LIKE', 'SATINALMSIP|%')
+  ->orWhere('write_perm', 'LIKE', 'SATINALMSIP|%')
     ->orWhere('write_perm', 'LIKE', '%|SATINALMSIP')
     ->orWhere('write_perm', '=', 'SATINALMSIP')
     ->select('id', 'name')
@@ -116,7 +116,7 @@ class stok40_controller extends Controller
     $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
     
     foreach ($mails as $mail) {
-      
+
       $id = DB::table($firma.'stok47e')->where('EVRAKNO', $EVRAKNO)->value('id');
       DB::table($firma.'notifications')->insert([
           'title' => 'Yeni Satın Alma Talebi',

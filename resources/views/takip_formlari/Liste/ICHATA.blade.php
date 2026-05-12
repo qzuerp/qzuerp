@@ -52,7 +52,7 @@
                 <td>{{ $item->ich_operator }} - {{ $name }}</td>
                 <td>{{ $item->ich_quantity }}</td>
                 <td>{{ $item->ich_date }}</td>
-                <td>{{ $fiyat ?? 'Fiyat Bulunamadı' }}</td>
+                <td>{{ $fiyat ?? 'Fiyat Bulunamadı' }} TL</td>
             </tr>
         @endforeach
     </tbody>

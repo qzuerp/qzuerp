@@ -463,6 +463,7 @@ class calisma_bildirimi_controller extends Controller
 
         if ($JOBNO != NULL) {
           $MIKTAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $JOBNO)->SUM('SF_MIKTAR');
+          
           if ($MIKTAR == $request->TAMAMLANAN_MIK) {
             DB::update("UPDATE {$firma} mmps10t 
               SET R_TMYMAMULMIKTAR =  ?,R_ACIK_KAPALI = ?

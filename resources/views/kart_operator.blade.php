@@ -155,7 +155,7 @@
                           @if($kart_veri->NAME2 == $unvan->KOD)
                             <option selected value="{{ $unvan->KOD }}">{{ $unvan->AD }}</option>
                           @else
-                            <option value="{{ $unvan->KOD }}">{{ $unvan->AD }}</option>
+                            <option value="{{ $unvan->KOD }}"> {{ $unvan->AD }} - {{ $unvan->AD }}</option>
                           @endif
                         @endforeach
                       </select>
