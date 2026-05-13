@@ -227,10 +227,20 @@
                                                             id="STOK_KODU_FILL">
                                                     </div>
                                                     
-                                                    <div class="col-6">
-                                                        <button class="btn btn-primary" type="button"><i class="fa-solid fa-arrow-pointer"></i> Lokasyondan seç</button>
-                                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" onclick="veriCek()" data-bs-target="#modal_popupSelectModal4"><i class="fa-solid fa-arrow-pointer"></i> Stoğu seç</button>
-                                                        <button class="btn btn-primary" type="button" id="addrow"><i class="fa-solid fa-plus"></i> Ekle</button>
+                                                    <div class="col-6 d-flex gap-2">
+                                                        <button class="btn btn-secondary" type="button"><i class="fa-solid fa-arrow-pointer"></i> Lokasyondan seç</button>
+                                                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" onclick="veriCek()" data-bs-target="#modal_popupSelectModal4"><i class="fa-solid fa-arrow-pointer"></i> Stoğu seç</button>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fa-solid fa-plus"></i> Ekle
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><button class="dropdown-item" href="#">Depodan depoya transfer et</button></li>
+                                                                <li><button class="dropdown-item" href="#">Etiket böl ve transfer et</button></li>
+                                                                <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari(document.getElementById('STOK_KODU_FILL').value)">Depo Mevcutları</button></li>
+                                                                <li><button type="button" class="dropdown-item" onclick="StokHareketleri(document.getElementById('STOK_KODU_FILL').value)">Stok Hareketleri</button></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- Stok Bilgileri -->
@@ -482,7 +492,8 @@
     </div>
     {{-- Seri no finish --}}
 
-    
+    @include('components.detayBtnLib')
+	<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
     <script>
         function veriCek() {
             let kod = $('#STOK_KODU_FILL').val();

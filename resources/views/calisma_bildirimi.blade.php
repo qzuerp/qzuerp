@@ -1389,6 +1389,7 @@
                       <th>Evrak No</th>
                       <th>Tarih</th>
                       <th>MPS No</th>
+                      <th>JOBNO</th>
                       <th>Mamul Kodu</th>
                       <th>Tezgah Kodu</th>
                       <th>Operasyon Kodu</th>
@@ -1402,6 +1403,7 @@
                       <th>Evrak No</th>
                       <th>Tarih</th>
                       <th>MPS No</th>
+                      <th>JOBNO</th>
                       <th>Mamul Kodu</th>
                       <th>Tezgah Kodu</th>
                       <th>Operasyon Kodu</th>
@@ -1420,6 +1422,7 @@
                         echo "<td>" . $suzVeri->EVRAKNO . "</td>";
                         echo "<td>" . $suzVeri->TARIH . "</td>";
                         echo "<td>" . $suzVeri->MPSNO . "</td>";
+                        echo "<td>" . $suzVeri->JOBNO . "</td>";
                         echo "<td>" . $suzVeri->STOK_CODE . "</td>";
                         echo "<td>" . $suzVeri->TO_ISMERKEZI. "</td>";
                         echo "<td>" . $suzVeri->OPERASYON. "</td>";
