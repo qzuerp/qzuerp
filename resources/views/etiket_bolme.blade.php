@@ -1362,7 +1362,7 @@
           $('#seriNoSec tbody').on('click', 'tr', function () {
               var $row = $(this);
               var $cells = $row.find('td');
-              console.log($cells);
+              
               var ID = $cells.eq(0).text().trim();
               var MIKTAR = $cells.eq(3).text().trim();
               var LOTNO = $cells.eq(5).text().trim();

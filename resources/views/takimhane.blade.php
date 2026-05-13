@@ -10,7 +10,7 @@
 
     $ekran = "ETIKETBOL";
     $ekranRumuz = "STOK25";
-    $ekranAdi = "Takımhane Yönetimi";
+    $ekranAdi = "Stok Yönetimi";
     $ekranLink = "takimhane";
     $ekranTableE = $database . "stok25e";
     $ekranTableT = $database . "stok25t";
@@ -214,10 +214,24 @@
                                     <div class="tab-content">
                                         <div class="active tab-pane" id="veriTab">
                                             <div class="container-fluid px-0">
-                                                <div class="d-flex gap-2 mb-3">
-                                                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-arrow-pointer"></i> Lokasyondan seç</button>
-                                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4"><i class="fa-solid fa-arrow-pointer"></i> Stoğu seç</button>
-                                                    <button class="btn btn-primary" type="button" id="addrow"><i class="fa-solid fa-plus"></i> Ekle</button>
+                                                <div class="row mb-3">
+                                                    <div class="col-6">
+                                                        <select
+                                                            class="form-select form-select-sm KOD STOK_KODU_SHOW"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-title="KOD" onchange="stokAdiGetir(this.value)"
+                                                            name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
+                                                            <option value=" ">Seç</option>
+                                                        </select>
+                                                        <input type="hidden" name="STOK_KODU_FILL"
+                                                            id="STOK_KODU_FILL">
+                                                    </div>
+                                                    
+                                                    <div class="col-6">
+                                                        <button class="btn btn-primary" type="button"><i class="fa-solid fa-arrow-pointer"></i> Lokasyondan seç</button>
+                                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" onclick="veriCek()" data-bs-target="#modal_popupSelectModal4"><i class="fa-solid fa-arrow-pointer"></i> Stoğu seç</button>
+                                                        <button class="btn btn-primary" type="button" id="addrow"><i class="fa-solid fa-plus"></i> Ekle</button>
+                                                    </div>
                                                 </div>
                                                 <!-- Stok Bilgileri -->
                                                 <div class="card mb-2">
@@ -229,19 +243,6 @@
                                                     </div>
                                                     <div class="card-body py-2 px-3">
                                                         <div class="row g-2">
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="STOK_KODU_SHOW" class="form-label mb-1"
-                                                                    style="font-size:12px">Stok Kodu</label>
-                                                                <select
-                                                                    class="form-select form-select-sm KOD STOK_KODU_SHOW"
-                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                    data-bs-title="KOD" onchange="stokAdiGetir(this.value)"
-                                                                    name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
-                                                                    <option value=" ">Seç</option>
-                                                                </select>
-                                                                <input type="hidden" name="STOK_KODU_FILL"
-                                                                    id="STOK_KODU_FILL">
-                                                            </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="STOK_ADI" class="form-label mb-1"
                                                                     style="font-size:12px">Stok Adı</label>
@@ -280,6 +281,44 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Lokasyon Alanları -->
+                                                <div class="card mb-2">
+                                                    <div class="card-header py-1 px-3">
+                                                        <small class="text-muted fw-semibold text-uppercase"
+                                                            style="font-size:11px; letter-spacing:.05em">
+                                                            <i class="fa-brands fa-wpforms"></i> Lokasyon Alanları
+                                                        </small>
+                                                    </div>
+                                                    <div class="card-body py-2 px-3">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-3 col-6">
+                                                                <label for="LOCATION1" class="form-label mb-1"
+                                                                    style="font-size:12px">Lokasyon 1</label>
+                                                                <input type="text" readonly id="LOCATION1"
+                                                                    class="form-control form-control-sm">
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <label for="LOCATION2" class="form-label mb-1"
+                                                                    style="font-size:12px">Lokasyon 2</label>
+                                                                <input type="text" readonly id="LOCATION2"
+                                                                    class="form-control form-control-sm">
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <label for="LOCATION3" class="form-label mb-1"
+                                                                    style="font-size:12px">Lokasyon 3</label>
+                                                                <input type="text" readonly id="LOCATION3"
+                                                                    class="form-control form-control-sm">
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <label for="LOCATION4" class="form-label mb-1"
+                                                                    style="font-size:12px">Lokasyon 4</label>
+                                                                <input type="text" readonly id="LOCATION4"
+                                                                    class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <!-- Metin Alanları -->
                                                 <div class="card mb-2">
                                                     <div class="card-header py-1 px-3">
@@ -291,42 +330,27 @@
                                                     <div class="card-body py-2 px-3">
                                                         <div class="row g-2">
                                                             <div class="col-md-3 col-6">
-                                                                <label for="TEXT1_FILL" class="form-label mb-1"
-                                                                    style="font-size:12px">Operatör (TEXT1)</label>
-                                                                <select
-                                                                    class="form-select form-select-sm select2 js-example-basic-single TEXT1"
-                                                                    style="width:100%" data-bs-toggle="tooltip"
-                                                                    data-bs-placement="top" data-bs-title="TEXT1"
-                                                                    id="TEXT1_FILL">
-                                                                    <option value="" selected></option>
-                                                                    @php
-                                                                        $pers00_evraklar = DB::table($database . 'pers00')->orderBy('id', 'ASC')->get();
-                                                                        foreach ($pers00_evraklar as $key => $veri) {
-                                                                            if ($veri->KOD == @$kart_veri->TO_OPERATOR) {
-                                                                                echo "<option value='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                                            } else {
-                                                                                echo "<option value='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                                            }
-                                                                        }
-                                                                    @endphp
-                                                                </select>
+                                                                <label for="TEXT1" class="form-label mb-1"
+                                                                    style="font-size:12px">TEXT1</label>
+                                                                <input type="text" readonly id="TEXT1"
+                                                                    class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="TEXT2" class="form-label mb-1"
                                                                     style="font-size:12px">TEXT2</label>
-                                                                <input type="text" id="TEXT2"
+                                                                <input type="text" readonly id="TEXT2"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="TEXT3" class="form-label mb-1"
                                                                     style="font-size:12px">TEXT3</label>
-                                                                <input type="text" id="TEXT3"
+                                                                <input type="text" readonly id="TEXT3"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="TEXT4" class="form-label mb-1"
                                                                     style="font-size:12px">TEXT4</label>
-                                                                <input type="text" id="TEXT4"
+                                                                <input type="text" readonly id="TEXT4"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                         </div>
@@ -346,25 +370,25 @@
                                                             <div class="col-md-3 col-6">
                                                                 <label for="NUM1" class="form-label mb-1"
                                                                     style="font-size:12px">NUM1</label>
-                                                                <input type="text" id="NUM1"
+                                                                <input type="text" readonly id="NUM1"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="NUM2" class="form-label mb-1"
                                                                     style="font-size:12px">NUM2</label>
-                                                                <input type="text" id="NUM2"
+                                                                <input type="text" readonly id="NUM2"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="NUM3" class="form-label mb-1"
                                                                     style="font-size:12px">NUM3</label>
-                                                                <input type="text" id="NUM3"
+                                                                <input type="text" readonly id="NUM3"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-md-3 col-6">
                                                                 <label for="NUM4" class="form-label mb-1"
                                                                     style="font-size:12px">NUM4</label>
-                                                                <input type="text" id="NUM4"
+                                                                <input type="text" readonly id="NUM4"
                                                                     class="form-control form-control-sm">
                                                             </div>
                                                         </div>
@@ -413,7 +437,6 @@
                 <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
                 <thead>
                     <tr class="bg-primary">
-                    <th style="min-width:100px;" >ID</th>
                     <th style="min-width:100px;" >Kod</th>
                     <th style="min-width:200px;" >Ad</th>
                     <th style="min-width:100px;" >Miktar</th>
@@ -494,7 +517,7 @@
         data: { KOD: kod },
         success: function (res) {
 
-            table.clear(); // eski verileri temizle
+            table.clear();
 
             res.forEach((row) => {
             table.row.add([
@@ -530,4 +553,48 @@
         }
         });
     }
+
+    $(document).ready(function () {
+        $('#seriNoSec tbody').on('click', 'tr', function () {
+            var $row = $(this);
+            var $cells = $row.find('td');
+
+            var MIKTAR = $cells.eq(3).text().trim();
+            var LOTNO = $cells.eq(5).text().trim();
+            var SERINO = $cells.eq(6).text().trim();
+            var DEPO = $cells.eq(7).text().trim().split('-')[0];
+            var V1 = $cells.eq(8).text().trim();
+            var V2 = $cells.eq(9).text().trim();
+            var V3 = $cells.eq(10).text().trim();
+            var V4 = $cells.eq(11).text().trim();
+
+            var O1 = $cells.eq(12).text().trim();
+            var O2 = $cells.eq(13).text().trim();
+            var O3 = $cells.eq(14).text().trim();
+            var O4 = $cells.eq(15).text().trim();
+
+            var L1 = $cells.eq(16).text().trim();
+            var L2 = $cells.eq(17).text().trim();
+            var L3 = $cells.eq(18).text().trim();
+            var L4 = $cells.eq(19).text().trim();
+
+            $('#LOTNUMBER').val(LOTNO);
+            $('#SERINO').val(SERINO);
+
+            $('#TEXT1').val(V1);
+            $('#TEXT2').val(V2);
+            $('#TEXT3').val(V3);
+            $('#TEXT4').val(V4);
+
+            $('#NUM1').val(O1);
+            $('#NUM2').val(O2);
+            $('#NUM3').val(O3);
+            $('#NUM4').val(O4);
+
+            $('#LOCATION1').val(L1);
+            $('#LOCATION2').val(L2);
+            $('#LOCATION3').val(L3);
+            $('#LOCATION4').val(L4);
+        });
+    });
 </script>
