@@ -463,8 +463,8 @@ class calisma_bildirimi_controller extends Controller
 
         if ($JOBNO != NULL) {
           $MIKTAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $JOBNO)->SUM('SF_MIKTAR');
-          
-          if ($MIKTAR == $request->TAMAMLANAN_MIK) {
+
+          if ((int)$MIKTAR >= (int)$request->TAMAMLANAN_MIK) {
             DB::update("UPDATE {$firma} mmps10t 
               SET R_TMYMAMULMIKTAR =  ?,R_ACIK_KAPALI = ?
               WHERE JOBNO = ?", [$MIKTAR, 'K', $JOBNO]);
@@ -490,8 +490,8 @@ class calisma_bildirimi_controller extends Controller
             $TOPLAM_SURE = $A_sure + $U_sure;
 
             DB::update("UPDATE {$firma} mmps10t 
-              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?
-              WHERE JOBNO = ?", [$MIKTAR, $TOPLAM_SURE, $JOBNO]);
+              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?,R_ACIK_KAPALI = ?
+              WHERE JOBNO = ?", [$MIKTAR, $TOPLAM_SURE, NULL, $JOBNO]);
           }
         }
 
@@ -718,9 +718,9 @@ class calisma_bildirimi_controller extends Controller
 
         if ($JOBNO != NULL) {
           $MIKTAR = DB::table($firma . 'sfdc31e')->where('JOBNO', $JOBNO)->SUM('SF_MIKTAR');
-          // dd($MIKTAR == $request->TAMAMLANAN_MIK);
+          // dd((int)$MIKTAR, (int)$request->TAMAMLANAN_MIK);
 
-          if ($MIKTAR == $request->TAMAMLANAN_MIK) {
+          if ((int)$MIKTAR >= (int)$request->TAMAMLANAN_MIK) {
             DB::update("UPDATE {$firma} mmps10t 
               SET R_TMYMAMULMIKTAR =  ?,R_ACIK_KAPALI = ?
               WHERE JOBNO = ?", [$MIKTAR, 'K', $JOBNO]);
@@ -745,8 +745,8 @@ class calisma_bildirimi_controller extends Controller
             $TOPLAM_SURE = $A_sure + $U_sure;
 
             DB::update("UPDATE {$firma} mmps10t 
-              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?
-              WHERE JOBNO = ?", [$MIKTAR, $TOPLAM_SURE, $JOBNO]);
+              SET R_TMYMAMULMIKTAR =  ? , GERCEKLESEN_SURE = ?, R_ACIK_KAPALI = ?
+              WHERE JOBNO = ?", [$MIKTAR, $TOPLAM_SURE, NULL, $JOBNO]);
           }
         }
 
