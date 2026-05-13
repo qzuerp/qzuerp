@@ -244,9 +244,9 @@
                                                     <div class="card-body py-2 px-3">
                                                         <div class="row g-2">
                                                             <div class="col-md-3 col-6">
-                                                                <label for="STOK_ADI" class="form-label mb-1"
+                                                                <label for="STOK_ADI_FILL" class="form-label mb-1"
                                                                     style="font-size:12px">Stok Adı</label>
-                                                                <input type="text" id="STOK_ADI"
+                                                                <input type="text" id="STOK_ADI_FILL"
                                                                     class="form-control form-control-sm" readonly
                                                                     placeholder="Otomatik dolar">
                                                             </div>
@@ -257,9 +257,9 @@
                                                                     class="form-control form-control-sm" placeholder="0">
                                                             </div>
                                                             <div class="col-md-1 col-4">
-                                                                <label for="STOK_BIRIM" class="form-label mb-1"
+                                                                <label for="SF_SF_UNIT_FILL" class="form-label mb-1"
                                                                     style="font-size:12px">Birim</label>
-                                                                <input type="text" id="STOK_BIRIM"
+                                                                <input type="text" id="SF_SF_UNIT_FILL"
                                                                     class="form-control form-control-sm" readonly
                                                                     placeholder="—">
                                                             </div>
@@ -394,21 +394,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <!-- Hidden Alanlar -->
-                                                <input type="hidden" id="OLD_TEXT1">
-                                                <input type="hidden" id="OLD_TEXT2">
-                                                <input type="hidden" id="OLD_TEXT3">
-                                                <input type="hidden" id="OLD_TEXT4">
-                                                <input type="hidden" id="OLD_NUM1">
-                                                <input type="hidden" id="OLD_NUM2">
-                                                <input type="hidden" id="OLD_NUM3">
-                                                <input type="hidden" id="OLD_NUM4">
-                                                <input type="hidden" id="OLD_LOCATION1">
-                                                <input type="hidden" id="OLD_LOCATION2">
-                                                <input type="hidden" id="OLD_LOCATION3">
-                                                <input type="hidden" id="OLD_LOCATION4">
-
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="liste"></div>
@@ -461,7 +446,6 @@
 
                 <tfoot>
                     <tr class="bg-info">
-                    <th>ID</th>
                     <th>Kod</th>
                     <th>Ad</th>
                     <th>Miktar</th>
@@ -497,104 +481,108 @@
         </div>
     </div>
     {{-- Seri no finish --}}
-@endsection
 
-<script>
-    function veriCek() {
-        let kod = $('#STOK_KODU_FILL').val();
-        Swal.fire({
-            text: 'Lütfen bekleyin',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-        let table = $('#seriNoSec').DataTable();
-
-        $.ajax({
-        url: '/mevcutVeriler',
-        type: 'get',
-        data: { KOD: kod },
-        success: function (res) {
-
-            table.clear();
-
-            res.forEach((row) => {
-            table.row.add([
-                row.KOD || '',
-                row.STOK_ADI || '',
-                row.MIKTAR || '',
-                row.SF_SF_UNIT || '',
-                row.LOTNUMBER || '',
-                row.SERINO || '',
-                (row.AMBCODE || '') + ' - ' + (row.AD || ''),
-                row.TEXT1 || '',
-                row.TEXT2 || '',
-                row.TEXT3 || '',
-                row.TEXT4 || '',
-                row.NUM1 || '',
-                row.NUM2 || '',
-                row.NUM3 || '',
-                row.NUM4 || '',
-                row.LOCATION1 || '',
-                row.LOCATION2 || '',
-                row.LOCATION3 || '',
-                row.LOCATION4 || ''
-            ]);
+    
+    <script>
+        function veriCek() {
+            let kod = $('#STOK_KODU_FILL').val();
+            Swal.fire({
+                text: 'Lütfen bekleyin',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
+            let table = $('#seriNoSec').DataTable();
 
-            table.draw(); // tabloyu güncelle
-        },
-        error: function (error) {
-            console.log(error);
-        },
-        complete: function () {
-            Swal.close();
+            $.ajax({
+            url: '/mevcutVeriler',
+            type: 'get',
+            data: { KOD: kod },
+            success: function (res) {
+
+                table.clear();
+
+                res.forEach((row) => {
+                table.row.add([
+                    row.KOD || '',
+                    row.STOK_ADI || '',
+                    row.MIKTAR || '',
+                    row.SF_SF_UNIT || '',
+                    row.LOTNUMBER || '',
+                    row.SERINO || '',
+                    (row.AMBCODE || '') + ' - ' + (row.AD || ''),
+                    row.TEXT1 || '',
+                    row.TEXT2 || '',
+                    row.TEXT3 || '',
+                    row.TEXT4 || '',
+                    row.NUM1 || '',
+                    row.NUM2 || '',
+                    row.NUM3 || '',
+                    row.NUM4 || '',
+                    row.LOCATION1 || '',
+                    row.LOCATION2 || '',
+                    row.LOCATION3 || '',
+                    row.LOCATION4 || ''
+                ]);
+                });
+
+                table.draw(); // tabloyu güncelle
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            complete: function () {
+                Swal.close();
+            }
+            });
         }
+
+
+        
+        $(document).ready(function () {
+            $('#seriNoSec tbody').on('click', 'tr', function () {
+                var $row = $(this);
+                var $cells = $row.find('td');
+
+                var MIKTAR = $cells.eq(2).text().trim();
+                var LOTNO = $cells.eq(4).text().trim();
+                var SERINO = $cells.eq(5).text().trim();
+                var DEPO = $cells.eq(6).text().trim().split('-')[0];
+
+                var V1 = $cells.eq(7).text().trim();
+                var V2 = $cells.eq(8).text().trim();
+                var V3 = $cells.eq(9).text().trim();
+                var V4 = $cells.eq(10).text().trim();
+
+                var O1 = $cells.eq(11).text().trim();
+                var O2 = $cells.eq(12).text().trim();
+                var O3 = $cells.eq(13).text().trim();
+                var O4 = $cells.eq(14).text().trim();
+
+                var L1 = $cells.eq(15).text().trim();
+                var L2 = $cells.eq(16).text().trim();
+                var L3 = $cells.eq(17).text().trim();
+                var L4 = $cells.eq(18).text().trim();
+
+                $('#LOTNUMBER').val(LOTNO);
+                $('#SERINO').val(SERINO);
+
+                $('#TEXT1').val(V1);
+                $('#TEXT2').val(V2);
+                $('#TEXT3').val(V3);
+                $('#TEXT4').val(V4);
+
+                $('#NUM1').val(O1);
+                $('#NUM2').val(O2);
+                $('#NUM3').val(O3);
+                $('#NUM4').val(O4);
+
+                $('#LOCATION1').val(L1);
+                $('#LOCATION2').val(L2);
+                $('#LOCATION3').val(L3);
+                $('#LOCATION4').val(L4);
+            });
         });
-    }
-
-    $(document).ready(function () {
-        $('#seriNoSec tbody').on('click', 'tr', function () {
-            var $row = $(this);
-            var $cells = $row.find('td');
-
-            var MIKTAR = $cells.eq(3).text().trim();
-            var LOTNO = $cells.eq(5).text().trim();
-            var SERINO = $cells.eq(6).text().trim();
-            var DEPO = $cells.eq(7).text().trim().split('-')[0];
-            var V1 = $cells.eq(8).text().trim();
-            var V2 = $cells.eq(9).text().trim();
-            var V3 = $cells.eq(10).text().trim();
-            var V4 = $cells.eq(11).text().trim();
-
-            var O1 = $cells.eq(12).text().trim();
-            var O2 = $cells.eq(13).text().trim();
-            var O3 = $cells.eq(14).text().trim();
-            var O4 = $cells.eq(15).text().trim();
-
-            var L1 = $cells.eq(16).text().trim();
-            var L2 = $cells.eq(17).text().trim();
-            var L3 = $cells.eq(18).text().trim();
-            var L4 = $cells.eq(19).text().trim();
-
-            $('#LOTNUMBER').val(LOTNO);
-            $('#SERINO').val(SERINO);
-
-            $('#TEXT1').val(V1);
-            $('#TEXT2').val(V2);
-            $('#TEXT3').val(V3);
-            $('#TEXT4').val(V4);
-
-            $('#NUM1').val(O1);
-            $('#NUM2').val(O2);
-            $('#NUM3').val(O3);
-            $('#NUM4').val(O4);
-
-            $('#LOCATION1').val(L1);
-            $('#LOCATION2').val(L2);
-            $('#LOCATION3').val(L3);
-            $('#LOCATION4').val(L4);
-        });
-    });
-</script>
+    </script>
+@endsection

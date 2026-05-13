@@ -242,7 +242,7 @@ class stok47_controller extends Controller
               );
           }
         }
-        else if(true)
+        else
         {
           $mails = DB::table($firma.'pers00')->where('NAME2','04')->get();
           $name = DB::table($firma.'pers00')->where('KOD',$TALEP_EDEN_KISI)->value('AD');
@@ -579,7 +579,7 @@ class stok47_controller extends Controller
           }
           
           $STOK = DB::table($firma . 'stok00')->where('KOD', $T_STOK_KODU[$i])->first();
-          DB::table($firma . 'stok47t')->where('TRNUM',  $OR_TRNUM[$i])->update([
+          DB::table($firma . 'stok47t')->where('TRNUM',  $OR_TRNUM[$i])->where('EVRAKNO',$EVRAKNO)->update([
             'AK' => 'K'
           ]);
 
