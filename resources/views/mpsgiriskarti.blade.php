@@ -1277,6 +1277,15 @@
 														<button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
 															<i class='fa fa-filter' style='color: WHİTE'></i> --Süz--
 														</button>
+														<button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
+															<i class="fa-solid fa-file-excel"></i>&nbsp; Excel
+														</button>
+														<button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')" style="font-size:13px; height:34px; padding: 0 16px;">
+															<i class="fa-solid fa-file-word"></i>&nbsp; Word
+														</button>
+														<button type="button" class="btn btn-secondary" onclick="printTable('example2')" style="font-size:13px; height:34px; padding: 0 16px;">
+															<i class="fa fa-print"></i>&nbsp; Yazdır
+														</button>
 													</div> 
 
 													<div class="row " style="overflow: auto">
@@ -1299,10 +1308,10 @@
 																<tfoot>
 																	<tr class="bg-info">
 																		<th>Evrak No</th>
-																		<th>Kaynak Tipi</th>
 																		<th>Kaynak Kodu</th>
 																		<th>Kaynak Adı</th>
-																		<th>Miktar/Süre</th>
+																		<th>Açık kapalı</th>
+																		<th>Toplam miktar</th>
 																		<th>#</th>
 																	</tr>
 																</tfoot></br></br></br>
@@ -1331,7 +1340,7 @@
 																	if(isset($_GET['TEZGAH_KODU_B'])) {$TEZGAH_KODU_B = TRIM($_GET['TEZGAH_KODU_B']);}
 																	if(isset($_GET['TEZGAH_KODU_E'])) {$TEZGAH_KODU_E = TRIM($_GET['TEZGAH_KODU_E']);}
 
-																	$sql_sorgu = 'SELECT * FROM ' . $database . 'mmps10t WHERE 1 = 1';
+																	$sql_sorgu = 'SELECT * FROM ' . $database . 'mmps10e WHERE 1 = 1';
 																	// $sql_sorgu = 'SELECT * FROM pers00 WHERE 1 = 1';
 																	// if(Trim($R_KAYNAKTYPE_B) <> ''){
 																	// 	$sql_sorgu = $sql_sorgu .  "AND R_KAYNAKTYPE >= '".$R_KAYNAKTYPE_B."' ";
@@ -1362,12 +1371,12 @@
 																		//echo "<td><b>".$table->SIRANO."</b></td>";
 																		echo "<td><b>".$table->EVRAKNO."</b></td>";
 
-																		echo "<td><b>".$table->R_KAYNAKTYPE."</b></td>";
-																		echo "<td><b>".$table->R_KAYNAKKODU."</b></td>";
+																		echo "<td><b>".$table->MAMULSTOKKODU."</b></td>";
+																		echo "<td><b>".$table->MAMULSTOKADI."</b></td>";
 
-																		echo "<td><b>".$table->KAYNAK_AD."</b></td>";
-																		echo "<td><b>".$table->R_MIKTAR0."</b></td>";															
-																		echo "<td>"."<a class='btn btn-info' href='#'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
+																		echo "<td><b>".$table->ACIK_KAPALI."</b></td>";
+																		echo "<td><b>".$table->SF_TOPLAMMIKTAR."</b></td>";															
+																		echo "<td>"."<a class='btn btn-info' href='mpsgiriskarti?ID='".$table->id."><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 																		echo "</tr>";
 																	}
 

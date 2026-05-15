@@ -235,8 +235,8 @@
                                                                 <i class="fa-solid fa-plus"></i> Ekle
                                                             </button>
                                                             <ul class="dropdown-menu">
-                                                                <li><button class="dropdown-item" href="#">Depodan depoya transfer et</button></li>
-                                                                <li><button class="dropdown-item" href="#">Etiket böl ve transfer et</button></li>
+                                                                <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#depodandepoya">Depodan depoya transfer et</button></li>
+                                                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#etiketbol">Etiket böl ve transfer et</button></li>
                                                                 <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari(document.getElementById('STOK_KODU_FILL').value)">Depo Mevcutları</button></li>
                                                                 <li><button type="button" class="dropdown-item" onclick="StokHareketleri(document.getElementById('STOK_KODU_FILL').value)">Stok Hareketleri</button></li>
                                                             </ul>
@@ -420,77 +420,206 @@
 
 
     {{-- Seri no start --}}
-    <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
-        <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Seri numarası seç</h4>
+                    </div>
 
-            <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Seri numarası seç</h4>
-            </div>
-            <div class="modal-body">
-            <div class="row" style="overflow:auto;">
-                <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
-                <thead>
-                    <tr class="bg-primary">
-                    <th style="min-width:100px;" >Kod</th>
-                    <th style="min-width:200px;" >Ad</th>
-                    <th style="min-width:100px;" >Miktar</th>
-                    <th style="min-width:100px;" >Birim</th>
-                    <th style="min-width:100px;" >Lot</th>
-                    <th style="min-width:100px;" >Seri No</th>
-                    <th style="min-width:100px;" >Depo</th>
-                    <th style="min-width:100px;" >Varyant Text 1</th>
-                    <th style="min-width:100px;" >Varyant Text 2</th>
-                    <th style="min-width:100px;" >Varyant Text 3</th>
-                    <th style="min-width:100px;" >Varyant Text 4</th>
-                    <th style="min-width:100px;" >Ölçü 1</th>
-                    <th style="min-width:100px;" >Ölçü 2</th>
-                    <th style="min-width:100px;" >Ölçü 3</th>
-                    <th style="min-width:100px;" >Ölçü 4</th>
-                    <th style="min-width:100px;" >Lok 1</th>
-                    <th style="min-width:100px;" >Lok 2</th>
-                    <th style="min-width:100px;" >Lok 3</th>
-                    <th style="min-width:100px;" >Lok 4</th>
-                    </tr>
-                </thead>
+                    <div class="modal-body">
+                        <div class="row" style="overflow:auto;">
+                            <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
+                            <thead>
+                                <tr class="bg-primary">
+                                <th style="min-width:100px;" >Kod</th>
+                                <th style="min-width:200px;" >Ad</th>
+                                <th style="min-width:100px;" >Miktar</th>
+                                <th style="min-width:100px;" >Birim</th>
+                                <th style="min-width:100px;" >Lot</th>
+                                <th style="min-width:100px;" >Seri No</th>
+                                <th style="min-width:100px;" >Depo</th>
+                                <th style="min-width:100px;" >Varyant Text 1</th>
+                                <th style="min-width:100px;" >Varyant Text 2</th>
+                                <th style="min-width:100px;" >Varyant Text 3</th>
+                                <th style="min-width:100px;" >Varyant Text 4</th>
+                                <th style="min-width:100px;" >Ölçü 1</th>
+                                <th style="min-width:100px;" >Ölçü 2</th>
+                                <th style="min-width:100px;" >Ölçü 3</th>
+                                <th style="min-width:100px;" >Ölçü 4</th>
+                                <th style="min-width:100px;" >Lok 1</th>
+                                <th style="min-width:100px;" >Lok 2</th>
+                                <th style="min-width:100px;" >Lok 3</th>
+                                <th style="min-width:100px;" >Lok 4</th>
+                                </tr>
+                            </thead>
 
-                <tfoot>
-                    <tr class="bg-info">
-                    <th>Kod</th>
-                    <th>Ad</th>
-                    <th>Miktar</th>
-                    <th>Birim</th>
-                    <th>Lot</th>
-                    <th>Seri No</th>
-                    <th>Depo</th>
-                    <th>Varyant Text 1</th>
-                    <th>Varyant Text 2</th>
-                    <th>Varyant Text 3</th>
-                    <th>Varyant Text 4</th>
-                    <th>Ölçü 1</th>
-                    <th>Ölçü 2</th>
-                    <th>Ölçü 3</th>
-                    <th>Ölçü 4</th>
-                    <th>Lok 1</th>
-                    <th>Lok 2</th>
-                    <th>Lok 3</th>
-                    <th>Lok 4</th>
-                    </tr>
-                </tfoot>
+                            <tfoot>
+                                <tr class="bg-info">
+                                <th>Kod</th>
+                                <th>Ad</th>
+                                <th>Miktar</th>
+                                <th>Birim</th>
+                                <th>Lot</th>
+                                <th>Seri No</th>
+                                <th>Depo</th>
+                                <th>Varyant Text 1</th>
+                                <th>Varyant Text 2</th>
+                                <th>Varyant Text 3</th>
+                                <th>Varyant Text 4</th>
+                                <th>Ölçü 1</th>
+                                <th>Ölçü 2</th>
+                                <th>Ölçü 3</th>
+                                <th>Ölçü 4</th>
+                                <th>Lok 1</th>
+                                <th>Lok 2</th>
+                                <th>Lok 3</th>
+                                <th>Lok 4</th>
+                                </tr>
+                            </tfoot>
 
-                <tbody>
-                    
-                </tbody>
-                </table>
-            </div>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+                            <tbody>
+                                
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-    </div>
     {{-- Seri no finish --}}
+
+    <!-- Etiket böl ve transfer et -->
+        <div class="modal fade bd-example-modal-lg" id="etiketbol" tabindex="-1" role="dialog" aria-labelledby="etiketbol">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Etiket bölme</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Lokasyon Alanları -->
+                        <div class="card mb-2">
+                            <div class="card-header py-1 px-3">
+                                <small class="text-muted fw-semibold text-uppercase"
+                                    style="font-size:11px; letter-spacing:.05em">
+                                    <i class="fa-brands fa-wpforms"></i> Lokasyon Alanları
+                                </small>
+                            </div>
+                            <div class="card-body py-2 px-3">
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-6">
+                                        <label for="LOCATION1" class="form-label mb-1"
+                                            style="font-size:12px">Lokasyon 1</label>
+                                        <input type="text" id="NEWLOCATION1" name="NEWLOCATION1"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="LOCATION2" class="form-label mb-1"
+                                            style="font-size:12px">Lokasyon 2</label>
+                                        <input type="text" id="NEWLOCATION2" name="NEWLOCATION2"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="LOCATION3" class="form-label mb-1"
+                                            style="font-size:12px">Lokasyon 3</label>
+                                        <input type="text" id="NEWLOCATION3" name="NEWLOCATION3"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="LOCATION4" class="form-label mb-1"
+                                            style="font-size:12px">Lokasyon 4</label>
+                                        <input type="text" id="NEWLOCATION4" name="NEWLOCATION4"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metin Alanları -->
+                        <div class="card mb-2">
+                            <div class="card-header py-1 px-3">
+                                <small class="text-muted fw-semibold text-uppercase"
+                                    style="font-size:11px; letter-spacing:.05em">
+                                    <i class="fa-brands fa-wpforms"></i> Metin Alanları
+                                </small>
+                            </div>
+                            <div class="card-body py-2 px-3">
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-6">
+                                        <label for="TEXT1" class="form-label mb-1"
+                                            style="font-size:12px">TEXT1</label>
+                                        <input type="text" id="NEWTEXT1" name="NEWTEXT1"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="TEXT2" class="form-label mb-1"
+                                            style="font-size:12px">TEXT2</label>
+                                        <input type="text" id="NEWTEXT2" name="NEWTEXT2"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="TEXT3" class="form-label mb-1"
+                                            style="font-size:12px">TEXT3</label>
+                                        <input type="text" id="NEWTEXT3" name="NEWTEXT3"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="TEXT4" class="form-label mb-1"
+                                            style="font-size:12px">TEXT4</label>
+                                        <input type="text" id="NEWTEXT4" name="NEWTEXT4"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card mb-2">
+                            <div class="card-header py-1 px-3">
+                                <small class="text-muted fw-semibold text-uppercase"
+                                    style="font-size:11px; letter-spacing:.05em">
+                                    <i class="fa-solid fa-hashtag"></i> Sayısal Alanlar
+                                </small>
+                            </div>
+                            <div class="card-body py-2 px-3">
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-6">
+                                        <label for="NUM1" class="form-label mb-1"
+                                            style="font-size:12px">NUM1</label>
+                                        <input type="text" id="NEWNUM1" name="NEWNUM1"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="NUM2" class="form-label mb-1"
+                                            style="font-size:12px">NUM2</label>
+                                        <input type="text" id="NEWNUM2" name="NEWNUM2"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="NUM3" class="form-label mb-1"
+                                            style="font-size:12px">NUM3</label>
+                                        <input type="text" id="NEWNUM3" name="NEWNUM3"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <label for="NUM4" class="form-label mb-1"
+                                            style="font-size:12px">NUM4</label>
+                                        <input type="text" id="NEWNUM4" name="NEWNUM4"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Etiket böl ve transfer et sonu -->
 
     @include('components.detayBtnLib')
 	<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
