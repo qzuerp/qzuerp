@@ -548,33 +548,40 @@
                                     <i class="fa-brands fa-wpforms"></i> Metin Alanları
                                 </small>
                             </div>
+
                             <div class="card-body py-2 px-3">
-                                <div class="row g-2">
-                                    <div class="col-md-3 col-6">
-                                        <label for="TEXT1" class="form-label mb-1"
-                                            style="font-size:12px">TEXT1</label>
-                                        <input type="text" id="NEWTEXT1" name="NEWTEXT1"
-                                            class="form-control form-control-sm">
+                                <form id="etiketbolform" method="post" action="etiketbol">
+                                    <div class="row g-2">
+                                        <div class="col-md-3 col-6">
+                                            <label for="TEXT1" class="form-label mb-1"
+                                                style="font-size:12px">TEXT1</label>
+                                            <input type="text" id="NEWTEXT1" name="NEWTEXT1"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label for="TEXT2" class="form-label mb-1"
+                                                style="font-size:12px">TEXT2</label>
+                                            <input type="text" id="NEWTEXT2" name="NEWTEXT2"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label for="TEXT3" class="form-label mb-1"
+                                                style="font-size:12px">TEXT3</label>
+                                            <input type="text" id="NEWTEXT3" name="NEWTEXT3"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label for="TEXT4" class="form-label mb-1"
+                                                style="font-size:12px">TEXT4</label>
+                                            <input type="text" id="NEWTEXT4" name="NEWTEXT4"
+                                                class="form-control form-control-sm">
+                                        </div>
                                     </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="TEXT2" class="form-label mb-1"
-                                            style="font-size:12px">TEXT2</label>
-                                        <input type="text" id="NEWTEXT2" name="NEWTEXT2"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="TEXT3" class="form-label mb-1"
-                                            style="font-size:12px">TEXT3</label>
-                                        <input type="text" id="NEWTEXT3" name="NEWTEXT3"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="TEXT4" class="form-label mb-1"
-                                            style="font-size:12px">TEXT4</label>
-                                        <input type="text" id="NEWTEXT4" name="NEWTEXT4"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-success" form="etiketbolform">Kaydet</button>
                             </div>
                         </div>
 

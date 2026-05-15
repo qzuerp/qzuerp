@@ -404,8 +404,7 @@
                                     <input type="hidden" class="form-control" id='Lot-{{ $veri->id }}-CAM' name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
                                   </td>                          
                                   <td class="d-flex ">
-                                    <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}" disabled>
-                                    <input type="hidden" class="form-control" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
+                                    <input type="text" class="form-control SERINO" id='serino-{{ $veri->id }}-CAM' name="SERINO[]" value="{{ $veri->SERINO }}">
                                     <span class="d-flex -btn">
                                       <button class="btn btn-radius btn-primary" onclick='veriCek("{{ $veri->KOD }}","{{ $veri->id }}-CAM")' data-bs-toggle="modal"  data-bs-target="#modal_popupSelectModal4" type="button">
                                         <span class="fa-solid fa-magnifying-glass">
