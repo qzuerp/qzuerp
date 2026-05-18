@@ -67,6 +67,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FasonTakibi;
 use App\Http\Controllers\library;
 use App\Http\Controllers\stok70_controller;
+use App\Http\Controllers\stok_controller;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\TaskList\TaskListItemMarkerParser;
 
@@ -210,7 +211,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Stok25 - Etiket Bölme
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');
-    Route::get('takimhane', function() { return view('takimhane');})->name('takimhane');
+    Route::get('stok_yonetimi', function() { return view('takimhane');})->name('takimhane');
+    Route::post('stok_islemler', [stok_controller::class, 'islemler']);
     Route::post('stok25_islemler', [stok25_controller::class, 'islemler']);
 
     // Stok26 - Depodan Depoya Transfer

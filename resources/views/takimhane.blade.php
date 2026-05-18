@@ -57,679 +57,721 @@
 @endphp
 
 @section('content')
-    <div class="content-wrapper">
+<div class="content-wrapper">
 
-        @include('layout.util.evrakContentHeader')
-        @include('layout.util.logModal', ['EVRAKTYPE' => 'STOK25', 'EVRAKNO' => @$kart_veri->EVRAKNO])
+    @include('layout.util.evrakContentHeader')
 
-        <section class="content">
-            <form method="POST" action="stok25_islemler" method="POST" name="verilerForm" id="verilerForm">
-                @csrf
-                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+    <section class="content">
 
-                <div class="row">
-                    <div class="col">
-                        <div class="box box-danger">
-                            <div class="box-body">
-                                <div class="row ">
-                                    <div class="col-md-2 col-xs-2">
-                                        <select id="evrakSec" class="form-control js-example-basic-single"
-                                            style="width: 100%;" name="evrakSec"
-                                            onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')">
-                                            @php
-                                                foreach ($evraklar as $key => $veri) {
+        {{-- ── Stil ── --}}
+        <style>
+            .topbar {
+                display: flex;
+                align-items: flex-end;
+                flex-wrap: wrap;
+                gap: 6px;
+                background: #fff;
+                border: 1px solid #dde1e7;
+                border-radius: 8px;
+                padding: 10px 14px;
+                margin-bottom: 10px;
+            }
+            .nav-btn { height: 30px; width: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; }
 
-                                                    if ($veri->id == @$kart_veri->id) {
-                                                        echo "<option value ='" . $veri->id . "' selected>" . $veri->EVRAKNO . "</option>";
-                                                    } else {
-                                                        echo "<option value ='" . $veri->id . "'>" . $veri->EVRAKNO . "</option>";
-                                                    }
-                                                }
-                                            @endphp
-                                        </select>
-                                        <input type='hidden' value='{{ @$kart_veri->id }}' name='ID_TO_REDIRECT'
-                                            id='ID_TO_REDIRECT'>
-                                    </div>
+            .main-card { border-radius: 8px; border: 1px solid #dde1e7; background: #fff; margin-bottom: 8px; }
+            .main-card .card-header { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid #f0f2f5; background: #f8f9fb; border-radius: 8px 8px 0 0; }
+            .main-card .card-header span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #6c757d; }
+            .main-card .card-body { padding: 10px 12px; }
 
-                                    <div class="col-md-2 col-xs-2">
-                                        <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz">
-                                            <i class="fa fa-filter" style="color: white;"></i>
-                                        </a>
+            .row { display: flex; flex-wrap: wrap; gap: 8px; }
 
-                                        <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2">
-                                            <i class="fa fa-filter" style="color: white;"></i>
-                                        </a>
-                                    </div>
+            .action-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #f0f2f5; background: #f8f9fb; }
+            .action-bar .form-control { height: 30px; font-size: 12px; }
+            .action-bar .btn { height: 30px; padding: 0 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+            .action-bar .dropdown-toggle { height: 30px; padding: 0 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
 
-                                    <div class="col-md-2 col-xs-2">
-                                        <input type="text" class="form-control input-sm" maxlength="16" name="firma"
-                                            id="firma" value="{{ @$kullanici_veri->firma }}" disabled>
-                                        <input type="hidden" maxlength="16" class="form-control input-sm" name="firma"
-                                            id="firma" value="{{ @$kullanici_veri->firma }}">
-                                    </div>
+            .tabs .nav-tabs { border-bottom: 1px solid #dde1e7; padding: 0 12px; }
+            .tabs .nav-tabs .nav-link { font-size: 12px; padding: 6px 14px; color: #6c757d; border: none; border-bottom: 2px solid transparent; }
+            .tabs .nav-tabs .nav-link.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; background: transparent; }
+            .tabs .tab-content { padding: 10px 0 0; }
 
-                                    <div class="col-md-4 col-xs-4">
-                                        @include('layout.util.evrakIslemleri')
-                                    </div>
+            /* Modal iyileştirme */
+            .modal .modal-header { padding: 10px 16px; border-bottom: 1px solid #dde1e7; }
+            .modal .modal-header .modal-title { font-size: 14px; font-weight: 600; }
+            .modal .modal-body { padding: 12px 16px; }
+            .modal .modal-footer { padding: 8px 16px; border-top: 1px solid #dde1e7; }
+
+            /* Seri no tablosu */
+            #seriNoSec thead th { font-size: 11px; white-space: nowrap; }
+            #seriNoSec tbody tr { cursor: pointer; }
+            #seriNoSec tbody tr:hover td { background: #e8f0fe; }
+        </style>
+
+        <form method="POST" action="stok_islemler" name="verilerForm" id="verilerForm">
+            @csrf
+            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
+            {{-- ═══════════════════════════════
+                 ÜST BAR  (fiş no + navigasyon + alanlar)
+            ═══════════════════════════════ --}}
+            <div class="topbar">
+
+                {{-- Firma --}}
+                <div class="field" style="min-width:80px">
+                    <label>Firma</label>
+                    <input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled style="width:80px">
+                    <input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
+                </div>
+
+                <div class="sep"></div>
+
+                {{-- Evrak Seç --}}
+                <div class="field" style="min-width:90px">
+                    <label>Fiş No</label>
+                    <select id="evrakSec" class="form-control js-example-basic-single" name="evrakSec"
+                            onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" style="width:100px">
+                        @php
+                            foreach ($evraklar as $veri) {
+                                $sel = ($veri->id == @$kart_veri->id) ? 'selected' : '';
+                                echo "<option value='{$veri->id}' {$sel}>{$veri->EVRAKNO}</option>";
+                            }
+                        @endphp
+                    </select>
+                    <input type="hidden" value="{{ @$kart_veri->id }}" name="ID_TO_REDIRECT" id="ID_TO_REDIRECT">
+                    <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
+                    <input type="hidden" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" value="{{ @$kart_veri->EVRAKNO }}">
+                </div>
+
+                {{-- Süzgeç --}}
+                <div class="field" style="justify-content:flex-end">
+                    <label>&nbsp;</label>
+                    <div class="d-flex">
+                        <a class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz" title="Süzgeç 1"><i class="fa fa-filter"></i></a>
+                        <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2" title="Süzgeç 2"><i class="fa fa-filter"></i></a>
+                    </div>
+                </div>
+
+                {{-- Sayfa Navigasyonu --}}
+                <div class="action-group">
+                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$ilkEvrak }}" title="İlk"><i class="fa fa-angle-double-left"></i></a>
+                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$oncekiEvrak }}" title="Önceki"><i class="fa fa-angle-left"></i></a>
+                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$sonrakiEvrak }}" title="Sonraki"><i class="fa fa-angle-right"></i></a>
+                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$sonEvrak }}" title="Son"><i class="fa fa-angle-double-right"></i></a>
+                </div>
+
+
+                <div class="sep"></div>
+
+                {{-- Tarih --}}
+                <div class="field">
+                    <label>Tarih</label>
+                    <input type="date" class="form-control TARIH" data-max name="TARIH" id="TARIH"
+                           value="{{ @$kart_veri->TARIH }}" style="width:130px">
+                </div>
+
+                {{-- Veren Depo --}}
+                <div class="field" style="min-width:130px">
+                    <label>Veren Depo</label>
+                    <select class="form-control select2 js-example-basic-single AMBCODE"
+                            onchange="updateVerenDepoSatir(this.value)"
+                            name="AMBCODE_E" id="AMBCODE_E" style="width:140px">
+                        <option value=" ">Seç</option>
+                        @php
+                            $ambcode_evraklar = DB::table($database . 'gdef00')->orderBy('id', 'ASC')->get();
+                            foreach ($ambcode_evraklar as $veri) {
+                                $sel = ($veri->KOD == @$kart_veri->AMBCODE) ? 'selected' : '';
+                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                            }
+                        @endphp
+                    </select>
+                </div>
+
+                {{-- Alan Depo --}}
+                <div class="field" style="min-width:130px">
+                    <label>Alan Depo</label>
+                    <select class="form-control select2 js-example-basic-single"
+                            onchange="getNewLocation1()"
+                            name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" style="width:140px">
+                        <option value=" ">Seç</option>
+                        @php
+                            foreach ($ambcode_evraklar as $veri) {
+                                $sel = ($veri->KOD == @$kart_veri->TARGETAMBCODE) ? 'selected' : '';
+                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                            }
+                        @endphp
+                    </select>
+                </div>
+
+                {{-- Nitelik --}}
+                <div class="field" style="min-width:110px">
+                    <label>Nitelik</label>
+                    <select class="form-control select2 js-example-basic-single NITELIK"
+                            name="NITELIK" id="NITELIK" style="width:130px">
+                        <option value=" ">Seç</option>
+                        @php
+                            $evraklar_nit = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
+                            foreach ($evraklar_nit as $veri) {
+                                $sel = ($veri->KOD == @$kart_veri->NITELIK) ? 'selected' : '';
+                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                            }
+                        @endphp
+                    </select>
+                </div>
+
+            </div>
+            {{-- /üst bar --}}
+
+
+            {{-- ═══════════════════════════════
+                 ANA İÇERİK KARTI
+            ═══════════════════════════════ --}}
+            <div class="main-card">
+
+                {{-- Aksiyon Çubuğu --}}
+                <div class="action-bar">
+                    <select class="form-control js-example-basic-single KOD STOK_KODU_SHOW"
+                            onchange="stokAdiGetir(this.value)"
+                            name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style="width:260px; flex:none">
+                        <option value=" ">— Stok Seç —</option>
+                    </select>
+                    <input type="hidden" name="STOK_KODU" id="STOK_KODU_FILL">
+
+                    <button class="btn btn-primary btn-sm" type="button">
+                        <i class="fa fa-map-marker"></i> Lokasyondan seç
+                    </button>
+
+                    <button class="btn btn-primary btn-sm" type="button"
+                            data-bs-toggle="modal" onclick="veriCek()"
+                            data-bs-target="#modal_popupSelectModal4">
+                        <i class="fa fa-search"></i> Stoğu seç
+                    </button>
+
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown">
+                            <i class="fa fa-plus"></i> Ekle
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-sm">
+                            <li>
+                                <button class="dropdown-item" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#depodandepoya">
+                                    <i class="fa fa-exchange"></i> Depodan depoya transfer et
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#etiketbol">
+                                    <i class="fa fa-scissors"></i> Etiket böl ve transfer et
+                                </button>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <button type="button" class="dropdown-item"
+                                        onclick="DepoMevcutlari($('#STOK_KODU_FILL').val())">
+                                    <i class="fa fa-building"></i> Depo Mevcutları
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item"
+                                        onclick="StokHareketleri($('#STOK_KODU_FILL').val())">
+                                    <i class="fa fa-history"></i> Stok Hareketleri
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- Sekmeler --}}
+                <div class="tabs">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a href="#veriTab" class="nav-link active" data-bs-toggle="tab">Form</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#liste" class="nav-link" data-bs-toggle="tab">Rapor</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" style="padding:10px 12px">
+
+                        {{-- Form Sekmesi --}}
+                        <div class="active tab-pane" id="veriTab">
+
+                            {{-- Stok Bilgileri --}}
+                            <div class="main-card" style="margin-bottom:8px">
+                                <div class="card-header">
+                                    <i class="fa fa-cube" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Stok Bilgileri</span>
                                 </div>
-
-                                <div class="row ">
-                                    <div class="col-md-2 col-sm-3 col-xs-6">
-                                        <label>Fiş No</label>
-                                        <input type="text" class="form-control EVRAKNO" data-bs-toggle="tooltip"
-                                            data-bs-placement="top" data-bs-title="EVRAKNO" maxlength="24"
-                                            name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" value="{{ @$kart_veri->EVRAKNO }}"
-                                            disabled>
-                                        <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E"
-                                            value="{{ @$kart_veri->EVRAKNO }}">
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-4 col-xs-6">
-                                        <label>Tarih</label>
-                                        <input type="date" class="form-control TARIH" data-max data-bs-toggle="tooltip"
-                                            data-bs-placement="top" data-bs-title="TARIH" name="TARIH" id="TARIH"
-                                            value="{{ @$kart_veri->TARIH }}">
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-4 col-xs-6">
-                                        <label>Veren Depo</label>
-                                        <select class="form-control select2 js-example-basic-single AMBCODE"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE"
-                                            style="width: 100%; height: 30PX" onchange="updateVerenDepoSatir(this.value)"
-                                            name="AMBCODE_E" id="AMBCODE_E">
-                                            <option value=" ">Seç</option>
-                                            @php
-                                                $ambcode_evraklar = DB::table($database . 'gdef00')->orderBy('id', 'ASC')->get();
-
-                                                foreach ($ambcode_evraklar as $key => $veri) {
-
-                                                    if ($veri->KOD == @$kart_veri->AMBCODE) {
-                                                        echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    } else {
-                                                        echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    }
-                                                }
-                                            @endphp
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-4 col-xs-6">
-                                        <label>Alan Depo</label>
-                                        <select class="form-control select2 js-example-basic-single"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TARGETAMBCODE"
-                                            style="width: 100%; height: 30px" onchange="getNewLocation1()"
-                                            name="TARGETAMBCODE_E" id="TARGETAMBCODE_E">
-                                            <option value=" ">Seç</option>
-                                            @php
-                                                $ambcode_evraklar = DB::table($database . 'gdef00')->orderBy('id', 'ASC')->get();
-
-                                                foreach ($ambcode_evraklar as $key => $veri) {
-
-                                                    if ($veri->KOD == @$kart_veri->TARGETAMBCODE) {
-                                                        echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    } else {
-                                                        echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    }
-                                                }
-                                            @endphp
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-4 col-xs-6">
-                                        <label>Nitelik</label>
-                                        <select class="form-control select2 js-example-basic-single NITELIK"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NITELIK"
-                                            style="width: 100%; height: 30px" name="NITELIK" id="NITELIK">
-                                            <option value=" ">Seç</option>
-                                            @php
-                                                $evraklar = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
-
-                                                foreach ($evraklar as $key => $veri) {
-
-                                                    if ($veri->KOD == @$kart_veri->NITELIK) {
-                                                        echo "<option value ='" . $veri->KOD . "' selected>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    } else {
-                                                        echo "<option value ='" . $veri->KOD . "'>" . $veri->KOD . " | " . $veri->AD . "</option>";
-                                                    }
-                                                }
-                                            @endphp
-                                        </select>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col field-w2">
+                                            <label>Stok Adı</label>
+                                            <input type="text" id="STOK_ADI_FILL" name="STOK_ADI" class="form-control" readonly placeholder="Otomatik dolar">
+                                        </div>
+                                        <div class="col" style="max-width:100px">
+                                            <label>Miktar</label>
+                                            <input type="text" id="STOK_MIKTAR" name="STOK_MIKTAR" class="form-control" placeholder="0">
+                                        </div>
+                                        <div class="col" style="max-width:70px">
+                                            <label>Birim</label>
+                                            <input type="text" id="SF_SF_UNIT_FILL" name="STOK_BIRIMI" class="form-control" readonly placeholder="—">
+                                        </div>
+                                        <div class="col" style="max-width:120px">
+                                            <label>Lot No</label>
+                                            <input type="text" id="LOTNUMBER" name="LOTNUMBER" class="form-control" readonly placeholder="—">
+                                        </div>
+                                        <div class="col" style="max-width:110px">
+                                            <label>Seri No</label>
+                                            <input type="text" id="SERINO" name="SERINO" class="form-control" readonly placeholder="—">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="col-12">
-                        <div class="box box-info">
-                            <div class="box-body">
-                                <div class="nav-tabs-custom">
-                                    <ul class="nav nav-tabs">
-                                        <li class="nav-item"><a href="#veriTab" class="nav-link"
-                                                data-bs-toggle="tab">Form</a></li>
-                                        <li class="nav-item"><a href="#liste" id="liste-tab" class="nav-link"
-                                                data-bs-toggle="tab">Rapor</a></li>
-                                    </ul>
+                            {{-- Lokasyon + Metin yan yana --}}
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
 
-                                    <div class="tab-content">
-                                        <div class="active tab-pane" id="veriTab">
-                                            <div class="container-fluid px-0">
-                                                <div class="row mb-3">
-                                                    <div class="col-6">
-                                                        <select
-                                                            class="form-select form-select-sm KOD STOK_KODU_SHOW"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="KOD" onchange="stokAdiGetir(this.value)"
-                                                            name="STOK_KODU_SHOW" id="STOK_KODU_SHOW">
-                                                            <option value=" ">Seç</option>
-                                                        </select>
-                                                        <input type="hidden" name="STOK_KODU_FILL"
-                                                            id="STOK_KODU_FILL">
-                                                    </div>
-                                                    
-                                                    <div class="col-6 d-flex gap-2">
-                                                        <button class="btn btn-secondary" type="button"><i class="fa-solid fa-arrow-pointer"></i> Lokasyondan seç</button>
-                                                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" onclick="veriCek()" data-bs-target="#modal_popupSelectModal4"><i class="fa-solid fa-arrow-pointer"></i> Stoğu seç</button>
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="fa-solid fa-plus"></i> Ekle
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#depodandepoya">Depodan depoya transfer et</button></li>
-                                                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#etiketbol">Etiket böl ve transfer et</button></li>
-                                                                <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari(document.getElementById('STOK_KODU_FILL').value)">Depo Mevcutları</button></li>
-                                                                <li><button type="button" class="dropdown-item" onclick="StokHareketleri(document.getElementById('STOK_KODU_FILL').value)">Stok Hareketleri</button></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Stok Bilgileri -->
-                                                <div class="card mb-2">
-                                                    <div class="card-header py-1 px-3">
-                                                        <small class="text-muted fw-semibold text-uppercase"
-                                                            style="font-size:11px; letter-spacing:.05em">
-                                                            <i class="fa-solid fa-box"></i> Stok Bilgileri
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body py-2 px-3">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="STOK_ADI_FILL" class="form-label mb-1"
-                                                                    style="font-size:12px">Stok Adı</label>
-                                                                <input type="text" id="STOK_ADI_FILL"
-                                                                    class="form-control form-control-sm" readonly
-                                                                    placeholder="Otomatik dolar">
-                                                            </div>
-                                                            <div class="col-md-2 col-4">
-                                                                <label for="STOK_MIKTAR" class="form-label mb-1"
-                                                                    style="font-size:12px">Miktar</label>
-                                                                <input type="text" id="STOK_MIKTAR"
-                                                                    class="form-control form-control-sm" placeholder="0">
-                                                            </div>
-                                                            <div class="col-md-1 col-4">
-                                                                <label for="SF_SF_UNIT_FILL" class="form-label mb-1"
-                                                                    style="font-size:12px">Birim</label>
-                                                                <input type="text" id="SF_SF_UNIT_FILL"
-                                                                    class="form-control form-control-sm" readonly
-                                                                    placeholder="—">
-                                                            </div>
-                                                            <div class="col-md-2 col-4">
-                                                                <label for="LOTNUMBER" class="form-label mb-1"
-                                                                    style="font-size:12px">Lot No</label>
-                                                                <input type="text" id="LOTNUMBER"
-                                                                    class="form-control form-control-sm" readonly
-                                                                    placeholder="—">
-                                                            </div>
-                                                            <div class="col-md-1 col-4">
-                                                                <label for="SERINO" class="form-label mb-1"
-                                                                    style="font-size:12px">Seri No</label>
-                                                                <input type="text" id="SERINO"
-                                                                    class="form-control form-control-sm" readonly
-                                                                    placeholder="—">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Lokasyon Alanları -->
-                                                <div class="card mb-2">
-                                                    <div class="card-header py-1 px-3">
-                                                        <small class="text-muted fw-semibold text-uppercase"
-                                                            style="font-size:11px; letter-spacing:.05em">
-                                                            <i class="fa-brands fa-wpforms"></i> Lokasyon Alanları
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body py-2 px-3">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="LOCATION1" class="form-label mb-1"
-                                                                    style="font-size:12px">Lokasyon 1</label>
-                                                                <input type="text" readonly id="LOCATION1"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="LOCATION2" class="form-label mb-1"
-                                                                    style="font-size:12px">Lokasyon 2</label>
-                                                                <input type="text" readonly id="LOCATION2"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="LOCATION3" class="form-label mb-1"
-                                                                    style="font-size:12px">Lokasyon 3</label>
-                                                                <input type="text" readonly id="LOCATION3"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="LOCATION4" class="form-label mb-1"
-                                                                    style="font-size:12px">Lokasyon 4</label>
-                                                                <input type="text" readonly id="LOCATION4"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Metin Alanları -->
-                                                <div class="card mb-2">
-                                                    <div class="card-header py-1 px-3">
-                                                        <small class="text-muted fw-semibold text-uppercase"
-                                                            style="font-size:11px; letter-spacing:.05em">
-                                                            <i class="fa-brands fa-wpforms"></i> Metin Alanları
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body py-2 px-3">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="TEXT1" class="form-label mb-1"
-                                                                    style="font-size:12px">TEXT1</label>
-                                                                <input type="text" readonly id="TEXT1"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="TEXT2" class="form-label mb-1"
-                                                                    style="font-size:12px">TEXT2</label>
-                                                                <input type="text" readonly id="TEXT2"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="TEXT3" class="form-label mb-1"
-                                                                    style="font-size:12px">TEXT3</label>
-                                                                <input type="text" readonly id="TEXT3"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="TEXT4" class="form-label mb-1"
-                                                                    style="font-size:12px">TEXT4</label>
-                                                                <input type="text" readonly id="TEXT4"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Sayısal Alanlar -->
-                                                <div class="card mb-2">
-                                                    <div class="card-header py-1 px-3">
-                                                        <small class="text-muted fw-semibold text-uppercase"
-                                                            style="font-size:11px; letter-spacing:.05em">
-                                                            <i class="fa-solid fa-hashtag"></i> Sayısal Alanlar
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body py-2 px-3">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="NUM1" class="form-label mb-1"
-                                                                    style="font-size:12px">NUM1</label>
-                                                                <input type="text" readonly id="NUM1"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="NUM2" class="form-label mb-1"
-                                                                    style="font-size:12px">NUM2</label>
-                                                                <input type="text" readonly id="NUM2"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="NUM3" class="form-label mb-1"
-                                                                    style="font-size:12px">NUM3</label>
-                                                                <input type="text" readonly id="NUM3"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                            <div class="col-md-3 col-6">
-                                                                <label for="NUM4" class="form-label mb-1"
-                                                                    style="font-size:12px">NUM4</label>
-                                                                <input type="text" readonly id="NUM4"
-                                                                    class="form-control form-control-sm">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                {{-- Lokasyon Alanları --}}
+                                <div class="main-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
+                                        <span>Lokasyon Alanları</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Lok 1</label>
+                                                <input type="text" id="LOCATION1" name="LOCATION1" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 2</label>
+                                                <input type="text" id="LOCATION2" name="LOCATION2" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 3</label>
+                                                <input type="text" id="LOCATION3" name="LOCATION3" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 4</label>
+                                                <input type="text" id="LOCATION4" name="LOCATION4" class="form-control" readonly>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="liste"></div>
+                                    </div>
+                                </div>
+
+                                {{-- Metin Alanları --}}
+                                <div class="main-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-font" style="color:#6c757d;font-size:12px"></i>
+                                        <span>Metin Alanları</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Text 1</label>
+                                                <input type="text" id="TEXT1" name="TEXT1" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 2</label>
+                                                <input type="text" id="TEXT2" name="TEXT2" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 3</label>
+                                                <input type="text" id="TEXT3" name="TEXT3" class="form-control" readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 4</label>
+                                                <input type="text" id="TEXT4" name="TEXT4" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            {{-- Sayısal Alanlar --}}
+                            <div class="main-card">
+                                <div class="card-header">
+                                    <i class="fa fa-hashtag" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Sayısal Alanlar</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Num 1</label>
+                                            <input type="text" id="NUM1" name="NUM1" class="form-control" readonly>
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 2</label>
+                                            <input type="text" id="NUM2" name="NUM2" class="form-control" readonly>
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 3</label>
+                                            <input type="text" id="NUM3" name="NUM3" class="form-control" readonly>
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 4</label>
+                                            <input type="text" id="NUM4" name="NUM4" class="form-control" readonly>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </div>
+                        {{-- /Form Sekmesi --}}
 
+                        {{-- Rapor Sekmesi --}}
+                        <div class="tab-pane" id="liste"></div>
 
-
-    {{-- Seri no start --}}
-        <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Seri numarası seç</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row" style="overflow:auto;">
-                            <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
-                            <thead>
-                                <tr class="bg-primary">
-                                <th style="min-width:100px;" >Kod</th>
-                                <th style="min-width:200px;" >Ad</th>
-                                <th style="min-width:100px;" >Miktar</th>
-                                <th style="min-width:100px;" >Birim</th>
-                                <th style="min-width:100px;" >Lot</th>
-                                <th style="min-width:100px;" >Seri No</th>
-                                <th style="min-width:100px;" >Depo</th>
-                                <th style="min-width:100px;" >Varyant Text 1</th>
-                                <th style="min-width:100px;" >Varyant Text 2</th>
-                                <th style="min-width:100px;" >Varyant Text 3</th>
-                                <th style="min-width:100px;" >Varyant Text 4</th>
-                                <th style="min-width:100px;" >Ölçü 1</th>
-                                <th style="min-width:100px;" >Ölçü 2</th>
-                                <th style="min-width:100px;" >Ölçü 3</th>
-                                <th style="min-width:100px;" >Ölçü 4</th>
-                                <th style="min-width:100px;" >Lok 1</th>
-                                <th style="min-width:100px;" >Lok 2</th>
-                                <th style="min-width:100px;" >Lok 3</th>
-                                <th style="min-width:100px;" >Lok 4</th>
-                                </tr>
-                            </thead>
-
-                            <tfoot>
-                                <tr class="bg-info">
-                                <th>Kod</th>
-                                <th>Ad</th>
-                                <th>Miktar</th>
-                                <th>Birim</th>
-                                <th>Lot</th>
-                                <th>Seri No</th>
-                                <th>Depo</th>
-                                <th>Varyant Text 1</th>
-                                <th>Varyant Text 2</th>
-                                <th>Varyant Text 3</th>
-                                <th>Varyant Text 4</th>
-                                <th>Ölçü 1</th>
-                                <th>Ölçü 2</th>
-                                <th>Ölçü 3</th>
-                                <th>Ölçü 4</th>
-                                <th>Lok 1</th>
-                                <th>Lok 2</th>
-                                <th>Lok 3</th>
-                                <th>Lok 4</th>
-                                </tr>
-                            </tfoot>
-
-                            <tbody>
-                                
-                            </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
                     </div>
                 </div>
             </div>
-        </div>
-    {{-- Seri no finish --}}
+            {{-- /ana içerik --}}
 
-    <!-- Etiket böl ve transfer et -->
-        <div class="modal fade bd-example-modal-lg" id="etiketbol" tabindex="-1" role="dialog" aria-labelledby="etiketbol">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Etiket bölme</h4>
-                    </div>
 
-                    <div class="modal-body">
-                        <!-- Lokasyon Alanları -->
-                        <div class="card mb-2">
-                            <div class="card-header py-1 px-3">
-                                <small class="text-muted fw-semibold text-uppercase"
-                                    style="font-size:11px; letter-spacing:.05em">
-                                    <i class="fa-brands fa-wpforms"></i> Lokasyon Alanları
-                                </small>
-                            </div>
-                            <div class="card-body py-2 px-3">
-                                <div class="row g-2">
-                                    <div class="col-md-3 col-6">
-                                        <label for="LOCATION1" class="form-label mb-1"
-                                            style="font-size:12px">Lokasyon 1</label>
-                                        <input type="text" id="NEWLOCATION1" name="NEWLOCATION1"
-                                            class="form-control form-control-sm">
+            {{-- ════════════════════════════════════════
+                 MODAL – Etiket Böl ve Transfer Et
+            ════════════════════════════════════════ --}}
+            <div class="modal fade modal" id="etiketbol" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <i class="fa fa-scissors" style="color:#337ab7"></i> Etiket Bölme
+                            </h4>
+                        </div>
+                        <form id="etiketbolform" method="post" action="etiketbol">
+                            <div class="modal-body">
+
+                                {{-- Lokasyon --}}
+                                <div class="main-card" style="margin-bottom:8px">
+                                    <div class="card-header">
+                                        <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
+                                        <span>Lokasyon Alanları</span>
                                     </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="LOCATION2" class="form-label mb-1"
-                                            style="font-size:12px">Lokasyon 2</label>
-                                        <input type="text" id="NEWLOCATION2" name="NEWLOCATION2"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="LOCATION3" class="form-label mb-1"
-                                            style="font-size:12px">Lokasyon 3</label>
-                                        <input type="text" id="NEWLOCATION3" name="NEWLOCATION3"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="LOCATION4" class="form-label mb-1"
-                                            style="font-size:12px">Lokasyon 4</label>
-                                        <input type="text" id="NEWLOCATION4" name="NEWLOCATION4"
-                                            class="form-control form-control-sm">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Lok 1</label>
+                                                <input type="text" id="NEWLOCATION1" name="NEWLOCATION1" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 2</label>
+                                                <input type="text" id="NEWLOCATION2" name="NEWLOCATION2" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 3</label>
+                                                <input type="text" id="NEWLOCATION3" name="NEWLOCATION3" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Lok 4</label>
+                                                <input type="text" id="NEWLOCATION4" name="NEWLOCATION4" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Metin Alanları -->
-                        <div class="card mb-2">
-                            <div class="card-header py-1 px-3">
-                                <small class="text-muted fw-semibold text-uppercase"
-                                    style="font-size:11px; letter-spacing:.05em">
-                                    <i class="fa-brands fa-wpforms"></i> Metin Alanları
-                                </small>
-                            </div>
-
-                            <div class="card-body py-2 px-3">
-                                <form id="etiketbolform" method="post" action="etiketbol">
-                                    <div class="row g-2">
-                                        <div class="col-md-3 col-6">
-                                            <label for="TEXT1" class="form-label mb-1"
-                                                style="font-size:12px">TEXT1</label>
-                                            <input type="text" id="NEWTEXT1" name="NEWTEXT1"
-                                                class="form-control form-control-sm">
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label for="TEXT2" class="form-label mb-1"
-                                                style="font-size:12px">TEXT2</label>
-                                            <input type="text" id="NEWTEXT2" name="NEWTEXT2"
-                                                class="form-control form-control-sm">
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label for="TEXT3" class="form-label mb-1"
-                                                style="font-size:12px">TEXT3</label>
-                                            <input type="text" id="NEWTEXT3" name="NEWTEXT3"
-                                                class="form-control form-control-sm">
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label for="TEXT4" class="form-label mb-1"
-                                                style="font-size:12px">TEXT4</label>
-                                            <input type="text" id="NEWTEXT4" name="NEWTEXT4"
-                                                class="form-control form-control-sm">
+                                {{-- Metin --}}
+                                <div class="main-card" style="margin-bottom:8px">
+                                    <div class="card-header">
+                                        <i class="fa fa-font" style="color:#6c757d;font-size:12px"></i>
+                                        <span>Metin Alanları</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Text 1</label>
+                                                <select class="form-control select2 js-example-basic-single"
+                                                        id="NEWTEXT1" name="NEWTEXT1" data-modal="etiketbol" style="height:28px!important">
+                                                    <option value="" selected></option>
+                                                    @php
+                                                        $pers00_evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+                                                        foreach ($pers00_evraklar as $veri) {
+                                                            $sel = ($veri->KOD == @$kart_veri->TO_OPERATOR) ? 'selected' : '';
+                                                            echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                                        }
+                                                    @endphp
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 2</label>
+                                                <input type="text" id="NEWTEXT2" name="NEWTEXT2" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 3</label>
+                                                <input type="text" id="NEWTEXT3" name="NEWTEXT3" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Text 4</label>
+                                                <input type="text" id="NEWTEXT4" name="NEWTEXT4" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
 
+                                {{-- Sayısal --}}
+                                <div class="main-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-hashtag" style="color:#6c757d;font-size:12px"></i>
+                                        <span>Sayısal Alanlar</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Num 1</label>
+                                                <input type="text" id="NEWNUM1" name="NEWNUM1" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Num 2</label>
+                                                <input type="text" id="NEWNUM2" name="NEWNUM2" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Num 3</label>
+                                                <input type="text" id="NEWNUM3" name="NEWNUM3" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label>Num 4</label>
+                                                <input type="text" id="NEWNUM4" name="NEWNUM4" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div class="modal-footer">
-                                <button class="btn btn-success" form="etiketbolform">Kaydet</button>
+                                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
+                                <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
+                                        name="kart_islemleri" value="etiketbol">
+                                    <i class="fa fa-save"></i> Kaydet
+                                </button>
                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{-- /Etiket Böl Modal --}}
+
+
+            {{-- ════════════════════════════════════════
+                 MODAL – Depodan Depoya Transfer
+            ════════════════════════════════════════ --}}
+            <div class="modal fade modal" id="depodandepoya" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <i class="fa fa-exchange" style="color:#337ab7"></i> Depodan Depoya Transfer
+                            </h4>
                         </div>
-
-
-                        <div class="card mb-2">
-                            <div class="card-header py-1 px-3">
-                                <small class="text-muted fw-semibold text-uppercase"
-                                    style="font-size:11px; letter-spacing:.05em">
-                                    <i class="fa-solid fa-hashtag"></i> Sayısal Alanlar
-                                </small>
-                            </div>
-                            <div class="card-body py-2 px-3">
-                                <div class="row g-2">
-                                    <div class="col-md-3 col-6">
-                                        <label for="NUM1" class="form-label mb-1"
-                                            style="font-size:12px">NUM1</label>
-                                        <input type="text" id="NEWNUM1" name="NEWNUM1"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="NUM2" class="form-label mb-1"
-                                            style="font-size:12px">NUM2</label>
-                                        <input type="text" id="NEWNUM2" name="NEWNUM2"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="NUM3" class="form-label mb-1"
-                                            style="font-size:12px">NUM3</label>
-                                        <input type="text" id="NEWNUM3" name="NEWNUM3"
-                                            class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-3 col-6">
-                                        <label for="NUM4" class="form-label mb-1"
-                                            style="font-size:12px">NUM4</label>
-                                        <input type="text" id="NEWNUM4" name="NEWNUM4"
-                                            class="form-control form-control-sm">
+                        <div class="modal-body">
+                            <div class="main-card">
+                                <div class="card-header">
+                                    <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Yeni Lokasyon</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Lok 1</label>
+                                            <input type="text" id="DEP_NEWLOCATION1" name="DEP_NEWLOCATION1" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 2</label>
+                                            <input type="text" id="DEP_NEWLOCATION2" name="DEP_NEWLOCATION2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 3</label>
+                                            <input type="text" id="DEP_NEWLOCATION3" name="DEP_NEWLOCATION3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 4</label>
+                                            <input type="text" id="DEP_NEWLOCATION4" name="DEP_NEWLOCATION4" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
+                                    name="kart_islemleri" value="depodandepoyatransfer">
+                                <i class="fa fa-save"></i> Kaydet
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            {{-- /Depodan Depoya Modal --}}
+
+        </form>
+    </section>
+</div>
+
+
+{{-- ════════════════════════════════════════
+     MODAL – Seri No Seç (form dışında)
+════════════════════════════════════════ --}}
+<div class="modal fade modal" id="modal_popupSelectModal4" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-barcode" style="color:#337ab7"></i> Seri Numarası Seç
+                </h4>
+            </div>
+            <div class="modal-body" style="overflow:auto">
+                <table id="seriNoSec" class="table table-hover table-condensed text-center" data-page-length="10">
+                    <thead>
+                        <tr class="bg-primary">
+                            <th>Kod</th>
+                            <th>Ad</th>
+                            <th>Miktar</th>
+                            <th>Birim</th>
+                            <th>Lot</th>
+                            <th>Seri No</th>
+                            <th>Depo</th>
+                            <th>Text 1</th>
+                            <th>Text 2</th>
+                            <th>Text 3</th>
+                            <th>Text 4</th>
+                            <th>Ölçü 1</th>
+                            <th>Ölçü 2</th>
+                            <th>Ölçü 3</th>
+                            <th>Ölçü 4</th>
+                            <th>Lok 1</th>
+                            <th>Lok 2</th>
+                            <th>Lok 3</th>
+                            <th>Lok 4</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="bg-info">
+                            <th>Kod</th>
+                            <th>Ad</th>
+                            <th>Miktar</th>
+                            <th>Birim</th>
+                            <th>Lot</th>
+                            <th>Seri No</th>
+                            <th>Depo</th>
+                            <th>Text 1</th>
+                            <th>Text 2</th>
+                            <th>Text 3</th>
+                            <th>Text 4</th>
+                            <th>Ölçü 1</th>
+                            <th>Ölçü 2</th>
+                            <th>Ölçü 3</th>
+                            <th>Ölçü 4</th>
+                            <th>Lok 1</th>
+                            <th>Lok 2</th>
+                            <th>Lok 3</th>
+                            <th>Lok 4</th>
+                        </tr>
+                    </tfoot>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-sm" data-bs-dismiss="modal">
+                    <i class="fa fa-times"></i> Kapat
+                </button>
+            </div>
         </div>
-    <!-- Etiket böl ve transfer et sonu -->
+    </div>
+</div>
 
-    @include('components.detayBtnLib')
-	<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
-    <script>
-        function veriCek() {
-            let kod = $('#STOK_KODU_FILL').val();
-            Swal.fire({
-                text: 'Lütfen bekleyin',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            let table = $('#seriNoSec').DataTable();
 
-            $.ajax({
+@include('components.detayBtnLib')
+<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
+
+<script>
+$(function () {
+
+    /* ─── Stoğu seç modalı – veri çek ─── */
+    function veriCek() {
+        var kod = $('#STOK_KODU_FILL').val();
+
+        Swal.fire({
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: function () { Swal.showLoading(); }
+        });
+
+        var table = $('#seriNoSec').DataTable();
+
+        $.ajax({
             url: '/mevcutVeriler',
-            type: 'get',
+            type: 'GET',
             data: { KOD: kod },
             success: function (res) {
-
                 table.clear();
 
-                res.forEach((row) => {
-                table.row.add([
-                    row.KOD || '',
-                    row.STOK_ADI || '',
-                    row.MIKTAR || '',
-                    row.SF_SF_UNIT || '',
-                    row.LOTNUMBER || '',
-                    row.SERINO || '',
-                    (row.AMBCODE || '') + ' - ' + (row.AD || ''),
-                    row.TEXT1 || '',
-                    row.TEXT2 || '',
-                    row.TEXT3 || '',
-                    row.TEXT4 || '',
-                    row.NUM1 || '',
-                    row.NUM2 || '',
-                    row.NUM3 || '',
-                    row.NUM4 || '',
-                    row.LOCATION1 || '',
-                    row.LOCATION2 || '',
-                    row.LOCATION3 || '',
-                    row.LOCATION4 || ''
-                ]);
+                $.each(res, function (i, row) {
+                    table.row.add([
+                        row.KOD        || '',
+                        row.STOK_ADI   || '',
+                        row.MIKTAR     || '',
+                        row.SF_SF_UNIT || '',
+                        row.LOTNUMBER  || '',
+                        row.SERINO     || '',
+                        (row.AMBCODE || '') + ' - ' + (row.AD || ''),
+                        row.TEXT1      || '',
+                        row.TEXT2      || '',
+                        row.TEXT3      || '',
+                        row.TEXT4      || '',
+                        row.NUM1       || '',
+                        row.NUM2       || '',
+                        row.NUM3       || '',
+                        row.NUM4       || '',
+                        row.LOCATION1  || '',
+                        row.LOCATION2  || '',
+                        row.LOCATION3  || '',
+                        row.LOCATION4  || ''
+                    ]);
                 });
 
-                table.draw(); // tabloyu güncelle
+                table.draw();
             },
-            error: function (error) {
-                console.log(error);
+            error: function (err) {
+                console.error(err);
             },
             complete: function () {
                 Swal.close();
             }
-            });
-        }
-
-
-        
-        $(document).ready(function () {
-            $('#seriNoSec tbody').on('click', 'tr', function () {
-                var $row = $(this);
-                var $cells = $row.find('td');
-
-                var MIKTAR = $cells.eq(2).text().trim();
-                var LOTNO = $cells.eq(4).text().trim();
-                var SERINO = $cells.eq(5).text().trim();
-                var DEPO = $cells.eq(6).text().trim().split('-')[0];
-
-                var V1 = $cells.eq(7).text().trim();
-                var V2 = $cells.eq(8).text().trim();
-                var V3 = $cells.eq(9).text().trim();
-                var V4 = $cells.eq(10).text().trim();
-
-                var O1 = $cells.eq(11).text().trim();
-                var O2 = $cells.eq(12).text().trim();
-                var O3 = $cells.eq(13).text().trim();
-                var O4 = $cells.eq(14).text().trim();
-
-                var L1 = $cells.eq(15).text().trim();
-                var L2 = $cells.eq(16).text().trim();
-                var L3 = $cells.eq(17).text().trim();
-                var L4 = $cells.eq(18).text().trim();
-
-                $('#LOTNUMBER').val(LOTNO);
-                $('#SERINO').val(SERINO);
-
-                $('#TEXT1').val(V1);
-                $('#TEXT2').val(V2);
-                $('#TEXT3').val(V3);
-                $('#TEXT4').val(V4);
-
-                $('#NUM1').val(O1);
-                $('#NUM2').val(O2);
-                $('#NUM3').val(O3);
-                $('#NUM4').val(O4);
-
-                $('#LOCATION1').val(L1);
-                $('#LOCATION2').val(L2);
-                $('#LOCATION3').val(L3);
-                $('#LOCATION4').val(L4);
-            });
         });
-    </script>
+    }
+
+    /* Global erişim için window'a ekle (onclick="veriCek()" için) */
+    window.veriCek = veriCek;
+
+
+    /* ─── Seri No tablosunda satıra tıklanınca formu doldur ─── */
+    $('#seriNoSec tbody').on('click', 'tr', function () {
+        var $cells = $(this).find('td');
+
+        $('#LOTNUMBER').val( $cells.eq(4).text().trim() );
+        $('#SERINO').val(    $cells.eq(5).text().trim() );
+
+        $('#TEXT1').val( $cells.eq(7).text().trim() );
+        $('#TEXT2').val( $cells.eq(8).text().trim() );
+        $('#TEXT3').val( $cells.eq(9).text().trim() );
+        $('#TEXT4').val( $cells.eq(10).text().trim() );
+
+        $('#NUM1').val( $cells.eq(11).text().trim() );
+        $('#NUM2').val( $cells.eq(12).text().trim() );
+        $('#NUM3').val( $cells.eq(13).text().trim() );
+        $('#NUM4').val( $cells.eq(14).text().trim() );
+
+        $('#LOCATION1').val( $cells.eq(15).text().trim() );
+        $('#LOCATION2').val( $cells.eq(16).text().trim() );
+        $('#LOCATION3').val( $cells.eq(17).text().trim() );
+        $('#LOCATION4').val( $cells.eq(18).text().trim() );
+
+        /* Modalı kapat */
+        $('#modal_popupSelectModal4').modal('hide');
+    });
+
+});
+</script>
+
 @endsection

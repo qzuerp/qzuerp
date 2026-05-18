@@ -120,7 +120,7 @@ class stok25_controller extends Controller
             }
             
             else {
-            $EVRAKNO = $SON_ID + 1;
+                $EVRAKNO = $SON_ID + 1;
             }
             FunctionHelpers::Logla('STOK25',$EVRAKNO,'C',$TARIH);
 

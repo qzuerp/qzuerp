@@ -1277,7 +1277,7 @@
 														<button type="submit" class="btn btn-success gradient-yellow" name="kart_islemleri" id="listele" value="listele">
 															<i class='fa fa-filter' style='color: WHİTE'></i> --Süz--
 														</button>
-														<button type="button" class="btn btn-success" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
+														<button type="button" class="btn btn-success no-disabled" onclick="exportTableToExcel('example2','tablo_excel')" style="font-size:13px; height:34px; padding: 0 16px;">
 															<i class="fa-solid fa-file-excel"></i>&nbsp; Excel
 														</button>
 														<button type="button" class="btn btn-danger" onclick="exportTableToWord('example2','tablo_word')" style="font-size:13px; height:34px; padding: 0 16px;">

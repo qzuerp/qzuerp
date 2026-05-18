@@ -1,0 +1,235 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Helpers\FunctionHelpers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
+class stok_controller extends Controller
+{
+    public function islemler(Request $request)
+    {
+        $kart_islemleri = $request->kart_islemleri;
+
+        $user = auth::user();
+
+        $firma = trim($user->firma).'.dbo.';
+
+        $EVRAKNO = $request->EVRAKNO_E;
+        $TARIH = $request->TARIH;
+        $AMBCODE_E = $request->AMBCODE_E;
+        $TARGETAMBCODE = $request->TARGETAMBCODE;
+        $NITELIK = $request->NITELIK;
+
+        $STOK_KODU = $request->STOK_KODU;
+        $STOK_ADI = $request->STOK_ADI;
+        $STOK_BIRIMI = $request->STOK_BIRIMI;
+        $SF_MIKTAR = $request->STOK_MIKTAR;
+        $LOTNUMBER = $request->LOTNUMBER;
+        $SERINO = $request->SERINO;
+
+        $LOCATION1 = $request->LOCATION1;
+        $LOCATION2 = $request->LOCATION2;
+        $LOCATION3 = $request->LOCATION3;
+        $LOCATION4 = $request->LOCATION4;
+        
+        $TEXT1 = $request->TEXT1;
+        $TEXT2 = $request->TEXT2;
+        $TEXT3 = $request->TEXT3;
+        $TEXT4 = $request->TEXT4;
+
+        $NUM1 = $request->NUM1;
+        $NUM2 = $request->NUM2;
+        $NUM3 = $request->NUM3;
+        $NUM4 = $request->NUM4;
+
+        $NEWLOCATION1 = $request->NEWLOK1;
+        $NEWLOCATION2 = $request->NEWLOK2;
+        $NEWLOCATION3 = $request->NEWLOK3;
+        $NEWLOCATION4 = $request->NEWLOK4;
+
+        $NEWTEXT1 = $request->NEWTEXT1;
+        $NEWTEXT2 = $request->NEWTEXT2;
+        $NEWTEXT3 = $request->NEWTEXT3;
+        $NEWTEXT4 = $request->NEWTEXT4;
+
+        $NEWNUM1 = $request->NEWNUM1;
+        $NEWNUM2 = $request->NEWNUM2;
+        $NEWNUM3 = $request->NEWNUM3;
+        $NEWNUM4 = $request->NEWNUM4;
+
+        switch ($kart_islemleri) {
+            case 'etiketbol':
+                    FunctionHelpers::stokKontrol(
+                        $STOK_KODU, $LOTNUMBER, $SERINO, $AMBCODE_E, 
+                        $NUM1, $NUM2, $NUM3, $NUM4, 
+                        $TEXT1, $TEXT2, $TEXT3, $TEXT4, 
+                        $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, 
+                        $SF_MIKTAR
+                    );
+                    $SON_EVRAK=DB::table($firma.'stok25e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+                    $SON_ID= $SON_EVRAK->EVRAKNO;
+                    
+                    $SON_ID = (int) $SON_ID;
+                    if ($SON_ID == NULL) {
+                        $EVRAKNO = 1;
+                    }
+                    
+                    else {
+                        $EVRAKNO = $SON_ID + 1;
+                    }
+                    FunctionHelpers::Logla('STOK25',$EVRAKNO,'C',$TARIH);
+
+                    DB::table($firma.'stok25e')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TARIH' => $TARIH,
+                        'AMBCODE' => $AMBCODE_E,
+                        'TARGETAMBCODE' => $TARGETAMBCODE,
+                        'NITELIK' => $NITELIK,
+                        'LAST_TRNUM' => '000001',
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+
+                    DB::table($firma.'stok10a')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TRNUM' => '000001',
+                        'KOD' => $STOK_KODU,
+                        'STOK_ADI' => $STOK_ADI,
+                        'LOTNUMBER' => $LOTNUMBER,
+                        'SERINO' => $SERINO,
+                        'SF_MIKTAR' => $SF_MIKTAR * -1,
+                        'SF_SF_UNIT' => $STOK_BIRIMI,
+                        'TEXT1' => $TEXT1,
+                        'TEXT2' => $TEXT2,
+                        'TEXT3' => $TEXT3,
+                        'TEXT4' => $TEXT4,
+                        'NUM1' => $NUM1,
+                        'NUM2' => $NUM2,
+                        'NUM3' => $NUM3,
+                        'NUM4' => $NUM4,
+                        'TARIH' => $TARIH,
+                        'EVRAKTIPI' => 'stok25t-C',
+                        'STOK_MIKTAR' => $SF_MIKTAR * -1,
+                        'AMBCODE' => $AMBCODE_E,
+                        'LOCATION1' => $LOCATION1,
+                        'LOCATION2' => $LOCATION2,
+                        'LOCATION3' => $LOCATION3,
+                        'LOCATION4' => $LOCATION4,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+
+                    DB::table($firma.'stok10a')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TRNUM' => '000001',
+                        'KOD' => $STOK_KODU,
+                        'STOK_ADI' => $STOK_ADI,
+                        'LOTNUMBER' => $LOTNUMBER,
+                        'SERINO' => $SERINO,
+                        'SF_MIKTAR' => $SF_MIKTAR,
+                        'SF_SF_UNIT' => $STOK_BIRIMI,
+                        'TEXT1' => $NEWTEXT1,
+                        'TEXT2' => $NEWTEXT2,
+                        'TEXT3' => $NEWTEXT3,
+                        'TEXT4' => $NEWTEXT4,
+                        'NUM1' => $NEWNUM1,
+                        'NUM2' => $NEWNUM2,
+                        'NUM3' => $NEWNUM3,
+                        'NUM4' => $NEWNUM4,
+                        'TARIH' => $TARIH,
+                        'EVRAKTIPI' => 'stok25t-G',
+                        'STOK_MIKTAR' => $SF_MIKTAR,
+                        'AMBCODE' => $TARGETAMBCODE,
+                        'LOCATION1' => $NEWLOCATION1,
+                        'LOCATION2' => $NEWLOCATION2,
+                        'LOCATION3' => $NEWLOCATION3,
+                        'LOCATION4' => $NEWLOCATION4,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+
+                    $ILK_MI = DB::table($firma.'D7KIDSLB')
+                    ->where([
+                        "BARCODE"     => $SERINO,
+                        "KOD"         => $STOK_KODU,
+                        "EVRAKTYPE"    => 'STOK25',
+                        "DEPO"        => $AMBCODE_E,
+                        "VARYANT1"       => $TEXT1,
+                        "VARYANT2"       => $TEXT2,
+                        "VARYANT3"       => $TEXT3,
+                        "VARYANT4"       => $TEXT4,
+                        "NUM1"        => $NUM1,
+                        "NUM2"        => $NUM2,
+                        "NUM3"        => $NUM3,
+                        "NUM4"        => $NUM4,
+                        "LOCATION1"   => $LOCATION1,
+                        "LOCATION2"   => $LOCATION2,
+                        "LOCATION3"   => $LOCATION3,
+                        "LOCATION4"   => $LOCATION4,
+                    ])
+                    ->value('ILK_ETIKET');
+
+                    $isIlk = !$ILK_MI;
+
+                    $dataToInsert = [
+                        "BARCODE"     => $SERINO,
+                        "KOD"         => $STOK_KODU,
+                        "AD"          => $STOK_ADI,
+                        "EVRAKTYPE"    => 'STOK25',
+                        "EVRAKNO"     => $EVRAKNO,
+                        "SF_BOLUNEN"  => $SF_MIKTAR,
+                        "SF_MIKTAR"   => $SF_TOPLAM_MIKTAR,
+                        "SF_BAKIYE" => floatval($SF_TOPLAM_MIKTAR) - floatval($SF_MIKTAR),
+                        "DEPO"        => $AMBCODE_E,
+                        "VARYANT1"       => $TEXT1,
+                        "VARYANT2"       => $TEXT2,
+                        "VARYANT3"       => $TEXT3,
+                        "VARYANT4"       => $TEXT4,
+                        "NUM1"        => $NUM1,
+                        "NUM2"        => $NUM2,
+                        "NUM3"        => $NUM3,
+                        "NUM4"        => $NUM4,
+                        "LOCATION1"   => $LOCATION1,
+                        "LOCATION2"   => $LOCATION2,
+                        "LOCATION3"   => $LOCATION3,
+                        "LOCATION4"   => $LOCATION4,
+                        "TRNUM"       => '000001',
+                    ];
+
+                    $dataToInsert[$isIlk ? 'ILK_ETIKET' : 'ONCEKI_ETIKET'] = $SERINO;
+
+                    DB::table($firma.'D7KIDSLB')->insert($dataToInsert);
+
+                    DB::table($firma.'stok25t')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'SRNUM' => '000001',
+                        'TRNUM' => '000001',
+                        'KOD' => $STOK_KODU,
+                        'STOK_ADI' => $STOK_ADI,
+                        'LOTNUMBER' => $LOTNUMBER,
+                        'SERINO' => $SERINO,
+                        'SF_MIKTAR' => $SF_MIKTAR,
+                        'SF_SF_UNIT' => $STOK_BIRIMI,
+                        'TEXT1' => $NEWTEXT1,
+                        'TEXT2' => $NEWTEXT2,
+                        'TEXT3' => $NEWTEXT3,
+                        'TEXT4' => $NEWTEXT4,
+                        'NUM1' => $NEWNUM1,
+                        'NUM2' => $NEWNUM2,
+                        'NUM3' => $NEWNUM3,
+                        'NUM4' => $NEWNUM4,
+                        'AMBCODE' => $AMBCODE_E,
+                        'LOCATION1' => $NEWLOCATION1,
+                        'LOCATION2' => $NEWLOCATION2,
+                        'LOCATION3' => $NEWLOCATION3,
+                        'LOCATION4' => $NEWLOCATION4,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]); 
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+}
