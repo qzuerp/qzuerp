@@ -369,7 +369,7 @@
                               <label>Üretim Miktarı</label>
                               <input type="hidden" class="form-control input-sm" maxlength="50" name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}" >
                               <div class="d-flex gap-1">
-                                  <input type="text" class="form-control input-sm SF_MIKTAR" style="color:red" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR"
+                                  <input type="number" class="form-control input-sm SF_MIKTAR" style="color:red" maxlength="50" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR"
                                         name="SF_MIKTAR" id="SF_MIKTAR" value="{{ @$kart_veri->SF_MIKTAR }}">
 
                                   @php

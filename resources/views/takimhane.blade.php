@@ -441,112 +441,112 @@
                                 <i class="fa fa-scissors" style="color:#337ab7"></i> Etiket Bölme
                             </h4>
                         </div>
-                        <form id="etiketbolform" method="post" action="etiketbol">
-                            <div class="modal-body">
+                        
+                        <div class="modal-body">
 
-                                {{-- Lokasyon --}}
-                                <div class="main-card" style="margin-bottom:8px">
-                                    <div class="card-header">
-                                        <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
-                                        <span>Lokasyon Alanları</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <label>Lok 1</label>
-                                                <input type="text" id="NEWLOCATION1" name="NEWLOCATION1" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Lok 2</label>
-                                                <input type="text" id="NEWLOCATION2" name="NEWLOCATION2" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Lok 3</label>
-                                                <input type="text" id="NEWLOCATION3" name="NEWLOCATION3" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Lok 4</label>
-                                                <input type="text" id="NEWLOCATION4" name="NEWLOCATION4" class="form-control">
-                                            </div>
+                            {{-- Lokasyon --}}
+                            <div class="main-card" style="margin-bottom:8px">
+                                <div class="card-header">
+                                    <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Lokasyon Alanları</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Lok 1</label>
+                                            <input type="text" id="NEWLOCATION1" name="NEWLOCATION1" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 2</label>
+                                            <input type="text" id="NEWLOCATION2" name="NEWLOCATION2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 3</label>
+                                            <input type="text" id="NEWLOCATION3" name="NEWLOCATION3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 4</label>
+                                            <input type="text" id="NEWLOCATION4" name="NEWLOCATION4" class="form-control">
                                         </div>
                                     </div>
                                 </div>
-
-                                {{-- Metin --}}
-                                <div class="main-card" style="margin-bottom:8px">
-                                    <div class="card-header">
-                                        <i class="fa fa-font" style="color:#6c757d;font-size:12px"></i>
-                                        <span>Metin Alanları</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <label>Text 1</label>
-                                                <select class="form-control select2 js-example-basic-single"
-                                                        id="NEWTEXT1" name="NEWTEXT1" data-modal="etiketbol" style="height:28px!important">
-                                                    <option value="" selected></option>
-                                                    @php
-                                                        $pers00_evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
-                                                        foreach ($pers00_evraklar as $veri) {
-                                                            $sel = ($veri->KOD == @$kart_veri->TO_OPERATOR) ? 'selected' : '';
-                                                            echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
-                                                        }
-                                                    @endphp
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <label>Text 2</label>
-                                                <input type="text" id="NEWTEXT2" name="NEWTEXT2" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Text 3</label>
-                                                <input type="text" id="NEWTEXT3" name="NEWTEXT3" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Text 4</label>
-                                                <input type="text" id="NEWTEXT4" name="NEWTEXT4" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Sayısal --}}
-                                <div class="main-card">
-                                    <div class="card-header">
-                                        <i class="fa fa-hashtag" style="color:#6c757d;font-size:12px"></i>
-                                        <span>Sayısal Alanlar</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <label>Num 1</label>
-                                                <input type="text" id="NEWNUM1" name="NEWNUM1" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Num 2</label>
-                                                <input type="text" id="NEWNUM2" name="NEWNUM2" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Num 3</label>
-                                                <input type="text" id="NEWNUM3" name="NEWNUM3" class="form-control">
-                                            </div>
-                                            <div class="col">
-                                                <label>Num 4</label>
-                                                <input type="text" id="NEWNUM4" name="NEWNUM4" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
-                                <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
-                                        name="kart_islemleri" value="etiketbol">
-                                    <i class="fa fa-save"></i> Kaydet
-                                </button>
+
+                            {{-- Metin --}}
+                            <div class="main-card" style="margin-bottom:8px">
+                                <div class="card-header">
+                                    <i class="fa fa-font" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Metin Alanları</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Text 1</label>
+                                            <select class="form-control select2 js-example-basic-single"
+                                                    id="NEWTEXT1" name="NEWTEXT1" data-modal="etiketbol" style="height:28px!important">
+                                                <option value="" selected></option>
+                                                @php
+                                                    $pers00_evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+                                                    foreach ($pers00_evraklar as $veri) {
+                                                        $sel = ($veri->KOD == @$kart_veri->TO_OPERATOR) ? 'selected' : '';
+                                                        echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                                    }
+                                                @endphp
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 2</label>
+                                            <input type="text" id="NEWTEXT2" name="NEWTEXT2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 3</label>
+                                            <input type="text" id="NEWTEXT3" name="NEWTEXT3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 4</label>
+                                            <input type="text" id="NEWTEXT4" name="NEWTEXT4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+
+                            {{-- Sayısal --}}
+                            <div class="main-card">
+                                <div class="card-header">
+                                    <i class="fa fa-hashtag" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Sayısal Alanlar</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Num 1</label>
+                                            <input type="text" id="NEWNUM1" name="NEWNUM1" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 2</label>
+                                            <input type="text" id="NEWNUM2" name="NEWNUM2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 3</label>
+                                            <input type="text" id="NEWNUM3" name="NEWNUM3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 4</label>
+                                            <input type="text" id="NEWNUM4" name="NEWNUM4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
+                                    name="kart_islemleri" value="etiketbol">
+                                <i class="fa fa-save"></i> Kaydet
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
