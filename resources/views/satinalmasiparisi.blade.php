@@ -545,7 +545,7 @@
                         <label for="DURUM" style="font-size:13px; font-weight:500; color:#374151; margin:0;">Açık/Kapalı</label>
                       </div>
 
-                      <button type="submit" class="btn btn-primary" name="kart_islemleri" id="listele" value="listele"
+                      <button type="submit" class="btn btn-primary no-disabled" name="kart_islemleri" id="listele" value="listele"
                         style="font-size:13px; height:34px; padding:0 16px;">
                         <i class="fa fa-filter"></i>&nbsp; Süz
                       </button>
