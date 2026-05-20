@@ -732,33 +732,47 @@ $(function () {
     });
 
     
-    $('#AMBCODE_SEC').on('change',function(){
-        var table = $('#depo_data').dataTable({
-            'processing': true,
-            'serverSide': true,
-            'ajax': '/depo_data',
-            'columns': [
-                { data: 'KOD', name: 'KOD' },
-                { data: 'STOK_ADI', name: 'STOK_ADI' },
-                { data: 'BIRIM', name: 'BIRIM' },
-                { data: 'MIKTAR', name: 'MIKTAR' },
-                { data: 'LOTNUMBER', name: 'LOTNUMBER' },
-                { data: 'SERINO', name: 'SERINO' },
-                { data: 'AMBCODE', name: 'AMBCODE' },
-                { data: 'LOCATION1', name: 'LOCATION1' },
-                { data: 'LOCATION2', name: 'LOCATION2' },
-                { data: 'LOCATION3', name: 'LOCATION3' },
-                { data: 'LOCATION4', name: 'LOCATION4' },
-                { data: 'TEXT1', name: 'TEXT1' },
-                { data: 'TEXT2', name: 'TEXT2' },
-                { data: 'TEXT3', name: 'TEXT3' },
-                { data: 'TEXT4', name: 'TEXT4' },
-                { data: 'NUM1', name: 'NUM1' },
-                { data: 'NUM2', name: 'NUM2' },
-                { data: 'NUM3', name: 'NUM3' },
-                { data: 'NUM4', name: 'NUM4' },0
-            ],
-        });
+    var table = $('#depo_data').DataTable({
+        'processing': true,
+        'serverSide': true,
+        'ajax': {
+            'url': '/depo_data',
+            'type': 'POST',
+            'headers': {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+            },
+            'data': function (d) {
+                d.amb_code = $('#AMBCODE_SEC').val();
+            },
+            'error': function (xhr) {
+                console.error("HTML Dönen Hata İçeriği:", xhr.responseText);
+            }
+        },
+        'columns': [
+            { data: 'KOD', name: 'KOD' },
+            { data: 'STOK_ADI', name: 'STOK_ADI' },
+            { data: 'BIRIM', name: 'BIRIM' },
+            { data: 'MIKTAR', name: 'MIKTAR' },
+            { data: 'LOTNUMBER', name: 'LOTNUMBER' },
+            { data: 'SERINO', name: 'SERINO' },
+            { data: 'AMBCODE', name: 'AMBCODE' },
+            { data: 'LOCATION1', name: 'LOCATION1' },
+            { data: 'LOCATION2', name: 'LOCATION2' },
+            { data: 'LOCATION3', name: 'LOCATION3' },
+            { data: 'LOCATION4', name: 'LOCATION4' },
+            { data: 'TEXT1', name: 'TEXT1' },
+            { data: 'TEXT2', name: 'TEXT2' },
+            { data: 'TEXT3', name: 'TEXT3' },
+            { data: 'TEXT4', name: 'TEXT4' },
+            { data: 'NUM1', name: 'NUM1' },
+            { data: 'NUM2', name: 'NUM2' },
+            { data: 'NUM3', name: 'NUM3' },
+            { data: 'NUM4', name: 'NUM4' }
+        ]
+    });
+
+    $('#AMBCODE_SEC').on('change', function() {
+        table.ajax.reload(); 
     });
 
     /* ─── Stoğu seç modalı – veri çek ─── */

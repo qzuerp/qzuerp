@@ -372,4 +372,15 @@ class stok_controller extends Controller
             
         }
     }
+
+    public function depo_data(Request $request)
+    {
+        $user = auth::user();
+
+        $firma = trim($user->firma).'.dbo.';
+
+        $veri = DB::table($firma.'vw_stok01')->where('AMBCODE', $request->amb_code)->get();
+
+        return json_encode($veri);
+    }
 }

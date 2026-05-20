@@ -859,7 +859,7 @@
 
 	<div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog"
 		aria-labelledby="modal_evrakSuz">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 
 				<div class="modal-header">
@@ -876,6 +876,9 @@
 									<th>Kod</th>
 									<th>Ad</th>
 									<th>Adet</th>
+									<th style="min-width: 160px;">Müşteri Teklif No</th>
+									<th style="min-width: 120px;">Teklif Verilen Kişi</th>
+									<th style="min-width: 100px;">Tarih</th>
 									<th>Revizyon</th>
 									<th>Açıklama</th>
 									<th>#</th>
@@ -888,6 +891,9 @@
 									<th>Kod</th>
 									<th>Ad</th>
 									<th>Adet</th>
+									<th>Müşteri Teklif No</th>
+									<th>Teklif Verilen Kişi</th>
+									<th>Tarih</th>
 									<th>Revizyon</th>
 									<th>Açıklama</th>
 									<th>#</th>
@@ -897,13 +903,18 @@
 							<tbody>
 
 								@php
-									$evraklar2 = DB::table($ekranTableT)->orderBy('EVRAKNO', 'ASC')->get();
+									$evraklar2 = DB::table($ekranTableT)
+									->leftJoin($ekranTableE, $ekranTableT.'.EVRAKNO', '=', $ekranTableE.'.EVRAKNO')
+									->orderBy('EVRAKNO', 'ASC')->get(['tekl20t.*','tekl20e.MUSTERI_TEKLIF_NO','tekl20e.AD_SOYAD','tekl20e.TARIH']);
 									foreach ($evraklar2 as $key => $suzVeri) {
 										echo "<tr>";
 										echo "<td>" . $suzVeri->EVRAKNO . "</td>";
 										echo "<td>" . $suzVeri->KOD . "</td>";
 										echo "<td>" . $suzVeri->STOK_AD1 . "</td>";
 										echo "<td>" . $suzVeri->SF_MIKTAR . "</td>";
+										echo "<td>" . $suzVeri->MUSTERI_TEKLIF_NO . "</td>";
+										echo "<td>" . $suzVeri->AD_SOYAD . "</td>";
+										echo "<td>" . $suzVeri->TARIH . "</td>";
 										echo "<td>" . $suzVeri->SF_SF_UNIT . "</td>";
 										echo "<td>" . $suzVeri->ACIKLAMA . "</td>";
 										echo "<td><a class='btn btn-info' href='{$ekranLink}?ID={$suzVeri->EVRAKNO}&KOD={$suzVeri->KOD}'><i class='fa fa-chevron-circle-right' style='color: white'></i></a></td>";
