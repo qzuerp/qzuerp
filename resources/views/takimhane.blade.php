@@ -399,6 +399,9 @@
                                     <th>#</th>
                                     <th>Stok Kodu</th>
                                     <th>Stok Adı</th>
+                                    <th>Miktar</th>
+                                    <th>Lot no</th>
+                                    <th>Seri no</th>
                                     <th>Stok Birimi</th>
                                     <th>Lokasyon 1</th>
                                     <th>Lokasyon 2</th>
@@ -414,9 +417,12 @@
                                     <th>Ölçü 4</th>
                                 </thead>
                                 <tfoot>
-                                    <th>#</th>
+                                <th>#</th>
                                     <th>Stok Kodu</th>
                                     <th>Stok Adı</th>
+                                    <th>Miktar</th>
+                                    <th>Lot no</th>
+                                    <th>Seri no</th>
                                     <th>Stok Birimi</th>
                                     <th>Lokasyon 1</th>
                                     <th>Lokasyon 2</th>
@@ -697,85 +703,114 @@
 
 <script>
 $(function () {
-    $('#depo_data tfoot th').each(function () {
-        var title = $(this).text();
-        if (title == "#") {
-         $(this).html('<b>Git</b>');
-        }
-        else {
-            $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
-        }
-    });
-
-    var table = $('#depo_data').DataTable({
-      "order": [[0, "desc"]],
-      dom: 'rtip',
-      deferRender: true,
-      buttons: ['copy', 'excel', 'print'],
-      language: {
-        url: '{{ asset("tr.json") }}'
-      },
-      initComplete: function () {
-        // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
+    function tfootInputlariniHazirla() {
+        $('#depo_data tfoot th').each(function () {
+            var title = $(this).text();
+            if (title == "#") {
+                $(this).html('<b>Git</b>');
+            } else {
+                $(this).html('<input type="text" class="form-control form-rounded tfoot-search" style="font-size: 10px; width: 100%" placeholder="🔍" />');
             }
-          });
         });
-      }
-    });
+    }
 
-    
+    tfootInputlariniHazirla();
+
     var table = $('#depo_data').DataTable({
-        'processing': true,
-        'serverSide': true,
-        'ajax': {
-            'url': '/depo_data',
-            'type': 'POST',
-            'headers': {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
-            },
-            'data': function (d) {
-                d.amb_code = $('#AMBCODE_SEC').val();
-            },
-            'error': function (xhr) {
-                console.error("HTML Dönen Hata İçeriği:", xhr.responseText);
-            }
+        "order": [[0, "desc"]],
+        dom: 'rtip',
+        deferRender: true,
+        buttons: ['copy', 'excel', 'print'],
+        language: {
+            url: '{{ asset("tr.json") }}'
         },
-        'columns': [
-            { data: 'KOD', name: 'KOD' },
-            { data: 'STOK_ADI', name: 'STOK_ADI' },
-            { data: 'BIRIM', name: 'BIRIM' },
-            { data: 'MIKTAR', name: 'MIKTAR' },
-            { data: 'LOTNUMBER', name: 'LOTNUMBER' },
-            { data: 'SERINO', name: 'SERINO' },
-            { data: 'AMBCODE', name: 'AMBCODE' },
-            { data: 'LOCATION1', name: 'LOCATION1' },
-            { data: 'LOCATION2', name: 'LOCATION2' },
-            { data: 'LOCATION3', name: 'LOCATION3' },
-            { data: 'LOCATION4', name: 'LOCATION4' },
-            { data: 'TEXT1', name: 'TEXT1' },
-            { data: 'TEXT2', name: 'TEXT2' },
-            { data: 'TEXT3', name: 'TEXT3' },
-            { data: 'TEXT4', name: 'TEXT4' },
-            { data: 'NUM1', name: 'NUM1' },
-            { data: 'NUM2', name: 'NUM2' },
-            { data: 'NUM3', name: 'NUM3' },
-            { data: 'NUM4', name: 'NUM4' }
-        ]
+        initComplete: function () {
+            this.api().columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        }
     });
 
     $('#AMBCODE_SEC').on('change', function() {
-        table.ajax.reload(); 
+        var ambCode = $(this).val();
+
+        $.ajax({
+            url: '/depo_data',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: { amb_code: ambCode },
+            success: function (res) {
+                
+                if ($.fn.DataTable.isDataTable('#depo_data')) {
+                    $('#depo_data').DataTable().destroy();
+                }
+
+                tfootInputlariniHazirla();
+
+                var htmlCode = '';
+                var veriListesi = Array.isArray(res) ? res : (res.data || []);
+
+                veriListesi.forEach(function (veri) {
+                    htmlCode += `
+                        <tr>
+                            <td><input type='checkbox' name='VERI_ID[]' value='${veri.ID}'></td>
+                            <td>${veri.KOD || ''}</td>
+                            <td>${veri.STOK_ADI || ''}</td>
+                            <td>${veri.MIKTAR || 0}</td>
+                            <td>${veri.SF_SF_UNIT || ''}</td>
+                            <td>${veri.LOTNUMBER || ''}</td>
+                            <td>${veri.SERINO || ''}</td>
+                            <td>${veri.LOK1 || ''}</td>
+                            <td>${veri.LOK2 || ''}</td>
+                            <td>${veri.LOK3 || ''}</td>
+                            <td>${veri.LOK4 || ''}</td>
+                            <td>${veri.TEXT1 || ''}</td>
+                            <td>${veri.TEXT2 || ''}</td>
+                            <td>${veri.TEXT3 || ''}</td>
+                            <td>${veri.TEXT4 || ''}</td>
+                            <td>${veri.NUM1 || ''}</td>
+                            <td>${veri.NUM2 || ''}</td>
+                            <td>${veri.NUM3 || ''}</td>
+                            <td>${veri.NUM4 || ''}</td>
+                        </tr>
+                    `;
+                });
+
+                $('#depo_data tbody').html(htmlCode);
+
+                $('#depo_data').DataTable({
+                    "order": [[0, "desc"]],
+                    dom: 'rtip',
+                    deferRender: true,
+                    buttons: ['copy', 'excel', 'print'],
+                    language: {
+                        url: '{{ asset("tr.json") }}'
+                    },
+                    initComplete: function () {
+                        this.api().columns().every(function () {
+                            var that = this;
+                            $('input', this.footer()).on('keyup change clear', function () {
+                                if (that.search() !== this.value) {
+                                    that.search(this.value).draw();
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            error: function(xhr) {
+                console.error("Dönen Hata:", xhr.responseText);
+            }
+        });
     });
 
-    /* ─── Stoğu seç modalı – veri çek ─── */
     function veriCek() {
         var kod = $('#STOK_KODU_FILL').val();
 

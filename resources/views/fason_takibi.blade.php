@@ -85,7 +85,7 @@
         SELECT 
         D00.DOSYA,
         GDF.AD AS DEPO_ADI,
-        S63T.created_at AS TARIH,
+        S63E.TARIH,
         S63T.TERMIN_TAR,
         s63t.LOTNUMBER,
         GDF.GK_2,
@@ -121,6 +121,8 @@
             ON D00.EVRAKNO = S01.KOD 
             AND D00.EVRAKTYPE = 'STOK00' 
             AND D00.DOSYATURU = 'GORSEL'
+        left join {$database}stok63e as S63E
+            ON S63E.EVRAKNO = S63T.EVRAKNO
         Where S01.MIKTAR > 0
         AND GDF.GK_2 = 'FSN_G2'
     ");
