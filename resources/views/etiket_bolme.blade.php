@@ -1974,7 +1974,6 @@
               _token: '{{ csrf_token() }}'
             },
             success:function(res){
-              console.log(res);
               htmlCode = '';
               htmlCode += " <tr> ";
               htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";

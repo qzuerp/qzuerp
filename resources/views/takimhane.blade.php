@@ -90,7 +90,7 @@
             .action-bar .btn { height: 30px; padding: 0 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
             .action-bar .dropdown-toggle { height: 30px; padding: 0 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
 
-            .tabs .nav-tabs { border-bottom: 1px solid #dde1e7; padding: 0 12px; }
+            .tabs .nav-tabs { border-bottom: 1px solid #dde1e7; padding: 0 12px; margin-bottom:0px; }
             .tabs .nav-tabs .nav-link { font-size: 12px; padding: 6px 14px; color: #6c757d; border: none; border-bottom: 2px solid transparent; }
             .tabs .nav-tabs .nav-link.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; background: transparent; }
             .tabs .tab-content { padding: 10px 0 0; }
@@ -117,48 +117,7 @@
             <div class="topbar">
 
                 {{-- Firma --}}
-                <div class="field" style="min-width:80px">
-                    <label>Firma</label>
-                    <input type="text" class="form-control" value="{{ @$kullanici_veri->firma }}" disabled style="width:80px">
-                    <input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
-                </div>
-
-                <div class="sep"></div>
-
-                {{-- Evrak Seç --}}
-                <div class="field" style="min-width:90px">
-                    <label>Fiş No</label>
-                    <select id="evrakSec" class="form-control js-example-basic-single" name="evrakSec"
-                            onchange="evrakGetirRedirect(this.value,'{{ $ekranLink }}')" style="width:100px">
-                        @php
-                            foreach ($evraklar as $veri) {
-                                $sel = ($veri->id == @$kart_veri->id) ? 'selected' : '';
-                                echo "<option value='{$veri->id}' {$sel}>{$veri->EVRAKNO}</option>";
-                            }
-                        @endphp
-                    </select>
-                    <input type="hidden" value="{{ @$kart_veri->id }}" name="ID_TO_REDIRECT" id="ID_TO_REDIRECT">
-                    <input type="hidden" name="EVRAKNO_E" id="EVRAKNO_E" value="{{ @$kart_veri->EVRAKNO }}">
-                    <input type="hidden" name="EVRAKNO_E_SHOW" id="EVRAKNO_E_SHOW" value="{{ @$kart_veri->EVRAKNO }}">
-                </div>
-
-                {{-- Süzgeç --}}
-                <div class="field" style="justify-content:flex-end">
-                    <label>&nbsp;</label>
-                    <div class="d-flex">
-                        <a class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz" title="Süzgeç 1"><i class="fa fa-filter"></i></a>
-                        <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal_evrakSuz2" title="Süzgeç 2"><i class="fa fa-filter"></i></a>
-                    </div>
-                </div>
-
-                {{-- Sayfa Navigasyonu --}}
-                <div class="action-group">
-                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$ilkEvrak }}" title="İlk"><i class="fa fa-angle-double-left"></i></a>
-                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$oncekiEvrak }}" title="Önceki"><i class="fa fa-angle-left"></i></a>
-                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$sonrakiEvrak }}" title="Sonraki"><i class="fa fa-angle-right"></i></a>
-                    <a class="evrak-btn nav-btn" style="font-size:20px; text-decoration: none;" href="?ID={{ @$sonEvrak }}" title="Son"><i class="fa fa-angle-double-right"></i></a>
-                </div>
-
+                <input type="hidden" name="firma" value="{{ @$kullanici_veri->firma }}">
 
                 <div class="sep"></div>
 
@@ -173,14 +132,12 @@
                 <div class="field" style="min-width:130px">
                     <label>Veren Depo</label>
                     <select class="form-control select2 js-example-basic-single AMBCODE"
-                            onchange="updateVerenDepoSatir(this.value)"
                             name="AMBCODE_E" id="AMBCODE_E" style="width:140px">
                         <option value=" ">Seç</option>
                         @php
                             $ambcode_evraklar = DB::table($database . 'gdef00')->orderBy('id', 'ASC')->get();
                             foreach ($ambcode_evraklar as $veri) {
-                                $sel = ($veri->KOD == @$kart_veri->AMBCODE) ? 'selected' : '';
-                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
                             }
                         @endphp
                     </select>
@@ -195,8 +152,7 @@
                         <option value=" ">Seç</option>
                         @php
                             foreach ($ambcode_evraklar as $veri) {
-                                $sel = ($veri->KOD == @$kart_veri->TARGETAMBCODE) ? 'selected' : '';
-                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
                             }
                         @endphp
                     </select>
@@ -211,8 +167,7 @@
                         @php
                             $evraklar_nit = DB::table($database . 'gecoust')->where('EVRAKNO', 'STKNIT')->orderBy('id', 'ASC')->get();
                             foreach ($evraklar_nit as $veri) {
-                                $sel = ($veri->KOD == @$kart_veri->NITELIK) ? 'selected' : '';
-                                echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
                             }
                         @endphp
                     </select>
@@ -226,60 +181,6 @@
                  ANA İÇERİK KARTI
             ═══════════════════════════════ --}}
             <div class="main-card">
-
-                {{-- Aksiyon Çubuğu --}}
-                <div class="action-bar">
-                    <select class="form-control js-example-basic-single KOD STOK_KODU_SHOW"
-                            onchange="stokAdiGetir(this.value)"
-                            name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style="width:260px; flex:none">
-                        <option value=" ">— Stok Seç —</option>
-                    </select>
-                    <input type="hidden" name="STOK_KODU" id="STOK_KODU_FILL">
-
-                    <button class="btn btn-primary btn-sm" type="button">
-                        <i class="fa fa-map-marker"></i> Lokasyondan seç
-                    </button>
-
-                    <button class="btn btn-primary btn-sm" type="button"
-                            data-bs-toggle="modal" onclick="veriCek()"
-                            data-bs-target="#modal_popupSelectModal4">
-                        <i class="fa fa-search"></i> Stoğu seç
-                    </button>
-
-                    <div class="dropdown">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown">
-                            <i class="fa fa-plus"></i> Ekle
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-sm">
-                            <li>
-                                <button class="dropdown-item" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#depodandepoya">
-                                    <i class="fa fa-exchange"></i> Depodan depoya transfer et
-                                </button>
-                            </li>
-                            <li>
-                                <button class="dropdown-item" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#etiketbol">
-                                    <i class="fa fa-scissors"></i> Etiket böl ve transfer et
-                                </button>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <button type="button" class="dropdown-item"
-                                        onclick="DepoMevcutlari($('#STOK_KODU_FILL').val())">
-                                    <i class="fa fa-building"></i> Depo Mevcutları
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item"
-                                        onclick="StokHareketleri($('#STOK_KODU_FILL').val())">
-                                    <i class="fa fa-history"></i> Stok Hareketleri
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
 
                 {{-- Sekmeler --}}
                 <div class="tabs">
@@ -305,6 +206,62 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        <div class="col-7">
+                                            <select class="form-control w-100 js-example-basic-single KOD STOK_KODU_SHOW"
+                                                    onchange="stokAdiGetir(this.value)"
+                                                    name="STOK_KODU_SHOW" id="STOK_KODU_SHOW" style="width:260px; flex:none">
+                                                <option value=" ">— Stok Seç —</option>
+                                            </select>
+                                            <input type="hidden" name="STOK_KODU" id="STOK_KODU_FILL">
+                                        </div>
+
+                                        <div class="d-flex col gap-2">
+                                            <button class="btn btn-primary btn-sm" type="button">
+                                                <i class="fa fa-map-marker"></i> Lokasyondan seç
+                                            </button>
+
+                                            <button class="btn btn-primary btn-sm" type="button"
+                                                    data-bs-toggle="modal" onclick="veriCek()"
+                                                    data-bs-target="#modal_popupSelectModal4">
+                                                <i class="fa fa-search"></i> Stoğu seç
+                                            </button>
+
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                                        data-bs-toggle="dropdown">
+                                                    <i class="fa fa-plus"></i> Ekle
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-sm">
+                                                    <li>
+                                                        <button class="dropdown-item" type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#depodandepoya">
+                                                            <i class="fa fa-exchange"></i> Depodan depoya transfer et
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button class="dropdown-item" type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#etiketbol">
+                                                            <i class="fa fa-scissors"></i> Etiket böl ve transfer et
+                                                        </button>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item"
+                                                                onclick="DepoMevcutlari($('#STOK_KODU_FILL').val())">
+                                                            <i class="fa fa-building"></i> Depo Mevcutları
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item"
+                                                                onclick="StokHareketleri($('#STOK_KODU_FILL').val())">
+                                                            <i class="fa fa-history"></i> Stok Hareketleri
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col field-w2">
                                             <label>Stok Adı</label>
                                             <input type="text" id="STOK_ADI_FILL" name="STOK_ADI" class="form-control" readonly placeholder="Otomatik dolar">
@@ -312,6 +269,7 @@
                                         <div class="col" style="max-width:100px">
                                             <label>Miktar</label>
                                             <input type="text" id="STOK_MIKTAR" name="STOK_MIKTAR" class="form-control" placeholder="0">
+                                            <input type="hidden" id="SF_TOPLAM_MIKTAR" name="SF_TOPLAM_MIKTAR" class="form-control" placeholder="0">
                                         </div>
                                         <div class="col" style="max-width:70px">
                                             <label>Birim</label>
@@ -422,7 +380,60 @@
                         {{-- /Form Sekmesi --}}
 
                         {{-- Rapor Sekmesi --}}
-                        <div class="tab-pane" id="liste"></div>
+                        <div class="tab-pane" id="liste">
+                            <div class="field" style="min-width:130px">
+                                <label>Depo</label>
+                                <select class="form-control select2 js-example-basic-single"
+                                        id="AMBCODE_SEC" style="width:140px">
+                                    <option value=" ">Seç</option>
+                                    @php
+                                        foreach ($ambcode_evraklar as $veri) {
+                                            echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
+                                        }
+                                    @endphp
+                                </select>
+                            </div>
+
+                            <table class="table" id="depo_data">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Stok Kodu</th>
+                                    <th>Stok Adı</th>
+                                    <th>Stok Birimi</th>
+                                    <th>Lokasyon 1</th>
+                                    <th>Lokasyon 2</th>
+                                    <th>Lokasyon 3</th>
+                                    <th>Lokasyon 4</th>
+                                    <th>Varyant 1</th>
+                                    <th>Varyant 2</th>
+                                    <th>Varyant 3</th>
+                                    <th>Varyant 4</th>
+                                    <th>Ölçü 1</th>
+                                    <th>Ölçü 2</th>
+                                    <th>Ölçü 3</th>
+                                    <th>Ölçü 4</th>
+                                </thead>
+                                <tfoot>
+                                    <th>#</th>
+                                    <th>Stok Kodu</th>
+                                    <th>Stok Adı</th>
+                                    <th>Stok Birimi</th>
+                                    <th>Lokasyon 1</th>
+                                    <th>Lokasyon 2</th>
+                                    <th>Lokasyon 3</th>
+                                    <th>Lokasyon 4</th>
+                                    <th>Varyant 1</th>
+                                    <th>Varyant 2</th>
+                                    <th>Varyant 3</th>
+                                    <th>Varyant 4</th>
+                                    <th>Ölçü 1</th>
+                                    <th>Ölçü 2</th>
+                                    <th>Ölçü 3</th>
+                                    <th>Ölçü 4</th>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>
@@ -488,8 +499,7 @@
                                                 @php
                                                     $pers00_evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
                                                     foreach ($pers00_evraklar as $veri) {
-                                                        $sel = ($veri->KOD == @$kart_veri->TO_OPERATOR) ? 'selected' : '';
-                                                        echo "<option value='{$veri->KOD}' {$sel}>{$veri->KOD} | {$veri->AD}</option>";
+                                                        echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
                                                     }
                                                 @endphp
                                             </select>
@@ -557,12 +567,13 @@
                  MODAL – Depodan Depoya Transfer
             ════════════════════════════════════════ --}}
             <div class="modal fade modal" id="depodandepoya" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-md">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header d-flex align-items-baseline flex-column gap-1">
                             <h4 class="modal-title">
                                 <i class="fa fa-exchange" style="color:#337ab7"></i> Depodan Depoya Transfer
                             </h4>
+                            <p class="modal-subtitle text-danger">Dikkat: Depodan depoya transfer işleminde stoğun tamamı transfer edilir </p>
                         </div>
                         <div class="modal-body">
                             <div class="main-card">
@@ -595,7 +606,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
                             <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
-                                    name="kart_islemleri" value="depodandepoyatransfer">
+                                    name="kart_islemleri" value="transfer">
                                 <i class="fa fa-save"></i> Kaydet
                             </button>
                         </div>
@@ -686,6 +697,69 @@
 
 <script>
 $(function () {
+    $('#depo_data tfoot th').each(function () {
+        var title = $(this).text();
+        if (title == "#") {
+         $(this).html('<b>Git</b>');
+        }
+        else {
+            $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+        }
+    });
+
+    var table = $('#depo_data').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'rtip',
+      deferRender: true,
+      buttons: ['copy', 'excel', 'print'],
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
+
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
+
+    
+    $('#AMBCODE_SEC').on('change',function(){
+        var table = $('#depo_data').dataTable({
+            'processing': true,
+            'serverSide': true,
+            'ajax': '/depo_data',
+            'columns': [
+                { data: 'KOD', name: 'KOD' },
+                { data: 'STOK_ADI', name: 'STOK_ADI' },
+                { data: 'BIRIM', name: 'BIRIM' },
+                { data: 'MIKTAR', name: 'MIKTAR' },
+                { data: 'LOTNUMBER', name: 'LOTNUMBER' },
+                { data: 'SERINO', name: 'SERINO' },
+                { data: 'AMBCODE', name: 'AMBCODE' },
+                { data: 'LOCATION1', name: 'LOCATION1' },
+                { data: 'LOCATION2', name: 'LOCATION2' },
+                { data: 'LOCATION3', name: 'LOCATION3' },
+                { data: 'LOCATION4', name: 'LOCATION4' },
+                { data: 'TEXT1', name: 'TEXT1' },
+                { data: 'TEXT2', name: 'TEXT2' },
+                { data: 'TEXT3', name: 'TEXT3' },
+                { data: 'TEXT4', name: 'TEXT4' },
+                { data: 'NUM1', name: 'NUM1' },
+                { data: 'NUM2', name: 'NUM2' },
+                { data: 'NUM3', name: 'NUM3' },
+                { data: 'NUM4', name: 'NUM4' },0
+            ],
+        });
+    });
 
     /* ─── Stoğu seç modalı – veri çek ─── */
     function veriCek() {
@@ -749,6 +823,7 @@ $(function () {
     $('#seriNoSec tbody').on('click', 'tr', function () {
         var $cells = $(this).find('td');
 
+        $('#SF_TOPLAM_MIKTAR').val( $cells.eq(2).text().trim() );
         $('#LOTNUMBER').val( $cells.eq(4).text().trim() );
         $('#SERINO').val(    $cells.eq(5).text().trim() );
 

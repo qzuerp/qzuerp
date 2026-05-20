@@ -213,6 +213,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');
     Route::get('stok_yonetimi', function() { return view('takimhane');})->name('takimhane');
     Route::post('stok_islemler', [stok_controller::class, 'islemler']);
+    Route::post('depo_data', [stok_controller::class, 'depo_data']);
     Route::post('stok25_islemler', [stok25_controller::class, 'islemler']);
 
     // Stok26 - Depodan Depoya Transfer

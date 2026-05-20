@@ -1465,31 +1465,31 @@
               htmlCode += " <td><input type='text' class='form-control' name='SF_MIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_MIKTAR)+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"' readonly></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT_PB)+"' readonly></td> ";
-              htmlCode += " <td><input type='text' id='birim-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='SF_SF_UNIT[]' value='"+setValueOfJsonObject(kartVerisi2.SF_SF_UNIT)+"' readonly></td> ";
+              htmlCode += " <td><input type='text' id='birim-"+TRNUM_FILL+"' class='form-control' name='SF_SF_UNIT[]' value='"+setValueOfJsonObject(kartVerisi2.SF_SF_UNIT)+"' readonly></td> ";
               // htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
-              htmlCode += " <td><input type='text' id='Lot-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOTNUMBER[]' value='"+setValueOfJsonObject(kartVerisi2.LOTNUMBER)+"' readonly></td> ";
+              htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+setValueOfJsonObject(kartVerisi2.LOTNUMBER)+"' readonly></td> ";
               htmlCode += " <td class='d-flex '>" +
-                "<input type='text' id='serino-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly>" +
+                "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly>" +
                 "<span class='d-flex -btn'>" +
-                "<button class='btn btn-primary' onclick='veriCek(\"" + setValueOfJsonObject(kartVerisi2.KOD) + "\", "+setValueOfJsonObject(kartVerisi2.id)+")' data-bs-toggle='modal' data-kod='" + setValueOfJsonObject(kartVerisi2.KOD) + "' data-id='" + setValueOfJsonObject(kartVerisi2.id) + "' data-bs-target='#modal_popupSelectModal4' type='button'>" +
+                "<button class='btn btn-primary' onclick='veriCek(\"" + setValueOfJsonObject(kartVerisi2.KOD) + "\", "+TRNUM_FILL+")' data-bs-toggle='modal' data-kod='" + setValueOfJsonObject(kartVerisi2.KOD) + "' data-id='" + TRNUM_FILL + "' data-bs-target='#modal_popupSelectModal4' type='button'>" +
                 "<span class='fa-solid fa-magnifying-glass'></span>" +
                 "</button>" +
                 "</span>" +
                 "</td>";
-              htmlCode += " <td><input type='text' id='depo-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='AMBCODE[]' value='"+depo+"' readonly></td> ";
+              htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+depo+"' readonly></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='SIPNO[]' value='"+setValueOfJsonObject(kartVerisi2.ARTNO)+"'></td> ";
-              htmlCode += " <td><input type='text' id='lok1-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOCATION1[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION1)+"'></td> ";
-              htmlCode += " <td><input type='text' id='lok2-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOCATION2[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION2)+"'></td> ";
-              htmlCode += " <td><input type='text' id='lok3-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOCATION3[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION3)+"'></td> ";
-              htmlCode += " <td><input type='text' id='lok4-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='LOCATION4[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION4)+"'></td> ";
-              htmlCode += " <td><input type='text' id='text1-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='TEXT1[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT1)+"'></td> ";
-              htmlCode += " <td><input type='text' id='text2-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='TEXT2[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT2)+"'></td> ";
-              htmlCode += " <td><input type='text' id='text3-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='TEXT3[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT3)+"'></td> ";
-              htmlCode += " <td><input type='text' id='text4-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='TEXT4[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT4)+"'></td> ";
-              htmlCode += " <td><input type='number' id='num1-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='NUM1[]' value='"+setValueOfJsonObject(kartVerisi2.NUM1)+"'></td> ";
-              htmlCode += " <td><input type='number' id='num2-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='NUM2[]' value='"+setValueOfJsonObject(kartVerisi2.NUM2)+"'></td> ";
-              htmlCode += " <td><input type='number' id='num3-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='NUM3[]' value='"+setValueOfJsonObject(kartVerisi2.NUM3)+"'></td> ";
-              htmlCode += " <td><input type='number' id='num4-"+setValueOfJsonObject(kartVerisi2.id)+"' class='form-control' name='NUM4[]' value='"+setValueOfJsonObject(kartVerisi2.NUM4)+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION1)+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok2-"+TRNUM_FILL+"' class='form-control' name='LOCATION2[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION2)+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok3-"+TRNUM_FILL+"' class='form-control' name='LOCATION3[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION3)+"'></td> ";
+              htmlCode += " <td><input type='text' id='lok4-"+TRNUM_FILL+"' class='form-control' name='LOCATION4[]' value='"+setValueOfJsonObject(kartVerisi2.LOCATION4)+"'></td> ";
+              htmlCode += " <td><input type='text' id='text1-"+TRNUM_FILL+"' class='form-control' name='TEXT1[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT1)+"'></td> ";
+              htmlCode += " <td><input type='text' id='text2-"+TRNUM_FILL+"' class='form-control' name='TEXT2[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT2)+"'></td> ";
+              htmlCode += " <td><input type='text' id='text3-"+TRNUM_FILL+"' class='form-control' name='TEXT3[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT3)+"'></td> ";
+              htmlCode += " <td><input type='text' id='text4-"+TRNUM_FILL+"' class='form-control' name='TEXT4[]' value='"+setValueOfJsonObject(kartVerisi2.TEXT4)+"'></td> ";
+              htmlCode += " <td><input type='number' id='num1-"+TRNUM_FILL+"' class='form-control' name='NUM1[]' value='"+setValueOfJsonObject(kartVerisi2.NUM1)+"'></td> ";
+              htmlCode += " <td><input type='number' id='num2-"+TRNUM_FILL+"' class='form-control' name='NUM2[]' value='"+setValueOfJsonObject(kartVerisi2.NUM2)+"'></td> ";
+              htmlCode += " <td><input type='number' id='num3-"+TRNUM_FILL+"' class='form-control' name='NUM3[]' value='"+setValueOfJsonObject(kartVerisi2.NUM3)+"'></td> ";
+              htmlCode += " <td><input type='number' id='num4-"+TRNUM_FILL+"' class='form-control' name='NUM4[]' value='"+setValueOfJsonObject(kartVerisi2.NUM4)+"'></td> ";
               // htmlCode += " <td style='display: none;'><input type='text' class='form-control' name='SIPARTNO[]' value='"+setValueOfJsonObject(kartVerisi2.EVRAKNO+kartVerisi2.TRNUM)+"' readonly></td> ";
               htmlCode += " <td><button type='button' id='deleteSingleRow3' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 
