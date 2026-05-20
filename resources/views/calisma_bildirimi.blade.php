@@ -301,13 +301,13 @@
                               <select class="form-control select2 js-example-basic-single" style="width: 100%;" name="STOK_CODE" id="STOK_CODE" >
                                 <option value="" selected>Seç</option>
                                 @php
-                                $stok00_evraklar=DB::table($database.'mmps10e')->orderBy('id', 'ASC')->get();
+                                $stok00_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->get();
                                 foreach ($stok00_evraklar as $key => $val) {
-                                  if (@$kart_veri->STOK_CODE == $val->MAMULSTOKKODU) {
-                                    echo "<option value ='".$val->MAMULSTOKKODU."' selected>".$val->MAMULSTOKKODU." - ". $val->MAMULSTOKADI."</option>";
+                                  if (@$kart_veri->STOK_CODE == $val->KOD) {
+                                    echo "<option value ='".$val->KOD."' selected>".$val->KOD." - ". $val->AD."</option>";
                                   }
                                   else {
-                                    echo "<option value ='".$val->MAMULSTOKKODU."'>".$val->MAMULSTOKKODU." - ". $val->MAMULSTOKADI."</option>";
+                                    echo "<option value ='".$val->KOD."'>".$val->KOD." - ". $val->AD."</option>";
                                   }
                                 }
                                 @endphp

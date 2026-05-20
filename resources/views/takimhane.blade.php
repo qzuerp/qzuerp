@@ -381,17 +381,39 @@
 
                         {{-- Rapor Sekmesi --}}
                         <div class="tab-pane" id="liste">
-                            <div class="field" style="min-width:130px">
-                                <label>Depo</label>
-                                <select class="form-control select2 js-example-basic-single"
-                                        id="AMBCODE_SEC" style="width:140px">
-                                    <option value=" ">Seç</option>
-                                    @php
-                                        foreach ($ambcode_evraklar as $veri) {
-                                            echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
-                                        }
-                                    @endphp
-                                </select>
+                            <div class="field d-flex gap-2" style="min-width:130px">
+                                <div>
+                                    <label>Depo</label>
+                                    <select class="form-control select2 js-example-basic-single"
+                                            id="AMBCODE_SEC" style="width:140px">
+                                        <option value=" ">Seç</option>
+                                        @php
+                                            foreach ($ambcode_evraklar as $veri) {
+                                                echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
+                                            }
+                                        @endphp
+                                    </select>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown">
+                                        <i class="fa fa-plus"></i> Geri Al
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-sm">
+                                        <li>
+                                            <button class="dropdown-item" type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#depodandepoya">
+                                                <i class="fa fa-exchange"></i> Depodan depoya transfer et
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item" type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#etiketbol">
+                                                <i class="fa fa-scissors"></i> Etiket böl ve transfer et
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <table class="table" id="depo_data">
