@@ -1332,7 +1332,7 @@ $(function () {
                             <td>${veri.LOK2 || ''}</td>
                             <td>${veri.LOK3 || ''}</td>
                             <td>${veri.LOK4 || ''}</td>
-                            <td>${veri.TEXT1 || ''}</td>
+                            <td>${veri.AD || ''}</td>
                             <td>${veri.TEXT2 || ''}</td>
                             <td>${veri.TEXT3 || ''}</td>
                             <td>${veri.TEXT4 || ''}</td>
