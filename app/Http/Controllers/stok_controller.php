@@ -540,7 +540,10 @@ class stok_controller extends Controller
 
         $firma = trim($user->firma).'.dbo.';
 
-        $veri = DB::table($firma.'vw_stok01')->where('AMBCODE', $request->amb_code)->get();
+        $veri = DB::table($firma.'vw_stok01')->
+        where('AMBCODE', $request->amb_code)
+        ->having('MIKTAR', '>', 0)
+        ->get();
 
         return $veri;
     }
