@@ -1229,13 +1229,13 @@
 
                           {{-- Aktar araç çubuğu --}}
                           <div class="d-flex gap-2 mb-2">
-                              <button type="button" class="btn btn-sm btn-success" onclick="exportTableToExcel('liste_tablo')">
+                              <button type="button" class="btn btn-sm btn-success" onclick="exportTableToExcel('listeleTable')">
                                   <i class="fas fa-file-excel me-1"></i> Excel'e Aktar
                               </button>
-                              <button type="button" class="btn btn-sm btn-danger" onclick="exportTableToWord('liste_tablo')">
+                              <button type="button" class="btn btn-sm btn-danger" onclick="exportTableToWord('listeleTable')">
                                   <i class="fas fa-file-word me-1"></i> Word'e Aktar
                               </button>
-                              <button type="button" class="btn btn-sm btn-primary" onclick="printTable('liste_tablo')">
+                              <button type="button" class="btn btn-sm btn-primary" onclick="printTable('listeleTable')">
                                   <i class="fas fa-print me-1"></i> Yazdır
                               </button>
                               <span class="ms-auto text-muted small align-self-center">
@@ -1253,7 +1253,7 @@
                                           <th>Evrak No</th>
                                           <th>Evrak Tarihi</th>
                                           <th>Stok Kodu</th>
-                                          <th>Operatör</th>
+                                          <th style="min-width:120px;">Operatör</th>
                                           <th>Operasyon</th>
                                           <th>Tezgah Adı</th>
                                           <th>İşlem Statüsü</th>
