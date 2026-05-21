@@ -147,7 +147,6 @@
                 <div class="field" style="min-width:130px">
                     <label>Alan Depo</label>
                     <select class="form-control select2 js-example-basic-single"
-                            onchange="getNewLocation1()"
                             name="TARGETAMBCODE_E" id="TARGETAMBCODE_E" style="width:140px">
                         <option value=" ">Seç</option>
                         @php
@@ -382,7 +381,7 @@
                         {{-- Rapor Sekmesi --}}
                         <div class="tab-pane" id="liste">
                             <div class="field d-flex gap-2" style="min-width:130px">
-                                <div>
+                                <div class="w-75">
                                     <label>Depo</label>
                                     <select class="form-control select2 js-example-basic-single"
                                             id="AMBCODE_SEC" style="width:140px">
@@ -394,26 +393,9 @@
                                         @endphp
                                     </select>
                                 </div>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown">
-                                        <i class="fa fa-plus"></i> Geri Al
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-sm">
-                                        <li>
-                                            <button class="dropdown-item" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#depodandepoya">
-                                                <i class="fa fa-exchange"></i> Depodan depoya transfer et
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#etiketbol">
-                                                <i class="fa fa-scissors"></i> Etiket böl ve transfer et
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <button class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="modal" data-bs-target="#etiketbol2" type="button">
+                                    <i class="fa-solid fa-arrow-rotate-left"></i> Geri Al
+                                </button>
                             </div>
 
                             <table class="table" id="depo_data">
@@ -592,6 +574,128 @@
 
 
             {{-- ════════════════════════════════════════
+                 MODAL – Etiket Böl ve Transfer Et
+            ════════════════════════════════════════ --}}
+            <div class="modal fade modal" id="etiketbol2" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <i class="fa fa-scissors" style="color:#337ab7"></i> Etiket Bölme
+                            </h4>
+                        </div>
+                        
+                        <div class="modal-body">
+
+                            {{-- Lokasyon --}}
+                            <div class="main-card" style="margin-bottom:8px">
+                                <div class="card-header">
+                                    <i class="fa fa-map-pin" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Lokasyon Alanları</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Lok 1</label>
+                                            <input type="text" id="G_NEWLOCATION1" name="G_NEWLOCATION1" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 2</label>
+                                            <input type="text" id="G_NEWLOCATION2" name="G_NEWLOCATION2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 3</label>
+                                            <input type="text" id="G_NEWLOCATION3" name="G_NEWLOCATION3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Lok 4</label>
+                                            <input type="text" id="G_NEWLOCATION4" name="G_NEWLOCATION4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Metin --}}
+                            <div class="main-card" style="margin-bottom:8px">
+                                <div class="card-header">
+                                    <i class="fa fa-font" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Metin Alanları</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Text 1</label>
+                                            <select class="form-control select2 js-example-basic-single"
+                                                    id="G_NEWTEXT1" name="G_NEWTEXT1" data-modal="etiketbol2" style="height:28px!important">
+                                                <option value="" selected></option>
+                                                @php
+                                                    $pers00_evraklar = DB::table($database.'pers00')->orderBy('id', 'ASC')->get();
+                                                    foreach ($pers00_evraklar as $veri) {
+                                                        echo "<option value='{$veri->KOD}'>{$veri->KOD} | {$veri->AD}</option>";
+                                                    }
+                                                @endphp
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 2</label>
+                                            <input type="text" id="G_NEWTEXT2" name="G_NEWTEXT2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 3</label>
+                                            <input type="text" id="G_NEWTEXT3" name="G_NEWTEXT3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Text 4</label>
+                                            <input type="text" id="G_NEWTEXT4" name="G_NEWTEXT4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Sayısal --}}
+                            <div class="main-card">
+                                <div class="card-header">
+                                    <i class="fa fa-hashtag" style="color:#6c757d;font-size:12px"></i>
+                                    <span>Sayısal Alanlar</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Num 1</label>
+                                            <input type="text" id="G_NEWNUM1" name="G_NEWNUM1" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 2</label>
+                                            <input type="text" id="G_NEWNUM2" name="G_NEWNUM2" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 3</label>
+                                            <input type="text" id="G_NEWNUM3" name="G_NEWNUM3" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label>Num 4</label>
+                                            <input type="text" id="G_NEWNUM4" name="G_NEWNUM4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-success btn-sm" form="verilerForm"
+                                    name="kart_islemleri" id="geri_al" value="geri_al">
+                                <i class="fa fa-save"></i> Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- /Etiket Böl Modal --}}
+                                            
+
+            {{-- ════════════════════════════════════════
                  MODAL – Depodan Depoya Transfer
             ════════════════════════════════════════ --}}
             <div class="modal fade modal" id="depodandepoya" tabindex="-1" role="dialog">
@@ -758,6 +862,10 @@ $(function () {
         }
     });
 
+    $('#geri_al').on('click', function() {
+        $('.form-checkk:not(:checked)').closest('tr').remove();
+    });
+
     $('#AMBCODE_SEC').on('change', function() {
         var ambCode = $(this).val();
 
@@ -782,7 +890,28 @@ $(function () {
                 veriListesi.forEach(function (veri) {
                     htmlCode += `
                         <tr>
-                            <td><input type='checkbox' name='VERI_ID[]' value='${veri.ID}'></td>
+                            <td>
+                                <input type='checkbox' class='form-checkk' name='VERI_ID[]' value='${veri.TRNUM} - ${veri.EVRAKNO}'>
+                                
+                                <input type='hidden' name='G_KOD[]' value='${veri.KOD || ''}'>
+                                <input type='hidden' name='G_STOK_ADI[]' value='${veri.STOK_ADI || ''}'>
+                                <input type='hidden' name='G_MIKTAR[]' value='${veri.MIKTAR || 0}'>
+                                <input type='hidden' name='G_SF_SF_UNIT[]' value='${veri.SF_SF_UNIT || ''}'>
+                                <input type='hidden' name='G_LOTNUMBER[]' value='${veri.LOTNUMBER || ''}'>
+                                <input type='hidden' name='G_SERINO[]' value='${veri.SERINO || ''}'>
+                                <input type='hidden' name='G_LOK1[]' value='${veri.LOK1 || ''}'>
+                                <input type='hidden' name='G_LOK2[]' value='${veri.LOK2 || ''}'>
+                                <input type='hidden' name='G_LOK3[]' value='${veri.LOK3 || ''}'>
+                                <input type='hidden' name='G_LOK4[]' value='${veri.LOK4 || ''}'>
+                                <input type='hidden' name='G_TEXT1[]' value='${veri.TEXT1 || ''}'>
+                                <input type='hidden' name='G_TEXT2[]' value='${veri.TEXT2 || ''}'>
+                                <input type='hidden' name='G_TEXT3[]' value='${veri.TEXT3 || ''}'>
+                                <input type='hidden' name='G_TEXT4[]' value='${veri.TEXT4 || ''}'>
+                                <input type='hidden' name='G_NUM1[]' value='${veri.NUM1 || ''}'>
+                                <input type='hidden' name='G_NUM2[]' value='${veri.NUM2 || ''}'>
+                                <input type='hidden' name='G_NUM3[]' value='${veri.NUM3 || ''}'>
+                                <input type='hidden' name='G_NUM4[]' value='${veri.NUM4 || ''}'>
+                            </td>
                             <td>${veri.KOD || ''}</td>
                             <td>${veri.STOK_ADI || ''}</td>
                             <td>${veri.MIKTAR || 0}</td>
@@ -886,11 +1015,9 @@ $(function () {
         });
     }
 
-    /* Global erişim için window'a ekle (onclick="veriCek()" için) */
     window.veriCek = veriCek;
 
 
-    /* ─── Seri No tablosunda satıra tıklanınca formu doldur ─── */
     $('#seriNoSec tbody').on('click', 'tr', function () {
         var $cells = $(this).find('td');
 

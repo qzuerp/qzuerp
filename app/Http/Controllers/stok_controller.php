@@ -46,15 +46,15 @@ class stok_controller extends Controller
         $NUM3 = $request->NUM3;
         $NUM4 = $request->NUM4;
 
-        $NEWLOCATION1 = $request->NEWLOK1;
-        $NEWLOCATION2 = $request->NEWLOK2;
-        $NEWLOCATION3 = $request->NEWLOK3;
-        $NEWLOCATION4 = $request->NEWLOK4;
-
         $DEP_NEWLOCATION1 = $request->DEP_NEWLOCATION1;
         $DEP_NEWLOCATION2 = $request->DEP_NEWLOCATION2;
         $DEP_NEWLOCATION3 = $request->DEP_NEWLOCATION3;
         $DEP_NEWLOCATION4 = $request->DEP_NEWLOCATION4;
+        
+        $NEWLOCATION1 = $request->NEWLOK1;
+        $NEWLOCATION2 = $request->NEWLOK2;
+        $NEWLOCATION3 = $request->NEWLOK3;
+        $NEWLOCATION4 = $request->NEWLOK4;
 
         $NEWTEXT1 = $request->NEWTEXT1;
         $NEWTEXT2 = $request->NEWTEXT2;
@@ -65,6 +65,8 @@ class stok_controller extends Controller
         $NEWNUM2 = $request->NEWNUM2;
         $NEWNUM3 = $request->NEWNUM3;
         $NEWNUM4 = $request->NEWNUM4;
+
+        $VERI_ID = $request->VERI_ID;
 
         switch ($kart_islemleri) {
             case 'etiketbol':
@@ -369,7 +371,158 @@ class stok_controller extends Controller
 
                 return redirect()->back()->with('success', 'Stok başarıyla transfer edildi.');
             break;
-            
+            case 'geri_al':
+                // dd($request->all());
+
+                $G_KOD = $request->G_KOD;
+                $G_STOK_ADI = $request->G_STOK_ADI;
+                $G_LOTNUMBER = $request->G_LOTNUMBER;
+                $G_SERINO = $request->G_SERINO;
+                $G_MIKTAR = $request->G_MIKTAR;
+                $G_SF_SF_UNIT = $request->G_SF_SF_UNIT;
+                $G_TEXT1 = $request->G_TEXT1;
+                $G_TEXT2 = $request->G_TEXT2;
+                $G_TEXT3 = $request->G_TEXT3;
+                $G_TEXT4 = $request->G_TEXT4;
+                $G_NUM1 = $request->G_NUM1;
+                $G_NUM2 = $request->G_NUM2;
+                $G_NUM3 = $request->G_NUM3;
+                $G_NUM4 = $request->G_NUM4;
+                $G_AMBCODE = $request->G_AMBCODE;
+                $G_LOCATION1 = $request->G_LOCATION1;
+                $G_LOCATION2 = $request->G_LOCATION2;
+                $G_LOCATION3 = $request->G_LOCATION3;
+                $G_LOCATION4 = $request->G_LOCATION4;
+
+
+                $G_NEWLOCATION1 = $request->G_NEWLOK1;
+                $G_NEWLOCATION2 = $request->G_NEWLOK2;
+                $G_NEWLOCATION3 = $request->G_NEWLOK3;
+                $G_NEWLOCATION4 = $request->G_NEWLOK4;
+
+                $G_NEWTEXT1 = $request->G_NEWTEXT1;
+                $G_NEWTEXT2 = $request->G_NEWTEXT2;
+                $G_NEWTEXT3 = $request->G_NEWTEXT3;
+                $G_NEWTEXT4 = $request->G_NEWTEXT4;
+
+                $G_NEWNUM1 = $request->G_NEWNUM1;
+                $G_NEWNUM2 = $request->G_NEWNUM2;
+                $G_NEWNUM3 = $request->G_NEWNUM3;
+                $G_NEWNUM4 = $request->G_NEWNUM4;
+
+
+                $SON_EVRAK = DB::table($firma . 'stok26e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
+                $SON_ID = $SON_EVRAK->EVRAKNO;
+
+                $SON_ID = (int) $SON_ID;
+                if ($SON_ID == NULL) {
+                    $EVRAKNO = 1;
+                } else {
+                    $EVRAKNO = $SON_ID + 1;
+                }
+
+                FunctionHelpers::Logla('STOK26', $EVRAKNO, 'C', $TARIH);
+
+                DB::table($firma . 'stok26e')->insert([
+                    'EVRAKNO' => $EVRAKNO,
+                    'TARIH' => $TARIH,
+                    'AMBCODE' => $AMBCODE_E,
+                    'TARGETAMBCODE' => $TARGETAMBCODE,
+                    'NITELIK' => $NITELIK,
+                    'LAST_TRNUM' => '000001',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                for($i = 0; $i < count($G_KOD); $i++) {
+                    $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+                    DB::table($firma . 'stok10a')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TRNUM' => $SRNUM,
+                        'KOD' => $G_KOD[$i],
+                        'STOK_ADI' => $G_STOK_ADI[$i],
+                        'LOTNUMBER' => $G_LOTNUMBER[$i],
+                        'SERINO' => $G_SERINO[$i],
+                        'SF_MIKTAR' => $G_MIKTAR[$i] * -1,
+                        'SF_SF_UNIT' => $G_SF_SF_UNIT[$i],
+                        'TEXT1' => $G_TEXT1[$i],
+                        'TEXT2' => $G_TEXT2[$i],
+                        'TEXT3' => $G_TEXT3[$i],
+                        'TEXT4' => $G_TEXT4[$i],
+                        'NUM1' => $G_NUM1[$i],
+                        'NUM2' => $G_NUM2[$i],
+                        'NUM3' => $G_NUM3[$i],
+                        'NUM4' => $G_NUM4[$i],
+                        'TARIH' => $TARIH,
+                        'EVRAKTIPI' => 'stok25t-C',
+                        'AMBCODE' => $AMBCODE_E,
+                        'LOCATION1' => $G_LOCATION1,
+                        'LOCATION2' => $G_LOCATION2,
+                        'LOCATION3' => $G_LOCATION3,
+                        'LOCATION4' => $G_LOCATION4,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+    
+                    DB::table($firma . 'stok10a')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'TRNUM' => $SRNUM,
+                        'KOD' => $G_KOD[$i],
+                        'STOK_ADI' => $G_STOK_ADI[$i],
+                        'LOTNUMBER' => $G_LOTNUMBER[$i],
+                        'SERINO' => $G_SERINO[$i],
+                        'SF_MIKTAR' => $G_MIKTAR[$i],
+                        'SF_SF_UNIT' => $G_SF_SF_UNIT[$i],
+                        'TEXT1' => $G_NEWTEXT1,
+                        'TEXT2' => $G_NEWTEXT2,
+                        'TEXT3' => $G_NEWTEXT3,
+                        'TEXT4' => $G_NEWTEXT4,
+                        'NUM1' => $G_NEWNUM1,
+                        'NUM2' => $G_NEWNUM2,
+                        'NUM3' => $G_NEWNUM3,
+                        'NUM4' => $G_NEWNUM4,
+                        'TARIH' => $TARIH,
+                        'EVRAKTIPI' => 'stok25t-G',
+                        'STOK_MIKTAR' => $G_MIKTAR[$i],
+                        'AMBCODE' => $TARGETAMBCODE,
+                        'LOCATION1' => $G_NEWLOCATION1,
+                        'LOCATION2' => $G_NEWLOCATION2,
+                        'LOCATION3' => $G_NEWLOCATION3,
+                        'LOCATION4' => $G_NEWLOCATION4,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+    
+                    DB::table($firma . 'stok26t')->insert([
+                        'EVRAKNO' => $EVRAKNO,
+                        'SRNUM' => $SRNUM,
+                        'TRNUM' => $SRNUM,
+                        'KOD' => $G_KOD[$i],
+                        'STOK_ADI' => $G_STOK_ADI[$i],
+                        'LOTNUMBER' => $G_LOTNUMBER[$i],
+                        'SERINO' => $G_SERINO[$i],
+                        'SF_MIKTAR' => $G_MIKTAR[$i],
+                        'SF_SF_UNIT' => $G_SF_SF_UNIT[$i],
+                        'TEXT1' => $G_NEWTEXT1,
+                        'TEXT2' => $G_NEWTEXT2,
+                        'TEXT3' => $G_NEWTEXT3,
+                        'TEXT4' => $G_NEWTEXT4,
+                        'NUM1' => $G_NEWNUM1,
+                        'NUM2' => $G_NEWNUM2,
+                        'NUM3' => $G_NEWNUM3,
+                        'NUM4' => $G_NEWNUM4,
+                        'AMBCODE' => $AMBCODE_E,
+                        'LOCATION1' => $G_NEWLOCATION1,
+                        'LOCATION2' => $G_NEWLOCATION2,
+                        'LOCATION3' => $G_NEWLOCATION3,
+                        'LOCATION4' => $G_NEWLOCATION4,
+                        'TESLIM_ALAN' => $TESLIM_ALAN ?? 0,
+                        'TEZGAH' => $TEZGAH ?? 0,
+                        'MPS_NO' => $MPS_NO ?? 0,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+
+
+                return redirect()->back()->with('success', 'Stok başarıyla geri alındı.');
+            break;
         }
     }
 
@@ -379,7 +532,7 @@ class stok_controller extends Controller
 
         $firma = trim($user->firma).'.dbo.';
 
-        $veri = DB::table($firma.'vw_stok01')->where('AMBCODE', $request->AMBCODE)->get();
+        $veri = DB::table($firma.'vw_stok01')->where('AMBCODE', $request->amb_code)->get();
 
         return $veri;
     }

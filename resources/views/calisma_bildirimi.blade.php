@@ -976,6 +976,7 @@
                       $q = DB::table($db . 'sfdc31e as e')
                               ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
                               ->leftJoin($db . 'mmps10t as M10T','M10T.JOBNO','=','e.JOBNO')
+                              ->leftJoin($db . 'pers00 as P00','P00.KOD','=','e.TO_OPERATOR')
                               ->select(
                                   'e.EVRAKNO', 'e.TARIH', 'e.ID',
                                   'e.STOK_CODE', 'e.TO_OPERATOR', 'e.OPERASYON',
@@ -983,7 +984,7 @@
                                   't.BASLANGIC_TARIHI', 't.BASLANGIC_SAATI',
                                   't.BITIS_TARIHI',    't.BITIS_SAATI',
                                   't.SURE',            'e.SF_MIKTAR',
-                                  'M10T.R_MIKTART'
+                                  'M10T.R_MIKTART', 'P00.AD AS OPR_AD'
                               );
 
                       // Stok kodu
@@ -1293,7 +1294,7 @@
                                               <td><strong>{{ $r->EVRAKNO }}</strong></td>
                                               <td>{{ $r->TARIH }}</td>
                                               <td>{{ $r->STOK_CODE }}</td>
-                                              <td>{{ $r->TO_OPERATOR }}</td>
+                                              <td>{{ $r->OPR_AD }}</td>
                                               <td>{{ $r->OPERASYON }}</td>
                                               <td>{{ $r->TO_ISMERKEZI }}</td>
                                               <td>
