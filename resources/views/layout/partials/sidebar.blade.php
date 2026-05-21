@@ -58,6 +58,9 @@
         @if (in_array('ETIKETBOL', $kullanici_read_yetkileri))
           <li><a href="etiket_bolme"><i class='bx bx-shuffle'></i>Etiket Bölme</a></li>
         @endif
+        @if (in_array('ETIKETBOL', $kullanici_read_yetkileri))
+          <li><a href="stok_yonetimi"><i class='bx bx-shuffle'></i>Stok Yönetim paneli</a></li>
+        @endif
         @if (in_array('ETKTKART', $kullanici_read_yetkileri))
           <li><a href="etiketKarti"><i class='bx bx-purchase-tag'></i>Etiket Kartı</a></li>
         @endif

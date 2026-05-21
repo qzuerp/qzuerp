@@ -11,6 +11,7 @@ class stok_controller extends Controller
 {
     public function islemler(Request $request)
     {
+        // dd($request->all());
         $kart_islemleri = $request->kart_islemleri;
 
         $user = auth::user();
@@ -51,10 +52,10 @@ class stok_controller extends Controller
         $DEP_NEWLOCATION3 = $request->DEP_NEWLOCATION3;
         $DEP_NEWLOCATION4 = $request->DEP_NEWLOCATION4;
         
-        $NEWLOCATION1 = $request->NEWLOK1;
-        $NEWLOCATION2 = $request->NEWLOK2;
-        $NEWLOCATION3 = $request->NEWLOK3;
-        $NEWLOCATION4 = $request->NEWLOK4;
+        $NEWLOCATION1 = $request->NEWLOCATION1;
+        $NEWLOCATION2 = $request->NEWLOCATION2;
+        $NEWLOCATION3 = $request->NEWLOCATION3;
+        $NEWLOCATION4 = $request->NEWLOCATION4;
 
         $NEWTEXT1 = $request->NEWTEXT1;
         $NEWTEXT2 = $request->NEWTEXT2;
@@ -77,6 +78,11 @@ class stok_controller extends Controller
                     $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, 
                     $SF_MIKTAR
                 );
+
+                if (session()->has('EKSILER')) {
+                    return redirect()->back()->with('error_stock', session('EKSILER'));
+                }
+
                 $SON_EVRAK=DB::table($firma.'stok25e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
                 $SON_ID= $SON_EVRAK->EVRAKNO;
                 
@@ -239,6 +245,18 @@ class stok_controller extends Controller
             break;
 
             case 'transfer':
+                //dd($request->all());
+                FunctionHelpers::stokKontrol(
+                    $STOK_KODU, $LOTNUMBER, $SERINO, $AMBCODE_E, 
+                    $NUM1, $NUM2, $NUM3, $NUM4, 
+                    $TEXT1, $TEXT2, $TEXT3, $TEXT4, 
+                    $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, 
+                    $SF_TOPLAM_MIKTAR
+                );
+
+                if (session()->has('EKSILER')) {
+                    return redirect()->back()->with('error_stock', session('EKSILER'));
+                }
                 //ID OLARAK DEGISECEK
                 $SON_EVRAK = DB::table($firma . 'stok26e')->select(DB::raw('MAX(CAST(EVRAKNO AS Int)) AS EVRAKNO'))->first();
                 $SON_ID = $SON_EVRAK->EVRAKNO;
@@ -262,17 +280,7 @@ class stok_controller extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
-                FunctionHelpers::stokKontrol(
-                    $STOK_KODU, $LOTNUMBER, $SERINO, $AMBCODE_E, 
-                    $NUM1, $NUM2, $NUM3, $NUM4, 
-                    $TEXT1, $TEXT2, $TEXT3, $TEXT4, 
-                    $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, 
-                    $SF_MIKTAR
-                );
-
-                if (session()->has('EKSILER')) {
-                    return redirect()->back()->with('error_stock', session('EKSILER'));
-                }
+                
 
     
                 $SF_MIKTAR_NEGATIVE = -$SF_TOPLAM_MIKTAR;
@@ -395,10 +403,10 @@ class stok_controller extends Controller
                 $G_LOCATION4 = $request->G_LOCATION4;
 
 
-                $G_NEWLOCATION1 = $request->G_NEWLOK1;
-                $G_NEWLOCATION2 = $request->G_NEWLOK2;
-                $G_NEWLOCATION3 = $request->G_NEWLOK3;
-                $G_NEWLOCATION4 = $request->G_NEWLOK4;
+                $G_NEWLOCATION1 = $request->G_NEWLOCATION1;
+                $G_NEWLOCATION2 = $request->G_NEWLOCATION2;
+                $G_NEWLOCATION3 = $request->G_NEWLOCATION3;
+                $G_NEWLOCATION4 = $request->G_NEWLOCATION4;
 
                 $G_NEWTEXT1 = $request->G_NEWTEXT1;
                 $G_NEWTEXT2 = $request->G_NEWTEXT2;
