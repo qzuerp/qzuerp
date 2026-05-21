@@ -1312,8 +1312,8 @@
                                               <td>{{ $r->BASLANGIC_SAATI }}</td>
                                               <td>{{ $r->BITIS_TARIHI }}</td>
                                               <td>{{ $r->BITIS_SAATI }}</td>
-                                              <td>{{ $r->SURE }}</td>
-                                              <td>{{ round($r->R_MIKTART,3) }}</td>
+                                              <td>{{ number_format($r->SURE,2,',','.') }}</td>
+                                              <td>{{ number_format($r->R_MIKTART,2,',','.') }}</td>
                                               <td>{{ floor($r->SF_MIKTAR) }}</td>
                                               <td>
                                                   <a class="btn btn-sm btn-primary"

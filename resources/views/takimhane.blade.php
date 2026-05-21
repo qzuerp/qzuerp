@@ -24,36 +24,8 @@
 
     $evrakno = null;
 
-    if (isset($_GET['evrakno'])) {
-        $evrakno = $_GET['evrakno'];
-    }
 
-    if (isset($_GET['ID'])) {
-        $sonID = $_GET['ID'];
-    } else {
-        $sonID = DB::table($ekranTableE)->min("id");
-    }
-
-    $kart_veri = DB::table($ekranTableE)->where('id', $sonID)->first();
-
-    $t_kart_veri = DB::table($ekranTableT . ' as t')
-        ->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
-        ->where('t.EVRAKNO', @$kart_veri->EVRAKNO)
-        ->orderBy('t.id', 'ASC')
-        ->select('t.*', 's.AD as STOK_ADI', 's.IUNIT as STOK_BIRIM')
-        ->get();
-
-    $evraklar = DB::table($ekranTableE)->orderByRaw('CAST(EVRAKNO AS Int)')->get();
-
-    if (isset($kart_veri)) {
-
-        $ilkEvrak = DB::table($ekranTableE)->min('id');
-        $sonEvrak = DB::table($ekranTableE)->max('id');
-        $sonrakiEvrak = DB::table($ekranTableE)->where('id', '>', $sonID)->min('id');
-        $oncekiEvrak = DB::table($ekranTableE)->where('id', '<', $sonID)->max('id');
-    }
-
-    $locat2_kodlar = DB::table($database . 'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
+    $location_kodlar = DB::table($database . 'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 @endphp
 
 @section('content')
@@ -475,10 +447,21 @@
                                     <div class="row">
                                         <div class="col">
                                             <label>Lok 1</label>
-                                            <input type="text" id="NEWLOCATION1" name="NEWLOCATION1" class="form-control">
+                                            <select class="form-select select2" id="NEWLOCATION1" name="NEWLOCATION1">
+                                                <option value=" ">Seç</option>
+                                                @foreach ($location_kodlar as $location)
+                                                    <option value="{{$location->LOCATION1}}">{{$location->LOCATION1}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="col">
                                             <label>Lok 2</label>
+                                            <select class="form-select select2" id="NEWLOCATION2" name="NEWLOCATION2">
+                                                <option value=" ">Seç</option>
+                                                @foreach ($location_kodlar as $location)
+                                                    <option value="{{$location->LOCATION1}}">{{$location->LOCATION1}}</option>
+                                                @endforeach
+                                            </select>
                                             <input type="text" id="NEWLOCATION2" name="NEWLOCATION2" class="form-control">
                                         </div>
                                         <div class="col">
