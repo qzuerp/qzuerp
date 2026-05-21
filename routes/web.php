@@ -21,6 +21,7 @@ use App\Http\Controllers\stok01_controller;
 use App\Http\Controllers\stok69_controller;
 use App\Http\Controllers\stok20_controller;
 use App\Http\Controllers\stok21_controller;
+use App\Http\Controllers\sayim;
 use App\Http\Controllers\stok26_controller;
 use App\Http\Controllers\stok25_controller;
 use App\Http\Controllers\bomu01_controller;
@@ -204,10 +205,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('stok21_islemler', [stok21_controller::class, 'islemler']);
     Route::post('stok21_createLocationSelect', [stok21_controller::class, 'createLocationSelect']);
 
-    // - - Stok Sayımı
-    Route::get('stokSayim', [stok21_controller::class, 'index'])->name('stokSayim');
-    Route::post('stok21_islemler', [stok21_controller::class, 'islemler']);
-    Route::post('stok21_createLocationSelect', [stok21_controller::class, 'createLocationSelect']);
+    // SYM10 - Stok Sayımı
+    Route::get('stokSayim', [sayim::class, 'index'])->name('stokSayim');
+    Route::get('mukayese', [sayim::class, 'mukayese'])->name('mukayese');
+    Route::post('sym10_islemler', [sayim::class, 'islemler']);
+    Route::post('sym10_mukayese', [sayim::class, 'mukayeseIslemler']);
 
     // Stok25 - Etiket Bölme
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');

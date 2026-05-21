@@ -1153,7 +1153,7 @@
                         M10E.SIPNO FROM ".$database." mmps10t M10T 
                         LEFT JOIN ".$database." MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO
                         LEFT JOIN ".$database." imlt01 IM01 ON IM01.KOD = M10T.R_OPERASYON 
-                        WHERE M10T.R_KAYNAKTYPE = 'I' AND M10T.R_ACIK_KAPALI IS NULL AND IM01.GK_1 = 'OPTLS'";
+                        WHERE M10T.R_KAYNAKTYPE = 'I' AND M10E.ACIK_KAPALI IS NULL AND IM01.GK_1 = 'OPTLS'";
 
                       $mmps10t_evraklar = DB::select($sql_sorgu);
 

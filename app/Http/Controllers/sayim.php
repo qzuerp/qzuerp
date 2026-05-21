@@ -5,21 +5,22 @@ use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class sayim extends Controller
 {
   public function index()
   {
-    $sonID=DB::table('stok21e')->min('id');
+    $sonID=DB::table('sym10e')->min('id');
 
-    return view('stokgiriscikis')->with('sonID', $sonID);
+    return view('stokSayim')->with('sonID', $sonID);
   }
 
   public function kartGetir(Request $request)
   {
     $id = $request->input('id');
     $firma = $request->input('firma').'.dbo.';
-    $veri=DB::table($firma.'stok21e')->where('id',$id)->first();
+    $veri=DB::table($firma.'sym10e')->where('id',$id)->first();
 
     return json_encode($veri);
   }
@@ -106,13 +107,8 @@ class sayim extends Controller
 
   }
 
-  public function yeniEvrakNo(Request $request)
-  {
-      $YENIEVRAKNO=DB::table('stok21e')->max('EVRAKNO');
-      $firma = $request->input('firma').'.dbo.';    
-      $veri=DB::table($firma.'stok21e')->find(DB::table($firma.'stok21e')->max('EVRAKNO'));
-
-      return json_encode($veri);
+  public function mukayese(Request $request) {
+    return view('mukayese');
   }
 
   public function islemler(Request $request)
@@ -125,11 +121,13 @@ class sayim extends Controller
     $AMBCODE = $request->input('AMBCODE') ?? ''; 
     $AMBCODE_E = $request->input('AMBCODE_E'); 
     $NITELIK = $request->input('NITELIK');
+    $NOT = $request->input('NOT');
     $KOD = $request->input('KOD');
     $STOK_ADI = $request->input('STOK_ADI');
     $LOTNUMBER = $request->input('LOTNUMBER');
     $SERINO = $request->input('SERINO');
     $SF_SF_UNIT = $request->input('SF_SF_UNIT');
+    $SF_MIKTAR = $request->input('SF_MIKTAR');
     $TEXT1 = $request->input('TEXT1');
     $TEXT2 = $request->input('TEXT2');
     $TEXT3 = $request->input('TEXT3');
@@ -174,7 +172,7 @@ class sayim extends Controller
         $DEPO_B = $request->input('DEPO_B');
         
 
-        return redirect()->route('stokgiriscikis', [
+        return redirect()->route('stokSayim', [
           'SUZ' => 'SUZ',
           'EVRAKNO_B' => $EVRAKNO_B, 
           'EVRAKNO_E' => $EVRAKNO_E,          
@@ -185,39 +183,37 @@ class sayim extends Controller
           'firma' => $firma
         ]);
         
-        print_r("mesaj mesaj");
-        
         break;
 
     case 'kart_sil':
       FunctionHelpers::Logla('STOK21',$EVRAKNO,'D',$TARIH);
 
-      DB::table($firma.'stok21e')->where('EVRAKNO',$EVRAKNO)->delete();
-      DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->delete();
+      DB::table($firma.'sym10e')->where('EVRAKNO',$EVRAKNO)->delete();
+      DB::table($firma.'sym10t')->where('EVRAKNO',$EVRAKNO)->delete();
 
-      DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->delete();
 
       print_r("Silme işlemi başarılı.");
 
-      $sonID=DB::table($firma.'stok21e')->min('EVRAKNO');
-      return redirect()->route('stokgiriscikis', ['ID' => $sonID, 'silme' => 'ok']);
+      $sonID=DB::table($firma.'sym10e')->min('EVRAKNO');
+      return redirect()->route('stokSayim', ['ID' => $sonID, 'silme' => 'ok']);
 
       break;
 
     case 'kart_olustur':
       
       //ID OLARAK DEGISECEK
-      $SON_EVRAK = DB::table($firma.'stok21e')->max('EVRAKNO');
+      $SON_EVRAK = DB::table($firma.'sym10e')->max('EVRAKNO');
       // dd($SON_EVRAK);
       $EVRAKNO   = $SON_EVRAK ? ((int) $SON_EVRAK + 1) : 1;
 
-      FunctionHelpers::Logla('STOK21',$EVRAKNO,'C',$TARIH);  
+      FunctionHelpers::Logla('SYM10',$EVRAKNO,'C',$TARIH);  
 
-      DB::table($firma.'stok21e')->insert([
+      DB::table($firma.'sym10e')->insert([
         'EVRAKNO' => $EVRAKNO,
         'TARIH' => $TARIH,
         'AMBCODE' => $AMBCODE_E,
         'NITELIK' => $NITELIK,
+        'NOT' => $NOT,
         'LAST_TRNUM' => $LAST_TRNUM,
         'created_at' => date('Y-m-d H:i:s'),
       ]);
@@ -234,9 +230,8 @@ class sayim extends Controller
 
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
       
-        $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
 
-        DB::table($firma.'stok21t')->insert([
+        DB::table($firma.'sym10t')->insert([
           'EVRAKNO' => $EVRAKNO,
           'SRNUM' => $i+1,
           'TRNUM' => $TRNUM[$i],
@@ -244,7 +239,7 @@ class sayim extends Controller
           'STOK_ADI' => $STOK_ADI[$i],
           'LOTNUMBER' => $LOTNUMBER[$i],
           'SERINO' => $SERINO[$i],
-          'SF_MIKTAR' => $SF_MIKTAR,
+          'SF_MIKTAR' => $SF_MIKTAR[$i],
           'SF_SF_UNIT' => $SF_SF_UNIT[$i],
           'TESLIM_ALAN' => $TESLIM_ALAN[$i],
           'TEZGAH' => $TEZGAH[$i],
@@ -264,8 +259,6 @@ class sayim extends Controller
           'LOCATION2' => $LOCATION2[$i],
           'LOCATION3' => $LOCATION3[$i],
           'LOCATION4' => $LOCATION4[$i],
-          'GIREN_MIKTAR' => $GIREN_MIKTAR[$i],
-          'CIKAN_MIKTAR' => $CIKAN_MIKTAR[$i],
           //'AKTARIM' => $AKTARIM,
           'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -273,18 +266,19 @@ class sayim extends Controller
 
       print_r("Kayıt işlemi başarılı.");
 
-      $sonID=DB::table($firma.'stok21e')->max('id');
-      return redirect()->route('stokgiriscikis', ['ID' => $sonID, 'kayit' => 'ok']);
+      $sonID=DB::table($firma.'sym10e')->max('id');
+      return redirect()->route('stokSayim', ['ID' => $sonID, 'kayit' => 'ok']);
 
     break;
 
     case 'kart_duzenle':
       FunctionHelpers::Logla('STOK21',$EVRAKNO,'W',$TARIH);
 
-      DB::table($firma.'stok21e')->where('EVRAKNO',$EVRAKNO)->update([
+      DB::table($firma.'sym10e')->where('EVRAKNO',$EVRAKNO)->update([
         'TARIH' => $TARIH,
         'AMBCODE' => $AMBCODE_E,
         'NITELIK' => $NITELIK,
+        'NOT' => $NOT,
         'LAST_TRNUM' => $LAST_TRNUM,
         'updated_at' => date('Y-m-d H:i:s'),
       ]);
@@ -297,9 +291,9 @@ class sayim extends Controller
 
       $currentTRNUMS = array();
       $liveTRNUMS = array();
-      // $currentTRNUMSObj = DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
+      // $currentTRNUMSObj = DB::table($firma.'sym10t')->where('EVRAKNO',$EVRAKNO)->select('TRNUM')->get();
 
-      $currentTRNUMSObj = DB::table($firma.'stok21t')
+      $currentTRNUMSObj = DB::table($firma.'sym10t')
       ->where("EVRAKNO", $EVRAKNO)
       ->select('TRNUM')
       ->get();
@@ -325,9 +319,6 @@ class sayim extends Controller
 
       for ($i = 0; $i < $satir_say; $i++) {
 
-        $SF_MIKTAR = $GIREN_MIKTAR[$i] ?? 0 - $CIKAN_MIKTAR[$i] ?? 0;
-        // if($i == 1)
-        //   dd($SF_MIKTAR,$GIREN_MIKTAR[$i],$CIKAN_MIKTAR[$i]);
         if ($AMBCODE[$i]== "" || $AMBCODE[$i]== null) {
             $AMBCODE_SEC = $AMBCODE_E;
         }
@@ -341,7 +332,7 @@ class sayim extends Controller
 
         if (in_array($TRNUM[$i],$newTRNUMS)) { //Yeni eklenen satirlar
 
-          DB::table($firma.'stok21t')->insert([
+          DB::table($firma.'sym10t')->insert([
             'EVRAKNO' => $EVRAKNO,
             'SRNUM' => $SRNUM,
             'TRNUM' => $TRNUM[$i],
@@ -349,7 +340,7 @@ class sayim extends Controller
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
-            'SF_MIKTAR' => $SF_MIKTAR,
+            'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'TESLIM_ALAN' => $TESLIM_ALAN[$i],
             'TEZGAH' => $TEZGAH[$i],
@@ -369,21 +360,19 @@ class sayim extends Controller
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],
             'LOCATION4' => $LOCATION4[$i],
-            'GIREN_MIKTAR' => $GIREN_MIKTAR[$i],
-            'CIKAN_MIKTAR' => $CIKAN_MIKTAR[$i],
 
             'created_at' => date('Y-m-d H:i:s'),
           ]);
         }
 
         if (in_array($TRNUM[$i],$updateTRNUMS)) { //Guncellenecek satirlar
-          DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
+          DB::table($firma.'sym10t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->update([
             'SRNUM' => $SRNUM,
             'KOD' => $KOD[$i],
             'STOK_ADI' => $STOK_ADI[$i],
             'LOTNUMBER' => $LOTNUMBER[$i],
             'SERINO' => $SERINO[$i],
-            'SF_MIKTAR' => $SF_MIKTAR,
+            'SF_MIKTAR' => $SF_MIKTAR[$i],
             'SF_SF_UNIT' => $SF_SF_UNIT[$i],
             'TESLIM_ALAN' => $TESLIM_ALAN[$i],
             'TEZGAH' => $TEZGAH[$i],
@@ -403,23 +392,21 @@ class sayim extends Controller
             'LOCATION2' => $LOCATION2[$i],
             'LOCATION3' => $LOCATION3[$i],
             'LOCATION4' => $LOCATION4[$i],
-            'GIREN_MIKTAR' => $GIREN_MIKTAR[$i],
-            'CIKAN_MIKTAR' => $CIKAN_MIKTAR[$i],
             'updated_at' => date('Y-m-d H:i:s'),
           ]);
         }
       }
 
       foreach ($deleteTRNUMS as $key => $deleteTRNUM) { //Silinecek satirlar
-        DB::table($firma.'stok21t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
-        DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->where('TRNUM',$deleteTRNUM)->delete();
+        DB::table($firma.'sym10t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUM)->delete();
+        DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'sym10t')->where('TRNUM',$deleteTRNUM)->delete();
       }
 
       print_r("Düzenleme işlemi başarılı.");
 
       
 
-      return redirect()->route('stokgiriscikis', ['ID' => $request->ID_TO_REDIRECT, 'duzenleme' => 'ok']);
+      return redirect()->route('stokSayim', ['ID' => $request->ID_TO_REDIRECT, 'duzenleme' => 'ok']);
 
       break;
 
@@ -464,10 +451,8 @@ class sayim extends Controller
             ]);
             $SERINO_ETIKET[] = $newSerial;
 
-            DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK21T')->where('TRNUM',$TRNUM[$i])->update([
-              'SERINO' => $newSerial
-            ]);
-            DB::table($firma.'stok21t')
+            
+            DB::table($firma.'sym10t')
                 ->where('EVRAKNO', $EVRAKNO)
                 ->where('TRNUM', $TRNUM[$i])
                 ->update(['SERINO' => $newSerial]);
@@ -509,7 +494,7 @@ class sayim extends Controller
           'MPS_BILGISI' => $MPS_BILGISI,
           'MIKTAR' => $SF_MIKTAR,
           'LOTNO' => $LOTNUMBER,
-          'ID' => 'stokgiriscikis?ID='.$request->ID_TO_REDIRECT
+          'ID' => 'stokSayim?ID='.$request->ID_TO_REDIRECT
         ];
         FunctionHelpers::Logla('STOK21',$EVRAKNO,'P',$TARIH);
 
@@ -519,4 +504,100 @@ class sayim extends Controller
 
   }
 
+  public function mukayeseIslemler(Request $request)
+  {
+      if (!auth()->check()) {
+          return response()->json(['error' => 'Yetkisiz erişim dayımın oğlu!'], 401);
+      }
+      
+      $u = auth()->user();
+      $firma = trim($u->firma) . '.dbo.';
+
+      $evraklar = array_filter($request->only(['MUKAYESE1', 'MUKAYESE2', 'MUKAYESE3', 'MUKAYESE4', 'MUKAYESE5']));
+
+      if (empty($evraklar)) {
+          return response()->json(['error' => 'Karşılaştırılacak evrak bulunamadı.'], 400);
+      }
+
+      $bindings = [];
+      $whereInSql = [];
+      foreach (array_values($evraklar) as $index => $evrak) {
+          $paramName = 'EVRAK' . ($index + 1);
+          $bindings[$paramName] = $evrak;
+          $whereInSql[] = ':' . $paramName;
+      }
+      $whereInString = implode(',', $whereInSql);
+
+      $sql = "
+        WITH Sayim AS ( 
+            SELECT 
+                KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
+                SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR 
+            FROM qzuerp.dbo.sym10t 
+            WHERE EVRAKNO IN (:EVRAK1) 
+            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4 
+        ), 
+        Sistem AS ( 
+            SELECT 
+                KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
+                MIKTAR AS SISTEM_MIKTAR
+            FROM qzuerp.dbo.vw_stok01 
+        ) 
+        SELECT 
+            COALESCE(S.KOD, SIS.KOD) AS KOD, 
+            COALESCE(S.LOTNUMBER, SIS.LOTNUMBER) AS LOTNUMBER, 
+            COALESCE(S.SERINO, SIS.SERINO) AS SERINO, 
+            COALESCE(S.AMBCODE, SIS.AMBCODE) AS AMBCODE, 
+            COALESCE(S.TEXT1, SIS.TEXT1) AS TEXT1, 
+            COALESCE(S.TEXT2, SIS.TEXT2) AS TEXT2, 
+            COALESCE(S.TEXT3, SIS.TEXT3) AS TEXT3, 
+            COALESCE(S.TEXT4, SIS.TEXT4) AS TEXT4, 
+            COALESCE(S.NUM1, SIS.NUM1) AS NUM1, 
+            COALESCE(S.NUM2, SIS.NUM2) AS NUM2, 
+            COALESCE(S.NUM3, SIS.NUM3) AS NUM3, 
+            COALESCE(S.NUM4, SIS.NUM4) AS NUM4, 
+            COALESCE(S.LOCATION1, SIS.LOCATION1) AS LOCATION1, 
+            COALESCE(S.LOCATION2, SIS.LOCATION2) AS LOCATION2, 
+            COALESCE(S.LOCATION3, SIS.LOCATION3) AS LOCATION3, 
+            COALESCE(S.LOCATION4, SIS.LOCATION4) AS LOCATION4, 
+            ISNULL(S.SAYILAN_MIKTAR, 0) AS SAYILAN_MIKTAR, 
+            ISNULL(SIS.SISTEM_MIKTAR, 0) AS SISTEM_MIKTAR, 
+            (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) AS FARK 
+        FROM Sayim S 
+        FULL OUTER JOIN Sistem SIS ON 
+            ISNULL(S.KOD, '') = ISNULL(SIS.KOD, '') AND 
+            ISNULL(S.LOTNUMBER, '') = ISNULL(SIS.LOTNUMBER, '') AND 
+            ISNULL(S.SERINO, '') = ISNULL(SIS.SERINO, '') AND 
+            ISNULL(S.AMBCODE, '') = ISNULL(SIS.AMBCODE, '') AND 
+            ISNULL(S.TEXT1, '') = ISNULL(SIS.TEXT1, '') AND 
+            ISNULL(S.TEXT2, '') = ISNULL(SIS.TEXT2, '') AND 
+            ISNULL(S.TEXT3, '') = ISNULL(SIS.TEXT3, '') AND 
+            ISNULL(S.TEXT4, '') = ISNULL(SIS.TEXT4, '') AND 
+            ISNULL(S.NUM1, 0) = ISNULL(SIS.NUM1, 0) AND 
+            ISNULL(S.NUM2, 0) = ISNULL(SIS.NUM2, 0) AND 
+            ISNULL(S.NUM3, 0) = ISNULL(SIS.NUM3, 0) AND 
+            ISNULL(S.NUM4, 0) = ISNULL(SIS.NUM4, 0) AND 
+            ISNULL(S.LOCATION1, '') = ISNULL(SIS.LOCATION1, '') AND 
+            ISNULL(S.LOCATION2, '') = ISNULL(SIS.LOCATION2, '') AND 
+            ISNULL(S.LOCATION3, '') = ISNULL(SIS.LOCATION3, '') AND 
+            ISNULL(S.LOCATION4, '') = ISNULL(SIS.LOCATION4, '') 
+        WHERE (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) <> 0
+      ";
+
+      $mukayeseSonucu = DB::select($sql, $bindings);
+
+      // 4. Durum Etiketlerini Ekle ve Gönder
+      $sonuc = array_map(function($satir) {
+          $fark = (float)$satir->FARK;
+          if ($fark == 0) { $durum = 'Eşit'; }
+          elseif ($fark > 0) { $durum = 'Fazla (Sistemde Eksik)'; }
+          else { $durum = 'Eksik (Sistemde Fazla)'; }
+          
+          $satir->DURUM = $durum;
+          return $satir;
+      }, $mukayeseSonucu);
+
+      dd($sonuc);
+      return response()->json($sonuc);
+  }
 }

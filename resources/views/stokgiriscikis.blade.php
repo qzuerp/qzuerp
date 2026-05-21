@@ -64,7 +64,7 @@
 			display: block !important;
 		}
   </style>
-  <div class="content-wrapper" bgcolor='yellow'>
+  <div class="content-wrapper" >
 
     @include('layout.util.evrakContentHeader')
 		@include('layout.util.logModal',['EVRAKTYPE' => 'STOK21','EVRAKNO'=>@$kart_veri->EVRAKNO])

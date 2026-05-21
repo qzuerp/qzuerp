@@ -67,7 +67,7 @@
 
 @section('content')
 
-  <div class="content-wrapper" bgcolor='yellow'>
+  <div class="content-wrapper" >
     @include('layout.util.evrakContentHeader')
     @include('layout.util.logModal',['EVRAKTYPE' => 'STOK60','EVRAKNO'=>@$kart_veri->EVRAKNO])
 

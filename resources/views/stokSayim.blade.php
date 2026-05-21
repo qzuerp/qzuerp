@@ -12,8 +12,8 @@
   $ekranRumuz = "STOK21";
   $ekranAdi = "Stok Sayımı";
   $ekranLink = "stokSayim";
-  $ekranTableE = $database."stok21e";
-  $ekranTableT = $database."stok21t";
+  $ekranTableE = $database."sym10e";
+  $ekranTableT = $database."sym10t";
   $ekranKayitSatirKontrol = "true";
 
 
@@ -57,20 +57,14 @@
 @endphp
 
 @section('content')
-  <style>
-		#yazdir
-		{
-			display: block !important;
-		}
-  </style>
-  <div class="content-wrapper" bgcolor='yellow'>
+  <div class="content-wrapper" >
 
     @include('layout.util.evrakContentHeader')
-		@include('layout.util.logModal',['EVRAKTYPE' => 'STOK21','EVRAKNO'=>@$kart_veri->EVRAKNO])
+		@include('layout.util.logModal',['EVRAKTYPE' => 'SYM10','EVRAKNO'=>@$kart_veri->EVRAKNO])
 
     <section class="content">
 
-      <form method="POST" action="stok21_islemler" method="POST" name="verilerForm" id="verilerForm">
+      <form method="POST" action="sym10_islemler" method="POST" name="verilerForm" id="verilerForm">
         @csrf
         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
         <div class="row">
@@ -165,6 +159,11 @@
                         @endphp
                       </select>
                     </div>
+
+                    <div class="col">
+                      <label>Not</label>
+                      <input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NOT" class="form-control " maxlength="255" name="NOT" id="NOT"  value="{{ @$kart_veri->NOT }}">
+                    </div>
                   </div>
 
                 </div>
@@ -196,8 +195,7 @@
                           <th style="min-width:150px">Stok Adı</th>
                           <th style="min-width:150px">Lot No</th>
                           <th style="min-width:150px">Seri No</th>
-                          <th style="min-width:150px">Giren Mik.</th>
-                          <th style="min-width:150px">Çıkan Mik.</th>
+                          <th style="min-width:150px">Miktar</th>
                           <!-- <th style="min-width:150px">İşlem Mik.</th> -->
                           <th style="min-width:150px">İşlem Br.</th>
                           <th style="min-width:150px">Depo</th>
@@ -246,10 +244,7 @@
                             <input maxlength="20" style="color: red" type="text" name="SERINO_FILL" id="SERINO_FILL" disabled placeholder="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SERINO" class="SERINO form-control">
                           </td>
                           <td>
-                            <input maxlength="28" style="color: red" type="number" name="GIREN_MIKTAR_FILL" data-name="GIREN_MIKTAR" id="GIREN_MIKTAR_FILL" onchange ="girenMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GIREN_MIKTAR" class="GIREN_MIKTAR form-control">
-                          </td>
-                          <td>
-                            <input maxlength="28" style="color: red" type="number" name="CIKAN_MIKTAR_FILL" data-name="CIKAN_MIKTAR" id="CIKAN_MIKTAR_FILL" onchange ="cikanMiktarAction(this.value)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CIKAN_MIKTAR" class="CIKAN_MIKTAR form-control">
+                            <input maxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" id="SF_MIKTAR_FILL"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                           </td>
                           <!-- <td>
                             <input maxlength="28" style="color: red" type="hidden" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control">
@@ -434,8 +429,7 @@
                                 </button>
                               </span>
                             </td>
-                            <td><input type="text" class="form-control GIREN_MIKTAR" name="GIREN_MIKTAR[]" value="{{ $veri->GIREN_MIKTAR }}"></td>
-                            <td><input type="text" class="form-control CIKAN_MIKTAR" name="CIKAN_MIKTAR[]" value="{{ $veri->CIKAN_MIKTAR }}" readonly></td>
+                            <td><input type="text" class="form-control SF_MIKTAR" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
                             <!-- <td><input type="number" class="form-control" name="SF_MIKTAR_SHOW_T" value="{{ $veri->SF_MIKTAR }}" disabled><input type="hidden" class="form-control" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td> -->
                             <td><input type="text" class="form-control SF_SF_UNIT" name="SF_SF_UNIT_SHOW_T" value="{{ $veri->SF_SF_UNIT }}" disabled><input type="hidden" class="form-control" name="SF_SF_UNIT[]" value="{{ $veri->SF_SF_UNIT }}"></td>
                             <td><input type="text" class="form-control AMBCODE" id='depo-{{ $veri->id }}-CAM' name="AMBCODE_SHOW_T" value="{{ $veri->AMBCODE }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="AMBCODE[]" value="{{ $veri->AMBCODE }}"></td>
@@ -667,27 +661,27 @@
 
 
                           $sql_sorgu = 
-                            'SELECT S21E.TARIH, S21T.* FROM ' . $database . 'stok21t S21T 
-                            LEFT JOIN stok21E S21E ON S21E.EVRAKNO = S21T.EVRAKNO
+                            'SELECT S10E.TARIH, S10T.* FROM ' . $database . 'sym10t S10T 
+                            LEFT JOIN sym10e S10E ON S10E.EVRAKNO = S10T.EVRAKNO
                             WHERE 1 = 1 ';
 
                           if(Trim($KOD_B) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21T.KOD >= '".$KOD_B."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10T.KOD >= '".$KOD_B."' ";
                           }
                           if(Trim($KOD_E) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21T.KOD <= '".$KOD_E."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10T.KOD <= '".$KOD_E."' ";
                           }
                           if(Trim($DEPO_B) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21T.AMBCODE >= '".$DEPO_B."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10T.AMBCODE >= '".$DEPO_B."' ";
                           }
                           if(Trim($DEPO_E) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21T.AMBCODE <= '".$DEPO_E."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10T.AMBCODE <= '".$DEPO_E."' ";
                           }
                           if(Trim($TARIH_B) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21E.TARIH >= '".$TARIH_B."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10E.TARIH >= '".$TARIH_B."' ";
                           }
                           if(Trim($TARIH_E) <> ''){
-                            $sql_sorgu = $sql_sorgu .  "AND S21E.TARIH <= '".$TARIH_E."' ";
+                            $sql_sorgu = $sql_sorgu .  "AND S10E.TARIH <= '".$TARIH_E."' ";
                           }
                           $table = DB::select($sql_sorgu);
 
@@ -1145,9 +1139,8 @@
           "</button>" +
           "</span>" +
           "</td>";
-        htmlCode += " <td><input type='text' class='form-control' name='GIREN_MIKTAR[]' value='"+satirEkleInputs.GIREN_MIKTAR_FILL+"'></td> ";
-        htmlCode += " <td><input type='text' class='form-control' name='CIKAN_MIKTAR[]' value='"+satirEkleInputs.CIKAN_MIKTAR_FILL+"'></td> ";
-      	// htmlCode += " <td><input type='text' readonly class='form-control' name='SF_MIKTAR[]' value='"+sf_miktar+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+              	// htmlCode += " <td><input type='text' readonly class='form-control' name='SF_MIKTAR[]' value='"+sf_miktar+"'></td> ";
     		htmlCode += " <td><input type='text' id='birim-"+TRNUM_FILL+"' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' readonly></td> ";
         htmlCode += " <td><input type='text' id='depo-"+TRNUM_FILL+"' class='form-control' name='AMBCODE[]' value='"+satirEkleInputs.AMBCODE_FILL+"' style='color:blue;' readonly></td> ";
         htmlCode += " <td><input type='text' id='lok1-"+TRNUM_FILL+"' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOCATION1_FILL+"' style='color:blue;' readonly></td> ";
