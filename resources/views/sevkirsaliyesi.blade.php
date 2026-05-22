@@ -1398,24 +1398,24 @@
       });
     }
 
-    $(document).on("change", "#SIP_NO_SEC", function() {
-        var secilenEvrak = $(this).val();
-        var htmlCode = "";
+    // $(document).on("change", "#SIP_NO_SEC", function() {
+    //     var secilenEvrak = $(this).val();
+    //     var htmlCode = "";
 
-        $.each(allData, function(index, row) {
-            if (row.EVRAKNO === secilenEvrak) {
-                htmlCode += "<tr>";
-                htmlCode += "<td>"+(row.EVRAKNO ?? '')+"</td>";
-                htmlCode += "<td>"+(row.TARIH ?? '')+"</td>";
-                htmlCode += "<td>"+(row.CARIHESAPCODE ?? '')+"</td>";
-                htmlCode += "</tr>";
-            }
-        });
+    //     $.each(allData, function(index, row) {
+    //         if (row.EVRAKNO === secilenEvrak) {
+    //             htmlCode += "<tr>";
+    //             htmlCode += "<td>"+(row.EVRAKNO ?? '')+"</td>";
+    //             htmlCode += "<td>"+(row.TARIH ?? '')+"</td>";
+    //             htmlCode += "<td>"+(row.CARIHESAPCODE ?? '')+"</td>";
+    //             htmlCode += "</tr>";
+    //         }
+    //     });
 
-        // $("#popupSelect2").DataTable().clear().destroy();
-        // $("#popupSelect2 > tbody").html(htmlCode);
-        // $("#popupSelect2").DataTable();
-    });
+    //     $("#popupSelect2").DataTable().clear().destroy();
+    //     $("#popupSelect2 > tbody").html(htmlCode);
+    //     $("#popupSelect2").DataTable();
+    // });
   </script>
   <script>
     
