@@ -527,58 +527,69 @@ class sayim extends Controller
       $whereInString = implode(',', $whereInSql);
 
       $sql = "
-        WITH Sayim AS ( 
+        WITH EvrakAmbar AS (
+            SELECT DISTINCT EVRAKNO, AMBCODE 
+            FROM {$firma}sym10e
+            WHERE EVRAKNO IN ({$whereInString})
+        ),
+        Sayim AS ( 
             SELECT 
-                KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
-                SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR 
-            FROM ".$firma."sym10t 
-            WHERE EVRAKNO IN (:EVRAK1) 
-            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4 
+                KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1,
+                TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
+                SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR
+            FROM {$firma}sym10t 
+            WHERE EVRAKNO IN (SELECT EVRAKNO FROM EvrakAmbar)
+            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
         ), 
         Sistem AS ( 
             SELECT 
-                KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
-                MIKTAR AS SISTEM_MIKTAR
-            FROM ".$firma."vw_stok01 
+                KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1,
+                TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
+                SUM(MIKTAR) AS SISTEM_MIKTAR
+            FROM {$firma}vw_stok01 
+            WHERE AMBCODE IN (SELECT AMBCODE FROM EvrakAmbar)
+            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
         ) 
+
         SELECT 
             COALESCE(S.KOD, SIS.KOD) AS KOD, 
-            COALESCE(S.LOTNUMBER, SIS.LOTNUMBER) AS LOTNUMBER, 
-            COALESCE(S.SERINO, SIS.SERINO) AS SERINO, 
             COALESCE(S.AMBCODE, SIS.AMBCODE) AS AMBCODE, 
-            COALESCE(S.TEXT1, SIS.TEXT1) AS TEXT1, 
-            COALESCE(S.TEXT2, SIS.TEXT2) AS TEXT2, 
-            COALESCE(S.TEXT3, SIS.TEXT3) AS TEXT3, 
-            COALESCE(S.TEXT4, SIS.TEXT4) AS TEXT4, 
-            COALESCE(S.NUM1, SIS.NUM1) AS NUM1, 
-            COALESCE(S.NUM2, SIS.NUM2) AS NUM2, 
-            COALESCE(S.NUM3, SIS.NUM3) AS NUM3, 
-            COALESCE(S.NUM4, SIS.NUM4) AS NUM4, 
-            COALESCE(S.LOCATION1, SIS.LOCATION1) AS LOCATION1, 
-            COALESCE(S.LOCATION2, SIS.LOCATION2) AS LOCATION2, 
-            COALESCE(S.LOCATION3, SIS.LOCATION3) AS LOCATION3, 
-            COALESCE(S.LOCATION4, SIS.LOCATION4) AS LOCATION4, 
+            
+            S.LOTNUMBER AS LOTNUMBER, 
+            S.SERINO AS SERINO, 
+            S.LOCATION1 AS LOCATION1, 
+            S.TEXT1 AS TEXT1, 
+            S.TEXT2 AS TEXT2, 
+            S.TEXT3 AS TEXT3, 
+            S.TEXT4 AS TEXT4, 
+            S.NUM1 AS NUM1, 
+            S.NUM2 AS NUM2, 
+            S.NUM3 AS NUM3, 
+            S.NUM4 AS NUM4, 
+            
+            SIS.LOTNUMBER AS OLD_LOTNUMBER, 
+            SIS.SERINO AS OLD_SERINO, 
+            SIS.LOCATION1 AS OLD_LOCATION1, 
+            SIS.TEXT1 AS OLD_TEXT1, 
+            SIS.TEXT2 AS OLD_TEXT2, 
+            SIS.TEXT3 AS OLD_TEXT3, 
+            SIS.TEXT4 AS OLD_TEXT4, 
+            SIS.NUM1 AS OLD_NUM1, 
+            SIS.NUM2 AS OLD_NUM2, 
+            SIS.NUM3 AS OLD_NUM3, 
+            SIS.NUM4 AS OLD_NUM4, 
+            
+            
             ISNULL(S.SAYILAN_MIKTAR, 0) AS SAYILAN_MIKTAR, 
             ISNULL(SIS.SISTEM_MIKTAR, 0) AS SISTEM_MIKTAR, 
             (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) AS FARK 
         FROM Sayim S 
         FULL OUTER JOIN Sistem SIS ON 
-            ISNULL(S.KOD, '') = ISNULL(SIS.KOD, '') AND 
-            ISNULL(S.LOTNUMBER, '') = ISNULL(SIS.LOTNUMBER, '') AND 
-            ISNULL(S.SERINO, '') = ISNULL(SIS.SERINO, '') AND 
-            ISNULL(S.AMBCODE, '') = ISNULL(SIS.AMBCODE, '') AND 
-            ISNULL(S.TEXT1, '') = ISNULL(SIS.TEXT1, '') AND 
-            ISNULL(S.TEXT2, '') = ISNULL(SIS.TEXT2, '') AND 
-            ISNULL(S.TEXT3, '') = ISNULL(SIS.TEXT3, '') AND 
-            ISNULL(S.TEXT4, '') = ISNULL(SIS.TEXT4, '') AND 
-            ISNULL(S.NUM1, 0) = ISNULL(SIS.NUM1, 0) AND 
-            ISNULL(S.NUM2, 0) = ISNULL(SIS.NUM2, 0) AND 
-            ISNULL(S.NUM3, 0) = ISNULL(SIS.NUM3, 0) AND 
-            ISNULL(S.NUM4, 0) = ISNULL(SIS.NUM4, 0) AND 
-            ISNULL(S.LOCATION1, '') = ISNULL(SIS.LOCATION1, '') AND 
-            ISNULL(S.LOCATION2, '') = ISNULL(SIS.LOCATION2, '') AND 
-            ISNULL(S.LOCATION3, '') = ISNULL(SIS.LOCATION3, '') AND 
-            ISNULL(S.LOCATION4, '') = ISNULL(SIS.LOCATION4, '') 
+            ISNULL(S.KOD, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.KOD, '') COLLATE DATABASE_DEFAULT AND 
+            ISNULL(S.LOTNUMBER, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.LOTNUMBER, '') COLLATE DATABASE_DEFAULT AND 
+            ISNULL(S.SERINO, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.SERINO, '') COLLATE DATABASE_DEFAULT AND
+            ISNULL(S.AMBCODE, 0) = ISNULL(SIS.AMBCODE, 0)  
+            
         WHERE (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) <> 0
       ";
 
@@ -595,7 +606,6 @@ class sayim extends Controller
           return $satir;
       }, $mukayeseSonucu);
 
-      dd($sonuc);
       return response()->json($sonuc);
   }
 }
