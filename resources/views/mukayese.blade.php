@@ -424,17 +424,25 @@
                 <tr>
                   <th>Ürün Kodu</th>
                   <th>Depo</th>
-                  <th>S. Lot No</th><th>S. Seri No</th><th>S. Lokasyon</th>
+                  <th>S. Lot No</th><th>S. Seri No</th>
+                  <th>S. Lokasyon 1</th>
+                  <th>S. Lokasyon 2</th>
+                  <th>S. Lokasyon 3</th>
+                  <th>S. Lokasyon 4</th>
                   <th>S. Text1</th><th>S. Text2</th><th>S. Text3</th><th>S. Text4</th>
                   <th>S. Num1</th><th>S. Num2</th><th>S. Num3</th><th>S. Num4</th>
-                  <th>SYS Lot No</th><th>SYS Seri No</th><th>SYS Lokasyon</th>
+                  <th>SYS Lot No</th><th>SYS Seri No</th>
+                  <th>SYS Lokasyon 1</th>
+                  <th>SYS Lokasyon 2</th>
+                  <th>SYS Lokasyon 3</th>
+                  <th>SYS Lokasyon 4</th>
                   <th>SYS Text1</th><th>SYS Text2</th><th>SYS Text3</th><th>SYS Text4</th>
                   <th>SYS Num1</th><th>SYS Num2</th><th>SYS Num3</th><th>SYS Num4</th>
                   <th>Sayım Mik.</th><th>Sistem Mik.</th><th>Fark</th>
                 </tr>
               </thead>
               <tfoot>
-                <tr>@for($i=0;$i<27;$i++)<th></th>@endfor</tr>
+                <tr>@for($i=0;$i<33;$i++)<th></th>@endfor</tr>
               </tfoot>
               <tbody></tbody>
             </table>
@@ -465,10 +473,18 @@ $(document).ready(function () {
     columns: [
       { data: 'KOD'            },
       { data: 'AMBCODE'        },
-      { data: 'LOTNUMBER'      }, { data: 'SERINO' }, { data: 'LOCATION1' },
+      { data: 'LOTNUMBER'      }, { data: 'SERINO' }, 
+      { data: 'LOCATION1' },
+      { data: 'LOCATION2' },
+      { data: 'LOCATION3' },
+      { data: 'LOCATION4' },
       { data: 'TEXT1' }, { data: 'TEXT2' }, { data: 'TEXT3' }, { data: 'TEXT4' },
       { data: 'NUM1'  }, { data: 'NUM2'  }, { data: 'NUM3'  }, { data: 'NUM4'  },
-      { data: 'OLD_LOTNUMBER'  }, { data: 'OLD_SERINO' }, { data: 'OLD_LOCATION1' },
+      { data: 'OLD_LOTNUMBER'  }, { data: 'OLD_SERINO' }, 
+      { data: 'OLD_LOCATION1' },
+      { data: 'OLD_LOCATION2' },
+      { data: 'OLD_LOCATION3' },
+      { data: 'OLD_LOCATION4' },
       { data: 'OLD_TEXT1' }, { data: 'OLD_TEXT2' }, { data: 'OLD_TEXT3' }, { data: 'OLD_TEXT4' },
       { data: 'OLD_NUM1'  }, { data: 'OLD_NUM2'  }, { data: 'OLD_NUM3'  }, { data: 'OLD_NUM4'  },
       { data: 'SAYILAN_MIKTAR' },
@@ -521,11 +537,9 @@ $(document).ready(function () {
     } else if (tamam) {
       pct = 100; renk = '#22c55e'; durum = '✓ Tam Doğru';
     } else {
-      /* Toplam fark satırı = hatalı kayıt sayısı
-         Burada yüzdeyi: (neg+pos) ne kadar büyükse o kadar kötü
-         Eğer backend toplam sayıyı dönmüyorsa en açık ifade:
-         "hatalı satır var" → %0 */
-      pct = 0; renk = '#ef4444'; durum = '✗ Uyuşmazlık Var';
+        hataOran = Math.abs((neg - pos) / data.length * 100)
+        pct      = Math.round(hataOran);
+        renk = '#ef4444'; durum = '✗ Uyuşmazlık Var';
     }
 
     /* Ring animasyonu */
@@ -585,19 +599,15 @@ $(document).ready(function () {
     });
   });
 
-  /* EKSİLERİ DÜZENLE (FARK < 0) */
   $('#btnEksiler').on('click', function() {
-    var filtreli = tumVeri.filter(function(r){ return parseFloat(r.FARK) < 0; });
-    backendGonder(filtreli, 'eksiler');
+    backendGonder(tumVeri, 'eksiler');
   });
 
-  /* ARTILARI DÜZENLE (FARK > 0) */
   $('#btnArtilar').on('click', function() {
     var filtreli = tumVeri.filter(function(r){ return parseFloat(r.FARK) > 0; });
     backendGonder(filtreli, 'artilar');
   });
 
-  /* Backend'e gönder */
   function backendGonder(data, tip) {
     if (!data.length) { alert('Gönderilecek satır bulunamadı.'); return; }
     $.ajax({

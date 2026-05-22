@@ -210,6 +210,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('mukayese', [sayim::class, 'mukayese'])->name('mukayese');
     Route::post('sym10_islemler', [sayim::class, 'islemler']);
     Route::post('sym10_mukayese', [sayim::class, 'mukayeseIslemler']);
+    Route::post('sym10_mukayese_duzenle', [sayim::class, 'mukayeseDuzenle']);
 
     // Stok25 - Etiket Bölme
     Route::get('etiket_bolme', [stok25_controller::class, 'index'])->name('etiket_bolme');

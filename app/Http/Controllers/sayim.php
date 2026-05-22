@@ -534,52 +534,48 @@ class sayim extends Controller
         ),
         Sayim AS ( 
             SELECT 
-                KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1,
+                KOD, LOTNUMBER, SERINO, AMBCODE, 
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
+                -- LOKASYONLARI MAX() İLE ÇEKİYORUZ, SATIRI BÖLMESİNİ ENGELLİYORUZ!
+                STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
+                STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
                 SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR
             FROM {$firma}sym10t 
             WHERE EVRAKNO IN (SELECT EVRAKNO FROM EvrakAmbar)
-            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
+            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
         ), 
         Sistem AS ( 
             SELECT 
-                KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1,
+                KOD, LOTNUMBER, SERINO, AMBCODE, 
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
+                -- SİSTEM İÇİN DE AYNI TAKTİK!
+                STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
+                STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
                 SUM(MIKTAR) AS SISTEM_MIKTAR
             FROM {$firma}vw_stok01 
             WHERE AMBCODE IN (SELECT AMBCODE FROM EvrakAmbar)
-            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, LOCATION1, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
+            GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
         ) 
-
+      
         SELECT 
             COALESCE(S.KOD, SIS.KOD) AS KOD, 
             COALESCE(S.AMBCODE, SIS.AMBCODE) AS AMBCODE, 
             
+            -- SAYIM VERİLERİ 
             S.LOTNUMBER AS LOTNUMBER, 
             S.SERINO AS SERINO, 
-            S.LOCATION1 AS LOCATION1, 
-            S.TEXT1 AS TEXT1, 
-            S.TEXT2 AS TEXT2, 
-            S.TEXT3 AS TEXT3, 
-            S.TEXT4 AS TEXT4, 
-            S.NUM1 AS NUM1, 
-            S.NUM2 AS NUM2, 
-            S.NUM3 AS NUM3, 
-            S.NUM4 AS NUM4, 
+            S.LOCATION1 AS LOCATION1, S.LOCATION2 AS LOCATION2, S.LOCATION3 AS LOCATION3, S.LOCATION4 AS LOCATION4, 
+            S.TEXT1 AS TEXT1, S.TEXT2 AS TEXT2, S.TEXT3 AS TEXT3, S.TEXT4 AS TEXT4, 
+            S.NUM1 AS NUM1, S.NUM2 AS NUM2, S.NUM3 AS NUM3, S.NUM4 AS NUM4, 
             
+            -- SİSTEM VERİLERİ
             SIS.LOTNUMBER AS OLD_LOTNUMBER, 
             SIS.SERINO AS OLD_SERINO, 
-            SIS.LOCATION1 AS OLD_LOCATION1, 
-            SIS.TEXT1 AS OLD_TEXT1, 
-            SIS.TEXT2 AS OLD_TEXT2, 
-            SIS.TEXT3 AS OLD_TEXT3, 
-            SIS.TEXT4 AS OLD_TEXT4, 
-            SIS.NUM1 AS OLD_NUM1, 
-            SIS.NUM2 AS OLD_NUM2, 
-            SIS.NUM3 AS OLD_NUM3, 
-            SIS.NUM4 AS OLD_NUM4, 
+            SIS.LOCATION1 AS OLD_LOCATION1, SIS.LOCATION2 AS OLD_LOCATION2, SIS.LOCATION3 AS OLD_LOCATION3, SIS.LOCATION4 AS OLD_LOCATION4, 
+            SIS.TEXT1 AS OLD_TEXT1, SIS.TEXT2 AS OLD_TEXT2, SIS.TEXT3 AS OLD_TEXT3, SIS.TEXT4 AS OLD_TEXT4, 
+            SIS.NUM1 AS OLD_NUM1, SIS.NUM2 AS OLD_NUM2, SIS.NUM3 AS OLD_NUM3, SIS.NUM4 AS OLD_NUM4, 
             
-            
+            -- MİKTARLAR VE HESAPLANAN FARK
             ISNULL(S.SAYILAN_MIKTAR, 0) AS SAYILAN_MIKTAR, 
             ISNULL(SIS.SISTEM_MIKTAR, 0) AS SISTEM_MIKTAR, 
             (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) AS FARK 
@@ -588,8 +584,15 @@ class sayim extends Controller
             ISNULL(S.KOD, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.KOD, '') COLLATE DATABASE_DEFAULT AND 
             ISNULL(S.LOTNUMBER, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.LOTNUMBER, '') COLLATE DATABASE_DEFAULT AND 
             ISNULL(S.SERINO, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.SERINO, '') COLLATE DATABASE_DEFAULT AND
-            ISNULL(S.TEXT1, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.TEXT1, '') COLLATE DATABASE_DEFAULT 
-            
+            ISNULL(S.AMBCODE, 0) = ISNULL(SIS.AMBCODE, 0) AND
+            ISNULL(S.TEXT1, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.TEXT1, '') COLLATE DATABASE_DEFAULT AND
+            ISNULL(S.TEXT2, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.TEXT2, '') COLLATE DATABASE_DEFAULT AND
+            ISNULL(S.TEXT3, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.TEXT3, '') COLLATE DATABASE_DEFAULT AND
+            ISNULL(S.TEXT4, '') COLLATE DATABASE_DEFAULT = ISNULL(SIS.TEXT4, '') COLLATE DATABASE_DEFAULT AND
+            ISNULL(S.NUM1, 0) = ISNULL(SIS.NUM1, 0) AND
+            ISNULL(S.NUM2, 0) = ISNULL(SIS.NUM2, 0) AND
+            ISNULL(S.NUM3, 0) = ISNULL(SIS.NUM3, 0) AND
+            ISNULL(S.NUM4, 0) = ISNULL(SIS.NUM4, 0)
         WHERE (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) <> 0
       ";
 
@@ -607,5 +610,24 @@ class sayim extends Controller
       }, $mukayeseSonucu);
 
       return response()->json($sonuc);
+  }
+
+  public function mukayeseDuzenle(Request $request)
+  {
+    $u = auth()->user();
+    $firma = trim($u->firma) . '.dbo.';
+
+    $tip = $request->tip;
+    $satirlar = $request->satirlar;
+
+    $EVRAKNO = DB::table($firma.'stok21e')->value('EVRAKNO');
+
+    $ARTIEVRAK = (int)$EVRAKNO + 1;
+    $EKSIEVRAKNO = (int)$EVRAKNO + 2;
+
+    foreach($satirlar as $satir)
+    {
+      DB::table($firma.'stok21')
+    }
   }
 }
