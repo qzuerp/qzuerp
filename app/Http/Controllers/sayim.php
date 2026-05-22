@@ -11,7 +11,7 @@ class sayim extends Controller
 {
   public function index()
   {
-    return view('stokSayim')->with('sonID');
+    return view('stokSayim');
   }
 
   public function kartGetir(Request $request)
