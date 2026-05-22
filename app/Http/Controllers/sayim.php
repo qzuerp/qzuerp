@@ -531,7 +531,7 @@ class sayim extends Controller
             SELECT 
                 KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
                 SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR 
-            FROM qzuerp.dbo.sym10t 
+            FROM ".$firma."sym10t 
             WHERE EVRAKNO IN (:EVRAK1) 
             GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4 
         ), 
@@ -539,7 +539,7 @@ class sayim extends Controller
             SELECT 
                 KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4, LOCATION1, LOCATION2, LOCATION3, LOCATION4,
                 MIKTAR AS SISTEM_MIKTAR
-            FROM qzuerp.dbo.vw_stok01 
+            FROM ".$firma."vw_stok01 
         ) 
         SELECT 
             COALESCE(S.KOD, SIS.KOD) AS KOD, 
