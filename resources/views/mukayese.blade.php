@@ -7,7 +7,7 @@
 
   $ekran              = "STKSYM";
   $ekranRumuz         = "STOK21";
-  $ekranAdi           = "Stok Sayımı";
+  $ekranAdi           = "Stok Mukayesesi";
   $ekranLink          = "stokSayim";
   $ekranTableE        = $database."sym10e";
   $ekranTableT        = $database."sym10t";
@@ -153,28 +153,52 @@
 
   /* ── Stats bar ───────────────────────────── */
   .muk-stats {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
   }
+  @media(max-width:900px){ .muk-stats { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:500px){ .muk-stats { grid-template-columns: 1fr; } }
+
   .muk-stat {
     background: #fff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 12px 20px;
-    min-width: 130px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    border-radius: 12px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
   }
-  .muk-stat-val { font-size: 26px; font-weight: 700; line-height: 1; }
-  .muk-stat-lbl { font-size: 10.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: #94a3b8; margin-top: 4px; }
+  .muk-stat-val { font-size: 30px; font-weight: 700; line-height: 1; }
+  .muk-stat-lbl { font-size: 10.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: #94a3b8; margin-top: 5px; }
 
-  .muk-stat-all   { border-top: 3px solid #64748b; }
-  .muk-stat-all   .muk-stat-val { color: #1e293b; }
-  .muk-stat-neg   { border-top: 3px solid #dc2626; }
-  .muk-stat-neg   .muk-stat-val { color: #dc2626; }
-  .muk-stat-pos   { border-top: 3px solid #d97706; }
-  .muk-stat-pos   .muk-stat-val { color: #d97706; }
+  .muk-stat-all { border-top: 3px solid #64748b; }
+  .muk-stat-all .muk-stat-val { color: #1e293b; }
+  .muk-stat-neg { border-top: 3px solid #dc2626; }
+  .muk-stat-neg .muk-stat-val { color: #dc2626; }
+  .muk-stat-pos { border-top: 3px solid #d97706; }
+  .muk-stat-pos .muk-stat-val { color: #d97706; }
+
+  /* Doğruluk kartı */
+  .muk-stat-acc { border-top: 3px solid #e2e8f0; padding: 14px 20px; }
+  .muk-stat-acc-inner { display: flex; align-items: center; gap: 16px; }
+
+  .muk-ring-wrap { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+  .muk-ring-wrap svg { transform: rotate(-90deg); }
+  .muk-ring-bg   { fill: none; stroke: #f1f5f9; stroke-width: 6; }
+  .muk-ring-fill { fill: none; stroke-width: 6; stroke-linecap: round;
+                   transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1), stroke .4s; }
+  .muk-ring-pct  {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #1e293b;
+    transform: rotate(0deg); /* counter-rotate back */
+  }
+
+  .muk-acc-info {}
+  .muk-acc-val   { font-size: 24px; font-weight: 700; line-height: 1; }
+  .muk-acc-state { font-size: 11px; font-weight: 600; margin-top: 3px; letter-spacing: .3px; }
+  .muk-acc-lbl   { font-size: 10.5px; font-weight: 600; letter-spacing: .8px;
+                   text-transform: uppercase; color: #94a3b8; margin-top: 4px; }
 
   /* ── Result card ─────────────────────────── */
   .muk-result-card {
@@ -348,18 +372,43 @@
 
         {{-- ── İSTATİSTİKLER ───────────────────── --}}
         <div class="muk-stats" id="statsBar" style="display:none">
+
           <div class="muk-stat muk-stat-all">
             <div class="muk-stat-val" id="statTotal">0</div>
             <div class="muk-stat-lbl">Toplam Satır</div>
           </div>
+
           <div class="muk-stat muk-stat-neg">
             <div class="muk-stat-val" id="statNeg">0</div>
             <div class="muk-stat-lbl">Eksik (Fark &lt; 0)</div>
           </div>
+
           <div class="muk-stat muk-stat-pos">
             <div class="muk-stat-val" id="statPos">0</div>
             <div class="muk-stat-lbl">Fazla (Fark &gt; 0)</div>
           </div>
+
+          {{-- Doğruluk Oranı --}}
+          <div class="muk-stat muk-stat-acc" id="statAccCard">
+            <div class="muk-stat-acc-inner">
+              <div class="muk-ring-wrap">
+                <svg viewBox="0 0 64 64" width="64" height="64">
+                  <circle class="muk-ring-bg"   cx="32" cy="32" r="28"/>
+                  <circle class="muk-ring-fill" id="ringFill" cx="32" cy="32" r="28"
+                    stroke="#22c55e"
+                    stroke-dasharray="175.93"
+                    stroke-dashoffset="175.93"/>
+                </svg>
+                <div class="muk-ring-pct" id="ringPct">–</div>
+              </div>
+              <div class="muk-acc-info">
+                <div class="muk-acc-val" id="accVal">–</div>
+                <div class="muk-acc-state" id="accState" style="color:#94a3b8">Bekleniyor</div>
+                <div class="muk-acc-lbl">Doğruluk Oranı</div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {{-- ── SONUÇ TABLOSU ────────────────────── --}}
@@ -456,9 +505,41 @@ $(document).ready(function () {
   function istatistikGuncelle(data) {
     var neg = data.filter(function(r){ return parseFloat(r.FARK) < 0; }).length;
     var pos = data.filter(function(r){ return parseFloat(r.FARK) > 0; }).length;
+
     $('#statTotal').text(data.length);
     $('#statNeg').text(neg);
     $('#statPos').text(pos);
+
+    /* Doğruluk oranı hesapla */
+    var tamam    = (neg === 0 && pos === 0);
+    var circumf  = 175.93; /* 2 * π * r = 2 * 3.14159 * 28 */
+    var pct, renk, durum;
+
+    if (data.length === 0) {
+      /* Sonuç yok — veri bulunamadı anlamı */
+      pct = 0; renk = '#94a3b8'; durum = 'Veri Yok';
+    } else if (tamam) {
+      pct = 100; renk = '#22c55e'; durum = '✓ Tam Doğru';
+    } else {
+      /* Toplam fark satırı = hatalı kayıt sayısı
+         Burada yüzdeyi: (neg+pos) ne kadar büyükse o kadar kötü
+         Eğer backend toplam sayıyı dönmüyorsa en açık ifade:
+         "hatalı satır var" → %0 */
+      pct = 0; renk = '#ef4444'; durum = '✗ Uyuşmazlık Var';
+    }
+
+    /* Ring animasyonu */
+    var offset = circumf - (pct / 100) * circumf;
+    $('#ringFill').css('stroke', renk).css('stroke-dashoffset', offset);
+    $('#ringPct').text(pct + '%').css('color', renk);
+
+    /* Kart üst border rengi */
+    $('#statAccCard').css('border-top-color', renk);
+
+    /* Büyük değer + durum yazısı */
+    $('#accVal').text(pct + '%').css('color', renk);
+    $('#accState').text(durum).css('color', renk);
+
     $('#statsBar').fadeIn(200);
     $('#btnEksiler').prop('disabled', neg === 0);
     $('#btnArtilar').prop('disabled', pos === 0);

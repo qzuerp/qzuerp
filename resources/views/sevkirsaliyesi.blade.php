@@ -1245,7 +1245,7 @@
         htmlCode += " <td class='d-flex '>" +
           "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' value='" +satirEkleInputs.SERINO_FILL + "' readonly>" +
           "<span class='d-flex -btn'>" +
-          "<button class='btn btn-primary' onclick='veriCek(\"" +KOD_PARCA[0]+ "\", "+TRNUM_FILL+")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>" +
+          "<button class='btn btn-primary' onclick='veriCek(\"" + KOD_PARCA[0] + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-bs-target='#modal_popupSelectModal4' type='button'>" +
           "<span class='fa-solid fa-magnifying-glass'></span>" +
           "</button>" +
           "</span>" +
@@ -1398,24 +1398,24 @@
       });
     }
 
-    // $(document).on("change", "#SIP_NO_SEC", function() {
-    //     var secilenEvrak = $(this).val();
-    //     var htmlCode = "";
+    $(document).on("change", "#SIP_NO_SEC", function() {
+        var secilenEvrak = $(this).val();
+        var htmlCode = "";
 
-    //     $.each(allData, function(index, row) {
-    //         if (row.EVRAKNO === secilenEvrak) {
-    //             htmlCode += "<tr>";
-    //             htmlCode += "<td>"+(row.EVRAKNO ?? '')+"</td>";
-    //             htmlCode += "<td>"+(row.TARIH ?? '')+"</td>";
-    //             htmlCode += "<td>"+(row.CARIHESAPCODE ?? '')+"</td>";
-    //             htmlCode += "</tr>";
-    //         }
-    //     });
+        $.each(allData, function(index, row) {
+            if (row.EVRAKNO === secilenEvrak) {
+                htmlCode += "<tr>";
+                htmlCode += "<td>"+(row.EVRAKNO ?? '')+"</td>";
+                htmlCode += "<td>"+(row.TARIH ?? '')+"</td>";
+                htmlCode += "<td>"+(row.CARIHESAPCODE ?? '')+"</td>";
+                htmlCode += "</tr>";
+            }
+        });
 
-    //     $("#popupSelect2").DataTable().clear().destroy();
-    //     $("#popupSelect2 > tbody").html(htmlCode);
-    //     $("#popupSelect2").DataTable();
-    // });
+        // $("#popupSelect2").DataTable().clear().destroy();
+        // $("#popupSelect2 > tbody").html(htmlCode);
+        // $("#popupSelect2").DataTable();
+    });
   </script>
   <script>
     
@@ -1471,7 +1471,7 @@
               htmlCode += " <td class='d-flex '>" +
                 "<input type='text' id='serino-"+TRNUM_FILL+"' class='form-control' name='SERINO[]' value='" + setValueOfJsonObject(kartVerisi2.SERINO) + "' readonly>" +
                 "<span class='d-flex -btn'>" +
-                "<button class='btn btn-primary' onclick='veriCek(\"" + setValueOfJsonObject(kartVerisi2.KOD) + "\", "+TRNUM_FILL+")' data-bs-toggle='modal' data-kod='" + setValueOfJsonObject(kartVerisi2.KOD) + "' data-id='" + TRNUM_FILL + "' data-bs-target='#modal_popupSelectModal4' type='button'>" +
+                "<button class='btn btn-primary' onclick='veriCek(\"" + setValueOfJsonObject(kartVerisi2.KOD) + "\", \"" + TRNUM_FILL + "\")' data-bs-toggle='modal' data-kod='" + setValueOfJsonObject(kartVerisi2.KOD) + "' data-id='" + TRNUM_FILL + "' data-bs-target='#modal_popupSelectModal4' type='button'>" +
                 "<span class='fa-solid fa-magnifying-glass'></span>" +
                 "</button>" +
                 "</span>" +
