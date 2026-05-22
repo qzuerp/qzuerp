@@ -11,9 +11,7 @@ class sayim extends Controller
 {
   public function index()
   {
-    $sonID=DB::table('sym10e')->min('id');
-
-    return view('stokSayim')->with('sonID', $sonID);
+    return view('stokSayim')->with('sonID');
   }
 
   public function kartGetir(Request $request)

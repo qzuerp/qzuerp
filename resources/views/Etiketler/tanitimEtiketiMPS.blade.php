@@ -15,7 +15,7 @@
             ->on('D00.DOSYATURU', '=', DB::raw("'GORSEL'"));
     })
     ->where('M10E.EVRAKNO', $EVRAKNO)
-    ->first();
+    ->first(['M10E.*','S40T.TERMIN_TAR','S40E.*','S29T.TEXT1 as MLZM', 'S29T.*', 'S29E.*','C00.*','D00.*']);
     
     $firmaBilgisi = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($u->firma))->first();
 
@@ -226,7 +226,7 @@
                 </div>
                 <div class="data-row">
                     <div class="data-label">Malzeme Sertifikası</div>
-                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->TEXT1 }}"/></div>
+                    <div class="data-value"><input style="background:transparant; border:none; outline:none; min-width:445px;" value="{{ $veriE->MLZM }}"/></div>
                 </div>
 
             </div>
