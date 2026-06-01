@@ -19,7 +19,13 @@
     
     $firmaBilgisi = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($u->firma))->first();
 
-    $veriT = DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->orderBy('R_SIRANO','asc')->get();
+    $veri = DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->orderBy('R_SIRANO','asc')->get();
+
+    // İlk elemanı koparıp alır, koleksiyonu günceller
+    $olcu = $veri->shift(); 
+
+    // Geriye kalanlar artık veriT oldu
+    $veriT = $veri;
 @endphp
 <!DOCTYPE html>
 <html lang="tr">
@@ -187,6 +193,11 @@
                 <div class="data-row">
                     <div class="data-label">Malzeme Adı</div>
                     <div class="data-value">{{ $veriE->MAMULSTOKADI }}</div>
+                </div>
+
+                <div class="data-row">
+                    <div class="data-label">Malzeme Ölçüsü</div>
+                    <div class="data-value">{{ $olcu->KAYNAK_AD }}</div>
                 </div>
 
                 <div class="data-row">
