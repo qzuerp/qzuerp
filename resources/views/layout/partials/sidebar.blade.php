@@ -67,6 +67,9 @@
         @if (in_array('STKSYM', $kullanici_read_yetkileri))
           <li><a href="stokSayim"><i class="fa-solid fa-calculator"></i>Stok sayımı</a></li>
         @endif
+        @if (in_array('STKSYM', $kullanici_read_yetkileri))
+          <li><a href="mukayese"><i class="fa-solid fa-calculator"></i>Mukayese</a></li>
+        @endif
         @if (in_array('STKGRSCKS', $kullanici_read_yetkileri))
           <li><a href="stokgiriscikis"><i class='bx bx-import'></i>Stok Giriş-Çıkış</a></li>
         @endif

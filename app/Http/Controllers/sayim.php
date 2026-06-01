@@ -608,7 +608,7 @@ class sayim extends Controller
 
   public function mukayeseDuzenle(Request $request)
   {
-    dd($request->all());
+    // dd($request->all());
     $u = auth()->user();
     $firma = trim($u->firma) . '.dbo.';
 
@@ -644,24 +644,24 @@ class sayim extends Controller
         'TRNUM' => $SRNUM,
         'KOD' => $satir->KOD,
         'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->LOTNUMBER,
-        'SERINO' => $satir->SERINO,
+        'LOTNUMBER' => $satir->OLD_LOTNUMBER,
+        'SERINO' => $satir->OLD_SERINO,
         'SF_MIKTAR' => ($satir->SISTEM_MIKTAR < 0) ? abs($satir->SISTEM_MIKTAR) : ($satir->SISTEM_MIKTAR * -1),
-        'TEXT2' => $satir->TEXT2,
-        'TEXT1' => $satir->TEXT1,
-        'TEXT3' => $satir->TEXT3,
-        'TEXT4' => $satir->TEXT4,
-        'NUM1' => $satir->NUM1,
-        'NUM2' => $satir->NUM2,
-        'NUM3' => $satir->NUM3,
-        'NUM4' => $satir->NUM4,
+        'TEXT2' => $satir->OLD_TEXT2,
+        'TEXT1' => $satir->OLD_TEXT1,
+        'TEXT3' => $satir->OLD_TEXT3,
+        'TEXT4' => $satir->OLD_TEXT4,
+        'NUM1' => $satir->OLD_NUM1,
+        'NUM2' => $satir->OLD_NUM2,
+        'NUM3' => $satir->OLD_NUM3,
+        'NUM4' => $satir->OLD_NUM4,
         'TARIH' => date('Y-m-d'),
         'EVRAKTIPI' => 'STOK21T',
         'AMBCODE' => $satir->AMBCODE,
-        'LOCATION1' => $satir->LOCATION1,
-        'LOCATION2' => $satir->LOCATION2,
-        'LOCATION3' => $satir->LOCATION3,
-        'LOCATION4' => $satir->LOCATION4,
+        'LOCATION1' => $satir->OLD_LOCATION1,
+        'LOCATION2' => $satir->OLD_LOCATION2,
+        'LOCATION3' => $satir->OLD_LOCATION3,
+        'LOCATION4' => $satir->OLD_LOCATION4,
         'created_at' => date('Y-m-d H:i:s'),
       ]);
 
@@ -696,8 +696,8 @@ class sayim extends Controller
         'EVRAKNO' => $EKSIEVRAKNO,
         'KOD' => $satir->KOD,
         'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->LOTNUMBER,
-        'SERINO' => $satir->SERINO,
+        'LOTNUMBER' => $satir->OLD_LOTNUMBER,
+        'SERINO' => $satir->OLD_SERINO,
         'AMBCODE' => $satir->AMBCODE,
         'TEXT2' => $satir->OLD_TEXT2,
         'TEXT1' => $satir->OLD_TEXT1,

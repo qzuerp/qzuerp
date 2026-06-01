@@ -356,13 +356,9 @@
 
           <div class="muk-action-row">
             <button type="button" id="btnEksiler" class="muk-btn muk-btn-red" disabled>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Eksileri Düzenle
+              Stoğu Düzelt
             </button>
-            <button type="button" id="btnArtilar" class="muk-btn muk-btn-amber" disabled>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Artıları Düzenle
-            </button>
+            
             <button type="button" id="btnHesapla" class="muk-btn muk-btn-blue">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
               Hesapla
@@ -620,7 +616,10 @@ $(document).ready(function () {
         satirlar: data
       }),
       success: function(res) {
-        alert('İşlem başarılı. (' + data.length + ' satır gönderildi)');
+        swal.fire('Bilgi', 'İşlem başarıyla gönderildi.', 'success');
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       },
       error: function(xhr) {
         var msg = xhr.responseJSON?.error ?? 'Bir hata oluştu.';
