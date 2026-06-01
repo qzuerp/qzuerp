@@ -538,7 +538,6 @@ class sayim extends Controller
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
                 STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
                 STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
-                -- KRITIK REVIZYON: CAST yerine TRY_CAST kullanarak nvarchar hatasını engelliyoruz
                 SUM(ISNULL(TRY_CAST(SF_MIKTAR AS FLOAT), 0)) AS SAYILAN_MIKTAR
             FROM {$firma}sym10t 
             WHERE EVRAKNO IN (SELECT EVRAKNO FROM EvrakAmbar)
@@ -613,136 +612,114 @@ class sayim extends Controller
 
   public function mukayeseDuzenle(Request $request)
   {
-    // dd($request->all());
-    $u = auth()->user();
-    $firma = trim($u->firma) . '.dbo.';
+      $u = auth()->user();
+      $firma = trim($u->firma) . '.dbo.';
 
-    $tip = $request->tip;
-    $satirlar = $request->satirlar;
+      $satirlar = $request->satirlar;
 
-    $EVRAKNO = DB::table($firma.'stok21e')->max('EVRAKNO');
+      // Bomba 3 Önlemi: Satırlar boşsa sistemi hiç yorma, direkt geri dön
+      if (empty($satirlar) || !is_array($satirlar)) {
+          return response()->json(['error' => 'Düzenlenecek satır bulunamadı!'], 400);
+      }
 
-    $ARTIEVRAK = (int)$EVRAKNO + 1;
-    $EKSIEVRAKNO = (int)$EVRAKNO + 2;
-    // dd($ARTIEVRAK, $EKSIEVRAKNO);
-    DB::table($firma.'stok21e')->insert([
-      'EVRAKNO' => $ARTIEVRAK,
-      'TARIH' => date('Y-m-d'),
-      'AMBCODE' => $satirlar[0]['AMBCODE']
-    ]);
-    DB::table($firma.'stok21e')->insert([
-      'EVRAKNO' => $EKSIEVRAKNO,
-      'TARIH' => date('Y-m-d'),
-      'AMBCODE' => $satirlar[0]['AMBCODE']
-    ]);
+      // Performans İçin: Döngü öncesi stok isimlerini tek kalemde çek
+      $stokKodlari = array_unique(array_column($satirlar, 'KOD'));
+      $stokIsimleri = DB::table($firma.'stok00')
+          ->whereIn('KOD', $stokKodlari)
+          ->pluck('AD', 'KOD')
+          ->toArray();
 
-    foreach($satirlar as $i => $satir)
-    {
-      $satir = (object) $satir;
-      $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+      // Bomba 1 ve 2 Önlemi: Her şeyi tek bir Transaction içine alıyoruz
+      DB::transaction(function () use ($firma, $satirlar, $stokIsimleri) {
+          
+          // Evrak numarasını transaction içinde alıyoruz ki çakışma riski azalsın 
+          // (Eğer tablo kilitleme (lock) yoksa hâlâ risk var ama eskisinden 100 kat güvenli)
+          $EVRAKNO = DB::table($firma.'stok21e')->max('EVRAKNO');
+          $ARTIEVRAK = (int)$EVRAKNO + 1;
+          $EKSIEVRAKNO = (int)$EVRAKNO + 2;
 
-      $STOK_ADI = DB::table($firma.'stok00')->where('KOD', $satir->KOD)->value('AD');
+          $ilkSatir = (object)$satirlar[0];
+          $ambarkodu = $ilkSatir->AMBCODE ?? $ilkSatir->ambcode ?? 0; // Esnek kontrol
 
-      DB::table($firma.'stok10a')->insert([
-        'EVRAKNO' => $EKSIEVRAKNO,
-        'SRNUM' => $SRNUM,
-        'TRNUM' => $SRNUM,
-        'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->OLD_LOTNUMBER,
-        'SERINO' => $satir->OLD_SERINO,
-        'SF_MIKTAR' => ($satir->SISTEM_MIKTAR < 0) ? abs($satir->SISTEM_MIKTAR) : ($satir->SISTEM_MIKTAR * -1),
-        'TEXT2' => $satir->OLD_TEXT2,
-        'TEXT1' => $satir->OLD_TEXT1,
-        'TEXT3' => $satir->OLD_TEXT3,
-        'TEXT4' => $satir->OLD_TEXT4,
-        'NUM1' => $satir->OLD_NUM1,
-        'NUM2' => $satir->OLD_NUM2,
-        'NUM3' => $satir->OLD_NUM3,
-        'NUM4' => $satir->OLD_NUM4,
-        'TARIH' => date('Y-m-d'),
-        'EVRAKTIPI' => 'STOK21T',
-        'AMBCODE' => $satir->AMBCODE,
-        'LOCATION1' => $satir->OLD_LOCATION1,
-        'LOCATION2' => $satir->OLD_LOCATION2,
-        'LOCATION3' => $satir->OLD_LOCATION3,
-        'LOCATION4' => $satir->OLD_LOCATION4,
-        'created_at' => date('Y-m-d H:i:s'),
-      ]);
+          // Başlıkları kaydediyoruz
+          DB::table($firma.'stok21e')->insert([
+              ['EVRAKNO' => $ARTIEVRAK, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu],
+              ['EVRAKNO' => $EKSIEVRAKNO, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu]
+          ]);
 
-      DB::table($firma.'stok10a')->insert([
-        'EVRAKNO' => $ARTIEVRAK,
-        'SRNUM' => $SRNUM,
-        'TRNUM' => $SRNUM,
-        'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->LOTNUMBER,
-        'SERINO' => $satir->SERINO,
-        'SF_MIKTAR' => $satir->SAYILAN_MIKTAR,
-        'TEXT2' => $satir->TEXT2,
-        'TEXT1' => $satir->TEXT1,
-        'TEXT3' => $satir->TEXT3,
-        'TEXT4' => $satir->TEXT4,
-        'NUM1' => $satir->NUM1,
-        'NUM2' => $satir->NUM2,
-        'NUM3' => $satir->NUM3,
-        'NUM4' => $satir->NUM4,
-        'TARIH' => date('Y-m-d'),
-        'EVRAKTIPI' => 'STOK21T',
-        'AMBCODE' => $satir->AMBCODE,
-        'LOCATION1' => $satir->LOCATION1,
-        'LOCATION2' => $satir->LOCATION2,
-        'LOCATION3' => $satir->LOCATION3,
-        'LOCATION4' => $satir->LOCATION4,
-        'created_at' => date('Y-m-d H:i:s'),
-      ]);
+          $stok10a_batch = [];
+          $stok21t_batch = [];
+          $tarih = date('Y-m-d');
+          $createdAt = date('Y-m-d H:i:s');
 
-      DB::table($firma.'stok21t')->insert([
-        'EVRAKNO' => $EKSIEVRAKNO,
-        'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->OLD_LOTNUMBER,
-        'SERINO' => $satir->OLD_SERINO,
-        'AMBCODE' => $satir->AMBCODE,
-        'TEXT2' => $satir->OLD_TEXT2,
-        'TEXT1' => $satir->OLD_TEXT1,
-        'TEXT3' => $satir->OLD_TEXT3,
-        'TEXT4' => $satir->OLD_TEXT4,
-        'NUM1' => $satir->OLD_NUM1,
-        'NUM2' => $satir->OLD_NUM2,
-        'NUM3' => $satir->OLD_NUM3,
-        'NUM4' => $satir->OLD_NUM4,
-        'LOCATION1' => $satir->OLD_LOCATION1,
-        'LOCATION2' => $satir->OLD_LOCATION2,
-        'LOCATION3' => $satir->OLD_LOCATION3,
-        'LOCATION4' => $satir->OLD_LOCATION4,
-        'CIKAN_MIKTAR' => abs($satir->SISTEM_MIKTAR),
-        'SRNUM' => $SRNUM,
-        'TRNUM' => $SRNUM
-      ]);
-      DB::table($firma.'stok21t')->insert([
-        'EVRAKNO' => $ARTIEVRAK,
-        'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
-        'LOTNUMBER' => $satir->LOTNUMBER,
-        'SERINO' => $satir->SERINO,
-        'AMBCODE' => $satir->AMBCODE,
-        'TEXT2' => $satir->TEXT2,
-        'TEXT1' => $satir->TEXT1,
-        'TEXT3' => $satir->TEXT3,
-        'TEXT4' => $satir->TEXT4,
-        'NUM1' => $satir->NUM1,
-        'NUM2' => $satir->NUM2,
-        'NUM3' => $satir->NUM3,
-        'NUM4' => $satir->NUM4,
-        'LOCATION1' => $satir->LOCATION1,
-        'LOCATION2' => $satir->LOCATION2,
-        'LOCATION3' => $satir->LOCATION3,
-        'LOCATION4' => $satir->LOCATION4,
-        'GIREN_MIKTAR' => $satir->SAYILAN_MIKTAR,
-        'SRNUM' => $SRNUM,
-        'TRNUM' => $SRNUM
-      ]);
-    }
+          // Sadece hafızada verileri hazırlıyoruz (Sıfır DB yükü)
+          foreach($satirlar as $i => $satir)
+          {
+              $satir = (object) $satir;
+              $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+              $STOK_ADI = $stokIsimleri[$satir->KOD] ?? '';
+
+              $sistemMiktar = (float)$satir->SISTEM_MIKTAR;
+              $sayilanMiktar = (float)$satir->SAYILAN_MIKTAR;
+
+              // --- EKSİ EVRAK KAYITLARI (Sıfırlama Raconu) ---
+              if ($sistemMiktar != 0) {
+                  $sfMiktarEksi = ($sistemMiktar < 0) ? abs($sistemMiktar) : ($sistemMiktar * -1);
+
+                  $stok10a_batch[] = [
+                      'EVRAKNO' => $EKSIEVRAKNO, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
+                      'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '', 'SF_MIKTAR' => $sfMiktarEksi,
+                      'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
+                      'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
+                      'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $satir->AMBCODE,
+                      'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
+                      'created_at' => $createdAt,
+                  ];
+
+                  $stok21t_batch[] = [
+                      'EVRAKNO' => $EKSIEVRAKNO, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '',
+                      'AMBCODE' => $satir->AMBCODE, 'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
+                      'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
+                      'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
+                      'CIKAN_MIKTAR' => abs($sistemMiktar), 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
+                  ];
+              }
+
+              // --- ARTI EVRAK KAYITLARI (Yeni Sayım) ---
+              if ($sayilanMiktar != 0) {
+                  $stok10a_batch[] = [
+                      'EVRAKNO' => $ARTIEVRAK, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
+                      'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '', 'SF_MIKTAR' => $sayilanMiktar,
+                      'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
+                      'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
+                      'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $satir->AMBCODE,
+                      'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
+                      'created_at' => $createdAt,
+                  ];
+
+                  $stok21t_batch[] = [
+                      'EVRAKNO' => $ARTIEVRAK, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '',
+                      'AMBCODE' => $satir->AMBCODE, 'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
+                      'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
+                      'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
+                      'GIREN_MIKTAR' => $sayilanMiktar, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
+                  ];
+              }
+          }
+
+          // Toplu Insert (Bulk Insert) ile veritabanına tek hamlede fırlatıyoruz
+          if (!empty($stok10a_batch)) {
+              foreach (array_chunk($stok10a_batch, 500) as $chunk) {
+                  DB::table($firma.'stok10a')->insert($chunk);
+              }
+          }
+          if (!empty($stok21t_batch)) {
+              foreach (array_chunk($stok21t_batch, 500) as $chunk) {
+                  DB::table($firma.'stok21t')->insert($chunk);
+              }
+          }
+      });
+
+      return response()->json(['success' => 'Mukayese başarıyla işlendi dayımın oğlu!']);
   }
 }

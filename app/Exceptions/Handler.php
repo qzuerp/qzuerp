@@ -41,18 +41,18 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (QueryException $e, $request) {
             // SQL Server'dan gelen o özel trigger mesajını yakala
-            if (str_contains($e->getMessage(), 'Stok eksiye düşüyor')) {
-                dd('Buraya girdi!');
-                // Eğer AJAX/API isteği ise JSON dön
-                if ($request->expectsJson()) {
-                    return response()->json(['error' => 'Stok yetersiz, işlem iptal edildi!'], 422);
-                }
+            // if (str_contains($e->getMessage(), 'Stok eksiye düşüyor')) {
+            //     dd('Buraya girdi!');
+            //     // Eğer AJAX/API isteği ise JSON dön
+            //     if ($request->expectsJson()) {
+            //         return response()->json(['error' => 'Stok yetersiz, işlem iptal edildi!'], 422);
+            //     }
     
-                // Normal web isteği ise geldiği sayfaya hata mesajıyla dön
-                return Redirect::back()
-                    ->withErrors(['stok_hatasi' => 'Dikkat! Stok eksiye düşüyor, işlem engellendi.'])
-                    ->withInput();
-            }
+            //     // Normal web isteği ise geldiği sayfaya hata mesajıyla dön
+            //     return Redirect::back()
+            //         ->withErrors(['stok_hatasi' => 'Dikkat! Stok eksiye düşüyor, işlem engellendi.'])
+            //         ->withInput();
+            // }
         });
     }
 }
