@@ -364,7 +364,7 @@
                               @php
                                 $kod_veri = DB::table($database . 'mmps10e')->get();
                                 foreach ($kod_veri as $key => $veri) {
-                                  echo "<option value='" . $veri->MAMULSTOKKODU . "'>" . $veri->MAMULSTOKKODU . " - " . $veri->MAMULSTOKADI . "</option>";
+                                  echo "<option value='" . $veri->EVRAKNO . "'>" . $veri->EVRAKNO . " - " . $veri->MAMULSTOKKODU . "</option>";
                                 }
                               @endphp
                             </select>

@@ -611,118 +611,118 @@ class sayim extends Controller
   }
 
   public function mukayeseDuzenle(Request $request)
-  {
-      $u = auth()->user();
-      $firma = trim($u->firma) . '.dbo.';
+{
+    $u = auth()->user();
+    $firma = trim($u->firma) . '.dbo.';
 
-      $satirlar = $request->satirlar;
+    $satirlar = $request->satirlar;
 
-      // Önlem: Satırlar boşsa sistemi hiç yorma
-      if (empty($satirlar) || !is_array($satirlar)) {
-          return response()->json(['error' => 'Düzenlenecek satır bulunamadı!'], 400);
-      }
+    // Önlem: Satırlar boşsa sistemi hiç yorma
+    if (empty($satirlar) || !is_array($satirlar)) {
+        return response()->json(['error' => 'Düzenlenecek satır bulunamadı!'], 400);
+    }
 
-      // Performans: Döngü öncesi stok isimlerini tek kalemde çek
-      $stokKodlari = array_unique(array_column($satirlar, 'KOD'));
-      $stokIsimleri = DB::table($firma.'stok00')
-          ->whereIn('KOD', $stokKodlari)
-          ->pluck('AD', 'KOD')
-          ->toArray();
+    // Performans: Döngü öncesi stok isimlerini tek kalemde çek
+    $stokKodlari = array_unique(array_column($satirlar, 'KOD'));
+    $stokIsimleri = DB::table($firma.'stok00')
+        ->whereIn('KOD', $stokKodlari)
+        ->pluck('AD', 'KOD')
+        ->toArray();
 
-      // Güvenlik: Her şey tek bir Transaction içinde
-      DB::transaction(function () use ($firma, $satirlar, $stokIsimleri) {
-          
-          // AMELİYAT 1: SQL Server için kilit koyarak mükerrer evrak nosunu engelliyoruz
-          $res = DB::select("SELECT ISNULL(MAX(EVRAKNO), 0) AS max_evrak FROM " . $firma . "stok21e WITH (UPDLOCK, HOLDLOCK)");
-          $EVRAKNO = $res[0]->max_evrak;
-          
-          $ARTIEVRAK = (int)$EVRAKNO + 1;
-          $EKSIEVRAKNO = (int)$EVRAKNO + 2;
+    // Güvenlik: Her şey tek bir Transaction içinde
+    DB::transaction(function () use ($firma, $satirlar, $stokIsimleri) {
+        
+        // AMELİYAT 1: SQL Server için kilit koyarak mükerrer evrak nosunu engelliyoruz
+        $res = DB::select("SELECT ISNULL(MAX(EVRAKNO), 0) AS max_evrak FROM " . $firma . "stok21e WITH (UPDLOCK, HOLDLOCK)");
+        $EVRAKNO = $res[0]->max_evrak;
+        
+        $ARTIEVRAK = (int)$EVRAKNO + 1;
+        $EKSIEVRAKNO = (int)$EVRAKNO + 2;
 
-          $ilkSatir = (object)$satirlar[0];
-          $ambarkodu = $ilkSatir->AMBCODE ?? $ilkSatir->ambcode ?? 0;
+        $ilkSatir = (object)$satirlar[0];
+        $ambarkodu = $ilkSatir->AMBCODE ?? $ilkSatir->ambcode ?? 0;
 
-          // Başlıkları kaydediyoruz
-          DB::table($firma.'stok21e')->insert([
-              ['EVRAKNO' => $ARTIEVRAK, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu],
-              ['EVRAKNO' => $EKSIEVRAKNO, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu]
-          ]);
+        // Başlıkları kaydediyoruz
+        DB::table($firma.'stok21e')->insert([
+            ['EVRAKNO' => $ARTIEVRAK, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu],
+            ['EVRAKNO' => $EKSIEVRAKNO, 'TARIH' => date('Y-m-d'), 'AMBCODE' => $ambarkodu]
+        ]);
 
-          $stok10a_batch = [];
-          $stok21t_batch = [];
-          $tarih = date('Y-m-d');
-          $createdAt = date('Y-m-d H:i:s');
+        $stok10a_batch = [];
+        $stok21t_batch = [];
+        $tarih = date('Y-m-d');
+        $createdAt = date('Y-m-d H:i:s');
 
-          foreach($satirlar as $i => $satir)
-          {
-              $satir = (object) $satir;
-              $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
-              $STOK_ADI = $stokIsimleri[$satir->KOD] ?? '';
+        foreach($satirlar as $i => $satir)
+        {
+            $satir = (object) $satir;
+            $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+            $STOK_ADI = $stokIsimleri[$satir->KOD] ?? '';
 
-              // AMELİYAT 2: Küçük/Büyük harf ambcode tuzağını çözüyoruz
-              $currentAmbcode = $satir->AMBCODE ?? $satir->ambcode ?? 0;
+            // AMELİYAT 2: Küçük/Büyük harf ambcode tuzağını çözüyoruz
+            $currentAmbcode = $satir->AMBCODE ?? $satir->ambcode ?? 0;
 
-              $sistemMiktar = (float)$satir->SISTEM_MIKTAR;
-              $sayilanMiktar = (float)$satir->SAYILAN_MIKTAR;
+            $sistemMiktar = (float)$satir->SISTEM_MIKTAR;
+            $sayilanMiktar = (float)$satir->SAYILAN_MIKTAR;
 
-              // --- EKSİ EVRAK KAYITLARI ---
-              if ($sistemMiktar != 0) {
-                  $sfMiktarEksi = ($sistemMiktar < 0) ? abs($sistemMiktar) : ($sistemMiktar * -1);
+            // --- EKSİ EVRAK KAYITLARI ---
+            if ($sistemMiktar != 0) {
+                $sfMiktarEksi = ($sistemMiktar < 0) ? abs($sistemMiktar) : ($sistemMiktar * -1);
 
-                  $stok10a_batch[] = [
-                      'EVRAKNO' => $EKSIEVRAKNO, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
-                      'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '', 'SF_MIKTAR' => $sfMiktarEksi,
-                      'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
-                      'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
-                      'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $currentAmbcode,
-                      'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
-                      'created_at' => $createdAt,
-                  ];
+                $stok10a_batch[] = [
+                    'EVRAKNO' => $EKSIEVRAKNO, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
+                    'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '', 'SF_MIKTAR' => $sfMiktarEksi,
+                    'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
+                    'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
+                    'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $currentAmbcode,
+                    'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
+                    'created_at' => $createdAt,
+                ];
 
-                  $stok21t_batch[] = [
-                      'EVRAKNO' => $EKSIEVRAKNO, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '',
-                      'AMBCODE' => $currentAmbcode, 'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
-                      'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
-                      'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
-                      'CIKAN_MIKTAR' => abs($sistemMiktar), 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
-                  ];
-              }
+                $stok21t_batch[] = [
+                    'EVRAKNO' => $EKSIEVRAKNO, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->OLD_LOTNUMBER ?? '', 'SERINO' => $satir->OLD_SERINO ?? '',
+                    'AMBCODE' => $currentAmbcode, 'TEXT2' => $satir->OLD_TEXT2 ?? '', 'TEXT1' => $satir->OLD_TEXT1 ?? '', 'TEXT3' => $satir->OLD_TEXT3 ?? '', 'TEXT4' => $satir->OLD_TEXT4 ?? '',
+                    'NUM1' => $satir->OLD_NUM1 ?? 0, 'NUM2' => $satir->OLD_NUM2 ?? 0, 'NUM3' => $satir->OLD_NUM3 ?? 0, 'NUM4' => $satir->OLD_NUM4 ?? 0,
+                    'LOCATION1' => $satir->OLD_LOCATION1 ?? '', 'LOCATION2' => $satir->OLD_LOCATION2 ?? '', 'LOCATION3' => $satir->OLD_LOCATION3 ?? '', 'LOCATION4' => $satir->OLD_LOCATION4 ?? '',
+                    'CIKAN_MIKTAR' => abs($sistemMiktar), 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
+                ];
+            }
 
-              // --- ARTI EVRAK KAYITLARI ---
-              if ($sayilanMiktar != 0) {
-                  $stok10a_batch[] = [
-                      'EVRAKNO' => $ARTIEVRAK, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
-                      'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '', 'SF_MIKTAR' => $sayilanMiktar,
-                      'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
-                      'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
-                      'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $currentAmbcode,
-                      'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
-                      'created_at' => $createdAt,
-                  ];
+            // --- ARTI EVRAK KAYITLARI ---
+            if ($sayilanMiktar != 0) {
+                $stok10a_batch[] = [
+                    'EVRAKNO' => $ARTIEVRAK, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI,
+                    'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '', 'SF_MIKTAR' => $sayilanMiktar,
+                    'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
+                    'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
+                    'TARIH' => $tarih, 'EVRAKTIPI' => 'STOK21T', 'AMBCODE' => $currentAmbcode,
+                    'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
+                    'created_at' => $createdAt,
+                ];
 
-                  $stok21t_batch[] = [
-                      'EVRAKNO' => $ARTIEVRAK, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '',
-                      'AMBCODE' => $currentAmbcode, 'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
-                      'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
-                      'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
-                      'GIREN_MIKTAR' => $sayilanMiktar, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
-                  ];
-              }
-          }
+                $stok21t_batch[] = [
+                    'EVRAKNO' => $ARTIEVRAK, 'KOD' => $satir->KOD, 'STOK_ADI' => $STOK_ADI, 'LOTNUMBER' => $satir->LOTNUMBER ?? '', 'SERINO' => $satir->SERINO ?? '',
+                    'AMBCODE' => $currentAmbcode, 'TEXT2' => $satir->TEXT2 ?? '', 'TEXT1' => $satir->TEXT1 ?? '', 'TEXT3' => $satir->TEXT3 ?? '', 'TEXT4' => $satir->TEXT4 ?? '',
+                    'NUM1' => $satir->NUM1 ?? 0, 'NUM2' => $satir->NUM2 ?? 0, 'NUM3' => $satir->NUM3 ?? 0, 'NUM4' => $satir->NUM4 ?? 0,
+                    'LOCATION1' => $satir->LOCATION1 ?? '', 'LOCATION2' => $satir->LOCATION2 ?? '', 'LOCATION3' => $satir->LOCATION3 ?? '', 'LOCATION4' => $satir->LOCATION4 ?? '',
+                    'GIREN_MIKTAR' => $sayilanMiktar, 'SRNUM' => $SRNUM, 'TRNUM' => $SRNUM
+                ];
+            }
+        }
 
-          // AMELİYAT 3: Chunk sınırını SQL Server limitine göre max 50'ye çektik
-          if (!empty($stok10a_batch)) {
-              foreach (array_chunk($stok10a_batch, 50) as $chunk) {
-                  DB::table($firma.'stok10a')->insert($chunk);
-              }
-          }
-          if (!empty($stok21t_batch)) {
-              foreach (array_chunk($stok21t_batch, 50) as $chunk) {
-                  DB::table($firma.'stok21t')->insert($chunk);
-              }
-          }
-      });
+        // AMELİYAT 3: Chunk sınırını SQL Server limitine göre max 50'ye çektik
+        if (!empty($stok10a_batch)) {
+            foreach (array_chunk($stok10a_batch, 50) as $chunk) {
+                DB::table($firma.'stok10a')->insert($chunk);
+            }
+        }
+        if (!empty($stok21t_batch)) {
+            foreach (array_chunk($stok21t_batch, 50) as $chunk) {
+                DB::table($firma.'stok21t')->insert($chunk);
+            }
+        }
+    });
 
-      return response()->json(['success' => 'Mukayese kurşun geçirmez şekilde işlendi dayımın oğlu!']);
-  }
+    return response()->json(['success' => 'Mukayese kurşun geçirmez şekilde işlendi dayımın oğlu!']);
+}
 }
