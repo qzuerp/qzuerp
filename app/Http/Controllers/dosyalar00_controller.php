@@ -16,38 +16,32 @@ class dosyalar00_controller extends Controller
 {
     public function import(Request $request)
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $u = Auth::user();
         }
         $firma = trim($u->firma);
 
         $request->validate([
-            'file' => 'required|file|mimes:xlsx,xls,csv',
+            'file'  => 'required|file|mimes:xlsx,xls,csv',
             'table' => 'required|string',
         ]);
 
-        $unallowedTables = ['stok','urun','musteri'];
-        $maxRows = 3000;
-        $chunkSize = 500;
-        $blacklistColumns = ['id','created_at','updated_at'];
+        $unallowedTables  = ['stok', 'urun', 'musteri'];
+        $blacklistColumns = ['id', 'created_at', 'updated_at'];
+        $maxRows          = 3000;
 
         $tableName = $request->input('table');
-        $table = $firma . '.dbo.' . $tableName;
-        $EVRAKNO = $request->input('EVRAKNO');
-
-        if($table == 'STOK00')
-        {
-            // Stok kartı için daha önce bu kodda açılmış stok var mı diye kontrol ettirmemiz lazım
-        }
+        $table     = $firma . '.dbo.' . $tableName;
+        $EVRAKNO   = $request->input('EVRAKNO');
 
         if (in_array($tableName, $unallowedTables)) {
             return response()->json(['error' => 'Bu tabloya yükleme iznin yok.'], 422);
         }
 
-        // --- Table columns using INFORMATION_SCHEMA.COLUMNS
+        // Tablo sütunlarını çek
         $tableColumns = DB::table('INFORMATION_SCHEMA.COLUMNS')
             ->where('TABLE_NAME', $tableName)
-            ->where('TABLE_SCHEMA', 'dbo') // SQL Server default schema
+            ->where('TABLE_SCHEMA', 'dbo')
             ->pluck('COLUMN_NAME')
             ->toArray();
 
@@ -55,23 +49,24 @@ class dosyalar00_controller extends Controller
         foreach ($tableColumns as $col) {
             $tableColumnsLowerMap[strtolower($col)] = $col;
         }
-
         foreach ($blacklistColumns as $b) {
             unset($tableColumnsLowerMap[strtolower($b)]);
         }
 
+        // Tüm dosyayı oku
         $collection = Excel::toCollection(null, $request->file('file'))->first();
-        if (!$collection || $collection->count() == 0) {
+        if (!$collection || $collection->isEmpty()) {
             return response()->json(['error' => 'Excel dosyası boş veya okunamadı.'], 422);
         }
 
         $headerRow = $collection->first();
-        $dataRows = $collection->slice(1);
+        $dataRows  = $collection->slice(1);
 
         if ($dataRows->count() > $maxRows) {
             return response()->json(['error' => "Satır sayısı çok fazla. Maks {$maxRows} satır izinli."], 422);
         }
 
+        // Header → kolon eşleştirmesi
         $indexToColumn = [];
         foreach ($headerRow as $idx => $head) {
             $headNormalized = strtolower(trim((string)$head));
@@ -81,30 +76,38 @@ class dosyalar00_controller extends Controller
             }
         }
 
-        if (count($indexToColumn) === 0) {
+        if (empty($indexToColumn)) {
             return response()->json([
                 'error' => 'Excel başlıkları ile tablo sütunları eşleşmedi.',
                 'excel' => $headerRow,
-                'table' => $tableColumnsLowerMap
+                'table' => $tableColumnsLowerMap,
             ], 422);
         }
 
-        $insertCount = 0;
-        $failed = [];
-        $batch = [];
-
+        // BURAYA DIKKAT: sym10t listeye eklendi!
         $specialTables = [
-            "tekl20tı","stdm10t","stok48t","stok40t","MMPS10S_T","bomu01t","mmos10t",
+            "sym10t", "tekl20tı","stdm10t","stok48t","stok40t","MMPS10S_T","bomu01t","mmos10t",
             "stok60ti","sfdc31t","stok20t","mmps10t","stok21t","plan_t","stok26t",
-            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","stok25t"
+            "stok29t","stok46t","stok63t","QVAL10T","stok68t","stok69t","stok25t",
         ];
 
-        if(in_array($tableName, $specialTables))
-        {
-            $trNum = DB::table($table)->where('EVRAKNO',$EVRAKNO)->max('TRNUM');
-            $trNum = $trNum ? (int)$trNum + 1 : 1;
+        $columnCount = count($indexToColumn);
+        $effectiveColumnCount = in_array($tableName, $specialTables) ? $columnCount + 2 : $columnCount;
+        
+        // SQL Server garantili safe chunk boyutu
+        $chunkSize = max(1, (int) floor(2000 / $effectiveColumnCount));
+
+        // TRNUM başlangıcı
+        $trNum = null;
+        if (in_array($tableName, $specialTables)) {
+            $max   = DB::table($table)->where('EVRAKNO', $EVRAKNO)->max('TRNUM');
+            $trNum = $max ? (int)$max + 1 : 1;
         }
 
+        $insertCount = 0;
+        $allRowsData = [];
+
+        // Önce tüm veriyi hafızada toplayıp temizliyoruz
         foreach ($dataRows as $rIndex => $row) {
             $rowData = [];
             foreach ($indexToColumn as $idx => $colName) {
@@ -113,8 +116,11 @@ class dosyalar00_controller extends Controller
                 $rowData[$colName] = $val;
             }
 
+            // Tamamen boş satırı atla
             $allNull = true;
-            foreach ($rowData as $v) { if ($v !== null && $v !== '') { $allNull = false; break; } }
+            foreach ($rowData as $v) {
+                if ($v !== null && $v !== '') { $allNull = false; break; }
+            }
             if ($allNull) continue;
 
             if (in_array($tableName, $specialTables)) {
@@ -125,36 +131,28 @@ class dosyalar00_controller extends Controller
                 }
             }
 
-            $batch[] = $rowData;
-
-            if (count($batch) >= $chunkSize) {
-                try {
-                    DB::table($table)->insert($batch);
-                    $insertCount += count($batch);
-                } catch (\Exception $e) {
-                    $failed[] = "Chunk insert failed at excel row ".($rIndex+2).": ".$e->getMessage();
-                }
-                $batch = [];
-            }
+            $allRowsData[] = $rowData;
         }
 
-        if (count($batch) > 0) {
+        // Şimdi güvenli transaction ve chunk insert aşaması
+        if (!empty($allRowsData)) {
             try {
-                DB::table($table)->insert($batch);
-                $insertCount += count($batch);
+                DB::transaction(function () use ($allRowsData, $chunkSize, $table, &$insertCount) {
+                    $chunks = array_chunk($allRowsData, $chunkSize);
+                    foreach ($chunks as $chunk) {
+                        DB::table($table)->insert($chunk);
+                        $insertCount += count($chunk);
+                    }
+                });
             } catch (\Exception $e) {
-                $failed[] = "Final chunk failed: ".$e->getMessage();
+                \Log::error('Import fatal error: ' . $e->getMessage());
+                return response()->json(['error' => 'Veritabanına yazılırken bir hata oluştu: ' . $e->getMessage()], 500);
             }
         }
 
-        $msg = "{$insertCount} kayıt eklendi.";
-        if (count($failed) > 0) {
-            $msg .= "<br>" . implode("<br>", $failed);
-            \Log::error('Import errors', $failed);
-        }
-
-        return response()->json(['success' => $msg]);
+        return response()->json(['success' => "{$insertCount} kayıt başarıyla eklendi."]);
     }
+
 
     private function generateRandomString($length = 10)
     {

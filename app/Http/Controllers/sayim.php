@@ -510,13 +510,13 @@ class sayim extends Controller
       
       $u = auth()->user();
       $firma = trim($u->firma) . '.dbo.';
-
+  
       $evraklar = array_filter($request->only(['MUKAYESE1', 'MUKAYESE2', 'MUKAYESE3', 'MUKAYESE4', 'MUKAYESE5']));
-
+  
       if (empty($evraklar)) {
           return response()->json(['error' => 'Karşılaştırılacak evrak bulunamadı.'], 400);
       }
-
+  
       $bindings = [];
       $whereInSql = [];
       foreach (array_values($evraklar) as $index => $evrak) {
@@ -525,7 +525,7 @@ class sayim extends Controller
           $whereInSql[] = ':' . $paramName;
       }
       $whereInString = implode(',', $whereInSql);
-
+  
       $sql = "
         WITH EvrakAmbar AS (
             SELECT DISTINCT EVRAKNO, AMBCODE 
@@ -538,7 +538,8 @@ class sayim extends Controller
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
                 STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
                 STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
-                SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR
+                -- KRITIK REVIZYON: CAST yerine TRY_CAST kullanarak nvarchar hatasını engelliyoruz
+                SUM(ISNULL(TRY_CAST(SF_MIKTAR AS FLOAT), 0)) AS SAYILAN_MIKTAR
             FROM {$firma}sym10t 
             WHERE EVRAKNO IN (SELECT EVRAKNO FROM EvrakAmbar)
             GROUP BY KOD, LOTNUMBER, SERINO, AMBCODE, TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4
@@ -590,19 +591,23 @@ class sayim extends Controller
             ISNULL(S.NUM4, 0) = ISNULL(SIS.NUM4, 0)
         WHERE (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) <> 0
       ";
-
+  
       $mukayeseSonucu = DB::select($sql, $bindings);
-
+  
       $sonuc = array_map(function($satir) {
           $fark = (float)$satir->FARK;
-          if ($fark == 0) { $durum = 'Eşit'; }
-          elseif ($fark > 0) { $durum = 'Fazla (Sistemde Eksik)'; }
-          else { $durum = 'Eksik (Sistemde Fazla)'; }
+          
+          // Ölü 'Eşit' kontrolü kaldırıldı çünkü SQL zaten farkı 0 olanları getirmiyor.
+          if ($fark > 0) { 
+              $durum = 'Fazla (Sistemde Eksik)'; 
+          } else { 
+              $durum = 'Eksik (Sistemde Fazla)'; 
+          }
           
           $satir->DURUM = $durum;
           return $satir;
       }, $mukayeseSonucu);
-
+  
       return response()->json($sonuc);
   }
 
