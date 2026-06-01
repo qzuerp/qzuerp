@@ -536,7 +536,6 @@ class sayim extends Controller
             SELECT 
                 KOD, LOTNUMBER, SERINO, AMBCODE, 
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
-                -- LOKASYONLARI MAX() İLE ÇEKİYORUZ, SATIRI BÖLMESİNİ ENGELLİYORUZ!
                 STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
                 STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
                 SUM(CAST(ISNULL(SF_MIKTAR, '0') AS FLOAT)) AS SAYILAN_MIKTAR
@@ -548,7 +547,6 @@ class sayim extends Controller
             SELECT 
                 KOD, LOTNUMBER, SERINO, AMBCODE, 
                 TEXT1, TEXT2, TEXT3, TEXT4, NUM1, NUM2, NUM3, NUM4,
-                -- SİSTEM İÇİN DE AYNI TAKTİK!
                 STRING_AGG(LOCATION1, ' - ') AS LOCATION1, STRING_AGG(LOCATION2, ' - ') AS LOCATION2, 
                 STRING_AGG(LOCATION3, ' - ') AS LOCATION3, STRING_AGG(LOCATION4, ' - ') AS LOCATION4,
                 SUM(MIKTAR) AS SISTEM_MIKTAR
@@ -561,21 +559,18 @@ class sayim extends Controller
             COALESCE(S.KOD, SIS.KOD) AS KOD, 
             COALESCE(S.AMBCODE, SIS.AMBCODE) AS AMBCODE, 
             
-            -- SAYIM VERİLERİ 
             S.LOTNUMBER AS LOTNUMBER, 
             S.SERINO AS SERINO, 
             S.LOCATION1 AS LOCATION1, S.LOCATION2 AS LOCATION2, S.LOCATION3 AS LOCATION3, S.LOCATION4 AS LOCATION4, 
             S.TEXT1 AS TEXT1, S.TEXT2 AS TEXT2, S.TEXT3 AS TEXT3, S.TEXT4 AS TEXT4, 
             S.NUM1 AS NUM1, S.NUM2 AS NUM2, S.NUM3 AS NUM3, S.NUM4 AS NUM4, 
             
-            -- SİSTEM VERİLERİ
             SIS.LOTNUMBER AS OLD_LOTNUMBER, 
             SIS.SERINO AS OLD_SERINO, 
             SIS.LOCATION1 AS OLD_LOCATION1, SIS.LOCATION2 AS OLD_LOCATION2, SIS.LOCATION3 AS OLD_LOCATION3, SIS.LOCATION4 AS OLD_LOCATION4, 
             SIS.TEXT1 AS OLD_TEXT1, SIS.TEXT2 AS OLD_TEXT2, SIS.TEXT3 AS OLD_TEXT3, SIS.TEXT4 AS OLD_TEXT4, 
             SIS.NUM1 AS OLD_NUM1, SIS.NUM2 AS OLD_NUM2, SIS.NUM3 AS OLD_NUM3, SIS.NUM4 AS OLD_NUM4, 
             
-            -- MİKTARLAR VE HESAPLANAN FARK
             ISNULL(S.SAYILAN_MIKTAR, 0) AS SAYILAN_MIKTAR, 
             ISNULL(SIS.SISTEM_MIKTAR, 0) AS SISTEM_MIKTAR, 
             (ISNULL(S.SAYILAN_MIKTAR, 0) - ISNULL(SIS.SISTEM_MIKTAR, 0)) AS FARK 
@@ -598,7 +593,6 @@ class sayim extends Controller
 
       $mukayeseSonucu = DB::select($sql, $bindings);
 
-      // 4. Durum Etiketlerini Ekle ve Gönder
       $sonuc = array_map(function($satir) {
           $fark = (float)$satir->FARK;
           if ($fark == 0) { $durum = 'Eşit'; }
@@ -614,20 +608,136 @@ class sayim extends Controller
 
   public function mukayeseDuzenle(Request $request)
   {
+    dd($request->all());
     $u = auth()->user();
     $firma = trim($u->firma) . '.dbo.';
 
     $tip = $request->tip;
     $satirlar = $request->satirlar;
 
-    $EVRAKNO = DB::table($firma.'stok21e')->value('EVRAKNO');
+    $EVRAKNO = DB::table($firma.'stok21e')->max('EVRAKNO');
 
     $ARTIEVRAK = (int)$EVRAKNO + 1;
     $EKSIEVRAKNO = (int)$EVRAKNO + 2;
+    // dd($ARTIEVRAK, $EKSIEVRAKNO);
+    DB::table($firma.'stok21e')->insert([
+      'EVRAKNO' => $ARTIEVRAK,
+      'TARIH' => date('Y-m-d'),
+      'AMBCODE' => $satirlar[0]['AMBCODE']
+    ]);
+    DB::table($firma.'stok21e')->insert([
+      'EVRAKNO' => $EKSIEVRAKNO,
+      'TARIH' => date('Y-m-d'),
+      'AMBCODE' => $satirlar[0]['AMBCODE']
+    ]);
 
-    foreach($satirlar as $satir)
+    foreach($satirlar as $i => $satir)
     {
-      DB::table($firma.'stok21')
+      $satir = (object) $satir;
+      $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
+
+      $STOK_ADI = DB::table($firma.'stok00')->where('KOD', $satir->KOD)->value('AD');
+
+      DB::table($firma.'stok10a')->insert([
+        'EVRAKNO' => $EKSIEVRAKNO,
+        'SRNUM' => $SRNUM,
+        'TRNUM' => $SRNUM,
+        'KOD' => $satir->KOD,
+        'STOK_ADI' => $STOK_ADI,
+        'LOTNUMBER' => $satir->LOTNUMBER,
+        'SERINO' => $satir->SERINO,
+        'SF_MIKTAR' => ($satir->SISTEM_MIKTAR < 0) ? abs($satir->SISTEM_MIKTAR) : ($satir->SISTEM_MIKTAR * -1),
+        'TEXT2' => $satir->TEXT2,
+        'TEXT1' => $satir->TEXT1,
+        'TEXT3' => $satir->TEXT3,
+        'TEXT4' => $satir->TEXT4,
+        'NUM1' => $satir->NUM1,
+        'NUM2' => $satir->NUM2,
+        'NUM3' => $satir->NUM3,
+        'NUM4' => $satir->NUM4,
+        'TARIH' => date('Y-m-d'),
+        'EVRAKTIPI' => 'STOK21T',
+        'AMBCODE' => $satir->AMBCODE,
+        'LOCATION1' => $satir->LOCATION1,
+        'LOCATION2' => $satir->LOCATION2,
+        'LOCATION3' => $satir->LOCATION3,
+        'LOCATION4' => $satir->LOCATION4,
+        'created_at' => date('Y-m-d H:i:s'),
+      ]);
+
+      DB::table($firma.'stok10a')->insert([
+        'EVRAKNO' => $ARTIEVRAK,
+        'SRNUM' => $SRNUM,
+        'TRNUM' => $SRNUM,
+        'KOD' => $satir->KOD,
+        'STOK_ADI' => $STOK_ADI,
+        'LOTNUMBER' => $satir->LOTNUMBER,
+        'SERINO' => $satir->SERINO,
+        'SF_MIKTAR' => $satir->SAYILAN_MIKTAR,
+        'TEXT2' => $satir->TEXT2,
+        'TEXT1' => $satir->TEXT1,
+        'TEXT3' => $satir->TEXT3,
+        'TEXT4' => $satir->TEXT4,
+        'NUM1' => $satir->NUM1,
+        'NUM2' => $satir->NUM2,
+        'NUM3' => $satir->NUM3,
+        'NUM4' => $satir->NUM4,
+        'TARIH' => date('Y-m-d'),
+        'EVRAKTIPI' => 'STOK21T',
+        'AMBCODE' => $satir->AMBCODE,
+        'LOCATION1' => $satir->LOCATION1,
+        'LOCATION2' => $satir->LOCATION2,
+        'LOCATION3' => $satir->LOCATION3,
+        'LOCATION4' => $satir->LOCATION4,
+        'created_at' => date('Y-m-d H:i:s'),
+      ]);
+
+      DB::table($firma.'stok21t')->insert([
+        'EVRAKNO' => $EKSIEVRAKNO,
+        'KOD' => $satir->KOD,
+        'STOK_ADI' => $STOK_ADI,
+        'LOTNUMBER' => $satir->LOTNUMBER,
+        'SERINO' => $satir->SERINO,
+        'AMBCODE' => $satir->AMBCODE,
+        'TEXT2' => $satir->OLD_TEXT2,
+        'TEXT1' => $satir->OLD_TEXT1,
+        'TEXT3' => $satir->OLD_TEXT3,
+        'TEXT4' => $satir->OLD_TEXT4,
+        'NUM1' => $satir->OLD_NUM1,
+        'NUM2' => $satir->OLD_NUM2,
+        'NUM3' => $satir->OLD_NUM3,
+        'NUM4' => $satir->OLD_NUM4,
+        'LOCATION1' => $satir->OLD_LOCATION1,
+        'LOCATION2' => $satir->OLD_LOCATION2,
+        'LOCATION3' => $satir->OLD_LOCATION3,
+        'LOCATION4' => $satir->OLD_LOCATION4,
+        'CIKAN_MIKTAR' => abs($satir->SISTEM_MIKTAR),
+        'SRNUM' => $SRNUM,
+        'TRNUM' => $SRNUM
+      ]);
+      DB::table($firma.'stok21t')->insert([
+        'EVRAKNO' => $ARTIEVRAK,
+        'KOD' => $satir->KOD,
+        'STOK_ADI' => $STOK_ADI,
+        'LOTNUMBER' => $satir->LOTNUMBER,
+        'SERINO' => $satir->SERINO,
+        'AMBCODE' => $satir->AMBCODE,
+        'TEXT2' => $satir->TEXT2,
+        'TEXT1' => $satir->TEXT1,
+        'TEXT3' => $satir->TEXT3,
+        'TEXT4' => $satir->TEXT4,
+        'NUM1' => $satir->NUM1,
+        'NUM2' => $satir->NUM2,
+        'NUM3' => $satir->NUM3,
+        'NUM4' => $satir->NUM4,
+        'LOCATION1' => $satir->LOCATION1,
+        'LOCATION2' => $satir->LOCATION2,
+        'LOCATION3' => $satir->LOCATION3,
+        'LOCATION4' => $satir->LOCATION4,
+        'GIREN_MIKTAR' => $satir->SAYILAN_MIKTAR,
+        'SRNUM' => $SRNUM,
+        'TRNUM' => $SRNUM
+      ]);
     }
   }
 }

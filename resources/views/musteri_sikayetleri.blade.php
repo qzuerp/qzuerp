@@ -9,7 +9,7 @@
     $database = trim($kullanici_veri->firma).".dbo.";
 
     $ekran = "CGC70";
-    $ekranAdi = "Müşteri Şikayetleri"; 
+    $ekranAdi = "Öğrenilmiş dersler / Müşteri Şikayetleri"; 
     $ekranRumuz = "CGC70";
     $ekranLink = "musteri_sikayet";
     $ekranTableE = $database."cgc70";
@@ -28,14 +28,15 @@
     }
     $sonID = intval($sonID);
     $kart_veri = DB::table($ekranTableE)
+    ->whereNotNull('STOK_KODU')
     ->where("ID",$sonID)
     ->first();
 
 
-  $ilkEvrak=DB::table($ekranTableE)->min('ID');
-  $sonEvrak=DB::table($ekranTableE)->max('ID');
-  $sonrakiEvrak=DB::table($ekranTableE)->where('ID', '>', $sonID)->min('ID');
-  $oncekiEvrak=DB::table($ekranTableE)->where('ID', '<', $sonID)->max('ID');
+  $ilkEvrak=DB::table($ekranTableE)->whereNotNull('STOK_KODU')->min('ID');
+  $sonEvrak=DB::table($ekranTableE)->whereNotNull('STOK_KODU')->max('ID');
+  $sonrakiEvrak=DB::table($ekranTableE)->whereNotNull('STOK_KODU')->where('ID', '>', $sonID)->min('ID');
+  $oncekiEvrak=DB::table($ekranTableE)->whereNotNull('STOK_KODU')->where('ID', '<', $sonID)->max('ID');
 
   $stok_evraklar=DB::table($database.'stok00')->limit(50)->get();
   $lokasyonlar = json_decode(@$kart_veri->LOKASYONLAR ?? '[]');
@@ -57,7 +58,7 @@
                                     <div class="col-md-2 col-xs-2">
                                         <select id="evrakSec" class="form-control js-example-basic-single" style="width: 100%;" name="evrakSec" onchange="evrakGetirRedirect(this.value, '{{ $ekranLink }}')" >
                                             @php
-                                            $evraklar=DB::table($ekranTableE)->orderBy('ID', 'ASC')->get();
+                                            $evraklar=DB::table($ekranTableE)->whereNotNull('STOK_KODU')->orderBy('ID', 'ASC')->get();
                                             foreach ($evraklar as $key => $veri) {
                                                 if ($veri->ID == @$kart_veri->ID) {
                                                     echo "<option value ='".$veri->ID."' selected>".$veri->ID."
