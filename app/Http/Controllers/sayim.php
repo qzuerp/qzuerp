@@ -505,7 +505,7 @@ class sayim extends Controller
   public function mukayeseIslemler(Request $request)
   {
       if (!auth()->check()) {
-          return response()->json(['error' => 'Yetkisiz erişim dayımın oğlu!'], 401);
+          return response()->json(['error' => 'Yetkisiz erişim!'], 401);
       }
       
       $u = auth()->user();
