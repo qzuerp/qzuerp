@@ -19,7 +19,7 @@
     
     $firmaBilgisi = DB::table('FIRMA_TANIMLARI')->where('FIRMA',trim($u->firma))->first();
 
-    $veriT = DB::table($firma.'mmps10t')->where('R_KAYNAKTYPE','I')->where('EVRAKNO',$EVRAKNO)->orderBy('R_SIRANO','asc')->get();
+    $veriT = DB::table($firma.'mmps10t')->where('EVRAKNO',$EVRAKNO)->orderBy('R_SIRANO','asc')->get();
 @endphp
 <!DOCTYPE html>
 <html lang="tr">
