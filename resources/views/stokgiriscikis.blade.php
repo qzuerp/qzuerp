@@ -514,7 +514,7 @@
                               <!-- <input type="text" class="form-control LOCATION4" id="lok4-{{ $veri->id }}-CAM" name="LOCATION4_SHOW_T" value="{{ $veri->LOCATION4 }}" style="color: blue;" disabled><input type="hidden" class="form-control" name="LOCATION4[]" value="{{ $veri->LOCATION4 }}"> -->
                             </td>
                             <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
-                            <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ $veri->TESLIM_ALAN }}"></td>
+                            <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ @$veri->TESLIM_ALAN }}"></td>
                             <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
                             <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
                             <td><input type="text" class="form-control" name="PARCA_KODU[]" value="{{ $veri->PARCA_KODU }}" readonly></td>
