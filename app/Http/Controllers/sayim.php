@@ -640,7 +640,7 @@ class sayim extends Controller
       $satir = (object) $satir;
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
-      $STOK_ADI = DB::table($firma.'stok00')->where('KOD', $satir->KOD)->value('AD');
+      $STOK = DB::table($firma.'stok00')->where('KOD', $satir->KOD)->first(['AD','IUNIT']);
       
       // Çıkış
       DB::table($firma.'stok10a')->insert([
@@ -648,7 +648,8 @@ class sayim extends Controller
         'SRNUM' => $SRNUM,
         'TRNUM' => $SRNUM,
         'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
+        'STOK_ADI' => $STOK->AD,
+        'SF_SF_UNIT' => $STOK->IUNIT,
         'LOTNUMBER' => $satir->OLD_LOTNUMBER,
         'SERINO' => $satir->OLD_SERINO,
         'SF_MIKTAR' => ($satir->SISTEM_MIKTAR < 0) ? abs($satir->SISTEM_MIKTAR) : ($satir->SISTEM_MIKTAR * -1),
@@ -676,7 +677,8 @@ class sayim extends Controller
         'SRNUM' => $SRNUM,
         'TRNUM' => $SRNUM,
         'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
+        'STOK_ADI' => $STOK->AD,
+        'SF_SF_UNIT' => $STOK->IUNIT,
         'LOTNUMBER' => $satir->LOTNUMBER,
         'SERINO' => $satir->SERINO,
         'SF_MIKTAR' => $satir->SAYILAN_MIKTAR,
@@ -702,7 +704,8 @@ class sayim extends Controller
       DB::table($firma.'stok21t')->insert([
         'EVRAKNO' => $EKSIEVRAKNO,
         'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
+        'STOK_ADI' => $STOK->AD,
+        'SF_SF_UNIT' => $STOK->IUNIT,
         'LOTNUMBER' => $satir->OLD_LOTNUMBER,
         'SERINO' => $satir->OLD_SERINO,
         'AMBCODE' => $satir->AMBCODE,
@@ -727,7 +730,8 @@ class sayim extends Controller
       DB::table($firma.'stok21t')->insert([
         'EVRAKNO' => $ARTIEVRAK,
         'KOD' => $satir->KOD,
-        'STOK_ADI' => $STOK_ADI,
+        'STOK_ADI' => $STOK->AD,
+        'SF_SF_UNIT' => $STOK->IUNIT,
         'LOTNUMBER' => $satir->LOTNUMBER,
         'SERINO' => $satir->SERINO,
         'AMBCODE' => $satir->AMBCODE,

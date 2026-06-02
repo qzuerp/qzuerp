@@ -59,7 +59,7 @@
           <li><a href="etiket_bolme"><i class='bx bx-shuffle'></i>Etiket Bölme</a></li>
         @endif
         @if (in_array('ETIKETBOL', $kullanici_read_yetkileri))
-          <li><a href="stok_yonetimi"><i class="fa-solid fa-chart-gantt"></i>Stok Yönetim paneli</a></li>
+          <li><a href="stok_yonetimi"><i class="fa-solid fa-chart-gantt"></i>Stok / Takımhane Yönetim paneli</a></li>
         @endif
         @if (in_array('ETKTKART', $kullanici_read_yetkileri))
           <li><a href="etiketKarti"><i class='bx bx-purchase-tag'></i>Etiket Kartı</a></li>
@@ -260,7 +260,7 @@
           <li><a href="kart_kalip"><i class='bx bx-shape-square'></i>Kalıp Kartı</a></li>
         @endif
         @if (in_array('KLBRSYNKARTI', $kullanici_read_yetkileri))
-          <li><li><a href="kart_kalibrasyon"><i class='bx bx-ruler'></i>Bakım ve Kalibrasyon Kartı</a></li>
+          <li><li><a href="kart_kalibrasyon"><i class='bx bx-ruler'></i>Makina Bakım ve ölçüm cihazları Kartı</a></li>
         @endif
         @if (in_array('PRYBKM', $kullanici_read_yetkileri))
           <li><li><a href="periyodikBakim"><i class='bx bx-ruler'></i>Periyodik Bakım</a></li>
