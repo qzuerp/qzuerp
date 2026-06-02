@@ -515,17 +515,17 @@
                             </td>
                             <td><input type="text" class="form-control NOT1" name="NOT1[]" value="{{ $veri->NOT1 }}"></td>
                             <td><input type="text" class="form-control" name="TESLIM_ALAN[]" value="{{ @$veri->TESLIM_ALAN }}"></td>
-                            <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ $veri->TEZGAH }}"></td>
-                            <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ $veri->MPS_NO }}"></td>
+                            <td><input type="text" class="form-control" name="TEZGAH[]" value="{{ @$veri->TEZGAH }}"></td>
+                            <td><input type="text" class="form-control" name="MPS_NO[]" value="{{ @$veri->MPS_NO }}"></td>
                             <td><input type="text" class="form-control" name="PARCA_KODU[]" value="{{ $veri->PARCA_KODU }}" readonly></td>
-                            <td><input type="text" class="form-control TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
-                            <td><input type="text" class="form-control TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
-                            <td><input type="text" class="form-control TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
-                            <td><input type="text" class="form-control TEXT4" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ $veri->TEXT4 }}"></td>
-                            <td><input type="number" class="form-control NUM1" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ $veri->NUM1 }}"></td>
-                            <td><input type="number" class="form-control NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ $veri->NUM2 }}"></td>
-                            <td><input type="number" class="form-control NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ $veri->NUM3 }}"></td>
-                            <td><input type="number" class="form-control NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ $veri->NUM4 }}"></td>
+                            <td><input type="text" class="form-control TEXT1" id='text1-{{ $veri->id }}-CAM' name="TEXT1[]" value="{{ @$veri->TEXT1 }}"></td>
+                            <td><input type="text" class="form-control TEXT2" id='text2-{{ $veri->id }}-CAM' name="TEXT2[]" value="{{ @$veri->TEXT2 }}"></td>
+                            <td><input type="text" class="form-control TEXT3" id='text3-{{ $veri->id }}-CAM' name="TEXT3[]" value="{{ @$veri->TEXT3 }}"></td>
+                            <td><input type="text" class="form-control TEXT4" id='text4-{{ $veri->id }}-CAM' name="TEXT4[]" value="{{ @$veri->TEXT4 }}"></td>
+                            <td><input type="number" class="form-control NUM1" id='num1-{{ $veri->id }}-CAM' name="NUM1[]" value="{{ @$veri->NUM1 }}"></td>
+                            <td><input type="number" class="form-control NUM2" id='num2-{{ $veri->id }}-CAM' name="NUM2[]" value="{{ @$veri->NUM2 }}"></td>
+                            <td><input type="number" class="form-control NUM3" id='num3-{{ $veri->id }}-CAM' name="NUM3[]" value="{{ @$veri->NUM3 }}"></td>
+                            <td><input type="number" class="form-control NUM4" id='num4-{{ $veri->id }}-CAM' name="NUM4[]" value="{{ @$veri->NUM4 }}"></td>
                             <td><button type="button" class="btn btn-default delete-row" id="deleteSingleRow"><i class="fa fa-minus" style="color: red"></i></button></td>
                           </tr>
                         @endforeach
