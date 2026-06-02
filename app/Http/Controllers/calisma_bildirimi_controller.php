@@ -250,6 +250,9 @@ class calisma_bildirimi_controller extends Controller
     $AMBCODE = $request->AMBCODE;
     $TRNUM2 = $request->TRNUM2;
 
+    $SOKTAK = $request->SOKTAK;
+    $ISLEME = $request->ISLEME;
+
     if ($TRNUM2 == null) {
       $satir_say3 = 0;
     } else {
@@ -415,7 +418,9 @@ class calisma_bildirimi_controller extends Controller
           'TO_OPERATOR' => $TO_OPERATOR,
           'OPERASYON' => $OPERASYON,
           'SF_MIKTAR' => $SF_MIKTAR,
-          'STOK_CODE' => $STOK_CODE
+          'STOK_CODE' => $STOK_CODE,
+          'SOKTAK' => $SOKTAK,
+          'ISLEME' => $ISLEME,
         ]);
 
         for ($i = 0; $i < count($RECTARIH1); $i++) {
@@ -516,7 +521,9 @@ class calisma_bildirimi_controller extends Controller
           'TO_OPERATOR' => $TO_OPERATOR,
           'OPERASYON' => $OPERASYON,
           'SF_MIKTAR' => $SF_MIKTAR,
-          'STOK_CODE' => $STOK_CODE
+          'STOK_CODE' => $STOK_CODE,
+          'SOKTAK' => $SOKTAK,
+          'ISLEME' => $ISLEME,
         ]);
 
         $TRNUM = $request->TRNUM;

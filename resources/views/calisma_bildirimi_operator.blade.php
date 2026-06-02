@@ -382,6 +382,16 @@
                             </div>
 
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
+                              <label>Sök-Tak</label>
+                              <input type="text" class="form-control SOKTAK" maxlength="16" name="SOKTAK" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SOKTAK" id="SOKTAK" value="{{ @$kart_veri->SOKTAK }}">
+                            </div>
+
+                            <div class="col-md-2 col-sm-4 col-xs-6"> 
+                              <label>İşleme</label>
+                              <input type="text" class="form-control ISLEME" maxlength="16" name="ISLEME" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ISLEME" id="ISLEME" value="{{ @$kart_veri->ISLEME }}">
+                            </div>
+                            
+                            <div class="col-md-2 col-sm-4 col-xs-6"> 
                               <label>Kalıp Kodu</label>
                               <input type="text" class="form-control KALIPKODU" maxlength="16" name="KALIPKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIPKODU" id="KALIPKODU" value="{{ @$kart_veri->KALIPKODU }}">
                             </div>
