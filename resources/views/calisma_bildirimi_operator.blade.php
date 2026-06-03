@@ -281,15 +281,18 @@
                     </div>
                     
                     <div class="d-flex col">
-                      @php 
-                        $img = DB::table($database.'dosyalar00')
-                        ->where('EVRAKNO',@$kart_veri->STOK_CODE)
-                        ->where('EVRAKTYPE','STOK00')
-                        ->where('DOSYATURU','GORSEL')
-                        ->first();
-                      @endphp
-                      <img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
-                    
+                      @if (@$kart_veri->STOK_CODE != null)
+                      
+                        @php 
+                          $img = DB::table($database.'dosyalar00')
+                            ->where('EVRAKNO',@$kart_veri->STOK_CODE)
+                            ->where('EVRAKTYPE','STOK00')
+                            ->where('DOSYATURU','GORSEL')
+                            ->first();
+                        @endphp
+                        <img src="{{ isset($img->DOSYA) ? asset('dosyalar/'.$img->DOSYA) : '' }}" alt="" id="kart_img" width="100">
+                      
+                      @endif
                     </div>
                   </div>
                 </div>
