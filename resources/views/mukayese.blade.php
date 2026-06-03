@@ -484,7 +484,7 @@ $(document).ready(function () {
       { data: 'OLD_TEXT1' }, { data: 'OLD_TEXT2' }, { data: 'OLD_TEXT3' }, { data: 'OLD_TEXT4' },
       { data: 'OLD_NUM1'  }, { data: 'OLD_NUM2'  }, { data: 'OLD_NUM3'  }, { data: 'OLD_NUM4'  },
       { data: 'SAYILAN_MIKTAR' },
-      { data: 'SISTEM_MIKTAR'  },
+      { data: 'MIKTAR'  },
       {
         data: 'FARK',
         render: function(v) {
