@@ -390,7 +390,7 @@
                               <label>İşleme</label>
                               <input type="text" class="form-control ISLEME" maxlength="16" name="ISLEME" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ISLEME" id="ISLEME" value="{{ @$kart_veri->ISLEME }}">
                             </div>
-                            
+
                             <div class="col-md-2 col-sm-4 col-xs-6"> 
                               <label>Kalıp Kodu</label>
                               <input type="text" class="form-control KALIPKODU" maxlength="16" name="KALIPKODU" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KALIPKODU" id="KALIPKODU" value="{{ @$kart_veri->KALIPKODU }}">
@@ -1716,15 +1716,6 @@
       function endProcess(type) {
         const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
         
-        // Duruş için sebep kontrolü
-        if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Duruş sebebi seçmelisiniz.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
         
         const lastRow = findLastRow(type);
         

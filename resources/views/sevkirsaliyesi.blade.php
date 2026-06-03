@@ -782,6 +782,7 @@
                         <th>Cari</th>
                         <th>Depo</th>
                         <th>Tarih</th>
+                        <th>Müşteri Sipariş No</th>
                         <th>#</th>
                       </tr>
                     </thead>
@@ -795,6 +796,7 @@
                         <th>Cari</th>
                         <th>Depo</th>
                         <th>Tarih</th>
+                        <th>Müşteri Sipariş No</th>
                         <th>#</th>
                       </tr>
                     </tfoot>

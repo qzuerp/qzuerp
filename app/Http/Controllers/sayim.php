@@ -605,7 +605,6 @@ class sayim extends Controller
     $u = auth()->user();
     $firma = trim($u->firma) . '.dbo.';
 
-    $tip = $request->tip;
     $satirlar = $request->satirlar;
 
     $EVRAKNO = DB::table($firma.'stok21e')->max('EVRAKNO');
@@ -626,6 +625,7 @@ class sayim extends Controller
 
     foreach($satirlar as $i => $satir)
     {
+      
       $satir = (object) $satir;
       $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
@@ -656,7 +656,7 @@ class sayim extends Controller
         'LOCATION1' => $satir->OLD_LOCATION1,
         'LOCATION2' => $satir->OLD_LOCATION2,
         'LOCATION3' => $satir->OLD_LOCATION3,
-        'LOCATION4' => $satir->OLD_LOCATION4,
+        'LOCATION4' => $satir->OLD_LOCATION4, 
         'created_at' => date('Y-m-d H:i:s'),
       ]);
 

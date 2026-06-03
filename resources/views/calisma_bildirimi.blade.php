@@ -2168,15 +2168,6 @@
       function endProcess(type) {
         const labels = { A: 'Ayar', U: 'Üretim', D: 'Duruş' };
         
-        // Duruş için sebep kontrolü
-        if (type === 'D' && !$("#DURMA_SEBEBI").val()) {
-          Swal.fire({
-            icon: 'warning',
-            text: "Duruş sebebi seçmelisiniz.",
-            confirmButtonText: "Tamam"
-          });
-          return;
-        }
         
         const lastRow = findLastRow(type);
         
