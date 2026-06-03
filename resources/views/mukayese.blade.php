@@ -581,7 +581,7 @@ $(document).ready(function () {
       },
       success: function(response) {
         tumVeri = response;
-        table.clear().rows.add( ).draw();
+        table.clear().rows.add(tumVeri).draw();
         istatistikGuncelle(response);
       },
       error: function(xhr) {
