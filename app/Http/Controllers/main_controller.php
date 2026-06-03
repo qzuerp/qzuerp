@@ -113,44 +113,19 @@ class main_controller extends Controller
       $kullanici_veri = DB::table('users')->where('id', $user->id)->first();
       $database = trim($kullanici_veri->firma).".dbo.";
 
-      $evraklar = DB::table($database.'stok10a as s10')
-          ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
-          ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
-          ->selectRaw('
-              s10.KOD,
-              s10.STOK_ADI,
-              SUM(s10.SF_MIKTAR) AS MIKTAR,
-              s0.IUNIT AS SF_SF_UNIT,
-              s10.LOTNUMBER,
-              s10.SERINO,
-              s10.AMBCODE,
-              g.AD AS DEPO_ADI,
-              s10.TEXT1,
-              s10.TEXT2,
-              s10.TEXT3,
-              s10.TEXT4,
-              s10.NUM1,
-              s10.NUM2,
-              s10.NUM3,
-              s10.NUM4,
-              s10.LOCATION1,
-              s10.LOCATION2,
-              s10.LOCATION3,
-              s10.LOCATION4,
-              s0.NAME2,
-              s0.id,
-              s0.REVNO
-          ')
-          ->groupBy(
-              's10.KOD','s10.STOK_ADI','s0.IUNIT','s10.LOTNUMBER',
-              's10.SERINO','s10.AMBCODE','g.AD',
-              's10.TEXT1','s10.TEXT2','s10.TEXT3','s10.TEXT4',
-              's10.NUM1','s10.NUM2','s10.NUM3','s10.NUM4',
-              's10.LOCATION1','s10.LOCATION2','s10.LOCATION3','s10.LOCATION4',
-              's0.NAME2','s0.id','s0.REVNO'
-          )
-          ->havingRaw('SUM(s10.SF_MIKTAR) <> 0')
-          ->get();
+      $evraklar = DB::table($database.'vw_stok01 as s10')
+        ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
+        ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
+        ->selectRaw('
+            s10.*,
+            s0.NAME2,
+            s0.id,
+            s0.REVNO,
+            g.AD AS DEPO_ADI,
+            s0.IUNIT AS SF_SF_UNIT
+        ')
+        ->where('s10.MIKTAR', '<>', 0) // HAVING yerine doğrusu bu
+        ->get();
 
       // Görselleri toplu al
       $kodlar = $evraklar->pluck('KOD')->toArray();

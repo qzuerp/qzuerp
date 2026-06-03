@@ -18,7 +18,7 @@
   $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
   $sayimListesi = DB::table($database.'sym10e')->get();
-  $depo         = DB::table($database.'gdef00')->orderBy('id','ASC')->get();
+  $depo         = DB::table($database.'gdef00')->orderBy('id','DESC')->get();
 @endphp
 
 @section('content')
@@ -581,7 +581,7 @@ $(document).ready(function () {
       },
       success: function(response) {
         tumVeri = response;
-        table.clear().rows.add(response).draw();
+        table.clear().rows.add( ).draw();
         istatistikGuncelle(response);
       },
       error: function(xhr) {

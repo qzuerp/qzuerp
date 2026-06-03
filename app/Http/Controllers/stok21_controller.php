@@ -215,7 +215,7 @@ class stok21_controller extends Controller
 
       print_r("Silme işlemi başarılı.");
 
-      $sonID=DB::table($firma.'stok21e')->min('EVRAKNO');
+      $sonID=DB::table($firma.'stok21e')->min('id');
       return redirect()->route('stokgiriscikis', ['ID' => $sonID, 'silme' => 'ok']);
 
       break;
