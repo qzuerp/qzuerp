@@ -641,7 +641,7 @@ class sayim extends Controller
         'SF_SF_UNIT' => $STOK->IUNIT,
         'LOTNUMBER' => $satir->OLD_LOTNUMBER,
         'SERINO' => $satir->OLD_SERINO,
-        'SF_MIKTAR' => ($satir->SISTEM_MIKTAR < 0) ? abs($satir->SISTEM_MIKTAR) : ($satir->SISTEM_MIKTAR * -1),
+        'SF_MIKTAR' => ($satir->MIKTAR < 0) ? abs($satir->MIKTAR) : ($satir->MIKTAR * -1),
         'TEXT2' => $satir->OLD_TEXT2,
         'TEXT1' => $satir->OLD_TEXT1,
         'TEXT3' => $satir->OLD_TEXT3,
@@ -710,7 +710,7 @@ class sayim extends Controller
         'LOCATION2' => $satir->OLD_LOCATION2,
         'LOCATION3' => $satir->OLD_LOCATION3,
         'LOCATION4' => $satir->OLD_LOCATION4,
-        'CIKAN_MIKTAR' => abs($satir->SISTEM_MIKTAR),
+        'CIKAN_MIKTAR' => abs($satir->MIKTAR),
         'SRNUM' => $SRNUM,
         'TRNUM' => $SRNUM
       ]);
