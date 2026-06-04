@@ -213,6 +213,9 @@ class bomu01_controller extends Controller
     $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
     $ACIKLAMA2 = $request->ACIKLAMA2;
 
+
+    $DURUM = $request->DURUM;
+
     if ($BOMREC_KAYNAKCODE == null) {
       $satir_say = 0;
     } else {
@@ -300,6 +303,7 @@ class bomu01_controller extends Controller
           'AP10' => $AP10,
           'MAMUL_MIKTAR' => $MAMUL_MIKTAR,
           'ACIKLAMA' => $ACIKLAMA_E,
+          'DURUM' => $DURUM,
           'LAST_TRNUM' => $LAST_TRNUM,
           'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -362,6 +366,7 @@ class bomu01_controller extends Controller
           'AP10' => $AP10,
           'MAMUL_MIKTAR' => $MAMUL_MIKTAR,
           'ACIKLAMA' => $ACIKLAMA_E,
+          'DURUM' => $DURUM,
           'LAST_TRNUM' => $LAST_TRNUM,
           // 'updated_at' => date('Y-m-d H:i:s'),
         ]);

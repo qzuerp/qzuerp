@@ -184,12 +184,12 @@
 								</div>
 								<div class="col-5">
 									<label>Durum</label>
-									<select class="select2">
+									<select class="select2 form-select" name="DURUM">
 										<option value="">Seç</option>
-										<option value="1">Kilitle</option>
-										<option value="2">1. İyileştirme</option>
-										<option value="3">2. İyileştirme</option>
-										<option value="4">3. İyileştirme</option>
+										<option {{ @$kart_veri->DURUM == '1' ? 'selected' : '' }} value="1">Kilitle</option>
+										<option {{ @$kart_veri->DURUM == '2' ? 'selected' : '' }} value="2">1. İyileştirme</option>
+										<option {{ @$kart_veri->DURUM == '3' ? 'selected' : '' }} value="3">2. İyileştirme</option>
+										<option {{ @$kart_veri->DURUM == '4' ? 'selected' : '' }} value="4">3. İyileştirme</option>
 									</select>
 								</div>
 								<div class="col-md-1" style="text-align: right;">
