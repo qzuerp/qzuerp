@@ -437,6 +437,7 @@
                               S40T.EVRAKNO AS SiparisEvrakNo,
                               S40T.KOD AS NihaiMamulKodu,
                               S40T.ARTNO,
+                              S40T.TERMIN_TAR,
                               S40T.SF_MIKTAR AS NihaiMamulSiparisMiktari,
                               CASE WHEN B01T.BOMREC_INPUTTYPE <> 'I' THEN B01T.BOMREC_KAYNAKCODE ELSE
                               B01T.BOMREC_YMAMULCODE END AS HM_YM_Kodu,
@@ -461,6 +462,7 @@
                               RB.SiparisEvrakNo,
                               RB.NihaiMamulKodu,
                               RB.ARTNO,
+                              RB.TERMIN_TAR,
                               RB.NihaiMamulSiparisMiktari,
                               B01T_Alt.BOMREC_KAYNAKCODE,
                               B01T_Alt.BOMREC_KAYNAK0,
@@ -477,6 +479,7 @@
                             ROW_NUMBER() OVER (ORDER BY RB.SiparisEvrakNo, RB.NihaiMamulKodu, RB.HM_YM_Kodu) AS SatirNo,
                             RB.SiparisEvrakNo,
 			                      RB.ARTNO,
+			                      RB.TERMIN_TAR,
                             RB.Seviye,
                             RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari,
@@ -493,9 +496,9 @@
                         GROUP BY
                             RB.SiparisEvrakNo, RB.Seviye, RB.NihaiMamulKodu,
                             RB.NihaiMamulSiparisMiktari, RB.KaynakTipi,
-                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, RB.ARTNO,RB.HesaplananHM_YM_Miktar
+                            RB.HM_YM_Kodu, S00.AD, S00.IUNIT, RB.ARTNO,RB.TERMIN_TAR,RB.HesaplananHM_YM_Miktar
                         ORDER BY
-                            RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu
+                          RB.SiparisEvrakNo, RB.NihaiMamulKodu, HammaddeKodu
                           OFFSET 1 ROWS;
                       ";
                       $sonuc = DB::select($sql, [@$kart_veri->EVRAKNO]);
@@ -526,6 +529,7 @@
                             <span class="badge bg-secondary">{{ $satir->Seviye }}</span>
                           </td>
                           <td>
+                            <input type="hidden" name="IHTIYAC_TERMIN_TAR[]" value="{{ $satir->TERMIN_TAR }}">
                             <input type="hidden" name="NihaiMamulKodu[]" value="{{ $satir->NihaiMamulKodu }}">
                             <small class="text-muted">{{ $satir->NihaiMamulKodu }}</small>
                           </td>
@@ -984,6 +988,7 @@
                 <table class="table table-bordered table-sm" id="modal_ihtiyac_table">
                   <thead class="table-light">
                     <tr>
+                      <th>Mamul Stok Kodu</th>
                       <th>Stok Kodu</th>
                       <th>Stok Adı</th>
                       <th style="width:80px; text-align:center">Br.</th>
@@ -1305,6 +1310,7 @@
           var getSelectedRows = $('#ihtiyac_table tbody input:checked').closest("tr");
 
           getSelectedRows.each(function() {
+              var termin = $(this).find('input[name="IHTIYAC_TERMIN_TAR[]"]').val();
               var nihaiKod = $(this).find('input[name="NihaiMamulKodu[]"]').val();
               var hammaddeKodu = $(this).find('input[name="HammaddeKodu[]"]').val();
               var stokAdi = $(this).find('input[name="STOK_ADI_2[]"]').val();
@@ -1314,13 +1320,14 @@
 
               var yeniSatir = `
                   <tr>
-                    <input type='hidden' name='NIHAI_KOD[]' value='${nihaiKod}' class='form-control' readonly/>
+                    
                     <input type='hidden' name='MPS_EVRAKNO[]' value='${MPS}' class='form-control'/>
+                    <td><input type='text' name='NIHAI_KOD[]' value='${nihaiKod}' class='form-control' readonly/></td>
                     <td><input type='text' name='STOK_KODU[]' value='${hammaddeKodu}' class='form-control' readonly/></td>
                     <td><input type='text' name='STOK_ADI[]' value='${stokAdi}' class='form-control' readonly/></td>
                     <td><input type='text' name='BIRIM[]' value='${birim}' class='form-control' readonly/></td>
                     <td><input type='text' name='SF_MIKTAR[]' value='${miktar}' class='form-control'/></td>
-                    <td><input type='date' name='TERMIN[]' value='' class='form-control'/></td>
+                    <td><input type='date' name='TERMIN[]' value='${termin}' class='form-control'/></td>
                   </tr>
               `;
 

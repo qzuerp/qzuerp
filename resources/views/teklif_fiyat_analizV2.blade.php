@@ -1334,7 +1334,7 @@
 														</div>
 													</div>
 													<div class="mb-2">
-														<label class="form-label-sm fw-bold">Ayar</label>
+														<label class="form-label-sm fw-bold">Ayar (Saat)</label>
 														<div class="d-flex gap-1">
 															<input type="text" class="form-control  TIME"
 																placeholder="0.00">
@@ -1348,7 +1348,7 @@
 														</div>
 													</div>
 													<div class="mb-2">
-														<label class="form-label-sm fw-bold">İşleme</label>
+														<label class="form-label-sm fw-bold">İşleme (Dakika)</label>
 														<div class="d-flex gap-1">
 															<div class="input-group">
 																<input type="text" class="form-control  PTIME"
@@ -1366,7 +1366,7 @@
 													</div>
 
 													<div class="mb-2">
-														<label class="form-label-sm fw-bold">Sök-Tak</label>
+														<label class="form-label-sm fw-bold">Sök-Tak (Dakika)</label>
 														<div class="d-flex gap-1">
 															<div class="input-group">
 																<input type="text" class="form-control  STIME"

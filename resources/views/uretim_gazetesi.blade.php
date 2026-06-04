@@ -932,7 +932,7 @@ usort($groups, function($a, $b) {
                                 <td class="num"><?= $g['ILK_FASON'] ? $g['ILK_FASON'] : '—' ?></td>
                                 <td><?= $g['FASON_SEVK'] == $g['FASON_GELEN'] ? '' : htmlspecialchars($g['fason_depo'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($g['fason'] ?? '') ?></td>
-                                <?php if (isset($ops)): foreach ($ops as $op): 
+                                <?php  if (isset($ops)): foreach ($ops as $op): 
                                     if (isset($g['ops'][$op])) {
                                         $m = $g['ops'][$op];
                                         $planS = isset($m['planSure']) ? (float)$m['planSure'] : null;
