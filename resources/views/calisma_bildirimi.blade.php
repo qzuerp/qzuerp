@@ -285,6 +285,11 @@
                   <li class=""><a href="#hatalar" class="nav-link" data-bs-toggle="tab">Hatalar</a></li>
                   <li class=""><a href="#hammade" class="nav-link" data-bs-toggle="tab">Kullanılan Hammade / Diğer Malzemeler</a></li>
                   <li class=""><a href="#liste" id="liste-tab" class="nav-link" data-bs-toggle="tab">Liste</a></li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#analiz" data-bs-toggle="tab">
+                          <i class="fa fa-chart-bar me-1"></i> Verimlilik Analizi
+                      </a>
+                  </li>
                   <li id="baglantiliDokumanlarTab" class=""><a href="#baglantiliDokumanlar" id="baglantiliDokumanlarTabButton" class="nav-link" data-bs-toggle="tab"><i style="color: orange" class="fa fa-file-text"></i> Bağlantılı Dokümanlar</a></li>
                 </ul>
 
@@ -927,443 +932,1318 @@
                   {{-- LİSTE BAŞLANGIÇ --}}
                     <div class="tab-pane" id="liste">
 
+                      @php
+                      $get = fn(string $key): string => trim(request()->get($key, ''));
+
+                      $MPSSTOKKODU_B    = $get('MPSSTOKKODU_B');
+                      $MPSSTOKKODU_E    = $get('MPSSTOKKODU_E');
+                      $TO_OPERATOR_B    = $get('TO_OPERATOR_B');
+                      $TO_OPERATOR_E    = $get('TO_OPERATOR_E');
+                      $OPERASYON_B      = $get('OPERASYON_B');
+                      $OPERASYON_E      = $get('OPERASYON_E');
+                      $X_T_ISMERKEZI_B  = $get('X_T_ISMERKEZI_B');
+                      $X_T_ISMERKEZI_E  = $get('X_T_ISMERKEZI_E');
+                      $D7_ISLEM_KODU_B  = $get('D7_ISLEM_KODU_B');
+                      $D7_ISLEM_KODU_E  = $get('D7_ISLEM_KODU_E');
+                      $RECTARIH1_B      = $get('RECTARIH1_B');
+                      $RECTARIH1_E      = $get('RECTARIH1_E');
+                      $RECTIME1_B       = $get('RECTIME1_B');
+                      $RECTIME1_E       = $get('RECTIME1_E');
+                      $ENDTARIH1_B      = $get('ENDTARIH1_B');
+                      $ENDTARIH1_E      = $get('ENDTARIH1_E');
+                      $ENDTIME1_B       = $get('ENDTIME1_B');
+                      $ENDTIME1_E       = $get('ENDTIME1_E');
+                      $URETIM_B         = $get('URETIM_B');
+                      $URETIM_E         = $get('URETIM_E');
+
+                      $db = trim($kullanici_veri->firma) . '.dbo.';
+
+                      $mpsStoklar  = DB::table($db . 'mmps10e')
+                                          ->whereNotNull('MAMULSTOKKODU')
+                                          ->where('MAMULSTOKKODU', '<>', '')
+                                          ->orderBy('MAMULSTOKKODU')
+                                          ->get(['MAMULSTOKKODU', 'MAMULSTOKADI']);
+
+                      $operatorler = DB::table($db . 'pers00')
+                                          ->whereNotNull('KOD')
+                                          ->where('KOD', '<>', '')
+                                          ->orderBy('KOD')
+                                          ->get(['KOD', 'AD']);
+
+                      $operasyonlar = DB::table($db . 'imlt01')
+                                          ->whereNotNull('KOD')
+                                          ->where('KOD', '<>', '')
+                                          ->orderBy('KOD')
+                                          ->get(['KOD', 'AD']);
+
+                      $tezgahlar   = DB::table($db . 'imlt00')
+                                          ->whereNotNull('KOD')
+                                          ->where('KOD', '<>', '')
+                                          ->orderBy('KOD')
+                                          ->get(['KOD', 'AD']);
+
+                                          
+                      $kayitlar   = collect();
+                      $suzAktif   = request()->has('SUZ');
+
+                      if ($suzAktif) {
+
+                          $q = DB::table($db . 'sfdc31e as e')
+                                  ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
+                                  ->leftJoin($db . 'mmps10t as M10T','M10T.JOBNO','=','e.JOBNO')
+                                  ->leftJoin($db . 'pers00 as P00','P00.KOD','=','e.TO_OPERATOR')
+                                  ->select(
+                                      'e.EVRAKNO', 'e.TARIH', 'e.ID',
+                                      'e.STOK_CODE', 'e.TO_OPERATOR', 'e.OPERASYON',
+                                      'e.TO_ISMERKEZI', 't.ISLEM_TURU',
+                                      't.BASLANGIC_TARIHI', 't.BASLANGIC_SAATI',
+                                      't.BITIS_TARIHI',    't.BITIS_SAATI',
+                                      't.SURE',            'e.SF_MIKTAR',
+                                      'M10T.R_MIKTART', 'P00.AD AS OPR_AD'
+                                  );
+
+                          // Stok kodu
+                          if ($MPSSTOKKODU_B !== '') $q->where('e.STOK_CODE', '>=', $MPSSTOKKODU_B);
+                          if ($MPSSTOKKODU_E !== '') $q->where('e.STOK_CODE', '<=', $MPSSTOKKODU_E);
+
+                          // Operatör
+                          if ($TO_OPERATOR_B !== '') $q->where('e.TO_OPERATOR', '>=', $TO_OPERATOR_B);
+                          if ($TO_OPERATOR_E !== '') $q->where('e.TO_OPERATOR', '<=', $TO_OPERATOR_E);
+
+                          // Operasyon
+                          if ($OPERASYON_B !== '') $q->where('e.OPERASYON', '>=', $OPERASYON_B);
+                          if ($OPERASYON_E !== '') $q->where('e.OPERASYON', '<=', $OPERASYON_E);
+
+                          // Tezgah / İş Merkezi
+                          if ($X_T_ISMERKEZI_B !== '') $q->where('e.TO_ISMERKEZI', '>=', $X_T_ISMERKEZI_B);
+                          if ($X_T_ISMERKEZI_E !== '') $q->where('e.TO_ISMERKEZI', '<=', $X_T_ISMERKEZI_E);
+
+                          // Süreç (D7_ISLEM_KODU)
+                          if ($D7_ISLEM_KODU_B !== '') $q->where('t.ISLEM_TURU', '>=', $D7_ISLEM_KODU_B);
+                          if ($D7_ISLEM_KODU_E !== '') $q->where('t.ISLEM_TURU', '<=', $D7_ISLEM_KODU_E);
+
+                          // Başlama tarihi / saati
+                          if ($RECTARIH1_B !== '') $q->where('t.BASLANGIC_TARIHI', '>=', $RECTARIH1_B);
+                          if ($RECTARIH1_E !== '') $q->where('t.BASLANGIC_TARIHI', '<=', $RECTARIH1_E);
+                          if ($RECTIME1_B  !== '') $q->where('t.BASLANGIC_SAATI',  '>=', $RECTIME1_B);
+                          if ($RECTIME1_E  !== '') $q->where('t.BASLANGIC_SAATI',  '<=', $RECTIME1_E);
+
+                          // Bitiş tarihi / saati  — DÜZELTME: önceden yanlış ($RECTARIH2_B, $RECTIME2_B) kullanılıyordu
+                          if ($ENDTARIH1_B !== '') $q->where('t.BITIS_TARIHI', '>=', $ENDTARIH1_B);
+                          if ($ENDTARIH1_E !== '') $q->where('t.BITIS_TARIHI', '<=', $ENDTARIH1_E);
+                          if ($ENDTIME1_B  !== '') $q->where('t.BITIS_SAATI',  '>=', $ENDTIME1_B);
+                          if ($ENDTIME1_E  !== '') $q->where('t.BITIS_SAATI',  '<=', $ENDTIME1_E);
+
+                          // Üretim adeti
+                          if ($URETIM_B !== '' && is_numeric($URETIM_B)) $q->where('e.SF_MIKTAR', '>=', (float)$URETIM_B);
+                          if ($URETIM_E !== '' && is_numeric($URETIM_E)) $q->where('e.SF_MIKTAR', '<=', (float)$URETIM_E);
+
+                          $kayitlar = $q->orderBy('e.EVRAKNO', 'DESC')->get();
+                      }
+
+                      
+                      $buildOptions = function(string $valField, string $labelField, $items, string $selected = ''): string {
+                          $html = '<option value="">— Seç —</option>';
+                          foreach ($items as $item) {
+                              $val  = e($item->$valField);
+                              $lbl  = e($item->$labelField);
+                              $sel  = ($val === $selected) ? ' selected' : '';
+                              $html .= "<option value=\"{$val}\"{$sel}>{$val} — {$lbl}</option>";
+                          }
+                          return $html;
+                      };
+                      @endphp
+
+                      
+                      <div class="tab-pane" id="liste">
+
+                          {{-- ── FİLTRE FORMU ──────────────────────────────────────── --}}
+                          <form method="GET" action="" id="filtre-formu">
+                              <input type="hidden" name="SUZ" value="1">
+
+                              <div class="card shadow-sm mb-3">
+                                  <div class="card-header bg-primary text-white py-2">
+                                      <i class="fa fa-filter me-1"></i> Filtre Kriterleri
+                                  </div>
+                                  <div class="card-body">
+                                      <div class="row g-3">
+
+                                          {{-- MPS Stok Kodu --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">MPS Stok Kodu</label>
+                                              <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-select form-select-sm select2">
+                                                  {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_B) !!}
+                                              </select>
+                                              <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-select form-select-sm mt-1 select2">
+                                                  {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_E) !!}
+                                              </select>
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Operatör --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Operatör</label>
+                                              <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-select form-select-sm select2">
+                                                  {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_B) !!}
+                                              </select>
+                                              <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-select form-select-sm mt-1 select2">
+                                                  {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_E) !!}
+                                              </select>
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Operasyon --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Operasyon</label>
+                                              <select name="OPERASYON_B" id="OPERASYON_B" class="form-select form-select-sm select2">
+                                                  {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_B) !!}
+                                              </select>
+                                              <select name="OPERASYON_E" id="OPERASYON_E" class="form-select form-select-sm mt-1 select2">
+                                                  {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_E) !!}
+                                              </select>
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Tezgah Adı --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Tezgah Adı</label>
+                                              <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-select form-select-sm select2">
+                                                  {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_B) !!}
+                                              </select>
+                                              <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-select form-select-sm mt-1 select2">
+                                                  {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_E) !!}
+                                              </select>
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Süreç Adı --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Süreç Adı</label>
+                                              <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-select form-select-sm select2">
+                                                  <option value="">— Seç —</option>
+                                                  <option value="A" @selected($D7_ISLEM_KODU_B === 'A')>A — Ayar</option>
+                                                  <option value="U" @selected($D7_ISLEM_KODU_B === 'U')>U — Üretim</option>
+                                                  <option value="D" @selected($D7_ISLEM_KODU_B === 'D')>D — Duruş</option>
+                                              </select>
+                                              <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-select form-select-sm mt-1 select2">
+                                                  <option value="">— Seç —</option>
+                                                  <option value="A" @selected($D7_ISLEM_KODU_E === 'A')>A — Ayar</option>
+                                                  <option value="U" @selected($D7_ISLEM_KODU_E === 'U')>U — Üretim</option>
+                                                  <option value="D" @selected($D7_ISLEM_KODU_E === 'D')>D — Duruş</option>
+                                              </select>
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Başlama Tarihi --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Başlama Tarihi</label>
+                                              <input type="date" class="form-control form-control-sm"
+                                                    name="RECTARIH1_B" id="RECTARIH1_B"
+                                                    value="{{ $RECTARIH1_B }}">
+                                              <input type="date" class="form-control form-control-sm mt-1"
+                                                    name="RECTARIH1_E" id="RECTARIH1_E"
+                                                    value="{{ $RECTARIH1_E }}">
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Başlama Saati --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Başlama Saati</label>
+                                              <input type="time" class="form-control form-control-sm"
+                                                    name="RECTIME1_B" id="RECTIME1_B"
+                                                    value="{{ $RECTIME1_B }}">
+                                              <input type="time" class="form-control form-control-sm mt-1"
+                                                    name="RECTIME1_E" id="RECTIME1_E"
+                                                    value="{{ $RECTIME1_E }}">
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Bitiş Tarihi --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Bitiş Tarihi</label>
+                                              <input type="date" class="form-control form-control-sm"
+                                                    name="ENDTARIH1_B" id="ENDTARIH1_B"
+                                                    value="{{ $ENDTARIH1_B }}">
+                                              <input type="date" class="form-control form-control-sm mt-1"
+                                                    name="ENDTARIH1_E" id="ENDTARIH1_E"
+                                                    value="{{ $ENDTARIH1_E }}">
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Bitiş Saati — DÜZELTME: her iki input da ENDTIME1_E olarak name almıştı --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Bitiş Saati</label>
+                                              <input type="time" class="form-control form-control-sm"
+                                                    name="ENDTIME1_B" id="ENDTIME1_B"
+                                                    value="{{ $ENDTIME1_B }}">
+                                              <input type="time" class="form-control form-control-sm mt-1"
+                                                    name="ENDTIME1_E" id="ENDTIME1_E"
+                                                    value="{{ $ENDTIME1_E }}">
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Başlangıç</small>
+                                                  <small class="text-muted">Bitiş</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Üretim Adeti --}}
+                                          <div class="col-md-3">
+                                              <label class="form-label fw-semibold">Üretim Adeti</label>
+                                              <input type="number" min="0" step="any" class="form-control form-control-sm"
+                                                    name="URETIM_B" id="URETIM_B" placeholder="Min"
+                                                    value="{{ $URETIM_B }}">
+                                              <input type="number" min="0" step="any" class="form-control form-control-sm mt-1"
+                                                    name="URETIM_E" id="URETIM_E" placeholder="Max"
+                                                    value="{{ $URETIM_E }}">
+                                              <div class="d-flex justify-content-between px-1 mt-1">
+                                                  <small class="text-muted">Min</small>
+                                                  <small class="text-muted">Max</small>
+                                              </div>
+                                          </div>
+
+                                          {{-- Butonlar --}}
+                                          <div class="col-md-3 d-flex align-items-center gap-2 mt-2">
+                                              <button type="submit" name="kart_islemleri" value="listele" class="btn btn-success">
+                                                  <i class="fa fa-filter me-1"></i> Süz
+                                              </button>
+                                              <a href="{{ url()->current() }}" class="btn btn-outline-secondary">
+                                                  <i class="fa fa-times me-1"></i> Temizle
+                                              </a>
+                                          </div>
+
+                                      </div>{{-- /row --}}
+                                  </div>{{-- /card-body --}}
+                              </div>{{-- /card --}}
+                          </form>
+
+                          {{-- ── SONUÇ TABLOSU ──────────────────────────────────────── --}}
+                          @if ($suzAktif)
+
+                              {{-- Aktar araç çubuğu --}}
+                              <div class="d-flex gap-2 mb-2">
+                                  <button type="button" class="btn btn-sm btn-success" onclick="exportTableToExcel('listeleTable')">
+                                      <i class="fas fa-file-excel me-1"></i> Excel'e Aktar
+                                  </button>
+                                  <button type="button" class="btn btn-sm btn-danger" onclick="exportTableToWord('listeleTable')">
+                                      <i class="fas fa-file-word me-1"></i> Word'e Aktar
+                                  </button>
+                                  <button type="button" class="btn btn-sm btn-primary" onclick="printTable('listeleTable')">
+                                      <i class="fas fa-print me-1"></i> Yazdır
+                                  </button>
+                                  <span class="ms-auto text-muted small align-self-center">
+                                      {{ $kayitlar->count() }} kayıt bulundu
+                                  </span>
+                              </div>
+
+                              <div style="overflow-x: auto;">
+                                  <table id="listeleTable"
+                                        class="table table-hover table-bordered text-center align-middle"
+                                        data-page-length="25">
+                                      <thead class="table-primary">
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Evrak No</th>
+                                              <th>Evrak Tarihi</th>
+                                              <th>Stok Kodu</th>
+                                              <th style="min-width:120px;">Operatör</th>
+                                              <th>Operasyon</th>
+                                              <th>Tezgah Adı</th>
+                                              <th>İşlem Statüsü</th>
+                                              <th>Başlama Tarihi</th>
+                                              <th>Başlama Saati</th>
+                                              <th>Bitiş Tarihi</th>
+                                              <th>Bitiş Saati</th>
+                                              <th>Gerçekleşen Süre</th>
+                                              <th>Planlanan Süre</th>
+                                              <th>Üretilen Miktar</th>
+                                              <th></th>
+                                          </tr>
+                                      </thead>
+                                      <tfoot class="table-primary">
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Evrak No</th>
+                                              <th>Evrak Tarihi</th>
+                                              <th>Stok Kodu</th>
+                                              <th>Operatör</th>
+                                              <th>Operasyon</th>
+                                              <th>Tezgah Adı</th>
+                                              <th>İşlem Statüsü</th>
+                                              <th>Başlama Tarihi</th>
+                                              <th>Başlama Saati</th>
+                                              <th>Bitiş Tarihi</th>
+                                              <th>Bitiş Saati</th>
+                                              <th>Gerçekleşen Süre</th>
+                                              <th>Planlanan Süre</th>
+                                              <th>Üretilen Miktar</th>
+                                              <th></th>
+                                          </tr>
+                                      </tfoot>
+                                      <tbody>
+                                          @forelse ($kayitlar as $i => $r)
+                                              <tr>
+                                                  <td class="text-muted small">{{ $i + 1 }}</td>
+                                                  <td><strong>{{ $r->EVRAKNO }}</strong></td>
+                                                  <td>{{ $r->TARIH }}</td>
+                                                  <td>{{ $r->STOK_CODE }}</td>
+                                                  <td>{{ $r->OPR_AD }}</td>
+                                                  <td>{{ $r->OPERASYON }}</td>
+                                                  <td>{{ $r->TO_ISMERKEZI }}</td>
+                                                  <td>
+                                                      @php
+                                                          $badge = match($r->ISLEM_TURU) {
+                                                              'A' => ['bg-warning text-dark', 'Ayar'],
+                                                              'U' => ['bg-success',           'Üretim'],
+                                                              'D' => ['bg-danger',            'Duruş'],
+                                                              default => ['bg-secondary',     $r->ISLEM_TURU ?? '—'],
+                                                          };
+                                                      @endphp
+                                                      <span class="badge {{ $badge[0] }}">{{ $badge[1] }}</span>
+                                                  </td>
+                                                  <td>{{ $r->BASLANGIC_TARIHI }}</td>
+                                                  <td>{{ $r->BASLANGIC_SAATI }}</td>
+                                                  <td>{{ $r->BITIS_TARIHI }}</td>
+                                                  <td>{{ $r->BITIS_SAATI }}</td>
+                                                  <td>{{ number_format($r->SURE,2,',','.') }}</td>
+                                                  <td>{{ number_format($r->R_MIKTART,2,',','.') }}</td>
+                                                  <td>{{ floor($r->SF_MIKTAR) }}</td>
+                                                  <td>
+                                                      <a class="btn btn-sm btn-primary"
+                                                        href="{{ url('calisma_bildirimi') }}?ID={{ $r->ID }}"
+                                                        title="Detay">
+                                                          <i class="fa fa-chevron-circle-right"></i>
+                                                      </a>
+                                                  </td>
+                                              </tr>
+                                          @empty
+                                              <tr>
+                                                  <td colspan="15" class="text-center text-muted py-4">
+                                                      <i class="fa fa-inbox fa-2x mb-2 d-block"></i>
+                                                      Filtreye uygun kayıt bulunamadı.
+                                                  </td>
+                                              </tr>
+                                          @endforelse
+                                      </tbody>
+                                      @if ($kayitlar->isNotEmpty())
+                                      <div class="table-primary">
+                                          <tr>
+                                              <th colspan="13" class="text-end">Toplam Üretilen:</th>
+                                              <th>{{ number_format($kayitlar->sum(fn($r) => floor($r->SF_MIKTAR))) }}</th>
+                                              <th></th>
+                                          </tr>
+                                      </div>
+                                      @endif
+                                  </table>
+                              </div>
+
+                          @elseif (!$suzAktif)
+                              <div class="alert alert-info">
+                                  <i class="fa fa-info-circle me-1"></i>
+                                  Filtreleri doldurup <strong>Süz</strong> butonuna basın.
+                              </div>
+                          @endif
+
+                      </div>{{-- /tab-pane#liste --}}
+                    </div>
+                  {{-- LİSTE BİTİŞ --}}
+
+
+                  {{-- 2) TAB PANEL --}}
+                  <div class="tab-pane" id="analiz">
+
                   @php
-                  $get = fn(string $key): string => trim(request()->get($key, ''));
+                  /* ── Yardımcı: GET parametresi ───────────────────────── */
+                  $ag = fn(string $k): string => trim(request()->get($k, ''));
 
-                  $MPSSTOKKODU_B    = $get('MPSSTOKKODU_B');
-                  $MPSSTOKKODU_E    = $get('MPSSTOKKODU_E');
-                  $TO_OPERATOR_B    = $get('TO_OPERATOR_B');
-                  $TO_OPERATOR_E    = $get('TO_OPERATOR_E');
-                  $OPERASYON_B      = $get('OPERASYON_B');
-                  $OPERASYON_E      = $get('OPERASYON_E');
-                  $X_T_ISMERKEZI_B  = $get('X_T_ISMERKEZI_B');
-                  $X_T_ISMERKEZI_E  = $get('X_T_ISMERKEZI_E');
-                  $D7_ISLEM_KODU_B  = $get('D7_ISLEM_KODU_B');
-                  $D7_ISLEM_KODU_E  = $get('D7_ISLEM_KODU_E');
-                  $RECTARIH1_B      = $get('RECTARIH1_B');
-                  $RECTARIH1_E      = $get('RECTARIH1_E');
-                  $RECTIME1_B       = $get('RECTIME1_B');
-                  $RECTIME1_E       = $get('RECTIME1_E');
-                  $ENDTARIH1_B      = $get('ENDTARIH1_B');
-                  $ENDTARIH1_E      = $get('ENDTARIH1_E');
-                  $ENDTIME1_B       = $get('ENDTIME1_B');
-                  $ENDTIME1_E       = $get('ENDTIME1_E');
-                  $URETIM_B         = $get('URETIM_B');
-                  $URETIM_E         = $get('URETIM_E');
+                  $A_MPSSTOKKODU_B   = $ag('A_MPSSTOKKODU_B');
+                  $A_MPSSTOKKODU_E   = $ag('A_MPSSTOKKODU_E');
+                  $A_TO_OPERATOR_B   = $ag('A_TO_OPERATOR_B');
+                  $A_TO_OPERATOR_E   = $ag('A_TO_OPERATOR_E');
+                  $A_OPERASYON_B     = $ag('A_OPERASYON_B');
+                  $A_OPERASYON_E     = $ag('A_OPERASYON_E');
+                  $A_ISMERKEZI_B     = $ag('A_ISMERKEZI_B');
+                  $A_ISMERKEZI_E     = $ag('A_ISMERKEZI_E');
+                  $A_RECTARIH_B      = $ag('A_RECTARIH_B');
+                  $A_RECTARIH_E      = $ag('A_RECTARIH_E');
 
+                  /* ── Lookup listeleri (filtre dropdownları için) ──────── */
                   $db = trim($kullanici_veri->firma) . '.dbo.';
 
-                  $mpsStoklar  = DB::table($db . 'mmps10e')
-                                      ->whereNotNull('MAMULSTOKKODU')
-                                      ->where('MAMULSTOKKODU', '<>', '')
-                                      ->orderBy('MAMULSTOKKODU')
-                                      ->get(['MAMULSTOKKODU', 'MAMULSTOKADI']);
+                  $a_mpsStoklar  = DB::table($db . 'mmps10e')
+                                      ->whereNotNull('MAMULSTOKKODU')->where('MAMULSTOKKODU','<>','')
+                                      ->orderBy('MAMULSTOKKODU')->get(['MAMULSTOKKODU','MAMULSTOKADI']);
 
-                  $operatorler = DB::table($db . 'pers00')
-                                      ->whereNotNull('KOD')
-                                      ->where('KOD', '<>', '')
-                                      ->orderBy('KOD')
-                                      ->get(['KOD', 'AD']);
+                  $a_operatorler = DB::table($db . 'pers00')
+                                      ->whereNotNull('KOD')->where('KOD','<>','')
+                                      ->orderBy('KOD')->get(['KOD','AD']);
 
-                  $operasyonlar = DB::table($db . 'imlt01')
-                                      ->whereNotNull('KOD')
-                                      ->where('KOD', '<>', '')
-                                      ->orderBy('KOD')
-                                      ->get(['KOD', 'AD']);
+                  $a_operasyonlar = DB::table($db . 'imlt01')
+                                      ->whereNotNull('KOD')->where('KOD','<>','')
+                                      ->orderBy('KOD')->get(['KOD','AD']);
 
-                  $tezgahlar   = DB::table($db . 'imlt00')
-                                      ->whereNotNull('KOD')
-                                      ->where('KOD', '<>', '')
-                                      ->orderBy('KOD')
-                                      ->get(['KOD', 'AD']);
+                  $a_tezgahlar   = DB::table($db . 'imlt00')
+                                      ->whereNotNull('KOD')->where('KOD','<>','')
+                                      ->orderBy('KOD')->get(['KOD','AD']);
 
-                                      
-                  $kayitlar   = collect();
-                  $suzAktif   = request()->has('SUZ');
-
-                  if ($suzAktif) {
-
-                      $q = DB::table($db . 'sfdc31e as e')
-                              ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
-                              ->leftJoin($db . 'mmps10t as M10T','M10T.JOBNO','=','e.JOBNO')
-                              ->leftJoin($db . 'pers00 as P00','P00.KOD','=','e.TO_OPERATOR')
-                              ->select(
-                                  'e.EVRAKNO', 'e.TARIH', 'e.ID',
-                                  'e.STOK_CODE', 'e.TO_OPERATOR', 'e.OPERASYON',
-                                  'e.TO_ISMERKEZI', 't.ISLEM_TURU',
-                                  't.BASLANGIC_TARIHI', 't.BASLANGIC_SAATI',
-                                  't.BITIS_TARIHI',    't.BITIS_SAATI',
-                                  't.SURE',            'e.SF_MIKTAR',
-                                  'M10T.R_MIKTART', 'P00.AD AS OPR_AD'
-                              );
-
-                      // Stok kodu
-                      if ($MPSSTOKKODU_B !== '') $q->where('e.STOK_CODE', '>=', $MPSSTOKKODU_B);
-                      if ($MPSSTOKKODU_E !== '') $q->where('e.STOK_CODE', '<=', $MPSSTOKKODU_E);
-
-                      // Operatör
-                      if ($TO_OPERATOR_B !== '') $q->where('e.TO_OPERATOR', '>=', $TO_OPERATOR_B);
-                      if ($TO_OPERATOR_E !== '') $q->where('e.TO_OPERATOR', '<=', $TO_OPERATOR_E);
-
-                      // Operasyon
-                      if ($OPERASYON_B !== '') $q->where('e.OPERASYON', '>=', $OPERASYON_B);
-                      if ($OPERASYON_E !== '') $q->where('e.OPERASYON', '<=', $OPERASYON_E);
-
-                      // Tezgah / İş Merkezi
-                      if ($X_T_ISMERKEZI_B !== '') $q->where('e.TO_ISMERKEZI', '>=', $X_T_ISMERKEZI_B);
-                      if ($X_T_ISMERKEZI_E !== '') $q->where('e.TO_ISMERKEZI', '<=', $X_T_ISMERKEZI_E);
-
-                      // Süreç (D7_ISLEM_KODU)
-                      if ($D7_ISLEM_KODU_B !== '') $q->where('t.ISLEM_TURU', '>=', $D7_ISLEM_KODU_B);
-                      if ($D7_ISLEM_KODU_E !== '') $q->where('t.ISLEM_TURU', '<=', $D7_ISLEM_KODU_E);
-
-                      // Başlama tarihi / saati
-                      if ($RECTARIH1_B !== '') $q->where('t.BASLANGIC_TARIHI', '>=', $RECTARIH1_B);
-                      if ($RECTARIH1_E !== '') $q->where('t.BASLANGIC_TARIHI', '<=', $RECTARIH1_E);
-                      if ($RECTIME1_B  !== '') $q->where('t.BASLANGIC_SAATI',  '>=', $RECTIME1_B);
-                      if ($RECTIME1_E  !== '') $q->where('t.BASLANGIC_SAATI',  '<=', $RECTIME1_E);
-
-                      // Bitiş tarihi / saati  — DÜZELTME: önceden yanlış ($RECTARIH2_B, $RECTIME2_B) kullanılıyordu
-                      if ($ENDTARIH1_B !== '') $q->where('t.BITIS_TARIHI', '>=', $ENDTARIH1_B);
-                      if ($ENDTARIH1_E !== '') $q->where('t.BITIS_TARIHI', '<=', $ENDTARIH1_E);
-                      if ($ENDTIME1_B  !== '') $q->where('t.BITIS_SAATI',  '>=', $ENDTIME1_B);
-                      if ($ENDTIME1_E  !== '') $q->where('t.BITIS_SAATI',  '<=', $ENDTIME1_E);
-
-                      // Üretim adeti
-                      if ($URETIM_B !== '' && is_numeric($URETIM_B)) $q->where('e.SF_MIKTAR', '>=', (float)$URETIM_B);
-                      if ($URETIM_E !== '' && is_numeric($URETIM_E)) $q->where('e.SF_MIKTAR', '<=', (float)$URETIM_E);
-
-                      $kayitlar = $q->orderBy('e.EVRAKNO', 'DESC')->get();
-                  }
-
-                  
-                  $buildOptions = function(string $valField, string $labelField, $items, string $selected = ''): string {
+                  $aBuildOptions = function(string $vf, string $lf, $items, string $sel = ''): string {
                       $html = '<option value="">— Seç —</option>';
                       foreach ($items as $item) {
-                          $val  = e($item->$valField);
-                          $lbl  = e($item->$labelField);
-                          $sel  = ($val === $selected) ? ' selected' : '';
-                          $html .= "<option value=\"{$val}\"{$sel}>{$val} — {$lbl}</option>";
+                          $v = e($item->$vf); $l = e($item->$lf);
+                          $s = ($v === $sel) ? ' selected' : '';
+                          $html .= "<option value=\"{$v}\"{$s}>{$v} — {$l}</option>";
                       }
                       return $html;
                   };
+
+                  /* ── Analiz aktif mi? ─────────────────────────────────── */
+                  $analizAktif = request()->has('ANALIZ_SUZ');
+
+                  /* ── Veri setleri (boş başlar) ───────────────────────── */
+                  $tezgahOzet    = collect();
+                  $operatorOzet  = collect();
+                  $urunOzet      = collect();
+                  $durusOzet     = collect();
+                  $gunlukOzet    = collect();
+
+                  if ($analizAktif) {
+
+                      /* Temel join — her analizde tekrar kullanılır */
+                      $baseQuery = function() use ($db,
+                          $A_MPSSTOKKODU_B, $A_MPSSTOKKODU_E,
+                          $A_TO_OPERATOR_B, $A_TO_OPERATOR_E,
+                          $A_OPERASYON_B,   $A_OPERASYON_E,
+                          $A_ISMERKEZI_B,   $A_ISMERKEZI_E,
+                          $A_RECTARIH_B,    $A_RECTARIH_E
+                      ) {
+                          $q = DB::table($db . 'sfdc31e as e')
+                                  ->leftJoin($db . 'sfdc31t as t',   'e.EVRAKNO', '=', 't.EVRAKNO')
+                                  ->leftJoin($db . 'mmps10t as M10T', 'M10T.JOBNO', '=', 'e.JOBNO')
+                                  ->leftJoin($db . 'pers00 as P00',   'P00.KOD', '=', 'e.TO_OPERATOR');
+
+                          if ($A_MPSSTOKKODU_B !== '') $q->where('e.STOK_CODE', '>=', $A_MPSSTOKKODU_B);
+                          if ($A_MPSSTOKKODU_E !== '') $q->where('e.STOK_CODE', '<=', $A_MPSSTOKKODU_E);
+                          if ($A_TO_OPERATOR_B !== '') $q->where('e.TO_OPERATOR', '>=', $A_TO_OPERATOR_B);
+                          if ($A_TO_OPERATOR_E !== '') $q->where('e.TO_OPERATOR', '<=', $A_TO_OPERATOR_E);
+                          if ($A_OPERASYON_B   !== '') $q->where('e.OPERASYON', '>=', $A_OPERASYON_B);
+                          if ($A_OPERASYON_E   !== '') $q->where('e.OPERASYON', '<=', $A_OPERASYON_E);
+                          if ($A_ISMERKEZI_B   !== '') $q->where('e.TO_ISMERKEZI', '>=', $A_ISMERKEZI_B);
+                          if ($A_ISMERKEZI_E   !== '') $q->where('e.TO_ISMERKEZI', '<=', $A_ISMERKEZI_E);
+                          if ($A_RECTARIH_B    !== '') $q->where('t.BASLANGIC_TARIHI', '>=', $A_RECTARIH_B);
+                          if ($A_RECTARIH_E    !== '') $q->where('t.BASLANGIC_TARIHI', '<=', $A_RECTARIH_E);
+
+                          return $q;
+                      };
+
+                      /* ── 1) TEZGAH KULLANIM ÖZETİ ─────────────────────────
+                        Çalışma (A+U) ve duruş (D) sürelerini tezgah bazında topla */
+                      $tezgahOzet = $baseQuery()
+                      ->select(
+                          'e.TO_ISMERKEZI',
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU IN ('A','U') THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0.00) ELSE 0.00 END) AS calisma_sure"),
+                          
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'D' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0.00) ELSE 0.00 END) AS durus_sure"),
+                          
+                          DB::raw("SUM(ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0.00)) AS toplam_sure"),
+                          
+                          DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0.00)) AS toplam_uretim")
+                      )
+                      ->whereNotNull('e.TO_ISMERKEZI')
+                      ->where('e.TO_ISMERKEZI', '<>', '')
+                      ->groupBy('e.TO_ISMERKEZI')
+                      ->orderByDesc('toplam_sure')
+                      ->get();
+
+                      /* ── 2) OPERATÖR PERFORMANS ÖZETİ ────────────────────── */
+                      $operatorOzet = $baseQuery()
+                        ->select(
+                          'e.TO_OPERATOR',
+                          DB::raw("MAX(P00.AD) AS OPR_AD"),
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'U' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS uretim_sure"),
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'A' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS ayar_sure"),
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'D' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS durus_sure"),
+                          DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0)) AS toplam_uretim"),
+                          DB::raw("SUM(ISNULL(CAST(M10T.R_MIKTART AS DECIMAL(18,4)), 0)) AS planlanan_sure"),
+                          DB::raw("SUM(ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0)) AS gerceklesen_sure")
+                      )
+                      ->whereNotNull('e.TO_OPERATOR')
+                      ->where('e.TO_OPERATOR', '<>', '')
+                      ->groupBy('e.TO_OPERATOR')
+                      ->orderByDesc('toplam_uretim')
+                      ->get();
+
+                      /* ── 3) ÜRÜN BAZLI ÜRETİM ────────────────────────────── */
+                      $urunOzet = $baseQuery()
+                      ->select(
+                          'e.STOK_CODE',
+                          // 1. Toplam Üretim - CAST eklendi, varsayılan değer 0.00 yapıldı
+                          DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0.00)) AS toplam_uretim"),
+                          
+                          // 2. Üretim Süresi - CAST eklendi, varsayılan değer 0.00 yapıldı
+                          DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'U' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0.00) ELSE 0.00 END) AS uretim_sure"),
+                          
+                          // 3. Planlanan Süre - Riske girmeyip CAST ediyoruz
+                          DB::raw("SUM(ISNULL(CAST(M10T.R_MIKTART AS DECIMAL(18,4)), 0.00)) AS planlanan_sure"),
+                          
+                          // 4. İş Emri Sayısı - COUNT her zaman tam sayıdır, burada CAST gerekmez!
+                          DB::raw("COUNT(DISTINCT e.EVRAKNO) AS is_emri_sayisi")
+                      )
+                      ->whereNotNull('e.STOK_CODE')
+                      ->where('e.STOK_CODE', '<>', '')
+                      ->groupBy('e.STOK_CODE')
+                      ->orderByDesc('toplam_uretim')
+                      ->get();
+
+                      /* ── 4) DURUŞ SEBEBİ ANALİZİ ─────────────────────────── */
+                      $durusOzet = $baseQuery()
+                          ->select(
+                              DB::raw("ISNULL(t.DURMA_SEBEBI,'Belirtilmemiş') AS durus_sebebi"),
+                              DB::raw("COUNT(*) AS durus_sayisi"),
+                              DB::raw("SUM(ISNULL(CAST(t.SURE AS DECIMAL(18,4)),0)) AS toplam_durus_sure"),
+                              DB::raw("AVG(ISNULL(CAST(t.SURE AS DECIMAL(18,4)),0)) AS ort_durus_sure")
+                          )
+                          ->where('t.ISLEM_TURU', 'D')
+                          ->groupBy('t.DURMA_SEBEBI')
+                          ->orderByDesc('toplam_durus_sure')
+                          ->get();
+
+                      /* ── 5) GÜNLÜK ÜRETİM TRENDİ ─────────────────────────── */
+                      $gunlukOzet = $baseQuery()
+                          ->select(
+                              't.BASLANGIC_TARIHI AS gun',
+                              DB::raw("SUM(ISNULL(e.SF_MIKTAR,0)) AS uretim"),
+                              DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'D' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)),0) ELSE 0 END) AS durus_sure"),
+                              DB::raw("SUM(CASE WHEN t.ISLEM_TURU IN ('A','U') THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)),0) ELSE 0 END) AS calisma_sure")
+                          )
+                          ->whereNotNull('t.BASLANGIC_TARIHI')
+                          ->where('t.ISLEM_TURU', '<>', '')
+                          ->groupBy('t.BASLANGIC_TARIHI')
+                          ->orderBy('t.BASLANGIC_TARIHI')
+                          ->get();
+                  }
+
+                  /* ── Genel KPI toplamları ─────────────────────────────── */
+                  $kpiToplamUretim    = $urunOzet->sum('toplam_uretim');
+                  $kpiToplamCalisma   = $tezgahOzet->sum('calisma_sure');
+                  $kpiToplamDurus     = $tezgahOzet->sum('durus_sure');
+                  $kpiToplamPlanlanan = $operatorOzet->sum('planlanan_sure');
+                  $kpiToplamGercek    = $operatorOzet->sum('gerceklesen_sure');
+                  $kpiVerimlilik      = ($kpiToplamPlanlanan > 0)
+                                          ? round(($kpiToplamGercek / $kpiToplamPlanlanan) * 100, 1)
+                                          : 0;
                   @endphp
 
-                  
-                  <div class="tab-pane" id="liste">
+                  {{-- ── FİLTRE FORMU ──────────────────────────────────────────── --}}
+                  <form method="GET" action="" id="analiz-formu">
+                      <input type="hidden" name="ANALIZ_SUZ" value="1">
 
-                      {{-- ── FİLTRE FORMU ──────────────────────────────────────── --}}
-                      <form method="GET" action="" id="filtre-formu">
-                          <input type="hidden" name="SUZ" value="1">
+                      <div class="card shadow-sm mb-3">
+                          <div class="card-header bg-dark text-white py-2">
+                              <i class="fa fa-chart-bar me-1"></i> Verimlilik Analizi — Filtre
+                          </div>
+                          <div class="card-body">
+                              <div class="row g-3">
 
-                          <div class="card shadow-sm mb-3">
-                              <div class="card-header bg-primary text-white py-2">
-                                  <i class="fa fa-filter me-1"></i> Filtre Kriterleri
+                                  {{-- MPS Stok Kodu --}}
+                                  <div class="col-md-3">
+                                      <label class="form-label fw-semibold">MPS Stok Kodu</label>
+                                      <select name="A_MPSSTOKKODU_B" class="form-select form-select-sm select2">
+                                          {!! $aBuildOptions('MAMULSTOKKODU','MAMULSTOKADI',$a_mpsStoklar,$A_MPSSTOKKODU_B) !!}
+                                      </select>
+                                      <select name="A_MPSSTOKKODU_E" class="form-select form-select-sm mt-1 select2">
+                                          {!! $aBuildOptions('MAMULSTOKKODU','MAMULSTOKADI',$a_mpsStoklar,$A_MPSSTOKKODU_E) !!}
+                                      </select>
+                                      <div class="d-flex justify-content-between px-1 mt-1">
+                                          <small class="text-muted">Başlangıç</small><small class="text-muted">Bitiş</small>
+                                      </div>
+                                  </div>
+
+                                  {{-- Operatör --}}
+                                  <div class="col-md-3">
+                                      <label class="form-label fw-semibold">Operatör</label>
+                                      <select name="A_TO_OPERATOR_B" class="form-select form-select-sm select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_operatorler,$A_TO_OPERATOR_B) !!}
+                                      </select>
+                                      <select name="A_TO_OPERATOR_E" class="form-select form-select-sm mt-1 select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_operatorler,$A_TO_OPERATOR_E) !!}
+                                      </select>
+                                      <div class="d-flex justify-content-between px-1 mt-1">
+                                          <small class="text-muted">Başlangıç</small><small class="text-muted">Bitiş</small>
+                                      </div>
+                                  </div>
+
+                                  {{-- Operasyon --}}
+                                  <div class="col-md-3">
+                                      <label class="form-label fw-semibold">Operasyon</label>
+                                      <select name="A_OPERASYON_B" class="form-select form-select-sm select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_operasyonlar,$A_OPERASYON_B) !!}
+                                      </select>
+                                      <select name="A_OPERASYON_E" class="form-select form-select-sm mt-1 select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_operasyonlar,$A_OPERASYON_E) !!}
+                                      </select>
+                                      <div class="d-flex justify-content-between px-1 mt-1">
+                                          <small class="text-muted">Başlangıç</small><small class="text-muted">Bitiş</small>
+                                      </div>
+                                  </div>
+
+                                  {{-- Tezgah --}}
+                                  <div class="col-md-3">
+                                      <label class="form-label fw-semibold">Tezgah</label>
+                                      <select name="A_ISMERKEZI_B" class="form-select form-select-sm select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_tezgahlar,$A_ISMERKEZI_B) !!}
+                                      </select>
+                                      <select name="A_ISMERKEZI_E" class="form-select form-select-sm mt-1 select2">
+                                          {!! $aBuildOptions('KOD','AD',$a_tezgahlar,$A_ISMERKEZI_E) !!}
+                                      </select>
+                                      <div class="d-flex justify-content-between px-1 mt-1">
+                                          <small class="text-muted">Başlangıç</small><small class="text-muted">Bitiş</small>
+                                      </div>
+                                  </div>
+
+                                  {{-- Tarih Aralığı --}}
+                                  <div class="col-md-3">
+                                      <label class="form-label fw-semibold">Başlama Tarihi</label>
+                                      <input type="date" class="form-control form-control-sm"
+                                            name="A_RECTARIH_B" value="{{ $A_RECTARIH_B }}">
+                                      <input type="date" class="form-control form-control-sm mt-1"
+                                            name="A_RECTARIH_E" value="{{ $A_RECTARIH_E }}">
+                                      <div class="d-flex justify-content-between px-1 mt-1">
+                                          <small class="text-muted">Başlangıç</small><small class="text-muted">Bitiş</small>
+                                      </div>
+                                  </div>
+
+                                  {{-- Butonlar --}}
+                                  <div class="col-md-3 d-flex align-items-center gap-2 mt-2">
+                                      <button type="submit" class="btn btn-dark">
+                                          <i class="fa fa-chart-bar me-1"></i> Analiz Et
+                                      </button>
+                                      <a href="{{ url()->current() }}" class="btn btn-outline-secondary">
+                                          <i class="fa fa-times me-1"></i> Temizle
+                                      </a>
+                                  </div>
+
                               </div>
-                              <div class="card-body">
-                                  <div class="row g-3">
+                          </div>
+                      </div>
+                  </form>
 
-                                      {{-- MPS Stok Kodu --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">MPS Stok Kodu</label>
-                                          <select name="MPSSTOKKODU_B" id="MPSSTOKKODU_B" class="form-select form-select-sm select2">
-                                              {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_B) !!}
-                                          </select>
-                                          <select name="MPSSTOKKODU_E" id="MPSSTOKKODU_E" class="form-select form-select-sm mt-1 select2">
-                                              {!! $buildOptions('MAMULSTOKKODU', 'MAMULSTOKADI', $mpsStoklar, $MPSSTOKKODU_E) !!}
-                                          </select>
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
+                  @if (!$analizAktif)
+                      <div class="alert alert-info">
+                          <i class="fa fa-info-circle me-1"></i>
+                          Tarih aralığı ve isteğe bağlı filtreleri seçip <strong>Analiz Et</strong> butonuna basın.
+                      </div>
+                  @else
+
+                      {{-- ── KPI KARTLARI ─────────────────────────────────────────── --}}
+                      <div class="row g-3 mb-4">
+
+                          <div class="col-md-3">
+                              <div class="card border-0 shadow-sm h-100"
+                                  style="border-left:4px solid #0d6efd !important; border-left-width:4px !important;">
+                                  <div class="card-body">
+                                      <div class="d-flex justify-content-between align-items-start">
+                                          <div>
+                                              <p class="text-muted small mb-1">Toplam Üretim</p>
+                                              <h3 class="fw-bold mb-0">{{ number_format($kpiToplamUretim,0,',','.') }}</h3>
+                                              <small class="text-muted">adet</small>
+                                          </div>
+                                          <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                              style="width:48px;height:48px;background:#e7f0ff;">
+                                              <i class="fa fa-industry text-primary fs-5"></i>
                                           </div>
                                       </div>
-
-                                      {{-- Operatör --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Operatör</label>
-                                          <select name="TO_OPERATOR_B" id="TO_OPERATOR_B" class="form-select form-select-sm select2">
-                                              {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_B) !!}
-                                          </select>
-                                          <select name="TO_OPERATOR_E" id="TO_OPERATOR_E" class="form-select form-select-sm mt-1 select2">
-                                              {!! $buildOptions('KOD', 'AD', $operatorler, $TO_OPERATOR_E) !!}
-                                          </select>
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Operasyon --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Operasyon</label>
-                                          <select name="OPERASYON_B" id="OPERASYON_B" class="form-select form-select-sm select2">
-                                              {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_B) !!}
-                                          </select>
-                                          <select name="OPERASYON_E" id="OPERASYON_E" class="form-select form-select-sm mt-1 select2">
-                                              {!! $buildOptions('KOD', 'AD', $operasyonlar, $OPERASYON_E) !!}
-                                          </select>
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Tezgah Adı --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Tezgah Adı</label>
-                                          <select name="X_T_ISMERKEZI_B" id="X_T_ISMERKEZI_B" class="form-select form-select-sm select2">
-                                              {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_B) !!}
-                                          </select>
-                                          <select name="X_T_ISMERKEZI_E" id="X_T_ISMERKEZI_E" class="form-select form-select-sm mt-1 select2">
-                                              {!! $buildOptions('KOD', 'AD', $tezgahlar, $X_T_ISMERKEZI_E) !!}
-                                          </select>
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Süreç Adı --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Süreç Adı</label>
-                                          <select name="D7_ISLEM_KODU_B" id="D7_ISLEM_KODU_B" class="form-select form-select-sm select2">
-                                              <option value="">— Seç —</option>
-                                              <option value="A" @selected($D7_ISLEM_KODU_B === 'A')>A — Ayar</option>
-                                              <option value="U" @selected($D7_ISLEM_KODU_B === 'U')>U — Üretim</option>
-                                              <option value="D" @selected($D7_ISLEM_KODU_B === 'D')>D — Duruş</option>
-                                          </select>
-                                          <select name="D7_ISLEM_KODU_E" id="D7_ISLEM_KODU_E" class="form-select form-select-sm mt-1 select2">
-                                              <option value="">— Seç —</option>
-                                              <option value="A" @selected($D7_ISLEM_KODU_E === 'A')>A — Ayar</option>
-                                              <option value="U" @selected($D7_ISLEM_KODU_E === 'U')>U — Üretim</option>
-                                              <option value="D" @selected($D7_ISLEM_KODU_E === 'D')>D — Duruş</option>
-                                          </select>
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Başlama Tarihi --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Başlama Tarihi</label>
-                                          <input type="date" class="form-control form-control-sm"
-                                                name="RECTARIH1_B" id="RECTARIH1_B"
-                                                value="{{ $RECTARIH1_B }}">
-                                          <input type="date" class="form-control form-control-sm mt-1"
-                                                name="RECTARIH1_E" id="RECTARIH1_E"
-                                                value="{{ $RECTARIH1_E }}">
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Başlama Saati --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Başlama Saati</label>
-                                          <input type="time" class="form-control form-control-sm"
-                                                name="RECTIME1_B" id="RECTIME1_B"
-                                                value="{{ $RECTIME1_B }}">
-                                          <input type="time" class="form-control form-control-sm mt-1"
-                                                name="RECTIME1_E" id="RECTIME1_E"
-                                                value="{{ $RECTIME1_E }}">
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Bitiş Tarihi --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Bitiş Tarihi</label>
-                                          <input type="date" class="form-control form-control-sm"
-                                                name="ENDTARIH1_B" id="ENDTARIH1_B"
-                                                value="{{ $ENDTARIH1_B }}">
-                                          <input type="date" class="form-control form-control-sm mt-1"
-                                                name="ENDTARIH1_E" id="ENDTARIH1_E"
-                                                value="{{ $ENDTARIH1_E }}">
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Bitiş Saati — DÜZELTME: her iki input da ENDTIME1_E olarak name almıştı --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Bitiş Saati</label>
-                                          <input type="time" class="form-control form-control-sm"
-                                                name="ENDTIME1_B" id="ENDTIME1_B"
-                                                value="{{ $ENDTIME1_B }}">
-                                          <input type="time" class="form-control form-control-sm mt-1"
-                                                name="ENDTIME1_E" id="ENDTIME1_E"
-                                                value="{{ $ENDTIME1_E }}">
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Başlangıç</small>
-                                              <small class="text-muted">Bitiş</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Üretim Adeti --}}
-                                      <div class="col-md-3">
-                                          <label class="form-label fw-semibold">Üretim Adeti</label>
-                                          <input type="number" min="0" step="any" class="form-control form-control-sm"
-                                                name="URETIM_B" id="URETIM_B" placeholder="Min"
-                                                value="{{ $URETIM_B }}">
-                                          <input type="number" min="0" step="any" class="form-control form-control-sm mt-1"
-                                                name="URETIM_E" id="URETIM_E" placeholder="Max"
-                                                value="{{ $URETIM_E }}">
-                                          <div class="d-flex justify-content-between px-1 mt-1">
-                                              <small class="text-muted">Min</small>
-                                              <small class="text-muted">Max</small>
-                                          </div>
-                                      </div>
-
-                                      {{-- Butonlar --}}
-                                      <div class="col-md-3 d-flex align-items-center gap-2 mt-2">
-                                          <button type="submit" name="kart_islemleri" value="listele" class="btn btn-success">
-                                              <i class="fa fa-filter me-1"></i> Süz
-                                          </button>
-                                          <a href="{{ url()->current() }}" class="btn btn-outline-secondary">
-                                              <i class="fa fa-times me-1"></i> Temizle
-                                          </a>
-                                      </div>
-
-                                  </div>{{-- /row --}}
-                              </div>{{-- /card-body --}}
-                          </div>{{-- /card --}}
-                      </form>
-
-                      {{-- ── SONUÇ TABLOSU ──────────────────────────────────────── --}}
-                      @if ($suzAktif)
-
-                          {{-- Aktar araç çubuğu --}}
-                          <div class="d-flex gap-2 mb-2">
-                              <button type="button" class="btn btn-sm btn-success" onclick="exportTableToExcel('listeleTable')">
-                                  <i class="fas fa-file-excel me-1"></i> Excel'e Aktar
-                              </button>
-                              <button type="button" class="btn btn-sm btn-danger" onclick="exportTableToWord('listeleTable')">
-                                  <i class="fas fa-file-word me-1"></i> Word'e Aktar
-                              </button>
-                              <button type="button" class="btn btn-sm btn-primary" onclick="printTable('listeleTable')">
-                                  <i class="fas fa-print me-1"></i> Yazdır
-                              </button>
-                              <span class="ms-auto text-muted small align-self-center">
-                                  {{ $kayitlar->count() }} kayıt bulundu
-                              </span>
+                                  </div>
+                              </div>
                           </div>
 
-                          <div style="overflow-x: auto;">
-                              <table id="listeleTable"
-                                    class="table table-hover table-bordered text-center align-middle"
-                                    data-page-length="25">
-                                  <thead class="table-primary">
-                                      <tr>
-                                          <th>#</th>
-                                          <th>Evrak No</th>
-                                          <th>Evrak Tarihi</th>
-                                          <th>Stok Kodu</th>
-                                          <th style="min-width:120px;">Operatör</th>
-                                          <th>Operasyon</th>
-                                          <th>Tezgah Adı</th>
-                                          <th>İşlem Statüsü</th>
-                                          <th>Başlama Tarihi</th>
-                                          <th>Başlama Saati</th>
-                                          <th>Bitiş Tarihi</th>
-                                          <th>Bitiş Saati</th>
-                                          <th>Gerçekleşen Süre</th>
-                                          <th>Planlanan Süre</th>
-                                          <th>Üretilen Miktar</th>
-                                          <th></th>
-                                      </tr>
-                                  </thead>
-                                  <tfoot class="table-primary">
-                                      <tr>
-                                          <th>#</th>
-                                          <th>Evrak No</th>
-                                          <th>Evrak Tarihi</th>
-                                          <th>Stok Kodu</th>
-                                          <th>Operatör</th>
-                                          <th>Operasyon</th>
-                                          <th>Tezgah Adı</th>
-                                          <th>İşlem Statüsü</th>
-                                          <th>Başlama Tarihi</th>
-                                          <th>Başlama Saati</th>
-                                          <th>Bitiş Tarihi</th>
-                                          <th>Bitiş Saati</th>
-                                          <th>Gerçekleşen Süre</th>
-                                          <th>Planlanan Süre</th>
-                                          <th>Üretilen Miktar</th>
-                                          <th></th>
-                                      </tr>
-                                  </tfoot>
-                                  <tbody>
-                                      @forelse ($kayitlar as $i => $r)
+                          <div class="col-md-3">
+                              <div class="card border-0 shadow-sm h-100"
+                                  style="border-left:4px solid #198754 !important;">
+                                  <div class="card-body">
+                                      <div class="d-flex justify-content-between align-items-start">
+                                          <div>
+                                              <p class="text-muted small mb-1">Toplam Çalışma</p>
+                                              <h3 class="fw-bold mb-0">{{ number_format($kpiToplamCalisma,1,',','.') }}</h3>
+                                              <small class="text-muted">saat</small>
+                                          </div>
+                                          <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                              style="width:48px;height:48px;background:#e6f4ee;">
+                                              <i class="fa fa-clock text-success fs-5"></i>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3">
+                              <div class="card border-0 shadow-sm h-100"
+                                  style="border-left:4px solid #dc3545 !important;">
+                                  <div class="card-body">
+                                      <div class="d-flex justify-content-between align-items-start">
+                                          <div>
+                                              <p class="text-muted small mb-1">Toplam Duruş</p>
+                                              <h3 class="fw-bold mb-0">{{ number_format($kpiToplamDurus,1,',','.') }}</h3>
+                                              <small class="text-muted">saat</small>
+                                          </div>
+                                          <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                              style="width:48px;height:48px;background:#fde8ea;">
+                                              <i class="fa fa-pause-circle text-danger fs-5"></i>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3">
+                              <div class="card border-0 shadow-sm h-100"
+                                  style="border-left:4px solid #fd7e14 !important;">
+                                  <div class="card-body">
+                                      <div class="d-flex justify-content-between align-items-start">
+                                          <div>
+                                              <p class="text-muted small mb-1">Plan/Gerçek Oran</p>
+                                              <h3 class="fw-bold mb-0">%{{ $kpiVerimlilik }}</h3>
+                                              <small class="text-muted">
+                                                  Plan: {{ number_format($kpiToplamPlanlanan,1,',','.') }}
+                                                  — Gerçek: {{ number_format($kpiToplamGercek,1,',','.') }}
+                                              </small>
+                                          </div>
+                                          <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                              style="width:48px;height:48px;background:#fff3e0;">
+                                              <i class="fa fa-chart-pie text-warning fs-5"></i>
+                                          </div>
+                                      </div>
+                                      {{-- Mini progress bar --}}
+                                      <div class="progress mt-2" style="height:5px;">
+                                          <div class="progress-bar {{ $kpiVerimlilik >= 90 ? 'bg-success' : ($kpiVerimlilik >= 70 ? 'bg-warning' : 'bg-danger') }}"
+                                              style="width:{{ min($kpiVerimlilik,100) }}%"></div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>{{-- /row KPI --}}
+
+                      {{-- ── GRAFİK SATIRI 1: Tezgah + Operatör ───────────────────── --}}
+                      <div class="row g-3 mb-4">
+
+                          {{-- Tezgah Kullanım Grafiği --}}
+                          <div class="col-md-6">
+                              <div class="card shadow-sm h-100">
+                                  <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                      <span><i class="fa fa-cogs me-1 text-primary"></i> Tezgah Kullanım Oranı</span>
+                                      <button class="btn btn-xs btn-outline-success btn-sm"
+                                              onclick="exportTableToExcel('tezgahTable')">
+                                          <i class="fas fa-file-excel me-1"></i>Excel
+                                      </button>
+                                  </div>
+                                  <div class="card-body" style="min-height:300px;">
+                                      <div id="chartTezgah" style="height:280px;"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          {{-- Operatör Performans Grafiği --}}
+                          <div class="col-md-6">
+                              <div class="card shadow-sm h-100">
+                                  <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                      <span><i class="fa fa-users me-1 text-success"></i> Operatör Üretim Performansı</span>
+                                      <button class="btn btn-xs btn-outline-success btn-sm"
+                                              onclick="exportTableToExcel('operatorTable')">
+                                          <i class="fas fa-file-excel me-1"></i>Excel
+                                      </button>
+                                  </div>
+                                  <div class="card-body" style="min-height:300px;">
+                                      <div id="chartOperator" style="height:280px;"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+
+                      {{-- ── GRAFİK SATIRI 2: Günlük Trend + Duruş ────────────────── --}}
+                      <div class="row g-3 mb-4">
+
+                          {{-- Günlük Trend --}}
+                          <div class="col-md-8">
+                              <div class="card shadow-sm h-100">
+                                  <div class="card-header py-2">
+                                      <i class="fa fa-calendar me-1 text-info"></i> Günlük Üretim Trendi
+                                  </div>
+                                  <div class="card-body">
+                                      <div id="chartGunluk" style="height:280px;"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          {{-- Duruş Sebepleri --}}
+                          <div class="col-md-4">
+                              <div class="card shadow-sm h-100">
+                                  <div class="card-header py-2">
+                                      <i class="fa fa-exclamation-triangle me-1 text-danger"></i> Duruş Sebepleri
+                                  </div>
+                                  <div class="card-body">
+                                      <div id="chartDurus" style="height:280px;"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+
+                      {{-- ── ÖZET TABLOLAR ─────────────────────────────────────────── --}}
+
+                      {{-- Tezgah Tablosu --}}
+                      <div class="card shadow-sm mb-3">
+                          <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                              <span><i class="fa fa-table me-1 text-primary"></i> Tezgah Bazlı Özet</span>
+                              <div class="d-flex gap-2">
+                                  <button class="btn btn-sm btn-success" onclick="exportTableToExcel('tezgahTable')">
+                                      <i class="fas fa-file-excel me-1"></i>Excel
+                                  </button>
+                                  <button class="btn btn-sm btn-primary" onclick="printTable('tezgahTable')">
+                                      <i class="fas fa-print me-1"></i>Yazdır
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="card-body p-0">
+                              <div style="overflow-x:auto;">
+                                  <table id="tezgahTable" class="table table-hover table-bordered text-center align-middle mb-0 listeleTable">
+                                      <thead class="table-primary">
                                           <tr>
-                                              <td class="text-muted small">{{ $i + 1 }}</td>
-                                              <td><strong>{{ $r->EVRAKNO }}</strong></td>
-                                              <td>{{ $r->TARIH }}</td>
-                                              <td>{{ $r->STOK_CODE }}</td>
-                                              <td>{{ $r->OPR_AD }}</td>
-                                              <td>{{ $r->OPERASYON }}</td>
-                                              <td>{{ $r->TO_ISMERKEZI }}</td>
+                                              <th>#</th>
+                                              <th>Tezgah Kodu</th>
+                                              <th>Çalışma Süresi (sa)</th>
+                                              <th>Duruş Süresi (sa)</th>
+                                              <th>Toplam Süre (sa)</th>
+                                              <th>Çalışma %</th>
+                                              <th>Toplam Üretim</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          @forelse ($tezgahOzet as $ti => $tz)
+                                              @php
+                                                  $calPct = $tz->toplam_sure > 0
+                                                      ? round(($tz->calisma_sure / $tz->toplam_sure) * 100, 1)
+                                                      : 0;
+                                                  $barColor = $calPct >= 80 ? '#198754' : ($calPct >= 60 ? '#fd7e14' : '#dc3545');
+                                              @endphp
+                                              <tr>
+                                                  <td class="text-muted small">{{ $ti+1 }}</td>
+                                                  <td><strong>{{ $tz->TO_ISMERKEZI }}</strong></td>
+                                                  <td>{{ number_format($tz->calisma_sure,2,',','.') }}</td>
+                                                  <td class="text-danger">{{ number_format($tz->durus_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($tz->toplam_sure,2,',','.') }}</td>
+                                                  <td>
+                                                      <div class="d-flex align-items-center gap-2">
+                                                          <div class="flex-grow-1 bg-light rounded" style="height:10px;">
+                                                              <div class="rounded" style="height:10px;width:{{ $calPct }}%;background:{{ $barColor }};transition:width .5s;"></div>
+                                                          </div>
+                                                          <span style="min-width:38px;" class="small">%{{ $calPct }}</span>
+                                                      </div>
+                                                  </td>
+                                                  <td>{{ number_format($tz->toplam_uretim,0,',','.') }}</td>
+                                              </tr>
+                                          @empty
+                                              <tr><td colspan="7" class="text-center text-muted py-3">Kayıt yok</td></tr>
+                                          @endforelse
+                                      </tbody>
+                                      @if ($tezgahOzet->isNotEmpty())
+                                      <tfoot class="table-secondary fw-bold">
+                                          <tr>
+                                              <td colspan="2">TOPLAM</td>
+                                              <td>{{ number_format($tezgahOzet->sum('calisma_sure'),2,',','.') }}</td>
+                                              <td class="text-danger">{{ number_format($tezgahOzet->sum('durus_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($tezgahOzet->sum('toplam_sure'),2,',','.') }}</td>
                                               <td>
                                                   @php
-                                                      $badge = match($r->ISLEM_TURU) {
-                                                          'A' => ['bg-warning text-dark', 'Ayar'],
-                                                          'U' => ['bg-success',           'Üretim'],
-                                                          'D' => ['bg-danger',            'Duruş'],
-                                                          default => ['bg-secondary',     $r->ISLEM_TURU ?? '—'],
-                                                      };
+                                                      $topT = $tezgahOzet->sum('toplam_sure');
+                                                      $topC = $tezgahOzet->sum('calisma_sure');
+                                                      echo $topT > 0 ? '%'.round(($topC/$topT)*100,1) : '—';
                                                   @endphp
-                                                  <span class="badge {{ $badge[0] }}">{{ $badge[1] }}</span>
                                               </td>
-                                              <td>{{ $r->BASLANGIC_TARIHI }}</td>
-                                              <td>{{ $r->BASLANGIC_SAATI }}</td>
-                                              <td>{{ $r->BITIS_TARIHI }}</td>
-                                              <td>{{ $r->BITIS_SAATI }}</td>
-                                              <td>{{ number_format($r->SURE,2,',','.') }}</td>
-                                              <td>{{ number_format($r->R_MIKTART,2,',','.') }}</td>
-                                              <td>{{ floor($r->SF_MIKTAR) }}</td>
-                                              <td>
-                                                  <a class="btn btn-sm btn-primary"
-                                                    href="{{ url('calisma_bildirimi') }}?ID={{ $r->ID }}"
-                                                    title="Detay">
-                                                      <i class="fa fa-chevron-circle-right"></i>
-                                                  </a>
-                                              </td>
+                                              <td>{{ number_format($tezgahOzet->sum('toplam_uretim'),0,',','.') }}</td>
                                           </tr>
-                                      @empty
+                                      </tfoot>
+                                      @endif
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+
+                      {{-- Operatör Tablosu --}}
+                      <div class="card shadow-sm mb-3">
+                          <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                              <span><i class="fa fa-table me-1 text-success"></i> Operatör Performans Özeti</span>
+                              <div class="d-flex gap-2">
+                                  <button class="btn btn-sm btn-success" onclick="exportTableToExcel('operatorTable')">
+                                      <i class="fas fa-file-excel me-1"></i>Excel
+                                  </button>
+                                  <button class="btn btn-sm btn-primary" onclick="printTable('operatorTable')">
+                                      <i class="fas fa-print me-1"></i>Yazdır
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="card-body p-0">
+                              <div style="overflow-x:auto;">
+                                  <table id="operatorTable" class="table table-hover table-bordered text-center align-middle mb-0 listeleTable">
+                                      <thead class="table-success">
                                           <tr>
-                                              <td colspan="15" class="text-center text-muted py-4">
-                                                  <i class="fa fa-inbox fa-2x mb-2 d-block"></i>
-                                                  Filtreye uygun kayıt bulunamadı.
-                                              </td>
+                                              <th>#</th>
+                                              <th>Operatör</th>
+                                              <th>Adı</th>
+                                              <th>Üretim Süresi (sa)</th>
+                                              <th>Ayar Süresi (sa)</th>
+                                              <th>Duruş Süresi (sa)</th>
+                                              <th>Planlanan (sa)</th>
+                                              <th>Gerçekleşen (sa)</th>
+                                              <th>Verimlilik %</th>
+                                              <th>Üretim Adedi</th>
                                           </tr>
-                                      @endforelse
-                                  </tbody>
-                                  @if ($kayitlar->isNotEmpty())
-                                  <div class="table-primary">
-                                      <tr>
-                                          <th colspan="13" class="text-end">Toplam Üretilen:</th>
-                                          <th>{{ number_format($kayitlar->sum(fn($r) => floor($r->SF_MIKTAR))) }}</th>
-                                          <th></th>
-                                      </tr>
-                                  </div>
-                                  @endif
-                              </table>
+                                      </thead>
+                                      <tbody>
+                                          @forelse ($operatorOzet as $oi => $op)
+                                              @php
+                                                  $vr = $op->planlanan_sure > 0
+                                                      ? round(($op->gerceklesen_sure / $op->planlanan_sure) * 100, 1)
+                                                      : 0;
+                                                  $vrColor = $vr >= 90 ? 'text-success' : ($vr >= 70 ? 'text-warning' : 'text-danger');
+                                              @endphp
+                                              <tr>
+                                                  <td class="text-muted small">{{ $oi+1 }}</td>
+                                                  <td><strong>{{ $op->TO_OPERATOR }}</strong></td>
+                                                  <td>{{ $op->OPR_AD }}</td>
+                                                  <td>{{ number_format($op->uretim_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($op->ayar_sure,2,',','.') }}</td>
+                                                  <td class="text-danger">{{ number_format($op->durus_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($op->planlanan_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($op->gerceklesen_sure,2,',','.') }}</td>
+                                                  <td class="{{ $vrColor }} fw-bold">%{{ $vr }}</td>
+                                                  <td><strong>{{ number_format($op->toplam_uretim,0,',','.') }}</strong></td>
+                                              </tr>
+                                          @empty
+                                              <tr><td colspan="10" class="text-center text-muted py-3">Kayıt yok</td></tr>
+                                          @endforelse
+                                      </tbody>
+                                      @if ($operatorOzet->isNotEmpty())
+                                      <tfoot class="table-secondary fw-bold">
+                                          <tr>
+                                              <td colspan="3">TOPLAM / ORTALAMA</td>
+                                              <td>{{ number_format($operatorOzet->sum('uretim_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($operatorOzet->sum('ayar_sure'),2,',','.') }}</td>
+                                              <td class="text-danger">{{ number_format($operatorOzet->sum('durus_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($operatorOzet->sum('planlanan_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($operatorOzet->sum('gerceklesen_sure'),2,',','.') }}</td>
+                                              <td>%{{ $kpiVerimlilik }}</td>
+                                              <td>{{ number_format($operatorOzet->sum('toplam_uretim'),0,',','.') }}</td>
+                                          </tr>
+                                      </tfoot>
+                                      @endif
+                                  </table>
+                              </div>
                           </div>
+                      </div>
 
-                      @elseif (!$suzAktif)
-                          <div class="alert alert-info">
-                              <i class="fa fa-info-circle me-1"></i>
-                              Filtreleri doldurup <strong>Süz</strong> butonuna basın.
+                      {{-- Ürün Tablosu --}}
+                      <div class="card shadow-sm mb-3">
+                          <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                              <span><i class="fa fa-table me-1 text-info"></i> Ürün Bazlı Üretim Özeti</span>
+                              <div class="d-flex gap-2">
+                                  <button class="btn btn-sm btn-success" onclick="exportTableToExcel('urunTable')">
+                                      <i class="fas fa-file-excel me-1"></i>Excel
+                                  </button>
+                                  <button class="btn btn-sm btn-primary" onclick="printTable('urunTable')">
+                                      <i class="fas fa-print me-1"></i>Yazdır
+                                  </button>
+                              </div>
                           </div>
-                      @endif
+                          <div class="card-body p-0">
+                              <div style="overflow-x:auto;">
+                                  <table id="urunTable" class="table table-hover table-bordered text-center align-middle mb-0 listeleTable">
+                                      <thead class="table-info">
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Stok Kodu</th>
+                                              <th>İş Emri Sayısı</th>
+                                              <th>Üretim Süresi (sa)</th>
+                                              <th>Planlanan Süre (sa)</th>
+                                              <th>Toplam Üretim</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          @forelse ($urunOzet as $ui => $ur)
+                                              <tr>
+                                                  <td class="text-muted small">{{ $ui+1 }}</td>
+                                                  <td><strong>{{ $ur->STOK_CODE }}</strong></td>
+                                                  <td>{{ $ur->is_emri_sayisi }}</td>
+                                                  <td>{{ number_format($ur->uretim_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($ur->planlanan_sure,2,',','.') }}</td>
+                                                  <td><strong>{{ number_format($ur->toplam_uretim,0,',','.') }}</strong></td>
+                                              </tr>
+                                          @empty
+                                              <tr><td colspan="6" class="text-center text-muted py-3">Kayıt yok</td></tr>
+                                          @endforelse
+                                      </tbody>
+                                      @if ($urunOzet->isNotEmpty())
+                                      <tfoot class="table-secondary fw-bold">
+                                          <tr>
+                                              <td colspan="2">TOPLAM</td>
+                                              <td>{{ $urunOzet->sum('is_emri_sayisi') }}</td>
+                                              <td>{{ number_format($urunOzet->sum('uretim_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($urunOzet->sum('planlanan_sure'),2,',','.') }}</td>
+                                              <td>{{ number_format($urunOzet->sum('toplam_uretim'),0,',','.') }}</td>
+                                          </tr>
+                                      </tfoot>
+                                      @endif
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
 
-                  </div>{{-- /tab-pane#liste --}}
-                    </div>
-                  {{-- LİSTE BİTİŞ --}}
+                      {{-- Duruş Sebebi Tablosu --}}
+                      <div class="card shadow-sm mb-3">
+                          <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                              <span><i class="fa fa-table me-1 text-danger"></i> Duruş Sebebi Analizi</span>
+                              <div class="d-flex gap-2">
+                                  <button class="btn btn-sm btn-success" onclick="exportTableToExcel('durusTable')">
+                                      <i class="fas fa-file-excel me-1"></i>Excel
+                                  </button>
+                                  <button class="btn btn-sm btn-primary" onclick="printTable('durusTable')">
+                                      <i class="fas fa-print me-1"></i>Yazdır
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="card-body p-0">
+                              <div style="overflow-x:auto;">
+                                  <table id="durusTable" class="table table-hover table-bordered text-center align-middle mb-0 listeleTable">
+                                      <thead class="table-danger">
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Duruş Sebebi</th>
+                                              <th>Duruş Sayısı</th>
+                                              <th>Toplam Duruş (sa)</th>
+                                              <th>Ort. Duruş (sa)</th>
+                                              <th>Pay %</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          @php $toplamDurusSure = $durusOzet->sum('toplam_durus_sure'); @endphp
+                                          @forelse ($durusOzet as $di => $dr)
+                                              @php
+                                                  $pay = $toplamDurusSure > 0
+                                                      ? round(($dr->toplam_durus_sure / $toplamDurusSure) * 100, 1)
+                                                      : 0;
+                                              @endphp
+                                              <tr>
+                                                  <td class="text-muted small">{{ $di+1 }}</td>
+                                                  <td class="text-start"><strong>{{ $dr->durus_sebebi }}</strong></td>
+                                                  <td>{{ $dr->durus_sayisi }}</td>
+                                                  <td class="text-danger fw-bold">{{ number_format($dr->toplam_durus_sure,2,',','.') }}</td>
+                                                  <td>{{ number_format($dr->ort_durus_sure,2,',','.') }}</td>
+                                                  <td>
+                                                      <div class="d-flex align-items-center gap-2">
+                                                          <div class="flex-grow-1 bg-light rounded" style="height:10px;">
+                                                              <div class="rounded bg-danger" style="height:10px;width:{{ $pay }}%;transition:width .5s;"></div>
+                                                          </div>
+                                                          <span style="min-width:38px;" class="small">%{{ $pay }}</span>
+                                                      </div>
+                                                  </td>
+                                              </tr>
+                                          @empty
+                                              <tr><td colspan="6" class="text-center text-muted py-3">Duruş kaydı yok</td></tr>
+                                          @endforelse
+                                      </tbody>
+                                      @if ($durusOzet->isNotEmpty())
+                                      <tfoot class="table-secondary fw-bold">
+                                          <tr>
+                                              <td colspan="2">TOPLAM</td>
+                                              <td>{{ $durusOzet->sum('durus_sayisi') }}</td>
+                                              <td class="text-danger">{{ number_format($toplamDurusSure,2,',','.') }}</td>
+                                              <td>—</td>
+                                              <td>%100</td>
+                                          </tr>
+                                      </tfoot>
+                                      @endif
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+
+                      {{-- ── HIGHCHARTS ────────────────────────────────────────────── --}}
+                      {{-- Tüm grafik verileri PHP'den JSON olarak aktarılır           --}}
+                      <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+
+                            /* ── Ortak tema ─────────────────────────────────── */
+                            Highcharts.setOptions({
+                                chart: { style: { fontFamily: 'inherit' } },
+                                credits: { enabled: false },
+                                exporting: { enabled: true }
+                            });
+
+                            /* ── 1) TEZGAH: Stacked Bar (Çalışma / Duruş) ──── */
+                            var tezgahData = @json($tezgahOzet);
+                            Highcharts.chart('chartTezgah', {
+                                chart: { type: 'bar' },
+                                title: { text: null },
+                                xAxis: {
+                                    categories: tezgahData.map(function(d){ return d.TO_ISMERKEZI || '?'; }),
+                                    title: { text: null }
+                                },
+                                yAxis: { title: { text: 'Saat' }, stackLabels: { enabled: true } },
+                                legend: { reversed: true },
+                                plotOptions: { series: { stacking: 'normal' } },
+                                tooltip: {
+                                    formatter: function(){
+                                        return '<b>'+this.x+'</b><br/>'+this.series.name+': <b>'+
+                                              Highcharts.numberFormat(this.y,1,'.',',')+' sa</b>';
+                                    }
+                                },
+                                series: [
+                                    {
+                                        name: 'Duruş',
+                                        data: tezgahData.map(function(d){ return parseFloat(d.durus_sure)||0; }),
+                                        color: '#dc3545'
+                                    },
+                                    {
+                                        name: 'Çalışma',
+                                        data: tezgahData.map(function(d){ return parseFloat(d.calisma_sure)||0; }),
+                                        color: '#198754'
+                                    }
+                                ]
+                            });
+
+                            /* ── 2) OPERATÖR: Column (Üretim adedi + verimlilik çizgi) */
+                            var oprData = @json($operatorOzet);
+                            Highcharts.chart('chartOperator', {
+                                chart: { zoomType: 'xy' },
+                                title: { text: null },
+                                xAxis: {
+                                    categories: oprData.map(function(d){
+                                        return (d.TO_OPERATOR||'?') + (d.OPR_AD ? ' — '+d.OPR_AD : '');
+                                    }),
+                                    crosshair: true
+                                },
+                                yAxis: [
+                                    { title: { text: 'Üretim Adedi' }, labels: { style: { color: '#0d6efd' } } },
+                                    { title: { text: 'Verimlilik %' }, labels: { style: { color: '#fd7e14' } }, opposite: true }
+                                ],
+                                tooltip: { shared: true },
+                                legend: { enabled: true },
+                                series: [
+                                    {
+                                        name: 'Üretim Adedi',
+                                        type: 'column',
+                                        color: '#0d6efd',
+                                        data: oprData.map(function(d){ return parseFloat(d.toplam_uretim)||0; }),
+                                        tooltip: { valueSuffix: ' adet' }
+                                    },
+                                    {
+                                        name: 'Verimlilik %',
+                                        type: 'spline',
+                                        yAxis: 1,
+                                        color: '#fd7e14',
+                                        data: oprData.map(function(d){
+                                            var p = d.planlanan_sure, g = d.gerceklesen_sure;
+                                            return (p > 0) ? Math.round((g/p)*100*10)/10 : 0;
+                                        }),
+                                        tooltip: { valueSuffix: '%' },
+                                        marker: { enabled: true }
+                                    }
+                                ]
+                            });
+
+                            /* ── 3) GÜNLÜK TREND: Area + Duruş çizgi ────────── */
+                            var gunData = @json($gunlukOzet);
+                            Highcharts.chart('chartGunluk', {
+                                chart: { type: 'area' },
+                                title: { text: null },
+                                xAxis: {
+                                    categories: gunData.map(function(d){ return d.gun || '?'; }),
+                                    tickmarkPlacement: 'on',
+                                    labels: { rotation: -45, style: { fontSize: '10px' } }
+                                },
+                                yAxis: [
+                                    { title: { text: 'Üretim (Adet)' } },
+                                    { title: { text: 'Duruş Süresi (sa)' }, opposite: true }
+                                ],
+                                tooltip: { shared: true },
+                                plotOptions: { area: { fillOpacity: 0.2, marker: { enabled: false } } },
+                                series: [
+                                    {
+                                        name: 'Günlük Üretim',
+                                        type: 'area',
+                                        color: '#0d6efd',
+                                        data: gunData.map(function(d){ return parseFloat(d.uretim)||0; }),
+                                        tooltip: { valueSuffix: ' adet' }
+                                    },
+                                    {
+                                        name: 'Duruş Süresi',
+                                        type: 'spline',
+                                        yAxis: 1,
+                                        color: '#dc3545',
+                                        data: gunData.map(function(d){ return parseFloat(d.durus_sure)||0; }),
+                                        tooltip: { valueSuffix: ' sa' }
+                                    }
+                                ]
+                            });
+
+                            /* ── 4) DURUŞ: Pie Chart ─────────────────────────── */
+                            var durusData = @json($durusOzet);
+                            Highcharts.chart('chartDurus', {
+                                chart: { type: 'pie' },
+                                title: { text: null },
+                                tooltip: {
+                                    pointFormat: '<b>{point.name}</b><br/>{point.y:.1f} sa — %{point.percentage:.1f}'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b><br/>%{point.percentage:.1f}',
+                                            style: { fontSize: '11px' }
+                                        },
+                                        showInLegend: true
+                                    }
+                                },
+                                series: [{
+                                    name: 'Duruş Süresi',
+                                    colorByPoint: true,
+                                    data: durusData.map(function(d){
+                                        return {
+                                            name: d.durus_sebebi || 'Belirtilmemiş',
+                                            y: parseFloat(d.toplam_durus_sure) || 0
+                                        };
+                                    })
+                                }]
+                            });
+
+                        });
+                      </script>
+
+                  @endif {{-- /analizAktif --}}
+
+                  </div>{{-- /tab-pane#analiz --}}
                   
                   {{-- BAĞLANTILI DokümanLAR BİTİŞ --}}
                     <div class="tab-pane" id="baglantiliDokumanlar">

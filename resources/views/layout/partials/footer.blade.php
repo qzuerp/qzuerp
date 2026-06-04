@@ -566,6 +566,16 @@ $(function() {
     }
   });
 
+  $('.listeleTable tfoot th').each(function () {
+    var title = $(this).text();
+    if (title == "#") {
+      $(this).html('<b>Git</b>');
+    }
+    else {
+      $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+    }
+  });
+
   $('#seriNoSec tfoot th').each(function () {
     var title = $(this).text();
     if (title == "#") {
@@ -626,6 +636,30 @@ $(function() {
     });
 
     var table = $('#listeleTable').DataTable({
+      "order": [[0, "desc"]],
+      dom: 'brtip',
+      buttons: ['copy', 'excel', 'print'],
+      paging: false,
+      language: {
+        url: '{{ asset("tr.json") }}'
+      },
+      initComplete: function () {
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
+
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+      }
+    });
+
+    var table = $('.listeleTable').DataTable({
       "order": [[0, "desc"]],
       dom: 'brtip',
       buttons: ['copy', 'excel', 'print'],

@@ -372,10 +372,33 @@ class calisma_bildirimi_controller extends Controller
 
         $TOPLAM_SURE = $A_sure + $U_sure;
 
-        if ($TOPLAM_SURE != null && $JOBNO != NULL)
-          DB::update("UPDATE " . $firma . "mmps10t SET GERCEKLESEN_SURE = GERCEKLESEN_SURE - " . $TOPLAM_SURE . " where JOBNO = '" . $JOBNO . "'");
-        if ($mevcutMiktar != null && $JOBNO != NULL)
-          DB::update("UPDATE " . $firma . "mmps10t SET R_TMYMAMULMIKTAR = R_TMYMAMULMIKTAR - " . $mevcutMiktar . " where JOBNO = '" . $JOBNO . "'");
+        if ($JOBNO != null && ($TOPLAM_SURE != null || $mevcutMiktar != null)) {
+    
+          // Güvenli değer atamaları (Null ise 0 kabul et)
+          $sure = (float)($TOPLAM_SURE ?? 0);
+          $miktar = (float)($mevcutMiktar ?? 0);
+      
+          // Tek sorguda işi bitiriyoruz ve SQL Injection'ı engelliyoruz
+          DB::update("
+              UPDATE {$firma}mmps10t 
+              SET 
+                  GERCEKLESEN_SURE = CASE 
+                      WHEN GERCEKLESEN_SURE >= :sure1 THEN GERCEKLESEN_SURE - :sure2 
+                      ELSE 0 
+                  END,
+                  R_TMYMAMULMIKTAR = CASE 
+                      WHEN R_TMYMAMULMIKTAR >= :miktar1 THEN R_TMYMAMULMIKTAR - :miktar2 
+                      ELSE 0 
+                  END
+              WHERE JOBNO = :jobno
+          ", [
+              'sure1'  => $sure,
+              'sure2'  => $sure,
+              'miktar1'=> $miktar,
+              'miktar2'=> $miktar,
+              'jobno'  => $JOBNO
+          ]);
+        }
 
         DB::table($firma . 'sfdc31e')->where('EVRAKNO', $EVRAKNO)->delete();
         DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->delete();
