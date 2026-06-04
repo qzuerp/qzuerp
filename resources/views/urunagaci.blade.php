@@ -177,10 +177,20 @@
 							</div>
 
 							<div class="row mt-3">
-								<div class="col-11">
+								<div class="col-5">
 									<label>Açıklama</label>
 									<input type="text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" data-name="ACIKLAMA" class="form-control mg-left" data-max 
 										name="ACIKLAMA_E" id="ACIKLAMA_E" value="{{ @$kart_veri->ACIKLAMA }}">
+								</div>
+								<div class="col-5">
+									<label>Durum</label>
+									<select class="select2">
+										<option value="">Seç</option>
+										<option value="1">Kilitle</option>
+										<option value="2">1. İyileştirme</option>
+										<option value="3">2. İyileştirme</option>
+										<option value="4">3. İyileştirme</option>
+									</select>
 								</div>
 								<div class="col-md-1" style="text-align: right;">
 									@php 
