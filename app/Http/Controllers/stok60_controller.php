@@ -232,7 +232,16 @@ class stok60_controller extends Controller
           // {
           //   $AMBCODE_SEC = $AMBCODE_T;
           // }
+          
+          // $TOPLAM_SEVK = DB::table($firma.'stok60t')->where('SIPNO',$SIPNO[$i])->sum('SF_MIKTAR');
 
+          // DB::update("
+          //   UPDATE {$firma}stok40t 
+          //   SET SF_NETKAPANANMIK = ?,
+          //       SF_BAKIYE = SF_MIKTAR - ?,
+          //       AK = CASE WHEN SF_MIKTAR = ? THEN 'K' ELSE AK END
+          //   WHERE ARTNO = ?
+          // ",[$TOPLAM_SEVK[$i],$TOPLAM_SEVK[$i],$TOPLAM_SEVK[$i],$SIPNO[$i]]);
 
           DB::update("
             UPDATE {$firma}stok40t 
@@ -553,7 +562,7 @@ class stok60_controller extends Controller
               ->where('TRNUM', $TRNUM[$i])
               ->value('SF_MIKTAR');
               
-          if ($KAYITLI_SF == $SF_MIKTAR[$i]) continue;
+          if ($KAYITLI_SF <= $SF_MIKTAR[$i]) continue;
           
           FunctionHelpers::stokKontrol(
               $KOD[$i], $LOTNUMBER[$i], $SERINO[$i], $AMBCODE,

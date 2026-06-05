@@ -368,7 +368,7 @@ class stok25_controller extends Controller
                     ->where('TRNUM', $TRNUM[$i])
                     ->value('SF_MIKTAR');
         
-                if ($KAYITLI_SF == $SF_MIKTAR[$i]) continue;
+                if ($KAYITLI_SF <= $SF_MIKTAR[$i]) continue;
                 FunctionHelpers::stokKontrol(
                     $KOD[$i], $LOTNUMBER[$i], $SERINO[$i], $AMBCODE_SEC,
                     $NUM1[$i], $NUM2[$i], $NUM3[$i], $NUM4[$i],

@@ -1,5 +1,3 @@
-
-
 @php
 
 if (Auth::check()) {
@@ -75,7 +73,7 @@ if ($mps_no !== '') {
     $params1[] = $like($mps_no);
 }
 
-$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . " AND S40T.AK != 'K'";
+$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . " AND S40T.AK IS NULL";
 
 // İkinci SELECT (UNION ALL kısmı) için WHERE koşulları
 $where2 = ['S40.AK IS NULL'];
@@ -144,6 +142,7 @@ agg_miktar AS (
     GROUP BY E.JOBNO, E.OPERASYON
 )
 SELECT
+M10T.R_KAYNAKTYPE,
     M10T.EVRAKNO AS mps_no,
     M10E.MAMULSTOKKODU AS mamul_kod,
     S00.AD AS mamul_ad,
@@ -187,6 +186,7 @@ AND (S40T.AK IS NULL OR S40T.EVRAKNO IS NULL)
 UNION ALL
 
 SELECT
+NULL AS R_KAYNAKTYPE,
     NULL AS mps_no,
     S40.KOD AS mamul_kod,
     S002.AD AS mamul_ad,
@@ -216,6 +216,7 @@ LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40.KOD
 AND (S40.AK IS NULL OR S40.EVRAKNO IS NULL)
 UNION ALL 
 SELECT
+M10T.R_KAYNAKTYPE ,
     M10T.EVRAKNO AS mps_no,
     M10E.MAMULSTOKKODU AS mamul_kod,
     S00.AD AS mamul_ad,
@@ -253,13 +254,13 @@ LEFT JOIN agg_miktar AS A2
   ON A2.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A2.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
 {$whereSql3}
-AND (M10E.ACIK_KAPALI = 'A' OR M10E.ACIK_KAPALI = 'K' AND M10E.MAMULSTOKKODU LIKE '151%')
+AND (M10E.ACIK_KAPALI = 'A' OR M10E.ACIK_KAPALI = 'K')
 AND (S40T.AK IS NULL OR S40T.EVRAKNO IS NULL)
 
 
 ORDER BY R_SIRANO ASC, termin ASC, mps_no DESC
 SQL;
-
+// dd($sql);
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll();
@@ -268,7 +269,7 @@ $rows = $stmt->fetchAll();
 $ops = [];
 foreach ($rows as $r) {
     if ($r['R_OPERASYON'] !== null && $r['R_OPERASYON'] !== '') {
-        $ops[$r['R_OPERASYON']] = true;
+        $ops[$r['R_OPERASYON']] = $r['R_OPERASYON'];
     }
 }
 $ops = array_keys($ops);
@@ -277,7 +278,7 @@ sort($ops, SORT_NATURAL | SORT_FLAG_CASE);
 
 // 4.1) M10E.SIPARTNO tekil satır olacak şekilde gruplama
 $grouped = [];
-
+//  dd($rows);
 foreach ($rows as $r) {
    
     $key = $r['sip_art_no'] . '|' . $r['mamul_kod'];
@@ -304,6 +305,7 @@ foreach ($rows as $r) {
     }
     
     $op = $r['R_OPERASYON'];
+    // dd($op);
     if ($op !== null && $op !== '') {
         $planSure = is_null($r['plan_sure']) ? 0 : (float)$r['plan_sure'];
         $actSure  = is_null($r['gerceklenen_SURE']) ? 0 : (float)$r['gerceklenen_SURE'];
@@ -808,10 +810,179 @@ usort($groups, function($a, $b) {
         white-space: nowrap !important;
         text-overflow: ellipsis !important;
     }
+
+
+    /* ---------- Modal temel ---------- */
+.dmodal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.dmodal-overlay[hidden] { display: none !important; }
+
+.dmodal-box {
+    background: var(--surface, #fff);
+    border-radius: 14px;
+    width: 100%; max-width: 680px;
+    max-height: 90vh; overflow-y: auto;
+    padding: 28px 28px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    animation: dmodalIn .18s ease;
+}
+@keyframes dmodalIn {
+    from { opacity:0; transform:translateY(12px) scale(.97); }
+    to   { opacity:1; transform:translateY(0)    scale(1);   }
+}
+
+/* ---------- Başlık ---------- */
+.dmodal-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 20px; gap: 12px;
+}
+.dmodal-kod  { font-size:20px; font-weight:700; color:var(--primary,#1a365d); }
+.dmodal-ad   { font-size:13px; color:var(--text-secondary,#4a5568); margin-top:3px; }
+.dmodal-meta { font-size:12px; color:var(--text-muted,#718096); margin-top:2px; }
+
+.dmodal-badge {
+    display:inline-block; padding:4px 12px; border-radius:6px;
+    font-size:12px; font-weight:600; white-space:nowrap;
+}
+.dmodal-badge.acik     { background:#e6f4f0; color:#276749; }
+.dmodal-badge.kapali   { background:#f1f5f9; color:#4a5568; }
+.dmodal-badge.gecikti  { background:#fff5f5; color:#c53030; }
+
+.dmodal-close {
+    background:none; border:none; font-size:22px; cursor:pointer;
+    color:var(--text-muted,#718096); line-height:1; padding:4px 6px;
+    border-radius:6px;
+}
+.dmodal-close:hover { background:var(--surface-3,#f1f5f9); }
+
+/* ---------- Metrik kartlar ---------- */
+.dmodal-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px; margin-bottom: 24px;
+}
+.dmetric {
+    background:var(--surface-2,#f8fafc);
+    border-radius:8px; padding:10px 12px;
+}
+.dmetric-label {
+    font-size:11px; color:var(--text-muted,#718096);
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px;
+}
+.dmetric-val  { font-size:20px; font-weight:700; }
+.dmetric-sub  { font-size:11px; color:var(--text-muted,#718096); margin-top:2px; }
+
+/* ---------- Section title ---------- */
+.dmodal-section-title {
+    font-size:11px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--text-muted,#718096);
+    margin-bottom:14px;
+}
+
+/* ---------- Timeline ---------- */
+.dmodal-timeline { display:flex; flex-direction:column; }
+
+.dtl-item {
+    display:grid; grid-template-columns:20px 1fr;
+    gap:0 14px; position:relative;
+}
+.dtl-item:not(:last-child) .dtl-line {
+    position:absolute; left:9px; top:20px; bottom:-4px;
+    width:1px; background:#e2e8f0;
+}
+.dtl-dot-wrap { display:flex; flex-direction:column; align-items:center; padding-top:5px; }
+.dtl-dot {
+    width:11px; height:11px; border-radius:50%; flex-shrink:0;
+    border:2px solid transparent;
+}
+.dtl-dot.done    { background:#38a169; border-color:#38a169; }
+.dtl-dot.partial { background:#d69e2e; border-color:#d69e2e; }
+.dtl-dot.waiting { background:#e2e8f0; border-color:#a0aec0; }
+
+.dtl-content { padding:0 0 16px; }
+.dtl-header  {
+    display:flex; align-items:center;
+    justify-content:space-between; gap:8px; margin-bottom:6px;
+}
+.dtl-opname { font-size:14px; font-weight:600; }
+.dtl-pct    { font-size:13px; font-weight:600; }
+.dtl-pct.done    { color:#276749; }
+.dtl-pct.partial { color:#975a16; }
+.dtl-pct.waiting { color:#718096; }
+
+.dtl-bar-bg   {
+    height:6px; background:#e2e8f0;
+    border-radius:3px; overflow:hidden; margin-bottom:6px;
+}
+.dtl-bar-fill { height:100%; border-radius:3px; transition:width .5s ease; }
+.dtl-bar-fill.done    { background:#38a169; }
+.dtl-bar-fill.partial { background:#d69e2e; }
+.dtl-bar-fill.waiting { background:#a0aec0; }
+
+.dtl-detail { display:flex; gap:16px; flex-wrap:wrap; }
+.dtl-detail-item { font-size:12px; color:var(--text-muted,#718096); }
+.dtl-detail-item span { color:var(--text-primary,#1a202c); font-weight:600; }
+
+/* ---------- Fason blok ---------- */
+.dmodal-fason {
+    margin-top:18px;
+    background:var(--surface-2,#f8fafc);
+    border-radius:8px; padding:12px 16px;
+    display:flex; gap:20px; flex-wrap:wrap;
+}
+.dmodal-fason-item { font-size:12px; color:var(--text-muted,#718096); }
+.dmodal-fason-item span { color:var(--text-primary,#1a202c); font-weight:600; }
+
+/* ---------- Detay butonu (tablodaki) ---------- */
+.btn-detay {
+    background: none; border: 1.5px solid var(--accent,#3182ce);
+    color: var(--accent,#3182ce); border-radius:6px;
+    padding:5px 8px; cursor:pointer; font-size:13px;
+    transition:all .15s ease;
+}
+.btn-detay:hover {
+    background:var(--accent,#3182ce); color:#fff;
+    transform:scale(1.05);
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+
+<div id="detayModal" class="dmodal-overlay" role="dialog" aria-modal="true" aria-labelledby="dmodal-title" hidden>
+    <div class="dmodal-box">
+
+        <!-- Başlık -->
+        <div class="dmodal-head">
+            <div>
+                <div class="dmodal-kod" id="dmodal-title">—</div>
+                <div class="dmodal-ad" id="dmodal-ad"></div>
+                <div class="dmodal-meta" id="dmodal-meta"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span class="dmodal-badge" id="dmodal-badge"></span>
+                <button class="dmodal-close" id="dmodalClose" aria-label="Kapat">&times;</button>
+            </div>
+        </div>
+
+        <!-- Metrik Kartlar -->
+        <div class="dmodal-metrics" id="dmodalMetrics"></div>
+
+        <!-- Operasyon Timeline -->
+        <div class="dmodal-section-title">Operasyon aşamaları</div>
+        <div class="dmodal-timeline" id="dmodalTimeline"></div>
+
+        <!-- Fason Blok -->
+        <div class="dmodal-fason" id="dmodalFason" style="display:none"></div>
+
+    </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1 class="header-title">Üretim Gazetesi</h1>
@@ -869,6 +1040,7 @@ usort($groups, function($a, $b) {
             <table class="data-table" id="rapor">
                 <thead class="table-header">
                     <tr>
+                        <th></th>
                         <th>Resim</th>
                         <th>Sipariş No</th>
                         <th>Müşteri Kodu</th>
@@ -904,6 +1076,35 @@ usort($groups, function($a, $b) {
                             $fasonbakiye     = $g['fason'] ?? null;
                         ?>
                             <tr style="max-height:100px;">
+                                <td>
+                                    <button
+                                        type="button"
+                                        class="btn-detay"
+                                        data-mamul-kod="<?= htmlspecialchars($g['mamul_kod'] ?? '') ?>"
+                                        data-mamul-ad="<?= htmlspecialchars($g['mamul_ad'] ?? '') ?>"
+                                        data-sip-no="<?= htmlspecialchars($g['sip_no'] ?? '') ?>"
+                                        data-mps-no="<?= htmlspecialchars($g['mps_no'] ?? '') ?>"
+                                        data-musteri-ad="<?= htmlspecialchars($g['musteri_ad'] ?? '') ?>"
+                                        data-sip-miktar="<?= htmlspecialchars($g['sip_miktar'] ?? 0) ?>"
+                                        data-uretilen="<?= htmlspecialchars($g['uretilen_miktar'] ?? 0) ?>"
+                                        data-bakiye="<?= htmlspecialchars($g['sip_bakiye'] ?? 0) ?>"
+                                        data-termin="<?= isset($g['termin']) && $g['termin'] ? (new DateTime($g['termin']))->format('d.m.Y') : '' ?>"
+                                        data-fason-depo="<?= htmlspecialchars($g['fason_depo'] ?? '') ?>"
+                                        data-fason-sevk="<?= htmlspecialchars($g['FASON_SEVK'] ?? '') ?>"
+                                        data-fason-gelen="<?= htmlspecialchars($g['FASON_GELEN'] ?? '') ?>"
+                                        data-ops="<?= htmlspecialchars(json_encode(
+                                            collect($g['ops'])->map(fn($v,$k) => [
+                                                'ad'      => $k,
+                                                'planMik' => $v['planMik'],
+                                                'actMik'  => $v['actMik'],
+                                            ])->values()->toArray()
+                                        , JSON_UNESCAPED_UNICODE)) ?>"
+                                        title="Detay görüntüle"
+                                        aria-label="<?= htmlspecialchars($g['mamul_kod'] ?? '') ?> detayını görüntüle"
+                                    >
+                                        <i class="fa-solid fa-chart-gantt"></i>
+                                    </button>
+                                </td>
                                  <td><img src="{{ isset($g['DOSYA']) ? asset('dosyalar/'.$g['DOSYA']) : '' }}" alt="" class="kart-img" width="100"></td>
                                             
                                 <td><?= htmlspecialchars($g['sip_no'] ?? '') ?></td>
@@ -1090,6 +1291,167 @@ usort($groups, function($a, $b) {
             }
         }
     });
+})();
+</script>
+
+
+<script>
+(function(){
+    const modal   = document.getElementById('detayModal');
+    const closeBtn = document.getElementById('dmodalClose');
+
+    /* ---- Yardımcılar ---- */
+    function fmt(n){
+        if(n===null||n===undefined||n==='') return '—';
+        return parseFloat(n).toLocaleString('tr-TR', {minimumFractionDigits:0, maximumFractionDigits:2});
+    }
+    function getStatus(pct){
+        if(pct>=99.5) return 'done';
+        if(pct>0)     return 'partial';
+        return 'waiting';
+    }
+    function statusLabel(pct,st){
+        if(st==='done')    return 'Tamamlandı';
+        if(st==='partial') return pct+'% tamamlandı';
+        return 'Başlamadı';
+    }
+
+    /* ---- Modal aç ---- */
+    function openModal(btn){
+        const mamulKod  = btn.dataset.mamulKod   || '—';
+        const mamulAd   = btn.dataset.mamulAd    || '';
+        const sipNo     = btn.dataset.sipNo      || '';
+        const mpsNo     = btn.dataset.mpsNo      || '';
+        const musteriAd = btn.dataset.musteriAd  || '';
+        const sipMiktar = parseFloat(btn.dataset.sipMiktar)  || 0;
+        const uretilen  = parseFloat(btn.dataset.uretilen)   || 0;
+        const bakiye    = parseFloat(btn.dataset.bakiye)      || 0;
+        const termin    = btn.dataset.termin     || '';
+        const fasonDepo = btn.dataset.fasonDepo  || '';
+        const fasonSevk = parseFloat(btn.dataset.fasonSevk)  || 0;
+        const fasonGelen= parseFloat(btn.dataset.fasonGelen) || 0;
+        let   ops       = [];
+        try { ops = JSON.parse(btn.dataset.ops || '[]'); } catch(e){}
+
+        /* Genel yüzde */
+        const pctGenel = sipMiktar>0 ? Math.round((uretilen/sipMiktar)*100) : 0;
+
+        /* Durum rozeti */
+        const today = new Date(); today.setHours(0,0,0,0);
+        let terminDate = null;
+        if(termin){ const p=termin.split('.'); terminDate=new Date(p[2],p[1]-1,p[0]); }
+        const gecikti  = terminDate && terminDate<today && bakiye>0;
+        const kapali   = bakiye<=0;
+        const badgeCls = kapali ? 'kapali' : gecikti ? 'gecikti' : 'acik';
+        const badgeTxt = kapali ? 'Tamamlandı' : gecikti ? 'Gecikmiş' : 'Açık Sipariş';
+
+        /* Başlık */
+        document.getElementById('dmodal-title').textContent = mamulKod;
+        document.getElementById('dmodal-ad').textContent    = mamulAd;
+        document.getElementById('dmodal-meta').textContent  =
+            [musteriAd, sipNo&&('Sip: '+sipNo), mpsNo&&('MPS: '+mpsNo)].filter(Boolean).join('  |  ');
+
+        const badge = document.getElementById('dmodal-badge');
+        badge.textContent = badgeTxt;
+        badge.className   = 'dmodal-badge '+badgeCls;
+
+        /* Metrikler */
+        const metricColor = {
+            siparis: 'var(--text-primary,#1a202c)',
+            uretilen: uretilen>0?'#276749':'var(--text-muted,#718096)',
+            bakiye:   bakiye>0?'#975a16':'var(--text-muted,#718096)',
+            genel:    pctGenel>=100?'#276749':pctGenel>50?'#975a16':'var(--text-primary,#1a202c)',
+        };
+        document.getElementById('dmodalMetrics').innerHTML = `
+            <div class="dmetric"><div class="dmetric-label">Sipariş</div><div class="dmetric-val" style="color:${metricColor.siparis}">${fmt(sipMiktar)}</div><div class="dmetric-sub">adet</div></div>
+            <div class="dmetric"><div class="dmetric-label">Üretilen</div><div class="dmetric-val" style="color:${metricColor.uretilen}">${fmt(uretilen)}</div><div class="dmetric-sub">adet</div></div>
+            <div class="dmetric"><div class="dmetric-label">Bakiye</div><div class="dmetric-val" style="color:${metricColor.bakiye}">${fmt(bakiye)}</div><div class="dmetric-sub">adet</div></div>
+            <div class="dmetric"><div class="dmetric-label">Termin</div><div class="dmetric-val" style="font-size:15px;${gecikti?'color:#c53030':''}">${termin||'—'}</div><div class="dmetric-sub">${gecikti?'Gecikmiş':''}</div></div>
+            <div class="dmetric"><div class="dmetric-label">Genel ilerleme</div><div class="dmetric-val" style="color:${metricColor.genel}">${pctGenel}%</div><div class="dmetric-sub">${fmt(uretilen)}/${fmt(sipMiktar)}</div></div>
+        `;
+
+        /* Timeline */
+        let tlHtml = '';
+        ops.forEach(function(op, i){
+            const pct = op.planMik>0 ? Math.min(100,Math.round((op.actMik/op.planMik)*100)) : 0;
+            const st  = getStatus(pct);
+            const isLast = i===ops.length-1;
+            tlHtml += `
+            <div class="dtl-item">
+                <div class="dtl-dot-wrap">
+                    <div class="dtl-dot ${st}"></div>
+                    ${!isLast?'<div class="dtl-line"></div>':''}
+                </div>
+                <div class="dtl-content">
+                    <div class="dtl-header">
+                        <span class="dtl-opname">${op.ad}</span>
+                        <span class="dtl-pct ${st}">${statusLabel(pct,st)}</span>
+                    </div>
+                    <div class="dtl-bar-bg"><div class="dtl-bar-fill ${st}" style="width:0%" data-w="${pct}"></div></div>
+                    <div class="dtl-detail">
+                        <div class="dtl-detail-item">Plan: <span>${fmt(op.planMik)}</span></div>
+                        <div class="dtl-detail-item">Gerçekleşen: <span>${fmt(op.actMik)}</span></div>
+                    </div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('dmodalTimeline').innerHTML = tlHtml;
+
+        /* Bar animasyonu (modal açıldıktan 1 frame sonra) */
+        requestAnimationFrame(function(){
+            requestAnimationFrame(function(){
+                document.querySelectorAll('.dtl-bar-fill').forEach(function(bar){
+                    bar.style.width = bar.dataset.w + '%';
+                });
+            });
+        });
+
+        /* Fason */
+        const fasonEl = document.getElementById('dmodalFason');
+        if(fasonDepo){
+            const bekleyen = Math.max(0, fasonSevk - fasonGelen);
+            fasonEl.style.display = 'flex';
+            fasonEl.innerHTML = `
+                <div class="dmodal-fason-item"><i class="fa-solid fa-industry" style="margin-right:5px"></i>Fason depo: <span>${fasonDepo}</span></div>
+                <div class="dmodal-fason-item">Gönderilen: <span>${fmt(fasonSevk)}</span></div>
+                <div class="dmodal-fason-item">Gelen: <span>${fmt(fasonGelen)}</span></div>
+                <div class="dmodal-fason-item">Bekleyen: <span>${fmt(bekleyen)}</span></div>
+            `;
+        } else {
+            fasonEl.style.display = 'none';
+            fasonEl.innerHTML = '';
+        }
+
+        /* Göster */
+        modal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    /* ---- Kapat ---- */
+    function closeModal(){
+        modal.setAttribute('hidden','');
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    /* Overlay tıklama ile kapat */
+    modal.addEventListener('click', function(e){
+        if(e.target === modal) closeModal();
+    });
+
+    /* ESC ile kapat */
+    document.addEventListener('keydown', function(e){
+        if(e.key==='Escape' && !modal.hasAttribute('hidden')) closeModal();
+    });
+
+    /* Buton dinleyici — event delegation (dinamik satırlar için güvenli) */
+    document.addEventListener('click', function(e){
+        const btn = e.target.closest('.btn-detay');
+        if(btn) openModal(btn);
+    });
+
 })();
 </script>
 </body>

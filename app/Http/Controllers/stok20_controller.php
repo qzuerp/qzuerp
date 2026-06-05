@@ -316,39 +316,30 @@ class stok20_controller extends Controller
             'ISEMRINO' => $IS_EMRI[$i]
           ]);
 
-          $toplamMiktar = DB::table($firma.'stok20t')
+          $toplamMiktar = DB::table($firma . 'stok20t')
               ->where('EVRAKNO', $EVRAKNO)
               ->where('KOD', $KOD[$i])
-              ->sum('SF_MIKTAR');
+              ->sum('SF_MIKTAR') ?? 0;
 
-          $mevcutMiktar = DB::table($firma.'mmps10e')
+          $MPS = DB::table($firma . 'mmps10e')
               ->where('EVRAKNO', $IS_EMRI[$i])
-              ->value('SF_TOPLAMMIKTAR');
+              ->first(['TAMAMLANAN_URETIM_FISI_MIKTARI','SIPARTNO']);
 
-          if ($toplamMiktar >= $mevcutMiktar) {
-              DB::table($firma.'mmps10e')
-                  ->where('EVRAKNO', $IS_EMRI[$i])
-                  ->update([
-                      'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar,
-                      'ACIK_KAPALI' => 'K',
-                      'KAPANIS_TARIHI' => now()->toDateString()
-                  ]);
-          }
-          else
-          {
-            DB::table($firma.'mmps10e')
-                  ->where('EVRAKNO', $IS_EMRI[$i])
-                  ->update([
-                      'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar
-                  ]);
+          $updateData = [
+              'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar
+          ];
+
+          if ($toplamMiktar >= $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI) {
+              $updateData['ACIK_KAPALI'] = 'K';
+              $updateData['KAPANIS_TARIHI'] = now()->toDateString();
           }
 
-          $sipNO = DB::table($firma.'mmps10e')
+          DB::table($firma . 'mmps10e')
               ->where('EVRAKNO', $IS_EMRI[$i])
-              ->value('SIPARTNO');
+              ->update($updateData);
 
           
-          DB::table($firma.'stok40t')->where('ARTNO',$sipNO)->update([
+          DB::table($firma.'stok40t')->where('ARTNO',$MPS->SIPARTNO)->update([
             'URETILEN_MIKTARI'=>$toplamMiktar
           ]);
 
@@ -572,39 +563,31 @@ class stok20_controller extends Controller
               'LOCATION4' => $LOCATION4[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
-            $toplamMiktar = DB::table($firma.'stok20t')
-                ->where('EVRAKNO', $EVRAKNO)
-                ->where('KOD', $KOD[$i])
-                ->sum('SF_MIKTAR');
+            
+            $toplamMiktar = DB::table($firma . 'stok20t')
+              ->where('EVRAKNO', $EVRAKNO)
+              ->where('KOD', $KOD[$i])
+              ->sum('SF_MIKTAR') ?? 0;
 
-            $mevcutMiktar = DB::table($firma.'mmps10e')
+            $MPS = DB::table($firma . 'mmps10e')
                 ->where('EVRAKNO', $IS_EMRI[$i])
-                ->value('SF_TOPLAMMIKTAR');
-                
-            if ($toplamMiktar >= $mevcutMiktar) {
-                DB::table($firma.'mmps10e')
-                    ->where('EVRAKNO', $IS_EMRI[$i])
-                    ->update([
-                        'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar,
-                        'ACIK_KAPALI' => 'K',
-                        'KAPANIS_TARIHI' => now()->toDateString()
-                    ]);
-            }
-            else
-            {
-              DB::table($firma.'mmps10e')
-                    ->where('EVRAKNO', $IS_EMRI[$i])
-                    ->update([
-                        'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar
-                    ]);
+                ->first(['TAMAMLANAN_URETIM_FISI_MIKTARI','SIPARTNO']);
+
+            $updateData = [
+                'TAMAMLANAN_URETIM_FISI_MIKTARI' => $toplamMiktar
+            ];
+
+            if ($toplamMiktar >= $MPS->TAMAMLANAN_URETIM_FISI_MIKTARI) {
+                $updateData['ACIK_KAPALI'] = 'K';
+                $updateData['KAPANIS_TARIHI'] = now()->toDateString();
             }
 
-            $sipNO = DB::table($firma.'mmps10e')
-            ->where('EVRAKNO', $IS_EMRI[$i])
-            ->value('SIPARTNO');
+            DB::table($firma . 'mmps10e')
+                ->where('EVRAKNO', $IS_EMRI[$i])
+                ->update($updateData);
 
-          
-            DB::table($firma.'stok40t')->where('ARTNO',$sipNO)->update([
+            
+            DB::table($firma.'stok40t')->where('ARTNO',$MPS->SIPARTNO)->update([
               'URETILEN_MIKTARI'=>$toplamMiktar
             ]);
           }

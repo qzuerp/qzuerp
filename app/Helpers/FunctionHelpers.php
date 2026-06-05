@@ -22,6 +22,8 @@ class FunctionHelpers
                 ['LOCATION2', $LOCATION2], ['LOCATION3', $LOCATION3], ['LOCATION4', $LOCATION4]
             ])
             ->first();
+
+
     
         if (!$MEVCUT) {
             session()->push('EKSILER', $KOD . ' için hiç stok kaydı bulunamadı!');
