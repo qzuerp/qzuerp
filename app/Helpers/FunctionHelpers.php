@@ -44,7 +44,7 @@ class FunctionHelpers
 
         if ($kalanStok < 0) {
             $eksiAdet = abs($kalanStok);
-            session()->push('EKSILER', "{$KOD[$i]} (-{$eksiAdet} Adet) eksiye düşecek!");
+            session()->push('EKSILER', "{$KOD} (-{$eksiAdet} Adet) eksiye düşecek!");
             return false;
         }
     }
