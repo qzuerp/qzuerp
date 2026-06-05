@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 class FunctionHelpers
 {
-    public static function stokKontrol($KOD, $LOTNO, $SERINO, $AMBCODE, $NUM1, $NUM2, $NUM3, $NUM4, $TEXT1, $TEXT2, $TEXT3, $TEXT4, $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, $ISLEM_MIK) {
+    public static function stokKontrol($KOD, $LOTNO, $SERINO, $AMBCODE, $NUM1, $NUM2, $NUM3, $NUM4, $TEXT1, $TEXT2, $TEXT3, $TEXT4, $LOCATION1, $LOCATION2, $LOCATION3, $LOCATION4, $ISLEM_MIK,$eskiIslemMiktari = 0) {
         $p = Auth::user();
         if (!$p) return;
     
@@ -36,9 +36,16 @@ class FunctionHelpers
         }
     
         $mevcutMiktar = $MEVCUT->MIKTAR ?? 0;
-        if ($ISLEM_MIK > $mevcutMiktar) {
-            session()->push('EKSILER', $KOD . ' (-' . ($ISLEM_MIK - $mevcutMiktar) . ' Adet) eksiye düşecek');
-            return true;
+        $yeniIslemMiktari = $ISLEM_MIK; 
+
+        $sanalStok = $mevcutMiktar + $eskiIslemMiktari;
+
+        $kalanStok = $sanalStok - $yeniIslemMiktari;
+
+        if ($kalanStok < 0) {
+            $eksiAdet = abs($kalanStok);
+            session()->push('EKSILER', "{$KOD[$i]} (-{$eksiAdet} Adet) eksiye düşecek!");
+            return false;
         }
     }
 

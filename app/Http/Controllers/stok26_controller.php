@@ -207,7 +207,7 @@ class stok26_controller extends Controller
             $KONTROL_VERI->NUM1, $KONTROL_VERI->NUM2, $KONTROL_VERI->NUM3, $KONTROL_VERI->NUM4, 
             $KONTROL_VERI->TEXT1, $KONTROL_VERI->TEXT2, $KONTROL_VERI->TEXT3, $KONTROL_VERI->TEXT4, 
             $KONTROL_VERI->LOCATION1, $KONTROL_VERI->LOCATION2, $KONTROL_VERI->LOCATION3, $KONTROL_VERI->LOCATION4, 
-            $KONTROL_VERI->SF_MIKTAR
+            $KONTROL_VERI->SF_MIKTAR,$KONTROL_VERI->SF_MIKTAR
           );
         }
 
@@ -438,7 +438,7 @@ class stok26_controller extends Controller
                   $NUM1[$i], $NUM2[$i], $NUM3[$i], $NUM4[$i],
                   $TEXT1[$i], $TEXT2[$i], $TEXT3[$i], $TEXT4[$i],
                   $LOCATION1[$i], $LOCATION2[$i], $LOCATION3[$i], $LOCATION4[$i],
-                  $SF_MIKTAR[$i]
+                  $SF_MIKTAR[$i],$KAYITLI_SF
               );
           }
           foreach ($deleteTRNUMS as $key => $deleteTRNUM) {
@@ -452,7 +452,7 @@ class stok26_controller extends Controller
                   $KONTROL_VERI->NUM1, $KONTROL_VERI->NUM2, $KONTROL_VERI->NUM3, $KONTROL_VERI->NUM4,
                   $KONTROL_VERI->TEXT1, $KONTROL_VERI->TEXT2, $KONTROL_VERI->TEXT3, $KONTROL_VERI->TEXT4,
                   $KONTROL_VERI->LOCATION1, $KONTROL_VERI->LOCATION2, $KONTROL_VERI->LOCATION3, $KONTROL_VERI->LOCATION4,
-                  $KONTROL_VERI->SF_MIKTAR
+                  $KONTROL_VERI->SF_MIKTAR,$KONTROL_VERI->SF_MIKTAR
               );
           }
       

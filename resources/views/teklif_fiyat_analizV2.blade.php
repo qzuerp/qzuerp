@@ -2929,9 +2929,11 @@
 
 					let miktar = parseFloat($('#SF_MIKTAR').val()) || 0;
 					
-					let fiyat      = AutoNumeric.getNumber(document.getElementById('FIYAT')) || 0;
+					let KUR_1 = getCachedKur('{{ @$kart_veri->TARIH }}', $('#teklif').val());
+
+					let fiyat      = (AutoNumeric.getNumber(document.getElementById('FIYAT')) / KUR_1.data.KURS_1 ?? 1);
 					let dolarFiyat = round(fiyat / dolarKur.data.KURS_1);
-					let tutar = fiyat * miktar;
+					let tutar = (fiyat * miktar) / KUR_1.data.KURS_1 ?? 1;
 
 					AutoNumeric.set(aktifSatir.find('input[name="FIYAT[]"]')[0], fiyat);
 					AutoNumeric.set(aktifSatir.find('input[name="DOLAR_FIYAT[]"]')[0], dolarFiyat);
@@ -3189,7 +3191,6 @@
 						try {
 							if (originalCurrency === newCurrency) {
 								converted = originalValue;
-
 							} else if (originalCurrency === 'TL') {
 								let kur = await getCachedKur(TARIH, newCurrency);
 								converted = originalValue / kur.data.KURS_1;
@@ -3197,7 +3198,6 @@
 							} else if (newCurrency === 'TL') {
 								let kur = await getCachedKur(TARIH, originalCurrency);
 								converted = originalValue * kur.data.KURS_1;
-
 							} else {
 								let kur1 = await getCachedKur(TARIH, originalCurrency);
 								let kur2 = await getCachedKur(TARIH, newCurrency);
@@ -3207,7 +3207,7 @@
 							let finalValue = Math.round(converted * 100) / 100;
 							let miktar     = parseFloat($(miktarInputs[i]).val()) || 0;
 
-							AutoNumeric.set(input,           finalValue);
+							AutoNumeric.set(input, finalValue);
 							AutoNumeric.set(tutarInputs[i],  Math.round(finalValue * miktar * 100) / 100);
 
 						} catch (e) {

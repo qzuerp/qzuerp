@@ -978,7 +978,7 @@
 				$('#maliyetListesi tbody tr').each(function () {
 
 					const fiyat = parseFloat($(this).find("input[name='FIYAT2[]']").val()) || 0;
-					const tutar = parseFloat($(this).find("input[name='TUTAR2[]']").val()) || 0;
+					const tutar = parseFloat($(this).find("input[name='TUTAR2[]']").val()) || 0; 
 
 					toplamFiyat += fiyat;
 					toplamTutar += tutar;

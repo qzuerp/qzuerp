@@ -569,7 +569,7 @@ class stok60_controller extends Controller
               $NUM1[$i], $NUM2[$i], $NUM3[$i], $NUM4[$i],
               $TEXT1[$i], $TEXT2[$i], $TEXT3[$i], $TEXT4[$i],
               $LOCATION1[$i], $LOCATION2[$i], $LOCATION3[$i], $LOCATION4[$i],
-              $SF_MIKTAR[$i]
+              $SF_MIKTAR[$i],$KAYITLI_SF
           );
         }
 
