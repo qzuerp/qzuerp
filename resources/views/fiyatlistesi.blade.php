@@ -493,8 +493,8 @@ if (isset($kart_veri)) {
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Para Birimi</th>
                       <th>Yoğunluk</th>
-                      <th>GK_1</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -503,12 +503,11 @@ if (isset($kart_veri)) {
                     <tr class="bg-info">
                       <th>Evrak No</th>
                       <th>Kod</th>
-                      <!-- <th>Lot</th> -->
                       <th>Miktar</th>
                       <th>Cari</th>
                       <th>Tarih</th>
+                      <th>Para Birimi</th>
                       <th>Yoğunluk</th>
-                      <th>GK_1</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -517,17 +516,19 @@ if (isset($kart_veri)) {
 
                     @php
 
-                    $evraklar=DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok48e.EVRAKNO', '=', 'stok48t.EVRAKNO')->orderBy('stok48t.id', 'ASC')->get();
+                    $evraklar=DB::table($ekranTableT)->leftJoin($ekranTableE, 'stok48e.EVRAKNO', '=', 'stok48t.EVRAKNO')
+                    ->leftJoin($database.'cari00 as C00', 'stok48e.CARIHESAPCODE', '=', 'C00.KOD')
+                    ->orderBy('stok48t.id', 'ASC')->get(['stok48t.*', 'stok48e.*', 'C00.AD']);
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
                         echo "<td>".$suzVeri->EVRAKNO."</td>";
                         echo "<td>".$suzVeri->KOD."</td>";
                         echo "<td>".$suzVeri->PRICE."</td>";
-                        echo "<td>".$suzVeri->CARIHESAPCODE."</td>";
+                        echo "<td>".$suzVeri->AD."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
+                        echo "<td>".$suzVeri->PRICE_UNIT."</td>";
                         echo "<td>".$suzVeri->TEXT1."</td>";
-                        echo "<td>".$suzVeri->GK_1."</td>";
 
 
                         echo "<td>"."<a class='btn btn-info' href='fiyat_listesi?ID=".$suzVeri->EVRAKNO."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
