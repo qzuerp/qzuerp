@@ -781,7 +781,7 @@
         </div>
       </div>
 
-      <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+      <!-- <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
 
@@ -925,7 +925,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       {{-- Seri no start --}}
         <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal4"  >
