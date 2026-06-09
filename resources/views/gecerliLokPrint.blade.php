@@ -48,11 +48,7 @@
             letter-spacing: .5px;
             color: #111;
             text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             max-width: 100%;
-            line-height: 1.2;
         }
 
         /* ── PRINT ────────────────────────────────── */
@@ -117,7 +113,7 @@
         @endphp
 
         <div class="label-card hidden">
-            <div class="barcode-text" style="font-size:20px;">{{ $NOTES[$i] }}</div>
+            <div class="barcode-text" style="font-size:16px;">{{ $NOTES[$i] }}</div>
             <svg class="barcode" id="bc-{{ $i }}" data-value="{{ $barcodeValue }}"></svg>
             <div class="barcode-text">{{ $displayText }}</div>
         </div>

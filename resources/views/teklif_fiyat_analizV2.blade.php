@@ -2929,11 +2929,11 @@
 
 					let miktar = parseFloat($('#SF_MIKTAR').val()) || 0;
 					
-					let KUR_1 = getCachedKur('{{ @$kart_veri->TARIH }}', $('#teklif').val());
-
-					let fiyat      = (AutoNumeric.getNumber(document.getElementById('FIYAT')) / KUR_1.data.KURS_1 ?? 1);
-					let dolarFiyat = round(fiyat / dolarKur.data.KURS_1);
-					let tutar = (fiyat * miktar) / KUR_1.data.KURS_1 ?? 1;
+					let birim_kur = await getCachedKur('{{ @$kart_veri->TARIH }}', $('#teklif').val());
+					console.log(birim_kur);
+					let fiyat = (AutoNumeric.getNumber(document.getElementById('FIYAT')) / (birim_kur?.data?.KURS_1 ?? 1));
+					let dolarFiyat = round(AutoNumeric.getNumber(document.getElementById('FIYAT')) / dolarKur?.data?.KURS_1);
+					let tutar = (fiyat * miktar) / birim_kur?.data?.KURS_1 ?? 1;
 
 					AutoNumeric.set(aktifSatir.find('input[name="FIYAT[]"]')[0], fiyat);
 					AutoNumeric.set(aktifSatir.find('input[name="DOLAR_FIYAT[]"]')[0], dolarFiyat);
