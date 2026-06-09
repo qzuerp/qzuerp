@@ -1,3 +1,4 @@
+<button class="btn btn-success" type="button" onclick="exportTableToExcel('example2')">Excel'e Aktar</button>
 <table id="example2" class="table table-hover text-center" data-page-length="500" style="font-size: 0.75em">
     <thead>
         <tr>

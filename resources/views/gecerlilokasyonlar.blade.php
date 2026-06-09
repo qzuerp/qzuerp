@@ -262,7 +262,12 @@ if (isset($kart_veri)) {
                     <tr class="bg-primary">
                       <th>EVRAKNO</th>
                       <th>TARİH</th>
-                      <th>LAST_TRNUM</th>
+                      <th>Depo</th>
+                      <th>Loksyon 1</th>
+                      <th>Loksyon 2</th>
+                      <th>Loksyon 3</th>
+                      <th>Loksyon 4</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -271,7 +276,12 @@ if (isset($kart_veri)) {
                     <tr class="bg-info">
                       <th>EVRAKNO</th>
                       <th>TARİH</th>
-                      <th>LAST_TRNUM</th>
+                      <th>Depo</th>
+                      <th>Loksyon 1</th>
+                      <th>Loksyon 2</th>
+                      <th>Loksyon 3</th>
+                      <th>Loksyon 4</th>
+                      <th>Not</th>
                       <th>#</th>
                     </tr>
                   </tfoot>
@@ -280,13 +290,20 @@ if (isset($kart_veri)) {
 
                     @php
 
-                    $evraklar=DB::table($ekranTableE)->orderBy('id', 'ASC')->get();
+                    $evraklar=DB::table($ekranTableE)
+                    ->leftJoin($ekranTableT, 'stok69e.EVRAKNO', '=', 'stok69t.EVRAKNO')
+                    ->orderBy('id', 'ASC')->get(['stok69e.id', 'stok69e.EVRAKNO', 'stok69e.TARIH', 'stok69t.AMBCODE', 'stok69t.LOCATION1', 'stok69t.LOCATION2', 'stok69t.LOCATION3', 'stok69t.LOCATION4', 'stok69t.NOTES']);
 
                     foreach ($evraklar as $key => $suzVeri) {
                         echo "<tr>";
                         echo "<td>".$suzVeri->EVRAKNO."</td>";
                         echo "<td>".$suzVeri->TARIH."</td>";
-                        echo "<td>".$suzVeri->LAST_TRNUM."</td>";
+                        echo "<td>".$suzVeri->AMBCODE."</td>";
+                        echo "<td>".$suzVeri->LOCATION1."</td>";
+                        echo "<td>".$suzVeri->LOCATION2."</td>";
+                        echo "<td>".$suzVeri->LOCATION3."</td>";
+                        echo "<td>".$suzVeri->LOCATION4."</td>";
+                        echo "<td>".$suzVeri->NOTES."</td>";
                         echo "<td>"."<a class='btn btn-info' href='gecerlilokasyonlar?ID=".$suzVeri->id."'><i class='fa fa-chevron-circle-right' style='color: white'></i></a>"."</td>";
 
                         echo "</tr>";

@@ -1,3 +1,4 @@
+<button class="btn btn-success" type="button" onclick="exportTableToExcel('excelTable')">Excel'e Aktar</button>
 <table id="example2" class="table table-hover text-center" data-page-length="500" style="font-size: 0.75em">
     <thead>
         <tr>
@@ -24,9 +25,19 @@
     <tbody>
        @php
             $veri = DB::table($database.'cgc70')->where('FORM',@$kart_veri->FORM)->get();
+            $Hindex = 0;
        @endphp
 
         @foreach ($veri as $key => $value)
+        
+            @php
+                if(json_decode($value->karar) != null)
+                {
+                    if(count(json_decode($value->karar)) > $Hindex){
+                        $Hindex = count(json_decode($value->karar));
+                    }
+                }
+            @endphp
             <tr>
                 <td style="min-width:120px; font-size: 13px !important;">{{ $value->EVRAKNO }}</td>
                 <td style="min-width:120px; font-size: 13px !important;">{{ $value->tarih }}</td>
@@ -34,6 +45,55 @@
                 <td style="min-width:120px; font-size: 13px !important;">{{ $value->bitis }}</td>
                 <td style="min-width:120px; font-size: 13px !important;"><button data-bs-toggle="modal" type="button" data-bs-target="#kararlar" data-index="{{ $key }}" class="btn btn-primary karar-btn">Kararlar</button></td>
                 <td style="min-width:120px; font-size: 13px !important;"><button data-bs-toggle="modal" type="button" data-bs-target="#katilimcilar" data-index="{{ $key }}" class="btn btn-primary katilimci-btn">Katılımcılar</button></td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+
+<table class="d-none" id="excelTable" data-page-length="500" style="font-size: 0.75em">
+    <thead>
+        <tr>
+            <th style="min-width:120px; font-size: 13px !important;">Evrak No</th>
+            <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
+            <th style="min-width:120px; font-size: 13px !important;">Başlangıç Saati</th>
+            <th style="min-width:120px; font-size: 13px !important;">Bitiş Saati</th>
+            @for ($index = 0; $index < $Hindex; $index++)
+                <th style="min-width:120px; font-size: 13px !important;">Karar {{ $index + 1 }}</th>
+            @endfor
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+            <th style="min-width:120px; font-size: 13px !important;">Evrak No</th>
+            <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
+            <th style="min-width:120px; font-size: 13px !important;">Başlangıç Saati</th>
+            <th style="min-width:120px; font-size: 13px !important;">Bitiş Saati</th>
+            @for ($index = 0; $index < $Hindex; $index++)
+                <th style="min-width:120px; font-size: 13px !important;">Karar {{ $index + 1 }}</th>
+            @endfor
+        </tr>
+    </tfoot>
+
+    <tbody>
+
+        @foreach ($veri as $key => $value)
+            <tr>
+                <td style="min-width:120px; font-size: 13px !important;">{{ $value->EVRAKNO }}</td>
+                <td style="min-width:120px; font-size: 13px !important;">{{ $value->tarih }}</td>
+                <td style="min-width:120px; font-size: 13px !important;">{{ $value->baslangic }}</td>
+                <td style="min-width:120px; font-size: 13px !important;">{{ $value->bitis }}</td>
+                @forelse (json_decode($value->karar) ?? [] as $karar) 
+                    <td style="min-width:120px; font-size: 13px !important;">
+                        {{ $karar }}
+                    </td>
+                @empty
+                    <td style="min-width:120px; font-size: 13px !important;">
+                        Karar alınmadı
+                    </td>
+                @endforelse
+                
             </tr>
         @endforeach
     </tbody>
@@ -79,7 +139,7 @@
     </div>
 
     <div class="modal fade bd-example-modal-lg" id="katilimcilar" tabindex="-1" role="dialog" aria-labelledby="katilimcilar">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="exampleModalLabel"> Katılımcılar</h4>
