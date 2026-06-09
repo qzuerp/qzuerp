@@ -219,6 +219,7 @@ class stok69_controller extends Controller
             'LOCATION2' => $LOCATION2,
             'LOCATION3' => $LOCATION3,
             'LOCATION4' => $LOCATION4,
+            'NOTES' => $NOTES,
             'AMBCODE'   => $AMBCODE,
         ]);
 

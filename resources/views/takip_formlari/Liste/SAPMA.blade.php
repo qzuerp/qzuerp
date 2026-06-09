@@ -1,1 +1,1 @@
-Yapılacak
+TOPLANTIYapılacak

@@ -3,6 +3,10 @@
         <tr>
             <th style="min-width:120px; font-size: 13px !important;">İç Hata Parça No</th>
             <th style="min-width:120px; font-size: 13px !important;">İç hatayı yapan operatör</th>
+            <th style="min-width:120px; font-size: 13px !important;">Problem Tanımı</th>
+            <th style="min-width:120px; font-size: 13px !important;">Kök Neden</th>
+            <th style="min-width:120px; font-size: 13px !important;">Düzeltici Faaliyet</th>
+            <th style="min-width:120px; font-size: 13px !important;">Açıklama</th>
             <th style="min-width:120px; font-size: 13px !important;">Adet</th>
             <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
             <th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
@@ -13,6 +17,10 @@
         <tr>
             <th style="min-width:120px; font-size: 13px !important;">İç Hata Parça No</th>
             <th style="min-width:120px; font-size: 13px !important;">İç hatayı yapan operatör</th>
+            <th style="min-width:120px; font-size: 13px !important;">Problem Tanımı</th>
+            <th style="min-width:120px; font-size: 13px !important;">Kök Neden</th>
+            <th style="min-width:120px; font-size: 13px !important;">Düzeltici Faaliyet</th>
+            <th style="min-width:120px; font-size: 13px !important;">Açıklama</th>
             <th style="min-width:120px; font-size: 13px !important;">Adet</th>
             <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
             <th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
@@ -50,6 +58,10 @@
             <tr>
                 <td>{{ $item->ich_part_code }}</td>
                 <td>{{ $item->ich_operator }} - {{ $name }}</td>
+                <td>{{ $item->ich_problem }}</td>
+                <td>{{ $item->ich_rootcause }}</td>
+                <td>{{ $item->ich_corrective }}</td>
+                <td>{{ $item->ich_description }}</td>
                 <td>{{ $item->ich_quantity }}</td>
                 <td>{{ $item->ich_date }}</td>
                 <td>{{ $fiyat ?? 'Fiyat Bulunamadı' }} TL</td>

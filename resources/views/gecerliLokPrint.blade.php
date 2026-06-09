@@ -117,6 +117,7 @@
         @endphp
 
         <div class="label-card hidden">
+            <div class="barcode-text" style="font-size:20px;">{{ $NOTES[$i] }}</div>
             <svg class="barcode" id="bc-{{ $i }}" data-value="{{ $barcodeValue }}"></svg>
             <div class="barcode-text">{{ $displayText }}</div>
         </div>
@@ -134,7 +135,7 @@
                     JsBarcode(svg, svg.dataset.value, {
                         format:       'CODE128',
                         width:        1.05,
-                        height:       52,
+                        height:       30,
                         displayValue: false,
                         background:   'transparent',
                         lineColor:    '#000',

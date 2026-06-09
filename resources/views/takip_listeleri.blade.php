@@ -459,7 +459,7 @@
                                     </div>
 
                                     <div class="tab-pane" id="liste">
-                                        <button class="btn btn-success" type="button">-- SÜZ --</button>
+                                        <button class="btn btn-success" onclick="location.reload()" type="button">-- SÜZ --</button>
 
                                         @php
                                             $form = @$kart_veri->FORM;
@@ -474,6 +474,8 @@
                                             @include('takip_formlari.Liste.ICHATA', ['kart_veri' => @$kart_veri, 'veri' => $veri])
                                         @elseif($form == 'SAPMA')
                                             @include('takip_formlari.Liste.SAPMA', ['kart_veri' => @$kart_veri, 'veri' => $veri])
+                                        @elseif($form == 'TOPLANTI')
+                                            @include('takip_formlari.Liste.TOPLANTI_TUTANAGI', ['kart_veri' => @$kart_veri])
                                         @endif
                                     </div>
                                     
@@ -560,6 +562,8 @@
             </div>
         </div>
     </div>
+
+    @stack('list_library')
 
     <script>
         function ozelInput(){

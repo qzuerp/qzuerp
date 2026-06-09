@@ -615,6 +615,7 @@ $(function() {
     var table = $('#evrakSuzTable').DataTable({
       "order": [[0, "desc"]],
       dom: 'rtip',
+      deferRender: true,
       buttons: ['copy', 'excel', 'print'],
       language: {
         url: '{{ asset("tr.json") }}'
