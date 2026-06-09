@@ -2574,11 +2574,11 @@
 				const birim = $satir.find('.birim-select').val();
 
 				const kur1 = await getCachedKur('{{ @$kart_veri->TARIH }}', '{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
-				const kur2 = await getCachedKur('{{ @$kart_veri->TARIH }}', birim);
+				// const kur2 = await getCachedKur('{{ @$kart_veri->TARIH }}', birim);
 
 				const total =
 					(tutar * Number(kur2.data.KURS_1 || 1)) /
-					Number(kur1.data.KURS_1 || 1);
+					1;
 
 				AutoNumeric.getAutoNumericElement($satir.find('.RES_TOTAL')[0]).set(round(total, 2));
 				hesapla();
@@ -2930,7 +2930,7 @@
 					let miktar = parseFloat($('#SF_MIKTAR').val()) || 0;
 					
 					let birim_kur = await getCachedKur('{{ @$kart_veri->TARIH }}', $('#teklif').val());
-					console.log(birim_kur);
+					
 					let fiyat = (AutoNumeric.getNumber(document.getElementById('FIYAT')) / (birim_kur?.data?.KURS_1 ?? 1));
 					let dolarFiyat = round(AutoNumeric.getNumber(document.getElementById('FIYAT')) / dolarKur?.data?.KURS_1);
 					let tutar = (fiyat * miktar) / birim_kur?.data?.KURS_1 ?? 1;
