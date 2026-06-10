@@ -838,7 +838,7 @@
         </div>
       </div>
 
-      <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
+      <!-- <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
 
@@ -892,103 +892,39 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz2"  >
+      <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz2" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
-
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)</h4>
+              <h4 class="modal-title">
+                <i class='fa fa-filter' style='color: blue'></i> Evrak Süz (Satır)
+              </h4>
             </div>
             <div class="modal-body">
               <div class="row">
-                <table id="evrakSuzTable2" class="table table-hover text-center" data-page-length="10" style="font-size: 0.8em">
+                <table id="searchTable" class="table table-hover text-center" style="font-size: 0.8em">
                   <thead>
                     <tr class="bg-primary">
-                      <th>Evrak No</th>
-                      <th>Kod</th>
-                      <th>Ad</th>
-                      <th>Ad2</th>
-                      <th>Lot</th>
-                      <th>Miktar</th>
-                      <th>Depo</th>
-                      <th>Lokasyon 1</th>
-                      <th>Lokasyon 2</th>
-                      <th>Lokasyon 3</th>
-                      <th>Lokasyon 4</th>
-                      <th>#</th>
+                      <th>Evrak No</th><th>Kod</th><th>Ad</th><th>Ad2</th>
+                      <th>Lot</th><th>Miktar</th><th>Depo</th>
+                      <th>Lok 1</th><th>Lok 2</th><th>Lok 3</th><th>Lok 4</th><th>#</th>
                     </tr>
                   </thead>
-
                   <tfoot>
-                    <tr class="bg-info">
-                      <th>Evrak No</th>
-                      <th>Kod</th>
-                      <th>Ad</th>
-                      <th>Ad2</th>
-                      <th>Lot</th>
-                      <th>Miktar</th>
-                      <th>Depo</th>
-                      <th>Lokasyon 1</th>
-                      <th>Lokasyon 2</th>
-                      <th>Lokasyon 3</th>
-                      <th>Lokasyon 4</th>
-                      <th>#</th>
+                    <tr class="bg-primary">
+                      <th>Evrak No</th><th>Kod</th><th>Ad</th><th>Ad2</th>
+                      <th>Lot</th><th>Miktar</th><th>Depo</th>
+                      <th>Lok 1</th><th>Lok 2</th><th>Lok 3</th><th>Lok 4</th><th>#</th>
                     </tr>
                   </tfoot>
-
-                  <tbody>
-
-                    @php
-
-                      $evraklar = DB::table($database.'stok21t as t')
-                          ->leftJoin($database.'stok21e as e', 'e.EVRAKNO', '=', 't.EVRAKNO')
-                          ->leftJoin($database.'stok00 as s', 's.KOD', '=', 't.KOD')
-                          ->orderBy('t.id', 'ASC')
-                          ->select(
-                              't.*',
-                              's.NAME2 as AD2',
-                              'e.id as EVRAKID',
-                          )
-                          ->get();
-
-
-                      foreach ($evraklar as $key => $suzVeri) {
-                        echo "<tr>";
-                        echo "<td>".$suzVeri->EVRAKNO."</td>";
-                        echo "<td>".$suzVeri->KOD."</td>";
-                        echo "<td>".$suzVeri->AD."</td>";
-                        echo "<td>".$suzVeri->AD2."</td>";
-                        echo "<td>".$suzVeri->LOTNUMBER."</td>";
-                        echo "<td>".$suzVeri->SF_MIKTAR."</td>";
-                        echo "<td>".$suzVeri->AMBCODE."</td>";
-                        echo "<td>".$suzVeri->LOCATION1."</td>";
-                        echo "<td>".$suzVeri->LOCATION2."</td>";
-                        echo "<td>".$suzVeri->LOCATION3."</td>";
-                        echo "<td>".$suzVeri->LOCATION4."</td>";
-
-
-                        echo "
-                          <td>
-                              <a href='" . $ekranLink . "?ID=" . $suzVeri->EVRAKID . "&KOD=" . $suzVeri->KOD . "' class='btn btn-info'>
-                                  <i class='fa fa-chevron-circle-right text-white'></i>
-                              </a>
-                          </td>";
-
-                        echo "</tr>";
-
-                      }
-
-                    @endphp
-
-                  </tbody>
-
+                  <tbody></tbody>
                 </table>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Kapat</button>
             </div>
           </div>
         </div>
@@ -1343,257 +1279,7 @@
     }
   </script>
 
-{{--   <script>
-
-    // function updateVerenDepoSatir(v) {
-    //   $('#AMBCODE_FILL').val(v).change();
-    // }
-
-    function getLocation1() {
-
-      $('#LOCATION1_FILL').val(' ').change();
-      $('#LOCATION2_FILL').val(' ').change();
-      $('#LOCATION3_FILL').val(' ').change();
-      $('#LOCATION4_FILL').val(' ').change();
-
-      var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
-       var firma = document.getElementById("firma").value;
-
-
-      $.ajax({
-         url: '/stok26_createLocationSelect',
-         data: {'islem': 'LOCATION1', 'AMBCODE': AMBCODE_FILL, 'firma': firma, '_token': $('#token').val()},
-         type: 'POST',
-
-         success: function (response) {
-
-           $('#LOCATION1_FILL').find('option').remove().end();
-           $('#LOCATION1_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
-
-           //$('#LOCATION1_FILL').find('option').empty();
-           $('#LOCATION1_FILL').append(response);
-
-         },
-         error: function (response) {
-         //  alert(response);
-
-         }
-      });
-
-    }
-
-    function getLocation2() {
-
-      var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
-      var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
-
-
-             $.ajax({
-                 url: '/stok26_createLocationSelect',
-                 data: {'islem': 'LOCATION2', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL, '_token': $('#token').val()},
-                 type: 'POST',
-
-                 success: function (response) {
-
-                   $('#LOCATION2_FILL').find('option').remove().end();
-                   $('#LOCATION2_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
-
-                   //$('#LOCATION1_FILL').find('option').empty();
-                   $('#LOCATION2_FILL').append(response);
-
-                 },
-                 error: function (response) {
-                   alert(response);
-
-                 }
-             });
-
-    }
-
-    function getLocation3() {
-
-      var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
-      var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
-      var LOCATION2_FILL = document.getElementById("LOCATION2_FILL").value;
-
-
-             $.ajax({
-                 url: '/stok21_createLocationSelect',
-                 data: {'islem': 'LOCATION3', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL,'LOCATION2': LOCATION2_FILL, '_token': $('#token').val()},
-                 type: 'POST',
-
-                 success: function (response) {
-
-                   $('#LOCATION3_FILL').find('option').remove().end();
-                   $('#LOCATION3_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
-
-                   //$('#LOCATION1_FILL').find('option').empty();
-                   $('#LOCATION3_FILL').append(response);
-
-                 },
-                 error: function (response) {
-                   alert(response);
-
-                 }
-             });
-
-    }
-
-    function getLocation4() {
-
-      var AMBCODE_FILL = document.getElementById("AMBCODE_FILL").value;
-      var LOCATION1_FILL = document.getElementById("LOCATION1_FILL").value;
-      var LOCATION2_FILL = document.getElementById("LOCATION2_FILL").value;
-      var LOCATION3_FILL = document.getElementById("LOCATION3_FILL").value;
-
-
-             $.ajax({
-                 url: '/stok26_createLocationSelect',
-                 data: {'islem': 'LOCATION4', 'AMBCODE': AMBCODE_FILL, 'LOCATION1': LOCATION1_FILL,'LOCATION2': LOCATION2_FILL,'LOCATION3': LOCATION3_FILL, '_token': $('#token').val()},
-                 type: 'POST',
-
-                 success: function (response) {
-
-                   $('#LOCATION4_FILL').find('option').remove().end();
-                   $('#LOCATION4_FILL').find('option').remove().end().append('<option value=" ">Seç</option>');
-
-                   //$('#LOCATION1_FILL').find('option').empty();
-                   $('#LOCATION4_FILL').append(response);
-
-                 },
-                 error: function (response) {
-                   alert(response);
-
-                 }
-             });
-
-    }
-
-    // function girenMiktarAction(miktar) {
-    //      alert(miktar);
-    //      yeniMiktar = miktar;
-    //      $("SF_MIKTAR_SHOW").val(yeniMiktar);
-    //      $("SF_MIKTAR_FILL").val(yeniMiktar);
-    //      $("CIKAN_MIKTAR_FILL").val(null);
-
-    // }
-
-    function cikanMiktarAction(miktar) {
-
-      yeniMiktar = -miktar;
-      $("GIREN_MIKTAR_FILL").val("");
-      $("SF_MIKTAR_SHOW").val(yeniMiktar);
-      $("SF_MIKTAR_FILL").val(yeniMiktar);
-
-    }
-
-
-
-    function girenMiktarAction() {
-      var miktar = $("#GIREN_MIKTAR_FILL").val(); // GIREN_MIKTAR_FILL alanının değerini al
-
-      // SF_MIKTAR_FILL ve SF_MIKTAR_SHOW alanlarına değerleri atar
-      $("#SF_MIKTAR_FILL").val(miktar);
-      $("#SF_MIKTAR_SHOW").val(miktar);
-
-      // CIKAN_MIKTAR_FILL alanını temizler
-      $("#CIKAN_MIKTAR_FILL").val("");
-    }
-
-    function cikanMiktarAction() {
-      var miktar = $("#CIKAN_MIKTAR_FILL").val(); // CIKAN_MIKTAR_FILL alanının değerini al
-      var yeniMiktar = -miktar;
-
-      // SF_MIKTAR_FILL ve SF_MIKTAR_SHOW alanlarına değerleri atar
-      $("#SF_MIKTAR_FILL").val(yeniMiktar);
-      $("#SF_MIKTAR_SHOW").val(yeniMiktar);
-
-      // GIREN_MIKTAR_FILL alanını temizler
-      $("#GIREN_MIKTAR_FILL").val("");
-    }
-
-  </script> --}}
-
-
-  <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
   <script>
-    function fnExcelReport() {
-      var tab_text = "";
-      var textRange; var j = 0;
-      tab = document.getElementById('example2'); // Excel'e çıkacak tablo id'si
-
-      for (j = 0 ; j < tab.rows.length ; j++) {
-        tab_text = tab_text + tab.rows[j].innerHTML + "";
-          //tab_text=tab_text+"";
-      }
-      //Temizleme işlemleri
-      tab_text = tab_text + "";
-      tab_text = tab_text.replace(/]*>|<\/A>/g, "");//Linklerinizi temizler
-      tab_text = tab_text.replace(/]*>/gi, ""); //Resimleri temizler
-      tab_text = tab_text.replace(/]*>|<\/input>/gi, ""); // İnput ve Parametreler
-
-      var ua = window.navigator.userAgent;
-      var msie = ua.indexOf("MSIE ");
-
-      if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // İE için
-      {
-        txtArea1.document.open("txt/html", "replace");
-        txtArea1.document.write(tab_text);
-        txtArea1.document.close();
-        txtArea1.focus();
-        sa = txtArea1.document.execCommand("SaveAs", true, "Teşekkürler");
-      }
-      else
-        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-        return (sa);
-    }
-  </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script>
-    function exportTableToWord(tableId)
-    {
-      let table = document.getElementById(tableId).outerHTML;
-      let htmlContent = `<!DOCTYPE html>
-          <html>
-          <head><meta charset='UTF-8'></head>
-          <body>${table}</body>
-          </html>`;
-
-      let blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-      let url = URL.createObjectURL(blob);
-      let link = document.createElement("a");
-      link.href = url;
-      link.download = "tablo.doc";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-    }
-
-    function printTable(tableId)
-    {
-      let table = document.getElementById(tableId).outerHTML; // Tabloyu al
-      let newWindow = window.open("", "_blank"); // Yeni pencere aç
-      newWindow.document.write(`
-          <html>
-          <head>
-              <title>Tablo Yazdır</title>
-              <style>
-                  table { width: 100%; border-collapse: collapse; }
-                  th, td { border: 1px solid black; padding: 8px; text-align: left; }
-              </style>
-          </head>
-          <body>
-              ${table}
-              <script>
-                  window.onload = function() { window.print(); window.onafterprint = window.close; };
-              <\/script>
-          </body>
-          </html>
-      `);
-      newWindow.document.close();
-    }
-
     function veriCek(kod,id) {
       Swal.fire({
           text: 'Lütfen bekleyin',
@@ -1722,6 +1408,86 @@
           });
         }
       });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('#searchTable tfoot th').each(function () {
+        var title = $(this).text();
+        if (title == "#") {
+          $(this).html('<b>Git</b>');
+        }
+        else {
+          $(this).html('<input type="text" class="form-control form-rounded" style="font-size: 10px; width: 100%" placeholder="🔍" />');
+        }
+
+      });
+    });
+
+    let evrakSuzTable2 = null;
+
+    $('#modal_evrakSuz2').on('show.bs.modal', function () {
+        if (evrakSuzTable2) return;
+
+        evrakSuzTable2 = $('#searchTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{{ route("evrak.suz.data") }}',
+                type: 'GET'
+            },
+            columns: [
+                { data: 'EVRAKNO' },
+                { data: 'KOD' },
+                { data: 'AD' },
+                { data: 'AD2' },
+                { data: 'LOTNUMBER' },
+                { data: 'SF_MIKTAR' },
+                { data: 'AMBCODE' },
+                { data: 'LOCATION1' },
+                { data: 'LOCATION2' },
+                { data: 'LOCATION3' },
+                { data: 'LOCATION4' },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        return `<a href="{{ $ekranLink }}?ID=${data.EVRAKID}&KOD=${data.KOD}" class="btn btn-info btn-sm">
+                                    <i class="fa fa-chevron-circle-right text-white"></i>
+                                </a>`;
+                    }
+                }
+            ],
+            pageLength: 10,
+            lengthChange: false,       // uzunluk değiştirme kapalı
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json'
+            },
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var $input = $('tfoot th', column.footer()).find('input');
+
+                    if ($input.length === 0) return; // "#" sütununu atla
+
+                    $input.on('keyup change clear', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value).draw();
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    $('#modal_evrakSuz2').on('hidden.bs.modal', function () {
+        if (evrakSuzTable2) {
+            evrakSuzTable2.destroy();
+            $('#searchTable tbody').empty();
+            evrakSuzTable2 = null;
+        }
     });
   </script>
 @endsection

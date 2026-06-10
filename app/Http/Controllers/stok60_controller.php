@@ -585,11 +585,11 @@ class stok60_controller extends Controller
         
         for ($i = 0; $i < $satir_say; $i++) 
         {
-          dd($SIPNO[$i]);
-          DB::update("
+
+          $query = DB::update("
               UPDATE {$firma}stok40t 
               SET 
-                  SF_NETKAPANANMIK = SF_NETKAPANANMIK + ?,
+                  SF_NETKAPANANMIK = ISNULL(SF_NETKAPANANMIK,0) + ?,
                   SF_BAKIYE = SF_BAKIYE - ?,
                   AK = CASE WHEN (SF_NETKAPANANMIK + ?) >= SF_MIKTAR THEN 'K' ELSE AK END
               WHERE ARTNO = ?
@@ -599,6 +599,7 @@ class stok60_controller extends Controller
               $SF_MIKTAR[$i],
               $SIPNO[$i]
           ]);
+          
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 

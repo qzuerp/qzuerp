@@ -203,6 +203,7 @@ Route::group(['middleware' => ['auth']], function() {
     // Stok21 - Stok Giriş Çıkış
     Route::get('stokgiriscikis', [stok21_controller::class, 'index'])->name('stokgiriscikis');
     Route::post('stok21_islemler', [stok21_controller::class, 'islemler']);
+    Route::get('/evrak-suz-data', [stok21_controller::class, 'evrakSuzData'])->name('evrak.suz.data');
     Route::post('stok21_createLocationSelect', [stok21_controller::class, 'createLocationSelect']);
 
     // SYM10 - Stok Sayımı

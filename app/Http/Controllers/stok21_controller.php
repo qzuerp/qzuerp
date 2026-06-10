@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class stok21_controller extends Controller
@@ -679,6 +680,78 @@ class stok21_controller extends Controller
         return view('etiketKarti', ['data' => $data]);
     }
 
+  }
+
+  public function evrakSuzData(Request $request)
+  {
+      $u = Auth::user();
+      $firma = trim($u->firma).'.dbo.';
+  
+      $query = DB::table($firma . 'stok21t as t')
+          ->leftJoin($firma . 'stok21e as e', 'e.EVRAKNO', '=', 't.EVRAKNO')
+          ->leftJoin($firma . 'stok00 as s', 's.KOD', '=', 't.KOD')
+          ->select(
+              't.*',
+              's.NAME2 as AD2',
+              'e.id as EVRAKID',
+          );
+  
+      $totalRecords = $query->count();
+  
+      // Global arama
+      if ($request->filled('search.value')) {
+          $search = $request->input('search.value');
+          $query->where(function ($q) use ($search) {
+              $q->where('t.EVRAKNO',    'like', "%$search%")
+                ->orWhere('t.KOD',      'like', "%$search%")
+                ->orWhere('t.AD',       'like', "%$search%")
+                ->orWhere('s.NAME2',    'like', "%$search%")
+                ->orWhere('t.LOTNUMBER','like', "%$search%");
+          });
+      }
+  
+      // Kolon bazlı arama
+      $columnMap = [
+          0  => 't.EVRAKNO',
+          1  => 't.KOD',
+          2  => 't.AD',
+          3  => 's.NAME2',
+          4  => 't.LOTNUMBER',
+          5  => 't.SF_MIKTAR',
+          6  => 't.AMBCODE',
+          7  => 't.LOCATION1',
+          8  => 't.LOCATION2',
+          9  => 't.LOCATION3',
+          10 => 't.LOCATION4',
+      ];
+  
+      foreach ($columnMap as $index => $dbColumn) {
+          $colSearch = $request->input("columns.{$index}.search.value");
+          if (!empty($colSearch)) {
+              $query->where($dbColumn, 'like', "%{$colSearch}%");
+          }
+      }
+  
+      $filteredRecords = $query->count();
+  
+      // Sıralama
+      $orderCol  = $request->input('order.0.column', 0);
+      $orderDir  = $request->input('order.0.dir', 'asc');
+      $sortColumn = $columnMap[$orderCol] ?? 't.id';
+      $query->orderBy($sortColumn, $orderDir);
+  
+      // Sayfalama
+      $data = $query
+          ->skip($request->input('start', 0))
+          ->take($request->input('length', 10))
+          ->get();
+  
+      return response()->json([
+          'draw'            => intval($request->input('draw')),
+          'recordsTotal'    => $totalRecords,
+          'recordsFiltered' => $filteredRecords,
+          'data'            => $data,
+      ]);
   }
 
 }
