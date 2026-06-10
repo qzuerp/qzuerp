@@ -140,6 +140,24 @@ class stok60_controller extends Controller
       case 'kart_sil':
         FunctionHelpers::Logla('STOK60',$EVRAKNO,'D',$TARIH);
 
+        for ($i=0; $i < count($TRNUM); $i++) { 
+          $irsaliye = DB::table($firma.'stok60t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$TRNUM[$i])->first();
+
+          DB::update("
+              UPDATE {$firma}stok40t 
+              SET 
+                  SF_NETKAPANANMIK = CAST(SF_NETKAPANANMIK AS DECIMAL(18,2)) - ?,
+                  SF_BAKIYE = CAST(SF_BAKIYE AS DECIMAL(18,2)) + ?,
+                  AK = CASE WHEN (CAST(SF_NETKAPANANMIK AS DECIMAL(18,2)) - ?) >= SF_MIKTAR THEN 'K' ELSE NULL END
+              WHERE ARTNO = ?
+          ", [
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SIPNO
+          ]);
+        }
+
         DB::table($firma.'stok60e')->where('EVRAKNO',$EVRAKNO)->delete();
 
         DB::table($firma.'stok60t')->where('EVRAKNO',$EVRAKNO)->delete();
@@ -148,7 +166,7 @@ class stok60_controller extends Controller
 
         print_r("Silme işlemi başarılı.");
 
-        $sonID=DB::table($firma.'stok60e')->min('EVRAKNO');
+        $sonID=DB::table($firma.'stok60e')->max('id');
         return redirect()->route('sevkirsaliyesi', ['ID' => $sonID, 'silme' => 'ok']);
 
         // break;
@@ -237,14 +255,14 @@ class stok60_controller extends Controller
           DB::update("
               UPDATE {$firma}stok40t 
               SET 
-                  SF_NETKAPANANMIK = SF_NETKAPANANMIK + ?,
-                  SF_BAKIYE = SF_BAKIYE - ?,
-                  AK = CASE WHEN (SF_NETKAPANANMIK + ?) >= SF_MIKTAR THEN 'K' ELSE AK END
+                  SF_NETKAPANANMIK = ISNULL(SF_NETKAPANANMIK, 0) + ?,
+                  SF_BAKIYE = ISNULL(SF_BAKIYE, 0) - ?,
+                  AK = CASE WHEN (ISNULL(SF_NETKAPANANMIK, 0) + ?) >= SF_MIKTAR THEN 'K' ELSE '' END
               WHERE ARTNO = ?
           ", [
-              $SF_MIKTAR[$i],
-              $SF_MIKTAR[$i],
-              $SF_MIKTAR[$i],
+              (int)$SF_MIKTAR[$i],
+              (int)$SF_MIKTAR[$i],
+              (int)$SF_MIKTAR[$i],
               $SIPNO[$i]
           ]);
 
@@ -252,53 +270,6 @@ class stok60_controller extends Controller
 
           if (in_array($TRNUM[$i],$newTRNUMS)) 
           { 
-            $s1 = DB::table($firma.'stok10a')
-                ->where('KOD',$KOD[$i])
-                ->where('LOTNUMBER',$LOTNUMBER[$i])
-                ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T)
-                ->where('NUM1',$NUM1[$i])
-                ->where('NUM2',$NUM2[$i])
-                ->where('NUM3',$NUM3[$i])
-                ->where('NUM4',$NUM4[$i])
-                ->where('TEXT1',$TEXT1[$i])
-                ->where('TEXT2',$TEXT2[$i])
-                ->where('TEXT3',$TEXT3[$i])
-                ->where('TEXT4',$TEXT4[$i])
-                ->where('LOCATION1',$LOCATION1[$i])
-                ->where('LOCATION2',$LOCATION2[$i])
-                ->where('LOCATION3',$LOCATION3[$i])
-                ->where('LOCATION4',$LOCATION4[$i])
-                ->sum('SF_MIKTAR');
-
-            $s2 = DB::table($firma.'stok10a')
-                ->where('KOD',$KOD[$i])
-                ->where('LOTNUMBER',$LOTNUMBER[$i])
-                ->where('SERINO',$SERINO[$i])
-                ->where('AMBCODE',$AMBCODE_T)
-                ->where('NUM1',$NUM1[$i])
-                ->where('NUM2',$NUM2[$i])
-                ->where('NUM3',$NUM3[$i])
-                ->where('NUM4',$NUM4[$i])
-                ->where('TEXT1',$TEXT1[$i])
-                ->where('TEXT2',$TEXT2[$i])
-                ->where('TEXT3',$TEXT3[$i])
-                ->where('TEXT4',$TEXT4[$i])
-                ->where('LOCATION1',$LOCATION1[$i])
-                ->where('LOCATION2',$LOCATION2[$i])
-                ->where('LOCATION3',$LOCATION3[$i])
-                ->where('LOCATION4',$LOCATION4[$i])
-                ->where('EVRAKNO',$EVRAKNO)
-                ->where('EVRAKTIPI','STOK60T')
-                ->where('TRNUM',$TRNUM[$i])
-                ->sum('SF_MIKTAR');
-            
-            $kontrol = $s1 + (-1 * $s2);
-            
-            if($SF_MIKTAR[$i] > $kontrol)
-            {
-              return redirect()->back()->with('error', 'Hata Stokta eksiye düşecek '. $KOD[$i] ." || ". $STOK_ADI[$i] . ' depo da yeteri miktar da bulunamadı ('.$kontrol - $SF_MIKTAR[$i].') stokta eksiye düşecek !!!');
-            }
 
             // $provider = $this->accounting->getProvider(trim($u->firma));
 
@@ -585,18 +556,21 @@ class stok60_controller extends Controller
         
         for ($i = 0; $i < $satir_say; $i++) 
         {
+          $eskiSevkMiktari = DB::table("{$firma}stok60t")->where('TRNUM', $TRNUM[$i])->where('EVRAKNO', $EVRAKNO)->value('SF_MIKTAR') ?? 0;
+
+          $farkMiktar = (int)$SF_MIKTAR[$i] - (int)$eskiSevkMiktari;
 
           $query = DB::update("
               UPDATE {$firma}stok40t 
               SET 
-                  SF_NETKAPANANMIK = ISNULL(SF_NETKAPANANMIK,0) + ?,
-                  SF_BAKIYE = SF_BAKIYE - ?,
-                  AK = CASE WHEN (SF_NETKAPANANMIK + ?) >= SF_MIKTAR THEN 'K' ELSE AK END
+                  SF_NETKAPANANMIK = ISNULL(SF_NETKAPANANMIK, 0) + ?,
+                  SF_BAKIYE = ISNULL(SF_BAKIYE, 0) - ?,
+                  AK = CASE WHEN (ISNULL(SF_NETKAPANANMIK, 0) + ?) >= SF_MIKTAR THEN 'K' ELSE '' END
               WHERE ARTNO = ?
           ", [
-              $SF_MIKTAR[$i],
-              $SF_MIKTAR[$i],
-              $SF_MIKTAR[$i],
+              $farkMiktar,
+              $farkMiktar,
+              $farkMiktar,
               $SIPNO[$i]
           ]);
           
@@ -775,9 +749,9 @@ class stok60_controller extends Controller
           DB::update("
               UPDATE {$firma}stok40t 
               SET 
-                  SF_NETKAPANANMIK = SF_NETKAPANANMIK - ?,
-                  SF_BAKIYE = SF_BAKIYE + ?,
-                  AK = CASE WHEN (SF_NETKAPANANMIK - ?) >= SF_MIKTAR THEN 'K' ELSE NULL END
+                  SF_NETKAPANANMIK = CAST(SF_NETKAPANANMIK AS DECIMAL(18,2)) - ?,
+                  SF_BAKIYE = CAST(SF_BAKIYE AS DECIMAL(18,2)) + ?,
+                  AK = CASE WHEN (CAST(SF_NETKAPANANMIK AS DECIMAL(18,2)) - ?) >= SF_MIKTAR THEN 'K' ELSE NULL END
               WHERE ARTNO = ?
           ", [
               $irsaliye->SF_MIKTAR,
