@@ -156,6 +156,7 @@ M10T.R_KAYNAKTYPE,
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
     M10T.R_OPERASYON,
+    I01.AD AS R_OPERASYON_AD,
     M10T.R_SIRANO,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
@@ -173,6 +174,7 @@ LEFT JOIN STOK40E  AS S40E  ON S40E.EVRAKNO = S40T.EVRAKNO
 LEFT JOIN STOK00   AS S00   ON S00.KOD = M10E.MAMULSTOKKODU
 LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
 LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40T.KOD
+LEFT JOIN imlt01 as I01 ON M10T.R_OPERASYON = I01.KOD
 LEFT JOIN agg_sure   AS A1  
   ON A1.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
@@ -200,6 +202,7 @@ NULL AS R_KAYNAKTYPE,
     S40.TERMIN_TAR AS termin,
     NULL AS JOBNO,
     NULL AS R_OPERASYON,
+    NULL AS R_OPERASYON_AD,
     '999' AS R_SIRANO,
     NULL AS plan_sure,
     NULL AS ILK_FASON,
@@ -230,6 +233,7 @@ M10T.R_KAYNAKTYPE ,
     S40T.TERMIN_TAR AS termin,
     M10T.JOBNO,
     M10T.R_OPERASYON,
+    I01.AD AS R_OPERASYON_AD,
     M10T.R_SIRANO,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
     TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
@@ -247,6 +251,7 @@ LEFT JOIN STOK40E  AS S40E  ON S40E.EVRAKNO = S40T.EVRAKNO
 LEFT JOIN STOK00   AS S00   ON S00.KOD = M10E.MAMULSTOKKODU
 LEFT JOIN cari00   AS C00   ON C00.KOD = M10E.MUSTERIKODU
 LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40T.KOD
+LEFT JOIN imlt01 as I01 ON M10T.R_OPERASYON = I01.KOD
 LEFT JOIN agg_sure   AS A1  
   ON A1.JOBNO = M10T.JOBNO 
  AND RTRIM(LTRIM(A1.OPERASYON)) = RTRIM(LTRIM(M10T.R_OPERASYON))
@@ -268,8 +273,8 @@ $rows = $stmt->fetchAll();
 // 4) Distinct operasyon başlıkları
 $ops = [];
 foreach ($rows as $r) {
-    if ($r['R_OPERASYON'] !== null && $r['R_OPERASYON'] !== '') {
-        $ops[$r['R_OPERASYON']] = $r['R_OPERASYON'];
+    if ($r['R_OPERASYON_AD'] !== null && $r['R_OPERASYON_AD'] !== '') {
+        $ops[$r['R_OPERASYON_AD']] = $r['R_OPERASYON_AD'];
     }
 }
 $ops = array_keys($ops);
@@ -304,7 +309,7 @@ foreach ($rows as $r) {
         ];
     }
     
-    $op = $r['R_OPERASYON'];
+    $op = $r['R_OPERASYON_AD'];
     // dd($op);
     if ($op !== null && $op !== '') {
         $planSure = is_null($r['plan_sure']) ? 0 : (float)$r['plan_sure'];
@@ -1168,7 +1173,7 @@ usort($groups, function($a, $b) {
         </div>
 
         <div class="footer-note">
-            💡 <strong>Bilgi:</strong> Başlıktaki operasyonlar, mevcut sonuç kümesindeki benzersiz R_OPERASYON değerlerine göre dinamik olarak oluşturulur.
+            💡 <strong>Bilgi:</strong> Başlıktaki operasyonlar, mevcut sonuç kümesindeki benzersiz Operasyon değerlerine göre dinamik olarak oluşturulur.
         </div>
     </div>
 </div>

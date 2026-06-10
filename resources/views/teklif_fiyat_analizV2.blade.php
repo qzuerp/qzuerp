@@ -2573,8 +2573,8 @@
 				const tutar = AutoNumeric.getNumber($satir.find('.tutar-input')[0]) || 0;
 				const birim = $satir.find('.birim-select').val();
 
-				const kur1 = await getCachedKur('{{ @$kart_veri->TARIH }}', '{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
-				// const kur2 = await getCachedKur('{{ @$kart_veri->TARIH }}', birim);
+				// const kur1 = await getCachedKur('{{ @$kart_veri->TARIH }}', '{{ @$kart_veri->TEKLIF_FIYAT_PB }}');
+				const kur2 = await getCachedKur('{{ @$kart_veri->TARIH }}', birim);
 
 				const total =
 					(tutar * Number(kur2.data.KURS_1 || 1)) /

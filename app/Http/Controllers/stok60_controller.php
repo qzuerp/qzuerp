@@ -233,23 +233,20 @@ class stok60_controller extends Controller
           //   $AMBCODE_SEC = $AMBCODE_T;
           // }
           
-          // $TOPLAM_SEVK = DB::table($firma.'stok60t')->where('SIPNO',$SIPNO[$i])->sum('SF_MIKTAR');
-
-          // DB::update("
-          //   UPDATE {$firma}stok40t 
-          //   SET SF_NETKAPANANMIK = ?,
-          //       SF_BAKIYE = SF_MIKTAR - ?,
-          //       AK = CASE WHEN SF_MIKTAR = ? THEN 'K' ELSE AK END
-          //   WHERE ARTNO = ?
-          // ",[$TOPLAM_SEVK[$i],$TOPLAM_SEVK[$i],$TOPLAM_SEVK[$i],$SIPNO[$i]]);
 
           DB::update("
-            UPDATE {$firma}stok40t 
-            SET SF_NETKAPANANMIK = ?,
-                SF_BAKIYE = SF_MIKTAR - ?,
-                AK = CASE WHEN SF_MIKTAR = ? THEN 'K' ELSE AK END
-            WHERE ARTNO = ?
-          ",[$SF_MIKTAR[$i],$SF_MIKTAR[$i],$SF_MIKTAR[$i],$SIPNO[$i]]);
+              UPDATE {$firma}stok40t 
+              SET 
+                  SF_NETKAPANANMIK = SF_NETKAPANANMIK + ?,
+                  SF_BAKIYE = SF_BAKIYE - ?,
+                  AK = CASE WHEN (SF_NETKAPANANMIK + ?) >= SF_MIKTAR THEN 'K' ELSE AK END
+              WHERE ARTNO = ?
+          ", [
+              $SF_MIKTAR[$i],
+              $SF_MIKTAR[$i],
+              $SF_MIKTAR[$i],
+              $SIPNO[$i]
+          ]);
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
@@ -588,13 +585,20 @@ class stok60_controller extends Controller
         
         for ($i = 0; $i < $satir_say; $i++) 
         {
+          dd($SIPNO[$i]);
           DB::update("
-            UPDATE {$firma}stok40t 
-            SET SF_NETKAPANANMIK = ?,
-                SF_BAKIYE = SF_MIKTAR - ?,
-                AK = CASE WHEN SF_MIKTAR = ? THEN 'K' ELSE AK END
-            WHERE ARTNO = ?
-          ",[$SF_MIKTAR[$i],$SF_MIKTAR[$i],$SF_MIKTAR[$i],$SIPNO[$i]]);
+              UPDATE {$firma}stok40t 
+              SET 
+                  SF_NETKAPANANMIK = SF_NETKAPANANMIK + ?,
+                  SF_BAKIYE = SF_BAKIYE - ?,
+                  AK = CASE WHEN (SF_NETKAPANANMIK + ?) >= SF_MIKTAR THEN 'K' ELSE AK END
+              WHERE ARTNO = ?
+          ", [
+              $SF_MIKTAR[$i],
+              $SF_MIKTAR[$i],
+              $SF_MIKTAR[$i],
+              $SIPNO[$i]
+          ]);
 
           $SRNUM = str_pad($i+1, 6, "0", STR_PAD_LEFT);
 
@@ -765,6 +769,21 @@ class stok60_controller extends Controller
 
         foreach ($deleteTRNUMS as $key => $value) 
         {
+          $irsaliye = DB::table($firma.'stok60t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUMS)->first();
+
+          DB::update("
+              UPDATE {$firma}stok40t 
+              SET 
+                  SF_NETKAPANANMIK = SF_NETKAPANANMIK - ?,
+                  SF_BAKIYE = SF_BAKIYE + ?,
+                  AK = CASE WHEN (SF_NETKAPANANMIK - ?) >= SF_MIKTAR THEN 'K' ELSE NULL END
+              WHERE ARTNO = ?
+          ", [
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SF_MIKTAR,
+              $irsaliye->SIPNO
+          ]);
           //Silinecek satirlar
           DB::table($firma.'stok60t')->where('EVRAKNO',$EVRAKNO)->where('TRNUM',$deleteTRNUMS)->delete();
           DB::table($firma.'stok10a')->where('EVRAKNO',$EVRAKNO)->where('EVRAKTIPI', 'STOK60T')->where('TRNUM',$deleteTRNUMS)->delete();
