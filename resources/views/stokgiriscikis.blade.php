@@ -227,12 +227,6 @@
                           <td style="min-width:150px;">                            
                               <select class="form-control select2 KOD w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="KOD" onchange="stokAdiGetir3(this.value)" data-name="KOD" id="STOK_KODU_SHOW" name="STOK_KODU_SHOW">
                                 <option value=" ">Seç</option>
-                                @php
-                                  $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->limit(50)->get();
-                                  foreach ($stok_evraklar as $key => $veri) {
-                                    echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD."|||".$veri->AD."</option>";
-                                  }
-                                @endphp
                               </select>
                               <input type="hidden" name="STOK_KODU_FILL" id="STOK_KODU_FILL" class="form-control">
                           </td>
@@ -264,9 +258,8 @@
                             <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AMBCODE" class="AMBCODE form-control select2 js-example-basic-single" style=" height: 30PX" data-name="AMBCODE" onchange="" name="AMBCODE_FILL" id="AMBCODE_FILL">
                               <option value=" ">Seç</option>
                               @php
-                                $evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
 
-                                foreach ($evraklar as $key => $veri) {
+                                foreach ($ambcode_evraklar as $key => $veri) {
                                   if ($veri->KOD == @$kart_veri->AMBCODE) {
                                     echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."|||".$veri->AD."</option>";
                                   }
@@ -281,9 +274,8 @@
                             <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION1" class="LOCATION1 form-control select2 js-example-basic-single" data-name="LOCATION1" onchange="getLocation2()" style=" height: 30PX" onchange="" name="LOCATION1_FILL" id="LOCATION1_FILL">
                               <option value=" ">Seç</option>
                               @php
-                                $locat1_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 
-                                foreach ($locat1_kodlar as $key => $veri) {
+                                foreach ($locat2_kodlar as $key => $veri) {
                                     echo "<option value ='".$veri->LOCATION1."'>".$veri->LOCATION1."</option>";
                                 }
                               @endphp
@@ -293,7 +285,6 @@
                             <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION2" class="LOCATION2 form-control select2 js-example-basic-single" data-name="LOCATION2" onchange="getLocation3()" style=" height: 30PX" onchange="" name="LOCATION2_FILL" id="LOCATION2_FILL">
                               <option value=" ">Seç</option>
                               @php
-                                $locat2_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 
                                 foreach ($locat2_kodlar as $key => $veri) {
                                     echo "<option value ='".$veri->LOCATION2."'>".$veri->LOCATION2."</option>";
@@ -305,9 +296,8 @@
                             <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION3" class="LOCATION3 form-control select2 js-example-basic-single" data-name="LOCATION3" onchange="getLocation4()" style=" height: 30PX" onchange="" name="LOCATION3_FILL" id="LOCATION3_FILL">
                               <option value=" ">Seç</option>
                               @php
-                                $locat3_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 
-                                foreach ($locat3_kodlar as $key => $veri) {
+                                foreach ($locat2_kodlar as $key => $veri) {
                                     echo "<option value ='".$veri->LOCATION3."'>".$veri->LOCATION3."</option>";
                                 }
                               @endphp
@@ -317,9 +307,8 @@
                             <select data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LOCATION4" class="LOCATION4 form-control select2 js-example-basic-single" data-name="LOCATION4" style=" height: 30PX" name="LOCATION4_FILL" id="LOCATION4_FILL">
                               <option value=" ">Seç</option>
                               @php
-                                $locat4_kodlar=DB::table($database.'stok69t')->orderBy('EVRAKNO', 'ASC')->get();
 
-                                foreach ($locat4_kodlar as $key => $veri) {
+                                foreach ($locat2_kodlar as $key => $veri) {
                                     echo "<option value ='".$veri->LOCATION4."'>".$veri->LOCATION4."</option>";
                                 }
                               @endphp
@@ -349,19 +338,6 @@
                           <td style="min-width: 150px">
                             <select class="form-control select2 js-example-basic-single TEZGAH" style="width: 100%;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEZGAH" id="TEZGAH_FILL">
                               <option value="" selected></option>
-                              @php
-                                $imlt00_evraklar=DB::table($database.'imlt00')->orderBy('KOD', 'ASC')->get();
-                                foreach ($imlt00_evraklar as $key => $veri) {
-                                  if (@$kart_veri->TO_ISMERKEZI == $veri->KOD) 
-                                  {
-                                    echo "<option value ='".$veri->KOD."' selected>".$veri->KOD."</option>";
-                                  }
-                                  else 
-                                  {
-                                    echo "<option value ='".$veri->KOD."'>".$veri->KOD."</option>";
-                                  }
-                                }
-                              @endphp
                             </select>
                           </td>
                           <td class="d-flex ">
@@ -377,12 +353,6 @@
                             <input type="hidden" id="PARCAKODU_FILL">
                             <select class="form-control select2 PARCAKODU w-100" onchange="stokAdiGetir4(this.value)" data-name="PARCAKODU" id="PARCAKODU_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PARCAKODU">
                                 <option value=" ">Seç</option>
-                                @php
-                                  $stok_evraklar=DB::table($database.'stok00')->orderBy('id', 'ASC')->limit(50)->get();
-                                  foreach ($stok_evraklar as $key => $veri) {
-                                    echo "<option value ='".$veri->KOD."|||".$veri->AD."|||".$veri->IUNIT."'>".$veri->KOD."|||".$veri->AD."</option>";
-                                  }
-                                @endphp
                               </select>
                           </td>
                           <td>
@@ -540,7 +510,6 @@
                 <div class="tab-pane" id="liste">
                   @php
                     $table = DB::table($ekranTableT)->get();
-                    $ambcode_evraklar=DB::table($database.'gdef00')->orderBy('id', 'ASC')->get();
                   @endphp
                 <div class="row mb-3">
                   <div class="col-sm-3">
@@ -1466,18 +1435,18 @@
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json'
             },
             initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var $input = $('tfoot th', column.footer()).find('input');
+              // Apply the search
+              this.api().columns().every(function () {
+                var that = this;
 
-                    if ($input.length === 0) return; // "#" sütununu atla
-
-                    $input.on('keyup change clear', function () {
-                        if (column.search() !== this.value) {
-                            column.search(this.value).draw();
-                        }
-                    });
+                $('input', this.footer()).on('keyup change clear', function () {
+                  if (that.search() !== this.value) {
+                    that
+                      .search(this.value)
+                      .draw();
+                  }
                 });
+              });
             }
         });
     });
