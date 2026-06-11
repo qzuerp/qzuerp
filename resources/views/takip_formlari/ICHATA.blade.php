@@ -196,19 +196,37 @@
         </div>
 
         {{-- HATA KODU --}}
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label class="form-label">Hata Kodu</label>
+            <select class="select2 ich_fault_code"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="ich_fault_code"
+                name="ich_fault_code"
+            >
+                <option>Seç</option>
+                @php
+                    $hata_kodlari = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->select('KOD', 'AD')->get();
+                @endphp
+                @foreach ($hata_kodlari as $hata)
+                    <option value="{{ $hata->KOD }}" {{ $hata->KOD == @$kart_veri->ich_fault_code ? 'selected' : '' }}>{{ $hata->KOD }} - {{ $hata->AD }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-4">
+            <label class="form-label">Hata Kodu Açıklaması</label>
             <input type="text"
-                   class="form-control ich_fault_code"
-                   data-bs-toggle="tooltip"
-                   data-bs-placement="bottom"
-                   data-bs-title="ich_fault_code"
-                   name="ich_fault_code"
-                   value="{{ @$kart_veri->ich_fault_code ?? '' }}">
+                class="form-control ich_fault_dis"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="ich_fault_dis"
+                name="ich_fault_dis"
+                value="{{ @$kart_veri->ich_fault_dis ?? '' }}">
         </div>
 
         {{-- MİKTAR --}}
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label class="form-label">Miktar</label>
             <input type="number"
                    class="form-control ich_quantity"

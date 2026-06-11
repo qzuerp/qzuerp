@@ -10,35 +10,31 @@
             <th style="min-width:120px; font-size: 13px !important;">Açıklama</th>
             <th style="min-width:120px; font-size: 13px !important;">Adet</th>
             <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
-            <th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
+            @if(in_array('SSF', $kullanici_read_yetkileri))
+                <th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
+            @endif
+            <th style="min-width:120px; font-size: 13px !important;">Hata Kodu</th>
+            <th style="min-width:120px; font-size: 13px !important;">Hata Kodu Yüzdelik Oranı</th>
         </tr>
     </thead>
 
-    <tfoot>
-        <tr>
-            <th style="min-width:120px; font-size: 13px !important;">İç Hata Parça No</th>
-            <th style="min-width:120px; font-size: 13px !important;">İç hatayı yapan operatör</th>
-            <th style="min-width:120px; font-size: 13px !important;">Problem Tanımı</th>
-            <th style="min-width:120px; font-size: 13px !important;">Kök Neden</th>
-            <th style="min-width:120px; font-size: 13px !important;">Düzeltici Faaliyet</th>
-            <th style="min-width:120px; font-size: 13px !important;">Açıklama</th>
-            <th style="min-width:120px; font-size: 13px !important;">Adet</th>
-            <th style="min-width:120px; font-size: 13px !important;">Tarih</th>
-            <th style="min-width:120px; font-size: 13px !important;">Fiyat</th>
-        </tr>
-    </tfoot>
-
     <tbody>
+        @php
+            $toplamHataSayisi = count($veri); 
+
+            $hataSayilari = $veri->groupBy('ich_fault_code')->map->count();
+        @endphp
+
         @foreach ($veri as $item)
         @php
             $name = DB::table($database.'pers00')->where('KOD', $item->ich_operator)->value('AD');
             $fiyat_listesi = DB::table($database.'stok48t')
-            ->where('KOD', $item->ich_part_code)
-            ->where('GECERLILIK_TAR', '<=', \Carbon\Carbon::parse($item->ich_date))
-            ->orderBy('GECERLILIK_TAR', 'desc')
-            ->first();
+                ->where('KOD', $item->ich_part_code)
+                ->where('GECERLILIK_TAR', '<=', \Carbon\Carbon::parse($item->ich_date))
+                ->orderBy('GECERLILIK_TAR', 'desc')
+                ->first();
+            
             $fiyat = 0;
-            // dd($fiyat_listesi);
 
             if(isset($fiyat_listesi)){
                 $tarih = date('Y/m/d', strtotime($item->ich_date));
@@ -50,11 +46,14 @@
                 if(isset($fiyat_listesi->PRICE_UNIT) && $fiyat_listesi->PRICE_UNIT == 'TL'){
                     $fiyat = $fiyat_listesi->PRICE * $item->ich_quantity;
                 }
-                else
-                {
-                    $fiyat = $fiyat_listesi->PRICE ?? 0 * $item->ich_quantity * $kur->KURS_1 ?? 0;
+                else {
+                    $fiyat = ($fiyat_listesi->PRICE ?? 0) * $item->ich_quantity * ($kur->KURS_1 ?? 1);
                 }
             }
+
+            $buHataninAdedi = $hataSayilari[$item->ich_fault_code] ?? 0;
+            
+            $yuzde = $toplamHataSayisi > 0 ? number_format(($buHataninAdedi / $toplamHataSayisi) * 100, 2) : 0;
         @endphp
             <tr>
                 <td>{{ $item->ich_part_code }}</td>
@@ -65,7 +64,11 @@
                 <td>{{ $item->ich_description }}</td>
                 <td>{{ $item->ich_quantity }}</td>
                 <td>{{ $item->ich_date }}</td>
-                <td>{{ $fiyat ?? 'Fiyat Bulunamadı' }} TL</td>
+                @if(in_array('SSF', $kullanici_read_yetkileri))
+                    <td>{{ $fiyat ?? 0 }} TL</td>
+                @endif
+                <td>{{ $item->ich_fault_code }}</td>
+                <td><strong>%{{ $yuzde }}</strong> ({{ $buHataninAdedi }} / {{ $toplamHataSayisi }})</td>
             </tr>
         @endforeach
     </tbody>
