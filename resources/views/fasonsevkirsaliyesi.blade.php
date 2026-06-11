@@ -1532,24 +1532,39 @@ $(document).ready(function() {
     });
 
     $('#secilenleriEkle').on('click', function() {
-        $('#tumunuSec').prop('checked',false)
-        table.rows().every(function() {
-            var rowNode = $(this.node());
-            var checkbox = rowNode.find('.seciliFason');
-            if(checkbox.is(':checked')) {
-                var tr = rowNode.clone();
-                var unitTd = tr.find('input[name="SF_SF_UNIT[]"]').closest('td');
+      $('#tumunuSec').prop('checked', false);
+      
+      table.rows().every(function() {
+          var rowNode = $(this.node());
+          var checkbox = rowNode.find('.seciliFason');
+          
+          if(checkbox.is(':checked')) {
+              var tr = rowNode.clone();
+              
+              tr.find('.seciliFason').prop('checked', false);
+              tr.find('[id]').removeAttr('id');
 
-                unitTd.after(
-                    '<td><input type="number" class="form-control" name="PKTICIADET[]" value=""></td>' +
-                    '<td><input type="text" class="form-control" name="AMBLJ_TNM[]" value=""></td>'
-                );
+              var eskiInput = tr.find('input[name="TERMIN_TAR[]"]');
+              var tdKapsayici = eskiInput.closest('td');
+              var eskiDeger = eskiInput.val();
 
-                $("#veriTable tbody").append(tr);
+              tdKapsayici.empty(); 
 
-            }
-        });
-        table.draw(false);
+              tdKapsayici.append('<input type="text" class="form-control" name="TERMIN_TAR[]" value="' + eskiDeger + '">');
+
+              var unitTd = tdKapsayici;
+              unitTd.after(
+                  '<td><input type="number" class="form-control" name="PKTICIADET[]" value=""></td>' +
+                  '<td><input type="text" class="form-control" name="AMBLJ_TNM[]" value=""></td>'
+              );
+
+              $("#veriTable tbody").append(tr);
+          }
+      });
+      
+      table.draw(false);
+
+      initFlatpickr('input[name="TERMIN_TAR[]"]'); 
     });
 
 
