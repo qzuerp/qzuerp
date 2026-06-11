@@ -184,7 +184,7 @@
                             {{ $item->ich_fault_code }}
                         </span>
                     </td>
-                    <td style="min-width:180px;">
+                    <td style="min-width:180px;" data-order="{{ $yuzde }}">
                         <div class="d-flex align-items-center gap-2">
                             <div class="ich-pbar-bg">
                                 <div class="ich-pbar-fill"

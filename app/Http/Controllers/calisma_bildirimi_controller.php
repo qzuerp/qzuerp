@@ -430,8 +430,7 @@ class calisma_bildirimi_controller extends Controller
 
         FunctionHelpers::Logla('SFDC31', $EVRAKNO, 'C', $TARIH);
 
-
-
+        
         DB::table($firma . 'sfdc31e')->insert([
           'EVRAKNO' => $EVRAKNO,
           'TARIH' => $TARIH,
