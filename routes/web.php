@@ -663,9 +663,26 @@ Route::group(['middleware' => ['auth']], function() {
     
     //     $token = $data['access_token'];
     
-    //     return Http::withToken($token)
-    //         ->get('https://api.parasut.com/v4/791329/products')
+    //     $response = Http::withToken($token)
+    //         ->get('https://api.parasut.com/v4/791329/employees', [
+    //             'page[size]' => 100 // Tek seferde maksimum kaydı çekmeye çalış
+    //         ])
     //         ->json();
+
+    //     $employees = collect($response['data'] ?? []);
+
+    //     $arananKelime = 'asdaasd';
+
+    //     $filtered = $employees->filter(function ($item) use ($arananKelime) {
+    //         $name = $item['attributes']['name'] ?? '';
+            
+    //         return \Illuminate\Support\Str::contains(
+    //             strtolower($name), 
+    //             strtolower($arananKelime)
+    //         );
+    //     });
+
+    //     return $filtered->values()->all();
     // });
 
     Route::get('/test/cariler/{firmaId}/{kod}', function (string $firmaId, string $kod) {

@@ -1913,8 +1913,7 @@
 																		value="{{@$kart_veri->TEKLIF_TUTAR}}">
 																	<td>
 																		<button type='button' class='btn btn-default satir_detay' data-trnum="{{ $veri->TRNUM }}" data-bs-toggle="modal"
-																		data-bs-target="#satir_detay"><i
-																				class='fa fa-plus'></i></button>
+																		data-bs-target="#satir_detay"><i class="fa-regular fa-pen-to-square"></i></button>
 																	</td>
 																	<td>
 																		{{ $siraNo }}

@@ -117,6 +117,7 @@ class main_controller extends Controller
         ->leftJoin($database.'stok00 as s0', 's10.KOD', '=', 's0.KOD')
         ->leftJoin($database.'gdef00 as g', 'g.KOD', '=', 's10.AMBCODE')
         ->selectRaw('
+            s0.AD AS STOK_AD,
             s10.*,
             s0.NAME2,
             s0.id,
@@ -124,7 +125,7 @@ class main_controller extends Controller
             g.AD AS DEPO_ADI,
             s0.IUNIT AS SF_SF_UNIT
         ')
-        ->where('s10.MIKTAR', '<>', 0) // HAVING yerine doğrusu bu
+        ->where('s10.MIKTAR', '<>', 0)
         ->get();
 
       // Görselleri toplu al
@@ -150,7 +151,7 @@ class main_controller extends Controller
           
           $data[] = [
               'KOD' => $item->KOD,
-              'STOK_ADI' => $item->STOK_ADI,
+              'STOK_ADI' => $item->STOK_AD,
               'NAME2' => $item->NAME2,
               'REVNO' => $item->REVNO,
               'MIKTAR' => $item->MIKTAR,

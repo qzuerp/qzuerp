@@ -109,6 +109,7 @@ class ParasutService implements AccountingInterface
             ])
             ->json();
     }
+    
     public function getSatismesajalari($data) {
         if (!$this->token) return ['error' => 'Token yok!'];
     
@@ -126,7 +127,7 @@ class ParasutService implements AccountingInterface
             $data = [
                 'invoice_no' => $value['attributes']['invoice_no'],
                 'net_total' => $value['attributes']['net_total'],
-            ]
+            ];
         }
 
         return $response->json();
