@@ -565,8 +565,7 @@ class stok20_controller extends Controller
             ]);
             
             $toplamMiktar = DB::table($firma . 'stok20t')
-              ->where('EVRAKNO', $EVRAKNO)
-              ->where('KOD', $KOD[$i])
+              ->where('ISEMRINO', $IS_EMRI[$i])
               ->sum('SF_MIKTAR') ?? 0;
 
             $MPS = DB::table($firma . 'mmps10e')
