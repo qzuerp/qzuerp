@@ -115,6 +115,10 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th style="min-width: 100px">Lot</th>
 										<th style="min-width: 100px">Seri No</th>
 										<th style="min-width: 100px">Depo</th>
+										<th style="min-width: 100px">Lok 1</th>
+										<th style="min-width: 100px">Lok 2</th>
+										<th style="min-width: 100px">Lok 3</th>
+										<th style="min-width: 100px">Lok 4</th>
 										<th style="min-width: 100px">Varyant Text 1</th>
 										<th style="min-width: 100px">Varyant Text 2</th>
 										<th style="min-width: 100px">Varyant Text 3</th>
@@ -123,10 +127,6 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th style="min-width: 100px">Ölçü 2</th>
 										<th style="min-width: 100px">Ölçü 3</th>
 										<th style="min-width: 100px">Ölçü 4</th>
-										<th style="min-width: 100px">Lok 1</th>
-										<th style="min-width: 100px">Lok 2</th>
-										<th style="min-width: 100px">Lok 3</th>
-										<th style="min-width: 100px">Lok 4</th>
 										<th style="min-width: 100px">Görsel</th>
 										<th>#</th>
 									</tr>
@@ -142,6 +142,10 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th>Lot</th>
 										<th>Seri No</th>
 										<th>Depo</th>
+										<th>Lok 1</th>
+										<th>Lok 2</th>
+										<th>Lok 3</th>
+										<th>Lok 4</th>
 										<th>Varyant Text 1</th>
 										<th>Varyant Text 2</th>
 										<th>Varyant Text 3</th>
@@ -150,10 +154,6 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 										<th>Ölçü 2</th>
 										<th>Ölçü 3</th>
 										<th>Ölçü 4</th>
-										<th>Lok 1</th>
-										<th>Lok 2</th>
-										<th>Lok 3</th>
-										<th>Lok 4</th>
 										<th>Görsel</th>
 										<th>#</th>
 									</tr>
@@ -318,6 +318,10 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 							return (data.AMBCODE || '') + (data.DEPO_ADI ? ' - ' + data.DEPO_ADI : ''); 
 						}
 					},
+					{ "data": "LOCATION1", "defaultContent": "" },
+					{ "data": "LOCATION2", "defaultContent": "" },
+					{ "data": "LOCATION3", "defaultContent": "" },
+					{ "data": "LOCATION4", "defaultContent": "" },
 					{ "data": "TEXT1", "defaultContent": "" },
 					{ "data": "TEXT2", "defaultContent": "" },
 					{ "data": "TEXT3", "defaultContent": "" },
@@ -326,10 +330,6 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					{ "data": "NUM2", "defaultContent": "" },
 					{ "data": "NUM3", "defaultContent": "" },
 					{ "data": "NUM4", "defaultContent": "" },
-					{ "data": "LOCATION1", "defaultContent": "" },
-					{ "data": "LOCATION2", "defaultContent": "" },
-					{ "data": "LOCATION3", "defaultContent": "" },
-					{ "data": "LOCATION4", "defaultContent": "" },
 					{
 						"data": "imgSrc",
 						"orderable": false,
