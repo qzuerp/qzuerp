@@ -531,6 +531,7 @@ class calisma_bildirimi_controller extends Controller
       // break;
 
       case 'kart_duzenle':
+        // dd($request->all());
         FunctionHelpers::Logla('SFDC31', $EVRAKNO, 'W', $TARIH);
 
         $ID = $request->input('ID_TO_REDIRECT');
@@ -571,6 +572,7 @@ class calisma_bildirimi_controller extends Controller
         $deleteTRNUMS = array_diff($currentTRNUMS, $liveTRNUMS);
 
         // dd([
+        //   'L' => $liveTRNUMS,
         //   "N" => $newTRNUMS,
         //   'U' => $updateTRNUMS,
         //   'D' => $deleteTRNUMS
@@ -579,7 +581,8 @@ class calisma_bildirimi_controller extends Controller
         for ($i = 0; $i < $satir_say; $i++) {
           if (in_array($TRNUM[$i], $updateTRNUMS)) {
             DB::table($firma . 'sfdc31t')
-              ->where('id', $TRNUM[$i])
+              ->where('TRNUM', $TRNUM[$i])
+              ->where('EVRAKNO', $EVRAKNO)
               ->update([
                 'EVRAKNO' => $EVRAKNO,
                 'ISLEM_TURU' => $ISLEM_TURU[$i],

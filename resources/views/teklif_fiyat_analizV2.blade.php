@@ -3169,10 +3169,7 @@
 
 				let currentCurrency = '{{ @$kart_veri->TEKLIF_FIYAT_PB }}';
 
-				$('input[name="FIYAT[]"]').each(function () {
-					$(this).data('originalValue',    AutoNumeric.getNumber(this));
-					$(this).data('originalCurrency', currentCurrency);
-				});
+				// ← İlk .each() tamamen kaldırıldı
 
 				$('#teklif').on('change', async function () {
 					let newCurrency = $(this).val();
@@ -3182,40 +3179,38 @@
 					let tutarInputs  = $('input[name="TUTAR[]"]');
 
 					for (let i = 0; i < fiyatInputs.length; i++) {
-						let input            = fiyatInputs[i];
-						let originalValue    = $(input).data('originalValue');
-						let originalCurrency = $(input).data('originalCurrency');
+						let input        = fiyatInputs[i];
+						let currentValue = AutoNumeric.getNumber(input); // ← o anki değer
 
 						let converted;
 
 						try {
-							if (originalCurrency === newCurrency) {
-								converted = originalValue;
-							} else if (originalCurrency === 'TL') {
+							if (currentCurrency === newCurrency) {
+								converted = currentValue;
+							} else if (currentCurrency === 'TL') {
 								let kur = await getCachedKur(TARIH, newCurrency);
-								converted = originalValue / kur.data.KURS_1;
-
+								converted = currentValue / kur.data.KURS_1;
 							} else if (newCurrency === 'TL') {
-								let kur = await getCachedKur(TARIH, originalCurrency);
-								converted = originalValue * kur.data.KURS_1;
+								let kur = await getCachedKur(TARIH, currentCurrency);
+								converted = currentValue * kur.data.KURS_1;
 							} else {
-								let kur1 = await getCachedKur(TARIH, originalCurrency);
+								let kur1 = await getCachedKur(TARIH, currentCurrency);
 								let kur2 = await getCachedKur(TARIH, newCurrency);
-								converted = (originalValue * kur1.data.KURS_1) / kur2.data.KURS_1;
+								converted = (currentValue * kur1.data.KURS_1) / kur2.data.KURS_1;
 							}
 
 							let finalValue = Math.round(converted * 100) / 100;
 							let miktar     = parseFloat($(miktarInputs[i]).val()) || 0;
 
 							AutoNumeric.set(input, finalValue);
-							AutoNumeric.set(tutarInputs[i],  Math.round(finalValue * miktar * 100) / 100);
+							AutoNumeric.set(tutarInputs[i], Math.round(finalValue * miktar * 100) / 100);
 
 						} catch (e) {
-							console.error('Kur dönüşüm hatası:', originalCurrency, '->', newCurrency, e);
+							console.error('Kur dönüşüm hatası:', currentCurrency, '->', newCurrency, e);
 						}
 					}
 
-					currentCurrency = newCurrency;
+					currentCurrency = newCurrency; // ← döngü bittikten sonra güncelle
 				});
 
 				$('#HammadeKodu').select2({
