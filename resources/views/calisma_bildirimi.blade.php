@@ -2338,7 +2338,7 @@
 
       <!-- JOBNO SEÇİM POPUP -->
       <div class="modal fade" id="modal_popupSelectModal" tabindex="-1" role="dialog" data-keyboard="false">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <div style='display:flex; justify-content: space-between;'>

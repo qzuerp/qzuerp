@@ -149,7 +149,7 @@ class calisma_bildirimi_controller extends Controller
 
       $firma = trim($u->firma) . '.dbo.';
 
-      if(DB::table($firma.'imlt00')->where('KOD', $kod)->value('COKLU_IS') == 0){ return; }
+      if(DB::table($firma.'imlt00')->where('KOD', $kod)->value('COKLU_IS') == '1'){ return; }
 
       $sonuc = DB::table($firma . 'sfdc31e as e')
         ->join($firma . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
