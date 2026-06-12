@@ -82,6 +82,7 @@ class imlt00_controller extends Controller
     $B_KAPASITE7_PERMPS = $request->input('B_KAPASITE7_PERMPS');
     $TOPLAM_KAPASITE_MPS = $request->input('TOPLAM_KAPASITE_MPS');
     $CIHAZTIPI = $request->input('CIHAZTIPI');
+    $COKLU_IS = $request->input('COKLU_IS');
 
 
     switch($islem_turu) {
@@ -146,7 +147,7 @@ class imlt00_controller extends Controller
         break;
 
       case 'kart_sil':
-FunctionHelpers::Logla('IMLT00',$KOD,'D');
+        FunctionHelpers::Logla('IMLT00',$KOD,'D');
 
         DB::table($firma.'imlt00')->where('KOD',$KOD)->delete();
 
@@ -201,6 +202,7 @@ FunctionHelpers::Logla('IMLT00',$KOD,'D');
           'B_KAPASITE7_PERMPS' => $B_KAPASITE7_PERMPS,
           'TOPLAM_KAPASITE_MPS' => $TOPLAM_KAPASITE_MPS,
           'CIHAZTIPI' => $CIHAZTIPI,
+          'COKLU_IS' => $COKLU_IS,
           'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -250,6 +252,7 @@ FunctionHelpers::Logla('IMLT00',$KOD,'D');
           'B_KAPASITE7_PERMPS' => $B_KAPASITE7_PERMPS,
           'TOPLAM_KAPASITE_MPS' => $TOPLAM_KAPASITE_MPS,
           'CIHAZTIPI' => $CIHAZTIPI,
+          'COKLU_IS' => $COKLU_IS,
           'updated_at' => date('Y-m-d H:i:s'),
         ]);
 

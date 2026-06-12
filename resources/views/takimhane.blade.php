@@ -1427,7 +1427,7 @@ $(function () {
                     var row = res[0];
                     $('#SF_TOPLAM_MIKTAR').val(row.MIKTAR || '');
                     $('#STOK_KODU_FILL').val(row.KOD || '');
-                    $('#STOK_ADI_FILL').val(row.STOK_ADI || '');
+                    $('#STOK_ADI_FILL').val(row.STOK_AD || '');
                     $('#LOTNUMBER').val(row.LOTNUMBER || '');
                     $('#SERINO').val(row.SERINO || '');
                     $('#TEXT1').val(row.TEXT1 || '');  $('#TEXT2').val(row.TEXT2 || '');
@@ -1437,7 +1437,7 @@ $(function () {
                     $('#LOCATION1').val(row.LOCATION1 || ''); $('#LOCATION2').val(row.LOCATION2 || '');
                     $('#LOCATION3').val(row.LOCATION3 || ''); $('#LOCATION4').val(row.LOCATION4 || '');
                     $('#quick_modal').modal('hide');
-                    toastr.success('Stok direkt forma yüklendi');
+                    mesaj('Stok direkt forma yüklendi','success');
                     return; // forEach'e gitme
                 }
                 else
@@ -1447,9 +1447,9 @@ $(function () {
                     res.forEach((row) => {
                         table.row.add([
                             row.KOD || '',
-                            row.STOK_ADI || '',
+                            row.STOK_AD || '',
                             row.MIKTAR || '',
-                            row.SF_SF_UNIT || '',
+                            row.BIRIM || '',
                             row.LOTNUMBER || '',
                             row.SERINO || '',
                             row.AMBCODE || '',

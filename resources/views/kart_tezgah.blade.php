@@ -132,6 +132,16 @@ if (isset($kart_veri)) {
 									<option value="A" {{ @$kart_veri->CIHAZTIPI == "A" ? "selected" : "" }}>Aparat Stok Kodu</option>
 								</select>
 							</div>
+
+							<div class="col-md-3 col-sm-4 col-xs-6">
+								<label>Çoklu iş </label>
+								<select name="COKLU_IS" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="COKLU_IS" id="COKLU_IS" class="COKLU_IS form-control select2">
+									<option value="0" {{ @$kart_veri->COKLU_IS == "0" ? "selected" : "" }}>Yapamaz</option>
+									<option value="1" {{ @$kart_veri->COKLU_IS == "1" ? "selected" : "" }}>Yapabilir</option>
+								</select>
+							</div>
+
+
 							<div class="col-md-1 col-sm-1 col-xs-1">
 							   <label>Aktif/Pasif</label>
 							   <div class="d-flex ">

@@ -64,14 +64,15 @@ class main_controller extends Controller
       $u = Auth::user();
     }
     $firma = trim($u->firma).'.dbo.';
-    $data = DB::table($firma.'vw_stok01')
-    ->where('AMBCODE', $DEPO)
-    ->where('LOCATION1', $LOK1)
-    ->where('LOCATION2', $LOK2)
-    ->where('LOCATION3', $LOK3)
-    ->where('LOCATION4', $LOK4)
-    ->where('MIKTAR','>',0)
-    ->get();
+    $data = DB::table($firma.'vw_stok01 as S01')
+    ->leftJoin($firma.'stok00 as S00','S00.KOD', '=', 'S01.KOD')
+    ->where('S01.AMBCODE', $DEPO)
+    ->where('S01.LOCATION1', $LOK1)
+    ->where('S01.LOCATION2', $LOK2)
+    ->where('S01.LOCATION3', $LOK3)
+    ->where('S01.LOCATION4', $LOK4)
+    ->where('S01.MIKTAR','>',0)
+    ->get(['S01.*','S00.AD as STOK_AD','S00.IUNIT as BIRIM']);
     
     return $data;
   }
