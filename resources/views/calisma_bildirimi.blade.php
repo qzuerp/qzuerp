@@ -2808,7 +2808,7 @@
               $('#JOBNO').val(JOBNO);
               $('#STOK_CODE').val(STOK_KOD).trigger('change');
               $('#OPERASYON').val(OPERASYON_KODU).trigger('change')
-              $('#X_T_ISMERKEZI').val(IS_MERKEZI).trigger('change');
+              // $('#X_T_ISMERKEZI').val(IS_MERKEZI).trigger('change');
               
               $('#modal_popupSelectModal').modal('toggle');
           });
@@ -3656,6 +3656,59 @@
                   }
                 });
 
+
+                let $this = $(this);
+                let buttonId = $this.attr('id');
+                let ismerkezi = $('#X_T_ISMERKEZI').val();
+
+                $.ajax({
+                  type: 'POST',
+                  url: '/get_questions',
+                  data: { 
+                      KOD: ismerkezi,
+                      _token: $('meta[name="csrf-token"]').attr('content')
+                  },
+                  success: function (res) {
+                    if (Array.isArray(res) && res.length > 0) {
+                        let questions = '';
+                        res.forEach((element, index) => {
+                            let sId = element.ID || index; 
+                            questions += `
+                              <div class="checklist-item" data-question-id="${sId}">
+                                <div class="question-header">
+                                  <div class="question-number">${String(index + 1).padStart(2, '0')}</div>
+                                  <div class="question-text">${element.SORU || element.SORU_METNI}</div>
+                                </div>
+                                <div class="answer-options">
+                                  <label class="radio-option yes">
+                                    <input id="yes_${sId}" type="radio" name="cevap_${sId}" value="EVET">
+                                    <label for="yes_${sId}" class="radio-label">
+                                      <span class="radio-icon"></span><span>Evet</span>
+                                    </label>
+                                  </label>
+                                  <label class="radio-option no">
+                                    <input id="no_${sId}" type="radio" name="cevap_${sId}" value="HAYIR">
+                                    <label for="no_${sId}" class="radio-label">
+                                      <span class="radio-icon"></span><span>Hayır</span>
+                                    </label>
+                                  </label>
+                                </div>
+                                <div class="warning-message">
+                                  <textarea class="explanation-input" name="explanation_${sId}" placeholder="Açıklama (opsiyonel)"></textarea>
+                                </div>
+                              </div>`;
+                        });
+
+                        $('#checkBody').html(questions);
+                        
+                        
+                        $('.modal-overlay').fadeIn(200).css('display', 'flex');
+                    } 
+                  },
+                  error: function() {
+                      alert("Bağlantı hatası! Kontrol yapılamadı.");
+                  }
+                });
               }
             }
           })

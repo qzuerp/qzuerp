@@ -9,12 +9,21 @@
 
 <div class="sidebar">
   <div class="logo-details">
-    @if(trim($user->firma) == 'yukselcnc')
-      <img src="{{URL::asset('/assets/img/yukselcnc_LOGO.jpeg')}}" class="" width='50' style='object-fit:contain width:100px !important; transform:scale(0.80); height:50px; border 1px solid white; border-radius: 50%;' alt="User Image">
+    @php
+        $FIRMA = Cache::remember('firma_' . trim($user->firma), 3600, function() use ($user) {
+            return DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->first();
+        });
+    @endphp
+
+    @if($FIRMA)
+      <img src="{{ asset($FIRMA->LOGO_URL) }}" width='50' style='object-fit:contain width:100px !important; transform:scale(0.80); height:50px; border 1px solid white; border-radius: 50%;' alt="User Image" alt="{{ $FIRMA->FIRMA_ADI }}" loading="lazy">
     @else
       <img src="{{URL::asset('/assets/img/qzu_logo.png')}}" class="img-circle" width='50' alt="User Image">
     @endif
-    <div class="logo_name ms-3"><b>QZU</b>ERP</div>
+    <a href="index" class="logo-link logo_name">
+      <span class="logo-mini" style="color: #f2f2f2;"><b>QZU</b></span>
+      <span class="logo-lg d-none d-md-inline"><b>ERP</b></span>
+    </a>
   </div>
   <ul class="nav-list">
     <li>

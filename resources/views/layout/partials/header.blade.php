@@ -518,11 +518,11 @@
 <div class="wrapper">
     <header class="modern-header">
         <div class="header-container">
-            <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
+            <div class="d-flex gap-2 align-items-center">
                 <button class="sidebar-toggle" id="toggle-btn-sidebar">
                     <i id="icon" class='bx bx-menu'></i>
                 </button>
-                
+
                 @php
                     $FIRMA = Cache::remember('firma_' . trim($user->firma), 3600, function() use ($user) {
                         return DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->first();
@@ -541,10 +541,10 @@
                 <div class="logo-section">
                     
                     
-                    <a href="index" class="logo-link">
+                    <!-- <a href="index" class="logo-link">
                         <span class="logo-mini" style="color: #f2f2f2;"><b>QZU</b></span>
                         <span class="logo-lg d-none d-md-inline"><b>ERP</b></span>
-                    </a>
+                    </a> -->
                 </div>
 
 
