@@ -518,18 +518,11 @@
 <div class="wrapper">
     <header class="modern-header">
         <div class="header-container">
-            <div class="logo-section">
+            <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
                 <button class="sidebar-toggle" id="toggle-btn-sidebar">
                     <i id="icon" class='bx bx-menu'></i>
                 </button>
                 
-                <a href="index" class="logo-link">
-                    <span class="logo-mini" style="color: #f2f2f2;"><b>QZU</b></span>
-                    <span class="logo-lg d-none d-md-inline"><b>ERP</b></span>
-                </a>
-            </div>
-
-            <div class="d-flex gap-2 align-items-center" style="transform: scale(0.85);">
                 @php
                     $FIRMA = Cache::remember('firma_' . trim($user->firma), 3600, function() use ($user) {
                         return DB::table('FIRMA_TANIMLARI')->where('FIRMA', trim($user->firma))->first();
@@ -543,8 +536,18 @@
                     </a>
                 @endif
             </div>
-
+            
             <div class="d-flex align-items-center" style="gap: 8px;">
+                <div class="logo-section">
+                    
+                    
+                    <a href="index" class="logo-link">
+                        <span class="logo-mini" style="color: #f2f2f2;"><b>QZU</b></span>
+                        <span class="logo-lg d-none d-md-inline"><b>ERP</b></span>
+                    </a>
+                </div>
+
+
                 <!-- Bildirim Dropdown -->
                 <button class="notif-btn " onclick="toggleAlarmDrawer()" title="Alarm Merkezi">
                     <i class="fa-solid fa-bell"></i>

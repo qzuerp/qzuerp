@@ -60,16 +60,16 @@
     .smooth-logo {
       width: 100px; /* Biraz küçülttük, zarafet bağırmaz. */
       height: auto;
-      animation: smoothBreathe 2.5s infinite ease-in-out;
+      animation: smoothBreathe 1s infinite ease-in-out;
       /* Neon değil, çok hafif, asil bir beyaz/gri gölge */
       filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.1));
     }
 
     /* Kriz geçiren kalp ritmi yerine, derin ve sakin bir nefes animasyonu */
     @keyframes smoothBreathe {
-      0% { transform: scale(0.8); opacity: 0.8; }
+      0% { transform: scale(0.9); opacity: 0.8; }
       50% { transform: scale(1); opacity: 1; filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.2)); }
-      100% { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(0.9); opacity: 0.8; }
     }
   </style>
 </head>
