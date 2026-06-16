@@ -826,7 +826,7 @@
                                             <select class="form-select select2" id="DEP_NEWLOCATION2" name="DEP_NEWLOCATION2" data-modal="depodandepoya">
                                                 <option value=" ">Seç</option>
                                                 @foreach ($location_kodlar as $location)
-                                                    <option value="{{$location->LOCATION1}}">{{$location->LOCATION1}}</option>
+                                                    <option value="{{$location->LOCATION2}}">{{$location->LOCATION2}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -835,7 +835,7 @@
                                             <select class="form-select select2" id="DEP_NEWLOCATION3" name="DEP_NEWLOCATION3" data-modal="depodandepoya">
                                                 <option value=" ">Seç</option>
                                                 @foreach ($location_kodlar as $location)
-                                                    <option value="{{$location->LOCATION1}}">{{$location->LOCATION1}}</option>
+                                                    <option value="{{$location->LOCATION3}}">{{$location->LOCATION3}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -844,7 +844,7 @@
                                             <select class="form-select select2" id="DEP_NEWLOCATION4" name="DEP_NEWLOCATION4" data-modal="depodandepoya">
                                                 <option value=" ">Seç</option>
                                                 @foreach ($location_kodlar as $location)
-                                                    <option value="{{$location->LOCATION1}}">{{$location->LOCATION1}}</option>
+                                                    <option value="{{$location->LOCATION4}}">{{$location->LOCATION4}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
