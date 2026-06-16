@@ -16,7 +16,7 @@
     @endphp
 
     @if($FIRMA)
-      <img src="{{ asset($FIRMA->LOGO_URL) }}" width='50' style='object-fit:contain width:100px !important; transform:scale(0.80); height:50px; border 1px solid white; border-radius: 50%;' alt="User Image" alt="{{ $FIRMA->FIRMA_ADI }}" loading="lazy">
+      <img src="{{ asset($FIRMA->LOGO_URL) }}" width='50' style='object-fit:cover; width:100px !important; transform:scale(0.80); height:50px; border 1px solid white; border-radius: 50%;' alt="User Image" alt="{{ $FIRMA->FIRMA_ADI }}" loading="lazy">
     @else
       <img src="{{URL::asset('/assets/img/qzu_logo.png')}}" class="img-circle" width='50' alt="User Image">
     @endif
