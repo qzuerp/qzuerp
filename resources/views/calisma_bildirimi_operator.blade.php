@@ -1784,10 +1784,10 @@
         row.find("td").eq(4).html(`<input type="time" class="tbl-input" name="bitis_saat[]" value="${time}" readonly>`);
         
         // Duruş sebebini güncelle
-        if (type === 'D') {
-          const durusSebebi = $("#DURMA_SEBEBI").val();
-          row.find("td").eq(5).html(`<input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly>`);
-        }
+        // if (type === 'D') {
+        //   const durusSebebi = $("#DURMA_SEBEBI").val();
+        //   row.find("td").eq(5).html(`<input class="tbl-input" name="durus_sebebi[]" value="${durusSebebi}" title="${durusSebebi}" readonly>`);
+        // }
         
         calculateDuration(row);
         

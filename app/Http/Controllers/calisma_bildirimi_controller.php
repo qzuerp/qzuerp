@@ -204,7 +204,7 @@ class calisma_bildirimi_controller extends Controller
     $DRSTIME2 = $request->input('DRSTIME2');
     $D7_AKSIYON = $request->input('D7_AKSIYON');
     $VARDIYA = $request->input('VARDIYA');
-    $DURMA_SEBEBI = $request->input('durus_sebebi');
+    $DURMA_SEBEBI = $request->durus_sebebi;
     $IS_OPERATOR_1 = $request->input('IS_OPERATOR_1');
     $JOBNO = $request->input('JOBNO');
     $ALLOC_SYSSTATUS = $request->input('ALLOC_SYSSTATUS');
@@ -380,17 +380,17 @@ class calisma_bildirimi_controller extends Controller
           $miktar = (float)($mevcutMiktar ?? 0);
       
           DB::update("
-              UPDATE {$firma}mmps10t 
-              SET 
-                  GERCEKLESEN_SURE = CASE 
-                      WHEN GERCEKLESEN_SURE >= :sure1 THEN GERCEKLESEN_SURE - :sure2 
-                      ELSE 0 
-                  END,
-                  R_TMYMAMULMIKTAR = CASE 
-                      WHEN R_TMYMAMULMIKTAR >= :miktar1 THEN R_TMYMAMULMIKTAR - :miktar2 
-                      ELSE 0 
-                  END
-              WHERE JOBNO = :jobno
+            UPDATE {$firma}mmps10t 
+            SET 
+                GERCEKLESEN_SURE = CASE 
+                    WHEN CAST(GERCEKLESEN_SURE AS DECIMAL(18,2)) >= :sure1 THEN CAST(GERCEKLESEN_SURE AS DECIMAL(18,2)) - :sure2 
+                    ELSE 0 
+                END,
+                R_TMYMAMULMIKTAR = CASE 
+                    WHEN CAST(R_TMYMAMULMIKTAR AS DECIMAL(18,2)) >= :miktar1 THEN CAST(R_TMYMAMULMIKTAR AS DECIMAL(18,2)) - :miktar2 
+                    ELSE 0 
+                END
+            WHERE JOBNO = :jobno
           ", [
               'sure1'  => $sure,
               'sure2'  => $sure,
