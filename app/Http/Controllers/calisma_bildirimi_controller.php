@@ -376,11 +376,9 @@ class calisma_bildirimi_controller extends Controller
 
         if ($JOBNO != null && ($TOPLAM_SURE != null || $mevcutMiktar != null)) {
     
-          // Güvenli değer atamaları (Null ise 0 kabul et)
           $sure = (float)($TOPLAM_SURE ?? 0);
           $miktar = (float)($mevcutMiktar ?? 0);
       
-          // Tek sorguda işi bitiriyoruz ve SQL Injection'ı engelliyoruz
           DB::update("
               UPDATE {$firma}mmps10t 
               SET 
@@ -594,7 +592,6 @@ class calisma_bildirimi_controller extends Controller
                 'BITIS_TARIHI' => $RECTARIH2[$i] ?? null,
                 'BITIS_SAATI' => $RECTIME2[$i] ?? null,
                 'SURE' => $SURE[$i] ?? null,
-                'TRNUM' => $TRNUM[$i] ?? null
               ]);
           }
           if (in_array($TRNUM[$i], $newTRNUMS)) {
