@@ -35,26 +35,49 @@
       pointer-events: none;
       transform: scale(0.80);
     }
+    /* Pavyon kapandı, mekan artık elit. */
     .main {
       width: 100%;
       height: 100%;
       z-index: 9999;
-      background-color: rgba(57, 57, 57, 0.18);
+      background-color: rgba(18, 18, 20, 0.4); /* Göz yormayan, premium koyu cam efekti */
       position: fixed;
       top: 0;
       left: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(16px); /* Daha pürüzsüz, kaliteli bir blur */
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .modern-loader-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .smooth-logo {
+      width: 100px; /* Biraz küçülttük, zarafet bağırmaz. */
+      height: auto;
+      animation: smoothBreathe 2.5s infinite ease-in-out;
+      /* Neon değil, çok hafif, asil bir beyaz/gri gölge */
+      filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.1));
+    }
+
+    /* Kriz geçiren kalp ritmi yerine, derin ve sakin bir nefes animasyonu */
+    @keyframes smoothBreathe {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.2)); }
+      100% { transform: scale(0.8); opacity: 0.8; }
     }
   </style>
 </head>
 
 <body class='skin-blue sidebar-mini sidebar-collapse'>
   <div class="main" id="loader" style="display:none;">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Yükleniyor...</span>
+    <div class="modern-loader-container">
+      <img src="{{ asset('/qzuerp-sources/img/qzu_logo.png') }}" alt="Logo" class="smooth-logo">
     </div>
   </div>
 
