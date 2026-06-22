@@ -414,7 +414,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			dt.rows().every(function () {
 				let d = this.data();
 				data.push([
-					d.create_at ?? '',
+					d.created_at ?? '',
 					d.KOD ?? '',
 					d.STOK_ADI ?? '',
 					d.NAME2 ?? '',
