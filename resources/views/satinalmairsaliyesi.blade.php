@@ -35,6 +35,8 @@
 
 	$t_kart_veri = DB::table($database . $ekranTableT . ' as t')
     ->leftJoin($database . 'stok00 as s', 't.KOD', '=', 's.KOD')
+    ->leftJoin($database . 'mmps10e as m10e', 't.MPS_KODU', '=', 'm10e.EVRAKNO')
+    ->leftJoin($database . 'stok40e as s40e', 'm10e.SIPNO', '=', 's40e.EVRAKNO')
     ->leftJoin($database . 'stok10a as S10A', function($join) {
         $join->on('t.TRNUM', '=', 'S10A.TRNUM')
              ->where('S10A.EVRAKTIPI', '=', 'STOK29T')
@@ -46,7 +48,9 @@
         't.*',
         's.AD as STOK_ADI', 
         's.IUNIT as SF_SF_UNIT',
-        'S10A.AKTIF_STOK'
+        'S10A.AKTIF_STOK',
+		's40e.id as SIPID',
+		'm10e.id as MPS',
     ])
     ->get();
 
@@ -271,6 +275,7 @@
 																<th>GKK</th>
 																<th style="min-width:220px;">Stok Kodu</th>
 																<th>Stok Adı</th>
+																<th>Malzeme Sertifikası</th>
 																<th>Lot No</th>
 																<th>Seri No</th>
 																<th>İşlem Mik.</th>
@@ -281,7 +286,6 @@
 																<th>Lokasyon 2</th>
 																<th>Lokasyon 3</th>
 																<th>Lokasyon 4</th>
-																<th>Malzeme Sertifikası</th>
 																<th>Varyant Text 2</th>
 																<th>Varyant Text 3</th>
 																<th>Varyant Text 4</th>
@@ -339,6 +343,12 @@
 																	<input data-max style="color: red" type="hidden"
 																		name="STOK_ADI_FILL" id="STOK_ADI_FILL"
 																		class="form-control">
+																</td>
+																<td style="min-width: 150px">
+																	<input maxlength="255" style="color: red" type="text"
+																		data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL"
+																		data-bs-toggle="tooltip" data-bs-placement="top"
+																		data-bs-title="TEXT1" class="TEXT1 form-control">
 																</td>
 																<td style="min-width: 150px">
 																	<input style="color: red"
@@ -420,12 +430,6 @@
 																		id="LOCATION4_FILL" data-bs-toggle="tooltip"
 																		data-bs-placement="top" data-bs-title="LOCATION4"
 																		class="LOCATION4 form-control">
-																</td>
-																<td style="min-width: 150px">
-																	<input maxlength="255" style="color: red" type="text"
-																		data-name="TEXT1" name="TEXT1_FILL" id="TEXT1_FILL"
-																		data-bs-toggle="tooltip" data-bs-placement="top"
-																		data-bs-title="TEXT1" class="TEXT1 form-control">
 																</td>
 																<td style="min-width: 150px">
 																	<input maxlength="255" style="color: red" type="text"
@@ -527,6 +531,12 @@
 																			disabled><input type="hidden" class="form-control"
 																			name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}">
 																	</td>
+																	<td class="d-flex">
+																		<input type="text" class="form-control" name="TEXT1[]"
+																			value="{{ $veri->TEXT1 }}">
+
+																			<a class="btn btn-primary" href="satissiparisi?ID={{ $veri->SIPID }}"><i class="fa-solid fa-truck-arrow-right"></i></a>
+																	</td>
 																	<td><input type="text" class="form-control"
 																			name="LOTNUMBER[]" value="{{ $veri->LOTNUMBER }}">
 																	</td>
@@ -543,7 +553,7 @@
 																	</td>
 																	<td><input type="text" class="form-control" name="NOT1[]"
 																			value="{{ $veri->NOT1 }}"></td>
-																	<td>
+																	<td class="d-flex">
 																		<select name="MPS_KODU[]"
 																			class="form-control js-example-basic-single select2"
 																			style="width: 100%; border-radius: 5px;">
@@ -555,6 +565,8 @@
 																				}
 																			@endphp
 																		</select>
+																		
+																		<a class="btn btn-primary" href="mpsgiriskarti?ID={{ $veri->MPS }}"><i class="bx bx-clipboard"></i></a>
 																	</td>
 																	<td><input type="text" class="form-control"
 																			name="LOCATION1[]" value="{{ $veri->LOCATION1 }}">
@@ -568,8 +580,6 @@
 																	<td><input type="text" class="form-control"
 																			name="LOCATION4[]" value="{{ $veri->LOCATION4 }}">
 																	</td>
-																	<td><input type="text" class="form-control" name="TEXT1[]"
-																			value="{{ $veri->TEXT1 }}"></td>
 																	<td><input type="text" class="form-control" name="TEXT2[]"
 																			value="{{ $veri->TEXT2 }}"></td>
 																	<td><input type="text" class="form-control" name="TEXT3[]"
@@ -824,6 +834,7 @@
 															<th>Tedarikçi</th>
 															<th>Stok Kodu</th>
 															<th>Stok Adı</th>
+															<th>Malzeme Sertifikası</th>
 															<th>Lot No</th>
 															<th>Seri No</th>
 															<th>İşlem Mik.</th>
@@ -840,6 +851,7 @@
 															<th>Tedarikçi</th>
 															<th>Stok Kodu</th>
 															<th>Stok Adı</th>
+															<th>Malzeme Sertifikası</th>
 															<th>Lot No</th>
 															<th>Seri No</th>
 															<th>İşlem Mik.</th>
@@ -901,6 +913,7 @@
 																echo "<td>".e($row->TEDARIKCI)."</td>";
 																echo "<td><code style='font-size:12px'>".e($row->KOD)."</code></td>";
 																echo "<td>".e($row->STOK_ADI)."</td>";
+																echo "<td>".e($row->TEXT1)."</td>";
 																echo "<td>".($row->LOTNUMBER ?? '—')."</td>";
 																echo "<td>".($row->SERINO ?? '—')."</td>";
 																echo "<td style='text-align:right'>".e($row->SF_MIKTAR)."</td>";
@@ -1267,6 +1280,7 @@
 				htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='" + TRNUM_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "' disabled><input type='hidden' class='form-control' name='KOD[]' value='" + satirEkleInputs.STOK_KODU_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='" + satirEkleInputs.STOK_ADI_FILL + "'></td> ";
+				htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='" + satirEkleInputs.TEXT1_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='" + satirEkleInputs.LOTNUMBER_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='" + satirEkleInputs.SERINO_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control number' name='SF_MIKTAR[]' value='" + satirEkleInputs.SF_MIKTAR_FILL + "'></td> ";
@@ -1279,7 +1293,6 @@
 				htmlCode += " <td><input type='text' class='form-control' name='LOCATION2[]' value='" + satirEkleInputs.LOCATION2_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='LOCATION3[]' value='" + satirEkleInputs.LOCATION3_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='LOCATION4[]' value='" + satirEkleInputs.LOCATION4_FILL + "'></td> ";
-				htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='" + satirEkleInputs.TEXT1_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='" + satirEkleInputs.TEXT2_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='" + satirEkleInputs.TEXT3_FILL + "'></td> ";
 				htmlCode += " <td><input type='text' class='form-control' name='TEXT4[]' value='" + satirEkleInputs.TEXT4_FILL + "'></td> ";
@@ -1405,7 +1418,7 @@
 
 						htmlCode += " <tr> ";
 						htmlCode += detayBtnForJS(setValueOfJsonObject(kartVerisi2.KOD));
-						htmlCode += " <td><input type='checkbox' checked name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
+						htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'><input type='hidden' id='D7' name='D7[]' value=''></td> ";
 						htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='24' name='TRNUM[]' id='TRNUM' value='" + TRNUM_FILL + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='" + setValueOfJsonObject(kartVerisi2.KOD) + "' disabled><input type='hidden' class='form-control' name='KOD[]' value='" + setValueOfJsonObject(kartVerisi2.KOD) + "'></td> ";
 						htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='" + setValueOfJsonObject(kartVerisi2.STOK_ADI) + "' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='" + setValueOfJsonObject(kartVerisi2.STOK_ADI) + "'></td> ";

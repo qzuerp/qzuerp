@@ -991,6 +991,7 @@
                           $q = DB::table($db . 'sfdc31e as e')
                                   ->leftJoin($db . 'sfdc31t as t', 'e.EVRAKNO', '=', 't.EVRAKNO')
                                   ->leftJoin($db . 'mmps10t as M10T','M10T.JOBNO','=','e.JOBNO')
+                                  ->leftJoin($db . 'mmps10e as M10E', 'M10T.EVRAKNO', '=', 'M10E.EVRAKNO')
                                   ->leftJoin($db . 'pers00 as P00','P00.KOD','=','e.TO_OPERATOR')
                                   ->select(
                                       'e.EVRAKNO', 'e.TARIH', 'e.ID',
@@ -1441,6 +1442,7 @@
                           $q = DB::table($db . 'sfdc31e as e')
                                   ->leftJoin($db . 'sfdc31t as t',   'e.EVRAKNO', '=', 't.EVRAKNO')
                                   ->leftJoin($db . 'mmps10t as M10T', 'M10T.JOBNO', '=', 'e.JOBNO')
+                                  ->leftJoin($db . 'mmps10e as M10E', 'M10T.EVRAKNO', '=', 'M10E.EVRAKNO')
                                   ->leftJoin($db . 'pers00 as P00',   'P00.KOD', '=', 'e.TO_OPERATOR');
 
                           if ($A_MPSSTOKKODU_B !== '') $q->where('e.STOK_CODE', '>=', $A_MPSSTOKKODU_B);
@@ -1485,12 +1487,12 @@
                           DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'A' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS ayar_sure"),
                           DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'D' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS durus_sure"),
                           DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0)) AS toplam_uretim"),
-                          DB::raw("SUM(ISNULL(CAST(M10T.R_MIKTART AS DECIMAL(18,4)), 0)) AS planlanan_sure"),
+                          DB::raw("(CAST(M10T.R_MIKTART AS DECIMAL(18,4)) / CAST(M10E.SF_TOPLAMMIKTAR AS DECIMAL(18,4))) * SUM(CAST(e.SF_MIKTAR AS DECIMAL(18,4))) AS planlanan_sure"),
                           DB::raw("SUM(ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0)) AS gerceklesen_sure")
                       )
                       ->whereNotNull('e.TO_OPERATOR')
                       ->where('e.TO_OPERATOR', '<>', '')
-                      ->groupBy('e.TO_OPERATOR')
+                      ->groupBy('e.TO_OPERATOR', 'M10T.R_MIKTART', 'M10E.SF_TOPLAMMIKTAR')
                       ->orderByDesc('toplam_uretim')
                       ->get();
 
@@ -1498,6 +1500,7 @@
                       $urunOzet = $baseQuery()
                       ->select(
                           'e.STOK_CODE',
+                          'M10T.R_OPERASYON_IMLT01_AD',
                           // 1. Toplam Üretim - CAST eklendi, varsayılan değer 0.00 yapıldı
                           DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0.00)) AS toplam_uretim"),
                           
@@ -1505,14 +1508,14 @@
                           DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'U' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0.00) ELSE 0.00 END) AS uretim_sure"),
                           
                           // 3. Planlanan Süre - Riske girmeyip CAST ediyoruz
-                          DB::raw("SUM(ISNULL(CAST(M10T.R_MIKTART AS DECIMAL(18,4)), 0.00)) AS planlanan_sure"),
+                          DB::raw("ISNULL(CAST(M10T.R_MIKTART AS DECIMAL(18,4)), 0.00) AS planlanan_sure"),
                           
                           // 4. İş Emri Sayısı - COUNT her zaman tam sayıdır, burada CAST gerekmez!
                           DB::raw("COUNT(DISTINCT e.EVRAKNO) AS is_emri_sayisi")
                       )
                       ->whereNotNull('e.STOK_CODE')
                       ->where('e.STOK_CODE', '<>', '')
-                      ->groupBy('e.STOK_CODE')
+                      ->groupBy('e.STOK_CODE','M10T.R_MIKTART','M10T.R_OPERASYON_IMLT01_AD')
                       ->orderByDesc('toplam_uretim')
                       ->get();
 
@@ -1924,8 +1927,8 @@
                                       <tbody>
                                           @forelse ($operatorOzet as $oi => $op)
                                               @php
-                                                  $vr = $op->planlanan_sure > 0
-                                                      ? round(($op->gerceklesen_sure / $op->planlanan_sure) * 100, 1)
+                                                  $vr = $op->gerceklesen_sure > 0
+                                                      ? round(($op->planlanan_sure / $op->gerceklesen_sure) * 100, 1)
                                                       : 0;
                                                   $vrColor = $vr >= 90 ? 'text-success' : ($vr >= 70 ? 'text-warning' : 'text-danger');
                                               @endphp
@@ -1984,6 +1987,7 @@
                                           <tr>
                                               <th>#</th>
                                               <th>Stok Kodu</th>
+                                              <th>Operasyon</th>
                                               <th>İş Emri Sayısı</th>
                                               <th>Üretim Süresi (sa)</th>
                                               <th>Planlanan Süre (sa)</th>
@@ -1995,6 +1999,7 @@
                                               <tr>
                                                   <td class="text-muted small">{{ $ui+1 }}</td>
                                                   <td><strong>{{ $ur->STOK_CODE }}</strong></td>
+                                                  <td><strong>{{ $ur->R_OPERASYON_IMLT01_AD }}</strong></td>
                                                   <td>{{ $ur->is_emri_sayisi }}</td>
                                                   <td>{{ number_format($ur->uretim_sure,2,',','.') }}</td>
                                                   <td>{{ number_format($ur->planlanan_sure,2,',','.') }}</td>
@@ -2007,7 +2012,7 @@
                                       @if ($urunOzet->isNotEmpty())
                                       <tfoot class="table-secondary fw-bold">
                                           <tr>
-                                              <td colspan="2">TOPLAM</td>
+                                              <td colspan="3">TOPLAM</td>
                                               <td>{{ $urunOzet->sum('is_emri_sayisi') }}</td>
                                               <td>{{ number_format($urunOzet->sum('uretim_sure'),2,',','.') }}</td>
                                               <td>{{ number_format($urunOzet->sum('planlanan_sure'),2,',','.') }}</td>

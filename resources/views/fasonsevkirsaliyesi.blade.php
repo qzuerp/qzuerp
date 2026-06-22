@@ -1797,7 +1797,6 @@
             fasonSecimGuncelle();
         });
 
-        // ── Seçilenleri Ana Tabloya Ekle ──────────────────────────────
         $('#secilenleriEkle').on('click', function() {
             var eklenenSayisi = 0;
 
@@ -1809,20 +1808,16 @@
 
                 var tr = $row.clone();
                 tr.find('.seciliFason').prop('checked', false);
-                tr.find('[id]').removeAttr('id');
 
-                // TERMIN_TAR: date → text (flatpickr için)
                 var $terminTd = tr.find('input[name="TERMIN_TAR[]"]').closest('td');
                 var terminDeger = tr.find('input[name="TERMIN_TAR[]"]').val();
                 $terminTd.html('<input type="text" class="form-control form-control-sm" name="TERMIN_TAR[]" value="' + terminDeger + '">');
 
-                // PKTICIADET ve AMBLJ_TNM sütunlarını ekle
                 $terminTd.after(
                     '<td><input type="number" class="form-control form-control-sm" name="PKTICIADET[]" value=""></td>' +
                     '<td><input type="text"   class="form-control form-control-sm" name="AMBLJ_TNM[]"  value=""></td>'
                 );
 
-                // data-* attr'larını temizle (ana tabloda gerekmez)
                 tr.removeAttr('data-kod data-ad data-mps data-depo');
 
                 $('#veriTable tbody').append(tr);
@@ -1831,10 +1826,7 @@
 
             if (eklenenSayisi > 0) {
                 initFlatpickr('input[name="TERMIN_TAR[]"]');
-                // Başarı bildirimi (erpAlert varsa)
-                if (typeof erpAlert === 'function') {
-                    erpAlert('success', eklenenSayisi + ' satır eklendi.');
-                }
+                mesaj(eklenenSayisi + ' satır eklendi.','success');
             }
 
             $('#modal_fason').modal('hide');

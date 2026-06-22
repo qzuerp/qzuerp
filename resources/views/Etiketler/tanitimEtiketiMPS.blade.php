@@ -272,6 +272,10 @@
 
 <script>
     window.addEventListener('load', () => window.print());
+
+    window.onafterprint = function () {
+        window.location.href = document.referrer;
+    };
 </script>
 </body>
 </html>

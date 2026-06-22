@@ -261,10 +261,10 @@ class calisma_bildirimi_controller extends Controller
       $satir_say3 = count($TRNUM2);
     }
 
-    if ($RECTARIH1 == null) {
+    if ($TRNUM == null) {
       $satir_say = 0;
     } else {
-      $satir_say = count($RECTARIH1);
+      $satir_say = count($TRNUM);
     }
 
     if ($TRNUM3 == null) {
@@ -549,8 +549,6 @@ class calisma_bildirimi_controller extends Controller
           'ISLEME' => $ISLEME,
         ]);
 
-        $TRNUM = $request->TRNUM;
-
         if (!isset($TRNUM)) {
           $TRNUM = array();
         }
@@ -612,6 +610,8 @@ class calisma_bildirimi_controller extends Controller
           DB::table($firma . 'sfdc31t')->where('EVRAKNO', $EVRAKNO)->where('TRNUM', $deleteTRNUM)->delete();
         }
 
+        
+
         if (!isset($TRNUM2)) {
           $TRNUM2 = array();
         }
@@ -634,7 +634,7 @@ class calisma_bildirimi_controller extends Controller
         for ($i = 0; $i < $satir_say3; $i++) {
           if (in_array($TRNUM2[$i], $updateTRNUMS2)) {
             DB::table($firma . 'sfdc20t1')
-              ->where('TRNUM', $TRNUM[$i])
+              ->where('TRNUM', $TRNUM2[$i])
               ->update([
                 'EVRAKNO' => $EVRAKNO,
                 'TRNUM' => $TRNUM2[$i],
@@ -783,9 +783,9 @@ class calisma_bildirimi_controller extends Controller
 
         $veri = DB::table($firma . 'sfdc31e')->where('ID', $ID)->first();
         if($dosyaEvrakType == 'calisma_bildirimi')
-        return redirect()->route('calisma_bildirimi', ['ID' => $ID, 'silme' => 'ok']);
+          return redirect()->route('calisma_bildirimi', ['ID' => $ID, 'silme' => 'ok']);
         else
-        return redirect()->route('calisma_bildirimi_oprt', ['ID' => $ID, 'silme' => 'ok']);
+          return redirect()->route('calisma_bildirimi_oprt', ['ID' => $ID, 'silme' => 'ok']);
 
       // break;
     }

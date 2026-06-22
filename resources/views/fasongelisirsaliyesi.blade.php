@@ -67,14 +67,21 @@
     #popupSelectt tbody tr:active {
       transform: scale(0.98);
     }
-
-    #fasonSuz_table thead th {
+    #fasonSuz_table th:nth-child(3), 
+    #fasonSuz_table td:nth-child(3),
+    #fasonSuz_table th:nth-child(4), 
+    #fasonSuz_table td:nth-child(4) {
       position: sticky;
-      top: 0;
+      left: 0;
+      background-color: #f8f9fa;
+      z-index: 2;
+      box-shadow: 2px 0 5px -2px rgba(0,0,0,0.2);
+    }
+    
+  #fasonSuz_table thead th:nth-child(3) {
       z-index: 3;
-      background: #343a40;
-      color: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,.3);
+      background-color: #0d6efd;
+      color: white;
     }
   </style>
   <div class="content-wrapper">
@@ -244,8 +251,7 @@
             <div class="box box-info">
               <div class="box-body">
                 <!-- <h5 class="box-title">Bordered Table</h5> -->
-
-
+                
                 <div class="col-xs-12">
 
                   <div class="box-body table-responsive">
@@ -1014,114 +1020,53 @@
         </div>
       </div>
 
-      {{-- ─── FASON SEÇ MODAL ────────────────────────────────────────────────── --}}
-      <div class="modal fade" id="modal_fasonSuz" tabindex="-1" aria-labelledby="modal_fasonSuz_label" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content border-0 shadow-lg">
-
-            {{-- HEADER --}}
-            <div class="modal-header py-2 px-3 bg-primary text-white">
-              <div class="d-flex align-items-center gap-2">
-                <i class="fa fa-industry"></i>
-                <h5 class="modal-title mb-0 fw-semibold" id="modal_fasonSuz_label">Fason Seç</h5>
-                <span class="badge bg-white text-primary rounded-pill ms-1 d-none" id="fasonSuzSeciliSayac"></span>
-              </div>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+      <div class="modal fade bd-example-modal-lg" id="modal_fasonSuz" tabindex="-1" role="dialog" aria-labelledby="modal_popupSelectModal2">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-search' style='color: blue'></i> Fason Seç</h4>
+              <input type="text" id="fasonArama" class="form-control w-50" placeholder="Hızlıca ara...">
             </div>
-
-            {{-- TOOLBAR --}}
-            <div class="px-3 py-2 bg-light border-bottom d-flex align-items-center gap-3 flex-wrap">
-              <div class="input-group input-group-sm" style="max-width:300px;">
-                <span class="input-group-text bg-white border-end-0">
-                  <i class="fa fa-search text-muted"></i>
-                </span>
-                <input type="text" id="fasonArama" class="form-control border-start-0 ps-1"
-                  placeholder="Stok kodu veya adı ara...">
-                <button class="btn btn-outline-secondary" type="button" id="fasonAramaTepizle" title="Aramayı temizle">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
-              <div class="form-check form-switch mb-0 ms-auto">
-                <input class="form-check-input" type="checkbox" role="switch" id="ekKolonlarGoster">
-                <label class="form-check-label small text-muted" for="ekKolonlarGoster">
-                  Ek Kolonlar
-                </label>
-              </div>
-            </div>
-
-            {{-- BODY --}}
-            <div class="modal-body p-0">
-
-              {{-- Yükleniyor --}}
-              <div id="fasonSuzYukleniyor" class="text-center py-5 d-none">
-                <div class="spinner-border text-primary mb-2" style="width:2.5rem;height:2.5rem;" role="status">
-                  <span class="visually-hidden">Yükleniyor...</span>
-                </div>
-                <div class="text-muted small">Fason kayıtları getiriliyor...</div>
-              </div>
-
-              {{-- Boş --}}
-              <div id="fasonSuzBos" class="text-center py-5 d-none">
-                <i class="fa fa-inbox fa-3x text-muted d-block mb-2"></i>
-                <p class="text-muted mb-0">Filtrelere uygun kayıt bulunamadı.</p>
-              </div>
-
-              {{-- Tablo --}}
-              <div id="fasonSuzTableWrap" style="overflow-x:auto; overflow-y:auto; max-height:55vh;">
-                <table id="fasonSuz_table" class="table table-hover table-sm align-middle mb-0"
-                  style="font-size:0.82em; white-space:nowrap;">
+            <div class="modal-body">
+              <div class="row" style="overflow: auto">
+                <table id="fasonSuz_table" class="table table-hover text-center table-responsive overflow-visible" data-page-length="10" style="font-size: 0.8em;">
                   <thead>
-                    <tr>
-                      <th class="text-center px-2" style="width:36px;">
-                        <input type="checkbox" id="fasonHepsiniSec" class="form-check-input" title="Tümünü seç/kaldır"
-                          style="width:16px;height:16px;cursor:pointer;">
-                      </th>
-                      <th style="width:36px;"></th>{{-- detay btn --}}
-                      <th style="display:none;"></th>{{-- TRNUM (hidden) --}}
-                      <th>Stok Kodu</th>
-                      <th style="min-width:150px;">Stok Adı</th>
-                      <th style="min-width:90px;">İşlem Mik.</th>
-                      <th>Birim</th>
-                      <th style="min-width:90px;">Paket İçi</th>
-                      <th style="min-width:120px;">Ambalaj Tanımı</th>
-                      <th>Lot No</th>
-                      <th>Seri No</th>
-                      <th>Depo</th>
-                      <th>MPS No</th>
-                      <th class="kolon-ekstra" style="display:none;">Lok. 1</th>
-                      <th class="kolon-ekstra" style="display:none;">Lok. 2</th>
-                      <th class="kolon-ekstra" style="display:none;">Lok. 3</th>
-                      <th class="kolon-ekstra" style="display:none;">Lok. 4</th>
-                      <th class="kolon-ekstra" style="display:none;">Text 1</th>
-                      <th class="kolon-ekstra" style="display:none;">Text 2</th>
-                      <th class="kolon-ekstra" style="display:none;">Text 3</th>
-                      <th class="kolon-ekstra" style="display:none;">Text 4</th>
-                      <th class="kolon-ekstra" style="display:none;">Ölçü 1</th>
-                      <th class="kolon-ekstra" style="display:none;">Ölçü 2</th>
-                      <th class="kolon-ekstra" style="display:none;">Ölçü 3</th>
-                      <th class="kolon-ekstra" style="display:none;">Ölçü 4</th>
+                    <tr class="bg-primary text-white">
+                      <th></th>
+                      <th></th>
+                      <th style="min-width:100px;">Stok Kodu</th>
+                      <th style="min-width:100px;">Stok Adı</th>
+                      <th style="min-width:100px;">İşlem Mik.</th>
+                      <th style="min-width:100px;">İşlem Br.</th>
+                      <th style="min-width:100px;">Paket İçi Mik.</th>
+                      <th style="min-width:100px;">Ambalaj Tanımı</th>
+                      <th style="min-width:100px;">Lot No</th>
+                      <th style="min-width:100px;">Seri No</th>
+                      <th style="min-width:100px;">Depo</th>
+                      <th style="min-width:100px;">MPS numarası</th>
+                      <th style="min-width:100px;">Lokasyon 1</th>
+                      <th style="min-width:100px;">Lokasyon 2</th>
+                      <th style="min-width:100px;">Lokasyon 3</th>
+                      <th style="min-width:100px;">Lokasyon 4</th>
+                      <th style="min-width:100px;">Varyant Text 1</th>
+                      <th style="min-width:100px;">Varyant Text 2</th>
+                      <th style="min-width:100px;">Varyant Text 3</th>
+                      <th style="min-width:100px;">Varyant Text 4</th>
+                      <th style="min-width:100px;">Ölçü 1</th>
+                      <th style="min-width:100px;">Ölçü 2</th>
+                      <th style="min-width:100px;">Ölçü 3</th>
+                      <th style="min-width:100px;">Ölçü 4</th>
                     </tr>
                   </thead>
-                  <tbody></tbody>
+                  <tbody>
+                    </tbody>
                 </table>
               </div>
             </div>
-
-            {{-- FOOTER --}}
-            <div class="modal-footer py-2 px-3 bg-light justify-content-between">
-              <small class="text-muted" id="fasonToplamSayac">—</small>
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="fasonSecilimiTemizle">
-                  <i class="fa fa-ban me-1"></i>Seçimi Temizle
-                </button>
-                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                <button type="button" class="btn btn-sm btn-success" id="secilenleriEkle" disabled>
-                  <i class="fa fa-check-circle me-1"></i>Seçilenleri Ekle
-                  <span class="badge bg-white text-success ms-1" id="fasonEkleBadge">0</span>
-                </button>
-              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="margin-top: 15px;">Vazgeç</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="secilenleriEkle" style="margin-top: 15px;">Seçilenleri Ekle</button>
             </div>
-
           </div>
         </div>
       </div>
@@ -1384,247 +1329,57 @@
     <script>
       isSubmit = true;
       function fasonSuz() {
-        var DEPO = $('#AMBCODE_E').val();
-        var URETICI = $('#CARIHESAPCODE_E').val();
-
-        // Sıfırla
-        $('#fasonSuz_table tbody').empty();
-        $('#fasonSuzBos').addClass('d-none');
-        $('#fasonSuzTableWrap').hide();
-        $('#fasonSuzYukleniyor').removeClass('d-none');
-        $('#fasonHepsiniSec').prop('checked', false).prop('indeterminate', false);
-        $('#fasonArama').val('');
-        _fasonSayacGuncelle();
-
+        let DEPO = $('#AMBCODE_E').val();
+        let URETICI = $('#CARIHESAPCODE_E').val();
+        
         $.ajax({
           url: '/fason/getir',
           type: 'post',
           data: { DEPO: DEPO, URETICI: URETICI },
-          success: function (res) {
-            $('#fasonSuzYukleniyor').addClass('d-none');
+          success: function(res) {
+            var htmlCode = "";
+            res.forEach(element => {
+              htmlCode += "<tr>";
+              htmlCode += "<td><input type='checkbox' class='seciliFason' style='width:20px;height:20px' name='hepsinisec'></td>";
+              htmlCode += detayBtnForJS(element.KOD); // Bu fonksiyonun düzgün çalıştığını varsayıyorum
+              htmlCode += "<td style='display: none;'><input type='hidden' name='TRNUM[]' value='"+element.TRNUM+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.KOD+"' disabled><input type='hidden' name='KOD[]' value='"+element.KOD+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.STOK_ADI+"' disabled><input type='hidden' name='STOK_ADI[]' value='"+element.STOK_ADI+"'></td>";
+              htmlCode += "<td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+element.SF_MIKTAR+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+element.SF_SF_UNIT+"' disabled><input type='hidden' name='SF_SF_UNIT[]' value='"+element.SF_SF_UNIT+"'></td>";
+              htmlCode += "<td><input type='number' class='form-control' name='PKTICIADET[]' value='"+(element.PKTICIADET ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' name='AMBLJ_TNM[]' value='"+(element.AMBLJ_TNM ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.LOTNUMBER ?? '')+"' disabled><input type='hidden' name='LOTNUMBER[]' value='"+(element.LOTNUMBER ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.SERINO ?? '')+"' disabled><input type='hidden' name='SERINO[]' value='"+(element.SERINO ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.AMBCODE ?? '')+"' disabled><input type='hidden' name='AMBCODE[]' value='"+(element.AMBCODE ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.MPSNO ?? '')+"' disabled><input type='hidden' name='JOBNO[]' value='"+(element.MPSNO ?? '')+"'></td>";
 
-            if (!res || res.length === 0) {
-              $('#fasonSuzBos').removeClass('d-none');
-              $('#fasonToplamSayac').text('0 kayıt bulundu');
-              return;
-            }
+              // LOCATION
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION1 ?? '') + "' disabled><input type='hidden' name='LOCATION1[]' value='" + (element.LOCATION1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION2 ?? '') + "' disabled><input type='hidden' name='LOCATION2[]' value='" + (element.LOCATION2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION3 ?? '') + "' disabled><input type='hidden' name='LOCATION3[]' value='" + (element.LOCATION3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION4 ?? '') + "' disabled><input type='hidden' name='LOCATION4[]' value='" + (element.LOCATION4 ?? '') + "'></td>";
 
-            // Ek kolonların mevcut durumunu al
-            var ekGoster = $('#ekKolonlarGoster').is(':checked');
-            var ekStyle = ekGoster ? '' : 'style="display:none;"';
+              // TEXT
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT1 ?? '') + "' disabled><input type='hidden' name='TEXT1[]' value='" + (element.TEXT1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT2 ?? '') + "' disabled><input type='hidden' name='TEXT2[]' value='" + (element.TEXT2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT3 ?? '') + "' disabled><input type='hidden' name='TEXT3[]' value='" + (element.TEXT3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='" + (element.TEXT4 ?? '') + "' disabled><input type='hidden' name='TEXT4[]' value='" + (element.TEXT4 ?? '') + "'></td>";
 
-            // Yardımcılar
-            var v = function (x) { return (x !== null && x !== undefined) ? x : ''; };
-            var dash = function (x) {
-              return (x !== null && x !== undefined && x !== '')
-                ? x : '<span class="text-muted">—</span>';
-            };
-            var badge = function (x, cls) {
-              return x ? '<span class="badge ' + cls + '">' + x + '</span>'
-                : '<span class="text-muted">—</span>';
-            };
+              // NUM
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM1 ?? '') + "' disabled><input type='hidden' name='NUM1[]' value='" + (element.NUM1 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM2 ?? '') + "' disabled><input type='hidden' name='NUM2[]' value='" + (element.NUM2 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM3 ?? '') + "' disabled><input type='hidden' name='NUM3[]' value='" + (element.NUM3 ?? '') + "'></td>";
+              htmlCode += "<td><input type='number' class='form-control' value='" + (element.NUM4 ?? '') + "' disabled><input type='hidden' name='NUM4[]' value='" + (element.NUM4 ?? '') + "'></td>";
 
-            var html = '';
-            res.forEach(function (el) {
-              html += '<tr>';
-              // [1] Checkbox
-              html += '<td class="text-center px-2">'
-                + '<input type="checkbox" class="form-check-input seciliFason"'
-                + ' style="width:16px;height:16px;cursor:pointer;">'
-                + '</td>';
-              // [2] Detay butonu
-              html += detayBtnForJS(el.KOD);
-              // [3] TRNUM (gizli)
-              html += '<td style="display:none;">'
-                + '<input type="hidden" name="TRNUM[]" value="' + v(el.TRNUM) + '">'
-                + '</td>';
-              // [4] KOD
-              html += '<td class="text-center">'
-                + '<span class="fw-semibold text-primary">' + v(el.KOD) + '</span>'
-                + '<input type="hidden" name="KOD[]" value="' + v(el.KOD) + '">'
-                + '</td>';
-              // [5] STOK_ADI
-              html += '<td class="text-start">' + v(el.STOK_ADI)
-                + '<input type="hidden" name="STOK_ADI[]" value="' + v(el.STOK_ADI) + '">'
-                + '</td>';
-              // [6] SF_MIKTAR (düzenlenebilir)
-              html += '<td>'
-                + '<input type="number" class="form-control form-control-sm text-end"'
-                + ' name="SF_MIKTAR[]" value="' + v(el.SF_MIKTAR) + '" style="width:80px;">'
-                + '</td>';
-              // [7] Birim
-              html += '<td class="text-center">'
-                + badge(v(el.SF_SF_UNIT), 'bg-secondary')
-                + '<input type="hidden" name="SF_SF_UNIT[]" value="' + v(el.SF_SF_UNIT) + '">'
-                + '</td>';
-              // [8] PKTICIADET (düzenlenebilir)
-              html += '<td>'
-                + '<input type="number" class="form-control form-control-sm text-end"'
-                + ' name="PKTICIADET[]" value="' + v(el.PKTICIADET) + '" style="width:80px;">'
-                + '</td>';
-              // [9] AMBLJ_TNM (düzenlenebilir)
-              html += '<td>'
-                + '<input type="text" class="form-control form-control-sm"'
-                + ' name="AMBLJ_TNM[]" value="' + v(el.AMBLJ_TNM) + '" style="min-width:110px;">'
-                + '</td>';
-              // [10] LOT
-              html += '<td class="text-center">'
-                + badge(el.LOTNUMBER, 'bg-light text-dark border')
-                + '<input type="hidden" name="LOTNUMBER[]" value="' + v(el.LOTNUMBER) + '">'
-                + '</td>';
-              // [11] SERİ
-              html += '<td class="text-center">'
-                + badge(el.SERINO, 'bg-light text-dark border')
-                + '<input type="hidden" name="SERINO[]" value="' + v(el.SERINO) + '">'
-                + '</td>';
-              // [12] DEPO
-              html += '<td class="text-center">'
-                + badge(v(el.AMBCODE) || null, 'bg-info text-dark')
-                + '<input type="hidden" name="AMBCODE[]" value="' + v(el.AMBCODE) + '">'
-                + '</td>';
-              // [13] MPS
-              html += '<td class="text-center">' + dash(el.MPSNO)
-                + '<input type="hidden" name="JOBNO[]" value="' + v(el.MPSNO) + '">'
-                + '</td>';
-              // [14-17] LOCATION
-              ['LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'].forEach(function (f, i) {
-                html += '<td class="td-ekstra text-center" ' + ekStyle + '>'
-                  + dash(el[f])
-                  + '<input type="hidden" name="' + f + '[]" value="' + v(el[f]) + '">'
-                  + '</td>';
-              });
-              // [18-21] TEXT
-              ['TEXT1', 'TEXT2', 'TEXT3', 'TEXT4'].forEach(function (f) {
-                html += '<td class="td-ekstra text-center" ' + ekStyle + '>'
-                  + dash(el[f])
-                  + '<input type="hidden" name="' + f + '[]" value="' + v(el[f]) + '">'
-                  + '</td>';
-              });
-              // [22-25] NUM
-              ['NUM1', 'NUM2', 'NUM3', 'NUM4'].forEach(function (f) {
-                html += '<td class="td-ekstra text-end" ' + ekStyle + '>'
-                  + dash(el[f])
-                  + '<input type="hidden" name="' + f + '[]" value="' + v(el[f]) + '">'
-                  + '</td>';
-              });
-              html += '</tr>';
+              htmlCode += "</tr>";
             });
-
-            $('#fasonSuz_table tbody').html(html);
-            $('#fasonSuzTableWrap').show();
-            $('#fasonToplamSayac').text('Toplam ' + res.length + ' kayıt');
-            _fasonSayacGuncelle();
-          },
-          error: function () {
-            $('#fasonSuzYukleniyor').addClass('d-none');
-            $('#fasonSuzTableWrap').show();
-            $('#fasonSuz_table tbody').html(
-              '<tr><td colspan="25" class="text-center text-danger py-4">'
-              + '<i class="fa fa-exclamation-triangle me-2"></i>'
-              + 'Veriler yüklenirken bir hata oluştu.'
-              + '</td></tr>'
-            );
+            
+            // KRİTİK HAMLE: Önce tabloyu temizle, sonra bas! Yoksa her istekte tablo şişer.
+            $('#fasonSuz_table tbody').empty().append(htmlCode);
           }
         });
       }
-
-      // ─── Fason Seç — Event Handlers ──────────────────────────────────────────────
-
-      function _fasonSayacGuncelle() {
-        var count = $('#fasonSuz_table tbody .seciliFason:checked').length;
-        var total = $('#fasonSuz_table tbody tr:visible').length;
-
-        $('#secilenleriEkle').prop('disabled', count === 0);
-        $('#fasonEkleBadge').text(count);
-
-        if (count > 0) {
-          $('#fasonSuzSeciliSayac').text(count + ' seçili').removeClass('d-none');
-          $('#fasonToplamSayac').html(
-            total + ' kayıt &nbsp;·&nbsp; '
-            + '<span class="text-success fw-semibold">' + count + ' seçili</span>'
-          );
-        } else {
-          $('#fasonSuzSeciliSayac').addClass('d-none');
-          if (total > 0) $('#fasonToplamSayac').text('Toplam ' + total + ' kayıt');
-        }
-      }
-
-      // Satır seçimi → yeşil highlight + sayaç
-      $(document).on('change', '#fasonSuz_table .seciliFason', function () {
-        $(this).closest('tr').toggleClass('table-success', this.checked);
-        _fasonSayacGuncelle();
-
-        var total = $('#fasonSuz_table tbody tr:visible').length;
-        var secili = $('#fasonSuz_table tbody tr:visible .seciliFason:checked').length;
-        $('#fasonHepsiniSec')
-          .prop('indeterminate', secili > 0 && secili < total)
-          .prop('checked', secili > 0 && secili === total);
-      });
-
-      // Tümünü seç / kaldır
-      $('#fasonHepsiniSec').on('change', function () {
-        var c = this.checked;
-        $('#fasonSuz_table tbody tr:visible .seciliFason')
-          .prop('checked', c).closest('tr').toggleClass('table-success', c);
-        _fasonSayacGuncelle();
-      });
-
-      // Seçimi temizle
-      $('#fasonSecilimiTemizle').on('click', function () {
-        $('#fasonSuz_table tbody .seciliFason').prop('checked', false)
-          .closest('tr').removeClass('table-success');
-        $('#fasonHepsiniSec').prop('checked', false).prop('indeterminate', false);
-        _fasonSayacGuncelle();
-      });
-
-      // Canlı arama
-      $('#fasonArama').on('input', function () {
-        var q = ($(this).val() || '').toLowerCase().trim();
-        var $rows = $('#fasonSuz_table tbody tr'), visible = 0;
-
-        $rows.each(function () {
-          var kod = ($('input[name="KOD[]"]', this).val() || '').toLowerCase();
-          var ad = ($('input[name="STOK_ADI[]"]', this).val() || '').toLowerCase();
-          var hit = !q || kod.indexOf(q) !== -1 || ad.indexOf(q) !== -1;
-          $(this).toggle(hit);
-          if (hit) visible++;
-        });
-
-        _fasonSayacGuncelle();
-
-        var secili = $('#fasonSuz_table tbody tr:visible .seciliFason:checked').length;
-        $('#fasonHepsiniSec')
-          .prop('indeterminate', secili > 0 && secili < visible)
-          .prop('checked', visible > 0 && secili === visible);
-      });
-
-      // Aramayı temizle
-      $('#fasonAramaTepizle').on('click', function () {
-        $('#fasonArama').val('').trigger('input');
-      });
-
-      // Ek kolonlar toggle
-      $('#ekKolonlarGoster').on('change', function () {
-        var show = this.checked;
-        $('#fasonSuz_table .kolon-ekstra, #fasonSuz_table .td-ekstra').toggle(show);
-      });
-
-      // Seçilenleri Ekle
-      $('#secilenleriEkle').on('click', function () {
-        var $secili = $('#fasonSuz_table tbody .seciliFason:checked').closest('tr');
-        if (!$secili.length) return;
-
-        $secili.removeClass('table-success').find('.seciliFason').prop('checked', false);
-        $('#veriTable tbody').append($secili);
-
-        bootstrap.Modal.getInstance(document.getElementById('modal_fasonSuz')).hide();
-      });
-
-      // Modal açılışında "Tümünü seç" sıfırla
-      document.getElementById('modal_fasonSuz')
-        .addEventListener('show.bs.modal', function () {
-          $('#fasonHepsiniSec').prop('checked', false).prop('indeterminate', false);
-        });
 
       function addRowHandlers2() {
         var table = document.getElementById("popupSelect2");
@@ -2092,9 +1847,44 @@
       $(document).ready(function () {
         fasonSuz();
 
+        let aramaTimeout;
+        $('#fasonArama').on('input', function () {
+          clearTimeout(aramaTimeout);
+          const deger = $(this).val().toLocaleLowerCase('tr-TR').trim();
+
+          aramaTimeout = setTimeout(function () {
+            const $satirlar = $('#fasonSuz_table tbody tr');
+            
+            $satirlar.parent().hide(); // DOM'u yormamak için gizle
+            
+            $satirlar.each(function () {
+              const $satir = $(this);
+              
+              // BAM! Satırdaki tüm görünür inputların değerlerini toplayıp arıyoruz
+              let satirMetni = "";
+              $satir.find('input:not([type="hidden"])').each(function() {
+                satirMetni += $(this).val() + " ";
+              });
+              
+              satirMetni = satirMetni.toLocaleLowerCase('tr-TR');
+              $satir.toggle(satirMetni.includes(deger));
+            });
+            
+            $satirlar.parent().show(); // Geri getir
+          }, 250);
+        });
+
         $('#secilenleriEkle').on('click', function () {
-          var seciliTr = $('#fasonSuz_table tbody .seciliFason:checked').parents('tr');
-          $("#veriTable tbody").append(seciliTr);
+          const $seciliSatirlar = $('#fasonSuz_table tbody .seciliFason:checked').closest('tr');
+          
+          if ($seciliSatirlar.length === 0) {
+            alert('Eren usta boş yapmayalım, en az bir tane fason seç!');
+            return;
+          }
+
+          $seciliSatirlar.find('.seciliFason').prop('checked', false);
+          
+          $("#veriTable tbody").append($seciliSatirlar);
         });
 
         $('#popupSelectt').DataTable({
@@ -2228,6 +2018,12 @@
 
         $('#suzTable > tbody').empty();
 
+      }
+
+      // --- Seçilen sayacı (mevcut _fasonSayacGuncelle'i çağırıyorsan, ek olarak badge'i de güncelle) ---
+      function _fasonSayacGuncelle() {
+        var secili = $('#fasonSuz_table tbody .seciliFason:checked').length;
+        $('#fasonSecilenSayac').text(secili + ' seçili');
       }
 
       function cariKoduGirildi(cariKodu) {

@@ -177,6 +177,13 @@
         $DOSYALAR = DB::table($database.'LIB00')->count();
         $DOSYALAR_END = DB::table($database.'LIB00')->orderBy('ID','desc')->first();
 
+        // Malzeme sertifikası
+        try{
+            $sertifikalar = DB::table($database.'stok29t')->whereNull('TEXT1')->count();
+        } catch (\Exception $e) {
+            
+        }
+
         // ── Tedarikçi Performans ─────────────────────────────────────
         try {
             $TEDARKCI_PERF = DB::table($database . 'tedarikci00')
@@ -264,8 +271,17 @@
                 'value'   => $DOSYALAR,
                 'sub'     => $DOSYALAR_END?->created_at ? 'En son ' . Carbon::parse($DOSYALAR_END->created_at)->locale('tr')->translatedFormat('d F Y') . ' tarihinde yüklendi' : 'Henüz yüklenen bir dosya yok',
                 'icon'    => 'fa-book-open',
-                'color'   => '#3bde77',
+                'color'   => '#3bde18',
                 'link'     => "library",
+                'progress'=> null,
+            ],
+            [
+                'title'   => 'Sertifikası Olmayan Malzemeler',
+                'value'   => $sertifikalar,
+                'sub'     => '',
+                'icon'    => 'fa-certificate',
+                'color'   => '#3bde77',
+                'link'     => "satinalmairsaliyesi?SUZ=SUZ&firma={$database}#liste",
                 'progress'=> null,
             ]
         ];

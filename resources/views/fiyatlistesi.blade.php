@@ -393,7 +393,7 @@ if (isset($kart_veri)) {
                           <td>{{ $veri->CARIHESAPCODE }} - {{ $veri->AD }}</td>
                           <td>{{ $veri->KOD }}</td>
                           <td>{{ $veri->STOK_ADI }}</td>
-                          <td>{{ $veri->PRICE }}</td>
+                          <td>{{ number_format($veri->PRICE, 4, ',', '.') }}</td>
                           <td>{{ $veri->PRICE_UNIT }}</td>
                           <td>{{ $veri->GECERLILIK_TAR }}</td>
                           <td>{{ $veri->NOT1 }}</td>
