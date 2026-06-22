@@ -20,221 +20,204 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       height: 100vh;
       overflow: hidden;
-      background: #0a0e27;
+      background: #f0f2f8;
+      display: flex;
+      align-items: stretch;
     }
 
     .login-container {
       display: flex;
-      height: 100vh;
       width: 100%;
-    }
-
-    /* Sol Taraf - Animasyonlu Görsel */
-    .left-side {
-      flex: 1;
-      position: relative;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      height: 100vh;
+      border-radius: 0;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .animated-background {
+    /* ── Sol Panel ── */
+    .left-side {
+      flex: 0.9;
+      position: relative;
+      overflow: hidden;
+      background: #2d2450;
+    }
+
+    .video-wrap {
       position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .background-video {
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.6s cubic-bezier(.4, 0, .2, 1);
     }
 
-    .circle {
+    .background-video.ready {
+      opacity: 1;
+    }
+
+    .video-overlay {
       position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      animation: float 20s infinite ease-in-out;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        160deg,
+        rgba(30, 20, 70, 0.55) 0%,
+        rgba(80, 60, 180, 0.28) 60%,
+        rgba(0, 0, 0, 0.38) 100%
+      );
     }
 
-    .circle:nth-child(1) {
-      width: 300px;
-      height: 300px;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .circle:nth-child(2) {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      left: 70%;
-      animation-delay: 2s;
-    }
-
-    .circle:nth-child(3) {
-      width: 150px;
-      height: 150px;
-      top: 30%;
-      left: 60%;
-      animation-delay: 4s;
-    }
-
-    .circle:nth-child(4) {
-      width: 100px;
-      height: 100px;
-      top: 70%;
-      left: 20%;
-      animation-delay: 6s;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.3;
-      }
-      50% {
-        transform: translateY(-50px) rotate(180deg);
-        opacity: 0.6;
-      }
-    }
-
-    .content-overlay {
+    .left-content {
       position: relative;
-      z-index: 10;
-      text-align: center;
-      color: white;
-      padding: 40px;
-      max-width: 500px;
+      z-index: 3;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 36px 44px;
     }
 
-    .logo-container {
-      margin-bottom: 40px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: auto;
+      padding-top: 36px;
     }
 
-    .logo-icon {
-      width: 120px;
-      height: 120px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 30px;
+    .brand-dot {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 30px;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      animation: pulse 3s infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-      }
-      50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-      }
-    }
-
-    .logo-icon h1 {
-      font-size: 70px;
-      margin-bottom: 10px;
-      color: white;
-    }
-
-    .welcome-text h1 {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .welcome-text p {
-      font-size: 18px;
-      line-height: 1.6;
-      opacity: 0.95;
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .features {
-      display: flex;
-      gap: 30px;
-      margin-top: 40px;
-      justify-content: center;
-    }
-
-    .feature-item {
-      text-align: center;
-    }
-
-    .feature-icon {
-      width: 60px;
-      height: 60px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      backdrop-filter: blur(10px);
-    }
-
-    .feature-icon i {
-      font-size: 24px;
-      color: white;
-    }
-
-    .feature-item h3 {
+    .brand-dot i {
       font-size: 16px;
-      margin-bottom: 5px;
+      color: #fff;
     }
 
-    .feature-item p {
+    .brand-name {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.04em;
+      opacity: 0.92;
+    }
+
+    .left-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      color: rgba(255, 255, 255, 0.82);
       font-size: 12px;
-      opacity: 0.8;
+      padding: 5px 14px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(6px);
     }
 
-    /* Sağ Taraf - Login Form */
+    .left-content h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .left-content > p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .pills {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 30px;
+      padding: 6px 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .pill i {
+      font-size: 12px;
+      color: #a0c4ff;
+    }
+
+    .pill span {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.80);
+    }
+
+    /* ── Sağ Panel ── */
     .right-side {
       flex: 1;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px;
-      position: relative;
+      padding: 44px 40px;
     }
 
     .form-container {
       width: 100%;
-      max-width: 450px;
+      max-width: 500px;
     }
 
-    .form-header {
-      margin-bottom: 40px;
-    }
-
-    .form-header h2 {
-      font-size: 32px;
-      color: #1a1a1a;
+    .form-hello {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #9b93c4;
+      text-transform: uppercase;
       margin-bottom: 10px;
-      font-weight: 700;
     }
 
-    .form-header p {
-      color: #666;
-      font-size: 16px;
+    .form-container h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1e1b3a;
+      margin-bottom: 6px;
+    }
+
+    .form-sub {
+      font-size: 14px;
+      color: #9492a6;
+      margin-bottom: 36px;
     }
 
     .form-group {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 8px;
-      color: #333;
-      font-size: 14px;
+      font-size: 12.5px;
       font-weight: 600;
+      color: #5f5b7a;
+      margin-bottom: 7px;
+      letter-spacing: 0.02em;
     }
 
     .input-wrapper {
@@ -243,106 +226,126 @@
 
     .input-wrapper input {
       width: 100%;
-      padding: 15px 20px 15px 50px;
-      border: 2px solid #e0e0e0;
+      padding: 13px 44px 13px 44px;
+      border: 1.5px solid #e8e5f4;
       border-radius: 12px;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      background: #f8f9fa;
+      font-size: 14.5px;
+      color: #1e1b3a;
+      background: #fafafe;
+      transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #bbb8d0;
     }
 
     .input-wrapper input:focus {
-      outline: none;
-      border-color: #667eea;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      border-color: #7c6fce;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(124, 111, 206, 0.10);
     }
 
     .input-icon {
       position: absolute;
-      left: 18px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: #999;
-      font-size: 18px;
+      color: #bbb8d0;
+      font-size: 16px;
       pointer-events: none;
+      transition: color 0.2s;
     }
 
     .input-wrapper input:focus ~ .input-icon {
-      color: #667eea;
+      color: #7c6fce;
     }
 
     .toggle-password {
       position: absolute;
-      right: 18px;
+      right: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: #999;
+      color: #bbb8d0;
       cursor: pointer;
-      font-size: 18px;
-      transition: color 0.3s;
+      font-size: 16px;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+      padding: 2px;
+      display: flex;
+      align-items: center;
     }
 
     .toggle-password:hover {
-      color: #667eea;
+      color: #7c6fce;
+    }
+
+    .error-message {
+      font-size: 12.5px;
+      color: #c0392b;
+      margin-top: 6px;
     }
 
     .form-options {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 26px;
+      margin-top: -4px;
     }
 
     .remember-me {
       display: flex;
       align-items: center;
+      gap: 8px;
       cursor: pointer;
     }
 
     .remember-me input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
+      width: 15px;
+      height: 15px;
+      accent-color: #7c6fce;
       cursor: pointer;
-      accent-color: #667eea;
     }
 
     .remember-me label {
-      font-size: 14px;
-      color: #666;
+      font-size: 13px;
+      color: #7e7a99;
       cursor: pointer;
     }
 
     .forgot-password {
-      color: #667eea;
-      text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
+      color: #7c6fce;
       font-weight: 600;
-      transition: color 0.3s;
+      text-decoration: none;
+      transition: color 0.2s;
     }
 
     .forgot-password:hover {
-      color: #764ba2;
+      color: #5044a0;
     }
 
     .login-button {
       width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      padding: 14px;
+      background: #7c6fce;
+      color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(124, 111, 206, 0.22);
+      letter-spacing: 0.02em;
     }
 
     .login-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+      background: #6a5cbd;
+      box-shadow: 0 6px 24px rgba(124, 111, 206, 0.32);
+      transform: translateY(-1px);
     }
 
     .login-button:active {
@@ -350,102 +353,117 @@
     }
 
     .login-button:disabled {
-      background: linear-gradient(135deg, #ccc 0%, #999 100%);
+      background: #b0aad8;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
     }
 
-    .error-message {
-      color: #e74c3c;
-      font-size: 13px;
-      margin-top: 8px;
+    .form-bottom {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12.5px;
+      color: #b0adc4;
     }
 
-    @media (max-width: 968px) {
+    .form-bottom a {
+      color: #7c6fce;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
       .login-container {
         flex-direction: column;
       }
 
       .left-side {
-        min-height: 300px;
+        flex: none;
+        min-height: 220px;
       }
 
-      .welcome-text h1 {
-        font-size: 36px;
+      .left-content h2 {
+        font-size: 22px;
       }
 
-      .features {
-        flex-direction: column;
-        gap: 20px;
+      .pills {
+        display: none;
+      }
+
+      .right-side {
+        padding: 32px 24px;
       }
     }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <!-- Sol Taraf -->
-    <div class="left-side">
-      <div class="animated-background">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-      </div>
-      
-      <div class="content-overlay">
-        <div class="logo-container">
-          <div class="logo-icon">
-            <h1>Q</h1>
-          </div>
-        </div>
-        
-        <div class="welcome-text">
-          <h1>QZU ERP</h1>
-          <p>İşletmenizi dijital dünyaya taşıyın. Tüm operasyonlarınızı tek platformdan yönetin.</p>
-        </div>
 
-        <div class="features">
-          <div class="feature-item">
-            <div class="feature-icon">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3>Güvenli</h3>
-            <p>256-bit şifreleme</p>
+    {{-- Sol Panel --}}
+    <div class="left-side">
+      <div class="video-wrap">
+        <video
+          id="bgVideo"
+          src="{{ asset('/qzuerp-sources/video/login.mp4') }}"
+          autoplay
+          loop
+          muted
+          playsinline
+          class="background-video"
+        ></video>
+      </div>
+      <div class="video-overlay"></div>
+      <div class="left-content">
+        <div class="brand">
+          <div class="brand-dot">
+            <i class="fas fa-layer-group"></i>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">
-              <i class="fas fa-bolt"></i>
-            </div>
-            <h3>Hızlı</h3>
-            <p>Gerçek zamanlı veri</p>
+          <span class="brand-name">QZU ERP</span>
+        </div>
+        <h2>Güçlü yönetim, tek platformda</h2>
+        <p>İş süreçlerinizi anlık takip edin, raporlayın ve optimize edin.</p>
+        <div class="pills">
+          <div class="pill">
+            <i class="fas fa-shield-halved"></i>
+            <span>Güvenli bağlantı</span>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <h3>Ekip Çalışması</h3>
-            <p>Kolay işbirliği</p>
+          <div class="pill">
+            <i class="fas fa-clock"></i>
+            <span>7/24 erişim</span>
+          </div>
+          <div class="pill">
+            <i class="fas fa-th-large"></i>
+            <span>Modüler yapı</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Sağ Taraf -->
+    {{-- Sağ Panel --}}
     <div class="right-side">
       <div class="form-container">
-        <div class="form-header">
-          <h2>Hoş Geldiniz</h2>
-          <p>Hesabınıza giriş yapın ve işinize devam edin</p>
-        </div>
+        <div class="form-hello">Hoş geldiniz</div>
+        <h1>Giriş Yapın</h1>
+        <p class="form-sub">Hesabınıza erişmek için bilgilerinizi girin</p>
 
         <form method="POST" action="{{ route('login') }}" id="loginForm">
           @csrf
-          
+
+          {{-- E-posta --}}
           <div class="form-group">
-            <label for="email">E-posta Adresi</label>
+            <label for="email">E-posta adresi</label>
             <div class="input-wrapper">
-              <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="ornek@karakuzu.info">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ old('email') }}"
+                required
+                autofocus
+                autocomplete="email"
+                placeholder="ornek@karakuzu.info"
+              >
               <i class="fas fa-envelope input-icon"></i>
             </div>
             @error('email')
@@ -453,53 +471,78 @@
             @enderror
           </div>
 
+          {{-- Şifre --}}
           <div class="form-group">
             <label for="password">Şifre</label>
             <div class="input-wrapper">
-              <input type="password" id="password" name="password" required placeholder="••••••••">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                placeholder="••••••••"
+              >
               <i class="fas fa-lock input-icon"></i>
-              <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+              <button type="button" class="toggle-password" id="togglePassword" aria-label="Şifreyi göster/gizle">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
             </div>
             @error('password')
               <div class="error-message">{{ $message }}</div>
             @enderror
           </div>
 
+          {{-- Seçenekler --}}
           <div class="form-options">
             <div class="remember-me">
               <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-              <label for="remember">Beni Hatırla</label>
+              <label for="remember">Beni hatırla</label>
             </div>
-            <a href="{{ route('password.request') }}" class="forgot-password">Şifremi Unuttum?</a>
           </div>
 
           <button type="submit" class="login-button" id="loginBtn">
             Giriş Yap
           </button>
         </form>
+
+        <div class="form-bottom">
+          Sorun mu yaşıyorsunuz? <a href="mailto:destek@karakuzu.info">Destek alın</a>
+        </div>
       </div>
     </div>
+
   </div>
 
   <script>
-    // Toggle password visibility
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
+    // Video: yüklenince yumuşakça belir
+    const bgVideo = document.getElementById('bgVideo');
+    bgVideo.addEventListener('canplaythrough', function () {
+      setTimeout(function () {
+        bgVideo.classList.add('ready');
+      }, 200);
+    }, { once: true });
 
-    togglePassword.addEventListener('click', function() {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-      this.classList.toggle('fa-eye');
-      this.classList.toggle('fa-eye-slash');
+    // Şifre göster/gizle
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput  = document.getElementById('password');
+    const eyeIcon        = document.getElementById('eyeIcon');
+    let passwordVisible  = false;
+
+    togglePassword.addEventListener('click', function () {
+      passwordVisible = !passwordVisible;
+      passwordInput.setAttribute('type', passwordVisible ? 'text' : 'password');
+      eyeIcon.classList.toggle('fa-eye',      !passwordVisible);
+      eyeIcon.classList.toggle('fa-eye-slash', passwordVisible);
     });
 
-    // Form submit handling
+    // Form gönderiminde butonu devre dışı bırak
     const loginForm = document.getElementById('loginForm');
-    const loginBtn = document.getElementById('loginBtn');
+    const loginBtn  = document.getElementById('loginBtn');
 
-    loginForm.addEventListener('submit', function() {
-      loginBtn.disabled = true;
-      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Giriş Yapılıyor...';
+    loginForm.addEventListener('submit', function () {
+      loginBtn.disabled    = true;
+      loginBtn.innerHTML   = '<i class="fas fa-spinner fa-spin"></i> Giriş yapılıyor…';
     });
   </script>
 </body>

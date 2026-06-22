@@ -603,8 +603,8 @@
 													<div class="row" >
 
 														<div class="col my-2">
-                    													<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
-       														</div>
+															<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
+														</div>
 														<br><br>
 
 														<table class="table table-bordered text-center" style="width: 100%;font-size: 9pt;" id="veriTable2" >
@@ -1325,12 +1325,12 @@
 								{{-- ADIM 1: TEMEL --}}
 								<div class="satir-pane active" id="satirPane1">
 									<div class="row g-3">
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label class="form-label fw-bold text-danger">Sıra No <span class="text-danger">*</span></label>
 											<input type="number" class="form-control" min="0"
 												name="SIRANO_FILL" id="SIRANO_FILL" placeholder="0">
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label class="form-label fw-bold">Giriş Tipi <span class="text-danger">*</span></label>
 											<select data-modal="satirEkleModal" class="form-control select2"
 												name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW"
@@ -1342,13 +1342,13 @@
 											</select>
 											<input type="hidden" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL">
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label class="form-label fw-bold">Yarı Mamul PS</label>
 											<input type="number" class="form-control"
 												name="PK_NO_FILL" id="PK_NO_FILL" value="1">
 										</div>
 
-										<div class="col-md-6">
+										<div class="col-md-3">
 											<label class="form-label fw-bold">Yarı Mamul Miktarı</label>
 											<input type="number" class="form-control"
 												name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="1">
@@ -1359,7 +1359,7 @@
 											<p class="text-muted small mb-2 fw-bold">Yarı Mamul (FASON)</p>
 										</div>
 			
-										<div class="col-md-6">
+										<div class="col-md-12">
 											<label class="form-label fw-bold">Yarı Mamul Kodu</label>
 											<select data-modal="satirEkleModal" class="form-control select2"
 												onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
@@ -1384,10 +1384,6 @@
 												<select data-modal="satirEkleModal" class="form-control select2"
 													onchange="stokAdiGetir3(this.value)"
 													name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW"></select>
-												<button class="btn btn-outline-primary" type="button"
-													data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal">
-													<i class="fa-solid fa-magnifying-glass"></i>
-												</button>
 											</div>
 											<input type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL">
 										</div>
@@ -1434,7 +1430,7 @@
 											<hr class="mt-1 mb-2">
 										</div>
 										<div class="col-md-4">
-											<label class="form-label fw-bold">Kaynak 0</label>
+											<label class="form-label fw-bold">HM Miktar/İş Süresi</label>
 											<div class="input-group">
 												<input type="number" class="form-control"
 													name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
@@ -1445,12 +1441,12 @@
 											</div>
 										</div>
 										<div class="col-md-4">
-											<label class="form-label fw-bold">Kaynak 1</label>
+											<label class="form-label fw-bold">Ayar Süresi</label>
 											<input type="number" class="form-control"
 												name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
 										</div>
 										<div class="col-md-4">
-											<label class="form-label fw-bold">Kaynak 2</label>
+											<label class="form-label fw-bold">Yükleme Süresi</label>
 											<input type="number" class="form-control"
 												name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
 										</div>
@@ -1537,7 +1533,7 @@
 							</div>
 							<div class="d-flex gap-2">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-								<button type="button" class="btn btn-secondary" id="satirBtnPrev" style="display:none">
+								<button type="button" class="btn btn-secondary" id="satirBtnPrev" >
 									<i class="fa-solid fa-arrow-left"></i> Geri
 								</button>
 								<button type="button" class="btn btn-primary" id="satirBtnNext">
@@ -1891,17 +1887,13 @@
 		
 				$stepText.text('Adım ' + currentStep + ' / ' + totalSteps);
 		
-				currentStep > 1 ? $btnPrev.show() : $btnPrev.hide();
 		
 				if (currentStep === totalSteps) {
-					$btnNext.hide();
 					$shortcutHint.text('Ctrl+Enter → kaydet');
 				} else {
-					$btnNext.show();
 					$shortcutHint.text('Enter → ileri');
 				}
 		
-				// İlk input'a focus (Buradaki jQuery seçici hayat kurtarır)
 				var $firstInput = $panes[currentStep - 1].find('input:not([disabled]):not([readonly]), select:not([disabled])').first();
 				if ($firstInput.length) {
 					setTimeout(function () { $firstInput.focus(); }, 60);
@@ -1962,6 +1954,8 @@
 						satirEkleInputs[elementID] = $(this).val();
 					}
 				});
+
+				console.log(satirEkleInputs);
 
 				var htmlCode = " ";
 

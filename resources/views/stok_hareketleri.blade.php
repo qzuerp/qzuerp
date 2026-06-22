@@ -404,7 +404,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 
 			// Header
 			data.push([
-				"Kod","Ad","Ad 2","Rev","Miktar","Birim","Lot","Seri No","Depo",
+				"Tarih","Kod","Ad","Ad 2","Rev","Miktar","Birim","Lot","Seri No","Depo",
 				"Text1","Text2","Text3","Text4",
 				"Num1","Num2","Num3","Num4",
 				"Lok1","Lok2","Lok3","Lok4"
@@ -414,6 +414,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			dt.rows().every(function () {
 				let d = this.data();
 				data.push([
+					d.create_at ?? '',
 					d.KOD ?? '',
 					d.STOK_ADI ?? '',
 					d.NAME2 ?? '',
