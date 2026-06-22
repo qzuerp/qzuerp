@@ -11,7 +11,7 @@
   $ekran = "CLSMBLDRM";
   $ekranRumuz = "calisma_bildirimi";
   $ekranAdi = "Çalışma Bildirimi"; 
-  $ekranLink = "calisma_bildirimi";
+  $ekranLink = "calisma_bildirimi_oprt";
   $ekranTableE = $database."sfdc31e";
   $ekranTableT = $database."sfdc31t";
   $ekranKayitSatirKontrol = "true";

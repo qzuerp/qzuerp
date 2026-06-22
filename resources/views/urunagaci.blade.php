@@ -231,7 +231,8 @@
 													<div class="row" >
 
 														<div class="col my-2">
-                    													<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i>Seçili Satırları Sil</button>
+																<button type="button" class="btn btn-default delete-row" id="deleteRow"><i class="fa fa-minus" style="color: red"></i> Seçili Satırları Sil</button>
+																<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#satirEkleModal"><i class="fa-solid fa-plus"></i> Sihirbaz İle Oluştur</button>
        														</div>
 														<br><br>
 
@@ -267,7 +268,7 @@
 																	<th>Ölçü 4</th>
 																	<th></th>
 																</tr>
-																<tr class="satirEkle">
+																<!-- <tr class="satirEkle2">
 																	<td>
 																		<button type="button" class="btn btn-default add-row" id="addRow"><i class="fa fa-plus" style="color: blue"></i></button>
 																	</td>
@@ -334,18 +335,6 @@
 																	</td>
 
 																	<td>
-																		<!-- <select class="form-control select2 js-example-basic-single" style="color: red" name="ACIKLAMA_FILL" id="ACIKLAMA_FILL">
-																			<option value=" ">Seç</option>
-																			<option>AD</option>
-																			<option>KİLO</option>
-																			<option>M</option>
-																			<option>M2</option>
-																			<option>MM</option>
-																			<option>SET</option>
-																			<option>TKM</option>
-																			<option>SAAT</option>
-																			<option>F</option>
-																		</select> -->
 																		<input type="text" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ACIKLAMA" data-name="ACIKLAMA" readonly id="ACIKLAMA_FILL">
 																	</td>
 																	
@@ -445,7 +434,7 @@
 																		<input maxlength="255" style="color: red" type="number" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="NUM4" data-name="NUM4" name="NUM4_FILL" id="NUM4_FILL" class="form-control">
 																	</td>
 																	<td>#</td>
-																</tr>
+																</tr> -->
 															</thead>
 															<tbody>
 																@foreach ($t_kart_veri as $key => $veri)
@@ -1145,6 +1134,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz"  >
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -1199,6 +1189,136 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="satirEkleModal" tabindex="-1" aria-labelledby="satirEkleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header bg-primary text-white">
+							<h5 class="modal-title" id="satirEkleModalLabel"><i class="fa fa-plus-circle"></i> Yeni Satır Bilgileri</h5>
+							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+						</div>
+						<div class="modal-body p-4">
+							<form id="modalSatirForm" class="satirEkle">
+								<div class="row g-3">
+									<div class="col-md-2">
+										<label class="form-label text-danger fw-bold">Sıra No</label>
+										<input type="number" class="form-control" min="0" name="SIRANO_FILL" id="SIRANO_FILL">
+									</div>
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Giriş Tipi (INPUTTYPE)</label>
+										<select class="form-control select2" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW" onchange="getKaynakCodeSelect()">
+											<option value=" ">Seç</option>
+											<option value="H">H - Hammadde</option>
+											<option value="I">I - Tezgah / İş Merk</option>
+											<option value="Y">Y - Yan Ürün</option>
+										</select>
+										<input type="hidden" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL">
+									</div>
+									<div class="col-md-4">
+										<label class="form-label fw-bold">Kaynak Kodu</label>
+										<div class="input-group">
+											<select class="form-control select2" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW"></select>
+											<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+										</div>
+										<input type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL">
+									</div>
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Stok Adı</label>
+										<input type="text" class="form-control" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled>
+										<input type="hidden" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+									</div>
+
+									<div class="col-md-4">
+										<label class="form-label fw-bold">Operasyon</label>
+										<select class="form-control select2" onchange="stokAdiGetir4(this.value)" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
+											<option value=" ">Seç</option>
+											@foreach (DB::table($database.'imlt01')->orderBy('id', 'ASC')->get() as $veri)
+												<option value="{{$veri->KOD}}|||{{$veri->AD}}">{{$veri->KOD}} | {{$veri->AD}}</option>
+											@endforeach
+										</select>
+										<input type="hidden" name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL">
+									</div>
+									<div class="col-md-4">
+										<label class="form-label fw-bold">Operasyon Adı</label>
+										<input type="text" class="form-control" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled>
+										<input type="hidden" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+									</div>
+									<div class="col-md-4">
+										<label class="form-label fw-bold">Açıklama</label>
+										<input type="text" class="form-control" readonly id="ACIKLAMA_FILL" name="ACIKLAMA_FILL">
+									</div>
+
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Kaynak 0</label>
+										<div class="input-group">
+											<input type="number" class="form-control" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+											<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Kaynak 1</label>
+										<input type="number" class="form-control" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
+									</div>
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Kaynak 2</label>
+										<input type="number" class="form-control" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
+									</div>
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Yarı Mamul Kodu</label>
+										<select class="form-control select2" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
+											<option value=" ">Seç</option>
+										</select>
+										<input type="hidden" id="YMAMULCODE">
+									</div>
+
+									<div class="col-md-6">
+										<label class="form-label fw-bold">Yarı Mamul PS</label>
+										<input type="number" class="form-control" name="PK_NO_FILL" id="PK_NO_FILL" value="1">
+									</div>
+									<div class="col-md-6">
+										<label class="form-label fw-bold">Yarı Mamul Miktarı</label>
+										<input type="number" class="form-control" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="1">
+									</div>
+
+									<hr class="my-3">
+									<h5>Kalıp Ayarları</h5>
+									@for ($i = 1; $i <= 4; $i++)
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Kalıp Kodu {{$i}}</label>
+										<select class="form-control select2" name="KALIPKODU_{{$i}}_FILL" id="KALIPKODU_{{$i}}_FILL">
+											<option value=" ">Seç...</option>
+											@foreach (DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get() as $veri)
+												<option value="{{$veri->KOD}}">{{$veri->KOD}} | {{$veri->AD}}</option>
+											@endforeach
+										</select>
+									</div>
+									@endfor
+
+									<hr class="my-3">
+									<h5>Özel Dinamik Alanlar</h5>
+									@for ($i = 1; $i <= 4; $i++)
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Metin Alanı (TEXT{{$i}})</label>
+										<input type="text" class="form-control" name="TEXT{{$i}}_FILL" id="TEXT{{$i}}_FILL">
+									</div>
+									@endfor
+
+									@for ($i = 1; $i <= 4; $i++)
+									<div class="col-md-3">
+										<label class="form-label fw-bold">Sayısal Alan (NUM{{$i}})</label>
+										<input type="number" class="form-control" name="NUM{{$i}}_FILL" id="NUM{{$i}}_FILL">
+									</div>
+									@endfor
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer bg-light">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+							<button type="button" class="btn btn-success px-4" id="addRow"><i class="fa fa-save"></i> Listeye Ekle</button>
 						</div>
 					</div>
 				</div>
