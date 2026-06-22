@@ -783,8 +783,7 @@
 														<select name="TEDARIKCI_B" id="TEDARIKCI_B" class="form-control js-example-basic-single" style="height:34px; font-size:13px;">
 															@php echo "<option value=' ' selected> </option>";
 															foreach ($cari00 as $veri) {
-																$selected = ($veri->KOD == @$kart_veri->CARIHESAPCODE) ? " selected" : "";
-																echo "<option value='".$veri->KOD."'".$selected.">".$veri->KOD." | ".$veri->AD."</option>";
+																echo "<option value='".$veri->KOD."'>".$veri->KOD." | ".$veri->AD."</option>";
 															}
 															@endphp
 														</select>
