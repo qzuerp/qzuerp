@@ -74,6 +74,102 @@
 
 
 @section('content')
+
+<style>
+	.satir-step-tab {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		padding: 10px 0;
+		font-size: 12px;
+		font-weight: 500;
+		color: #6c757d;
+		border-bottom: 2px solid transparent;
+		cursor: default;
+		transition: color .15s, border-color .15s;
+	}
+	.satir-step-tab.active {
+		color: #0d6efd;
+		border-bottom-color: #0d6efd;
+		background: #fff;
+	}
+	.satir-step-tab.done {
+		color: #198754;
+	}
+	.satir-step-num {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #dee2e6;
+		color: #6c757d;
+		font-size: 11px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background .15s, color .15s;
+	}
+	.satir-step-tab.active .satir-step-num {
+		background: #0d6efd;
+		color: #fff;
+	}
+	.satir-step-tab.done .satir-step-num {
+		background: #198754;
+		color: #fff;
+	}
+	.satir-pane {
+		display: none;
+	}
+	.satir-pane.active {
+		display: block;
+	}
+	.satir-tip-bar {
+		font-size: 12px;
+		color: #6c757d;
+		background: #f8f9fa;
+		border: 1px solid #dee2e6;
+		border-radius: 6px;
+		padding: 6px 12px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.satir-collapse-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+		padding: 8px 12px;
+		background: #f8f9fa;
+		border: 1px solid #dee2e6;
+		border-radius: 6px;
+		font-size: 13px;
+		font-weight: 500;
+		color: #495057;
+		user-select: none;
+		transition: background .15s;
+	}
+	.satir-collapse-head:hover {
+		background: #e9ecef;
+	}
+	.satir-collapse-icon {
+		transition: transform .2s;
+		font-size: 12px;
+		color: #6c757d;
+	}
+	.satir-collapse-head.open .satir-collapse-icon {
+		transform: rotate(180deg);
+	}
+	.satir-collapse-body {
+		display: none;
+		padding: 0 4px;
+	}
+	.satir-collapse-body.open {
+		display: block;
+	}
+</style>
+
 <div class="content-wrapper">
 
 	@include('layout.util.evrakContentHeader')
@@ -1195,131 +1291,264 @@
 			</div>
 
 			<div class="modal fade" id="satirEkleModal" tabindex="-1" aria-labelledby="satirEkleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-xl modal-dialog-scrollable">
+				<div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
 					<div class="modal-content">
+			
+						{{-- HEADER --}}
 						<div class="modal-header bg-primary text-white">
-							<h5 class="modal-title" id="satirEkleModalLabel"><i class="fa fa-plus-circle"></i> Yeni Satır Bilgileri</h5>
+							<h5 class="modal-title" id="satirEkleModalLabel">
+								<i class="fa fa-plus-circle"></i> Yeni Satır Ekle
+							</h5>
 							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
 						</div>
+			
+						{{-- ADIM SEKMELERI --}}
+						<div class="d-flex border-bottom bg-light" id="satirEkleStepBar">
+							<div class="satir-step-tab active" data-step="1">
+								<span class="satir-step-num">1</span>
+								<span>Temel</span>
+							</div>
+							<div class="satir-step-tab" data-step="2">
+								<span class="satir-step-num">2</span>
+								<span>Kaynak / Operasyon</span>
+							</div>
+							<div class="satir-step-tab" data-step="3">
+								<span class="satir-step-num">3</span>
+								<span>Ek Ayarlar</span>
+							</div>
+						</div>
+			
+						{{-- MODAL BODY --}}
 						<div class="modal-body p-4">
 							<form id="modalSatirForm" class="satirEkle">
-								<div class="row g-3">
-									<div class="col-md-2">
-										<label class="form-label text-danger fw-bold">Sıra No</label>
-										<input type="number" class="form-control" min="0" name="SIRANO_FILL" id="SIRANO_FILL">
-									</div>
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Giriş Tipi (INPUTTYPE)</label>
-										<select class="form-control select2" name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW" onchange="getKaynakCodeSelect()">
-											<option value=" ">Seç</option>
-											<option value="H">H - Hammadde</option>
-											<option value="I">I - Tezgah / İş Merk</option>
-											<option value="Y">Y - Yan Ürün</option>
-										</select>
-										<input type="hidden" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL">
-									</div>
-									<div class="col-md-4">
-										<label class="form-label fw-bold">Kaynak Kodu</label>
-										<div class="input-group">
-											<select class="form-control select2" onchange="stokAdiGetir3(this.value)" name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW"></select>
-											<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+			
+								{{-- ADIM 1: TEMEL --}}
+								<div class="satir-pane active" id="satirPane1">
+									<div class="row g-3">
+										<div class="col-md-4">
+											<label class="form-label fw-bold text-danger">Sıra No <span class="text-danger">*</span></label>
+											<input type="number" class="form-control" min="0"
+												name="SIRANO_FILL" id="SIRANO_FILL" placeholder="0">
 										</div>
-										<input type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL">
-									</div>
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Stok Adı</label>
-										<input type="text" class="form-control" name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW" disabled>
-										<input type="hidden" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
-									</div>
-
-									<div class="col-md-4">
-										<label class="form-label fw-bold">Operasyon</label>
-										<select class="form-control select2" onchange="stokAdiGetir4(this.value)" name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
-											<option value=" ">Seç</option>
-											@foreach (DB::table($database.'imlt01')->orderBy('id', 'ASC')->get() as $veri)
-												<option value="{{$veri->KOD}}|||{{$veri->AD}}">{{$veri->KOD}} | {{$veri->AD}}</option>
-											@endforeach
-										</select>
-										<input type="hidden" name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL">
-									</div>
-									<div class="col-md-4">
-										<label class="form-label fw-bold">Operasyon Adı</label>
-										<input type="text" class="form-control" name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW" disabled>
-										<input type="hidden" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
-									</div>
-									<div class="col-md-4">
-										<label class="form-label fw-bold">Açıklama</label>
-										<input type="text" class="form-control" readonly id="ACIKLAMA_FILL" name="ACIKLAMA_FILL">
-									</div>
-
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Kaynak 0</label>
-										<div class="input-group">
-											<input type="number" class="form-control" min="0" name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
-											<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dimensionsModal" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Giriş Tipi <span class="text-danger">*</span></label>
+											<select data-modal="satirEkleModal" class="form-control select2"
+												name="BOMREC_INPUTTYPE_SHOW" id="BOMREC_INPUTTYPE_SHOW"
+												onchange="getKaynakCodeSelect()">
+												<option value=" ">— Seç —</option>
+												<option value="H">H — Hammadde</option>
+												<option value="I">I — Tezgah / İş Merkezi</option>
+												<option value="Y">Y — Yan Ürün</option>
+											</select>
+											<input type="hidden" name="BOMREC_INPUTTYPE_FILL" id="BOMREC_INPUTTYPE_FILL">
 										</div>
-									</div>
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Kaynak 1</label>
-										<input type="number" class="form-control" name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
-									</div>
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Kaynak 2</label>
-										<input type="number" class="form-control" name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
-									</div>
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Yarı Mamul Kodu</label>
-										<select class="form-control select2" onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
-											<option value=" ">Seç</option>
-										</select>
-										<input type="hidden" id="YMAMULCODE">
-									</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Yarı Mamul PS</label>
+											<input type="number" class="form-control"
+												name="PK_NO_FILL" id="PK_NO_FILL" value="1">
+										</div>
 
-									<div class="col-md-6">
-										<label class="form-label fw-bold">Yarı Mamul PS</label>
-										<input type="number" class="form-control" name="PK_NO_FILL" id="PK_NO_FILL" value="1">
+										<div class="col-md-6">
+											<label class="form-label fw-bold">Yarı Mamul Miktarı</label>
+											<input type="number" class="form-control"
+												name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="1">
+										</div>
+			
+										<div class="col-12">
+											<hr class="my-1">
+											<p class="text-muted small mb-2 fw-bold">Yarı Mamul (FASON)</p>
+										</div>
+			
+										<div class="col-md-6">
+											<label class="form-label fw-bold">Yarı Mamul Kodu</label>
+											<select data-modal="satirEkleModal" class="form-control select2"
+												onchange="stokAdiGetir6(this.value)" id="YMAMULCODE_SHOW">
+												<option value=" ">— Seç —</option>
+											</select>
+											<input type="hidden" id="YMAMULCODE">
+										</div>
+										
 									</div>
-									<div class="col-md-6">
-										<label class="form-label fw-bold">Yarı Mamul Miktarı</label>
-										<input type="number" class="form-control" name="YARI_MAMUL_MIKTARI_FILL" id="YARI_MAMUL_MIKTARI_FILL" value="1">
-									</div>
-
-									<hr class="my-3">
-									<h5>Kalıp Ayarları</h5>
-									@for ($i = 1; $i <= 4; $i++)
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Kalıp Kodu {{$i}}</label>
-										<select class="form-control select2" name="KALIPKODU_{{$i}}_FILL" id="KALIPKODU_{{$i}}_FILL">
-											<option value=" ">Seç...</option>
-											@foreach (DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get() as $veri)
-												<option value="{{$veri->KOD}}">{{$veri->KOD}} | {{$veri->AD}}</option>
-											@endforeach
-										</select>
-									</div>
-									@endfor
-
-									<hr class="my-3">
-									<h5>Özel Dinamik Alanlar</h5>
-									@for ($i = 1; $i <= 4; $i++)
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Metin Alanı (TEXT{{$i}})</label>
-										<input type="text" class="form-control" name="TEXT{{$i}}_FILL" id="TEXT{{$i}}_FILL">
-									</div>
-									@endfor
-
-									@for ($i = 1; $i <= 4; $i++)
-									<div class="col-md-3">
-										<label class="form-label fw-bold">Sayısal Alan (NUM{{$i}})</label>
-										<input type="number" class="form-control" name="NUM{{$i}}_FILL" id="NUM{{$i}}_FILL">
-									</div>
-									@endfor
 								</div>
+			
+								{{-- ADIM 2: KAYNAK / OPERASYON --}}
+								<div class="satir-pane" id="satirPane2">
+									<div class="row g-3">
+										<div class="col-12">
+											<p class="text-muted small mb-0 fw-bold">Kaynak</p>
+											<hr class="mt-1 mb-2">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Kaynak Kodu <span class="text-danger">*</span></label>
+											<div class="input-group">
+												<select data-modal="satirEkleModal" class="form-control select2"
+													onchange="stokAdiGetir3(this.value)"
+													name="BOMREC_KAYNAKCODE_SHOW" id="BOMREC_KAYNAKCODE_SHOW"></select>
+												<button class="btn btn-outline-primary" type="button"
+													data-bs-toggle="modal" data-bs-target="#modal_popupSelectModal">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+											<input type="hidden" name="BOMREC_KAYNAKCODE_FILL" id="BOMREC_KAYNAKCODE_FILL">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Stok Adı</label>
+											<input type="text" class="form-control"
+												name="BOMREC_KAYNAKCODE_AD_SHOW" id="BOMREC_KAYNAKCODE_AD_SHOW"
+												disabled placeholder="Otomatik dolar">
+											<input type="hidden" name="BOMREC_KAYNAKCODE_AD_FILL" id="BOMREC_KAYNAKCODE_AD_FILL">
+										</div>
+
+										<div class="col-4">
+											<label class="form-label fw-bold">Birim</label>
+											<input type="text" class="form-control" readonly
+												id="ACIKLAMA_FILL" name="ACIKLAMA_FILL" placeholder="Otomatik oluşur">
+										</div>
+			
+										<div class="col-12">
+											<p class="text-muted small mb-0 fw-bold">Operasyon</p>
+											<hr class="mt-1 mb-2">
+										</div>
+										<div class="col-md-6">
+											<label class="form-label fw-bold">Operasyon</label>
+											<select data-modal="satirEkleModal" class="form-control select2"
+												onchange="stokAdiGetir4(this.value)"
+												name="BOMREC_OPERASYON_SHOW" id="BOMREC_OPERASYON_SHOW">
+												<option value=" ">— Seç —</option>
+												@foreach (DB::table($database.'imlt01')->orderBy('id', 'ASC')->get() as $veri)
+													<option value="{{ $veri->KOD }}|||{{ $veri->AD }}">{{ $veri->KOD }} | {{ $veri->AD }}</option>
+												@endforeach
+											</select>
+											<input type="hidden" name="BOMREC_OPERASYON_FILL" id="BOMREC_OPERASYON_FILL">
+										</div>
+										<div class="col-md-6">
+											<label class="form-label fw-bold">Operasyon Adı</label>
+											<input type="text" class="form-control"
+												name="BOMREC_OPERASYON_AD_SHOW" id="BOMREC_OPERASYON_AD_SHOW"
+												disabled placeholder="Otomatik dolar">
+											<input type="hidden" name="BOMREC_OPERASYON_AD_FILL" id="BOMREC_OPERASYON_AD_FILL">
+										</div>
+			
+										<div class="col-12">
+											<p class="text-muted small mb-0 fw-bold">Kaynak Değerleri</p>
+											<hr class="mt-1 mb-2">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Kaynak 0</label>
+											<div class="input-group">
+												<input type="number" class="form-control"
+													name="BOMREC_KAYNAK0_FILL" id="BOMREC_KAYNAK0_FILL" value="0">
+												<button class="btn btn-outline-secondary" type="button"
+													data-bs-toggle="modal" data-bs-target="#dimensionsModal">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Kaynak 1</label>
+											<input type="number" class="form-control"
+												name="BOMREC_KAYNAK01_FILL" id="BOMREC_KAYNAK01_FILL" value="0">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label fw-bold">Kaynak 2</label>
+											<input type="number" class="form-control"
+												name="BOMREC_KAYNAK02_FILL" id="BOMREC_KAYNAK02_FILL" value="0">
+										</div>
+									</div>
+								</div>
+			
+								{{-- ADIM 3: EK AYARLAR --}}
+								<div class="satir-pane" id="satirPane3">
+									<div class="row g-3">
+			
+										{{-- Kalıp Ayarları (Katlanabilir) --}}
+										<div class="col-12">
+											<div class="satir-collapse-head" data-target="kalipBody">
+												<span><i class="fa-solid fa-layer-group me-2"></i>Kalıp Ayarları</span>
+												<i class="fa-solid fa-chevron-down satir-collapse-icon"></i>
+											</div>
+											<div class="satir-collapse-body" id="kalipBody">
+												<div class="row g-3 pt-2">
+													@for ($i = 1; $i <= 4; $i++)
+													<div class="col-md-3">
+														<label class="form-label fw-bold">Kalıp Kodu {{ $i }}</label>
+														<select data-modal="satirEkleModal" class="form-control select2"
+															name="KALIPKODU_{{ $i }}_FILL" id="KALIPKODU_{{ $i }}_FILL">
+															<option value=" ">— Seç —</option>
+															@foreach (DB::table($database.'kalip00')->where('AP10','1')->orderBy('KOD', 'ASC')->get() as $veri)
+																<option value="{{ $veri->KOD }}">{{ $veri->KOD }} | {{ $veri->AD }}</option>
+															@endforeach
+														</select>
+													</div>
+													@endfor
+												</div>
+											</div>
+										</div>
+			
+										{{-- Metin Alanları (Katlanabilir) --}}
+										<div class="col-12">
+											<div class="satir-collapse-head" data-target="metinBody">
+												<span><i class="fa-solid fa-font me-2"></i>Metin Alanları (TEXT1–4)</span>
+												<i class="fa-solid fa-chevron-down satir-collapse-icon"></i>
+											</div>
+											<div class="satir-collapse-body" id="metinBody">
+												<div class="row g-3 pt-2">
+													@for ($i = 1; $i <= 4; $i++)
+													<div class="col-md-3">
+														<label class="form-label fw-bold">TEXT{{ $i }}</label>
+														<input type="text" class="form-control"
+															name="TEXT{{ $i }}_FILL" id="TEXT{{ $i }}_FILL">
+													</div>
+													@endfor
+												</div>
+											</div>
+										</div>
+			
+										{{-- Sayısal Alanlar (Katlanabilir) --}}
+										<div class="col-12">
+											<div class="satir-collapse-head" data-target="numBody">
+												<span><i class="fa-solid fa-hashtag me-2"></i>Sayısal Alanlar (NUM1–4)</span>
+												<i class="fa-solid fa-chevron-down satir-collapse-icon"></i>
+											</div>
+											<div class="satir-collapse-body" id="numBody">
+												<div class="row g-3 pt-2">
+													@for ($i = 1; $i <= 4; $i++)
+													<div class="col-md-3">
+														<label class="form-label fw-bold">NUM{{ $i }}</label>
+														<input type="number" class="form-control"
+															name="NUM{{ $i }}_FILL" id="NUM{{ $i }}_FILL">
+													</div>
+													@endfor
+												</div>
+											</div>
+										</div>
+			
+									</div>
+								</div>
+			
 							</form>
 						</div>
-						<div class="modal-footer bg-light">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-							<button type="button" class="btn btn-success px-4" id="addRow"><i class="fa fa-save"></i> Listeye Ekle</button>
+			
+						{{-- FOOTER --}}
+						<div class="modal-footer bg-light d-flex align-items-center justify-content-between">
+							<div class="d-flex align-items-center gap-2">
+								<span class="text-muted small" id="satirStepText">Adım 1 / 3</span>
+								<span class="badge bg-light text-secondary border" id="satirShortcutHint">Enter → ileri</span>
+							</div>
+							<div class="d-flex gap-2">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+								<button type="button" class="btn btn-secondary" id="satirBtnPrev" style="display:none">
+									<i class="fa-solid fa-arrow-left"></i> Geri
+								</button>
+								<button type="button" class="btn btn-primary" id="satirBtnNext">
+									<i class="fa-solid fa-arrow-right"></i> İleri
+								</button>
+								<button type="button" class="btn btn-success px-4" id="addRow">
+									<i class="fa fa-save"></i> Listeye Ekle
+								</button>
+							</div>
 						</div>
+			
 					</div>
 				</div>
 			</div>
@@ -1557,6 +1786,8 @@
 
 			$('#YMAMULCODE_SHOW').select2({
 				placeholder: 'Stok kodu seç...',
+				dropdownParent: $('#satirEkleModal'),
+      			dropdownPosition: 'below',
 				ajax: {
 					url: '/stok-kodu-custom-select',
 					dataType: 'json',
@@ -1624,12 +1855,113 @@
 				}
 			});
 
+			var currentStep = 1;
+			var totalSteps  = 3;
+		
+			var $tabs = $('.satir-step-tab');
+			var $panes = [
+				$('#satirPane1'),
+				$('#satirPane2'),
+				$('#satirPane3')
+			];
+			var $stepText     = $('#satirStepText');
+			var $shortcutHint = $('#satirShortcutHint');
+			var $btnNext      = $('#satirBtnNext');
+			var $btnPrev      = $('#satirBtnPrev');
+			var $btnSave      = $('#addRow');
+		
+			function goTo(n) {
+				// Eski sekmeyi kapat
+				$tabs.eq(currentStep - 1).removeClass('active');
+				
+				if (n > currentStep) {
+					$tabs.eq(currentStep - 1).addClass('done');
+				} else {
+					$tabs.eq(currentStep - 1).removeClass('done');
+				}
+				$.each($panes, function(index, $pane) {
+					$pane.removeClass('active');
+				});
+		
+				currentStep = n;
+		
+				// Yeni sekmeyi aç
+				$tabs.eq(currentStep - 1).addClass('active').removeClass('done');
+				$panes[currentStep - 1].addClass('active');
+		
+				$stepText.text('Adım ' + currentStep + ' / ' + totalSteps);
+		
+				currentStep > 1 ? $btnPrev.show() : $btnPrev.hide();
+		
+				if (currentStep === totalSteps) {
+					$btnNext.hide();
+					$shortcutHint.text('Ctrl+Enter → kaydet');
+				} else {
+					$btnNext.show();
+					$shortcutHint.text('Enter → ileri');
+				}
+		
+				// İlk input'a focus (Buradaki jQuery seçici hayat kurtarır)
+				var $firstInput = $panes[currentStep - 1].find('input:not([disabled]):not([readonly]), select:not([disabled])').first();
+				if ($firstInput.length) {
+					setTimeout(function () { $firstInput.focus(); }, 60);
+				}
+			}
+		
+			$btnNext.on('click', function () {
+				if (currentStep < totalSteps) goTo(currentStep + 1);
+			});
+		
+			$btnPrev.on('click', function () {
+				if (currentStep > 1) goTo(currentStep - 1);
+			});
+		
+			// Enter → ileri, Ctrl+Enter → kaydet (son adımda)
+			$('#modalSatirForm').on('keydown', function (e) {
+				if (e.key !== 'Enter') return;
+				
+				var tag = e.target.tagName;
+				if (tag === 'BUTTON' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+				
+				e.preventDefault(); 
+				
+				if (currentStep < totalSteps) {
+					goTo(currentStep + 1);
+				} else if (e.ctrlKey) {
+					$btnSave.click();
+				}
+			});
+		
+			$('#satirEkleModal').on('show.bs.modal', function () {
+				$tabs.removeClass('active done');
+				$.each($panes, function(index, $pane) {
+					$pane.removeClass('active');
+				});
+				currentStep = 0;
+				goTo(1);
+			});
+		
+			// Katlanabilir bölümler (Collapse)
+			$('.satir-collapse-head').on('click', function () {
+				var bodyId = $(this).attr('data-target');
+				var $body   = $('#' + bodyId);
+				
+				$body.toggleClass('open');
+				$(this).toggleClass('open');
+			});
 
 			$("#addRow").on('click', function() {
 
 				var TRNUM_FILL = getTRNUM();
 
-				var satirEkleInputs = getInputs('satirEkle');
+				var satirEkleInputs = {};
+
+				$("#modalSatirForm").find('input, select, textarea').each(function () {
+					var elementID = $(this).attr('id');
+					if (elementID) { 
+						satirEkleInputs[elementID] = $(this).val();
+					}
+				});
 
 				var htmlCode = " ";
 
@@ -1683,6 +2015,72 @@
 				}
 
 			});
+
+			// $("#addRow").on('click', function() {
+
+			// 	var TRNUM_FILL = getTRNUM();
+
+			// 	var satirEkleInputs = {};
+
+			// 	$("#modalSatirForm").find('input, select, textarea').each(function () {
+			// 		var elementID = $(this).attr('id');
+			// 		if (elementID) { 
+			// 			satirEkleInputs[elementID] = $(this).val();
+			// 		}
+			// 	});
+
+			// 	var htmlCode = " ";
+
+			// 	htmlCode += " <tr> ";
+			// 	htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+			// 	htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+			// 	htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+			// 	htmlCode += " <td><input type='text' class='form-control' name='SIRANO[]' value='"+satirEkleInputs.SIRANO_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_INPUTTYPE_SHOW_T' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_INPUTTYPE[]' value='"+satirEkleInputs.BOMREC_INPUTTYPE_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAKCODE_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAKCODE_AD[]' value='"+satirEkleInputs.BOMREC_KAYNAKCODE_AD_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON[]' value='"+satirEkleInputs.BOMREC_OPERASYON_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_OPERASYON_AD_SHOW_T' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"' disabled><input type='hidden' class='form-control' name='BOMREC_OPERASYON_AD[]' value='"+satirEkleInputs.BOMREC_OPERASYON_AD_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK0[]' value='"+satirEkleInputs.BOMREC_KAYNAK0_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK01[]' value='"+satirEkleInputs.BOMREC_KAYNAK01_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_KAYNAK01_SHOW_T' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='BOMREC_KAYNAK02[]' value='"+satirEkleInputs.BOMREC_KAYNAK02_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA[]' readonly value='"+satirEkleInputs.ACIKLAMA_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPS[]' value='"+(satirEkleInputs.PK_NO_FILL || 1) +"' style='color:blue;'></td>";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULPM[]' value='"+(satirEkleInputs.YARI_MAMUL_MIKTARI_FILL || 1) +"' style='color:blue;'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='BOMREC_YMAMULCODE[]' value='"+satirEkleInputs.YMAMULCODE+"' readonly></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_1_SHOW_T' value='"+satirEkleInputs.KALIPKODU_1_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_1[]' value='"+satirEkleInputs.KALIPKODU_1_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_2_SHOW_T' value='"+satirEkleInputs.KALIPKODU_2_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_2[]' value='"+satirEkleInputs.KALIPKODU_2_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_3_SHOW_T' value='"+satirEkleInputs.KALIPKODU_3_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_3[]' value='"+satirEkleInputs.KALIPKODU_3_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU_4_SHOW_T' value='"+satirEkleInputs.KALIPKODU_4_FILL+"' style='color:blue;' disabled><input type='hidden' class='form-control' name='KALIPKODU_4[]' value='"+satirEkleInputs.KALIPKODU_4_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='number' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+			// 	htmlCode += " <td><input type='text' class='form-control' name='ACIKLAMA2[]' value='"+satirEkleInputs.ACIKLAMA2+"'></td> ";
+			// 	htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+			// 	htmlCode += " </tr> ";
+
+			// 	//alert(satirEkleInputs.BOMREC_OPERASYON_FILL);
+
+
+			// 	if (satirEkleInputs.BOMREC_KAYNAKCODE_FILL==null || satirEkleInputs.BOMREC_KAYNAKCODE_FILL==" " || satirEkleInputs.BOMREC_KAYNAKCODE_FILL=="") {
+			// 		eksikAlanHataAlert2();
+			// 	}
+
+			// 	else {
+
+			// 		$("#veriTable > tbody").append(htmlCode);
+			// 		updateLastTRNUM(TRNUM_FILL);
+
+			// 		emptyInputs('satirEkle');
+
+			// 	}
+
+			// });
 
 			$("#addRow2").on('click', function() {
 

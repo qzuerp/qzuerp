@@ -3165,18 +3165,31 @@
           cancelButtonText: 'İptal',
           width: '550px',
           preConfirm: () => {
-            return {
-              startDate: document.getElementById('edit_start_date').value,
-              startTime: document.getElementById('edit_start_time').value,
-              endDate: document.getElementById('edit_end_date').value,
-              endTime: document.getElementById('edit_end_time').value
-            };
+            const sDate = document.getElementById('edit_start_date').value;
+            const sTime = document.getElementById('edit_start_time').value;
+            const eDate = document.getElementById('edit_end_date').value;
+            const eTime = document.getElementById('edit_end_time').value;
+
+            if (!sDate || !sTime) {
+              Swal.showValidationMessage('Lütfen tüm başlangıç alanlarını doldurun!');
+              return false;
+            }
+
+            // Tarih ve saatleri birleştirip saniyeye çeviriyoruz ki tam kıyaslama yapalım
+            const startDateTime = new Date(`${sDate}T${sTime}`);
+            const endDateTime = new Date(`${eDate}T${eTime}`);
+
+            if (endDateTime < startDateTime) {
+              Swal.showValidationMessage('Bitiş zamanı, başlangıç zamanından önce veya aynı olamaz!');
+              return false;
+            }
+
+            return { startDate: sDate, startTime: sTime, endDate: eDate, endTime: eTime };
           }
         }).then((result) => {
           if (result.isConfirmed) {
             updateRow(row, result.value);
-            
-            mesaj('İşlem bilgileri başarıyla güncellendi.','success');
+            mesaj('İşlem bilgileri başarıyla güncellendi.', 'success');
           }
         });
       }
