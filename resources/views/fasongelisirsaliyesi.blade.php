@@ -1044,6 +1044,7 @@
                       <th style="min-width:100px;">Seri No</th>
                       <th style="min-width:100px;">Depo</th>
                       <th style="min-width:100px;">MPS numarası</th>
+                      <th style="min-width:100px;">Sipariş Numarası</th>
                       <th style="min-width:100px;">Lokasyon 1</th>
                       <th style="min-width:100px;">Lokasyon 2</th>
                       <th style="min-width:100px;">Lokasyon 3</th>

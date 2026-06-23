@@ -5,6 +5,7 @@ use App\Helpers\FunctionHelpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class bomu01_controller extends Controller
 {
@@ -212,6 +213,8 @@ class bomu01_controller extends Controller
     $NUM4 = $request->NUM4;
     $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
     $ACIKLAMA2 = $request->ACIKLAMA2;
+    $FASON_KODLAR = $request->FASON_KODLAR;
+    $FASON_ADLAR = $request->FASON_ADLAR;
 
 
     $DURUM = $request->DURUM;
@@ -343,6 +346,8 @@ class bomu01_controller extends Controller
             'NUM2' => $NUM2[$i] ?? NULL,
             'NUM3' => $NUM3[$i] ?? NULL,
             'NUM4' => $NUM4[$i] ?? NULL,
+            'FASON_KODLAR' => $FASON_KODLAR,
+            'FASON_ADLAR' => $FASON_ADLAR,
             'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] ?? NULL,
             'ACIKLAMA2' => $ACIKLAMA2[$i],
             'created_at' => date('Y-m-d H:i:s') ?? NULL,
@@ -429,6 +434,8 @@ class bomu01_controller extends Controller
               'NUM2' => $NUM2[$i] ?? NULL,
               'NUM3' => $NUM3[$i] ?? NULL,
               'NUM4' => $NUM4[$i] ?? NULL,
+              'FASON_KODLAR' => $FASON_KODLAR,
+              'FASON_ADLAR' => $FASON_ADLAR,
               'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] ?? NULL,
               'ACIKLAMA2' => $ACIKLAMA2[$i],
               'created_at' => date('Y-m-d H:i:s') ?? NULL,
@@ -467,6 +474,8 @@ class bomu01_controller extends Controller
               'NUM2' => $NUM2[$i] ?? NULL,
               'NUM3' => $NUM3[$i] ?? NULL,
               'NUM4' => $NUM4[$i] ?? NULL,
+              'FASON_KODLAR' => $FASON_KODLAR,
+              'FASON_ADLAR' => $FASON_ADLAR,
               'BOMREC_YMAMULCODE' => $BOMREC_YMAMULCODE[$i] ?? NULL,
               'ACIKLAMA2' => $ACIKLAMA2[$i],
               'updated_at' => date('Y-m-d H:i:s'),
@@ -495,5 +504,14 @@ class bomu01_controller extends Controller
 
         break;
     }
+  }
+
+  public function getirTeklif(Request $request){
+    $u = Auth::user();
+    $firma = trim($u->firma).'.dbo.';
+
+    $teklif = DB::table($firma.'tekl20tı')->where('EVRAKNO',$request->EVRAKNO)->where('OR_TRNUM',$request->TRNUM)->get();
+
+    return response()->json($teklif);
   }
 }

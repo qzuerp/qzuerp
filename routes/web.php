@@ -395,6 +395,7 @@ Route::group(['middleware' => ['auth']], function() {
     */
     Route::get('urunagaci', [bomu01_controller::class, 'index'])->name('urunagaci');
     Route::post('bomu01_islemler', [bomu01_controller::class, 'islemler']);
+    Route::post('getirTeklif', [bomu01_controller::class, 'getirTeklif']);
     Route::post('bomu01_createKaynakKodSelect', [bomu01_controller::class, 'createKaynakKodSelect']);
 
     /*

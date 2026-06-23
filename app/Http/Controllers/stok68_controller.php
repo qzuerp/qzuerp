@@ -716,7 +716,10 @@ class stok68_controller extends Controller
       $DEPO = $request->DEPO;
       $URETICI = $request->URETICI;
   
-      $res = DB::table($firma.'stok63e','e')->leftJoin($firma.'stok63t as t','e.EVRAKNO','=','t.EVRAKNO')
+      $res = DB::table($firma.'stok63e','e')
+      ->leftJoin($firma.'stok63t as t','e.EVRAKNO','=','t.EVRAKNO')
+      ->leftJoin($firma.'mmps10t as m10t','t.MPSNO','=','m10t.JOBNO')
+      ->leftJoin($firma.'mmps10e as m10e','m10t.EVRAKNO','=','m10e.EVRAKNO')
       ->where('e.CARIHESAPCODE',$URETICI)
       ->where('e.TARGETAMBCODE',$DEPO)
       ->get();
