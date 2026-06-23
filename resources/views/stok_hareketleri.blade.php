@@ -419,7 +419,7 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 					d.STOK_ADI ?? '',
 					d.NAME2 ?? '',
 					d.REVNO ?? '',
-					d.MIKTAR ?? '',
+					d.SF_MIKTAR ?? '',
 					d.SF_SF_UNIT ?? '',
 					d.LOTNUMBER ?? '',
 					d.SERINO ?? '',
@@ -443,7 +443,6 @@ $kullanici_delete_yetkileri = explode("|", $kullanici_veri->delete_perm);
 			let ws = XLSX.utils.aoa_to_sheet(data);
 			XLSX.utils.book_append_sheet(wb, ws, "Stok");
 
-			// 🔥 kritik nokta (Excel’i Excel yapan yer)
 			let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
 			let blob = new Blob(
 				[wbout],

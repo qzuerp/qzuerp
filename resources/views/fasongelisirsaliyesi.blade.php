@@ -1353,6 +1353,7 @@
               htmlCode += "<td><input type='text' class='form-control' value='"+(element.SERINO ?? '')+"' disabled><input type='hidden' name='SERINO[]' value='"+(element.SERINO ?? '')+"'></td>";
               htmlCode += "<td><input type='text' class='form-control' value='"+(element.AMBCODE ?? '')+"' disabled><input type='hidden' name='AMBCODE[]' value='"+(element.AMBCODE ?? '')+"'></td>";
               htmlCode += "<td><input type='text' class='form-control' value='"+(element.MPSNO ?? '')+"' disabled><input type='hidden' name='JOBNO[]' value='"+(element.MPSNO ?? '')+"'></td>";
+              htmlCode += "<td><input type='text' class='form-control' value='"+(element.SIPARTNO ?? '')+"' disabled><input type='hidden' name='SIPARTNO[]' value='"+(element.SIPARTNO ?? '')+"'></td>";
 
               // LOCATION
               htmlCode += "<td><input type='text' class='form-control' value='" + (element.LOCATION1 ?? '') + "' disabled><input type='hidden' name='LOCATION1[]' value='" + (element.LOCATION1 ?? '') + "'></td>";

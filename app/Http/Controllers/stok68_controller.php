@@ -718,7 +718,7 @@ class stok68_controller extends Controller
   
       $res = DB::table($firma.'stok63e','e')->leftJoin($firma.'stok63t as t','e.EVRAKNO','=','t.EVRAKNO')
       ->where('e.CARIHESAPCODE',$URETICI)
-      ->where('t.AMBCODE',$DEPO)
+      ->where('e.TARGETAMBCODE',$DEPO)
       ->get();
   
       return $res;
