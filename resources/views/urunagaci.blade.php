@@ -1416,7 +1416,7 @@
 												->get(['t20t.*','t20e.TARIH']);
 											@endphp
 
-											<option>Seçiniz</option>
+											<option value=''>Seçiniz</option>
 											@foreach ($teklifler as $teklif)
 												<option value="{{ $teklif->EVRAKNO }}|||{{ $teklif->TRNUM }}">{{ $teklif->EVRAKNO }} - {{ $teklif->KOD }} - {{ $teklif->TARIH }}</option>
 											@endforeach
@@ -1841,6 +1841,10 @@
 			});
 
 			$('#getirTeklif').on('change', function() {
+				if($(this).val() == null) {
+					$('#respons').html('');
+					return;
+				}
 				var value = $(this).val().split('|||');
 				var EVRAKNO = value[0];
 				var TRNUM = value[1];
