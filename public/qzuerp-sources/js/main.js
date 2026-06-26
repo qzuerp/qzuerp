@@ -642,21 +642,140 @@ function inputTemizle2() {
   $('form').off('submit');
   manuelCheck = false;
 }
-function exportTableToExcel(table) {
-  $('#' + table + ' tfoot').remove();
-  $("#" + table).table2excel({
-    exclude: ".noExport",
-    name: "Sayfa 1",
-    filename: "indir",
+/**
+ * Gelişmiş Excel export fonksiyonu
+ * SheetJS (xlsx) kullanır — sayıları numeric hücre olarak yazar ve formatlar
+ * 
+ * Kullanım: exportTableToExcel('myTableId')
+ * Kullanım: exportTableToExcel('myTableId', { filename: 'rapor', sheetName: 'Veri' })
+ */
+function exportTableToExcel(tableId, options = {}) {
+  const {
+      filename      = 'indir',
+      sheetName     = 'Sayfa 1',
+      excludeClass  = 'noExport',
+      numberFormat  = '#,##0.00',   // Türkçe ondalık formatı için uygun
+      integerFormat = '#,##0',
+      reload        = true,
+      reloadDelay   = 2000,
+  } = options;
 
-    fileext: ".xlsx",
-    preserveColors: true
-  });
+  // SheetJS yüklü değilse CDN'den çek
+  if (typeof XLSX === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      script.onload = () => _doExport();
+      document.head.appendChild(script);
+  } else {
+      _doExport();
+  }
 
-  setTimeout(() => {
-    location.reload();
-  }, 5000);
-  
+  function _doExport() {
+      const table = document.getElementById(tableId);
+      if (!table) {
+          console.error(`[exportTableToExcel] Tablo bulunamadı: #${tableId}`);
+          return;
+      }
+
+      const wb = XLSX.utils.book_new();
+      const wsData = [];
+      const colFormats = {}; // sütun bazlı format { colIndex: formatString }
+
+      // Tüm satırları gez (thead + tbody, tfoot hariç)
+      const rows = table.querySelectorAll('thead tr, tbody tr');
+
+      rows.forEach((tr, rowIndex) => {
+          const cells = tr.querySelectorAll('th, td');
+          const rowData = [];
+
+          cells.forEach((cell) => {
+              // noExport sınıfı olanları atla
+              if (cell.classList.contains(excludeClass)) return;
+
+              const rawText = cell.innerText.trim();
+              const parsed  = _parseNumber(rawText);
+
+              if (parsed !== null) {
+                  rowData.push(parsed.value);
+                  // Hangi sütunun float/integer olduğunu kaydet
+                  const colIdx = rowData.length - 1;
+                  colFormats[colIdx] = parsed.isFloat ? numberFormat : integerFormat;
+              } else {
+                  rowData.push(rawText);
+              }
+          });
+
+          if (rowData.length > 0) wsData.push(rowData);
+      });
+
+      // Sheet oluştur
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+      // Hücre formatlarını uygula
+      const range = XLSX.utils.decode_range(ws['!ref']);
+      for (let R = 1; R <= range.e.r; R++) {        // 0. satır başlık, atla
+          for (let C = range.s.c; C <= range.e.c; C++) {
+              if (colFormats[C] === undefined) continue;
+              const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+              if (!ws[cellRef]) continue;
+              if (ws[cellRef].t !== 'n') continue;  // sadece numeric hücrelere format
+              if (!ws[cellRef].z) {
+                  ws[cellRef].z = colFormats[C];
+              }
+          }
+      }
+
+      // Sütun genişlikleri — içeriğe göre otomatik
+      const colWidths = [];
+      wsData.forEach(row => {
+          row.forEach((cell, i) => {
+              const len = String(cell).length;
+              colWidths[i] = Math.max(colWidths[i] || 10, Math.min(len + 2, 40));
+          });
+      });
+      ws['!cols'] = colWidths.map(w => ({ wch: w }));
+
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      XLSX.writeFile(wb, `${filename}.xlsx`);
+
+      if (reload) {
+          setTimeout(() => location.reload(), reloadDelay);
+      }
+  }
+
+  /**
+   * Metin → sayı dönüşümü
+   * Türkçe format (1.234,56) ve standart (1,234.56) her ikisini de destekler
+   * @returns {{ value: number, isFloat: boolean } | null}
+   */
+  function _parseNumber(text) {
+    if (!text || text === '-' || text === '') return null;
+
+    // Tarih formatlarını sayı olarak işleme — string bırak
+    // Desteklenen: 2026-01-30 / 30.01.2026 / 30/01/2026 / 01-30-2026
+    if (/^\d{2,4}[-./]\d{1,2}[-./]\d{2,4}$/.test(text)) return null;
+
+    // Yüzde, para birimi sembollerini temizle
+    let cleaned = text.replace(/[%€$£₺\s]/g, '');
+
+    // Türkçe format tespiti: binlik ayraç nokta, ondalık virgül → 1.234,56
+    const isTurkish = /^\d{1,3}(\.\d{3})*(,\d+)?$/.test(cleaned) ||
+                      /^\d+,\d+$/.test(cleaned);
+
+    if (isTurkish) {
+        cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+    } else {
+        cleaned = cleaned.replace(/,/g, '');
+    }
+
+    const num = parseFloat(cleaned);
+    if (isNaN(num)) return null;
+
+    return {
+        value  : num,
+        isFloat: cleaned.includes('.') && !Number.isInteger(num),
+    };
+  }
 }
 function inputTemizle3() {
   $('#kartOlustur').css('display', 'inline');

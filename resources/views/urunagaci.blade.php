@@ -1916,13 +1916,13 @@
 				});
 			});
 
-			$('.copyTime').on('click', function() {
+			$(document).on('click', '.copyTime', function() {
 				var ayar = $(this).data('ayar');
 				var islem = $(this).data('islem');
 				var soktak = $(this).data('soktak');
 
-				$('#BOMREC_KAYNAK0_FILL').val(ayar);
-				$('#BOMREC_KAYNAK01_FILL').val(islem);
+				$('#BOMREC_KAYNAK0_FILL').val(islem);
+				$('#BOMREC_KAYNAK01_FILL').val(ayar);
 				$('#BOMREC_KAYNAK02_FILL').val(soktak);
 			});
 

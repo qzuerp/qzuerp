@@ -299,6 +299,9 @@ class mmps10_controller extends Controller
     $NUM4 = $request->NUM4;
     $BOMREC_YMAMULCODE = $request->BOMREC_YMAMULCODE;
 
+    $FASON_KODLAR = $request->FASON_KODLAR;
+    $FASON_ADLAR = $request->FASON_ADLAR;
+
     $satir_say = 0;
 
     if (is_array($R_KAYNAKTYPE))
@@ -465,6 +468,8 @@ class mmps10_controller extends Controller
             'NUM2' => $TEXT2[$i],
             'NUM3' => $TEXT3[$i],
             'NUM4' => $TEXT4[$i],
+            'FASON_KODLAR' => $FASON_KODLAR[$i],
+            'FASON_ADLAR' => $FASON_ADLAR[$i],
             'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
             'created_at' => date('Y-m-d H:i:s'),
           ]);
@@ -594,6 +599,8 @@ class mmps10_controller extends Controller
               'NUM2' => $TEXT2[$i],
               'NUM3' => $TEXT3[$i],
               'NUM4' => $TEXT4[$i],
+              'FASON_KODLAR' => $FASON_KODLAR[$i],
+              'FASON_ADLAR' => $FASON_ADLAR[$i],
               'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
               'created_at' => date('Y-m-d H:i:s'),
             ]);
@@ -637,6 +644,8 @@ class mmps10_controller extends Controller
                 'NUM2' => $TEXT2[$i],
                 'NUM3' => $TEXT3[$i],
                 'NUM4' => $TEXT4[$i],
+                'FASON_KODLAR' => $FASON_KODLAR[$i],
+                'FASON_ADLAR' => $FASON_ADLAR[$i],
                 'R_YMAMULKODU' => $BOMREC_YMAMULCODE[$i],
                 'updated_at' => date('Y-m-d H:i:s'),
               ]);

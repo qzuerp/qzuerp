@@ -83,7 +83,7 @@
     <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.date.extensions.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.inputmask.extensions.js') }}" defer></script> -->
     <!-- <script src="{{ asset('qzuerp-sources/js/3rd-party/jquery/jquery.slimscroll.min.js') }}" defer></script> -->
-    <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
     <script src="{{ asset('qzuerp-sources/js/3rd-party/adminlte/adminlte.min.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/3rd-party/adminlte/demo.js') }}" defer></script>
     <script src="{{ asset('qzuerp-sources/js/3rd-party/select2/select2.min.js') }}" defer></script>

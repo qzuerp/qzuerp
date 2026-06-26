@@ -485,6 +485,8 @@
 																		<th>Tamamlanan Yarımamul Miktarı</th>
 																		<th>Bakiye Yarımamul Miktarı</th>
 																		<th>Kullanılacak Kalıp Kodu</th>
+																		<th>Fason Kodları</th>
+																		<th>Fason Adları</th>
 																		<th>Varyant 1</th>
 																		<th>Varyant 2</th>
 																		<th>Varyant 3</th>
@@ -586,6 +588,10 @@
 																				@endphp
 																			</select>
 																		</th>
+
+																		<th><input type="text" class="form-control " data-name="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FASON_KODLAR" readonly id=""></th>
+																		<th><input type="text" class="form-control " data-name="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FASON_ADLAR" readonly id=""></th>
+
 																		<th><input type="text" class="form-control TEXT1" data-name="TEXT1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT1" id="TEXT1_FILL"></th>
 																		<th><input type="text" class="form-control TEXT2" data-name="TEXT2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT2" id="TEXT2_FILL"></th>
 																		<th><input type="text" class="form-control TEXT3" data-name="TEXT3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="TEXT3" id="TEXT3_FILL"></th>
@@ -668,6 +674,10 @@
 																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_TMYMAMULMIKTAR[]" value="{{ $veri->R_TMYMAMULMIKTAR }}"></td>
 																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_BAKIYEYMAMULMIKTAR[]" value="{{ $veri->R_YMAMULMIKTAR - ($veri->R_TMYMAMULMIKTAR + $veri->R_MANUEL_TMMIKTAR) }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="KALIPKODU[]" value="{{ $veri->KALIPKODU }}"></td>
+
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_KODLAR[]" readonly value="{{ $veri->FASON_KODLAR }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_ADLAR[]" readonly value="{{ $veri->FASON_ADLAR }}"></td>
+																		
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT3[]" value="{{ $veri->TEXT3 }}"></td>
@@ -2468,6 +2478,10 @@
 					htmlCode += " <td><input type='number' class='form-control' name='R_BAKIYEYMAMULMIKTAR[]' value='"+satirEkleInputs.R_BAKIYEYMAMULMIKTAR_FILL+"'></td>";
 					
 					htmlCode += " <td><input type='text' class='form-control' name='KALIPKODU[]' value='"+satirEkleInputs.KALIPKODU_FILL+"' disabled><input type='hidden' class='form-control' name='KALIPKODU[]' value='"+satirEkleInputs.KALIPKODU_FILL+"'></td>";
+
+					htmlCode += "<td><input type='text' class='form-control' name='FASON_KODLAR[]' readonly value=''></td>";
+			        htmlCode += "<td><input type='text' class='form-control' name='FASON_ADLAR[]' readonly value=''></td>";
+
 					htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td>";
 					htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td>";
 					htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td>";
@@ -2640,10 +2654,14 @@
 			        htmlCode += "<td><input type='number' class='form-control' name='R_MANUEL_TMMIKTAR[]' value='0'></td>";
 			        
 			        htmlCode += "<td><input type='number' class='form-control' name='R_TMYMAMULMIKTAR[]' value='0'></td>";
+
 			        
 			        htmlCode += "<td><input type='number' class='form-control' name='R_BAKIYEYMAMULMIKTAR[]' value='{{ $tableRow->PAKETSAYISI * $tableRow->PAKETICERIGI }}'></td>";
 			        
 			        htmlCode += "<td><input type='text' class='form-control' name='KALIPKODU[]' value='{{ $tableRow->KALIP_KODU1 }}'></td>";
+
+			        htmlCode += "<td><input type='text' class='form-control' name='FASON_KODLAR[]' readonly value='{{ $tableRow->FASON_KODLAR }}'></td>";
+			        htmlCode += "<td><input type='text' class='form-control' name='FASON_ADLAR[]' readonly value='{{ $tableRow->FASON_ADLAR }}'></td>";
 
 			        htmlCode += "<td><input type='text' class='form-control' name='TEXT1[]' value='{{ $tableRow->TEXT1 }}'></td>";
 			        htmlCode += "<td><input type='text' class='form-control' name='TEXT2[]' value='{{ $tableRow->TEXT2 }}'></td>";
