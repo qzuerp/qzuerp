@@ -1972,14 +1972,17 @@
 
                               $operatorDetay = $baseQuery()->select(
                                   'e.STOK_CODE', 'e.TO_OPERATOR','M10T.R_OPERASYON_IMLT01_AD',
+                                  'M10E.SF_TOPLAMMIKTAR',
                                   DB::raw("MAX(P00.AD) AS OPR_AD"),
                                   DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'U' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS uretim_sure"),
                                   DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'A' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS ayar_sure"),
                                   DB::raw("SUM(CASE WHEN t.ISLEM_TURU = 'D' THEN ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0) ELSE 0 END) AS durus_sure"),
                                   DB::raw("SUM(ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0)) AS toplam_uretim"),
-                                  DB::raw("SUM(CASE WHEN ISNULL(CAST(M10E.SF_TOPLAMMIKTAR AS DECIMAL(18,4)), 0) > 0 THEN (ISNULL(CAST(M10T.R_MIKTAR0 AS DECIMAL(18,4)), 0) + ISNULL(CAST(M10T.R_MIKTAR2 AS DECIMAL(18,4)), 0)) / CAST(M10E.SF_TOPLAMMIKTAR AS DECIMAL(18,4)) * ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0) ELSE 0 END) AS planlanan_sure"),
+                                  DB::raw("(CASE WHEN ISNULL(CAST(M10E.SF_TOPLAMMIKTAR AS DECIMAL(18,4)), 0) > 0 
+                                  THEN ( (ISNULL(CAST(M10T.R_MIKTAR0 AS DECIMAL(18,4)), 0) + ISNULL(CAST(M10T.R_MIKTAR2 AS DECIMAL(18,4)), 0)) / CAST(M10E.SF_TOPLAMMIKTAR AS DECIMAL(18,4)) ) * ISNULL(CAST(e.SF_MIKTAR AS DECIMAL(18,4)), 0) 
+                                  ELSE 0 END) AS planlanan_sure"),
                                   DB::raw("SUM(ISNULL(CAST(t.SURE AS DECIMAL(18,4)), 0)) AS gerceklesen_sure")
-                              )->whereNotNull('e.STOK_CODE')->where('e.STOK_CODE', '<>', '')->whereNotNull('e.TO_OPERATOR')->where('e.TO_OPERATOR', '<>', '')->groupBy('e.STOK_CODE', 'e.TO_OPERATOR', 'M10T.R_OPERASYON_IMLT01_AD')->orderBy('e.STOK_CODE')->orderByDesc('toplam_uretim')->get()->groupBy('STOK_CODE');
+                              )->whereNotNull('e.STOK_CODE')->where('e.STOK_CODE', '<>', '')->whereNotNull('e.TO_OPERATOR')->where('e.TO_OPERATOR', '<>', '')->groupBy('e.SF_MIKTAR','M10T.R_MIKTAR2','M10T.R_MIKTAR0','M10E.SF_TOPLAMMIKTAR', 'e.STOK_CODE', 'e.TO_OPERATOR', 'M10T.R_OPERASYON_IMLT01_AD')->orderBy('e.STOK_CODE')->orderByDesc('toplam_uretim')->get()->groupBy('STOK_CODE');
 
                               $operasyonDetay = $baseQuery()->select(
                                   'e.STOK_CODE', 'M10T.R_OPERASYON',

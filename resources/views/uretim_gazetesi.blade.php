@@ -52,10 +52,8 @@ $like = function($v) {
     return "%$v%";
 };
 
-// İlk SELECT (MMPS10T) için WHERE koşulları
-$where1 = ['M10T.R_KAYNAKTYPE = ?'];
-$params1 = ['I'];
-
+$where1 = [];
+$params1 = [];
 if ($sipno !== '') {
     $where1[] = 'M10E.SIPNO LIKE ?';
     $params1[] = $like($sipno);
@@ -73,7 +71,7 @@ if ($mps_no !== '') {
     $params1[] = $like($mps_no);
 }
 
-$whereSql1 = 'WHERE ' . implode(' AND ', $where1) . " AND S40T.AK = ''";
+$whereSql1 = 'WHERE 1=1' . implode(' AND ', $where1) . " AND S40T.AK = ''";
 
 // İkinci SELECT (UNION ALL kısmı) için WHERE koşulları
 $where2 = ["S40.AK = ''"];
@@ -95,9 +93,8 @@ if ($mamul_kod !== '') {
 
 $whereSql2 = 'WHERE ' . implode(' AND ', $where2);
 
-// İlk SELECT (MMPS10T) için WHERE koşulları
-$where3 = ['M10T.R_KAYNAKTYPE = ?'];
-$params3 = ['H'];
+$where3 = [];
+$params3 = [];
 
 if ($sipno !== '') {
     $where3[] = 'M10E.SIPNO LIKE ?';
@@ -115,7 +112,7 @@ if ($mps_no !== '') {
     $where3[] = 'M10T.EVRAKNO LIKE ?';
     $params3[] = $like($mps_no);
 }
-$whereSql3 = 'WHERE ' . implode(' AND ', $where3);
+$whereSql3 = 'WHERE 1=1' . implode(' AND ', $where3);
 // Tüm parametreleri birleştir
 $params = array_merge($params1, $params2,$params3);
 
@@ -141,29 +138,31 @@ agg_miktar AS (
     GROUP BY E.JOBNO, E.OPERASYON
 )
 SELECT
-M10T.R_KAYNAKTYPE,
-    M10T.EVRAKNO AS mps_no,
-    M10E.MAMULSTOKKODU AS mamul_kod,
-    S00.AD AS mamul_ad,
-    M10E.MUSTERIKODU AS musteri_kod,
-    C00.AD AS musteri_ad,
-    S40E.CHSIPNO AS sip_no,
-    M10E.SIPARTNO AS sip_art_no,
-    S40T.SF_MIKTAR AS sip_miktar,
-    M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
-    S40T.SF_BAKIYE AS sip_bakiye,
-    S40T.TERMIN_TAR AS termin,
-    M10T.JOBNO,
-    M10T.R_OPERASYON,
-    I01.AD AS R_OPERASYON_AD,
-    M10T.R_SIRANO,
-    TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
-    TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
-    A1.gerceklenen_SURE,
-    A2.gerceklesen_MIKTAR,
-    (SELECT MIN(created_at) FROM STOK63T WHERE LOTNUMBER = M10T.EVRAKNO) AS ILK_FASON,
-    ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ORDER BY t63.created_at desc ) AS FASON_DEPO, 
-         ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
+  M10T.R_KAYNAKTYPE,
+  M10T.FASON_KODLAR,
+  M10T.FASON_ADLAR,
+  M10T.EVRAKNO AS mps_no,
+  M10E.MAMULSTOKKODU AS mamul_kod,
+  S00.AD AS mamul_ad,
+  M10E.MUSTERIKODU AS musteri_kod,
+  C00.AD AS musteri_ad,
+  S40E.CHSIPNO AS sip_no,
+  M10E.SIPARTNO AS sip_art_no,
+  S40T.SF_MIKTAR AS sip_miktar,
+  M10E.TAMAMLANAN_URETIM_FISI_MIKTARI AS uretilen_miktar,
+  S40T.SF_BAKIYE AS sip_bakiye,
+  S40T.TERMIN_TAR AS termin,
+  M10T.JOBNO,
+  M10T.R_OPERASYON,
+  I01.AD AS R_OPERASYON_AD,
+  M10T.R_SIRANO,
+  TRY_CONVERT(DECIMAL(18,6), M10T.R_MIKTART) AS plan_sure,
+  TRY_CONVERT(DECIMAL(18,6), M10T.R_YMK_YMPAKETICERIGI) AS plan_miktar,
+  A1.gerceklenen_SURE,
+  A2.gerceklesen_MIKTAR,
+  (SELECT MIN(created_at) FROM STOK63T WHERE LOTNUMBER = M10T.EVRAKNO) AS ILK_FASON,
+  ( SELECT TOP 1(g0.ad) FROM STOK63T t63 LEFT JOIN gdef00 g0 on g0.kod = t63.AMBCODE WHERE t63.LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND t63.KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ORDER BY t63.created_at desc ) AS FASON_DEPO, 
+  ( SELECT SUM(SF_MIKTAR) FROM STOK63T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_SEVK,     
   ( SELECT SUM(SF_MIKTAR) FROM STOK68T  WHERE LOTNUMBER LIKE '%'+trim(M10T.EVRAKNO)+'%' AND KOD LIKE '%'+trim(M10E.MAMULSTOKKODU)+'%' ) AS FASON_GELEN,
   case when R_OPERASYON IS NULL THEN M10T.R_KAYNAKKODU ELSE NULL END AS R_KAYNAKKODU,D00.DOSYA
 FROM MMPS10T AS M10T
@@ -186,28 +185,30 @@ AND (M10E.ACIK_KAPALI = 'A' OR M10E.ACIK_KAPALI = 'K')
 UNION ALL
 
 SELECT
-NULL AS R_KAYNAKTYPE,
-    NULL AS mps_no,
-    S40.KOD AS mamul_kod,
-    S002.AD AS mamul_ad,
-    S40E2.CARIHESAPCODE AS musteri_kod,
-    C002.AD AS musteri_ad,
-    S40E2.CHSIPNO AS sip_no,
-    S40.ARTNO AS sip_art_no,
-    S40.SF_MIKTAR AS sip_miktar,
-    S40.URETILEN_MIKTARI AS uretilen_miktar,
-    S40.SF_BAKIYE AS sip_bakiye,
-    S40.TERMIN_TAR AS termin,
-    NULL AS JOBNO,
-    NULL AS R_OPERASYON,
-    NULL AS R_OPERASYON_AD,
-    '999' AS R_SIRANO,
-    NULL AS plan_sure,
-    NULL AS plan_miktar,
-    NULL AS gerceklenen_SURE,
-    NULL AS gerceklesen_MIKTAR,
-    NULL AS ILK_FASON,
-    NULL AS FASON_DEPO,NULL AS FASON_SEVK,NULL AS FASON_GELEN,NULL AS R_KAYNAKKODU ,D00.DOSYA
+  NULL AS R_KAYNAKTYPE,
+  NULL AS FASON_KODLAR,
+  NULL AS FASON_ADLAR,
+  NULL AS mps_no,
+  S40.KOD AS mamul_kod,
+  S002.AD AS mamul_ad,
+  S40E2.CARIHESAPCODE AS musteri_kod,
+  C002.AD AS musteri_ad,
+  S40E2.CHSIPNO AS sip_no,
+  S40.ARTNO AS sip_art_no,
+  S40.SF_MIKTAR AS sip_miktar,
+  S40.URETILEN_MIKTARI AS uretilen_miktar,
+  S40.SF_BAKIYE AS sip_bakiye,
+  S40.TERMIN_TAR AS termin,
+  NULL AS JOBNO,
+  NULL AS R_OPERASYON,
+  NULL AS R_OPERASYON_AD,
+  '999' AS R_SIRANO,
+  NULL AS plan_sure,
+  NULL AS plan_miktar,
+  NULL AS gerceklenen_SURE,
+  NULL AS gerceklesen_MIKTAR,
+  NULL AS ILK_FASON,
+  NULL AS FASON_DEPO,NULL AS FASON_SEVK,NULL AS FASON_GELEN,NULL AS R_KAYNAKKODU ,D00.DOSYA
 FROM STOK40T AS S40
 LEFT JOIN STOK40E  AS S40E2  ON S40E2.EVRAKNO = S40.EVRAKNO
 LEFT JOIN STOK00   AS S002   ON S002.KOD = S40.KOD
@@ -216,7 +217,9 @@ LEFT JOIN DOSYALAR00 AS D00  ON D00.EVRAKNO = S40.KOD
 {$whereSql2}
 UNION ALL 
 SELECT
-M10T.R_KAYNAKTYPE ,
+    M10T.R_KAYNAKTYPE,
+    M10T.FASON_KODLAR,
+    M10T.FASON_ADLAR,
     M10T.EVRAKNO AS mps_no,
     M10E.MAMULSTOKKODU AS mamul_kod,
     S00.AD AS mamul_ad,
@@ -316,10 +319,12 @@ foreach ($rows as $r) {
 
         if (!isset($grouped[$key]['ops'][$op])) {
             $grouped[$key]['ops'][$op] = [
+                'FASON_KODLAR' => $r['FASON_KODLAR'],
+                'FASON_ADLAR' => $r['FASON_ADLAR'],
                 'planSure' => $planSure, 
                 'actSure' => $actSure,
                 'planMik' => $planMik, 
-                'actMik' => $actMik
+                'actMik' => $actMik,
             ];
         } else {
             $grouped[$key]['ops'][$op]['planSure'] += $planSure;
@@ -616,7 +621,7 @@ kbd{
 .dmodal-overlay[hidden]{display:none}
 .dmodal-box{
   background:var(--surface);border-radius:14px;
-  width:100%;max-width:850px;max-height:95vh;overflow-y:auto;
+  width:100%;max-width:1000px;max-height:95vh;overflow-y:auto;
   box-shadow:0 20px 60px rgba(0,0,0,.2);
   animation:modalIn .2s ease;
 }
@@ -989,6 +994,7 @@ kbd{
                         'ad'      => $k,
                         'planMik' => $v['planMik'],
                         'actMik'  => $v['actMik'],
+                        'FASON_ADLAR'  => $v['FASON_ADLAR'],
                       ])->values()->toArray()
                     , JSON_UNESCAPED_UNICODE)) ?>"
                     title="Detayı görüntüle"
@@ -1369,6 +1375,7 @@ $(function () {
       const pct  = op.planMik > 0 ? Math.min(100, Math.round((op.actMik/op.planMik)*100)) : 0;
       const st   = status(pct);
       const last = i === ops.length - 1;
+      var fason_adlar = op.FASON_ADLAR == null ? '' : '('+op.FASON_ADLAR.replace(/,/g, ', ')+')'
       tlHtml += `
         <div class="dtl-item">
           <div class="dtl-dot-col">
@@ -1377,7 +1384,7 @@ $(function () {
           </div>
           <div class="dtl-body">
             <div class="dtl-row">
-              <span class="dtl-opname">${op.ad}</span>
+              <span class="dtl-opname">${op.ad}  ${fason_adlar}</span>
               <span class="dtl-chip ${st}">${statusTxt(pct,st)}</span>
             </div>
             <div class="dtl-bar-bg">

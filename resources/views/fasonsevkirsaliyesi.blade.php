@@ -1765,7 +1765,7 @@
                 var kod  = ($(this).data('kod')  || '').toLocaleUpperCase('tr-TR');
                 var ad   = ($(this).data('ad')   || '').toLocaleUpperCase('tr-TR');
                 var mps  = String($(this).data('mps')  || '').toLocaleUpperCase('tr-TR');
-                var depo = ($(this).data('depo') || '').toLocaleUpperCase('tr-TR');
+                var depo = (String($(this).data('depo')) || '').toLocaleUpperCase('tr-TR');
 
                 var gorunsun =
                     (!aramaVal || kod.includes(aramaVal) || ad.includes(aramaVal)) &&
