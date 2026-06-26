@@ -588,6 +588,11 @@
   
     /* ─── Event listeners ──────────────────────────────────────────── */
     document.addEventListener("contextmenu", (e) => {
+      if (e.shiftKey) {
+        closeMenu();
+        return; 
+      }
+      
       e.preventDefault();
       openMenu(e);
     });

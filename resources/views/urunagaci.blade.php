@@ -1369,7 +1369,10 @@
 										</div>
 										
 										<div class="evrak-grid" id="evrakGrid">
-											@foreach ($imlt01_evraklar as $imlt01)
+											@php
+												$fason_operasyonlari = DB::table($database.'imlt01')->where('GK_1', 'FSN')->get();
+											@endphp
+											@foreach ($fason_operasyonlari as $imlt01)
 												<div class="evrak-card"
 													id="card-{{ $imlt01->id }}"
 													data-ad="{{ $imlt01->AD }}"
