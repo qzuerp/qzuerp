@@ -1255,11 +1255,11 @@ class stok20_controller extends Controller
       FROM (
         (SELECT MAX(R_SIRANO) 
           FROM {$firma}MMPS10T 
-          WHERE EVRAKNO = S20.ISEMRINO
+          WHERE EVRAKNO = S20E.ISEMRINO
             AND R_KAYNAKTYPE = 'I'
             AND R_KAYNAKKODU LIKE 'F%'
           ) AS MPS_SIRANO
-        WHERE S20.EVRAKNO = {$GET_ID}
+      WHERE S20E.EVRAKNO = {$GET_ID}
       ) S20T
 
       LEFT JOIN {$firma}STOK20E S20E ON S20E.EVRAKNO = S20T.EVRAKNO

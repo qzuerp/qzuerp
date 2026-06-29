@@ -722,6 +722,7 @@ class stok68_controller extends Controller
       ->leftJoin($firma.'mmps10e as m10e','m10t.EVRAKNO','=','m10e.EVRAKNO')
       ->where('e.CARIHESAPCODE',$URETICI)
       ->where('e.TARGETAMBCODE',$DEPO)
+      ->where('m10e.ACIK_KAPALI','A')
       ->get();
   
       return $res;
