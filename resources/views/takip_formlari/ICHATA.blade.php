@@ -120,6 +120,7 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     data-bs-title="ich_part_code"
+                    name='ich_part_code'
                     onchange="stokAdiGetir3(this.value)">
 
                 <option value="">Seç</option>
