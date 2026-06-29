@@ -120,7 +120,6 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     data-bs-title="ich_part_code"
-                    name='ich_part_code'
                     onchange="stokAdiGetir3(this.value)">
 
                 <option value="">Seç</option>
@@ -134,7 +133,7 @@
                         {{ $item->KOD }} - {{ $item->AD }}
                     </option>
                 @endforeach
-                <input type="hidden" name="ich_part_code" id="ich_part_code">
+                <input type="hidden" name="ich_part_code" value="{{ $kart_veri->ich_part_code ?? null }}" id="ich_part_code">
             </select>
         </div>
 
