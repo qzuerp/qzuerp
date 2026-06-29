@@ -675,8 +675,8 @@
 																		<td style="{{ $bgColor }}"><input type="number" class="form-control" name="R_BAKIYEYMAMULMIKTAR[]" value="{{ $veri->R_YMAMULMIKTAR - ($veri->R_TMYMAMULMIKTAR + $veri->R_MANUEL_TMMIKTAR) }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="KALIPKODU[]" value="{{ $veri->KALIPKODU }}"></td>
 
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_KODLAR[]" readonly value="{{ $veri->FASON_KODLAR }}"></td>
-																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_ADLAR[]" readonly value="{{ $veri->FASON_ADLAR }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_KODLAR[]" readonly value="{{ $veri->FASON_KODLAR ?? '' }}"></td>
+																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="FASON_ADLAR[]" readonly value="{{ $veri->FASON_ADLAR ?? '' }}"></td>
 																		
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT1[]" value="{{ $veri->TEXT1 }}"></td>
 																		<td style="{{ $bgColor }}"><input type="text" class="form-control" name="TEXT2[]" value="{{ $veri->TEXT2 }}"></td>
@@ -2660,8 +2660,8 @@
 			        
 			        htmlCode += "<td><input type='text' class='form-control' name='KALIPKODU[]' value='{{ $tableRow->KALIP_KODU1 }}'></td>";
 
-			        htmlCode += "<td><input type='text' class='form-control' name='FASON_KODLAR[]' readonly value='{{ $tableRow->FASON_KODLAR }}'></td>";
-			        htmlCode += "<td><input type='text' class='form-control' name='FASON_ADLAR[]' readonly value='{{ $tableRow->FASON_ADLAR }}'></td>";
+			        htmlCode += "<td><input type='text' class='form-control' name='FASON_KODLAR[]' readonly value='{{ $tableRow->FASON_KODLAR ?? '' }}'></td>";
+			        htmlCode += "<td><input type='text' class='form-control' name='FASON_ADLAR[]' readonly value='{{ $tableRow->FASON_ADLAR ?? '' }}'></td>";
 
 			        htmlCode += "<td><input type='text' class='form-control' name='TEXT1[]' value='{{ $tableRow->TEXT1 }}'></td>";
 			        htmlCode += "<td><input type='text' class='form-control' name='TEXT2[]' value='{{ $tableRow->TEXT2 }}'></td>";

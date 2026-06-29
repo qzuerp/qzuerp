@@ -1205,10 +1205,10 @@
                         T1.MAMULSTOKKODU,
                         T1.MAMULSTOKADI,
                         CASE 
-                            WHEN M10.R_KAYNAKKODU LIKE 'FSN%' THEN M10.R_YMAMULKODU
+                            WHEN M10.R_KAYNAKKODU LIKE 'F%' THEN M10.R_YMAMULKODU
                             ELSE (
                                 SELECT TOP 1 R_KAYNAKKODU 
-                                FROM {$database}MMPS10T 
+                                FROM {$database}MMPS10T
                                 WHERE EVRAKNO = T1.EVRAKNO
                                   AND R_SIRANO = T1.ANA_SIRANO 
                                   AND R_KAYNAKTYPE = 'H'
@@ -1227,6 +1227,7 @@
                                 WHERE M10T_SUB.EVRAKNO = M10T.EVRAKNO
                                   AND M10T_SUB.R_SIRANO < M10T.R_SIRANO
                                   AND M10T_SUB.R_KAYNAKTYPE = 'I'
+                                  AND M10T_SUB.R_KAYNAKKODU LIKE 'F%'
                             ) AS ONCEKI_OPERASYON
                         FROM {$database}MMPS10T M10T
                         LEFT JOIN {$database}MMPS10E M10E
@@ -1247,7 +1248,8 @@
               $res = DB::select($sql);
               $LASTTRNUM = DB::table($database.'stok63t')
                 ->where('EVRAKNO', @$kart_veri->EVRAKNO)
-                ->max('TRNUM');
+                ->orderBy('id','desc')
+                ->value('TRNUM');
             @endphp
 
             {{-- Arama Barı --}}

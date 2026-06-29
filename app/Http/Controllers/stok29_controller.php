@@ -240,11 +240,11 @@ class stok29_controller extends Controller
               ->whereRaw("ARTNO = ?", [$SIPARTNO[$i]])
               ->update([
                   'NETKAPANANMIK' => DB::raw("NETKAPANANMIK + {$SF_MIKTAR[$i]}"),
-                  'SF_BAKIYE'     => DB::raw("SF_MIKTAR - {$SF_MIKTAR[$i]}"),
+                  'SF_BAKIYE'     => DB::raw("SF_BAKIYE - {$SF_MIKTAR[$i]}"),
                   'AK' => DB::raw("
                       CASE 
-                          WHEN {$SF_MIKTAR[$i]} >= SF_MIKTAR THEN 'K'
-                          ELSE 'A'
+                        WHEN (ISNULL(SF_BAKIYE, SF_MIKTAR) - {$SF_MIKTAR[$i]}) <= 0 THEN 'K'
+                        ELSE 'A'
                       END
                   ")
               ]);
@@ -368,17 +368,17 @@ class stok29_controller extends Controller
             $mik = (float) $SF_MIKTAR[$i];
         
             DB::table($firma.'stok46t')
-                ->where('ARTNO', $SIPARTNO[$i])
-                ->update([
-                    'NETKAPANANMIK' => DB::raw("ISNULL(NETKAPANANMIK,0) + {$mik}"),
-                    'SF_BAKIYE'     => DB::raw("ISNULL(SF_MIKTAR,0) - {$mik}"),
-                    'AK' => DB::raw("
-                        CASE 
-                            WHEN {$mik} >= SF_MIKTAR THEN 'K'
-                            ELSE 'A'
-                        END
-                    ")
-                ]);
+              ->where('ARTNO', $SIPARTNO[$i])
+              ->update([
+                  'NETKAPANANMIK' => DB::raw("ISNULL(NETKAPANANMIK,0) + {$mik}"),
+                  'SF_BAKIYE'     => DB::raw("ISNULL(SF_BAKIYE,0) - {$mik}"),
+                  'AK' => DB::raw("
+                      CASE 
+                        WHEN (ISNULL(SF_BAKIYE, SF_MIKTAR) - {$mik}) <= 0 THEN 'K'
+                        ELSE 'A'
+                      END
+                  ")
+              ]);
         }
         
         
