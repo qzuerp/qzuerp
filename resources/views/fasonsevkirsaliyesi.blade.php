@@ -1197,7 +1197,8 @@
                     S01.NUM1,
                     S01.NUM2,
                     S01.NUM3, 
-                    S01.NUM4
+                    S01.NUM4,
+                    G00.AD AS DEPO_ADI
                 FROM (
                     SELECT 
                         T1.EVRAKNO,
@@ -1232,7 +1233,7 @@
                         FROM {$database}MMPS10T M10T
                         LEFT JOIN {$database}MMPS10E M10E
                             ON M10T.EVRAKNO = M10E.EVRAKNO
-                        WHERE M10T.R_ACIK_KAPALI IS NULL
+                        WHERE M10E.ACIK_KAPALI = 'A'
                           AND M10T.R_KAYNAKTYPE = 'I'
                           AND M10T.R_KAYNAKKODU LIKE 'F%'
                     ) AS T1
@@ -1241,8 +1242,9 @@
                       AND M10.R_SIRANO = T1.ONCEKI_OPERASYON
                 ) AS T2
                 LEFT JOIN {$database}VW_STOK01 S01 ON S01.KOD = T2.HAMMADDE
+                LEFT JOIN {$database}gdef00 G00 ON G00.KOD = S01.AMBCODE
                 LEFT JOIN {$database}STOK00 S00 ON S00.KOD = T2.HAMMADDE
-                WHERE S01.MIKTAR > 0
+                WHERE S01.MIKTAR > 0 AND G00.GK_2 != 'FSN_G2'
               ";
 
               $res = DB::select($sql);
@@ -1324,7 +1326,7 @@
                       <td><input type="date" class="form-control form-control-sm" name="TERMIN_TAR[]" value=""></td>
                       <td><input type="text" class="form-control form-control-sm" name="LOTNUMBER[]" value="{{ $value->LOTNUMBER }}" readonly></td>
                       <td><input type="text" class="form-control form-control-sm" name="SERINO[]" value="{{ $value->SERINO }}" readonly></td>
-                      <td><input type="text" class="form-control form-control-sm" name="AMBCODE[]" value="{{ $value->AMBCODE }}" readonly></td>
+                      <td><input type="text" class="form-control form-control-sm" name="AMBCODE[]" value="{{ $value->AMBCODE }} - {{ $value->DEPO_ADI }}" readonly></td>
                       <td><input type="text" class="form-control form-control-sm" name="MPSNO[]" value="{{ $value->JOBNO }}" readonly></td>
                       <td>
                         <div class="input-group input-group-sm">

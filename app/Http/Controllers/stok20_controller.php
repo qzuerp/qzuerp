@@ -1226,6 +1226,7 @@ class stok20_controller extends Controller
         $u = Auth::user();
       }
       $firma = trim($u->firma).'.dbo.';
+      $AMBCODE = $request->AMBCODE;
 
       $sql_sorgu = "
         SELECT 
@@ -1252,12 +1253,13 @@ class stok20_controller extends Controller
           ), 0) AS MEVCUT_STOK
 
       FROM (
-          SELECT S20.*,
-                (SELECT MAX(R_SIRANO) 
-                  FROM {$firma}MMPS10T 
-                  WHERE EVRAKNO = S20.ISEMRINO) AS MPS_SIRANO
-          FROM {$firma}STOK20T S20
-          WHERE S20.EVRAKNO = {$GET_ID}
+        (SELECT MAX(R_SIRANO) 
+          FROM MMPS10T 
+          WHERE EVRAKNO = S20.ISEMRINO
+            AND R_KAYNAKTYPE = 'I'
+            AND R_KAYNAKKODU LIKE 'F%'
+          ) AS MPS_SIRANO
+        WHERE S20.EVRAKNO = {$GET_ID}
       ) S20T
 
       LEFT JOIN {$firma}STOK20E S20E ON S20E.EVRAKNO = S20T.EVRAKNO
@@ -1298,7 +1300,7 @@ class stok20_controller extends Controller
                             NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
                             LOCATION1, LOCATION2, LOCATION3, LOCATION4")
                 ->where('KOD',$stok_kod)
-                // ->where('AMBCODE',)
+                ->where('AMBCODE',$AMBCODE)
                 ->groupBy(
                     'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE',
                     'NUM1', 'NUM2', 'NUM3', 'NUM4',
