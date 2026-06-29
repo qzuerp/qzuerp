@@ -1254,7 +1254,7 @@ class stok20_controller extends Controller
 
       FROM (
         (SELECT MAX(R_SIRANO) 
-          FROM MMPS10T 
+          FROM {$firma}MMPS10T 
           WHERE EVRAKNO = S20.ISEMRINO
             AND R_KAYNAKTYPE = 'I'
             AND R_KAYNAKKODU LIKE 'F%'

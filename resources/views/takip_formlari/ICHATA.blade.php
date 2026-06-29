@@ -206,7 +206,7 @@
             >
                 <option>Seç</option>
                 @php
-                    $hata_kodlari = DB::table($database.'gecoust')->where('EVRAKNO', 'DRSSBB')->select('KOD', 'AD')->get();
+                    $hata_kodlari = DB::table($database.'gecoust')->where('EVRAKNO', 'MPSGK2')->select('KOD', 'AD')->get();
                 @endphp
                 @foreach ($hata_kodlari as $hata)
                     <option value="{{ $hata->KOD }}" {{ $hata->KOD == @$kart_veri->ich_fault_code ? 'selected' : '' }}>{{ $hata->KOD }} - {{ $hata->AD }}</option>
