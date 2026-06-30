@@ -2598,7 +2598,7 @@
       </form>
             
       <div class="modal fade bd-example-modal-lg" id="modal_evrakSuz" tabindex="-1" role="dialog" aria-labelledby="modal_evrakSuz" aria-hidden="false">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-filter" style="color:blue;"></i>&nbsp;Evrak Süz</h4>

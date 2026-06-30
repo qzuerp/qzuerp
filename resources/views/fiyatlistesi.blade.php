@@ -194,7 +194,9 @@ if (isset($kart_veri)) {
 
                     <thead>
                       <tr>
-                        <th>#</th>
+                        <th>
+                          <center><input type="checkbox" style="width:20px;height:20px;" id="hepsinisec"></center>
+                        </th>
                         <th style="display:none;">Sıra</th>
                         <th>Stok Kodu</th>
                         <th>Stok Adı</th>
@@ -326,7 +328,7 @@ if (isset($kart_veri)) {
                     <tbody>
                     @foreach ($t_kart_veri as $key => $veri)
                       <tr>
-                        <td><input type="checkbox" style="width:20px;height:20px;" name="hepsinisec" id="hepsinisec"><input type="hidden" id="D7" name="D7[]" value=""></td>
+                        <td><input type="checkbox" style="width:20px;height:20px;" class="hepsinisec"></td>
                         <td style="display: none;"><input type="hidden" class="form-control" maxlength="6" name="TRNUM[]" value="{{ $veri->TRNUM }}"></td>
                         <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                         <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
@@ -594,6 +596,14 @@ if (isset($kart_veri)) {
 <script>
 $(document).ready(function() {
 
+  $('#hepsinisec').on('change', function() {
+    $('.hepsinisec').prop('checked', this.checked);
+  });
+
+  $('.hepsinisec').on('change', function() {
+    $('#hepsinisec').prop('checked', $('.hepsinisec:checked').length == $('.hepsinisec').length);
+  });
+
   $('#STOK_KODU_SHOW').select2({
       placeholder: 'Stok kodu seç...',
       ajax: {
@@ -657,7 +667,7 @@ $(document).ready(function() {
     var htmlCode = " ";
 
     htmlCode += " <tr> ";
-    htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' name='hepsinisec' id='hepsinisec'></td> ";
+    htmlCode += " <td><input type='checkbox' style='width:20px;height:20px' class='hepsinisec' ></td> ";
     htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
   	htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
     htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
@@ -678,7 +688,7 @@ $(document).ready(function() {
 		htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
 		htmlCode += " </tr> ";
 
-    if (satirEkleInputs.STOK_KODU_FILL==null || satirEkleInputs.STOK_KODU_FILL==" " || satirEkleInputs.STOK_KODU_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==null || satirEkleInputs.SF_MIKTAR_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==" " || satirEkleInputs.TERMIN_TAR_FILL==null || satirEkleInputs.TERMIN_TAR_FILL=="" || satirEkleInputs.TERMIN_TAR_FILL==" ") {
+    if (satirEkleInputs.STOK_KODU_FILL==null || satirEkleInputs.STOK_KODU_FILL==" " || satirEkleInputs.STOK_KODU_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==null || satirEkleInputs.SF_MIKTAR_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==" " || satirEkleInputs.TERMIN_TAR_FILL==null || satirEkleInputs.TERMIN_TAR_FILL=="" || satirEkleInputs.TERMIN_TAR_FILL==" " || satirEkleInputs.SF_SF_UNIT_FILL==null || satirEkleInputs.SF_SF_UNIT_FILL=="" || satirEkleInputs.SF_SF_UNIT_FILL==" ") {
       eksikAlanHataAlert2();
     }
 

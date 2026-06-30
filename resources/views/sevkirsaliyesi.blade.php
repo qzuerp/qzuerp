@@ -220,8 +220,8 @@
                                   <th style="min-width:2F20px;">Stok Kodu</th>
                                   <th>Stok Adı</th>
                                   <th>İşlem Mik.</th>
-                                  <th>Fiyat</th>
-                                  <th style="min-width: 120px;">Para Birimi</th>
+                                  <!-- <th>Fiyat</th>
+                                  <th style="min-width: 120px;">Para Birimi</th> -->
                                   <th>İşlem Br.</th>
                                   <th>Lot No</th>
                                   <th>Seri No</th>
@@ -274,10 +274,10 @@
                                     <input  tmaxlength="28" style="color: red" type="number" data-name="SF_MIKTAR" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF_MIKTAR" class="SF_MIKTAR form-control">
                                     {{-- <input style="color: red" type="hidden" name="SF_MIKTAR_FILL" id="SF_MIKTAR_FILL" class="form-control"> --}}
                                   </td>
-                                  <td style="min-width: 150px">
+                                  <td class="d-none" style="min-width: 150px">
                                     <input  tmaxlength="28" style="color: red" type="number" data-name="FIYAT" name="FIYAT" id="FIYAT_SHOW" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT" class="FIYAT form-control">
                                   </td>
-                                  <td>
+                                  <td class="d-none">
                                     <select name="" id="FIYAT_PB" data-name="FIYAT_PB" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FIYAT_PB" class="FIYAT_PB form-control js-example-basic-single select2" style="width: 100%;">
                                       <option value="">Seç</option>
                                       @php
@@ -380,8 +380,8 @@
                                   <td><input type="text" class="form-control KOD" name="KOD_SHOW_T" value="{{ $veri->KOD }}" disabled><input type="hidden" class="form-control" name="KOD[]" value="{{ $veri->KOD }}"></td>
                                   <td><input type="text" class="form-control STOK_ADI" name="STOK_ADI_SHOW_T" value="{{ $veri->STOK_ADI }}" disabled><input type="hidden" class="form-control" name="STOK_ADI[]" value="{{ $veri->STOK_ADI }}"></td>
                                   <td><input type="number" class="form-control SF_MIKTAR" name="SF_MIKTAR[]" value="{{ $veri->SF_MIKTAR }}"></td>
-                                  <td><input type="number" class="form-control FIYAT" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
-                                  <td>
+                                  <td class="d-none"><input type="number" class="form-control FIYAT" name="FIYAT[]" value="{{ $veri->FIYAT }}"></td>
+                                  <td class="d-none">
                                     <select name="FIYAT_PB[]" id="FIYAT_PB" class="form-control FIYAT_PB js-example-basic-single select2 req" style="width: 100%;">
                                         <option value=" ">Seç</option>
                                         @php
@@ -1240,8 +1240,8 @@
         htmlCode += "<td><input type='text' class='form-control' name='KOD[]' value='"+KOD_PARCA[0]+"' readonly></td>";
         htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_SHOW+"' readonly></td> ";
         htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
-        htmlCode += " <td><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
-        htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
+        htmlCode += " <td class='d-none'><input type='number' class='form-control' name='FIYAT[]' value='"+satirEkleInputs.FIYAT_SHOW+"'></td> ";
+        htmlCode += " <td class='d-none'><input type='text' class='form-control' name='FIYAT_PB[]' value='"+satirEkleInputs.FIYAT_PB+"' readonly></td> ";
         htmlCode += " <td><input type='text' id='birim-"+TRNUM_FILL+"' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_SHOW+"' readonly></td> ";
         htmlCode += " <td><input type='text' class='form-control' id='Lot-"+TRNUM_FILL+"' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"' readonly></td> ";
         htmlCode += " <td class='d-flex '>" +
@@ -1465,8 +1465,8 @@
               htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"' disabled><input type='hidden' name='KOD[]' value='"+setValueOfJsonObject(kartVerisi2.KOD)+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"' disabled><input type='hidden' name='STOK_ADI[]' value='"+setValueOfJsonObject(kartVerisi2.STOK_ADI)+"'></td> ";
               htmlCode += " <td><input type='text' class='form-control' name='SF_MIKTAR[]' value='"+setValueOfJsonObject(kartVerisi2.SF_MIKTAR)+"'></td> ";
-              htmlCode += " <td><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"' readonly></td> ";
-              htmlCode += " <td><input type='text' class='form-control' name='FIYAT_PB[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT_PB)+"' readonly></td> ";
+              htmlCode += " <td class='d-none'><input type='text' class='form-control' name='FIYAT[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT)+"' readonly></td> ";
+              htmlCode += " <td class='d-none'><input type='text' class='form-control' name='FIYAT_PB[]' value='"+setValueOfJsonObject(kartVerisi2.FIYAT_PB)+"' readonly></td> ";
               htmlCode += " <td><input type='text' id='birim-"+TRNUM_FILL+"' class='form-control' name='SF_SF_UNIT[]' value='"+setValueOfJsonObject(kartVerisi2.SF_SF_UNIT)+"' readonly></td> ";
               // htmlCode += " <td><input type='number' class='form-control' name='SF_BAKIYE[]' value='"+setValueOfJsonObject(kartVerisi2.SF_BAKIYE)+"'></td> ";
               htmlCode += " <td><input type='text' id='Lot-"+TRNUM_FILL+"' class='form-control' name='LOTNUMBER[]' value='"+setValueOfJsonObject(kartVerisi2.LOTNUMBER)+"' readonly></td> ";
