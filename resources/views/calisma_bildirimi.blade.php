@@ -3503,6 +3503,11 @@
               return false;
             }
 
+            if(eDate && !eTime || eTime && eDate)
+            {
+              Swal.showValidationMessage('Lütfen tüm bitiş alanlarını doldurun!');
+              return false;
+            }
             // Tarih ve saatleri birleştirip saniyeye çeviriyoruz ki tam kıyaslama yapalım
             const startDateTime = new Date(`${sDate}T${sTime}`);
             const endDateTime = new Date(`${eDate}T${eTime}`);
