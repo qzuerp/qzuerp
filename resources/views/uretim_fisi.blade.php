@@ -490,6 +490,7 @@ if (isset($kart_veri)) {
                             $evraklar=DB::table($database.'MMPS10E as e')
                             ->leftJoin($database.'stok00 as s','s.KOD','=','e.MAMULSTOKKODU')
                             ->select('e.*','s.IUNIT as BIRIM')
+                            ->where('e.ACIK_KAPALI', 'A')
                             ->orderBy('id', 'ASC')->get();
 
                             foreach ($evraklar as $key => $veri) {
@@ -1507,7 +1508,7 @@ if (isset($kart_veri)) {
       const veriler = veri.split("|||");
 
       // $('#BOMREC_KAYNAKCODE_SHOW').val(veriler[0]);
-      // $('#R_KAYNAKKODU_FILL').val(veriler[0]);
+      $('#LOTNUMBER_FILL').val(veriler[0]);
       $('#STOK_KODU_FILL').val(veriler[1]);
       $('#STOK_ADI_FILL').val(veriler[2]);
       $('#SF_SF_UNIT_SHOW').val(veriler[3]);
