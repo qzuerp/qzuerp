@@ -891,47 +891,55 @@ if (isset($kart_veri)) {
                     <td>
                       <input type="text" class="form-control" name="TI_AMBCODE[]" value="{{ $veri->AMBCODE }}" readonly>
                     </td>
-                    <td>
-                      <input type="text" class="form-control" name="TI_SERINO[]" value="{{ $veri->SERINO }}" readonly>
+                    <td class="d-flex">
+                      <input type="text" id="serino-R{{ $veri->TRNUM }}" class="form-control" name="TI_SERINO[]" value="{{ $veri->SERINO }}" readonly>
+                      <span class="d-flex -btn">
+                        <button class="btn btn-primary" data-bs-toggle="modal"
+                          onclick="veriCek('{{ $veri->KOD }}', 'R{{ $veri->TRNUM }}')"
+                          data-bs-target="#modal_popupSelectModal4" type="button">
+                          <span class="fa-solid fa-magnifying-glass">
+                          </span>
+                        </button>
+                      </span>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOT[]" value="{{ $veri->LOTNUMBER }}">
+                      <input type="text" id="Lot-R{{ $veri->TRNUM }}" class="form-control" name="TI_LOT[]" value="{{ $veri->LOTNUMBER }}">
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_TEXT1[]" value="{{ $veri->TEXT1 }}" readonly>
+                      <input type="text" id="text1-R{{ $veri->TRNUM }}" class="form-control" name="TI_TEXT1[]" value="{{ $veri->TEXT1 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_TEXT2[]" value="{{ $veri->TEXT2 }}" readonly>
+                      <input type="text" id="text2-R{{ $veri->TRNUM }}" class="form-control" name="TI_TEXT2[]" value="{{ $veri->TEXT2 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_TEXT3[]" value="{{ $veri->TEXT3 }}" readonly>
+                      <input type="text" id="text3-R{{ $veri->TRNUM }}" class="form-control" name="TI_TEXT3[]" value="{{ $veri->TEXT3 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_TEXT4[]" value="{{ $veri->TEXT4 }}" readonly>
+                      <input type="text" id="text4-R{{ $veri->TRNUM }}" class="form-control" name="TI_TEXT4[]" value="{{ $veri->TEXT4 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM1[]" value="{{ $veri->NUM1 }}" readonly>
+                      <input type="text" id="num1-R{{ $veri->TRNUM }}" class="form-control" name="TI_NUM1[]" value="{{ $veri->NUM1 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM2[]" value="{{ $veri->NUM2 }}" readonly>
+                      <input type="text" i="num2-R{{ $veri->TRNUM }}" class="form-control" name="TI_NUM2[]" value="{{ $veri->NUM2 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM3[]" value="{{ $veri->NUM3 }}" readonly>
+                      <input type="text" id="num3-R{{ $veri->TRNUM }}" class="form-control" name="TI_NUM3[]" value="{{ $veri->NUM3 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_NUM4[]" value="{{ $veri->NUM4 }}" readonly>
+                      <input type="text" id="num4-R{{ $veri->TRNUM }}" class="form-control" name="TI_NUM4[]" value="{{ $veri->NUM4 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOK1[]" value="{{ $veri->LOCATION1 }}" readonly>
+                      <input type="text" id="lok1-R{{ $veri->TRNUM }}" class="form-control" name="TI_LOK1[]" value="{{ $veri->LOCATION1 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOK2[]" value="{{ $veri->LOCATION2 }}" readonly>
+                      <input type="text" id="lok2-R{{ $veri->TRNUM }}" class="form-control" name="TI_LOK2[]" value="{{ $veri->LOCATION2 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOK3[]" value="{{ $veri->LOCATION3 }}" readonly>
+                      <input type="text" id="lok3-R{{ $veri->TRNUM }}" class="form-control" name="TI_LOK3[]" value="{{ $veri->LOCATION3 }}" readonly>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="TI_LOK4[]" value="{{ $veri->LOCATION4 }}" readonly>
+                      <input type="text" id="lok4-R{{ $veri->TRNUM }}" class="form-control" name="TI_LOK4[]" value="{{ $veri->LOCATION4 }}" readonly>
                     </td>
                     <td>
                       <input type="text" class="form-control" name="PM[]" value="{{ $veri->PM }}" readonly>
@@ -963,6 +971,83 @@ if (isset($kart_veri)) {
 
 
 </section>
+
+  {{-- Seri no start --}}
+  <div class="modal fade bd-example-modal-lg" id="modal_popupSelectModal4" tabindex="-1" role="dialog"
+    aria-labelledby="modal_popupSelectModal4">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel"><i class='fa fa-filter' style='color: blue'></i> Evrak Süz</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="overflow:auto;">
+            <table id="seriNoSec" class="table table-hover text-center" data-page-length="10">
+              <thead>
+                <tr class="bg-primary">
+                  <th>ID</th>
+                  <th>Kod</th>
+                  <th>Ad</th>
+                  <th>Miktar</th>
+                  <th>Birim</th>
+                  <th>Lot</th>
+                  <th>Seri No</th>
+                  <th>Depo</th>
+                  <th>Varyant Text 1</th>
+                  <th>Varyant Text 2</th>
+                  <th>Varyant Text 3</th>
+                  <th>Varyant Text 4</th>
+                  <th>Ölçü 1</th>
+                  <th>Ölçü 2</th>
+                  <th>Ölçü 3</th>
+                  <th>Ölçü 4</th>
+                  <th>Lok 1</th>
+                  <th>Lok 2</th>
+                  <th>Lok 3</th>
+                  <th>Lok 4</th>
+                </tr>
+              </thead>
+
+              <tfoot>
+                <tr class="bg-info">
+                  <th>ID</th>
+                  <th>Kod</th>
+                  <th>Ad</th>
+                  <th>Miktar</th>
+                  <th>Birim</th>
+                  <th>Lot</th>
+                  <th>Seri No</th>
+                  <th>Depo</th>
+                  <th>Varyant Text 1</th>
+                  <th>Varyant Text 2</th>
+                  <th>Varyant Text 3</th>
+                  <th>Varyant Text 4</th>
+                  <th>Ölçü 1</th>
+                  <th>Ölçü 2</th>
+                  <th>Ölçü 3</th>
+                  <th>Ölçü 4</th>
+                  <th>Lok 1</th>
+                  <th>Lok 2</th>
+                  <th>Lok 3</th>
+                  <th>Lok 4</th>
+                </tr>
+              </tfoot>
+
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal" style="margin-top: 15px;">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{-- Seri no finish --}}
+
 <div class="modal fade bd-example-modal-xl" id="modal_gkk" tabindex="-1" role="dialog" aria-labelledby="modal_gkk"  >
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -1046,314 +1131,361 @@ if (isset($kart_veri)) {
     </div>
   </div>
 </div>
+
+
 @include('components/detayBtnLib')
-<script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
-<script>
-  $(document).on('click', '#popupSelect tbody tr', function() {
-      var EVRAKNO = $(this).find('td:eq(0)').text().trim();
-      var KOD = $(this).find('td:eq(1)').text().trim();
-      var AD = $(this).find('td:eq(2)').text().trim();
+  <script src="{{ asset('qzuerp-sources/js/detayBtnFun.js') }}"></script>
+  <script>
+    $(document).on('click', '#popupSelect tbody tr', function() {
+        var EVRAKNO = $(this).find('td:eq(0)').text().trim();
+        var KOD = $(this).find('td:eq(1)').text().trim();
+        var AD = $(this).find('td:eq(2)').text().trim();
 
-      var selected = EVRAKNO + '|||' + KOD + '|||' + AD;
+        var selected = EVRAKNO + '|||' + KOD + '|||' + AD;
 
-      $('#IS_EMRI_FILL option').filter(function() {
-          return $(this).text().trim() === selected;
-      }).prop('selected', true).trigger('change');
+        $('#IS_EMRI_FILL option').filter(function() {
+            return $(this).text().trim() === selected;
+        }).prop('selected', true).trigger('change');
 
-      $('#modal_evrakSuz3').modal('hide');
-  });
-
-  $(document).ready(function() 
-  {
-    
-    $("#addRow").on('click',async function() {
-      var satirEkleInputs = getInputs('satirEkle');
-
-      var TRNUM_FILL = getTRNUM();
-
-      var htmlCode = " ";
-      var KOD_PARCAC = satirEkleInputs.IS_EMRI_FILL.split('|||');
-
-      htmlCode += " <tr> ";
-
-      htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
-      // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
-
-      htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='IS_EMRI[]' value='"+KOD_PARCAC[0]+"' readonly>"
-
-      htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR_SHOW_T' value='"+satirEkleInputs.SF_MIKTAR_FILL+"' disabled><input type='hidden' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='text' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='number' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
-
-      htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
-      htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOKT1_FILL+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOKT2_FILL+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOKT3_FILL+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOKT4_FILL+"'></td> ";
-
-      htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-
-      htmlCode += " </tr> ";
-
-      if (satirEkleInputs.IS_EMRI_FILL==null ||  satirEkleInputs.IS_EMRI_FILL==" " || satirEkleInputs.STOK_KODU_FILL==null || satirEkleInputs.STOK_KODU_FILL==" " || satirEkleInputs.STOK_KODU_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==null || satirEkleInputs.SF_MIKTAR_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==" ") {
-        eksikAlanHataAlert2();
-      }
-
-      else {
-        $("#veriTable > tbody").append(htmlCode);
-        updateLastTRNUM(TRNUM_FILL);
-
-        emptyInputs('satirEkle');
-
-      }
-
+        $('#modal_evrakSuz3').modal('hide');
     });
 
-    $(".delete-row").click(function() {
-      $("#addRow tbody").find('input[name="record"]').each(function() {
-        if($(this).is(":checked")) {
-          $(this).parents("tr").remove();
+    $(document).ready(function() 
+    {
+      
+      $("#addRow").on('click',async function() {
+        var satirEkleInputs = getInputs('satirEkle');
+
+        var TRNUM_FILL = getTRNUM();
+
+        var htmlCode = " ";
+        var KOD_PARCAC = satirEkleInputs.IS_EMRI_FILL.split('|||');
+
+        htmlCode += " <tr> ";
+
+        htmlCode += detayBtnForJS(satirEkleInputs.STOK_KODU_FILL);
+        // htmlCode += " <td><input type='checkbox' name='hepsinisec' id='hepsinisec'></td> ";
+
+        htmlCode += " <td style='display: none;'><input type='hidden' class='form-control' maxlength='6' name='TRNUM[]' value='"+TRNUM_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='IS_EMRI[]' value='"+KOD_PARCAC[0]+"' readonly>"
+
+        htmlCode += " <td><input type='text' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"' disabled><input type='hidden' class='form-control' name='KOD[]' value='"+satirEkleInputs.STOK_KODU_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='STOK_ADI_SHOW_T' value='"+satirEkleInputs.STOK_ADI_FILL+"' disabled><input type='hidden' class='form-control' name='STOK_ADI[]' value='"+satirEkleInputs.STOK_ADI_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='LOTNUMBER[]' value='"+satirEkleInputs.LOTNUMBER_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='SERINO[]' value='"+satirEkleInputs.SERINO_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='number' class='form-control' name='SF_MIKTAR_SHOW_T' value='"+satirEkleInputs.SF_MIKTAR_FILL+"' disabled><input type='hidden' class='form-control' name='SF_MIKTAR[]' value='"+satirEkleInputs.SF_MIKTAR_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"' disabled><input type='hidden' class='form-control' name='SF_SF_UNIT[]' value='"+satirEkleInputs.SF_SF_UNIT_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='TEXT1[]' value='"+satirEkleInputs.TEXT1_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='TEXT2[]' value='"+satirEkleInputs.TEXT2_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='TEXT3[]' value='"+satirEkleInputs.TEXT3_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='text' class='form-control' name='TEXT4[]' value='"+satirEkleInputs.TEXT4_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='number' class='form-control' name='NUM1[]' value='"+satirEkleInputs.NUM1_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='number' class='form-control' name='NUM2[]' value='"+satirEkleInputs.NUM2_FILL+"'></td> ";
+
+        htmlCode += " <td><input type='number' class='form-control' name='NUM3[]' value='"+satirEkleInputs.NUM3_FILL+"'></td> ";
+        htmlCode += " <td><input type='number' class='form-control' name='NUM4[]' value='"+satirEkleInputs.NUM4_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='LOCATION1[]' value='"+satirEkleInputs.LOKT1_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='LOCATION2[]' value='"+satirEkleInputs.LOKT2_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='LOCATION3[]' value='"+satirEkleInputs.LOKT3_FILL+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='LOCATION4[]' value='"+satirEkleInputs.LOKT4_FILL+"'></td> ";
+
+        htmlCode += " <td><button type='button' id='deleteSingleRow' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+
+        htmlCode += " </tr> ";
+
+        if (satirEkleInputs.IS_EMRI_FILL==null ||  satirEkleInputs.IS_EMRI_FILL==" " || satirEkleInputs.STOK_KODU_FILL==null || satirEkleInputs.STOK_KODU_FILL==" " || satirEkleInputs.STOK_KODU_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==null || satirEkleInputs.SF_MIKTAR_FILL=="" || satirEkleInputs.SF_MIKTAR_FILL==" ") {
+          eksikAlanHataAlert2();
+        }
+
+        else {
+          $("#veriTable > tbody").append(htmlCode);
+          updateLastTRNUM(TRNUM_FILL);
+
+          emptyInputs('satirEkle');
+
+        }
+
+      });
+
+      $(".delete-row").click(function() {
+        $("#addRow tbody").find('input[name="record"]').each(function() {
+          if($(this).is(":checked")) {
+            $(this).parents("tr").remove();
+          }
+        });
+      }); 
+
+
+      $('#seriNoSec tbody').on('click', 'tr', function () {
+        var $row = $(this);
+        var $cells = $row.find('td');
+
+        var ID = $cells.eq(0).text().trim();
+        var BIRIM = $cells.eq(4).text().trim();
+        var LOTNO = $cells.eq(5).text().trim();
+        var SERINO = $cells.eq(6).text().trim();
+        var DEPO = $cells.eq(7).text().trim();
+        var V1 = $cells.eq(8).text().trim();
+        var V2 = $cells.eq(9).text().trim();
+        var V3 = $cells.eq(10).text().trim();
+        var V4 = $cells.eq(11).text().trim();
+
+        var O1 = $cells.eq(12).text().trim();
+        var O2 = $cells.eq(13).text().trim();
+        var O3 = $cells.eq(14).text().trim();
+        var O4 = $cells.eq(15).text().trim();
+
+        var L1 = $cells.eq(16).text().trim();
+        var L2 = $cells.eq(17).text().trim();
+        var L3 = $cells.eq(18).text().trim();
+        var L4 = $cells.eq(19).text().trim();
+
+        $('#serino-' + ID).val(SERINO);
+        $('#Lot-' + ID).val(LOTNO);
+
+        $('#num1-' + ID).val(O1);
+        $('#num2-' + ID).val(O2);
+        $('#num3-' + ID).val(O3);
+        $('#num4-' + ID).val(O4);
+
+        $('#text1-' + ID).val(V1);
+        $('#text2-' + ID).val(V2);
+        $('#text3-' + ID).val(V3);
+        $('#text4-' + ID).val(V4);
+
+        $('#lok1-' + ID).val(L1);
+        $('#lok2-' + ID).val(L2);
+        $('#lok3-' + ID).val(L3);
+        $('#lok4-' + ID).val(L4);
+
+        $("#modal_popupSelectModal4").modal('hide');
+      });
+    });
+
+    $(document).ready(function() {
+      let kodValues = Array.from(document.querySelectorAll('#veriTable input[name^="KOD[]"]')).map(i => i.value);
+      let adValues = Array.from(document.querySelectorAll('#veriTable input[name^="STOK_ADI[]"]')).map(i => i.value);
+      let lotValues = Array.from(document.querySelectorAll('#veriTable input[name^="LOTNUMBER[]"]')).map(i => i.value);
+      let seriValues = Array.from(document.querySelectorAll('#veriTable input[name^="SERINO[]"]')).map(i => i.value);
+      let miktarValues = Array.from(document.querySelectorAll('#veriTable input[name^="SF_MIKTAR[]"]')).map(i => i.value);
+      let trnumValues = Array.from(document.querySelectorAll('#veriTable input[name^="TRNUM[]')).map(i => i.value);
+      let currentIndex = 0;
+
+      function confirmUnsavedChanges(callback) {
+        let currentState = JSON.stringify(getTableState());
+        if (lastSavedState && currentState !== lastSavedState) {
+          Swal.fire({
+            title: "Değişiklikler kaydedilmedi!",
+            text: "Devam edersen yaptığın değişiklikler kaybolacak.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Devam Et",
+            cancelButtonText: "İptal"
+          }).then(result => {
+            if (result.isConfirmed) callback();
+          });
+        } else {
+          callback();
+        }
+      }
+
+      $('.upButton').on('click', function () {
+        confirmUnsavedChanges(() => {
+          currentIndex = Math.max(currentIndex - 1, 0);
+          loadSablon(kodValues[currentIndex]);
+        });
+      });
+
+      $('.downButton').on('click', function () {
+        confirmUnsavedChanges(() => {
+          currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
+          loadSablon(kodValues[currentIndex]);
+        });
+      });
+
+      $('.sablonGetirBtn').on('click', function () {
+        let KOD = $(this).data('kod');
+        $('#modal_gkk').modal('show');
+        let foundIndex = kodValues.indexOf(KOD);
+        if (foundIndex !== -1) {
+          currentIndex = foundIndex;
+        } else {
+          currentIndex = 0;
+        }
+
+        loadSablon(KOD);
+      });
+      
+      let lastSavedState = null;
+
+      function getTableState() {
+        return Array.from(document.querySelectorAll('#gkk_table input, #gkk_table select'))
+          .map(el => ({
+            name: el.name,
+            value: el.type === 'checkbox'
+              ? (el.checked ? '1' : '0')
+              : (el.value === undefined || el.value === null ? '' : el.value.trim())
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      function loadSablon(KOD) {
+        Swal.fire({
+          title: 'Yükleniyor...',
+          text: 'Lütfen bekleyin',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        $("#gkk_table > tbody").empty();
+        $('#ISLEM_KODU').text(KOD);
+        $('#ISLEM_ADI').text(adValues[currentIndex]);
+        $('#ISLEM_LOTU').text(lotValues[currentIndex]);
+        $('#ISLEM_SERI').text(seriValues[currentIndex]);
+        $('#ISLEM_MIKTARI').text(miktarValues[currentIndex]);
+        $.ajax({
+          url: '/sablonGetir',
+          type: 'post',
+          data: {
+            KOD: KOD,
+            _token: $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function (res) {
+            if (res.length === 0) {
+              mesaj('Şablon bilgileri bulunamadı');
+              return;
+            }
+            let htmlCode = '';
+            res.forEach(function (veri, index) {
+              var TRNUM_FILL = getTRNUM();
+              let rowIndex = index;
+
+              htmlCode += "<tr>";
+              htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
+              htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
+              htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
+              htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
+              htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
+              htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
+              htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
+              htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
+
+              let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
+              htmlCode += `<td class="text-center">
+                <input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
+                <input type="checkbox" name="GECERLI_KOD[${rowIndex}]" value="1" ${isChecked}>
+              </td>`;
+
+              htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
+              htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
+              htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM[${rowIndex}]" value="${trnumValues[rowIndex] ?? ''}">`;
+
+              let durum = veri.DURUM ?? '';
+              htmlCode += `<td>
+                <select name="DURUM[${rowIndex}]" class="form-select">
+                  <option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
+                  <option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
+                  <option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
+                </select>
+              </td>`;
+
+              htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIH ?? ''}"></td>`;
+              htmlCode += "</tr>";
+
+            });
+            $("#gkk_table > tbody").append(htmlCode);
+            lastSavedState = JSON.stringify(getTableState());
+          },
+          error: function (xhr) {
+            console.error("Hata:", xhr.responseText);
+          },
+          complete: function () {
+            Swal.close();
+            setTimeout(() => {
+              lastSavedState = JSON.stringify(getTableState());
+            }, 100);
+          }
+        });
+      }
+
+      $("#addRow2").on('click', function() {
+
+        var satirEkleInputs2 = getInputs('satirEkle2');
+
+
+        var htmlCode = " ";
+        htmlCode += " <tr> ";
+        htmlCode += detayBtnForJS(satirEkleInputs2.STOK_KODU_FILL);
+        htmlCode += " <td><input type='text' class='form-control' maxlength='6' readonly name='TI_KARSITRNUM[]' value='"+satirEkleInputs2.TI_KARSITRNUM+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"' disabled><input type='hidden' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"' disabled><input type='hidden' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_KARSILOTNUMBER[]' value='"+satirEkleInputs2.TI_KARSILOTNUMBER+"' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_KARSISERINO[]' value='"+satirEkleInputs2.TI_KARSISERINO+"'></td> ";
+        htmlCode += " <td><input type='number' class='form-control' name='TI_KARSISF_MIKTAR[]' value='" + satirEkleInputs2.TI_KARSISF_MIKTAR + "'></td> ";
+        htmlCode += " <td><input type='checkbox' name='' " + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'checked') + " value='" + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'E') + "'> <input type='hidden' class='form-control' name='BILGISATIRIE[]' value='" + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'E') + "'></td>";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_KOD[]' value='" + satirEkleInputs2.TI_KOD + "' readonly></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_STOK_ADI[]' value='"+satirEkleInputs2.TI_STOK_ADI+"' readonly></td> ";
+        htmlCode += " <td><input type='number' class='form-control' name='TI_SF_MIKTAR[]' value='"+satirEkleInputs2.TI_SF_MIKTAR+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' value='"+satirEkleInputs2.TI_SF_SF_UNIT+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_AMBCODE[]' value='"+satirEkleInputs2.TI_AMBCODE+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_SERINO[]' value='"+satirEkleInputs2.TI_SERINO+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_LOTNUMBER[]' value='"+satirEkleInputs2.TI_LOT+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT1[]' value='"+satirEkleInputs2.TI_TEXT1+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT2[]' value='"+satirEkleInputs2.TI_TEXT2+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT3[]' value='"+satirEkleInputs2.TI_TEXT3+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT4[]' value='"+satirEkleInputs2.TI_TEXT4+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_NUM1[]' value='"+satirEkleInputs2.TI_OLCU1+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_NUM2[]' value='"+satirEkleInputs2.TI_OLCU2+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_NUM3[]' value='"+satirEkleInputs2.TI_OLCU3+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_NUM4[]' value='"+satirEkleInputs2.TI_OLCU4+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_LOK1[]' value='"+satirEkleInputs2.LOK1+"'</td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_LOK2[]' value='"+satirEkleInputs2.LOK2+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_LOK3[]' value='"+satirEkleInputs2.LOK3+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' name='TI_LOK4[]' value='"+satirEkleInputs2.LOK4+"'></td> ";
+        htmlCode += " <td><input type='text' class='form-control' disabled name='' value=''></td> ";
+        htmlCode += " <td><button type='button' id='deleteSingleRow2' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
+        htmlCode += " </tr> ";
+        if (satirEkleInputs2.TI_KARSITRNUM==null) 
+        {
+          eksikAlanHataAlert2();
+        }
+        else {
+
+          $("#veriTable2 > tbody").append(htmlCode);
+
+
+          emptyInputs('satirEkle2');
+
         }
       });
-    }); 
-
-  });
-
-  $(document).ready(function() {
-    let kodValues = Array.from(document.querySelectorAll('#veriTable input[name^="KOD[]"]')).map(i => i.value);
-		let adValues = Array.from(document.querySelectorAll('#veriTable input[name^="STOK_ADI[]"]')).map(i => i.value);
-		let lotValues = Array.from(document.querySelectorAll('#veriTable input[name^="LOTNUMBER[]"]')).map(i => i.value);
-		let seriValues = Array.from(document.querySelectorAll('#veriTable input[name^="SERINO[]"]')).map(i => i.value);
-		let miktarValues = Array.from(document.querySelectorAll('#veriTable input[name^="SF_MIKTAR[]"]')).map(i => i.value);
-		let trnumValues = Array.from(document.querySelectorAll('#veriTable input[name^="TRNUM[]')).map(i => i.value);
-		let currentIndex = 0;
-
-		function confirmUnsavedChanges(callback) {
-			let currentState = JSON.stringify(getTableState());
-			if (lastSavedState && currentState !== lastSavedState) {
-				Swal.fire({
-					title: "Değişiklikler kaydedilmedi!",
-					text: "Devam edersen yaptığın değişiklikler kaybolacak.",
-					icon: "warning",
-					showCancelButton: true,
-					confirmButtonText: "Devam Et",
-					cancelButtonText: "İptal"
-				}).then(result => {
-					if (result.isConfirmed) callback();
-				});
-			} else {
-				callback();
-			}
-		}
-
-		$('.upButton').on('click', function () {
-			confirmUnsavedChanges(() => {
-				currentIndex = Math.max(currentIndex - 1, 0);
-				loadSablon(kodValues[currentIndex]);
-			});
-		});
-
-		$('.downButton').on('click', function () {
-			confirmUnsavedChanges(() => {
-				currentIndex = Math.min(currentIndex + 1, kodValues.length - 1);
-				loadSablon(kodValues[currentIndex]);
-			});
-		});
-
-		$('.sablonGetirBtn').on('click', function () {
-			let KOD = $(this).data('kod');
-			$('#modal_gkk').modal('show');
-			let foundIndex = kodValues.indexOf(KOD);
-			if (foundIndex !== -1) {
-				currentIndex = foundIndex;
-			} else {
-				currentIndex = 0;
-			}
-
-			loadSablon(KOD);
-		});
-		
-		let lastSavedState = null;
-
-		function getTableState() {
-			return Array.from(document.querySelectorAll('#gkk_table input, #gkk_table select'))
-				.map(el => ({
-					name: el.name,
-					value: el.type === 'checkbox'
-						? (el.checked ? '1' : '0')
-						: (el.value === undefined || el.value === null ? '' : el.value.trim())
-				}))
-				.sort((a, b) => a.name.localeCompare(b.name));
-		}
-
-		function loadSablon(KOD) {
-			Swal.fire({
-				title: 'Yükleniyor...',
-				text: 'Lütfen bekleyin',
-				allowOutsideClick: false,
-				didOpen: () => {
-					Swal.showLoading();
-				}
-			});
-			$("#gkk_table > tbody").empty();
-			$('#ISLEM_KODU').text(KOD);
-			$('#ISLEM_ADI').text(adValues[currentIndex]);
-			$('#ISLEM_LOTU').text(lotValues[currentIndex]);
-			$('#ISLEM_SERI').text(seriValues[currentIndex]);
-			$('#ISLEM_MIKTARI').text(miktarValues[currentIndex]);
-			$.ajax({
-				url: '/sablonGetir',
-				type: 'post',
-				data: {
-					KOD: KOD,
-					_token: $('meta[name="csrf-token"]').attr('content')
-				},
-				success: function (res) {
-					if (res.length === 0) {
-						mesaj('Şablon bilgileri bulunamadı');
-						return;
-					}
-					let htmlCode = '';
-					res.forEach(function (veri, index) {
-						var TRNUM_FILL = getTRNUM();
-						let rowIndex = index;
-
-						htmlCode += "<tr>";
-						htmlCode += `<td style='display: none;'><input type='hidden' class='form-form-control' maxlength='6' name='TRNUM[${rowIndex}]' value='${TRNUM_FILL}'></td>`;
-						htmlCode += `<td><button type='button' class='btn btn-default delete-row' id='deleteSingleRow'><i class='fa fa-minus' style='color: red'></i></button></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="KOD[${rowIndex}]" value="${veri.VARCODE ?? ''}" readonly></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="OLCUM_NO[${rowIndex}]" value="${veri.VARINDEX ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="ALAN_TURU[${rowIndex}]" value="${veri.VARTYPE ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="UZUNLUK[${rowIndex}]" value="${veri.VARLEN ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="DESIMAL[${rowIndex}]" value="${veri.VARSIG ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_SONUC[${rowIndex}]" value="${veri.VALUE ?? ''}"></td>`;
-						htmlCode += `<td><input type="date" class="form-control" name="OLCUM_SONUC_TARIH[${rowIndex}]" value="${veri.TARIH ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="MIN_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM1 ?? ''}"></td>`;
-						htmlCode += `<td><input type="number" class="form-control" name="MAX_DEGER[${rowIndex}]" value="${veri.VERIFIKASYONNUM2 ?? ''}"></td>`;
-
-						let isChecked = veri.VERIFIKASYONTIPI2 == '1' ? 'checked' : '';
-						htmlCode += `<td class="text-center">
-							<input type="hidden" name="GECERLI_KOD[${rowIndex}]" value="0">
-							<input type="checkbox" name="GECERLI_KOD[${rowIndex}]" value="1" ${isChecked}>
-						</td>`;
-
-						htmlCode += `<td><input type="text" class="form-control" name="OLCUM_BIRIMI[${rowIndex}]" value="${veri.UNIT ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="GK_1[${rowIndex}]" value="${veri.GK1 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER1[${rowIndex}]" value="${veri.REFDEGER1 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="REFERANS_DEGER2[${rowIndex}]" value="${veri.REFDEGER2 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="VTABLEINPUT[${rowIndex}]" value="${veri.VTABLEINPUT ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="QVALINPUTTYPE[${rowIndex}]" value="${veri.QVALINPUTTYPE ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_OPT[${rowIndex}]" value="${veri.KRITERMIK_OPT ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_1[${rowIndex}]" value="${veri.KRITERMIK_1 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="KRITERMIK_2[${rowIndex}]" value="${veri.KRITERMIK_2 ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="QVALCHZTYPE[${rowIndex}]" value="${veri.QVALCHZTYPE ?? ''}"></td>`;
-						htmlCode += `<td><input type="text" class="form-control" name="NOT[${rowIndex}]" value="${veri.NOTES ?? ''}"></td>`;
-						htmlCode += `<input type="hidden" class="form-control" name="EVRAKNO" value="{{ @$kart_veri->EVRAKNO }}"><input type="hidden" class="form-control" name="OR_TRNUM[${rowIndex}]" value="${trnumValues[rowIndex] ?? ''}">`;
-
-						let durum = veri.DURUM ?? '';
-						htmlCode += `<td>
-							<select name="DURUM[${rowIndex}]" class="form-select">
-								<option value="KABUL" ${durum === "KABUL" ? "selected" : ""}>KABUL</option>
-								<option value="RED" ${durum === "RED" ? "selected" : ""}>RED</option>
-								<option value="ŞARTLI KABUL" ${durum === "ŞARTLI KABUL" ? "selected" : ""}>ŞARTLI KABUL</option>
-							</select>
-						</td>`;
-
-						htmlCode += `<td><input type="date" class="form-control" name="ONAY_TARIH[${rowIndex}]" value="${veri.DURUM_ONAY_TARIH ?? ''}"></td>`;
-						htmlCode += "</tr>";
-
-					});
-					$("#gkk_table > tbody").append(htmlCode);
-					lastSavedState = JSON.stringify(getTableState());
-				},
-				error: function (xhr) {
-					console.error("Hata:", xhr.responseText);
-				},
-				complete: function () {
-					Swal.close();
-					setTimeout(() => {
-						lastSavedState = JSON.stringify(getTableState());
-					}, 100);
-				}
-			});
-		}
-
-    $("#addRow2").on('click', function() {
-
-      var satirEkleInputs2 = getInputs('satirEkle2');
-
-
-      var htmlCode = " ";
-      htmlCode += " <tr> ";
-      htmlCode += detayBtnForJS(satirEkleInputs2.STOK_KODU_FILL);
-      htmlCode += " <td><input type='text' class='form-control' maxlength='6' readonly name='TI_KARSITRNUM[]' value='"+satirEkleInputs2.TI_KARSITRNUM+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"' disabled><input type='hidden' class='form-control' name='TI_KARSIKOD[]' value='"+satirEkleInputs2.TI_KARSIKOD+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"' disabled><input type='hidden' class='form-control' name='TI_KARSISTOK_ADI[]' value='"+satirEkleInputs2.STOK_ADI_FILL1+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_KARSILOTNUMBER[]' value='"+satirEkleInputs2.TI_KARSILOTNUMBER+"' readonly></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_KARSISERINO[]' value='"+satirEkleInputs2.TI_KARSISERINO+"'></td> ";
-      htmlCode += " <td><input type='number' class='form-control' name='TI_KARSISF_MIKTAR[]' value='" + satirEkleInputs2.TI_KARSISF_MIKTAR + "'></td> ";
-      htmlCode += " <td><input type='checkbox' name='' " + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'checked') + " value='" + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'E') + "'> <input type='hidden' class='form-control' name='BILGISATIRIE[]' value='" + (satirEkleInputs2.BILGISATIRIE_FILL ? '' : 'E') + "'></td>";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_KOD[]' value='" + satirEkleInputs2.TI_KOD + "' readonly></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_STOK_ADI[]' value='"+satirEkleInputs2.TI_STOK_ADI+"' readonly></td> ";
-      htmlCode += " <td><input type='number' class='form-control' name='TI_SF_MIKTAR[]' value='"+satirEkleInputs2.TI_SF_MIKTAR+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' value='"+satirEkleInputs2.TI_SF_SF_UNIT+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_AMBCODE[]' value='"+satirEkleInputs2.TI_AMBCODE+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_SERINO[]' value='"+satirEkleInputs2.TI_SERINO+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_LOTNUMBER[]' value='"+satirEkleInputs2.TI_LOT+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT1[]' value='"+satirEkleInputs2.TI_TEXT1+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT2[]' value='"+satirEkleInputs2.TI_TEXT2+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT3[]' value='"+satirEkleInputs2.TI_TEXT3+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_TEXT4[]' value='"+satirEkleInputs2.TI_TEXT4+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_NUM1[]' value='"+satirEkleInputs2.TI_OLCU1+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_NUM2[]' value='"+satirEkleInputs2.TI_OLCU2+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_NUM3[]' value='"+satirEkleInputs2.TI_OLCU3+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_NUM4[]' value='"+satirEkleInputs2.TI_OLCU4+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_LOK1[]' value='"+satirEkleInputs2.LOK1+"'</td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_LOK2[]' value='"+satirEkleInputs2.LOK2+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_LOK3[]' value='"+satirEkleInputs2.LOK3+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' name='TI_LOK4[]' value='"+satirEkleInputs2.LOK4+"'></td> ";
-      htmlCode += " <td><input type='text' class='form-control' disabled name='' value=''></td> ";
-      htmlCode += " <td><button type='button' id='deleteSingleRow2' class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td> ";
-      htmlCode += " </tr> ";
-      if (satirEkleInputs2.TI_KARSITRNUM==null) 
-      {
-        eksikAlanHataAlert2();
-      }
-      else {
-
-        $("#veriTable2 > tbody").append(htmlCode);
-
-
-        emptyInputs('satirEkle2');
-
-      }
     });
-  });
-</script>
-<script>
+  </script>
+  <script>
     $(document).ready(function() {
       $("#deleteRow2").click(function() {
         $("#veriTable2 tbody").find('input[name="hepsinisec2"]').each(function() {
@@ -1381,158 +1513,222 @@ if (isset($kart_veri)) {
       $('#SF_SF_UNIT_SHOW').val(veriler[3]);
       $('#SF_SF_UNIT_FILL').val(veriler[3]);
     }
+
+    function veriCek(kod, id) {
+      Swal.fire({
+        text: 'Lütfen bekleyin',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      let table = $('#seriNoSec').DataTable();
+
+      $.ajax({
+        url: '/mevcutVeriler',
+        type: 'get',
+        data: { KOD: kod },
+        success: function (res) {
+
+          table.clear(); // eski verileri temizle
+
+          res.forEach((row) => {
+            table.row.add([
+              id || '',
+              row.KOD || '',
+              row.STOK_ADI || '',
+              row.MIKTAR || '',
+              row.SF_SF_UNIT || '',
+              row.LOTNUMBER || '',
+              row.SERINO || '',
+              (row.AMBCODE || '') + ' - ' + (row.AD || ''),
+              row.TEXT1 || '',
+              row.TEXT2 || '',
+              row.TEXT3 || '',
+              row.TEXT4 || '',
+              row.NUM1 || '',
+              row.NUM2 || '',
+              row.NUM3 || '',
+              row.NUM4 || '',
+              row.LOCATION1 || '',
+              row.LOCATION2 || '',
+              row.LOCATION3 || '',
+              row.LOCATION4 || ''
+            ]);
+          });
+
+          table.draw(); // tabloyu güncelle
+        },
+        error: function (error) {
+          console.log(error);
+        },
+        complete: function () {
+          Swal.close();
+        }
+      });
+    }
   </script> 
 
-  @endsection
   <script>
 
     function fnExcelReport() {
       var tab_text = "";
       var textRange; var j = 0;
-    tab = document.getElementById('example2'); // Excel'e çıkacak tablo id'si
+      tab = document.getElementById('example2'); // Excel'e çıkacak tablo id'si
 
-    for (j = 0 ; j < tab.rows.length ; j++) {
-      tab_text = tab_text + tab.rows[j].innerHTML + "";
-      //tab_text=tab_text+"";
+      for (j = 0 ; j < tab.rows.length ; j++) {
+        tab_text = tab_text + tab.rows[j].innerHTML + "";
+        //tab_text=tab_text+"";
+      }
+
+      //Temizleme işlemleri
+      tab_text = tab_text + "";
+      tab_text = tab_text.replace(/]*>|<\/A>/g, "");//Linklerinizi temizler
+      tab_text = tab_text.replace(/]*>/gi, ""); //Resimleri temizler
+      tab_text = tab_text.replace(/]*>|<\/input>/gi, ""); // İnput ve Parametreler
+
+      var ua = window.navigator.userAgent;
+      var msie = ua.indexOf("MSIE ");
+
+      if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // İE için
+      {
+        txtArea1.document.open("txt/html", "replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa = txtArea1.document.execCommand("SaveAs", true, "Teşekkürler");
+      }
+
+      else
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+      return (sa);
     }
 
-    //Temizleme işlemleri
-    tab_text = tab_text + "";
-    tab_text = tab_text.replace(/]*>|<\/A>/g, "");//Linklerinizi temizler
-    tab_text = tab_text.replace(/]*>/gi, ""); //Resimleri temizler
-    tab_text = tab_text.replace(/]*>|<\/input>/gi, ""); // İnput ve Parametreler
-
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf("MSIE ");
-
-    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // İE için
+    function ozelInput()
     {
-      txtArea1.document.open("txt/html", "replace");
-      txtArea1.document.write(tab_text);
-      txtArea1.document.close();
-      txtArea1.focus();
-      sa = txtArea1.document.execCommand("SaveAs", true, "Teşekkürler");
+      $('#stokDusum').val(' ').trigger('change');
     }
 
-    else
-      sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-    return (sa);
-  }
-  function ozelInput()
-  {
-    $('#stokDusum').val(' ').trigger('change');
-  }
+    // ─── Yardımcı: tek satır TR HTML'i oluşturur ──────────────────────────────
+    function buildSatirHTML(row, padded) {
+        const v  = (val) => val ?? '';
+        const mps = (val) => parseFloat(val || 0).toFixed(4);
 
+        const menuItems = `
+            <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari('${v(row.TI_KOD)}')">Depo Mevcutları</button></li>
+            <li><button type="button" class="dropdown-item" onclick="StokHareketleri('${v(row.TI_KOD)}')">Stok Hareketleri</button></li>
+            <li><button type="button" class="dropdown-item" onclick="StokKartinaGit('${v(row.TI_KOD)}')">Stok Kartına Git</button></li>
+            <li><button type="submit" name="kart_islemleri" value="yazdir" class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
+            <li><button type="button" class="dropdown-item delete-row">Satırı Sil</button></li>
+            <li><button type="button" class="dropdown-item" onclick="SatirKopyala(this)">Satırı Kopyala</button></li>
+        `;
 
-// ─── Yardımcı: tek satır TR HTML'i oluşturur ──────────────────────────────
-function buildSatirHTML(row, padded) {
-    const v  = (val) => val ?? '';
-    const mps = (val) => parseFloat(val || 0).toFixed(4);
-
-    const menuItems = `
-        <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari('${v(row.TI_KOD)}')">Depo Mevcutları</button></li>
-        <li><button type="button" class="dropdown-item" onclick="StokHareketleri('${v(row.TI_KOD)}')">Stok Hareketleri</button></li>
-        <li><button type="button" class="dropdown-item" onclick="StokKartinaGit('${v(row.TI_KOD)}')">Stok Kartına Git</button></li>
-        <li><button type="submit" name="kart_islemleri" value="yazdir" class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
-        <li><button type="button" class="dropdown-item delete-row">Satırı Sil</button></li>
-        <li><button type="button" class="dropdown-item" onclick="SatirKopyala(this)">Satırı Kopyala</button></li>
-    `;
-
-    return `
-        <tr>
-            <td>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-bars"></i>
+        return `
+            <tr>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <ul class="dropdown-menu">${menuItems}</ul>
+                    </div>
+                </td>
+                <input type="hidden"  class="form-control" name="TI_TRNUM[]"           value="${padded}">
+                <td><input type="text"   class="form-control" name="TI_KARSITRNUM[]"   value="${v(row.TI_KARSITRNUM)}"></td>
+                <td><input type="text"   class="form-control" name="TI_KARSIKOD[]"     value="${v(row.TI_KARSIKOD)}"           readonly></td>
+                <td><input type="text"   class="form-control" name="TI_KARSISTOK_ADI[]"value="${v(row.TI_KARSISTOK_ADI)}"      readonly></td>
+                <td><input type="text"   class="form-control" name="TI_KARSILOTNUMBER[]"value="${v(row.TI_KARSILOTNUMBER)}"    readonly></td>
+                <td><input type="text"   class="form-control" name="TI_KARSISERINO[]"  value="${v(row.TI_KARSISERINO)}"></td>
+                <td><input type="number" class="form-control" name="TI_KARSISF_MIKTAR[]"value="${v(row.TI_KARSISF_MIKTAR)}"></td>
+                <td>
+                    <input type="checkbox" ${row.STOKTAN_DUS ? '' : 'checked'} value="${row.STOKTAN_DUS ? null : 'E'}">
+                    <input type="hidden"   class="form-control" name="BILGISATIRIE[]"  value="${row.STOKTAN_DUS ? '' : 'E'}">
+                </td>
+                <td><input type="text"   class="form-control" name="TI_KOD[]"          value="${v(row.TI_KOD)}"                readonly></td>
+                <td><input type="text"   class="form-control" name="TI_STOK_ADI[]"     value="${v(row.TI_STOK_ADI)}"           readonly></td>
+                <td><input type="number" class="form-control" name="TI_SF_MIKTAR[]"    value="${mps(row.TI_SF_MIKTAR)}"></td>
+                <td><input type="text"   class="form-control" name="TI_SF_SF_UNIT[]"   value="${v(row.TI_SF_SF_UNIT)}"         readonly></td>
+                <td><input type="text"   class="form-control" name="TI_AMBCODE[]"      value="${v(row.AMBCODE)}"               readonly></td>
+                <td class="d-flex">
+                  <input type="text" id="serino-${padded}"  class="form-control" name="TI_SERINO[]"       value="${v(row.SERINO)}"                readonly>
+                  <span class="d-flex -btn">
+                    <button class="btn btn-primary" data-bs-toggle="modal"
+                      onclick="veriCek('${v(row.TI_KOD)}', '${padded}')"
+                      data-bs-target="#modal_popupSelectModal4" type="button">
+                      <span class="fa-solid fa-magnifying-glass">
+                      </span>
                     </button>
-                    <ul class="dropdown-menu">${menuItems}</ul>
-                </div>
-            </td>
-            <input type="hidden"  class="form-control" name="TI_TRNUM[]"           value="${padded}">
-            <td><input type="text"   class="form-control" name="TI_KARSITRNUM[]"   value="${v(row.TI_KARSITRNUM)}"></td>
-            <td><input type="text"   class="form-control" name="TI_KARSIKOD[]"     value="${v(row.TI_KARSIKOD)}"           readonly></td>
-            <td><input type="text"   class="form-control" name="TI_KARSISTOK_ADI[]"value="${v(row.TI_KARSISTOK_ADI)}"      readonly></td>
-            <td><input type="text"   class="form-control" name="TI_KARSILOTNUMBER[]"value="${v(row.TI_KARSILOTNUMBER)}"    readonly></td>
-            <td><input type="text"   class="form-control" name="TI_KARSISERINO[]"  value="${v(row.TI_KARSISERINO)}"></td>
-            <td><input type="number" class="form-control" name="TI_KARSISF_MIKTAR[]"value="${v(row.TI_KARSISF_MIKTAR)}"></td>
-            <td>
-                <input type="checkbox" ${row.STOKTAN_DUS ? '' : 'checked'} value="${row.STOKTAN_DUS ? null : 'E'}">
-                <input type="hidden"   class="form-control" name="BILGISATIRIE[]"  value="${row.STOKTAN_DUS ? '' : 'E'}">
-            </td>
-            <td><input type="text"   class="form-control" name="TI_KOD[]"          value="${v(row.TI_KOD)}"                readonly></td>
-            <td><input type="text"   class="form-control" name="TI_STOK_ADI[]"     value="${v(row.TI_STOK_ADI)}"           readonly></td>
-            <td><input type="number" class="form-control" name="TI_SF_MIKTAR[]"    value="${mps(row.TI_SF_MIKTAR)}"></td>
-            <td><input type="text"   class="form-control" name="TI_SF_SF_UNIT[]"   value="${v(row.TI_SF_SF_UNIT)}"         readonly></td>
-            <td><input type="text"   class="form-control" name="TI_AMBCODE[]"      value="${v(row.AMBCODE)}"               readonly></td>
-            <td><input type="text"   class="form-control" name="TI_SERINO[]"       value="${v(row.SERINO)}"                readonly></td>
-            <td><input type="text"   class="form-control" name="TI_LOT[]"          value="${v(row.LOTNUMBER)}"></td>
-            <td><input type="text"   class="form-control" name="TI_TEXT1[]"        value="${v(row.TEXT1)}"                 readonly></td>
-            <td><input type="text"   class="form-control" name="TI_TEXT2[]"        value="${v(row.TEXT2)}"                 readonly></td>
-            <td><input type="text"   class="form-control" name="TI_TEXT3[]"        value="${v(row.TEXT3)}"                 readonly></td>
-            <td><input type="text"   class="form-control" name="TI_TEXT4[]"        value="${v(row.TEXT4)}"                 readonly></td>
-            <td><input type="text"   class="form-control" name="TI_NUM1[]"         value="${v(row.NUM1)}"                  readonly></td>
-            <td><input type="text"   class="form-control" name="TI_NUM2[]"         value="${v(row.NUM2)}"                  readonly></td>
-            <td><input type="text"   class="form-control" name="TI_NUM3[]"         value="${v(row.NUM3)}"                  readonly></td>
-            <td><input type="text"   class="form-control" name="TI_NUM4[]"         value="${v(row.NUM4)}"                  readonly></td>
-            <td><input type="text"   class="form-control" name="TI_LOK1[]"         value="${v(row.LOCATION1)}"             readonly></td>
-            <td><input type="text"   class="form-control" name="TI_LOK2[]"         value="${v(row.LOCATION2)}"             readonly></td>
-            <td><input type="text"   class="form-control" name="TI_LOK3[]"         value="${v(row.LOCATION3)}"             readonly></td>
-            <td><input type="text"   class="form-control" name="TI_LOK4[]"         value="${v(row.LOCATION4)}"             readonly></td>
-            <td><input type="text"   class="form-control" name="PM[]"              value="${v(row.PM)}"                    readonly></td>
-            <td><button type="button" class="btn btn-default delete-row">
-                <i class="fa fa-minus" style="color:red"></i>
-            </button></td>
-        </tr>
-    `;
-}
+                  </span>
+                </td>
+                <td><input type="text" id="Lot-${padded}"  class="form-control" name="TI_LOT[]"          value="${v(row.LOTNUMBER)}"></td>
+                <td><input type="text" id="text1->${padded}"  class="form-control" name="TI_TEXT1[]"        value="${v(row.TEXT1)}"                 readonly></td>
+                <td><input type="text" id="text2->${padded}"  class="form-control" name="TI_TEXT2[]"        value="${v(row.TEXT2)}"                 readonly></td>
+                <td><input type="text" id="text3->${padded}"  class="form-control" name="TI_TEXT3[]"        value="${v(row.TEXT3)}"                 readonly></td>
+                <td><input type="text" id="text4->${padded}"  class="form-control" name="TI_TEXT4[]"        value="${v(row.TEXT4)}"                 readonly></td>
+                <td><input type="text" id="num1-${padded}"  class="form-control" name="TI_NUM1[]"         value="${v(row.NUM1)}"                  readonly></td>
+                <td><input type="text" id="num2-${padded}"  class="form-control" name="TI_NUM2[]"         value="${v(row.NUM2)}"                  readonly></td>
+                <td><input type="text" id="num3-${padded}"  class="form-control" name="TI_NUM3[]"         value="${v(row.NUM3)}"                  readonly></td>
+                <td><input type="text" id="num4-${padded}"  class="form-control" name="TI_NUM4[]"         value="${v(row.NUM4)}"                  readonly></td>
+                <td><input type="text" id="lok1-${padded}"  class="form-control" name="TI_LOK1[]"         value="${v(row.LOCATION1)}"             readonly></td>
+                <td><input type="text" id="lok2-${padded}"  class="form-control" name="TI_LOK2[]"         value="${v(row.LOCATION2)}"             readonly></td>
+                <td><input type="text" id="lok3-${padded}"  class="form-control" name="TI_LOK3[]"         value="${v(row.LOCATION3)}"             readonly></td>
+                <td><input type="text" id="lok4-${padded}"  class="form-control" name="TI_LOK4[]"         value="${v(row.LOCATION4)}"             readonly></td>
+                <td><input type="text"   class="form-control" name="PM[]"              value="${v(row.PM)}"                    readonly></td>
+                <td><button type="button" class="btn btn-default delete-row">
+                    <i class="fa fa-minus" style="color:red"></i>
+                </button></td>
+            </tr>
+        `;
+    }
 
-// ─── Ortak AJAX işleyici ───────────────────────────────────────────────────
-function hesaplaAjax(url, extraData) {
-    Swal.fire({
-        title: 'Yükleniyor...',
-        text: 'Lütfen bekleyin',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
+    // ─── Ortak AJAX işleyici ───────────────────────────────────────────────────
+    function hesaplaAjax(url, extraData) {
+        Swal.fire({
+            title: 'Yükleniyor...',
+            text: 'Lütfen bekleyin',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
 
-    $.ajax({
-        url,
-        type: 'POST',
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            ...extraData
-        },
-        success(response) {
-            let index = 1;
-            const html = response.map(row => {
-                const padded = String(index++).padStart(6, '0');
-                return buildSatirHTML(row, padded);
-            }).join('');
+        $.ajax({
+            url,
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                ...extraData
+            },
+            success(response) {
+                let index = 1;
+                const html = response.map(row => {
+                    const padded = String(index++).padStart(6, '0');
+                    return buildSatirHTML(row, padded);
+                }).join('');
 
-            $('#veriTable2 > tbody').append(html);
-            emptyInputs('satirEkle2');
-            Swal.close();
-        },
-        error(xhr) {
-            Swal.close();
-            console.error('Hata:', xhr.responseText);
-        }
-    });
-}
+                $('#veriTable2 > tbody').append(html);
+                emptyInputs('satirEkle2');
+                Swal.close();
+            },
+            error(xhr) {
+                Swal.close();
+                console.error('Hata:', xhr.responseText);
+            }
+        });
+    }
 
-// ─── Ana fonksiyon — sadece route seçimi burada kalır ─────────────────────
-function receteden_hesapla(value) {
-    if (value.trim() === '') return;
+    // ─── Ana fonksiyon — sadece route seçimi burada kalır ─────────────────────
+    function receteden_hesapla(value) {
+        if (value.trim() === '') return;
 
-    const commonData = {
-        ID:      {{ $EVRAKNO }},
-        AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
-    };
+        const commonData = {
+            ID:      {{ $EVRAKNO }},
+            AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
+        };
 
-    const url = value === 'category1'
-        ? '{{ route("mpsden-hesapla") }}'
-        : '{{ route("receteden-hesapla") }}';
+        const url = value === 'category1'
+            ? '{{ route("mpsden-hesapla") }}'
+            : '{{ route("receteden-hesapla") }}';
 
-    hesaplaAjax(url, commonData);
-}
-</script>
+        hesaplaAjax(url, commonData);
+    }
+  </script>
+@endsection

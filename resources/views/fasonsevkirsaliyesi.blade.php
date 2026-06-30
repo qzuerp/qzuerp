@@ -1715,6 +1715,7 @@
           }
         });
       }
+      
       $(document).ready(function () {
         // ── Fason Modal ──────────────────────────────────────────────
         var fasonTable = $('#fasonSelectt').DataTable({
@@ -1884,6 +1885,7 @@
 
           $("#modal_popupSelectModal4").modal('hide');
         });
+
 
         $('#popupSelectt').DataTable({
           "order": [[0, "desc"]],

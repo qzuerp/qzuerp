@@ -1185,57 +1185,57 @@ private function sorgulaRecete(string $firma, int $evrakNo): array
 private function sorgulaMPS(string $firma, int $evrakNo): array
 {
     $sql = "
-        SELECT
-            S20E.id,
-            S20T.SRNUM AS TI_KARSITRNUM,
-            TRIM(S20T.KOD) AS TI_KARSIKOD,
-            S00.AD AS TI_KARSISTOK_ADI,
-            COALESCE(TRIM(S20T.LOTNUMBER), '') + '  ' AS TI_KARSILOTNUMBER,
-            COALESCE(TRIM(S20T.SERINO),    '') + '  ' AS TI_KARSISERINO,
-            S20T.SF_MIKTAR AS TI_KARSISF_MIKTAR,
-            B01TI.BOMREC_YMAMULCODE,
-            (SELECT MAX(SIRANO) FROM {$firma}BOMU01T
-             WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I'
-               AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
-               AND BOMREC_KAYNAKCODE LIKE 'FSN%') AS SIRA,
-            M10T.R_YMAMULKODU AS TI_KOD,
-            S002.AD AS TI_STOK_ADI,
-            M10T.R_KAYNAKTYPE AS PM,
-            M10T.R_YMAMULMIKTAR,
-            CAST(S20T.SF_MIKTAR * M10T.R_YMAMULMIKTAR
-                 / NULLIF(M10E.SF_TOPLAMMIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
-            S002.IUNIT AS TI_SF_SF_UNIT,
-            ISNULL((SELECT SUM(SF_MIKTAR) FROM {$firma}STOK10A
-                    WHERE KOD = M10T.R_YMAMULKODU), 0) AS MEVCUT_STOK
-        FROM (
-            SELECT S20.*,
-                   (SELECT MAX(R_SIRANO) FROM {$firma}MMPS10T
-                    WHERE EVRAKNO = S20.ISEMRINO
-                      AND R_KAYNAKTYPE = 'I'
-                      AND R_KAYNAKKODU LIKE 'F%') AS MPS_SIRANO
-            FROM {$firma}STOK20T S20
-            WHERE S20.EVRAKNO = {$evrakNo}
-        ) S20T
-         
-        LEFT JOIN {$firma}STOK20E S20E  ON S20E.EVRAKNO = S20T.EVRAKNO
-        LEFT JOIN {$firma}STOK00  S00   ON S00.KOD  = S20T.KOD
-        LEFT JOIN {$firma}MMPS10T M10T  ON S20T.ISEMRINO = M10T.EVRAKNO
-                                       AND M10T.R_KAYNAKTYPE = 'I'
-                                       AND M10T.R_KAYNAKKODU LIKE 'F%'
-                                       AND M10T.R_SIRANO = S20T.MPS_SIRANO
-        LEFT JOIN {$firma}BOMU01E B01E  ON B01E.MAMULCODE = S20T.KOD
-        LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO
-                                       AND B01TI.BOMREC_INPUTTYPE = 'I'
-                                       AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL
-                                       AND B01TI.SIRANO = (
-                                           SELECT MAX(SIRANO) FROM {$firma}BOMU01T
-                                           WHERE EVRAKNO = B01TI.EVRAKNO
-                                             AND BOMREC_INPUTTYPE = 'I'
-                                             AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
-                                             AND BOMREC_KAYNAKCODE LIKE 'F%')
-        LEFT JOIN {$firma}MMPS10E M10E  ON M10E.EVRAKNO = M10T.EVRAKNO
-        LEFT JOIN {$firma}STOK00  S002  ON S002.KOD = M10T.R_YMAMULKODU
-        ORDER BY M10T.R_SIRANO DESC
+      SELECT
+          S20E.id,
+          S20T.SRNUM AS TI_KARSITRNUM,
+          TRIM(S20T.KOD) AS TI_KARSIKOD,
+          S00.AD AS TI_KARSISTOK_ADI,
+          COALESCE(TRIM(S20T.LOTNUMBER), '') + '  ' AS TI_KARSILOTNUMBER,
+          COALESCE(TRIM(S20T.SERINO),    '') + '  ' AS TI_KARSISERINO,
+          S20T.SF_MIKTAR AS TI_KARSISF_MIKTAR,
+          B01TI.BOMREC_YMAMULCODE,
+          (SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+            WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I'
+              AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+              AND BOMREC_KAYNAKCODE LIKE 'FSN%') AS SIRA,
+          M10T.R_YMAMULKODU AS TI_KOD,
+          S002.AD AS TI_STOK_ADI,
+          M10T.R_KAYNAKTYPE AS PM,
+          M10T.R_YMAMULMIKTAR,
+          CAST(S20T.SF_MIKTAR * M10T.R_YMAMULMIKTAR
+                / NULLIF(M10E.SF_TOPLAMMIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
+          S002.IUNIT AS TI_SF_SF_UNIT,
+          ISNULL((SELECT SUM(SF_MIKTAR) FROM {$firma}STOK10A
+                  WHERE KOD = M10T.R_YMAMULKODU), 0) AS MEVCUT_STOK
+      FROM (
+          SELECT S20.*,
+                  (SELECT MAX(R_SIRANO) FROM {$firma}MMPS10T
+                  WHERE EVRAKNO = S20.ISEMRINO
+                    AND R_KAYNAKTYPE = 'I'
+                    AND R_KAYNAKKODU LIKE 'F%') AS MPS_SIRANO
+          FROM {$firma}STOK20T S20
+          WHERE S20.EVRAKNO = {$evrakNo}
+      ) S20T
+        
+      LEFT JOIN {$firma}STOK20E S20E  ON S20E.EVRAKNO = S20T.EVRAKNO
+      LEFT JOIN {$firma}STOK00  S00   ON S00.KOD  = S20T.KOD
+      LEFT JOIN {$firma}MMPS10T M10T  ON S20T.ISEMRINO = M10T.EVRAKNO
+                                      AND M10T.R_KAYNAKTYPE = 'I'
+                                      AND M10T.R_KAYNAKKODU LIKE 'F%'
+                                      AND M10T.R_SIRANO = S20T.MPS_SIRANO
+      LEFT JOIN {$firma}BOMU01E B01E  ON B01E.MAMULCODE = S20T.KOD
+      LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO
+                                      AND B01TI.BOMREC_INPUTTYPE = 'I'
+                                      AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL
+                                      AND B01TI.SIRANO = (
+                                          SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+                                          WHERE EVRAKNO = B01TI.EVRAKNO
+                                            AND BOMREC_INPUTTYPE = 'I'
+                                            AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+                                            AND BOMREC_KAYNAKCODE LIKE 'F%')
+      LEFT JOIN {$firma}MMPS10E M10E  ON M10E.EVRAKNO = M10T.EVRAKNO
+      LEFT JOIN {$firma}STOK00  S002  ON S002.KOD = M10T.R_YMAMULKODU
+      ORDER BY M10T.R_SIRANO DESC
     ";
 
     return DB::select($sql);
