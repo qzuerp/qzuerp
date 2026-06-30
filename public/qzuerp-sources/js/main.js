@@ -741,10 +741,10 @@ function exportTableToExcel(tableId, options = {}) {
     if (/^\d{2,4}[-./]\d{1,2}[-./]\d{2,4}$/.test(text)) return null;
     if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(text)) return null;
     if (/^\d{2,4}[-./]\d{1,2}[-./]\d{2,4}\s+\d{1,2}:\d{2}/.test(text)) return null;
+    if (/\d-\d/.test(text)) return null;
 
     let cleaned = text.replace(/[%€$£₺\s]/g, '');
 
-    // Harf veya ':' içeriyorsa string bırak
     if (/[a-zA-ZğüşıöçĞÜŞİÖÇ:]/.test(cleaned)) return null;
 
     const isTurkish = /^\d{1,3}(\.\d{3})*(,\d+)?$/.test(cleaned) ||
@@ -763,7 +763,7 @@ function exportTableToExcel(tableId, options = {}) {
         value: num,
         isFloat: cleaned.includes('.') && !Number.isInteger(num),
     };
-}
+  }
 }
 
 function inputTemizle3() {
