@@ -739,28 +739,31 @@ function exportTableToExcel(tableId, options = {}) {
     if (!text || text === '-' || text === '') return null;
 
     if (/^\d{2,4}[-./]\d{1,2}[-./]\d{2,4}$/.test(text)) return null;
+    if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(text)) return null;
+    if (/^\d{2,4}[-./]\d{1,2}[-./]\d{2,4}\s+\d{1,2}:\d{2}/.test(text)) return null;
 
     let cleaned = text.replace(/[%€$£₺\s]/g, '');
 
-    if (/[a-zA-ZğüşıöçĞÜŞİÖÇ-]/.test(cleaned)) return null;
+    // Harf veya ':' içeriyorsa string bırak
+    if (/[a-zA-ZğüşıöçĞÜŞİÖÇ:]/.test(cleaned)) return null;
 
     const isTurkish = /^\d{1,3}(\.\d{3})*(,\d+)?$/.test(cleaned) ||
-      /^\d+,\d+$/.test(cleaned);
+        /^\d+,\d+$/.test(cleaned);
 
     if (isTurkish) {
-      cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+        cleaned = cleaned.replace(/\./g, '').replace(',', '.');
     } else {
-      cleaned = cleaned.replace(/,/g, '');
+        cleaned = cleaned.replace(/,/g, '');
     }
 
     const num = parseFloat(cleaned);
     if (isNaN(num)) return null;
 
     return {
-      value: num,
-      isFloat: cleaned.includes('.') && !Number.isInteger(num),
+        value: num,
+        isFloat: cleaned.includes('.') && !Number.isInteger(num),
     };
-  }
+}
 }
 
 function inputTemizle3() {

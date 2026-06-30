@@ -1422,166 +1422,117 @@ if (isset($kart_veri)) {
   {
     $('#stokDusum').val(' ').trigger('change');
   }
-  function receteden_hesapla(value) {
-    if(value.trim()=="")
-    return;
-      // var selected = document.getElementById("stokDusum").value;
-      Swal.fire({
-				title: 'Yükleniyor...',
-				text: 'Lütfen bekleyin',
-				allowOutsideClick: false,
-				didOpen: () => {
-					Swal.showLoading();
-				}
-			});
-      
-      if(value == "category1")
-      {
-        $.ajax({
-            url: '{{ route('mpsden-hesapla') }}',
-            type: 'POST',
-            data: {
-                ID: {{ $EVRAKNO }},
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
-            },success: function(response) {
-                var htmlCode = "";
-                var index = 1;
-                let padded = index.toString().padStart(6, '0');
-                response.forEach(function(row) {
-                    htmlCode += `
-                        <tr>
-                            <td>
-                              <div class="dropdown">
-                                  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      <i class="fa-solid fa-bars"></i>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                      <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari('${row.TI_KOD ?? ""}')">Depo Mevcutları</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="StokHareketleri('${row.TI_KOD ?? ""}')">Stok Hareketleri</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="StokKartinaGit('${row.TI_KOD ?? ""}')">Stok Kartına Git</button></li>
-                                      <li><button type="submit" name='kart_islemleri' value='yazdir' class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
-                                      <li><button type="button" class="dropdown-item delete-row">Satırı Sil</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="SatirKopyala(this)">Satırı Kopyala</button></li>
-                                  </ul>
-                              </div>
-                            </td>
-                            <input type='hidden' class='form-control' maxlength='6' name='TI_TRNUM[]' value='${padded}'>
-                            <td><input type='text' class='form-control' maxlength='6' name='TI_KARSITRNUM[]' value='${row.TI_KARSITRNUM}'></td>
-                            <td><input type='text' class='form-control' name='TI_KARSIKOD[]' value='${row.TI_KARSIKOD ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSISTOK_ADI[]' value='${row.TI_KARSISTOK_ADI ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSILOTNUMBER[]' value='${row.TI_KARSILOTNUMBER ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSISERINO[]' value='${row.TI_KARSISERINO ?? ""}'></td>
-                            <td><input type='number' class='form-control' name='TI_KARSISF_MIKTAR[]' value='${row.TI_KARSISF_MIKTAR ?? ""}'></td>
-                            <td><input type='checkbox' name='' ${row.STOKTAN_DUS ? '' : 'checked'} value='${row.STOKTAN_DUS ? null : 'E'}'> <input type='hidden' class='form-control' name='BILGISATIRIE[]' value='${row.STOKTAN_DUS ? '' : 'E'}'></td>
-                            <td><input type='text' class='form-control' name='TI_KOD[]' value='${row.TI_KOD ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_STOK_ADI[]' value='${row.TI_STOK_ADI ?? ""}' readonly></td>
-                            <td><input type='number' class='form-control' name='TI_SF_MIKTAR[]' value='${parseFloat(row.TI_SF_MIKTAR).toFixed(4) ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' readonly value='${row.TI_SF_SF_UNIT ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_AMBCODE[]' readonly value='${row.AMBCODE ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_SERINO[]' readonly value='${row.SERINO ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOT[]' value='${row.LOTNUMBER ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT1[]' readonly value='${row.TEXT1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT2[]' readonly value='${row.TEXT2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT3[]' readonly value='${row.TEXT3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT4[]' readonly value='${row.TEXT4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM1[]' readonly value='${row.NUM1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM2[]' readonly value='${row.NUM2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM3[]' readonly value='${row.NUM3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM4[]' readonly value='${row.NUM4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK1[]' readonly value='${row.LOCATION1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK2[]' readonly value='${row.LOCATION2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK3[]' readonly value='${row.LOCATION3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK4[]' readonly value='${row.LOCATION4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='PM[]' readonly value='${row.PM ?? ""}'></td>
-                            <td><button type='button' id="deleteSingleRow2" class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
-                        </tr>
-                    `;
-                    index++;
-                    padded = index.toString().padStart(6, '0');
-                });
 
-                $("#veriTable2 > tbody").append(htmlCode);
-                emptyInputs('satirEkle2');
-                Swal.close();
-            }
-        });
-      }
-      else
-      {
-        $.ajax({
-            url: '{{ route('receteden-hesapla') }}',
-            type: 'POST',
-            data: {
-                ID: {{ $EVRAKNO }},
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
-            },
-            success: function(response) {
-                var htmlCode = "";
-                var index = 1;
-                let padded = index.toString().padStart(6, '0');
-                response.forEach(function(row) {
-                    htmlCode += `
-                        <tr>
-                            <td>
-                              <div class="dropdown">
-                                  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      <i class="fa-solid fa-bars"></i>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                      <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari('${row.TI_KOD ?? ""}')">Depo Mevcutları</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="StokHareketleri('${row.TI_KOD ?? ""}')">Stok Hareketleri</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="StokKartinaGit('${row.TI_KOD ?? ""}')">Stok Kartına Git</button></li>
-                                      <li><button type="submit" name='kart_islemleri' value='yazdir' class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
-                                      <li><button type="button" class="dropdown-item delete-row">Satırı Sil</button></li>
-                                      <li><button type="button" class="dropdown-item" onclick="SatirKopyala(this)">Satırı Kopyala</button></li>
-                                  </ul>
-                              </div>
-                            </td>
-                            <input type='hidden' class='form-control' maxlength='6' name='TI_TRNUM[]' value='${padded}'>
-                            <td><input type='text' class='form-control' maxlength='6' name='TI_KARSITRNUM[]' value='${row.TI_KARSITRNUM}'></td>
-                            <td><input type='text' class='form-control' name='TI_KARSIKOD[]' value='${row.TI_KARSIKOD ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSISTOK_ADI[]' value='${row.TI_KARSISTOK_ADI ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSILOTNUMBER[]' value='${row.TI_KARSILOTNUMBER ?? ""}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_KARSISERINO[]' value='${row.TI_KARSISERINO ?? ""}'></td>
-                            <td><input type='number' class='form-control' name='TI_KARSISF_MIKTAR[]' value='${row.TI_KARSISF_MIKTAR ?? ""}'></td>
-                            <td><input type='checkbox' name='' ${row.STOKTAN_DUS ? '' : 'checked'} value='${row.STOKTAN_DUS ? null : 'E'}'> <input type='hidden' class='form-control' name='BILGISATIRIE[]' value='${row.STOKTAN_DUS ? '' : 'E'}'></td>
-                            <td><input type='text' class='form-control' name='TI_KOD[]' value='${(row.BOMREC_YMAMULCODE ? row.TI_KOD : row.BOMREC_YMAMULCODE) ?? row.TI_KOD}' readonly></td>
-                            <td><input type='text' class='form-control' name='TI_STOK_ADI[]' value='${row.TI_STOK_ADI ?? ""}' readonly></td>
-                            <td><input type='number' class='form-control' name='TI_SF_MIKTAR[]' value='${parseFloat(row.TI_SF_MIKTAR).toFixed(4) ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_SF_SF_UNIT[]' readonly value='${row.TI_SF_SF_UNIT ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_AMBCODE[]' readonly value='${row.AMBCODE ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_SERINO[]' readonly value='${row.SERINO ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOT[]' readonly value='${row.LOTNUMBER ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT1[]' readonly value='${row.TEXT1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT2[]' readonly value='${row.TEXT2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT3[]' readonly value='${row.TEXT3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_TEXT4[]' readonly value='${row.TEXT4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM1[]' readonly value='${row.NUM1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM2[]' readonly value='${row.NUM2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM3[]' readonly value='${row.NUM3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_NUM4[]' readonly value='${row.NUM4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK1[]' readonly value='${row.LOCATION1 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK2[]' readonly value='${row.LOCATION2 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK3[]' readonly value='${row.LOCATION3 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='TI_LOK4[]' readonly value='${row.LOCATION4 ?? ""}'></td>
-                            <td><input type='text' class='form-control' name='PM[]' readonly value='${row.PM ?? ""}'></td>
-                            <td><button type='button' id="deleteSingleRow2" class='btn btn-default delete-row'><i class='fa fa-minus' style='color: red'></i></button></td>
-                        </tr>
-                    `;
-                    index++;
-                    padded = index.toString().padStart(6, '0');
-                });
 
-                $("#veriTable2 > tbody").append(htmlCode);
-                emptyInputs('satirEkle2');
-                Swal.close();
-            },
-            error: function(xhr) {
-                console.error("Hata: ", xhr.responseText);
-            }
-        });
-      }
-  }
+// ─── Yardımcı: tek satır TR HTML'i oluşturur ──────────────────────────────
+function buildSatirHTML(row, padded) {
+    const v  = (val) => val ?? '';
+    const mps = (val) => parseFloat(val || 0).toFixed(4);
+
+    const menuItems = `
+        <li><button type="button" class="dropdown-item" onclick="DepoMevcutlari('${v(row.TI_KOD)}')">Depo Mevcutları</button></li>
+        <li><button type="button" class="dropdown-item" onclick="StokHareketleri('${v(row.TI_KOD)}')">Stok Hareketleri</button></li>
+        <li><button type="button" class="dropdown-item" onclick="StokKartinaGit('${v(row.TI_KOD)}')">Stok Kartına Git</button></li>
+        <li><button type="submit" name="kart_islemleri" value="yazdir" class="dropdown-item smbButton" onclick="SatirYazdir(this)">Satırı yazdır</button></li>
+        <li><button type="button" class="dropdown-item delete-row">Satırı Sil</button></li>
+        <li><button type="button" class="dropdown-item" onclick="SatirKopyala(this)">Satırı Kopyala</button></li>
+    `;
+
+    return `
+        <tr>
+            <td>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <ul class="dropdown-menu">${menuItems}</ul>
+                </div>
+            </td>
+            <input type="hidden"  class="form-control" name="TI_TRNUM[]"           value="${padded}">
+            <td><input type="text"   class="form-control" name="TI_KARSITRNUM[]"   value="${v(row.TI_KARSITRNUM)}"></td>
+            <td><input type="text"   class="form-control" name="TI_KARSIKOD[]"     value="${v(row.TI_KARSIKOD)}"           readonly></td>
+            <td><input type="text"   class="form-control" name="TI_KARSISTOK_ADI[]"value="${v(row.TI_KARSISTOK_ADI)}"      readonly></td>
+            <td><input type="text"   class="form-control" name="TI_KARSILOTNUMBER[]"value="${v(row.TI_KARSILOTNUMBER)}"    readonly></td>
+            <td><input type="text"   class="form-control" name="TI_KARSISERINO[]"  value="${v(row.TI_KARSISERINO)}"></td>
+            <td><input type="number" class="form-control" name="TI_KARSISF_MIKTAR[]"value="${v(row.TI_KARSISF_MIKTAR)}"></td>
+            <td>
+                <input type="checkbox" ${row.STOKTAN_DUS ? '' : 'checked'} value="${row.STOKTAN_DUS ? null : 'E'}">
+                <input type="hidden"   class="form-control" name="BILGISATIRIE[]"  value="${row.STOKTAN_DUS ? '' : 'E'}">
+            </td>
+            <td><input type="text"   class="form-control" name="TI_KOD[]"          value="${v(row.TI_KOD)}"                readonly></td>
+            <td><input type="text"   class="form-control" name="TI_STOK_ADI[]"     value="${v(row.TI_STOK_ADI)}"           readonly></td>
+            <td><input type="number" class="form-control" name="TI_SF_MIKTAR[]"    value="${mps(row.TI_SF_MIKTAR)}"></td>
+            <td><input type="text"   class="form-control" name="TI_SF_SF_UNIT[]"   value="${v(row.TI_SF_SF_UNIT)}"         readonly></td>
+            <td><input type="text"   class="form-control" name="TI_AMBCODE[]"      value="${v(row.AMBCODE)}"               readonly></td>
+            <td><input type="text"   class="form-control" name="TI_SERINO[]"       value="${v(row.SERINO)}"                readonly></td>
+            <td><input type="text"   class="form-control" name="TI_LOT[]"          value="${v(row.LOTNUMBER)}"></td>
+            <td><input type="text"   class="form-control" name="TI_TEXT1[]"        value="${v(row.TEXT1)}"                 readonly></td>
+            <td><input type="text"   class="form-control" name="TI_TEXT2[]"        value="${v(row.TEXT2)}"                 readonly></td>
+            <td><input type="text"   class="form-control" name="TI_TEXT3[]"        value="${v(row.TEXT3)}"                 readonly></td>
+            <td><input type="text"   class="form-control" name="TI_TEXT4[]"        value="${v(row.TEXT4)}"                 readonly></td>
+            <td><input type="text"   class="form-control" name="TI_NUM1[]"         value="${v(row.NUM1)}"                  readonly></td>
+            <td><input type="text"   class="form-control" name="TI_NUM2[]"         value="${v(row.NUM2)}"                  readonly></td>
+            <td><input type="text"   class="form-control" name="TI_NUM3[]"         value="${v(row.NUM3)}"                  readonly></td>
+            <td><input type="text"   class="form-control" name="TI_NUM4[]"         value="${v(row.NUM4)}"                  readonly></td>
+            <td><input type="text"   class="form-control" name="TI_LOK1[]"         value="${v(row.LOCATION1)}"             readonly></td>
+            <td><input type="text"   class="form-control" name="TI_LOK2[]"         value="${v(row.LOCATION2)}"             readonly></td>
+            <td><input type="text"   class="form-control" name="TI_LOK3[]"         value="${v(row.LOCATION3)}"             readonly></td>
+            <td><input type="text"   class="form-control" name="TI_LOK4[]"         value="${v(row.LOCATION4)}"             readonly></td>
+            <td><input type="text"   class="form-control" name="PM[]"              value="${v(row.PM)}"                    readonly></td>
+            <td><button type="button" class="btn btn-default delete-row">
+                <i class="fa fa-minus" style="color:red"></i>
+            </button></td>
+        </tr>
+    `;
+}
+
+// ─── Ortak AJAX işleyici ───────────────────────────────────────────────────
+function hesaplaAjax(url, extraData) {
+    Swal.fire({
+        title: 'Yükleniyor...',
+        text: 'Lütfen bekleyin',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    $.ajax({
+        url,
+        type: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            ...extraData
+        },
+        success(response) {
+            let index = 1;
+            const html = response.map(row => {
+                const padded = String(index++).padStart(6, '0');
+                return buildSatirHTML(row, padded);
+            }).join('');
+
+            $('#veriTable2 > tbody').append(html);
+            emptyInputs('satirEkle2');
+            Swal.close();
+        },
+        error(xhr) {
+            Swal.close();
+            console.error('Hata:', xhr.responseText);
+        }
+    });
+}
+
+// ─── Ana fonksiyon — sadece route seçimi burada kalır ─────────────────────
+function receteden_hesapla(value) {
+    if (value.trim() === '') return;
+
+    const commonData = {
+        ID:      {{ $EVRAKNO }},
+        AMBCODE: '{{ @$kart_veri->IMALATAMBCODE }}'
+    };
+
+    const url = value === 'category1'
+        ? '{{ route("mpsden-hesapla") }}'
+        : '{{ route("receteden-hesapla") }}';
+
+    hesaplaAjax(url, commonData);
+}
 </script>

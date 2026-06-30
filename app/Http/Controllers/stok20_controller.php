@@ -1107,252 +1107,203 @@ class stok20_controller extends Controller
 
   }
 
-  public function hesapla(Request $request) {
-      $GET_ID = $request->input('ID');
-      if(Auth::check()) {
-        $u = Auth::user();
-      }
-      $firma = trim($u->firma).'.dbo.';
-      $AMBCODE = $request->AMBCODE;
-      $sql_sorgu = "
-         SELECT 
+public function hesapla(Request $request)
+{
+    return $this->hesaplaOrtak($request, 'recete');
+}
+
+public function hesaplaMPS(Request $request)
+{
+    return $this->hesaplaOrtak($request, 'mps');
+}
+
+private function hesaplaOrtak(Request $request, string $tip): \Illuminate\Http\JsonResponse
+{
+    $u = Auth::user();
+    $firma = trim($u->firma) . '.dbo.';
+    $GET_ID = $request->input('ID');
+    $AMBCODE = $request->input('AMBCODE');
+
+    $table = $tip === 'mps'
+        ? $this->sorgulaMPS($firma, $GET_ID)
+        : $this->sorgulaRecete($firma, $GET_ID);
+
+    $stokPM = $tip === 'mps' ? 'I' : 'H';
+
+    $data = $this->satirlariOlustur($firma, $table, $AMBCODE, $stokPM);
+
+    return response()->json($data);
+}
+
+private function sorgulaRecete(string $firma, int $evrakNo): array
+{
+    $sql = "
+        SELECT
+            S20E.id,
+            S20T.SRNUM                                                AS TI_KARSITRNUM,
+            TRIM(S20T.KOD)                                            AS TI_KARSIKOD,
+            S00.AD                                                    AS TI_KARSISTOK_ADI,
+            COALESCE(TRIM(S20T.LOTNUMBER), '') + '  '                AS TI_KARSILOTNUMBER,
+            COALESCE(TRIM(S20T.SERINO),    '') + '  '                AS TI_KARSISERINO,
+            S20T.SF_MIKTAR                                            AS TI_KARSISF_MIKTAR,
+            B01TI.BOMREC_YMAMULCODE,
+            (SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+             WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I'
+               AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+               AND BOMREC_KAYNAKCODE LIKE 'FSN%')                    AS SIRA,
+            B01T.BOMREC_KAYNAKCODE                                    AS TI_KOD,
+            S002.AD                                                   AS TI_STOK_ADI,
+            B01T.BOMREC_INPUTTYPE                                     AS PM,
+            CAST(S20T.SF_MIKTAR * B01T.BOMREC_KAYNAK0
+                 / NULLIF(B01E.MAMUL_MIKTAR, 0) AS DECIMAL(18,2))    AS TI_SF_MIKTAR,
+            S002.IUNIT                                                AS TI_SF_SF_UNIT,
+            ISNULL((SELECT SUM(SF_MIKTAR) FROM {$firma}stok10a
+                    WHERE KOD = B01T.BOMREC_KAYNAKCODE), 0)           AS MEVCUT_STOK
+        FROM {$firma}STOK20T S20T
+        LEFT JOIN {$firma}STOK20E S20E  ON S20E.EVRAKNO = S20T.EVRAKNO
+        LEFT JOIN {$firma}BOMU01E B01E  ON B01E.MAMULCODE = S20T.KOD
+        LEFT JOIN {$firma}BOMU01T B01T  ON B01T.EVRAKNO = B01E.EVRAKNO
+                                       AND B01T.BOMREC_INPUTTYPE IN ('H','Y')
+        LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO
+                                       AND B01TI.BOMREC_INPUTTYPE = 'I'
+                                       AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL
+                                       AND B01TI.SIRANO >= B01T.SIRANO
+                                       AND B01TI.SIRANO = (
+                                           SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+                                           WHERE EVRAKNO = B01TI.EVRAKNO
+                                             AND BOMREC_INPUTTYPE = 'I'
+                                             AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+                                             AND BOMREC_KAYNAKCODE LIKE 'FSN%')
+        LEFT JOIN {$firma}STOK00 S00   ON S00.KOD  = S20T.KOD
+        LEFT JOIN {$firma}STOK00 S002  ON S002.KOD = B01T.BOMREC_KAYNAKCODE
+        WHERE S20E.EVRAKNO = ?
+    ";
+
+    return DB::select($sql, [$evrakNo]);
+}
+
+private function sorgulaMPS(string $firma, int $evrakNo): array
+{
+    $sql = "
+        SELECT
             S20E.id,
             S20T.SRNUM AS TI_KARSITRNUM,
             TRIM(S20T.KOD) AS TI_KARSIKOD,
             S00.AD AS TI_KARSISTOK_ADI,
             COALESCE(TRIM(S20T.LOTNUMBER), '') + '  ' AS TI_KARSILOTNUMBER,
-            COALESCE(TRIM(S20T.SERINO), '') + '  ' AS TI_KARSISERINO,
+            COALESCE(TRIM(S20T.SERINO),    '') + '  ' AS TI_KARSISERINO,
             S20T.SF_MIKTAR AS TI_KARSISF_MIKTAR,
             B01TI.BOMREC_YMAMULCODE,
-            (SELECT MAX(SIRANO) FROM {$firma}BOMU01T WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I' 
-            AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL AND  BOMREC_KAYNAKCODE LIKE 'FSN%' ) AS SIRA,
-            B01T.BOMREC_KAYNAKCODE AS TI_KOD,
+            (SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+             WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I'
+               AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+               AND BOMREC_KAYNAKCODE LIKE 'FSN%') AS SIRA,
+            M10T.R_YMAMULKODU AS TI_KOD,
             S002.AD AS TI_STOK_ADI,
-            B01T.BOMREC_INPUTTYPE AS PM,
-
-            CAST(S20T.SF_MIKTAR * B01T.BOMREC_KAYNAK0 / NULLIF(B01E.MAMUL_MIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
+            M10T.R_KAYNAKTYPE AS PM,
+            M10T.R_YMAMULMIKTAR,
+            CAST(S20T.SF_MIKTAR * M10T.R_YMAMULMIKTAR
+                 / NULLIF(M10E.SF_TOPLAMMIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
             S002.IUNIT AS TI_SF_SF_UNIT,
-            ISNULL((
-                SELECT SUM(SF_MIKTAR) 
-                FROM {$firma}stok10a 
-                WHERE KOD = B01T.BOMREC_KAYNAKCODE
-            ), 0) AS MEVCUT_STOK
-        FROM {$firma}STOK20T S20T
-        LEFT JOIN {$firma}STOK20E S20E ON S20E.EVRAKNO = S20T.EVRAKNO
-        LEFT JOIN {$firma}BOMU01E B01E ON B01E.MAMULCODE = S20T.KOD
-        LEFT JOIN {$firma}BOMU01T B01T ON B01T.EVRAKNO = B01E.EVRAKNO AND B01T.BOMREC_INPUTTYPE IN ('H','Y')
-        LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO AND B01TI.BOMREC_INPUTTYPE = 'I' 
-        AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL AND B01TI.SIRANO >=  B01T.SIRANO 
-        AND B01TI.SIRANO =(SELECT MAX(SIRANO) FROM {$firma}BOMU01T WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I' 
-        AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL AND  BOMREC_KAYNAKCODE LIKE 'FSN%') 
-        LEFT JOIN {$firma}STOK00 S00 ON S00.KOD = S20T.KOD
-        LEFT JOIN {$firma}STOK00 S002 ON S002.KOD = B01T.BOMREC_KAYNAKCODE
-        WHERE S20E.EVRAKNO = ?
-      ";
-
-      $table = DB::select($sql_sorgu, [$GET_ID]);
-
-      $data = [];
-      
-      foreach ($table as $row) {
-          $istenen = $row->TI_SF_MIKTAR;
-          $stok_kod = $row->TI_KOD;
-          if($row->PM == 'H')
-          {
-            $stokKaydi = $veriler = DB::table($firma.'stok10a')
-                ->selectRaw("'".$row->TI_KARSITRNUM."' AS TI_KARSITRNUM,'".$row->TI_KARSIKOD."' AS TI_KARSIKOD,'".$row->TI_KARSISTOK_ADI."' AS TI_KARSISTOK_ADI,
-                '".$row->TI_KARSILOTNUMBER."' AS TI_KARSILOTNUMBER,'".$row->TI_KARSISERINO."' AS TI_KARSISERINO,'".$row->TI_KARSISF_MIKTAR."' AS TI_KARSISF_MIKTAR,
-                KOD AS TI_KOD, STOK_ADI AS TI_STOK_ADI, LOTNUMBER, SERINO, SUM(SF_MIKTAR) AS MIKTAR, SF_SF_UNIT AS TI_SF_SF_UNIT, AMBCODE, 
-                            NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
-                            LOCATION1, LOCATION2, LOCATION3, LOCATION4")
-                ->where('KOD',$stok_kod)
-                ->where('AMBCODE',$AMBCODE)
-                ->groupBy(
-                    'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE',
-                    'NUM1', 'NUM2', 'NUM3', 'NUM4',
-                    'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4',
-                    'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'
-                )
-                ->get();
-
-
-            foreach ($stokKaydi as $veri)
-            {
-              if($veri->MIKTAR >= $istenen)
-              {
-                $satir1 = $veri;
-                $satir1->TI_SF_MIKTAR = $istenen;
-                $satir1->STOKTAN_DUS = true;
-                $data[] = $satir1;
-                $istenen = 0;
-                break;
-              }
-              else
-              {
-                if($istenen >= 0)
-                {
-                  $satir1 = $veri;
-                  $satir1->TI_SF_MIKTAR = $veri->MIKTAR;
-                  $satir1->STOKTAN_DUS = true;
-                  $satir1->PM = '';
-                  $data[] = $satir1;
-                  $istenen -= $veri->MIKTAR;
-                }
-              }
-            }
-            if($istenen > 0)
-            {
-              $satir2 = clone $row;
-              $satir2->TI_SF_MIKTAR = $istenen;
-              $satir2->STOKTAN_DUS = false;
-              $satir2->PM = '';
-              $data[] = $satir2;
-            }
-            
-          }
-          else
-          {
-            $satir3 = clone $row;
-            $satir3->PM = '+';
-            $data[] = $satir3;
-          }
-      }
-      
-      return response()->json($data);
-  }
-  public function hesaplaMPS(Request $request) {
-      $GET_ID = $request->input('ID');
-      if(Auth::check()) {
-        $u = Auth::user();
-      }
-      $firma = trim($u->firma).'.dbo.';
-      $AMBCODE = $request->AMBCODE;
-
-      $sql_sorgu = "
-        SELECT 
-          S20E.id,
-          S20T.SRNUM AS TI_KARSITRNUM,
-          TRIM(S20T.KOD) AS TI_KARSIKOD,
-          S00.AD AS TI_KARSISTOK_ADI,
-          COALESCE(TRIM(S20T.LOTNUMBER), '') + '  ' AS TI_KARSILOTNUMBER,
-          COALESCE(TRIM(S20T.SERINO), '') + '  ' AS TI_KARSISERINO,
-          S20T.SF_MIKTAR AS TI_KARSISF_MIKTAR,
-          B01TI.BOMREC_YMAMULCODE,
-          (SELECT MAX(SIRANO) FROM {$firma}BOMU01T WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I' 
-          AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL AND BOMREC_KAYNAKCODE LIKE 'FSN%') AS SIRA,
-          M10T.R_YMAMULKODU AS TI_KOD,
-          S002.AD AS TI_STOK_ADI,
-          M10T.R_KAYNAKTYPE AS PM,
-          M10T.R_YMAMULMIKTAR,
-          CAST(S20T.SF_MIKTAR * M10T.R_YMAMULMIKTAR / NULLIF(M10E.SF_TOPLAMMIKTAR, 0) AS DECIMAL(18,2)) AS TI_SF_MIKTAR,
-          S002.IUNIT AS TI_SF_SF_UNIT,
-          ISNULL((
-            SELECT SUM(SF_MIKTAR) 
-            FROM {$firma}STOK10A 
-            WHERE KOD = M10T.R_YMAMULKODU
-          ), 0) AS MEVCUT_STOK
-
-      FROM (
-          -- DÜZELTİLEN KISIM: Alt sorguyu adam gibi inşa ettik
-          SELECT S20.*, 
-                (SELECT MAX(R_SIRANO) 
-                  FROM {$firma}MMPS10T 
-                  WHERE EVRAKNO = S20.ISEMRINO
-                    AND R_KAYNAKTYPE = 'I'
-                    AND R_KAYNAKKODU LIKE 'F%'
-                ) AS MPS_SIRANO
-          FROM {$firma}STOK20T S20   -- Buradaki tablo adını kontrol et (STOK20T değilse düzelt)
-          WHERE S20.EVRAKNO = {$GET_ID}
-      ) S20T
-
-      LEFT JOIN {$firma}STOK20E S20E ON S20E.EVRAKNO = S20T.EVRAKNO
-      LEFT JOIN {$firma}STOK00 S00 ON S00.KOD = S20T.KOD
-      LEFT JOIN {$firma}MMPS10T M10T ON S20T.ISEMRINO = M10T.EVRAKNO
-          AND M10T.R_KAYNAKTYPE = 'I'
-          AND M10T.R_KAYNAKKODU LIKE 'F%'
-          AND M10T.R_SIRANO = S20T.MPS_SIRANO
-
-      LEFT JOIN {$firma}BOMU01E B01E ON B01E.MAMULCODE = S20T.KOD
-
-      LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO 
-          AND B01TI.BOMREC_INPUTTYPE = 'I' 
-          AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL 
-          AND B01TI.SIRANO = (SELECT MAX(SIRANO) FROM {$firma}BOMU01T WHERE EVRAKNO = B01TI.EVRAKNO AND BOMREC_INPUTTYPE = 'I' 
-              AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL AND BOMREC_KAYNAKCODE LIKE 'F%') 
-
-      LEFT JOIN {$firma}MMPS10E M10E ON M10E.EVRAKNO = M10T.EVRAKNO
-      LEFT JOIN {$firma}STOK00 S002 ON S002.KOD = M10T.R_YMAMULKODU
-
-      ORDER BY M10T.R_SIRANO DESC;
+            ISNULL((SELECT SUM(SF_MIKTAR) FROM {$firma}STOK10A
+                    WHERE KOD = M10T.R_YMAMULKODU), 0) AS MEVCUT_STOK
+        FROM (
+            SELECT S20.*,
+                   (SELECT MAX(R_SIRANO) FROM {$firma}MMPS10T
+                    WHERE EVRAKNO = S20.ISEMRINO
+                      AND R_KAYNAKTYPE = 'I'
+                      AND R_KAYNAKKODU LIKE 'F%') AS MPS_SIRANO
+            FROM {$firma}STOK20T S20
+            WHERE S20.EVRAKNO = {$evrakNo}
+        ) S20T
+         
+        LEFT JOIN {$firma}STOK20E S20E  ON S20E.EVRAKNO = S20T.EVRAKNO
+        LEFT JOIN {$firma}STOK00  S00   ON S00.KOD  = S20T.KOD
+        LEFT JOIN {$firma}MMPS10T M10T  ON S20T.ISEMRINO = M10T.EVRAKNO
+                                       AND M10T.R_KAYNAKTYPE = 'I'
+                                       AND M10T.R_KAYNAKKODU LIKE 'F%'
+                                       AND M10T.R_SIRANO = S20T.MPS_SIRANO
+        LEFT JOIN {$firma}BOMU01E B01E  ON B01E.MAMULCODE = S20T.KOD
+        LEFT JOIN {$firma}BOMU01T B01TI ON B01TI.EVRAKNO = B01E.EVRAKNO
+                                       AND B01TI.BOMREC_INPUTTYPE = 'I'
+                                       AND TRIM(B01TI.BOMREC_YMAMULCODE) IS NOT NULL
+                                       AND B01TI.SIRANO = (
+                                           SELECT MAX(SIRANO) FROM {$firma}BOMU01T
+                                           WHERE EVRAKNO = B01TI.EVRAKNO
+                                             AND BOMREC_INPUTTYPE = 'I'
+                                             AND TRIM(BOMREC_YMAMULCODE) IS NOT NULL
+                                             AND BOMREC_KAYNAKCODE LIKE 'F%')
+        LEFT JOIN {$firma}MMPS10E M10E  ON M10E.EVRAKNO = M10T.EVRAKNO
+        LEFT JOIN {$firma}STOK00  S002  ON S002.KOD = M10T.R_YMAMULKODU
+        ORDER BY M10T.R_SIRANO DESC
     ";
 
+    return DB::select($sql);
+}
 
-      $table = DB::select($sql_sorgu);
-      
-      $data = [];
-      
-      foreach ($table as $row) {
-          $istenen = $row->TI_SF_MIKTAR;
-          $stok_kod = $row->TI_KOD;
-          if($row->PM == 'I')
-          {
-            $stokKaydi = $veriler = DB::table($firma.'stok10a')
-                ->selectRaw("'".$row->TI_KARSITRNUM."' AS TI_KARSITRNUM,'".$row->TI_KARSIKOD."' AS TI_KARSIKOD,'".$row->TI_KARSISTOK_ADI."' AS TI_KARSISTOK_ADI,
-                '".$row->TI_KARSILOTNUMBER."' AS TI_KARSILOTNUMBER,'".$row->TI_KARSISERINO."' AS TI_KARSISERINO,'".$row->TI_KARSISF_MIKTAR."' AS TI_KARSISF_MIKTAR,
-                KOD AS TI_KOD, STOK_ADI AS TI_STOK_ADI, LOTNUMBER, SERINO, SUM(SF_MIKTAR) AS MIKTAR, SF_SF_UNIT AS TI_SF_SF_UNIT, AMBCODE, 
-                            NUM1, NUM2, NUM3, NUM4, TEXT1, TEXT2, TEXT3, TEXT4, 
-                            LOCATION1, LOCATION2, LOCATION3, LOCATION4")
-                ->where('KOD',$stok_kod)
-                ->where('AMBCODE',$AMBCODE)
-                ->groupBy(
-                    'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE',
-                    'NUM1', 'NUM2', 'NUM3', 'NUM4',
-                    'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4',
-                    'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'
-                )
-                ->get();
-            
+private function satirlariOlustur(string $firma, array $table, string $AMBCODE, string $stokPM): array
+{
+    $data = [];
 
-            foreach ($stokKaydi as $veri)
-            {
-              if($veri->MIKTAR >= $istenen)
-              {
-                $satir1 = $veri;
-                $satir1->TI_SF_MIKTAR = $istenen;
-                $satir1->STOKTAN_DUS = true;
-                $data[] = $satir1;
-                $istenen = 0;
-                break;
-              }
-              else {
-                  if($istenen > 0) {
-                      $satir1 = $veri;
-                      $satir1->TI_SF_MIKTAR = $veri->MIKTAR;
-                      $satir1->STOKTAN_DUS = true;
-                      $satir1->PM = '';
-                      $data[] = $satir1;
-                      $istenen -= $veri->MIKTAR;
-                  }
-              }
+    foreach ($table as $row) {
+        if ($row->PM !== $stokPM) {
+            $satir = clone $row;
+            $satir->PM = '+';
+            $data[] = $satir;
+            continue;
+        }
+
+        $istenen  = $row->TI_SF_MIKTAR;
+        $stokKaydi = DB::table($firma . 'stok10a')
+            ->selectRaw("
+                ? AS TI_KARSITRNUM, ? AS TI_KARSIKOD, ? AS TI_KARSISTOK_ADI,
+                ? AS TI_KARSILOTNUMBER, ? AS TI_KARSISERINO, ? AS TI_KARSISF_MIKTAR,
+                KOD AS TI_KOD, STOK_ADI AS TI_STOK_ADI,
+                LOTNUMBER, SERINO, SUM(SF_MIKTAR) AS MIKTAR,
+                SF_SF_UNIT AS TI_SF_SF_UNIT, AMBCODE,
+                NUM1, NUM2, NUM3, NUM4,
+                TEXT1, TEXT2, TEXT3, TEXT4,
+                LOCATION1, LOCATION2, LOCATION3, LOCATION4
+            ", [
+                $row->TI_KARSITRNUM, $row->TI_KARSIKOD, $row->TI_KARSISTOK_ADI,
+                $row->TI_KARSILOTNUMBER, $row->TI_KARSISERINO, $row->TI_KARSISF_MIKTAR,
+            ])
+            ->where('KOD', $row->TI_KOD)
+            ->where('AMBCODE', $AMBCODE)
+            ->groupBy(
+                'KOD', 'STOK_ADI', 'LOTNUMBER', 'SERINO', 'SF_SF_UNIT', 'AMBCODE',
+                'NUM1', 'NUM2', 'NUM3', 'NUM4',
+                'TEXT1', 'TEXT2', 'TEXT3', 'TEXT4',
+                'LOCATION1', 'LOCATION2', 'LOCATION3', 'LOCATION4'
+            )
+            ->havingRaw('SUM(SF_MIKTAR) > 0')
+            ->get();
+
+        foreach ($stokKaydi as $veri) {
+            if ($istenen <= 0) break;
+
+            $alinacak      = min($veri->MIKTAR, $istenen);
+            $satir         = clone $veri;
+            $satir->TI_SF_MIKTAR  = $alinacak;
+            $satir->STOKTAN_DUS   = true;
+            $satir->PM            = $veri->MIKTAR >= $istenen ? $satir->PM ?? '' : '';
+
+            if ($veri->MIKTAR < $istenen) {
+                $satir->PM = '';
             }
-            if($istenen > 0)
-            {
-              $satir2 = clone $row;
-              $satir2->TI_SF_MIKTAR = $istenen;
-              $satir2->STOKTAN_DUS = false;
-              $satir2->PM = '';
-              $data[] = $satir2;
-            }
-            
-          }
-          else
-          {
-            $satir3 = clone $row;
-            $satir3->PM = '+';
-            $data[] = $satir3;
-          }
-      }
-      
-      return response()->json($data);
-  }
+            $data[]  = $satir;
+            $istenen -= $alinacak;
+        }
+
+        if ($istenen > 0) {
+            $satir             = clone $row;
+            $satir->TI_SF_MIKTAR = $istenen;
+            $satir->STOKTAN_DUS  = false;
+            $satir->PM           = '';
+            $data[]              = $satir;
+        }
+    }
+
+    return $data;
+}
 }
