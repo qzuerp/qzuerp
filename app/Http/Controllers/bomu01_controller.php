@@ -225,7 +225,7 @@ class bomu01_controller extends Controller
       $satir_say = count($BOMREC_KAYNAKCODE);
     }
 
-    if(in_array($MAMULCODE,$BOMREC_KAYNAKCODE))
+    if(in_array($MAMULCODE,$BOMREC_KAYNAKCODE) && $satir_say > 0)
     {
       return redirect()->back()->with('error','Reçete ürün koduyla eşleşen satır bulundu.');
     }
